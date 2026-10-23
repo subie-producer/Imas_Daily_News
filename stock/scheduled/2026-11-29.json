@@ -679,12 +679,12 @@
   "src_dedup_key": "gakumas-seibu-chichibu-yukemuri-2026"
  },
  {
-  "id": "sched-2026-11-29-dsva-manaka-birthday-online-live-2026-platform-change-締切",
+  "id": "sched-2026-11-29-dsva-manaka-birthday-online-live-2026-platform-change-終了",
   "dedup_key": "dsva-manaka-birthday-online-live-2026-platform-change",
   "brand": "dsva",
-  "subject": "灯里愛夏 延期公演 配信チケット販売・アーカイブ",
-  "kind": "締切",
-  "note": "18:00が一般販売の終了。アーカイブは23:59まで視聴できる",
+  "subject": "灯里愛夏 延期公演 一般販売終了",
+  "kind": "終了",
+  "note": "18:00で一般販売が終わる。アーカイブ視聴は23:59まで",
   "reserved_on": "2026-10-24",
   "occurs_on": "2026-11-29",
   "title": "灯里愛夏バースデーライブ延期公演の配信先変更とチケット販売",

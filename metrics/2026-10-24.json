@@ -101,5 +101,47 @@
    },
    "duration_s": 1587
   }
+ ],
+ "compose": [
+  {
+   "at": "2026-10-24T03:28:15+09:00",
+   "edition": "2026-10-24",
+   "rounds": 5,
+   "approved": true,
+   "lint_green": true,
+   "planned": 56,
+   "written": 48,
+   "roundups": 1,
+   "dropped": 1,
+   "coverage": {
+    "subjects": 127,
+    "covered": 127,
+    "missing": 0,
+    "missing_keys": []
+   },
+   "dropped_by_review": [
+    "cg-sakuma-mayu-necklace-bound-to-you"
+   ],
+   "stages_min": {
+    "選定": 2.3472885330518087,
+    "執筆": 5.15521719455719,
+    "出典の判定": 2.4507297396659853,
+    "組版": 0.8596877733866374,
+    "校閲": 0.8477824926376343,
+    "校閲1波": 0.8477824926376343
+   },
+   "target_min": 60,
+   "over_target": false,
+   "aborted": [
+    "shiny-technical-challenge-cup-17-2026",
+    "sidem-315-night-2026-10-30",
+    "sidem-315-night-2026-11-hosts",
+    "cg-astromeda-popup-akihabara-2026",
+    "sidem-poppin-planet-2dmv-2026",
+    "gaku-ichiban-kuji-part7-illustration-2026",
+    "shiny-dark-girly-fashion-goods-2026"
+   ],
+   "duration_s": 1658
+  }
  ]
 }

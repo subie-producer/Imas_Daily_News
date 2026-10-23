@@ -317,11 +317,6 @@
   added_on: '2026-10-22'
 - dedup_key: portal-security-maintenance-2026-10
   brand: general
-  subject: アイマスポータル メンテナンス後のNEWS再開と各発表の詳細
-  watch: メンテ完了とポータルNEWS閲覧再開、「改めて知らせる」とされた各発表の内容と日付
-  added_on: '2026-10-24'
-- dedup_key: tsubasa-the-animation-figure-2026
-  brand: million
-  subject: コトブキヤ 伊吹翼-The Animation-フィギュア
-  watch: 2027年6月予定の正式発売日(判明次第 triggers へ)
+  subject: アイマスポータル メンテナンス明けの各発表内容
+  watch: セキュリティ強化メンテナンスの終了時期と、改めて知らせるとされた各発表の詳細(判明次第 triggers へ)
   added_on: '2026-10-24'

@@ -18659,20 +18659,20 @@
     - 会場は京王アリーナTOKYO。
 - story_id: cg-hourglass-radio-premiere-2026
   brand: cg
-  subject: シンデレラガールズ15周年曲「HOURGLASS」デレパ初公開
+  subject: CG15周年曲「HOURGLASS」デレパで初公開
   status: active
   first_published: '2026-10-24'
   published_facts:
   - 「HOURGLASS」が来週10月28日放送のWEBラジオ「CINDERELLA PARTY!」で初公開される（シンデレラガールズ15周年記念曲）
   - '放送: 2026/10/28(水) 22:00開始'
-  - '番組: CINDERELLA PARTY! from アイドルマスターシンデレラガールズ #623'
-  - '28日は「HOURGLASS」スペシャル回。出演: 桐生つかさ役の河瀬茉希さん、乙倉悠貴役の中島由貴さんの2名'
+  - 2026年11月18日発売
+  - 'アソビストアご予約締切: 11月8日（日）23:59まで'
   edition_facts:
     '2026-10-24':
     - 「HOURGLASS」が来週10月28日放送のWEBラジオ「CINDERELLA PARTY!」で初公開される（シンデレラガールズ15周年記念曲）
     - '放送: 2026/10/28(水) 22:00開始'
-    - '番組: CINDERELLA PARTY! from アイドルマスターシンデレラガールズ #623'
-    - '28日は「HOURGLASS」スペシャル回。出演: 桐生つかさ役の河瀬茉希さん、乙倉悠貴役の中島由貴さんの2名'
+    - 2026年11月18日発売
+    - 'アソビストアご予約締切: 11月8日（日）23:59まで'
 - story_id: cg-popntoybox-revival-general-lottery-2026
   brand: cg
   subject: Pop'n ToyBox!! もういっかい！ 一般会員先行
@@ -18687,22 +18687,6 @@
     - お申込みは11月1日(日)まで。
     - CONCEPT xR LIVE「Pop'n ToyBox!! もういっかい！」がオリックス劇場で開催される。
     - アソビチケットで一般会員先行（抽選）の受付中。
-- story_id: cinderella-mayu-bound-to-you-necklace-2026
-  brand: cg
-  subject: 佐久間まゆイメージネックレス「Bound to you.」
-  status: active
-  first_published: '2026-10-24'
-  published_facts:
-  - '予約期間: 2026年10月21日（水）12：00～11月30日（月）23：59'
-  - 本体素材はスターリングシルバー（ロジウムコーティング）とガーネット、チェーン素材はサージカルステンレス。
-  - トップのサイズは最大縦約16.3mm、横約9.6mm。チェーンは全長約50cmで、アジャスター5cmを含む。
-  - チェーンの通し方を変えて、モチーフを重ねたり揺れるように着けたりできる。
-  edition_facts:
-    '2026-10-24':
-    - '予約期間: 2026年10月21日（水）12：00～11月30日（月）23：59'
-    - 本体素材はスターリングシルバー（ロジウムコーティング）とガーネット、チェーン素材はサージカルステンレス。
-    - トップのサイズは最大縦約16.3mm、横約9.6mm。チェーンは全長約50cmで、アジャスター5cmを含む。
-    - チェーンの通し方を変えて、モチーフを重ねたり揺れるように着けたりできる。
 - story_id: dsva-3rd-live-meeting-qonnect-as-one
   brand: dsva
   subject: vα-liv 3rdLIVE＆MEETING -QONNECT AS ONE-
@@ -18747,7 +18731,7 @@
     - 「Agitato」のMusic Videoが200万再生を突破した。
 - story_id: hiro-another-idol-guaranteed-gasha-2026
   brand: gaku
-  subject: 学マス 篠澤広 無料確定ガシャ
+  subject: 学マス 篠澤広 アナザーアイドル確定無料ガシャ
   status: active
   first_published: '2026-10-24'
   published_facts:
@@ -18761,7 +18745,7 @@
     - アナザーアイドルアップデート記念として「SSR アナザーアイドル 確定ガシャ」を開催。
 - story_id: roar-mv-short-2026
   brand: gaku
-  subject: 学マス「Roar」MVショート動画
+  subject: 学マス「Roar」MVショート動画公開
   status: active
   first_published: '2026-10-24'
   published_facts:
@@ -18773,20 +18757,20 @@
     - 'YouTube: https://www.youtube.com/watch?v=Mdyk3h5-TQE&feature=youtu.be'
 - story_id: gaku-shirube-final-merch-2026
   brand: gaku
-  subject: 学マス「標」ファイナル 会場物販整理券
+  subject: 学マス「標」ファイナル会場物販の整理券受付
   status: active
   first_published: '2026-10-24'
   published_facts:
-  - 公演は2026年11月7日・8日にKアリーナ横浜で開催予定。
   - '整理券受付期間: 2026年10月23日(金)13:00～10月28日(水)23:59'
   - '当落発表: 2026年11月3日(火・祝)13:00～'
   - '物販日時: 2026年11月7日(土) 10:00～17:00'
+  - '物販日時: 2026年11月8日(日) 10:00～17:00'
   edition_facts:
     '2026-10-24':
-    - 公演は2026年11月7日・8日にKアリーナ横浜で開催予定。
     - '整理券受付期間: 2026年10月23日(金)13:00～10月28日(水)23:59'
     - '当落発表: 2026年11月3日(火・祝)13:00～'
     - '物販日時: 2026年11月7日(土) 10:00～17:00'
+    - '物販日時: 2026年11月8日(日) 10:00～17:00'
 - story_id: yorunite-mv-one-million-views
   brand: gaku
   subject: 学マス「ヨルニテ」MV100万再生突破
@@ -18801,7 +18785,7 @@
     - 'YouTube: https://www.youtube.com/watch?v=X1xcOhkgc4c&feature=youtu.be'
 - story_id: eva-765pro-fan-ss-2026
   brand: general
-  subject: 765プロ×エヴァのファンSS
+  subject: 765プロ×エヴァのファンSS掲載
   status: active
   first_published: '2026-10-24'
   published_facts:
@@ -18815,7 +18799,7 @@
     - 作中でカヲルは双海亜美・真美のデュエットに惹かれ、二人を好きなアイドルとして挙げている。
 - story_id: portal-security-maintenance-2026-10
   brand: general
-  subject: アイマスポータル セキュリティメンテナンスと先行ポスト削除
+  subject: アイマスポータル NEWS先行ポスト削除とメンテナンス
   status: active
   first_published: '2026-10-24'
   published_facts:
@@ -18829,7 +18813,7 @@
     - 各発表内容の詳細は改めて知らせると告知。
 - story_id: tours-s2-cyber-core-green-2026
   brand: joint
-  subject: ツアマスS2弾 SPアピールカード
+  subject: ツアマスS2弾 SPアピールカード紹介
   status: active
   first_published: '2026-10-24'
   published_facts:
@@ -18875,23 +18859,23 @@
     - 表示価格は2,974円（税込）。
 - story_id: nostalgic-orchestra-works-2026
   brand: million
-  subject: Nostalgic Orchestra Works セルフカバーアルバム
+  subject: Nostalgic Orchestra Works 10月25日発売
   status: active
   first_published: '2026-10-24'
   published_facts:
   - 『Nostalgic Orchestra Works』は『アイドルマスター ミリオンライブ！』への提供曲を収録したNostalgic Orchestra初のセルフカバーアルバムで、2026年10月25日発売。
   - M3-2026秋での先行発売後、10月28日ごろから注文順に順次発送する。
+  - アルバムは歌入り5曲とInstrumental 5曲の全10トラックを収録する。
   - CD価格は税込3,000円、税抜2,728円。
-  - 購入特典はジャケットサイズポストカード。
   edition_facts:
     '2026-10-24':
     - 『Nostalgic Orchestra Works』は『アイドルマスター ミリオンライブ！』への提供曲を収録したNostalgic Orchestra初のセルフカバーアルバムで、2026年10月25日発売。
     - M3-2026秋での先行発売後、10月28日ごろから注文順に順次発送する。
+    - アルバムは歌入り5曲とInstrumental 5曲の全10トラックを収録する。
     - CD価格は税込3,000円、税抜2,728円。
-    - 購入特典はジャケットサイズポストカード。
 - story_id: tsubasa-the-animation-figure-2026
   brand: million
-  subject: コトブキヤ 伊吹翼-The Animation-フィギュア
+  subject: 伊吹翼 The Animation フィギュア予約開始
   status: active
   first_published: '2026-10-24'
   published_facts:
@@ -18921,7 +18905,7 @@
     - ✅ショップでは金電話が入ったセレクトパックを販売予定！
 - story_id: '283'
   brand: shiny
-  subject: シャニマス新対戦「283ステージショー」
+  subject: シャニマス新対戦「283ステージショー」開発中
   status: active
   first_published: '2026-10-24'
   published_facts:
@@ -18944,16 +18928,16 @@
   - 10月31日 12:00 ～ 開催予定です✨
   - 最大150連分のガシャチケットをプレゼント✨
   - シャニソン3周年記念イベントの報酬として新衣装「ひとひら」が登場予定。
-  - 3周年記念ひとひらガシャでも入手可能。
+  - イベントミッション等で獲得できるイベントメダルと交換して獲得可能。
   edition_facts:
     '2026-10-24':
     - 10月31日 12:00 ～ 開催予定です✨
     - 最大150連分のガシャチケットをプレゼント✨
     - シャニソン3周年記念イベントの報酬として新衣装「ひとひら」が登場予定。
-    - 3周年記念ひとひらガシャでも入手可能。
+    - イベントミッション等で獲得できるイベントメダルと交換して獲得可能。
 - story_id: 3-pv
   brand: shiny
-  subject: シャニソン3rd Anniversary 記念PV
+  subject: シャニソン3周年記念PV公開
   status: active
   first_published: '2026-10-24'
   published_facts:
@@ -18965,7 +18949,7 @@
     - アイドルマスターチャンネルで公開中！
 - story_id: '7'
   brand: shiny
-  subject: シャニマス ささやきボイス第7弾に七草にちか
+  subject: シャニマスささやきボイス第7弾 七草にちか
   status: active
   first_published: '2026-10-24'
   published_facts:
@@ -18977,7 +18961,7 @@
     - S-SSR 【約いもうと】
 - story_id: auto-32
   brand: shiny
-  subject: シャニマス プレコレアイドルにボイス計300パターン追加
+  subject: シャニマス プレコレアイドルのボイス追加
   status: active
   first_published: '2026-10-24'
   published_facts:
@@ -18993,7 +18977,7 @@
     - アニメモード時に、ホーム画面にアイドルが設定されているとボイスが発生します
 - story_id: auto-36
   brand: shiny
-  subject: シャニソン 新曲展開とグラフィック更新、3周年へ
+  subject: シャニソン 3周年と新曲・グラフィック更新
   status: active
   first_published: '2026-10-24'
   published_facts:
@@ -19007,7 +18991,7 @@
     - ✅グラフィックの更なるアップデートを予定！
 - story_id: auto-38
   brand: shiny
-  subject: シャニソン 2シリーズ衣装を恒常販売へ
+  subject: シャニソン 2シリーズ衣装の恒常販売
   status: active
   first_published: '2026-10-24'
   published_facts:
@@ -19027,19 +19011,19 @@
   status: active
   first_published: '2026-10-24'
   published_facts:
-  - 【アイキューガシャ復刻開催予定！】
+  - '「PJ: REFRAC7IONS I''m a Cutie Finderガシャ」を復刻開催予定と告知。'
   - 【アイキューログインボーナスパス登場予定！】
   - 【アイキュー復刻記念ジュエルセール開催予定！】
   - 【アイキューアナザーイベント開催予定！】
   edition_facts:
     '2026-10-24':
-    - 【アイキューガシャ復刻開催予定！】
+    - '「PJ: REFRAC7IONS I''m a Cutie Finderガシャ」を復刻開催予定と告知。'
     - 【アイキューログインボーナスパス登場予定！】
     - 【アイキュー復刻記念ジュエルセール開催予定！】
     - 【アイキューアナザーイベント開催予定！】
 - story_id: auto-50
   brand: shiny
-  subject: シャニソン 新ガシャ「反射する星々、その先へ」に霧子と愛依
+  subject: シャニソン 新ピックアップガシャ「反射する星々、その先へ」
   status: active
   first_published: '2026-10-24'
   published_facts:
@@ -19053,7 +19037,7 @@
     - 限定★3【星が流れたら、またね】和泉 愛依
 - story_id: auto-70
   brand: shiny
-  subject: シャニマス ハロウィン登場アイドルに田中摩美々
+  subject: シャニマス ハロウィン登場アイドル 田中摩美々
   status: active
   first_published: '2026-10-24'
   published_facts:
@@ -19077,7 +19061,7 @@
     - 「果てにふれるのなら」はシーズの皆さんの物語を描いたシナリオイベント。
 - story_id: beam-mv
   brand: shiny
-  subject: アルストロメリア「BEAM」配信開始とMV公開
+  subject: アルストロメリア「BEAM」配信とMV公開
   status: active
   first_published: '2026-10-24'
   published_facts:
@@ -19089,23 +19073,23 @@
     - '「BEAM」各種音楽配信開始: 2026年10月30日 0:00'
 - story_id: shiny-higuchi-madoka-figure-2027
   brand: shiny
-  subject: シャニマス×雀魂 樋口円香フィギュア予約開始
+  subject: シャニマス円香、雀魂コラボ衣装のフィギュア予約中
   status: active
   first_published: '2026-10-24'
   published_facts:
   - SSR FIGUREが「アイドルマスター シャイニーカラーズ」×「雀魂」コラボの1/7スケールフィギュア「樋口円香 おしごとエフォートレス Ver.」を発売する。
-  - 「アイドルマスター シャイニーカラーズ」×「雀魂」のコラボより、ノクチルの樋口円香が「おしごとエフォートレス」の衣装姿でフィギュア化。
+  - DMM通販の商品は2026年11月9日以降、予約注文のキャンセルができない。
+  - DMM通販の商品ページで「樋口円香 おしごとエフォートレス Ver.」は予約受付中（発売日前後に発送）と表示され、価格は19,800円（税込）。
   - 発売予定は2027年6月。
-  - 価格は19,800円（税込）。
   edition_facts:
     '2026-10-24':
     - SSR FIGUREが「アイドルマスター シャイニーカラーズ」×「雀魂」コラボの1/7スケールフィギュア「樋口円香 おしごとエフォートレス Ver.」を発売する。
-    - 「アイドルマスター シャイニーカラーズ」×「雀魂」のコラボより、ノクチルの樋口円香が「おしごとエフォートレス」の衣装姿でフィギュア化。
+    - DMM通販の商品は2026年11月9日以降、予約注文のキャンセルができない。
+    - DMM通販の商品ページで「樋口円香 おしごとエフォートレス Ver.」は予約受付中（発売日前後に発送）と表示され、価格は19,800円（税込）。
     - 発売予定は2027年6月。
-    - 価格は19,800円（税込）。
 - story_id: kimchikura-anisama-seoul-2027
   brand: shiny
-  subject: KIMCHIKURA×ANISAMA SEOUL 2027 シャニマス出演
+  subject: シャニマス、KIMCHIKURA×ANISAMA SEOUL 2027出演
   status: active
   first_published: '2026-10-24'
   published_facts:
@@ -19121,7 +19105,7 @@
     - 📍Seoul, BLUESQUARE Woori WON Banking Hall
 - story_id: mei-leashanai-outfit-2026
   brand: shiny
-  subject: 和泉愛依 P-SSR【離さない♡】衣装イラスト公開
+  subject: シャニマス、和泉愛依の衣装イラスト公開
   status: active
   first_published: '2026-10-24'
   published_facts:
@@ -19131,7 +19115,7 @@
     - '登場アイドル: P-SSR【離さない♡】和泉 愛依'
 - story_id: 8-5-ur
   brand: shiny
-  subject: シャニマス8.5周年の72時間限定施策
+  subject: シャニマス8.5周年、72時間限定施策など開催中
   status: active
   first_published: '2026-10-24'
   published_facts:
@@ -19147,21 +19131,19 @@
     - 「有償限定 8.5th Anniversary 72時間限定ユニットセレクト特別ステップアップガシャ」開催中！
 - story_id: overlay-of-hopes
   brand: shiny
-  subject: シャニソン新全体曲「OVERLAY OF HOPES」
+  subject: シャニソン新全体曲「OVERLAY OF HOPES」、全28名の歌い分けに対応
   status: active
   first_published: '2026-10-24'
   published_facts:
   - 新全体曲『OVERLAY OF HOPES』が登場予定！
-  - また、歌い分けモードにも対応しており
   - アイドルのみなさん、全28名による
   edition_facts:
     '2026-10-24':
     - 新全体曲『OVERLAY OF HOPES』が登場予定！
-    - また、歌い分けモードにも対応しており
     - アイドルのみなさん、全28名による
 - story_id: pj-refrac7ions-enza
   brand: shiny
-  subject: enza版シャニマスにFumage登場、新曲「Monad」追加
+  subject: シャニマスにFumage登場、新曲「Monad」追加
   status: active
   first_published: '2026-10-24'
   published_facts:
@@ -19177,7 +19159,7 @@
     - こちらのイラストは後日S-SSRとして登場予定です♪
 - story_id: s-ssr
   brand: shiny
-  subject: Project “ReLight” AXE8第4弾ノクチル(新曲「凪ぐ」・S-SSR市川雛菜)
+  subject: Project “ReLight” AXE8第4弾はノクチル
   status: active
   first_published: '2026-10-24'
   published_facts:
@@ -19193,20 +19175,20 @@
     - S-SSR 【SOL!LOQUY】市川 雛菜
 - story_id: sidem-agatsuma-nin-nin-2026
   brand: sidem
-  subject: SideM彩×吾妻6町村「あがつまニンニン！」コラボ
+  subject: SideM彩×あがつまニンニン！忍者コラボ
   status: active
   first_published: '2026-10-24'
   published_facts:
   - '開催期間: 令和８年１０月２８日（水）～１２月１３日（日）'
   - 「アイドルマスター SideM」のユニット「彩」が「あがつまニンニン！広報大使」となる。
   - 吾妻地域６町村（中之条町、長野原町、嬬恋村、草津町、高山村、東吾妻町）のデジタルスタンプラリーを実施する。
-  - コラボメニューとオリジナルグッズを販売する予定。
+  - コラボイベント名は「あがつまニンニン！忍びの里めぐり～315に彩なす吾妻紀行～」。特設サイトにイベント開催期間と内容が掲載されている。
   edition_facts:
     '2026-10-24':
     - '開催期間: 令和８年１０月２８日（水）～１２月１３日（日）'
     - 「アイドルマスター SideM」のユニット「彩」が「あがつまニンニン！広報大使」となる。
     - 吾妻地域６町村（中之条町、長野原町、嬬恋村、草津町、高山村、東吾妻町）のデジタルスタンプラリーを実施する。
-    - コラボメニューとオリジナルグッズを販売する予定。
+    - コラボイベント名は「あがつまニンニン！忍びの里めぐり～315に彩なす吾妻紀行～」。特設サイトにイベント開催期間と内容が掲載されている。
 - story_id: sidem-fanfes-wsi-nagano-general-presale-2026
   brand: sidem
   subject: SideM FANFES!! 長野公演 アソビストア一般会員先行
@@ -19241,14 +19223,16 @@
     - ビッグアクリルスタンドは全14種、各5,000円（税込）。
 - story_id: sidem-promi-2027-payment-deadline-extension
   brand: sidem
-  subject: SideMプロミ2027 プレミアム会員先行の入金期限延長
+  subject: SideMプロミ2027 プレミアム会員先行 入金期限延長
   status: active
   first_published: '2026-10-24'
   published_facts:
   - SideMプロミ2027のアソビストアプレミアム会員先行について、ASOBI STOREの緊急メンテナンスで入金手続きが行えなかった人を対象に入金期限を延長する。
+  - '詳細ページ: https://asobiticket2.asobistore.jp/news/022a9df8-fb50-48fe-b21d-aea1b06953a7'
   edition_facts:
     '2026-10-24':
     - SideMプロミ2027のアソビストアプレミアム会員先行について、ASOBI STOREの緊急メンテナンスで入金手続きが行えなかった人を対象に入金期限を延長する。
+    - '詳細ページ: https://asobiticket2.asobistore.jp/news/022a9df8-fb50-48fe-b21d-aea1b06953a7'
 - story_id: sidem-renaissance-ticket-soldout-2026-10-22
   brand: sidem
   subject: 315 Fitness Project in RENAISSANCE タオル付チケット完売
@@ -19283,7 +19267,7 @@
     - 公開日時は後日改めて案内される。
 - story_id: sidem-ultimate-flame-2dmv-release-2026
   brand: sidem
-  subject: SideM・FRAME「ULTIMATE FLAME」2DMV公開
+  subject: FRAME「ULTIMATE FLAME」2DMV公開
   status: active
   first_published: '2026-10-24'
   published_facts:

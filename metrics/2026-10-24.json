@@ -100,6 +100,88 @@
     "failed": 0
    },
    "duration_s": 1587
+  },
+  {
+   "at": "2026-10-24T07:33:39+09:00",
+   "edition": "2026-10-25",
+   "watch": {
+    "stats": {
+     "imas-portal": {
+      "found": 0,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-sidem": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-shiny": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-million": {
+      "found": 9,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "lantis-shiny": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "lantis-sidem": {
+      "error": "HTTP Error 503: Service Temporarily Unavailable"
+     },
+     "columbia-imas": {
+      "found": 351,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "bnam-tours": {
+      "found": 69,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "imasnews765": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     }
+    },
+    "new": 0,
+    "facted": 0,
+    "deferred": 0,
+    "blocked": 0
+   },
+   "per_query": {
+    "explore:765as": 0,
+    "explore:cinderella": 1,
+    "explore:million": 0,
+    "explore:shiny": 9,
+    "explore:sidem": 2,
+    "explore:gakuen": 1,
+    "explore:dsva": 0,
+    "explore:joint-other": 0,
+    "explore:trend": 2
+   },
+   "normalized": 15,
+   "added": 8,
+   "verify": {
+    "confirmed": 5,
+    "unconfirmed": 9,
+    "failed": 1
+   },
+   "duration_s": 181
   }
  ],
  "compose": [

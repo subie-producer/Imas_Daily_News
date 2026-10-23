@@ -33,6 +33,7 @@
 | classify-rules / classify-site / classify-x / classify-debate | 出典種別の合議(`classify_sources`) | Claude haiku + Codex luna | 種別 JSON |
 | classify-link(+ classify-debate) | リンク先がリンク元の告知と関係しているかの合議(`classify_sources.inherit_from_links`) | Claude haiku + Codex luna | 関係する / 関係しない JSON |
 | oncall-fix(+ .objections)/ oncall-review | 当番の修正と監査(`oncall`) | Claude opus / Codex sol | 報告・判定(schema) |
+| oncall-reformat | 当番・監査のセッションが正常に終わったのに答えが読めない・schema のとおりでないとき、同じセッションを続けて答えの形だけを直させる(`oncall.run_claude` / `run_codex`。1回) | Claude opus / Codex sol(同じセッション) | 答え(最初と同じ schema) |
 | oncall-accept | 監査の must_fix が報告の誤り(misreport)だけのとき、監査が書いた編集長への報告の文面を当番が了承するか異を唱えるか(`oncall.accept_prompt`。取り込みの条件 C) | Claude opus(当番) | 了承・異議(schema `oncall-accept`) |
 | oncall-backlog | 当番が保管した「発行後に直す」指摘を、発行後の昼に直す依頼(`watch.hand_backlog` → `oncall.backlog_reason`、工程名 backlog) | Claude opus(当番) | 修正(oncall-fix と同じ) |
 | oncall-scope(.backlog)/ oncall-review.scope(.backlog) | 当番・監査の仕事の範囲。工程が止まった依頼と、保管の指摘を直す依頼(backlog)で切り替える(`oncall.fix_prompt` / `review_prompt`) | — | — |
@@ -290,6 +291,11 @@
   9/30 からの7件が1週間手つかずで、編集長「なんで直すリストを直せてなかった?」「こっちが本筋」。監視が当番に渡し、取り込めたら消し込む。
   範囲を「発行に必要な最小限に絞らない」のは、発行の時間帯ではなく、絞ると同じ指摘がまた later に戻るから。同じ理由で、
   この工程では監査の later も must_fix として扱い、保管に積まない
+- oncall-reformat(2026-10-23): ランティスのメンテナンスで定点観測1か所が読めなかった収集の当番が、正しい答え(直す箇所なし)を
+  空行をはさんで2回続けて出し、読み取りが2つを1つとして読もうとして「読めない答え」にした。作業は終わっていたのに試行を1回失い、
+  「当番の作業が途中で止まった」と人に届いた(ops の `metrics/oncall-2026-10-24-collect-failed.md`)。同じ答えの繰り返しは1つとして読み、
+  それでも読めない・形が違う答えは、作業をやり直させず同じセッションに形だけを直させる。「判断は変えない」は、形を直す回に結論を
+  書き換えさせないため(監査の判定・当番の診断は最初の回のもの)
 - 編集方針で決着済みの事項(`oncall.POLICY_EXCLUDED`): 内容判断の機械化の要求、HOME / OS 隔離の要求
 - 取り込みの条件 C と掲載の記録(編集長 2026-10-21): 2026-10-15 の backlog の当番は、予約の締切の欠陥を正しく直したが、報告で 10/15号に
   載ったレトラの記事を「外れた・最大3日遅れ」と書いた(校閲1巡目の書き直しの指示を「外れた」と読み、載った記事・外れた記事の記録を確かめなかった)。

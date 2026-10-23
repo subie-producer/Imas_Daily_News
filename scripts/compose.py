@@ -53,7 +53,7 @@ from pipelib import (ENV, ROOT, CLAUDE_MODEL, CODEX_WRITE_MODEL, COMPOSE_WAVE, E
                      edition_date, escalate, extract_json_array, git, has_editorial, EDITORIAL_UNTIL,
                      SETTLED_DROP_RULES, settled_drops,
                      notify, notify_crash, now_jst, render_prompt, PROMPTS, ANOMALIES, anomaly, diagnose_anomalies, save_raw,
-                     partial_output, reap, loads_strict, schema_ok, read_for_raw, compose_lock_wait_min,
+                     partial_output, reap, loads_strict, read_answer, schema_ok, read_for_raw, compose_lock_wait_min,
                      collect_oncall_handover_pending, candidate_misplaced, merge_candidate_facts, write_checked,
                      FETCH_RECORD_ENV, fetched_urls, is_portal, maintenance_urls, portal_maintenance_notice,
                      portal_maintenance_rules,
@@ -1545,11 +1545,11 @@ def run_plan(date: str, by_brand: dict, triggers: list[dict], wave: int = 0) -> 
                         # 途中までの出力・異常終了の間際の出力は判定に使わない(その面の主題は取りこぼしとして拾い直す)
                         raise TimeoutError("時間切れ" if timed_out else f"exit {p.returncode}")
                     text = (so or "").strip()
-                    # 同じ主題のキーが2回ある答えは読めない(後の判定で黙って上書きされる。loads_strict。監査指摘)
-                    try:
-                        ans = loads_strict(text)
-                    except json.JSONDecodeError:
-                        ans = loads_strict(re.search(r"\{.*\}", text, re.S).group(0))
+                    # 同じ主題のキーが2回ある答えは読めない(後の判定で黙って上書きされる。loads_strict。監査指摘)。
+                    # 同じ答えの繰り返しは1つとして読む(read_answer。2026-10-23 の当番の答えと同じ型)
+                    ans, why = read_answer(text)
+                    if ans is None:
+                        raise ValueError(why)
                     if not isinstance(ans, dict):
                         raise ValueError("答えが JSON の object でない")
                     if not isinstance(ans.get("decisions"), dict):
@@ -1671,7 +1671,9 @@ def pick_lead(date: str, plan: dict) -> None:
         if r.returncode != 0:
             raise RuntimeError(f"exit {r.returncode}")
         text = (r.stdout or "").strip()
-        pick = loads_strict(text) if text.startswith("{") else loads_strict(re.search(r"\{.*\}", text, re.S).group(0))
+        pick, why = read_answer(text)        # 同じ答えの繰り返しは1つとして読む(2026-10-23 の当番の答えと同じ型)
+        if pick is None:
+            raise ValueError(why)
         # 渡した schema どおりでない答え({"lead_slug": []} など)は使わず、下の機械のフォールバックへ(監査指摘)
         if not schema_ok(pick, schema):
             raise ValueError("答えが schema のとおりでない")
@@ -3582,22 +3584,10 @@ def _parse_review(text: str, err: str, where: str) -> dict:
 
     def shaped(v):
         return validator.is_valid(v) and (v["verdict"] == "approve" or len(v["blockers"]) > 0)
-    # 重複キーの答えは読めない答え(後の値で黙って上書きされる。loads_strict)
-    for cand in (text.strip(), ):
-        try:
-            v = loads_strict(cand)
-            if shaped(v):
-                return v
-        except Exception:
-            pass
-    m = re.search(r"\{.*\}", text, re.DOTALL)
-    if m:
-        try:
-            v = loads_strict(m.group(0))
-            if shaped(v):
-                return v
-        except Exception:
-            pass
+    # 重複キーの答えは読めない答え(後の値で黙って上書きされる。loads_strict)。同じ答えの繰り返しは1つとして読む(read_answer)
+    v, _ = read_answer(text)
+    if v is not None and shaped(v):
+        return v
     # **実行できなかったことを、判定にしない。**以前はここで「校閲実行失敗」という
     # ブロックを返していた。Claude の枠切れで校閲セッションが全滅した日、
     # そのブロックを根拠に記事11本が「校閲が下ろさなかった」として紙面から

@@ -341,8 +341,9 @@ def diagnose_anomalies(stage: str, date: str, rerun: bool = False, reason: str =
     edition に生きている号の日付を渡す。戻り値は当番を呼んだか。"""
     if not ANOMALIES or _ESCALATED:
         return False
+    # reason が無い = 工程は止まっていない。当番に伝え、「いま再実行しても変わらない」を「人の判断が要る」にさせない(oncall --finished)
     return escalate(stage, date, reason or "工程は終わった(止まっていない)が、人に異常として通知した事柄がある。下の一覧をなぜなぜすること",
-                    rerun=rerun, edition=edition, extra_args=extra_args)
+                    rerun=rerun, edition=edition, extra_args=list(extra_args or []) + ([] if reason else ["--finished"]))
 
 
 def escalate_reason(reason: str) -> str:
@@ -2049,6 +2050,53 @@ def schema_ok(value, schema) -> bool:
     from jsonschema import Draft202012Validator
     s = json.loads(schema) if isinstance(schema, str) else schema
     return Draft202012Validator(s).is_valid(value)
+
+
+def schema_error(value, schema) -> str:
+    """schema_ok の裏: 答えが schema のとおりでない箇所を1つ、短く返す(とおりなら "")。形を直させる依頼に添える。"""
+    from jsonschema import Draft202012Validator
+    from jsonschema.exceptions import best_match
+    s = json.loads(schema) if isinstance(schema, str) else schema
+    e = best_match(Draft202012Validator(s).iter_errors(value))
+    if e is None:
+        return ""
+    where = "/".join(str(p) for p in e.absolute_path) or "(全体)"
+    return f"{where}: {e.message[:300]}"
+
+
+def read_answer(text: str) -> tuple[object, str]:
+    """モデルの答え(標準出力・答えのファイル)から JSON を1つ取り出す。戻りは (答え, 読めない理由)。読めなければ (None, 理由)。
+    1. 全体が1つの JSON ならそれ。2. 前後に地の文があれば、最初の `{` から最後の `}` まで
+    3. それでも読めなければ、最初の `{` から JSON の object を順に読み、**同じ答えの繰り返しだけなら**その1つ
+       (2026-10-23 18:56 の当番は正しい答えを空行をはさんで2回出し、2で2つを1つとして読んで「読めない答え」にした。
+       作業は終わっていたのに、試行を1回失い「当番の作業が途中で止まった」と人に届いた)。
+    違う答えが並ぶ(どれを採るかを決めない)・途中で切れている・同じキーが2回ある(loads_strict)は読めない。"""
+    s = (text or "").strip()
+    if not s:
+        return None, "答えが空"
+    try:
+        return loads_strict(s), ""
+    except ValueError:
+        pass
+    m = re.search(r"\{.*\}", s, re.S)
+    if not m:
+        return None, "JSON の object が無い"
+    try:
+        return loads_strict(m.group(0)), ""
+    except ValueError:
+        pass
+    dec = json.JSONDecoder(object_pairs_hook=_no_duplicate_keys)
+    found, i = [], m.start()
+    while i >= 0:
+        try:
+            v, i = dec.raw_decode(s, i)
+        except ValueError as e:
+            return None, f"JSON が途中で切れている・形が崩れている({str(e)[:120]})"
+        found.append(v)
+        i = s.find("{", i)
+    if len({json.dumps(v, ensure_ascii=False, sort_keys=True) for v in found}) > 1:
+        return None, f"違う答えが {len(found)}個並んでいる(どれを採るか決められない)"
+    return found[0], ""
 
 
 def extract_json_array(text: str):

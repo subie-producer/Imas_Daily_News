@@ -77,8 +77,9 @@ import hashlib
 
 from pipelib import (COLLECT_ONCALL_MARK, COLLECT_OUTPUTS, ENV, ROOT, classify_txn_settled, settle_collect_outputs, SCHEDULED, SLOT_MARGIN_MIN,
                      JobLockTimeout, anomaly,
-                     job_lock, loads_strict, mark_collect_oncall,
-                     next_slot_end, notify, now_jst, partial_output, prompt_file, render_prompt, save_raw, schema_ok, settled_drops,
+                     job_lock, mark_collect_oncall,
+                     next_slot_end, notify, now_jst, partial_output, prompt_file, read_answer, render_prompt, save_raw, schema_error,
+                     schema_ok, settled_drops,
                      tool_path, CLI_BLOCKED_EXIT, CliBlocked, cli_check, oncall_clis_blocked, scratch_dir)
 from pipelib import exit_on_term, run_group   # モデルのセッションは自前のグループで起動し、時間切れ・中断では道具ごと止める
 
@@ -472,31 +473,44 @@ def report_authorship_text(fix: dict) -> str:
 
 
 def parse_json(text: str) -> dict | None:
-    """同じキーが2回ある答えは読めない(後の値で黙って上書きされ、reject と approve が並ぶと承認になる。loads_strict。監査指摘)。"""
-    try:
-        return loads_strict(text.strip())
-    except Exception:
-        m = re.search(r"\{.*\}", text, re.S)
-        if m:
-            try:
-                return loads_strict(m.group(0))
-            except Exception:
-                return None
-    return None
+    """同じキーが2回ある答えは読めない(後の値で黙って上書きされ、reject と approve が並ぶと承認になる。loads_strict。監査指摘)。
+    同じ答えの繰り返しは1つとして読む(pipelib.read_answer)。"""
+    ans, _ = read_answer(text)
+    return ans if isinstance(ans, dict) else None
 
 
-def run_claude(prompt: str, schema_file: Path, cwd: Path, timeout: int = 1800) -> dict:
-    # 指示は作業ツリー側のファイルで渡す(引数に詰めない。作業ツリーの metrics/work/ は Git 管理外)
-    name = "fix-" + hashlib.sha256(prompt.encode("utf-8")).hexdigest()[:8]
-    short = prompt_file("oncall", name, prompt, base=cwd)
+class AnswerUnreadable(RuntimeError):
+    """正常に終わったセッションの答えが、同じセッションに形を直させても読めない・schema のとおりでない。
+    作業が止まったのではない(人への文面を「途中で止まった」にしない)。who は「当番」か「監査」。"""
+
+    def __init__(self, who: str, msg: str):
+        super().__init__(msg)
+        self.who = who
+
+
+REFORMAT_MIN_SEC = 60       # 形を直させるのに、呼び手の timeout の残りがこれだけ要る(足りなければ直させずに読めない答えにする)
+REFORMAT_TIMEOUT_SEC = 600
+
+
+def take_answer(text: str, schema: str) -> tuple[dict | None, str]:
+    """答えの採用条件の形の側: JSON の object が1つに決まり、渡した schema のとおり。戻りは (答え, 読めない理由)。
+    正常終了かどうかは呼び手が先に見る。"""
+    ans, why = read_answer(text)
+    if ans is None:
+        return None, why
+    if not isinstance(ans, dict):
+        return None, "答えが JSON の object でない"
+    err = schema_error(ans, schema)
+    return (ans, "") if not err else (None, f"schema のとおりでない: {err}")
+
+
+def _claude(args: list[str], name: str, cwd: Path, timeout: float) -> subprocess.CompletedProcess:
+    """当番の claude を1回走らせ、生の出力を残し、認証切れ・利用上限を引き取る。"""
     tmp = scratch_dir("oncall-fix-tmp-")
     try:
         # 自前のグループで起動し、時間切れ・中断(SIGTERM)では道具ごと止める。親だけを止めると、失敗を返したあとも道具が
         # 作業ツリーへ書き続けた(監査指摘 2026-10-14)
-        r = run_group(["claude", "-p", short, "--model", ONCALL_MODEL, "--dangerously-skip-permissions",
-                       "--json-schema", schema_file.read_text(encoding="utf-8"),
-                       "--max-budget-usd", ONCALL_MAX_BUDGET_USD],
-                      timeout=timeout, cwd=cwd, env=session_env(tmp))
+        r = run_group(["claude", "-p", *args], timeout=timeout, cwd=cwd, env=session_env(tmp))
     except subprocess.TimeoutExpired as e:
         save_raw("oncall", name, *partial_output(e))      # 時間切れの回も、それまでの出力を残す
         raise
@@ -508,11 +522,35 @@ def run_claude(prompt: str, schema_file: Path, cwd: Path, timeout: int = 1800) -
     blocked = cli_check("claude", "oncall", f"当番の修正({name})", r.returncode, r.stdout, r.stderr)
     if blocked:
         raise CliBlocked(blocked)
+    return r
+
+
+def run_claude(prompt: str, schema_file: Path, cwd: Path, timeout: int = 1800) -> dict:
+    # 指示は作業ツリー側のファイルで渡す(引数に詰めない。作業ツリーの metrics/work/ は Git 管理外)
+    import uuid
+    name = "fix-" + hashlib.sha256(prompt.encode("utf-8")).hexdigest()[:8]
+    short = prompt_file("oncall", name, prompt, base=cwd)
+    schema = schema_file.read_text(encoding="utf-8")
+    opts = ["--model", ONCALL_MODEL, "--dangerously-skip-permissions", "--json-schema", schema, "--max-budget-usd", ONCALL_MAX_BUDGET_USD]
+    sid = str(uuid.uuid4())         # 答えの形を直させるときに、同じセッションを続けられるように名前を決めて始める
+    t0 = time.monotonic()
+    r = _claude([short, "--session-id", sid, *opts], name, cwd, timeout)
     # 採るのは正常に終わったセッションの、渡した schema どおりの答えだけ。{"status":"no_fix_needed"} だけの答えを
     # 診断も報告も無いまま「修正不要」にしない(監査指摘)
-    ans = parse_json(r.stdout or "") if r.returncode == 0 else None
-    if ans is None or not schema_ok(ans, schema_file.read_text(encoding="utf-8")):
-        raise RuntimeError(f"当番セッションの出力が読めない・schema のとおりでない(exit {r.returncode}): {(r.stderr or r.stdout or '')[-300:]}")
+    if r.returncode != 0:
+        raise RuntimeError(f"当番セッションが異常終了した(exit {r.returncode}): {(r.stderr or r.stdout or '')[-300:]}")
+    ans, why = take_answer(r.stdout or "", schema)
+    rest = timeout - (time.monotonic() - t0)
+    if ans is None and rest >= REFORMAT_MIN_SEC:
+        # 正常に終わったのに答えが読めない・形が違う: 作業をやり直させず、同じセッションに答えの形だけを直させる(1回)。
+        # 2026-10-23 18:56 の当番は正しい答えを2回続けて出して読めない答えになり、作業を終えていた試行を1回失った
+        ask = prompt_file("oncall", name + "-reformat", render_prompt("oncall-reformat", WHY=why), base=cwd)
+        r2 = _claude([ask, "--resume", sid, *opts], name + "-reformat", cwd, min(REFORMAT_TIMEOUT_SEC, rest))
+        ans, why2 = take_answer(r2.stdout or "", schema) if r2.returncode == 0 else (None, f"異常終了(exit {r2.returncode})")
+        if ans is None:
+            why = f"{why}。同じセッションに形を直させても: {why2}"
+    if ans is None:
+        raise AnswerUnreadable("当番", f"当番セッションの答えが読めない(exit 0。{why}): {(r.stdout or '')[-300:]}")
     return ans
 
 
@@ -594,35 +632,57 @@ def run_codex(prompt: str, schema_file: Path, cwd: Path, timeout: int = 1800) ->
     tmp = box / "tmp"
     tmp.mkdir()
     head = sh(["git", "rev-parse", "HEAD"], cwd=cwd).stdout.strip()
-    try:
-        must(sh(["git", "worktree", "add", "--detach", str(aw), head], cwd=cwd, timeout=120), "監査用の作業ツリー")
-        name = "review-" + hashlib.sha256(prompt.encode("utf-8")).hexdigest()[:8]
-        short = prompt_file("oncall", name, prompt, base=aw)
+    schema = schema_file.read_text(encoding="utf-8")
+    name = "review-" + hashlib.sha256(prompt.encode("utf-8")).hexdigest()[:8]
+
+    def run(cmd: list[str], nm: str, limit: float) -> tuple[str, str, int | None, str]:
+        """codex を1回走らせ、生の出力と答えのファイルを残し、認証切れ・利用上限を引き取る。戻りは (stdout, stderr, 終了値, 答え)。"""
+        out_path.unlink(missing_ok=True)        # 前の回の答えを読み違えない
         try:
-            r = run_group(["codex", "exec", "-m", AUDIT_MODEL, "-s", "workspace-write", "--skip-git-repo-check",
-                           "-C", str(aw), "--output-schema", str(schema_file), "-o", str(out_path), short],
-                          timeout=timeout, cwd=aw, env=session_env(tmp))
+            r = run_group(cmd, timeout=limit, cwd=aw, env=session_env(tmp))
             so, se, code = r.stdout, r.stderr, r.returncode
         except subprocess.TimeoutExpired as e:
             (so, se), code = partial_output(e), None
             # 時間切れの回も、それまでの出力と答えのファイルを残してから上げる(finally で答えのファイルは消える)
-            save_raw("oncall", name, so, se, code,
+            save_raw("oncall", nm, so, se, code,
                      files={"answer": out_path.read_text(encoding="utf-8") if out_path.exists() else None})
             raise
         text = out_path.read_text(encoding="utf-8") if out_path.exists() else ""
-        save_raw("oncall", name, so, se, code, files={"answer": text})
+        save_raw("oncall", nm, so, se, code, files={"answer": text})
+        # 認証切れ・利用上限は監査の失敗ではない(試行の回数に数えない。_main が引き取る)
+        blocked = cli_check("codex", "oncall", f"当番の監査({nm})", code, so, se)
+        if blocked:
+            raise CliBlocked(blocked)
+        return so, se, code, text
+
+    try:
+        must(sh(["git", "worktree", "add", "--detach", str(aw), head], cwd=cwd, timeout=120), "監査用の作業ツリー")
+        short = prompt_file("oncall", name, prompt, base=aw)
+        t0 = time.monotonic()
+        so, se, code, text = run(["codex", "exec", "-m", AUDIT_MODEL, "-s", "workspace-write", "--skip-git-repo-check",
+                                  "-C", str(aw), "--output-schema", str(schema_file), "-o", str(out_path), short], name, timeout)
+        # 採るのは正常に終わったセッションの、渡した schema どおりの答えだけ({"verdict":"approve"} だけの答えで承認にしない。監査指摘)
+        if code != 0:
+            raise RuntimeError(f"監査セッションが異常終了した(exit {code}): {(se or so or '')[-300:]}")
+        ans, why = take_answer(text, schema)
+        rest = timeout - (time.monotonic() - t0)
+        sid = re.search(r"^session id: ([0-9a-fA-F-]{36})\s*$", (se or "") + "\n" + (so or ""), re.M)
+        if ans is None and sid and rest >= REFORMAT_MIN_SEC:
+            # 正常に終わったのに答えが読めない・形が違う: 監査をやり直させず、同じセッションに答えの形だけを直させる(1回。
+            # 当番の答えと同じ扱い)。作業ツリーはまだ消していない。直させる回は書き込ませない
+            ask = prompt_file("oncall", name + "-reformat", render_prompt("oncall-reformat", WHY=why), base=aw)
+            _, _, code2, text2 = run(["codex", "exec", "resume", "-m", AUDIT_MODEL, "--skip-git-repo-check", "-c", 'sandbox_mode="read-only"',
+                                      "--output-schema", str(schema_file), "-o", str(out_path), sid.group(1), ask],
+                                     name + "-reformat", min(REFORMAT_TIMEOUT_SEC, rest))
+            ans, why2 = take_answer(text2, schema) if code2 == 0 else (None, f"異常終了(exit {code2})")
+            if ans is None:
+                why = f"{why}。同じセッションに形を直させても: {why2}"
+        if ans is None:
+            raise AnswerUnreadable("監査", f"監査セッションの答えが読めない(exit 0。{why}): {text[-300:]}")
+        return ans
     finally:
         remove_worktree(aw, cwd)
         shutil.rmtree(box, ignore_errors=True)    # 消し損ねても、次に置き場を作るとき古い順に片付く(pipelib.sweep_scratch)
-    # 認証切れ・利用上限は監査の失敗ではない(試行の回数に数えない。_main が引き取る)
-    blocked = cli_check("codex", "oncall", f"当番の監査({name})", code, so, se)
-    if blocked:
-        raise CliBlocked(blocked)
-    # 採るのは正常に終わったセッションの、渡した schema どおりの答えだけ({"verdict":"approve"} だけの答えで承認にしない。監査指摘)
-    ans = parse_json(text) if code == 0 else None
-    if ans is None or not schema_ok(ans, schema_file.read_text(encoding="utf-8")):
-        raise RuntimeError(f"監査セッションの出力が読めない・schema のとおりでない(exit {code}): {text[-300:]}")
-    return ans
 
 
 def freeze(wt: Path, base: str, rnd: int) -> tuple[str, str, list[str]]:
@@ -1118,6 +1178,10 @@ def run_rounds(stage: str, date: str, context: str, wt: Path, base: str, wip: di
     except CliBlocked as e:     # 認証切れ・利用上限(投稿は済み)。固定できたところまでは次へ残し、_main が試行を数えずに終える
         res["error"] = f"CliBlocked: {str(e)[:300]}"
         res["blocked"] = e.info
+        transcript.append({"error": res["error"]})
+    except AnswerUnreadable as e:   # セッションは終わったが答えが読めない(形を直させても)。人への文面で「途中で止まった」と言わない
+        res["error"] = f"AnswerUnreadable: {str(e)[:300]}"
+        res["unreadable"] = e.who
         transcript.append({"error": res["error"]})
     except Exception as e:      # noqa: BLE001 — 何で終わっても、固定できたところまでは次へ残す
         res["error"] = f"{type(e).__name__}: {str(e)[:300]}"
@@ -1645,6 +1709,8 @@ def _main() -> int:
     ap.add_argument("--date")
     ap.add_argument("--reason", default="")
     ap.add_argument("--no-rerun", action="store_true")
+    ap.add_argument("--finished", action="store_true",
+                    help="呼んだ工程は止まっていない(終わったあとに、人に通知した異常のなぜなぜを頼んだ。pipelib.diagnose_anomalies)")
     ap.add_argument("--edition", default="", metavar="YYYY-MM-DD",
                     help="修正を取り込む号の日付(既定は --date)。発行後の release・watch は異常の発生日と取り込み先の号が違う")
     ap.add_argument("--backlog", action="store_true", help="発行後に直す指摘(未着手)を一覧する")
@@ -1839,7 +1905,10 @@ def _main() -> int:
                 except (subprocess.TimeoutExpired, OSError):
                     wip_branch = ""
             # 編集長に届くのは、なぜ取り込めなかったかの1文と、当番が書いた編集長向けの要約だけ(診断の全文・記録の JSON は記録ファイル)
-            if res["error"]:
+            if res.get("unreadable"):
+                why = (f"{res['unreadable']}のセッションは終わったが、答えが読めなかった(同じセッションに形を直させても、渡した形にならない)。"
+                       "作業が途中で止まったのではない")
+            elif res["error"]:
                 why = "当番の作業が途中で止まった"
             elif last.get("remote_moved"):
                 why = "作業中に main が別の変更で動いたので、取り込まなかった"
@@ -1960,7 +2029,15 @@ def _main() -> int:
             # 呼び出し側が「再実行しない」(工程は終わっている・号は確定している。なぜなぜと修正だけ)。次の実行から効く
             return 0
         if rerun_mode == "none":
-            notify("oncall", f"{date} {stage}: 再実行しても通らない、と当番が判断。人の判断が要る", ok=False)
+            if a.finished:
+                # 工程は止まっていない(終わったあとのなぜなぜ)。「いま再実行しても結果は変わらない」は監査が承認した判断で、報告は
+                # 上で届いている。人の判断が要る、と言わず、異常終了にもしない(2026-10-23 19:06: 相手のサイトのメンテナンスで
+                # 定点観測1か所が読めなかった収集の当番が、次の定時の収集で読み直すと報告したあと「再実行しても通らない、
+                # 人の判断が要る」と人に届き、exit 1 の起動し直しで「既に2回試みた」まで重ねた)
+                print(f"{date} {stage}: 再実行しない(工程は止まっていない。いま再実行しても結果は変わらない、と当番が判断し監査が承認した)",
+                      flush=True)
+                return 0
+            notify("oncall", f"{date} {stage}: 工程は止まったまま。再実行しても通らない、と当番が判断し監査が承認した。人の判断が要る", ok=False)
             return 1
         if not root_clean():
             notify("oncall", f"{date} {stage}: 再実行前に本体の作業ツリーが汚れた。再実行しない", ok=False)

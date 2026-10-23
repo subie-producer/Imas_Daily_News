@@ -4113,7 +4113,7 @@ ACTIVE_PROMPTS = ("plan-brand", "plan-rules", "plan-lead", "plan-missing", "writ
                   "write-article.culture", "revise-article", "review-article", "review-paper", "assemble-digest", "assemble-ledger",
                   "collect-rules", "collect-item", "grok-collect", "grok-verify", "grok-deep", "explore", "watch-facts",
                   "classify-rules", "classify-site", "classify-x", "classify-debate", "classify-link",
-                  "oncall-fix", "oncall-fix.objections", "oncall-review", "oncall-parser", "oncall-whywhy",
+                  "oncall-fix", "oncall-fix.objections", "oncall-review", "oncall-parser", "oncall-whywhy", "oncall-reformat",
                   "portal-maintenance.write", "portal-maintenance.revise", "portal-maintenance.review")
 
 
@@ -8901,7 +8901,8 @@ def test_oncall_fix_until_clean(tmp: Path):
     check(vi["required"] == ["command", "exit_code", "result"] and vi["properties"]["exit_code"]["type"] == ["integer", "null"],
           "監査の schema: 走らせた記録に終了コードが必須でない")
     src_rc = __import__("inspect").getsource(oncall.run_codex)
-    check('"workspace-write"' in src_rc and '"read-only"' not in src_rc and '"worktree", "add", "--detach"' in src_rc
+    # 監査そのものは書き込み可(-s workspace-write)。答えの形だけを直させる回(resume)は書き込ませない(sandbox_mode="read-only")
+    check('"-s", "workspace-write"' in src_rc and '"-s", "read-only"' not in src_rc and '"worktree", "add", "--detach"' in src_rc
           and "remove_worktree(aw, cwd)" in src_rc.split("finally:")[-1], "監査を、使い捨ての作業ツリーで書き込みのできる環境として起動していない")
     # 続きから始められる条件
     tmp.mkdir(parents=True, exist_ok=True)
@@ -9507,7 +9508,7 @@ def test_anomaly_ledger_and_whywhy(tmp: Path):
     # oncall: --no-rerun は「再実行しても通らない(none)」より先に見る(号が確定した工程の当番は再実行せず 0 で終わる)
     import oncall
     src = (pipelib.ROOT / "scripts" / "oncall.py").read_text(encoding="utf-8")
-    check(src.index("if a.no_rerun:") < src.index('if rerun_mode == "none":\n            notify'), "no_rerun の判定が none の後にある")
+    check(src.index("if a.no_rerun:") < src.index('if rerun_mode == "none":\n            if a.finished:'), "no_rerun の判定が none の後にある")
     check(set(oncall.STAGES) >= {"compose", "release", "classify", "collect", "watch", "update"}, f"oncall の工程: {oncall.STAGES}")
     # compose の例外・SystemExit・終了時の当番は、対象の号(STARTED_DATE。--date で過去号を組み直したとき)を渡す(監査指摘 r87)
     csrc = (pipelib.ROOT / "scripts" / "compose.py").read_text(encoding="utf-8")
@@ -15061,6 +15062,190 @@ def test_scratch_not_tmp(tmp: Path):
           f"監査の作業ツリー・答え・一時ファイルが置き場に無い・残った: {c}")
 
 
+SCHEMAS = Path(__file__).resolve().parent.parent / "schema"     # このコードと同じ版の schema(テストが差し替える pipelib.ROOT と別)
+# 2026-10-23 18:56 の当番の答え(ランティスのメンテナンスで定点観測1か所が読めなかった収集。直す箇所なし)の形
+INCIDENT_FIX = {"status": "no_fix_needed",
+                "editor_summary": {"what_happened": "18時33分の収集で、ランティスの SideM ページの一覧を読めませんでした。",
+                                   "why": "サイト全体がメンテナンス中で 503 を返していました。",
+                                   "what_changed": "コードは変えていません。", "similar": "どの観測先も読めなければ既読を進めません。",
+                                   "paper_impact": "02時00分の収集でも読めなければ、ランティスだけの告知は25日号へ1日遅れます。"},
+                "diagnosis": "事象: lantis-sidem が 503 → なぜ: サイトのメンテナンス → 対処: 不要", "root_cause": "外部サイトの保守",
+                "changed_files": [], "test_evidence": "selfcheck 0 errors", "risk": "変更なし", "confidence": 90,
+                "rerun_mode": "none", "recovery": "保守が終われば次の定時の収集が読み直す", "notes": "", "backlog_items": []}
+
+
+def test_oncall_answer_reformat(tmp: Path):
+    """モデルの答えの読み取り(2026-10-23 18:56 の当番は、正しい答えを空行をはさんで2回出し、読めない答えになって試行を1回失い、
+    「当番の作業が途中で止まった」と人に届いた)。同じ答えの繰り返しは1つとして読み、違う答えが並ぶ・切れている・同じキーが2回ある、は
+    読めない。読めない・形が違う答えは、同じセッションに形だけを直させて採る(当番は --session-id で始めて --resume、監査は session id を
+    拾って codex exec resume)。直らなければ AnswerUnreadable(作業が止まったのではない)。偽の claude / codex を実際に起動する。"""
+    import oncall
+    tmp.mkdir(parents=True, exist_ok=True)
+    one = json.dumps(INCIDENT_FIX, ensure_ascii=False)
+    # 読み取り
+    check(pipelib.read_answer(one + "\n\n" + one)[0] == INCIDENT_FIX and oncall.parse_json(one + "\n\n" + one) == INCIDENT_FIX,
+          "同じ答えの繰り返しを1つとして読まない(2026-10-23 18:56 の当番の出力)")
+    check(pipelib.read_answer("答えです\n" + one + "\n念のため再掲\n" + one)[0] == INCIDENT_FIX, "地の文をはさんだ同じ答えの繰り返しを読まない")
+    for bad, what in ((one + "\n\n" + json.dumps(dict(INCIDENT_FIX, rerun_mode="resume"), ensure_ascii=False), "違う答えが2つ"),
+                      (one[:-60], "途中で切れた答え"), ('{"a": 1}\n{"a": 1, "a": 2}', "同じキーが2回ある答え"), ("", "空の答え")):
+        got, why = pipelib.read_answer(bad)
+        check(got is None and why, f"{what}を読んだ: {got!r} {why!r}")
+    check(pipelib.schema_error({"status": "x"}, (SCHEMAS / "oncall-fix.schema.json").read_text(encoding="utf-8")) != ""
+          and pipelib.schema_error(INCIDENT_FIX, (SCHEMAS / "oncall-fix.schema.json").read_text(encoding="utf-8")) == "",
+          "schema_error が形の違いを返さない・とおりの答えに違いを返す")
+    # 当番(claude): 2回続けた答え / 切れた答えを同じセッションで直す / 直らない
+    bindir, log, mode = tmp / "bin", tmp / "claude-calls.jsonl", tmp / "mode"
+    bindir.mkdir(exist_ok=True)
+    (bindir / "claude").write_text(
+        f"#!{sys.executable}\nimport json, sys\na = sys.argv[1:]\n"
+        f"m = open({str(mode)!r}).read()\none = {one!r}\n"
+        f"open({str(log)!r}, 'a').write(json.dumps(a) + '\\n')\n"
+        "first = {'twice': one + '\\n\\n' + one, 'cut': one[:-60], 'bad': one[:-60]}\n"
+        "again = {'twice': 'x', 'cut': one, 'bad': '{\"status\": \"no_fix_needed\"}'}\n"
+        "sys.stdout.write(first[m] if '--session-id' in a else again[m])\n", encoding="utf-8")
+    (bindir / "claude").chmod(0o755)
+    wt = tmp / "wt"
+    wt.mkdir(exist_ok=True)
+    sf = SCHEMAS / "oncall-fix.schema.json"
+    saved = (os.environ.get("PATH", ""), pipelib.ROOT)
+    got = {}
+    try:
+        os.environ["PATH"] = f"{bindir}{os.pathsep}{saved[0]}"
+        pipelib.ROOT = tmp           # 生の出力の控え(save_raw)も一時ディレクトリへ
+        for m in ("twice", "cut", "bad"):
+            mode.write_text(m, encoding="utf-8")
+            log.unlink(missing_ok=True)
+            try:
+                ans = oncall.run_claude("直して", sf, wt)
+            except oncall.AnswerUnreadable as e:
+                ans = e
+            calls = [json.loads(ln) for ln in log.read_text(encoding="utf-8").splitlines()]
+            got[m] = (ans, calls)
+    finally:
+        os.environ["PATH"], pipelib.ROOT = saved
+    ans, calls = got["twice"]
+    check(ans == INCIDENT_FIX and len(calls) == 1, f"同じ答えを2回続けた当番の答えを読まない・余分に呼んだ: {type(ans).__name__} {len(calls)}回")
+    ans, calls = got["cut"]
+    sid = calls[0][calls[0].index("--session-id") + 1] if "--session-id" in calls[0] else None
+    check(ans == INCIDENT_FIX and len(calls) == 2 and sid and calls[1][calls[1].index("--resume") + 1] == sid
+          and calls[1][calls[1].index("--json-schema") + 1] == sf.read_text(encoding="utf-8"),
+          f"切れた答えを同じセッション(同じ session id・同じ schema)に直させない: {type(ans).__name__} {[c[:4] for c in calls]}")
+    ans, calls = got["bad"]
+    check(isinstance(ans, oncall.AnswerUnreadable) and ans.who == "当番" and len(calls) == 2,
+          f"形を直させても読めない答えを AnswerUnreadable にしない: {ans!r} {len(calls)}回")
+    # 監査(codex): 切れた答えを同じセッション(session id)に、書き込ませずに直させる
+    repo = tmp / "repo"
+    repo.mkdir(exist_ok=True)
+    g = lambda *a: subprocess.run(["git", *a], cwd=repo, capture_output=True, text=True, check=True).stdout
+    g("init", "-q", "-b", "main"); g("config", "user.email", "t@example.com"); g("config", "user.name", "t")
+    (repo / "a").write_text("1"); g("add", "a"); g("commit", "-q", "-m", "base")
+    sid = "01a16835-6faf-75c1-959b-34ec00cf7019"
+    answer = json.dumps({"verdict": "approve", "verification": AUDIT_RAN, "must_fix": [], "later": [], "editor_summary": None,
+                         "notes": ""}, ensure_ascii=False)
+    clog = tmp / "codex-calls.jsonl"
+    (bindir / "codex").write_text(
+        f"#!{sys.executable}\nimport json, sys\na = sys.argv[1:]\no = a[a.index('-o') + 1]\n"
+        f"open({str(clog)!r}, 'a').write(json.dumps(a) + '\\n')\nans = {answer!r}\n"
+        f"if a[:2] == ['exec', 'resume']:\n    open(o, 'w', encoding='utf-8').write(ans if a[-2] == {sid!r} else 'x')\n"
+        f"else:\n    sys.stderr.write('session id: {sid}\\n')\n    open(o, 'w', encoding='utf-8').write(ans[:-30])\n",
+        encoding="utf-8")
+    (bindir / "codex").chmod(0o755)
+    schema = SCHEMAS / "oncall-review.schema.json"
+    saved = (os.environ.get("PATH", ""), pipelib.ROOT)
+    try:
+        os.environ["PATH"] = f"{bindir}{os.pathsep}{saved[0]}"
+        pipelib.ROOT = tmp
+        try:
+            rev = oncall.run_codex("監査して", schema, repo)
+        except RuntimeError as e:
+            rev = e
+    finally:
+        os.environ["PATH"], pipelib.ROOT = saved
+    calls = [json.loads(ln) for ln in clog.read_text(encoding="utf-8").splitlines()] if clog.exists() else []
+    check(isinstance(rev, dict) and rev.get("verdict") == "approve" and len(calls) == 2 and calls[1][:2] == ["exec", "resume"]
+          and 'sandbox_mode="read-only"' in calls[1] and g("status", "--porcelain") == ""
+          and sum(1 for ln in g("worktree", "list", "--porcelain").splitlines() if ln.startswith("worktree ")) == 1,
+          f"監査の切れた答えを同じセッションに(書き込ませずに)直させない・作業ツリーが残った: {rev!r} {[c[:3] for c in calls]}")
+
+
+def test_oncall_finished_rerun_none(tmp: Path):
+    """工程が止まっていない(終わったあとのなぜなぜ、--finished)当番が、承認された「いま再実行しても変わらない(none)」で終わるとき、
+    「再実行しても通らない。人の判断が要る」と人に届けず、異常終了にしない(2026-10-23 19:06。exit 1 で systemd が起動し直し、
+    「当番は既に2回試みた」まで重ねた)。止まった工程の none は、止まったままと人に渡す。本物の _main・run_rounds・run_claude を、
+    一時リポジトリと 18:56 の当番の出力(同じ答えを2回)を出す偽の claude で走らせる。diagnose_anomalies は理由が無い(止まっていない)
+    ときだけ --finished を渡す。"""
+    import shutil as _sh
+    import oncall
+    edition = "edition/2026-10-24"
+    tmp.mkdir(parents=True, exist_ok=True)
+    root, remote, bindir = tmp / "ops", tmp / "ops.git", tmp / "bin"
+    g = lambda *a: subprocess.run(["git", *a], cwd=root, capture_output=True, text=True, check=True).stdout.strip()
+    subprocess.run(["git", "init", "-q", "--bare", "-b", "main", str(remote)], check=True, capture_output=True)
+    subprocess.run(["git", "init", "-q", "-b", "main", str(root)], check=True, capture_output=True)
+    g("config", "user.email", "t@example"); g("config", "user.name", "t")
+    (root / "scripts").mkdir(); (root / "metrics").mkdir()
+    _sh.copytree(SCHEMAS, root / "schema")
+    (root / ".gitignore").write_text("metrics/oncall-*\nmetrics/jobs.lock\nmetrics/work/\n", encoding="utf-8")
+    for s in ("selfcheck", "lint"):        # 当番のコードが自分で走らせる検査(この一時リポジトリでは通るだけ)
+        (root / "scripts" / f"{s}.py").write_text(f"print('{s}: 0 errors')\n", encoding="utf-8")
+    g("add", "-A"); g("commit", "-q", "-m", "base")
+    g("remote", "add", "origin", str(remote)); g("push", "-q", "-u", "origin", "main")
+    g("checkout", "-q", "-b", edition); g("push", "-q", "-u", "origin", edition)
+    one = json.dumps(INCIDENT_FIX, ensure_ascii=False)
+    fake_cli(bindir, "claude", out=one + "\n\n" + one + "\n")
+    approve = {"verdict": "approve", "verification": AUDIT_RAN, "must_fix": [], "later": [], "editor_summary": None, "notes": ""}
+    names = ("ROOT", "notify", "job_lock", "gather_context", "env_fingerprint", "save_raw", "run_codex", "keep_later",
+             "DEADLINE_AT", "STAGE_END_AT", "RECOVER")
+    saved, saved_argv, saved_path, notes = {k: getattr(oncall, k) for k in names}, sys.argv, os.environ.get("PATH", ""), []
+    codes = {}
+    try:
+        oncall.ROOT = root
+        oncall.notify = lambda job, msg, ok=True, require=False: notes.append((msg, ok)) or True
+        oncall.job_lock = lambda *a, **k: os.open(os.devnull, os.O_RDONLY)
+        oncall.gather_context = lambda *a: "ctx"
+        oncall.env_fingerprint = lambda: ""
+        oncall.save_raw = lambda *a, **k: None
+        oncall.run_codex = lambda prompt, schema, cwd, timeout=1800: dict(approve)
+        oncall.keep_later = lambda *a: 0
+        oncall.DEADLINE_AT = oncall.STAGE_END_AT = None
+        oncall.RECOVER = False
+        os.environ["PATH"] = f"{bindir}{os.pathsep}{saved_path}"
+        for date, extra in (("2026-10-23", ["--finished"]), ("2026-10-22", [])):
+            notes.clear()
+            sys.argv = ["oncall", "--stage", "watch", "--date", date, "--edition", "2026-10-24", *extra]
+            try:
+                code = oncall._main()
+            except SystemExit as e:         # 直す前の実装は --finished を知らない
+                code = f"SystemExit {e.code}"
+            codes[date] = (code, list(notes))
+    finally:
+        for k, v in saved.items():
+            setattr(oncall, k, v)
+        sys.argv = saved_argv
+        os.environ["PATH"] = saved_path
+    code, ns = codes["2026-10-23"]
+    check(code == 0 and not [m for m, ok in ns if not ok] and any("直す箇所なし" in m for m, ok in ns),
+          f"止まっていない工程の当番が、承認された none で「人の判断が要る」と届けた・異常終了した・報告を出さない: exit {code} "
+          f"{[(m[:60], ok) for m, ok in ns]}")
+    code, ns = codes["2026-10-22"]
+    check(code == 1 and any("工程は止まったまま" in m and "人の判断が要る" in m and not ok for m, ok in ns),
+          f"止まった工程の none を人に渡さない: exit {code} {[(m[:60], ok) for m, ok in ns]}")
+    # 呼び出し側: 理由が無い(止まっていない)ときだけ --finished を渡す
+    calls = []
+    saved_esc = (pipelib.escalate, list(pipelib.ANOMALIES), pipelib._ESCALATED)
+    try:
+        pipelib.escalate = lambda stage, date, reason, **k: calls.append(k.get("extra_args")) or True
+        for reason in ("", "止まった"):
+            pipelib.ANOMALIES[:] = ["[collect] 定点観測 lantis-sidem: 一覧を読めなかった"]
+            pipelib._ESCALATED = False
+            pipelib.diagnose_anomalies("collect", "2026-10-24", rerun=True, reason=reason, extra_args=["--end-at", "1"])
+    finally:
+        pipelib.escalate = saved_esc[0]
+        pipelib.ANOMALIES[:] = saved_esc[1]
+        pipelib._ESCALATED = saved_esc[2]
+    check(calls == [["--end-at", "1", "--finished"], ["--end-at", "1"]], f"--finished の渡し方が違う: {calls}")
+
+
 def main() -> int:
     tmp = Path(tempfile.mkdtemp(prefix="imas-test-"))
     test_stray_governed_write_is_caught(tmp / "sgw")
@@ -15076,6 +15261,8 @@ def main() -> int:
     test_cli_blocked_watch_not_counted(tmp / "cbw")
     test_cli_blocked_compose(tmp / "cbc")
     test_cli_blocked_oncall_not_counted(tmp / "cbo")
+    test_oncall_answer_reformat(tmp / "oar")
+    test_oncall_finished_rerun_none(tmp / "ofr")
     test_cli_block_detect_and_post(tmp / "cbd")
     test_cli_blocked_paths_r2(tmp / "cb2")
     test_cli_blocked_grok_sessions_r3(tmp / "cb3")

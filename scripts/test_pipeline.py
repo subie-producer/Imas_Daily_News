@@ -15714,7 +15714,9 @@ def test_oncall_judged_not_rejudged(tmp: Path):
         return [k for k in rest[:next((i for i, x in enumerate(rest) if x.startswith("--")), len(rest))]]
 
     names = ("ROOT", "notify", "job_lock", "gather_context", "env_fingerprint", "save_raw", "run_codex", "keep_later",
-             "DEADLINE_AT", "STAGE_END_AT", "RECOVER", "REFORMAT_TIMEOUT_SEC", "mark_collect_oncall", "COLLECT_ONCALL_MARK")
+             "DEADLINE_AT", "STAGE_END_AT", "RECOVER", "REFORMAT_TIMEOUT_SEC", "mark_collect_oncall", "COLLECT_ONCALL_MARK",
+             "ALREADY_SETTLED")
+    names = tuple(n for n in names if hasattr(oncall, n))
     saved = {k: getattr(oncall, k) for k in names}
     saved_p = (pipelib.ROOT, pipelib.ENV, pipelib.oncall_clis_blocked, list(pipelib.ANOMALIES), pipelib._ESCALATED)
     saved_c = (collect.ROOT, collect.STATE_PATH, collect.list_source)
@@ -15916,8 +15918,9 @@ def test_oncall_recover_keeps_handed_exit(tmp: Path):
     def approved_rounds(stage, date_, context, wt, base, resume, env, transcript):
         transcript.append({"review": {"verdict": "approve"}})
         return dict(approved=True, fix=dict(INCIDENT_FIX), head=base, diff="", changed=[], kept={}, later=[], error=None)
-    minutes = {"short": 10, "stopped": 120, "direct": 30, "approved": 120}
-    for case in ("short", "stopped", "direct", "approved"):
+    # settled: 承認・報告・組み直しの成功で鍵が残ったあと、同じ依頼がまた来た(手での再投入)。後段で組み直しを重ねない(監査指摘 r5)
+    minutes = {"short": 10, "stopped": 120, "direct": 30, "approved": 120, "settled": 120}
+    for case in ("short", "stopped", "direct", "approved", "settled"):
         root, remote = tmp / case / "ops", tmp / case / "ops.git"
         root.mkdir(parents=True)
         g = lambda *a: subprocess.run(["git", *a], cwd=root, capture_output=True, text=True, check=True).stdout.strip()
@@ -15925,7 +15928,9 @@ def test_oncall_recover_keeps_handed_exit(tmp: Path):
         g("init", "-q", "-b", "main"); g("config", "user.email", "t@example"); g("config", "user.name", "t")
         (root / "metrics").mkdir(); (root / "scripts").mkdir()
         (root / ".gitignore").write_text("metrics/oncall-*\nmetrics/jobs.lock\nmetrics/work/\n", encoding="utf-8")
-        (root / "scripts" / "compose.py").write_text("print('組版の失敗'); raise SystemExit(1)\n", encoding="utf-8")
+        (root / "scripts" / "compose.py").write_text(
+            "from pathlib import Path\np = Path('metrics/oncall-child-count')\np.write_text(str(int(p.read_text()) + 1 if p.exists() else 1))\n"
+            if case == "settled" else "print('組版の失敗'); raise SystemExit(1)\n", encoding="utf-8")
         (root / "metrics" / f"plan-{date}.json").write_text(json.dumps({"articles": [{"slug": "dropped"}]}), encoding="utf-8")
         g("add", "-A"); g("commit", "-q", "-m", "base")
         g("remote", "add", "origin", str(remote)); g("push", "-q", "-u", "origin", "main")
@@ -15933,24 +15938,31 @@ def test_oncall_recover_keeps_handed_exit(tmp: Path):
         for n in ((1, 2) if case in ("short", "stopped") else ()):
             (root / "metrics" / f"oncall-{date}-compose-attempt-{n}").write_text("used", encoding="utf-8")
         args = ["oncall", "--stage", "compose", "--date", date, "--reason", "dropped article", "--recover",
-                "--end-at", str(int(time.time()) + minutes[case] * 60)] + (["--finished"] if case == "short" else [])
+                "--end-at", str(int(time.time()) + minutes[case] * 60)] + (["--finished"] if case == "short" else []) \
+            + (["--finished", "--anomaly-keys", "compose:known"] if case == "settled" else [])
         names = ("ROOT", "notify", "oncall_clis_blocked", "RECOVER", "RECOVER_TARGET", "RECOVER_TRIED", "DEADLINE_AT", "STAGE_END_AT",
-                 "run_rounds", "gather_context")
+                 "run_rounds", "gather_context", "ALREADY_SETTLED")
+        names = tuple(n for n in names if hasattr(oncall, n))
         saved = {k: getattr(oncall, k) for k in names}
         saved_p, saved_argv, runs = (pipelib.ROOT, pipelib.oncall_clis_blocked), sys.argv, []
         try:
             oncall.ROOT = pipelib.ROOT = root
             oncall.oncall_clis_blocked = pipelib.oncall_clis_blocked = lambda: []
             oncall.gather_context = lambda *a: "ctx"
-            if case == "approved":
+            if case in ("approved", "settled"):
                 oncall.run_rounds = approved_rounds
             for _ in range(2):          # systemd の起動し直し相当
                 notes = []
                 oncall.notify = lambda job, msg, ok=True, require=False: notes.append((msg, ok)) or True
                 oncall.RECOVER, oncall.RECOVER_TARGET, oncall.RECOVER_TRIED = False, None, False
+                oncall.ALREADY_SETTLED = False
                 oncall.DEADLINE_AT = oncall.STAGE_END_AT = None
                 sys.argv = list(args)
                 runs.append((oncall.exit_code(oncall.main()), [m for m, ok in notes if not ok]))
+                if case == "settled":
+                    p = root / "metrics" / "oncall-child-count"
+                    runs[-1] = runs[-1] + (p.read_text(encoding="utf-8") if p.exists() else "0",
+                                           pipelib.settled_anomaly_keys(date, "compose") if hasattr(pipelib, "settled_anomaly_keys") else set())
                 time.sleep(1.1)         # 控えのブランチ名(時刻)を分ける
         finally:
             for k, v in saved.items():
@@ -15965,6 +15977,9 @@ def test_oncall_recover_keeps_handed_exit(tmp: Path):
     check(c1 == HANDED and sum("既に2回" in m for m in n1 + n2) == 1,
           f"枠切れ・組み直しが失敗した復帰の当番が、起動し直させる終了値で終えた・枠切れの通知を重ねた: exit {c1}/{c2} 期待 {HANDED} "
           f"{[m[:40] for m in n1]} / {[m[:40] for m in n2]}")
+    (c1, _, k1, s1), (c2, _, k2, s2) = out["settled"]
+    check(c1 == c2 == 0 and (k1, k2) == ("1", "1") and s1 == s2 == {"compose:known"},
+          f"判定済みの --finished --recover の依頼で、後段が組み直しを重ねた(または1回目で鍵を残さない): exit {c1}/{c2} 組版の起動 {k1}/{k2} 鍵 {s1}/{s2}")
     for case in ("direct", "approved"):
         (c1, n1), (c2, n2) = out[case]
         check(c1 == c2 == HANDED and any("組み直し" in m for m in n1),

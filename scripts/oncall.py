@@ -1484,6 +1484,7 @@ def _proc_state(pid: int) -> str:
 
 
 RECOVER_TRIED = False   # 落とした記事を戻す組み直しを、この当番で既に試みたか(main の後段が二度目を走らせない)
+ALREADY_SETTLED = False  # 渡された事柄が全部判定済みで、何もせずに終えたか(main の後段が組み直しを走らせない)
 
 
 def posted_slugs(date: str) -> set[str]:
@@ -1654,6 +1655,10 @@ def main() -> int:
         notify("oncall", f"{RECOVER_TARGET[0]} compose: 当番の処理で例外({type(e).__name__}: {str(e)[:300]})。"
                          "落とした記事を戻す組み直しは続ける", ok=False)
         code = 1
+    if ALREADY_SETTLED:
+        # 渡された事柄は全部、診断が承認され要る再実行も済んだ型(鍵は再実行の成功のあとにだけ残る)。組み直しも済んでいるので、
+        # 後段で組み直しを重ねない(監査指摘 2026-10-24 r5)
+        return code
     if RECOVER and RECOVER_TARGET and RECOVER_TRIED:
         # _main の中で組み直しを試みた(残り時間が往復に足りない回・承認後の再実行)。戻せなかった結果は報告済みなので、
         # 後段と同じく起動し直させない(同じ組み直しと失敗の通知を重ねない。監査指摘 2026-10-24 r3)
@@ -1718,7 +1723,7 @@ def recover_rerun(date: str, edition: str) -> int | None:
 
 
 def _main() -> int:
-    global DEADLINE_AT, STAGE_END_AT, RECOVER, RECOVER_TARGET, PAPER_RECORD
+    global DEADLINE_AT, STAGE_END_AT, RECOVER, RECOVER_TARGET, PAPER_RECORD, ALREADY_SETTLED
     ap = argparse.ArgumentParser()
     ap.add_argument("--stage", choices=list(STAGES))
     ap.add_argument("--date")
@@ -1826,6 +1831,7 @@ def _main() -> int:
         # 渡された事柄は全部、この号・この工程で診断し監査が承認した型(起動し直し・手での起動で同じ依頼が来た)。判定し直さない
         print(f"{date} {stage}: 渡された異常は全部、診断し監査が承認した型。当番は起動しない", flush=True)
         os.close(lock_fd)
+        ALREADY_SETTLED = True
         return 0
     if attempt_count(date, stage) >= MAX_ATTEMPTS:
         os.close(lock_fd)

@@ -2934,6 +2934,9 @@ def fake_urlopen(url, mainte):
         raise http_error(url, 503, page("503 Service Unavailable", "混み合っています。"))
     if host == "notice.example":
         return U(url, page("システムメンテナンスのお知らせ", "メンテナンスのお知らせ。販売を開始する。価格は3000円。"))
+    if host == "dot.example.":          # 末尾ドットの表記だけメンテナンスへ転送(同じページを末尾ドット無しで読み直すと読める)
+        return U("https://dot.example./maintenance/", page("お知らせ", "作業中です。"))
+    host = host.rstrip(".")
     if host == "mixed.example" and "/gone" in url:          # 同じホストで、メンテナンスの最中でも 404・ただの 503 のページ
         raise http_error(url, 404, page("404 Not Found", "ページが見つかりません。"))
     if host == "mixed.example" and "/down" in url:
@@ -3264,6 +3267,28 @@ def test_site_maintenance_notice(tmp: Path):
         check(flaky in pipelib.failed_urls(frec) and flaky in pipelib.maintenance_urls(compose.fetch_record(dd, "flakyb"))
               and got == {"flaky": 1, "flakyb": 1, "flakyc": 1},
               f"先の取得失敗が、後で同じ URL に確かめたメンテナンスを打ち消した: {got} {pipelib.failed_urls(frec)}")
+        # ホストの末尾ドットの表記をまたいでも、読み直して読めたページ・404 のページには付けない(Sol 監査 Z2 r3)
+        fresh(dd)
+        dot_m, dot_p = "https://dot.example./news/1", "https://dot.example/news/1"
+        gone_dot, gone_plain = "https://mixed.example./gone/2", "https://mixed.example/gone/2"
+        cands.update(cdot=mat("cdot", dot_p, "dt"), cdg=mat("cdg", gone_plain, "dg"))
+        spec.update({"write-dot": [{"fetch": [dot_m, dot_p], "answer": ans(dot_p)}],
+                     "write-dotgone": [{"fetch": [gone_dot], "answer": ans(gone_plain)}]})
+        spec_p.write_text(json.dumps(spec, ensure_ascii=False), encoding="utf-8")
+        compose.write_articles(dd, {"articles": [art("mixmain", "cm"), art("dot", "cdot"), art("dotgone", "cdg")]}, cands, [], {}, wave=1)
+        got = {s: marked(s, dd) for s in ("mixmain", "dot", "dotgone")}
+        check(got == {"mixmain": 1, "dot": 0, "dotgone": 0} and dot_m in pipelib.maintenance_urls(compose.fetch_record(dd, "dot")),
+              f"末尾ドットの表記の違いで、読めたページ・404 のページに断り書きを付けた: {got}")
+        # 記録の置き場そのものに書けないと子は印も残せない。組版が置き場に書いて確かめ、申告する(Sol 監査 Z2 r3)
+        folder = tmp / "metrics" / "work" / dd / "fetched"
+        pipelib.ANOMALIES.clear()
+        os.chmod(folder, 0o555)
+        try:
+            compose.report_record_failures(dd)
+        finally:
+            os.chmod(folder, 0o755)
+        check(any("置き場" in str(a) and "書けない" in str(a) for a in pipelib.ANOMALIES) or os.geteuid() == 0,
+              f"記録の置き場に書けないのを申告しない: {pipelib.ANOMALIES}")
         # 校閲: どの号にも指示を足す(常設)
         seen: dict[str, str] = {}
 

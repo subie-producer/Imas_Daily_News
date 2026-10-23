@@ -320,6 +320,14 @@ def page_key(url) -> tuple | None:
         host, port = (u.hostname or "").lower(), u.port
     except ValueError:
         return None
+    # 末尾ドット(FQDN の表記)と英数字でない名前(IDNA の表記)も揃える。pipelib.site_host と同じ揃え方で、断り書きの判定の
+    # 「読めた・取得失敗・メンテナンス」の照合が表記の違いで崩れない(Sol 監査 Z2 r3: dot.example. を読み直して読めたのに付けた)
+    host = host.rstrip(".")
+    if host and not host.isascii():
+        try:
+            host = host.encode("idna").decode("ascii")
+        except UnicodeError:
+            pass
     if not host:
         return None
     host = re.sub(r"^(?:www|m|mobile)\.", "", host)

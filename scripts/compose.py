@@ -2395,6 +2395,18 @@ def report_record_failures(date: str) -> None:
     """fetch_page.py が記録(本文・メンテナンス・取得失敗)を書けなかった印を、異常として申告する。子の stderr は組版に届かないので、
     印のファイルで受け取る(Sol 監査 Z2 r1: .mainte を書けず、断り書きが黙って付かなかった)。組版は止めない"""
     folder = ROOT / "metrics" / "work" / date / "fetched"
+    # 置き場そのものに書けない(権限・容量)と、子は印も残せない。組版が置き場に実際に書いて確かめる(Sol 監査 Z2 r3)
+    if folder.is_dir():
+        probe = folder / f".probe-{os.getpid()}"
+        try:
+            probe.write_text("1", encoding="utf-8")
+            probe.unlink()
+        except OSError as e:
+            key = f"{folder}:unwritable"
+            if key not in RECORD_FAILED_SEEN:
+                RECORD_FAILED_SEEN.add(key)
+                anomaly("compose", f"fetch_page.py の読み取りの記録の置き場 {folder} に書けない({type(e).__name__}: {str(e)[:120]})。"
+                                   "メンテナンスの断り書き・根拠の照合が欠けうる")
     for f in sorted(folder.glob("*.record-failed")) if folder.is_dir() else []:
         try:
             rows = f.read_text(encoding="utf-8", errors="replace").splitlines()

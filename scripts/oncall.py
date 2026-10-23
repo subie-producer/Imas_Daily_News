@@ -2068,15 +2068,19 @@ def _main() -> int:
             # 報告ファイル(metrics/oncall-*-report.md)を人が見て、手で再実行する
             notify("oncall", f"{date} {stage}: 修正報告が Discord に届かないので再実行しない。metrics/oncall-{date}-{stage}-report.md を見て手で再実行すること", ok=False)
             return 1
-        if fix.get("status") == "no_fix_needed" and a.anomaly_keys:
-            # 診断が承認され、報告が人に届いた。渡された事柄の形の鍵を残し、この号・この工程の止まっていない工程は、同じ型で
-            # 当番を起こさない(pipelib.diagnose_anomalies。編集長 2026-10-24「ジャッジ済みをジャッジするな」)
-            state["log"][-1]["settled_keys"] = list(a.anomaly_keys)
-            save_state(state_p, state)
+        def settle() -> None:
+            # 診断が承認され、報告が人に届き、要る再実行(取り直し)も済んだ。渡された事柄の形の鍵を残し、この号・この工程の
+            # 止まっていない工程は、同じ型で当番を起こさない(pipelib.diagnose_anomalies。編集長 2026-10-24「ジャッジ済みをジャッジするな」)。
+            # 再実行の前に残すと、再実行が失敗して起動し直した当番が「判定済み」で取り直しまで省く(監査指摘 r4)
+            if fix.get("status") == "no_fix_needed" and a.anomaly_keys:
+                state["log"][-1]["settled_keys"] = list(a.anomaly_keys)
+                save_state(state_p, state)
         if a.no_rerun:
             # 呼び出し側が「再実行しない」(工程は終わっている・号は確定している。なぜなぜと修正だけ)。次の実行から効く
+            settle()
             return 0
         if rerun_mode == "none":
+            settle()
             if a.finished:
                 # 工程は止まっていない(終わったあとのなぜなぜ)。「いま再実行しても結果は変わらない」は監査が承認した判断で、報告は
                 # 上で届いている。人の判断が要る、と言わず、異常終了にもしない(2026-10-23 19:06: 相手のサイトのメンテナンスで
@@ -2100,6 +2104,8 @@ def _main() -> int:
         notify("oncall", f"{date} {stage}: 再実行({rerun_mode})が終わった(exit {code})。"
                          f"{'成功' if code == 0 else '失敗。metrics/oncall-' + date + '-' + stage + '-rerun.log を見ること'}",
                ok=(code == 0))
+        if code == 0:
+            settle()
         return code
     except Exception as e:
         notify("oncall", f"{date} {stage}: 当番の処理で例外: {type(e).__name__}: {str(e)[:300]}", ok=False)

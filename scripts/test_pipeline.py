@@ -9831,7 +9831,7 @@ def test_anomaly_ledger_and_whywhy(tmp: Path):
     # oncall: --no-rerun は「再実行しても通らない(none)」より先に見る(号が確定した工程の当番は再実行せず 0 で終わる)
     import oncall
     src = (pipelib.ROOT / "scripts" / "oncall.py").read_text(encoding="utf-8")
-    check(src.index("if a.no_rerun:") < src.index('if rerun_mode == "none":\n            if a.finished:'), "no_rerun の判定が none の後にある")
+    check(src.index("if a.no_rerun:") < src.index('if rerun_mode == "none":\n            settle()\n            if a.finished:'), "no_rerun の判定が none の後にある")
     check(set(oncall.STAGES) >= {"compose", "release", "classify", "collect", "watch", "update"}, f"oncall の工程: {oncall.STAGES}")
     # compose の例外・SystemExit・終了時の当番は、対象の号(STARTED_DATE。--date で過去号を組み直したとき)を渡す(監査指摘 r87)
     csrc = (pipelib.ROOT / "scripts" / "compose.py").read_text(encoding="utf-8")
@@ -15821,6 +15821,16 @@ def test_oncall_judged_not_rejudged(tmp: Path):
             r["webhook 未設定"] = case("2026-11-04", INCIDENT_FIX, approve, pipelib.notify)
         finally:
             pipelib.ENV = saved_env2
+        # 承認された「取り直す(resume)」の取り直しが一度失敗した: 鍵を残さず、起動し直した当番が取り直して新着を拾う(監査指摘 r4)
+        (root / "scripts" / "collect.py").write_text(
+            "from pathlib import Path\np = Path('metrics/oncall-probe-runs')\nn = int(p.read_text()) + 1 if p.exists() else 1\n"
+            "p.write_text(str(n))\nif n > 1:\n    Path('metrics/oncall-picked').write_text('new item')\nraise SystemExit(1 if n == 1 else 0)\n",
+            encoding="utf-8")
+        g("add", "scripts/collect.py"); g("commit", "-q", "-m", "一度だけ失敗する取り直し"); g("push", "-q", "origin", edition)
+        resume = dict(INCIDENT_FIX, rerun_mode="resume", recovery="保守が終わったので、定点観測を取り直して新着を素材へ戻す")
+        r["取り直し失敗"] = case("2026-11-08", resume, approve, record)
+        r["取り直し再起動"] = case("2026-11-08", resume, approve, record)
+        r["取り直し"] = ((root / "metrics" / "oncall-probe-runs").read_text(encoding="utf-8"), (root / "metrics" / "oncall-picked").exists())
         r["承認"] = case("2026-11-05", INCIDENT_FIX, approve, record)
         # 残り30分未満の当番でも、判定済みの照合と枠切れを先に見る(時間切れの通知で人に渡さない)
         r["残り少ない・判定済み"] = case("2026-11-05", INCIDENT_FIX, approve, record, minutes=29)
@@ -15874,6 +15884,9 @@ def test_oncall_judged_not_rejudged(tmp: Path):
     code, ns, logged = r["fixed"]
     check(code == 0 and any("取り込みました" in m for m, ok in ns),
           f"fixed の回が承認・取り込みまで進まない(鍵を残さないことを確かめられない): exit {code} {[m[:50] for m, ok in ns]}")
+    (c1, _, l1), (c2, _, l2) = r["取り直し失敗"], r["取り直し再起動"]
+    check(c1 == 1 and not any(l1) and c2 == 0 and r["取り直し"] == ("2", True) and l2[-1] == [k503],
+          f"取り直しが失敗した回で鍵を残した・起動し直した当番が取り直さない: exit {c1}/{c2} 記録 {l1}/{l2} 取り直し(回数, 拾えた) {r['取り直し']}")
     code, ns, logged = r["承認"]
     check(code == 0 and logged == [[k503]], f"承認され報告が届いた no_fix_needed の回で鍵を残さない: exit {code} 記録 {logged}")
     for what in ("残り少ない・判定済み", "残り少ない・枠切れ"):

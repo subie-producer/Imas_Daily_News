@@ -131,6 +131,8 @@ discovery_only_domains:
 # --- 二次情報: 他所の発表を写して伝えている情報源(規程2.5) ---
 # 法人運営か個人運営かは問わない。自ら取材・発表していないものはここ。
 secondary_domains:
+  - moca-news.net         # 合議で追加: 一番くじの公式発表を、定型の記事で伝達。自ら取材した形跡なし
+  - akiba.reload.co.jp    # 合議で追加: 他社POPUPの販売発表を概要・内容の定型で言い換え、取材の形跡なし
   - premium.gamepedia.jp  # 合議で追加: 公式発表の言い換えを編集部名で載せる媒体。取材形跡なし
   - article.yahoo.co.jp   # 合議で追加: コンテンツシードの事後通販告知を写して伝える配信記事。情報提供元は表示なし
   - kabuline.com          # 合議で追加: ツイート・ニュースを自動集計して載せる媒体。独自取材の形跡なし。相手は根拠なし
@@ -248,6 +250,7 @@ party_paths:
   - item.rakuten.co.jp/f272078-takatsuki        # 高槻市ふるさと納税
 
 party_domains:
+  - agakanren.com         # 合議で追加: イベントの主催側の観光団体が、彩とのコラボを自ら告知
   - status.games.dmm.com  # 合議で追加: DMM GAMES障害情報。学マスDMM版を配信する一般プラットフォーム
   - battlespirits.com     # 合議で追加: サイトはBANDAI CO.,LTD.©。学マスコラボのカード商品の販売元
   - tufave.com            # 合議で追加: 特商法表記で運営を確認。ライセンス商品を作って売る会社
@@ -606,6 +609,16 @@ x_accounts:
     - imasnews765
     - zutapoke
   ファン:
+    - taki_niconico       # 合議で追加: 個人によるデレステMVの動画投稿
+    - s_tyunp_im          # 合議で追加: 個人による踊ってみた動画への反応投稿
+    - momotiraori         # 合議で追加: 個人によるSideMコラボ店舗への訪問投稿
+    - mio_chihaya         # 合議で追加: 個人によるSideMコラボ店舗の来店投稿
+    - kokutoupan_imas     # 合議で追加: 個人のシャニマス周年お祝い投稿(ファンの発信)
+    - kawasemi337         # 合議で追加: 個人によるファン制作の動画投稿
+    - YODA_44             # 合議で追加: 個人によるカバー歌唱動画の投稿
+    - SSmaniax            # 合議で追加: 個人による765プロ題材のSS(二次創作)投稿
+    - G8WHvYvMcNomlrF     # 合議で追加: 個人の購入品紹介と誕生日祭壇の準備投稿
+    - Braze_enjoy         # 合議で追加: 個人によるファン制作のゲーム内エンブレム投稿
     - qx_maru             # 合議で追加: 個人のカバー動画のプレミア公開告知
     - ayame_digi          # 合議で追加: 個人アカウントによるライブ告知へのファン反応
     - koge_asupara        # 合議で追加: 個人アカウントによる学マス篠澤広のファン投稿

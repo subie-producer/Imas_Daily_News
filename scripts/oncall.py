@@ -80,7 +80,8 @@ from pipelib import (COLLECT_ONCALL_MARK, COLLECT_OUTPUTS, ENV, ROOT, classify_t
                      job_lock, mark_collect_oncall,
                      next_slot_end, notify, now_jst, partial_output, prompt_file, read_answer, render_prompt, save_raw, schema_error,
                      schema_ok, settled_drops,
-                     tool_path, CLI_BLOCKED_EXIT, CliBlocked, cli_check, oncall_clis_blocked, scratch_dir)
+                     tool_path, CLI_BLOCKED_EXIT, CliBlocked, cli_check, oncall_clis_blocked, scratch_dir,
+                     ONCALL_HANDED_EXIT, settled_keys_of)
 from pipelib import exit_on_term, run_group   # モデルのセッションは自前のグループで起動し、時間切れ・中断では道具ごと止める
 
 ONCALL_MODEL = ENV.get("ONCALL_MODEL", "opus")
@@ -1729,6 +1730,9 @@ def _main() -> int:
                     help="組版の当番: 承認まで進んだが記事を落とした。直したあと --reuse-plan で落とした記事をこの号に戻す")
     ap.add_argument("--backlog-keys", nargs="+", default=[], metavar="KEY",
                     help="--stage backlog で渡した保管の指摘。取り込めたら(直す箇所なしの承認も)消し込む")
+    ap.add_argument("--anomaly-keys", nargs="+", default=[], metavar="KEY",
+                    help="渡した異常の形の鍵(pipelib.anomaly_key)。直す箇所なし(no_fix_needed)で承認されたら試行の記録に残し、"
+                         "同じ号・同じ工程の止まっていない工程は、同じ型で当番を起こさない(pipelib.diagnose_anomalies)")
     a = ap.parse_args()
     if a.backlog or a.backlog_done:
         if a.backlog_done:
@@ -1818,15 +1822,16 @@ def _main() -> int:
         if stage == BACKLOG_STAGE:
             print("ロックを取れたが、期限までに1往復できない。保管の指摘は翌朝また渡る", flush=True)
             return 0
+        # どちらも残り時間は起動し直しても増えない。人に渡し終えたので、起動し直して同じ通知を重ねない(ONCALL_HANDED_EXIT)
         if RECOVER:
             notify("oncall", f"{date} compose: 発行の締切までに、落とした記事を戻す時間が無い(残り {int(STAGE_END_AT - time.time()) // 60}分)。"
                              "戻せない記事:\n" + a.reason[-1500:], ok=False)
-            return 1
+            return ONCALL_HANDED_EXIT
         # 収集: 次の定時工程までに直して取り直す時間が無い。落とした新着がこの号に載らないことを、通知で終えずに名指しする
         # (次の収集で同じ失敗が起きれば、その収集がまた当番を呼ぶ)
         notify("oncall", f"{date} collect: 次の定時工程までに、直して取り直す時間が無い(残り {int((STAGE_END_AT or 0) - time.time()) // 60}分)。"
                          "収集で落とした新着は、この号に載らず1号遅れうる。異常の一覧:\n" + a.reason[-1500:], ok=False)
-        return 1
+        return ONCALL_HANDED_EXIT
     # 試行回数はロックの中で数える・判定する・増やす(同時起動で上限をすり抜けない。監査指摘)。
     # 回数は印ファイルの個数(JSON の壊れ・書き換えで緩まない)、記録(log)は JSON
     state_p = ROOT / "metrics" / f"oncall-{date}-{stage}.json"
@@ -1834,11 +1839,30 @@ def _main() -> int:
     if state is None:
         os.close(lock_fd)
         return 1
-    if attempt_count(date, stage) >= MAX_ATTEMPTS:
-        notify("oncall", f"{date} {stage}: 当番は既に{MAX_ATTEMPTS}回試みた。人の判断が要る:\n"
-                         + "\n".join(str(x)[:200] for x in state["log"][-3:]), ok=False)
+    if a.finished and a.anomaly_keys and set(a.anomaly_keys) <= settled_keys_of(state):
+        # 渡された事柄は全部、この号・この工程で診断し監査が承認した型(起動し直し・手での起動で同じ依頼が来た)。判定し直さない
+        print(f"{date} {stage}: 渡された異常は全部、診断し監査が承認した型。当番は起動しない", flush=True)
         os.close(lock_fd)
-        return 1
+        return 0
+    if attempt_count(date, stage) >= MAX_ATTEMPTS:
+        os.close(lock_fd)
+        if a.finished:
+            # 工程は止まっていない。異常は見つけたときに人へ通知してあり、工程も号も止まっていないので、人の判断を求めない・
+            # 異常終了にしない(2026-10-24 02:29: 23:30・02:00 の収集が同じ 503 で当番を呼ぶたびに「既に2回試みた。人の判断が要る」が届き、
+            # exit 1 の起動し直しで重なった)
+            print(f"{date} {stage}: 当番は既に{MAX_ATTEMPTS}回試みた。工程は止まっていないので、人に渡さず終える。渡された異常:\n"
+                  + a.reason[-1500:], flush=True)
+            return 0
+        # 止まった工程は人に渡す。通知は号・工程ごとに1度だけ(同じ日の別の起動・起動し直しで同じ通知を重ねない)
+        told = ROOT / "metrics" / f"oncall-{date}-{stage}-exhausted"
+        try:
+            os.close(os.open(told, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o644))
+            if not notify("oncall", f"{date} {stage}: 当番は既に{MAX_ATTEMPTS}回試みた。人の判断が要る:\n"
+                                    + "\n".join(str(x)[:200] for x in state["log"][-3:]), ok=False):
+                told.unlink(missing_ok=True)      # 届かなかったら、次の起動でまた知らせる
+        except FileExistsError:
+            print(f"{date} {stage}: 当番は既に{MAX_ATTEMPTS}回試みた(人へは通知済み)", flush=True)
+        return ONCALL_HANDED_EXIT
     # 前提を全部確かめてから試行を消費する(dirty で何もしなかった回で回数を減らさない。監査指摘)
     try:
         if not root_clean():
@@ -2032,6 +2056,11 @@ def _main() -> int:
             # 報告ファイル(metrics/oncall-*-report.md)を人が見て、手で再実行する
             notify("oncall", f"{date} {stage}: 修正報告が Discord に届かないので再実行しない。metrics/oncall-{date}-{stage}-report.md を見て手で再実行すること", ok=False)
             return 1
+        if fix.get("status") == "no_fix_needed" and a.anomaly_keys:
+            # 診断が承認され、報告が人に届いた。渡された事柄の形の鍵を残し、この号・この工程の止まっていない工程は、同じ型で
+            # 当番を起こさない(pipelib.diagnose_anomalies。編集長 2026-10-24「ジャッジ済みをジャッジするな」)
+            state["log"][-1]["settled_keys"] = list(a.anomaly_keys)
+            save_state(state_p, state)
         if a.no_rerun:
             # 呼び出し側が「再実行しない」(工程は終わっている・号は確定している。なぜなぜと修正だけ)。次の実行から効く
             return 0
@@ -2045,7 +2074,7 @@ def _main() -> int:
                       flush=True)
                 return 0
             notify("oncall", f"{date} {stage}: 工程は止まったまま。再実行しても通らない、と当番が判断し監査が承認した。人の判断が要る", ok=False)
-            return 1
+            return ONCALL_HANDED_EXIT    # 承認された判断。起動し直して試行の2回目を使い、同じ通知を重ねない
         if not root_clean():
             notify("oncall", f"{date} {stage}: 再実行前に本体の作業ツリーが汚れた。再実行しない", ok=False)
             return 1

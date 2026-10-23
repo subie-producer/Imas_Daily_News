@@ -15086,9 +15086,12 @@ def test_oncall_answer_reformat(tmp: Path):
     check(pipelib.read_answer(one + "\n\n" + one)[0] == INCIDENT_FIX and oncall.parse_json(one + "\n\n" + one) == INCIDENT_FIX,
           "同じ答えの繰り返しを1つとして読まない(2026-10-23 18:56 の当番の出力)")
     check(pipelib.read_answer("答えです\n" + one + "\n念のため再掲\n" + one)[0] == INCIDENT_FIX, "地の文をはさんだ同じ答えの繰り返しを読まない")
+    check(pipelib.read_answer("Sure, here it is:\n" + one + "\nDone, thanks.")[0] == INCIDENT_FIX, "前後に地の文がある1つの答えを読まない")
     for bad, what in ((one + "\n\n" + json.dumps(dict(INCIDENT_FIX, rerun_mode="resume"), ensure_ascii=False), "違う答えが2つ"),
                       (one[:-60], "途中で切れた答え"), ('{"a": 1}\n{"a": 1, "a": 2}', "同じキーが2回ある答え"), ("", "空の答え"),
-                      ("[\n" + one + ",\n" + one, "閉じていない配列の内側の答え"), ('{"x": [\n' + one + ",\n" + one, "閉じていない object の内側の答え")):
+                      ("[\n" + one + ",\n" + one, "閉じていない配列の内側の答え"), ('{"x": [\n' + one + ",\n" + one, "閉じていない object の内側の答え"),
+                      ("[\n" + one, "閉じていない配列の内側の1つの答え"), (one + '\n{"status": "cannot_fix", "notes": [', "続きの答えがある答え"),
+                      (one + "\n}", "答えの後ろに閉じ括弧がある答え")):
         got, why = pipelib.read_answer(bad)
         check(got is None and why, f"{what}を読んだ: {got!r} {why!r}")
     check(pipelib.schema_error({"status": "x"}, (SCHEMAS / "oncall-fix.schema.json").read_text(encoding="utf-8")) != ""
@@ -15264,20 +15267,28 @@ def test_oncall_finished_rerun_none(tmp: Path):
     check(code == 1 and len(bad) == 1 and "答えが読めなかった" in bad[0] and "途中で止まったのではない" in bad[0]
           and "当番の作業が途中で止まった" not in bad[0] and "人の判断が要る" not in bad[0],
           f"形を直させる回が時間切れの当番を、答えが読めなかったと届けない: exit {code} {[m[:160] for m in bad]}")
-    # 呼び出し側: 理由が無い(止まっていない)ときだけ --finished を渡す
+    # 呼び出し側: 理由が無い(止まっていない)ときだけ --finished を渡す。収集は終わり方(終了値)を渡し、止まった収集
+    # (例外・SIGTERM・非0)には付けない(監査指摘 r2: 例外で終わった収集も末尾で無条件に当番を呼び、--finished が付いた)
+    import collect
     calls = []
     saved_esc = (pipelib.escalate, list(pipelib.ANOMALIES), pipelib._ESCALATED)
     try:
-        pipelib.escalate = lambda stage, date, reason, **k: calls.append(k.get("extra_args")) or True
+        pipelib.escalate = lambda stage, date, reason, **k: calls.append((k.get("extra_args"), reason)) and False
         for reason in ("", "止まった"):
             pipelib.ANOMALIES[:] = ["[collect] 定点観測 lantis-sidem: 一覧を読めなかった"]
             pipelib._ESCALATED = False
             pipelib.diagnose_anomalies("collect", "2026-10-24", rerun=True, reason=reason, extra_args=["--end-at", "1"])
+        for code in (0, 1, 143):
+            pipelib.ANOMALIES[:] = ["[collect] 定点観測 lantis-sidem: 一覧を読めなかった"]
+            pipelib._ESCALATED = False
+            collect.hand_to_oncall(code)
     finally:
         pipelib.escalate = saved_esc[0]
         pipelib.ANOMALIES[:] = saved_esc[1]
         pipelib._ESCALATED = saved_esc[2]
-    check(calls == [["--end-at", "1", "--finished"], ["--end-at", "1"]], f"--finished の渡し方が違う: {calls}")
+    fin = ["--finished" in (a or []) for a, _ in calls]
+    check(fin == [True, False, True, False, False] and all("止まった" in r for (a, r), f in zip(calls, fin) if not f),
+          f"--finished の渡し方が違う(止まった収集に付けた・止まっていない収集に付けない): {[(a, r[:30]) for a, r in calls]}")
 
 
 def main() -> int:

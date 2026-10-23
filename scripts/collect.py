@@ -2193,7 +2193,7 @@ def merge_into_day_file(cands: list[dict], day: str) -> int:
     return added
 
 
-def hand_to_oncall() -> None:
+def hand_to_oncall(code: int = 0) -> None:
     """人に「異常」として通知したものは、申告で終えずに当番がなぜなぜする。直したら定点観測を取り直し、落とした新着を
     この号の選定リストに入れるまでが当番の仕事(編集長 2026-10-07「やらかしてドロップしたのは責任を持って修正して紙面に乗せろ」。
     以前は「収集は終わっているので再実行しない」で、直しても次の定時収集まで拾われず、最後の収集なら1号遅れた)。
@@ -2202,7 +2202,10 @@ def hand_to_oncall() -> None:
     当番は取り直せない。組版は印を見て待ち、受け渡しの間は譲る。監査指摘)"""
     end_at = collect_oncall_end(now_jst())
     date = edition_date()
-    if diagnose_anomalies("collect", date, rerun=True, extra_args=["--end-at", str(int(end_at))]):
+    # 収集が止まった(例外・SIGTERM・非0)なら理由を渡す。理由の無い呼び出しは「工程は止まっていない」(--finished)になり、
+    # 当番の「いま再実行しない」が人に渡らなくなる(監査指摘 2026-10-24)
+    stopped = f"収集が止まった(exit {code})。下の一覧をなぜなぜし、原因を直して取り直すこと" if code else ""
+    if diagnose_anomalies("collect", date, rerun=True, reason=stopped, extra_args=["--end-at", str(int(end_at))]):
         mark_collect_oncall(end_at, date)
 
 
@@ -2420,5 +2423,5 @@ if __name__ == "__main__":
     except Exception as e:
         notify_crash("collect", e)
         code = 1
-    hand_to_oncall()
+    hand_to_oncall(code)
     sys.exit(code)

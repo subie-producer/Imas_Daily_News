@@ -2081,26 +2081,29 @@ def read_answer(text: str) -> tuple[object, str]:
     m = re.search(r"\{.*\}", s, re.S)
     if not m:
         return None, "JSON の object が無い"
+    # 答えの前後は地の文だけ。閉じていない配列の内側(前に `[`)・続きの JSON(後ろに `[ ] {`)なら読まない(監査指摘: `[` A、
+    # A `{"verdict":"reject", …` を承認として採った)。開いた object は最初の `{` より前に来ないので、前は `[` だけを見る
+    outside = "答えの外に JSON の記号がある(閉じていない配列・object の内側か、続きの答えがあるかもしれない)"
+    if "[" in s[:m.start()] or re.search(r"[\[\]{]", s[m.end():]):
+        return None, outside
     try:
         return loads_strict(m.group(0)), ""
     except ValueError:
         pass
     dec = json.JSONDecoder(object_pairs_hook=_no_duplicate_keys)
-    # 答えと答えの間・前後は地の文だけ(JSON の記号があれば、閉じていない配列・object の内側の答えかもしれないので読まない。
-    # 監査指摘: `[` A `,` A(閉じない配列)の内側の2つを繰り返しとして採った)
-    loose = lambda t: not re.search(r'[\[\]{},"]', t)
-    found, i, j = [], m.start(), 0
+    # 答えと答えの間も地の文だけ(監査指摘: `[` A `,` A(閉じない配列)の内側の2つを繰り返しとして採った)
+    found, i, j = [], m.start(), m.start()
     while i >= 0:
-        if not loose(s[j:i]):
-            return None, "答えの外に JSON の記号がある(閉じていない配列・object の内側かもしれない)"
+        if re.search(r'[\[\]{},"]', s[j:i]):
+            return None, outside
         try:
             v, j = dec.raw_decode(s, i)
         except ValueError as e:
             return None, f"JSON が途中で切れている・形が崩れている({str(e)[:120]})"
         found.append(v)
         i = s.find("{", j)
-    if not loose(s[j:]):
-        return None, "答えの外に JSON の記号がある(閉じていない配列・object の内側かもしれない)"
+    if re.search(r'[\[\]{},"]', s[j:]):
+        return None, outside
     if len({json.dumps(v, ensure_ascii=False, sort_keys=True) for v in found}) > 1:
         return None, f"違う答えが {len(found)}個並んでいる(どれを採るか決められない)"
     return found[0], ""

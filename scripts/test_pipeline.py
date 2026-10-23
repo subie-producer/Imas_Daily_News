@@ -15898,7 +15898,13 @@ def test_oncall_recover_keeps_handed_exit(tmp: Path):
     HANDED = getattr(pipelib, "ONCALL_HANDED_EXIT", "未定義")
     date, edition = "2026-10-24", "edition/2026-10-24"
     out = {}
-    for case in ("short", "stopped"):
+    # short: 枠切れ・残り時間が無い / stopped: 枠切れ・後段の組み直しが失敗 / direct: 往復の時間は無いが組み直しの時間はある
+    # (_main の中で組み直す) / approved: 当番の診断を監査が承認し、承認後の再実行で組み直す(監査指摘 r3)
+    def approved_rounds(stage, date_, context, wt, base, resume, env, transcript):
+        transcript.append({"review": {"verdict": "approve"}})
+        return dict(approved=True, fix=dict(INCIDENT_FIX), head=base, diff="", changed=[], kept={}, later=[], error=None)
+    minutes = {"short": 10, "stopped": 120, "direct": 30, "approved": 120}
+    for case in ("short", "stopped", "direct", "approved"):
         root, remote = tmp / case / "ops", tmp / case / "ops.git"
         root.mkdir(parents=True)
         g = lambda *a: subprocess.run(["git", *a], cwd=root, capture_output=True, text=True, check=True).stdout.strip()
@@ -15911,16 +15917,20 @@ def test_oncall_recover_keeps_handed_exit(tmp: Path):
         g("add", "-A"); g("commit", "-q", "-m", "base")
         g("remote", "add", "origin", str(remote)); g("push", "-q", "-u", "origin", "main")
         g("checkout", "-q", "-b", edition); g("push", "-q", "-u", "origin", edition)
-        for n in (1, 2):
+        for n in ((1, 2) if case in ("short", "stopped") else ()):
             (root / "metrics" / f"oncall-{date}-compose-attempt-{n}").write_text("used", encoding="utf-8")
         args = ["oncall", "--stage", "compose", "--date", date, "--reason", "dropped article", "--recover",
-                "--end-at", str(int(time.time()) + (600 if case == "short" else 7200))] + (["--finished"] if case == "short" else [])
-        names = ("ROOT", "notify", "oncall_clis_blocked", "RECOVER", "RECOVER_TARGET", "RECOVER_TRIED", "DEADLINE_AT", "STAGE_END_AT")
+                "--end-at", str(int(time.time()) + minutes[case] * 60)] + (["--finished"] if case == "short" else [])
+        names = ("ROOT", "notify", "oncall_clis_blocked", "RECOVER", "RECOVER_TARGET", "RECOVER_TRIED", "DEADLINE_AT", "STAGE_END_AT",
+                 "run_rounds", "gather_context")
         saved = {k: getattr(oncall, k) for k in names}
         saved_p, saved_argv, runs = (pipelib.ROOT, pipelib.oncall_clis_blocked), sys.argv, []
         try:
             oncall.ROOT = pipelib.ROOT = root
             oncall.oncall_clis_blocked = pipelib.oncall_clis_blocked = lambda: []
+            oncall.gather_context = lambda *a: "ctx"
+            if case == "approved":
+                oncall.run_rounds = approved_rounds
             for _ in range(2):          # systemd の起動し直し相当
                 notes = []
                 oncall.notify = lambda job, msg, ok=True, require=False: notes.append((msg, ok)) or True
@@ -15942,6 +15952,11 @@ def test_oncall_recover_keeps_handed_exit(tmp: Path):
     check(c1 == HANDED and sum("既に2回" in m for m in n1 + n2) == 1,
           f"枠切れ・組み直しが失敗した復帰の当番が、起動し直させる終了値で終えた・枠切れの通知を重ねた: exit {c1}/{c2} 期待 {HANDED} "
           f"{[m[:40] for m in n1]} / {[m[:40] for m in n2]}")
+    for case in ("direct", "approved"):
+        (c1, n1), (c2, n2) = out[case]
+        check(c1 == c2 == HANDED and any("組み直し" in m for m in n1),
+              f"{case}: _main の中で組み直しを試みて戻せなかった当番が、起動し直させる終了値で終えた(同じ組み直しと通知を重ねる): "
+              f"exit {c1}/{c2} 期待 {HANDED} {[m[:40] for m in n1]}")
 
 
 def main() -> int:

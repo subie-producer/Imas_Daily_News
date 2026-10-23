@@ -1654,6 +1654,10 @@ def main() -> int:
         notify("oncall", f"{RECOVER_TARGET[0]} compose: 当番の処理で例外({type(e).__name__}: {str(e)[:300]})。"
                          "落とした記事を戻す組み直しは続ける", ok=False)
         code = 1
+    if RECOVER and RECOVER_TARGET and RECOVER_TRIED:
+        # _main の中で組み直しを試みた(残り時間が往復に足りない回・承認後の再実行)。戻せなかった結果は報告済みなので、
+        # 後段と同じく起動し直させない(同じ組み直しと失敗の通知を重ねない。監査指摘 2026-10-24 r3)
+        return code if code in (0, CLI_BLOCKED_EXIT, ONCALL_HANDED_EXIT) else ONCALL_HANDED_EXIT
     if not (RECOVER and RECOVER_TARGET and not RECOVER_TRIED):
         return code
     if oncall_clis_blocked():

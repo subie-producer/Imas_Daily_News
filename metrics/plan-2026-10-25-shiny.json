@@ -1,0 +1,472 @@
+{
+ "decisions": {
+  "2": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/24号「シャニソン2周年記念電話が復刻」と同内容"
+  },
+  "3": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/24号「シャニソン3周年、最大150連と新衣装『ひとひら』」と同じ内容。新しい事実なし"
+  },
+  "283": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/24号「新対戦283ステージショー開発中」と同内容"
+  },
+  "shiny-85th-anniversary-present-2026": {
+   "action": "article",
+   "angle": "10月30日からキャスコレ「色んな愛の形編」(大崎甜花・和泉愛依のSSR)が始まる。プレゼント配布自体は既報で、新しい事実はこの日程",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ケーキ・ジュエル・こどもたち衣装は10/24号に既出。出典は二次情報で未確認"
+  },
+  "shiny-borderless-oh-yeah-event-merch-2026": {
+   "action": "article",
+   "angle": "Song for Prism発売記念イベント3公演(11/14・11/21・11/22)の会場物販。購入制限や販売時間を公演別に伝える",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ring-ring-ring・tokyo-jiyukei の物販を統合した1記事"
+  },
+  "shiny-ring-ring-ring-event-merch-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-borderless-oh-yeah-event-merch-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "11/21公演の会場物販。缶バッジ購入制限は4点"
+  },
+  "shiny-tokyo-jiyukei-my-time-event-merch-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-borderless-oh-yeah-event-merch-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "11/22公演の会場物販"
+  },
+  "shiny-song-for-prism-third-anniversary-event-2026": {
+   "action": "article",
+   "angle": "シャニソン3周年記念イベント(10月31日12時開始)のランキング報酬と、新曲「OVERLAY OF HOPES」を伝える",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "開始日と150連・ひとひら衣装は10/24号に既出。ランキング報酬を切り口にする"
+  },
+  "shiny-3-0-25": {
+   "action": "roundup",
+   "angle": "3周年記念カウントダウンのログインボーナス(毎日プリズムジュエル300個とガシャチケット1枚)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "8-5-s-ssr-s-ssr": {
+   "action": "roundup",
+   "angle": "シャニラジの切り抜きショート動画(朗読コーナー、凛世の誕生日会)の公開",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "素材24件はほぼ既報(Fumage・8.5周年・プレコレ等)。新規はラジオ切り抜きのみ"
+  },
+  "shiny-3rd-anniversary-story-0-24": {
+   "action": "roundup",
+   "angle": "シャニソン3rd Anniversary Story 第2話「手のひらの観光」の公開",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-web4-0-24": {
+   "action": "roundup",
+   "angle": "web4コマ漫画 第662話『おしゃべり』(浅倉透)の公開",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "3-pv": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/24号「シャニソン3周年記念PVが公開」と同内容"
+  },
+  "auto-36": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "素材24件はすべて10/24号の記事(衣装恒常化、新曲展開、アイキュー復刻、ソウル公演など)と同じ内容"
+  },
+  "pj-refrac7ions-enza": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/24号「Fumage登場、新曲Monad追加」と同内容"
+  },
+  "beam-mv": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/24号「BEAM 10月30日配信、MV公開」と同内容。配信日は30日で当日のトリガーなし"
+  },
+  "shiny-8-0-24": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人の来店報告のSNS投稿"
+  },
+  "shiny-dark-girly-fashion-goods-2026": {
+   "action": "article",
+   "angle": "ダークガーリーファッションver.グッズ全23商品の予約が11月4日まで。商品構成と価格を伝える",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "carried 2回目。出典が未確認(非公式アカウント由来)なので、記事にできるかは執筆と校閲が判断する"
+  },
+  "shiny-chikusei-collab-2026": {
+   "action": "article",
+   "angle": "筑西市×シャニマスのコラボが本日25日で終了。黛冬優子の音声スタンプラリーのポストカード引換は最終日",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(終了)。引換場所は道の駅グランテラス筑西とカフェブリーズ"
+  },
+  "shiny-style-collection-wave2-2026": {
+   "action": "article",
+   "angle": "SHINY Style COLLECTION第2弾の受注が本日10月25日で締切。ASOBI STOREで注文できる最終日",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "第2弾グッズ・Sonic Heartキーホルダー・No 1 feel aloneキーホルダーの締切を1記事に統合"
+  },
+  "shiny-prism-rinze-birthday-gasha-2026": {
+   "action": "article",
+   "angle": "シャニソンの凛世誕生日記念ガシャが本日23時59分で終了",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(終了)。誕生日ストーリーとプレゼントも同じ期間"
+  },
+  "shiny-style-collection-goods-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-style-collection-wave2-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ受注締切(10/25)の続報予約。統合"
+  },
+  "shiny-style-collection-vol2-keyholder-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-style-collection-wave2-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "Sonic Heartキーホルダーの受注締切(10/25)。統合"
+  },
+  "shiny-style-collection-sonic-heart-keyholder-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-style-collection-wave2-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ第2弾の受注締切(10/25)。統合"
+  },
+  "shiny-noctchill-live-2027": {
+   "action": "article",
+   "angle": "noctchill単独ライブ(2027年3月仙台)のプレミアム先行当選者は、入金締切10月28日23時59分まであと3日",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(締切前)。SideM×シャニの合同ライブとは別公演のため joint ではない"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "shiny-85th-anniversary-present-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "10月30日からキャスコレ「色んな愛の形編」(大崎甜花・和泉愛依のSSR)が始まる。プレゼント配布自体は既報で、新しい事実はこの日程",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "shiny-85th-anniversary-present-2026",
+    "candidate_ids": [
+     "202610240731-explore-1"
+    ]
+   },
+   {
+    "slug": "shiny-borderless-oh-yeah-event-merch-2026",
+    "brand": "shiny",
+    "rank": "medium",
+    "angle": "Song for Prism発売記念イベント3公演(11/14・11/21・11/22)の会場物販。購入制限や販売時間を公演別に伝える",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "shiny-borderless-oh-yeah-event-merch-2026",
+    "candidate_ids": [
+     "202610240731-explore-7",
+     "202610240731-explore-8",
+     "202610240731-explore-9"
+    ]
+   },
+   {
+    "slug": "shiny-song-for-prism-third-anniversary-event-2026",
+    "brand": "shiny",
+    "rank": "medium",
+    "angle": "シャニソン3周年記念イベント(10月31日12時開始)のランキング報酬と、新曲「OVERLAY OF HOPES」を伝える",
+    "purpose": "新情報",
+    "lead_score": 60,
+    "dedup_key": "shiny-song-for-prism-third-anniversary-event-2026",
+    "candidate_ids": [
+     "202610241231-explore-4"
+    ]
+   },
+   {
+    "slug": "shiny-dark-girly-fashion-goods-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "ダークガーリーファッションver.グッズ全23商品の予約が11月4日まで。商品構成と価格を伝える",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "shiny-dark-girly-fashion-goods-2026",
+    "candidate_ids": [
+     "202610230227-grok-19"
+    ]
+   },
+   {
+    "slug": "shiny-chikusei-collab-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "筑西市×シャニマスのコラボが本日25日で終了。黛冬優子の音声スタンプラリーのポストカード引換は最終日",
+    "purpose": "期日の知らせ",
+    "lead_score": 15,
+    "dedup_key": "shiny-chikusei-collab-2026",
+    "candidate_ids": [
+     "sched-2026-10-25-shiny-chikusei-collab-2026-終了",
+     "sched-2026-10-25-shiny-chikusei-collab-2026-終了-src1"
+    ]
+   },
+   {
+    "slug": "shiny-style-collection-wave2-2026",
+    "brand": "shiny",
+    "rank": "medium",
+    "angle": "SHINY Style COLLECTION第2弾の受注が本日10月25日で締切。ASOBI STOREで注文できる最終日",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "shiny-style-collection-wave2-2026",
+    "candidate_ids": [
+     "sched-2026-10-25-shiny-style-collection-wave2-2026-締切",
+     "sched-2026-10-25-shiny-style-collection-goods-2026-締切",
+     "sched-2026-10-25-shiny-style-collection-vol2-keyholder-2026-締切",
+     "sched-2026-10-25-shiny-style-collection-sonic-heart-keyholder-2026-締切",
+     "sched-2026-10-25-shiny-style-collection-sonic-heart-keyholder-2026-締切-src1",
+     "sched-2026-10-25-shiny-style-collection-sonic-heart-keyholder-2026-締切-src2",
+     "sched-2026-10-25-shiny-style-collection-sonic-heart-keyholder-2026-締切-src3"
+    ]
+   },
+   {
+    "slug": "shiny-prism-rinze-birthday-gasha-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "シャニソンの凛世誕生日記念ガシャが本日23時59分で終了",
+    "purpose": "期日の知らせ",
+    "lead_score": 15,
+    "dedup_key": "shiny-prism-rinze-birthday-gasha-2026",
+    "candidate_ids": [
+     "sched-2026-10-25-shiny-prism-rinze-birthday-gasha-2026-終了",
+     "sched-2026-10-25-shiny-prism-rinze-birthday-gasha-2026-終了-src1",
+     "sched-2026-10-25-shiny-prism-rinze-birthday-gasha-2026-終了-src2",
+     "sched-2026-10-25-shiny-prism-rinze-birthday-gasha-2026-終了-src3"
+    ]
+   },
+   {
+    "slug": "shiny-noctchill-live-2027",
+    "brand": "shiny",
+    "rank": "medium",
+    "angle": "noctchill単独ライブ(2027年3月仙台)のプレミアム先行当選者は、入金締切10月28日23時59分まであと3日",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "shiny-noctchill-live-2027",
+    "candidate_ids": [
+     "sched-2026-10-25-shiny-noctchill-live-2027-締切前",
+     "sched-2026-10-25-shiny-noctchill-live-2027-締切前-src1"
+    ]
+   },
+   {
+    "slug": "shiny-ops-roundup",
+    "brand": "shiny",
+    "rank": "roundup",
+    "angle": "3周年記念カウントダウンのログインボーナス(毎日プリズムジュエル300個とガシャチケット1枚)",
+    "lead_score": 0,
+    "dedup_key": "shiny-3-0-25",
+    "candidate_ids": [
+     "202610250218-grok-14",
+     "202610250218-grok-15",
+     "202610250218-grok-16",
+     "202610250218-grok-17",
+     "202610250218-grok-18",
+     "202610250218-grok-20",
+     "202610250218-grok-22",
+     "202610250218-grok-23",
+     "202610250218-grok-24",
+     "202610250218-grok-25",
+     "202610250218-grok-26",
+     "202610250218-grok-27",
+     "202610250218-grok-28",
+     "202610250218-grok-29",
+     "202610250218-grok-30",
+     "202610250218-grok-31",
+     "202610250218-grok-32",
+     "202610250218-grok-33",
+     "202610250218-grok-34",
+     "202610250218-grok-35",
+     "202610250218-grok-60",
+     "202610250218-grok-74",
+     "202610250218-grok-76",
+     "202610250218-grok-77",
+     "202610250218-grok-78",
+     "202610250218-grok-19",
+     "202610250218-grok-21"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "3-pv",
+    "reason": "既報",
+    "note": "10/24号「シャニソン3周年記念PVが公開」と同内容"
+   },
+   {
+    "dedup_key": "auto-36",
+    "reason": "既報",
+    "note": "素材24件はすべて10/24号の記事(衣装恒常化、新曲展開、アイキュー復刻、ソウル公演など)と同じ内容"
+   },
+   {
+    "dedup_key": "3",
+    "reason": "既報",
+    "note": "10/24号「シャニソン3周年、最大150連と新衣装『ひとひら』」と同じ内容。新しい事実なし"
+   },
+   {
+    "dedup_key": "2",
+    "reason": "既報",
+    "note": "10/24号「シャニソン2周年記念電話が復刻」と同内容"
+   },
+   {
+    "dedup_key": "pj-refrac7ions-enza",
+    "reason": "既報",
+    "note": "10/24号「Fumage登場、新曲Monad追加」と同内容"
+   },
+   {
+    "dedup_key": "283",
+    "reason": "既報",
+    "note": "10/24号「新対戦283ステージショー開発中」と同内容"
+   },
+   {
+    "dedup_key": "beam-mv",
+    "reason": "既報",
+    "note": "10/24号「BEAM 10月30日配信、MV公開」と同内容。配信日は30日で当日のトリガーなし"
+   },
+   {
+    "dedup_key": "shiny-8-0-24",
+    "reason": "個人の話題",
+    "note": "個人の来店報告のSNS投稿"
+   }
+  ],
+  "cross_brand": []
+ }
+}

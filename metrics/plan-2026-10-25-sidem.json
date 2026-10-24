@@ -1,0 +1,367 @@
+{
+ "decisions": {
+  "sidem-promi-2027-payment-extension": {
+   "action": "article",
+   "angle": "プロミ2027アソビストアプレミアム会員先行の入金期間が10月26日15時〜28日に延長された",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "既報は延長の期限が未確認。延長後の期間は新事実。公式の告知と二次情報を束ねる"
+  },
+  "sidem-promi-2027-payment-deadline-extension": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-promi-2027-payment-extension",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ入金期限延長の公式告知"
+  },
+  "sidem-agatsuma-nin-nin-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/24号に詳細記事あり。新事実なし。開始は10/28で当日ではない"
+  },
+  "sidem-monthly-theme-song-goods-vol3-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/24号の第3弾記念グッズ記事と同じ施策。新事実なし"
+  },
+  "sidem-monthly-theme-song-vol-3-goods-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/24号に商品・価格・11/8締切まで掲載済み。トリガーなし"
+  },
+  "315-night-mail-method-2026-10": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "315-night-2026-11-cast",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "11月回のお便り投稿方法の一時変更として統合"
+  },
+  "315-night-2026-11-cast": {
+   "action": "article",
+   "angle": "315プロNight!の11月はもふもふえんが担当。お便りは公式HP停止中のため投稿方法を一時変更",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "carried。直近の記事に11月担当の記事なし。お便り方法の変更も含める"
+  },
+  "315-night-2026-10-23": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "10/23放送回は終了済み。10/23号で本日配信を記事化済み"
+  },
+  "sidem-poppin-planet-2dmv-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/24号で11/4 21時公開を記事化済み。新事実なし"
+  },
+  "sidem-ultimate-flame-2dmv-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/23公開済みで10/24号まで記事化済み。新事実なし"
+  },
+  "sidem-315-night-2026-10-30": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/24号で30日回の23時開始を記事化済み。トリガーなし"
+  },
+  "sidem-story-release-delay-2026-10": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/24号で2編の公開延期を記事化済み。新事実なし"
+  },
+  "sidem-fanfes-wsi-nagano-general-presale-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/24号で一般会員先行開始と特典カードを記事化済み"
+  },
+  "sidem-takarazuka-name-comparison-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "同人・ファン主催",
+   "note": "個人ブログの非公式調査で、出典も未確認"
+  },
+  "sidem-fan-gym-motivation-2026-10": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿で、単体では記事にしない。fan面はgeneral面のみ"
+  },
+  "sidem-fan-expanding-hobbies-2026-10": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿で、単体では記事にしない"
+  },
+  "sidem-fbfes-wanna-step-in-goods-2026": {
+   "action": "article",
+   "angle": "Wanna step inの公式グッズ直前販売は本日23:59が最終日。数量限定で、予定数に達すると終了",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約の締切。本日が最終日"
+  },
+  "sidem-fifs-popup-fukuoka-2026": {
+   "action": "article",
+   "angle": "福岡のFiFS POP-UP'26で、SideMイラストグッズを買えるのは本日19時まで",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約の終了。本日が最終日で、会場に行ける"
+  },
+  "sidem-fbfes-wgf-2026-stage-greeting": {
+   "action": "article",
+   "angle": "劇場版SideMの11/21舞台挨拶、プレリク先行のエントリー締切は10月28日23:59まであと3日",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約の締切前。10/21号は告知済みで、締切3日前のトリガー"
+  },
+  "remember-shot-fair-4-2026": {
+   "action": "article",
+   "angle": "アニメイトのリメンバーショットフェア第4弾は本日が最終日。購入・予約で切手風ステッカーがもらえる",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約の締切。本日が最終日"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "sidem-promi-2027-payment-extension",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "プロミ2027アソビストアプレミアム会員先行の入金期間が10月26日15時〜28日に延長された",
+    "purpose": "新情報",
+    "lead_score": 60,
+    "dedup_key": "sidem-promi-2027-payment-extension",
+    "candidate_ids": [
+     "202610240731-explore-11",
+     "202610250218-grok-86"
+    ]
+   },
+   {
+    "slug": "sidem-315-night-2026-11-cast",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "315プロNight!の11月はもふもふえんが担当。お便りは公式HP停止中のため投稿方法を一時変更",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "315-night-2026-11-cast",
+    "candidate_ids": [
+     "202610250218-grok-83",
+     "202610250218-grok-79"
+    ]
+   },
+   {
+    "slug": "sidem-fbfes-wanna-step-in-goods-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "Wanna step inの公式グッズ直前販売は本日23:59が最終日。数量限定で、予定数に達すると終了",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "sidem-fbfes-wanna-step-in-goods-2026",
+    "candidate_ids": [
+     "sched-2026-10-25-sidem-fbfes-wanna-step-in-goods-2026-締切",
+     "sched-2026-10-25-sidem-fbfes-wanna-step-in-goods-2026-締切-src1"
+    ]
+   },
+   {
+    "slug": "sidem-fifs-popup-fukuoka-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "福岡のFiFS POP-UP'26で、SideMイラストグッズを買えるのは本日19時まで",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "sidem-fifs-popup-fukuoka-2026",
+    "candidate_ids": [
+     "sched-2026-10-25-sidem-fifs-popup-fukuoka-2026-終了"
+    ]
+   },
+   {
+    "slug": "sidem-fbfes-wgf-2026-stage-greeting",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "劇場版SideMの11/21舞台挨拶、プレリク先行のエントリー締切は10月28日23:59まであと3日",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "sidem-fbfes-wgf-2026-stage-greeting",
+    "candidate_ids": [
+     "sched-2026-10-25-sidem-fbfes-wgf-2026-stage-greeting-締切前",
+     "sched-2026-10-25-sidem-fbfes-wgf-2026-stage-greeting-締切前-src1"
+    ]
+   },
+   {
+    "slug": "sidem-remember-shot-fair-4-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "アニメイトのリメンバーショットフェア第4弾は本日が最終日。購入・予約で切手風ステッカーがもらえる",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "remember-shot-fair-4-2026",
+    "candidate_ids": [
+     "sched-2026-10-25-remember-shot-fair-4-2026-締切"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "sidem-agatsuma-nin-nin-2026",
+    "reason": "既報",
+    "note": "10/24号に詳細記事あり。新事実なし。開始は10/28で当日ではない"
+   },
+   {
+    "dedup_key": "sidem-monthly-theme-song-goods-vol3-2026",
+    "reason": "既報",
+    "note": "10/24号の第3弾記念グッズ記事と同じ施策。新事実なし"
+   },
+   {
+    "dedup_key": "sidem-poppin-planet-2dmv-2026",
+    "reason": "既報",
+    "note": "10/24号で11/4 21時公開を記事化済み。新事実なし"
+   },
+   {
+    "dedup_key": "sidem-ultimate-flame-2dmv-2026",
+    "reason": "既報",
+    "note": "10/23公開済みで10/24号まで記事化済み。新事実なし"
+   },
+   {
+    "dedup_key": "sidem-315-night-2026-10-30",
+    "reason": "既報",
+    "note": "10/24号で30日回の23時開始を記事化済み。トリガーなし"
+   },
+   {
+    "dedup_key": "315-night-2026-10-23",
+    "reason": "その他",
+    "note": "10/23放送回は終了済み。10/23号で本日配信を記事化済み"
+   },
+   {
+    "dedup_key": "sidem-story-release-delay-2026-10",
+    "reason": "既報",
+    "note": "10/24号で2編の公開延期を記事化済み。新事実なし"
+   },
+   {
+    "dedup_key": "sidem-monthly-theme-song-vol-3-goods-2026",
+    "reason": "既報",
+    "note": "10/24号に商品・価格・11/8締切まで掲載済み。トリガーなし"
+   },
+   {
+    "dedup_key": "sidem-fanfes-wsi-nagano-general-presale-2026",
+    "reason": "既報",
+    "note": "10/24号で一般会員先行開始と特典カードを記事化済み"
+   },
+   {
+    "dedup_key": "sidem-takarazuka-name-comparison-2026",
+    "reason": "同人・ファン主催",
+    "note": "個人ブログの非公式調査で、出典も未確認"
+   },
+   {
+    "dedup_key": "sidem-fan-gym-motivation-2026-10",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿で、単体では記事にしない。fan面はgeneral面のみ"
+   },
+   {
+    "dedup_key": "sidem-fan-expanding-hobbies-2026-10",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿で、単体では記事にしない"
+   }
+  ],
+  "cross_brand": []
+ }
+}

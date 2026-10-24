@@ -164,5 +164,52 @@
   "verify": "confirmed",
   "event_date": "2026-10-26",
   "src_candidate_id": "202610230227-grok-8"
+ },
+ {
+  "id": "sched-2026-10-26-sidem-promi-2027-payment-extension-開始",
+  "dedup_key": "sidem-promi-2027-payment-extension",
+  "brand": "sidem",
+  "subject": "SideMプロミ2027 先行当選分の延長入金期間",
+  "kind": "開始",
+  "note": "15時から、メンテで入金できなかった人がASOBI STOREで入金できる",
+  "reserved_on": "2026-10-25",
+  "occurs_on": "2026-10-26",
+  "title": "プロミ2027先行抽選の入金期間延長",
+  "url": "https://sidematome.xxxblog.jp/",
+  "source_type": "二次情報",
+  "facts": [
+   "2026年10月21日夜間からのアソビストア緊急メンテナンスにより、プロミ2027のアソビストアプレミアム会員先行抽選に当選した人が入金できない状態が発生した。",
+   "入金できなかった人を対象に、入金期間の延長が発表された。",
+   "延長後の入金期間: 2026年10月26日(月)15:00 ～ 10月28日(水)",
+   "エンゲージメント: 中"
+  ],
+  "via": "explore",
+  "verify": "unconfirmed",
+  "deadline": "2026-10-28",
+  "src_candidate_id": "202610240731-explore-11"
+ },
+ {
+  "id": "sched-2026-10-26-sidem-promi-2027-payment-extension-開始-src1",
+  "dedup_key": "sidem-promi-2027-payment-extension",
+  "brand": "sidem",
+  "subject": "SideMプロミ2027 先行当選分の延長入金期間",
+  "kind": "開始",
+  "note": "15時から、メンテで入金できなかった人がASOBI STOREで入金できる",
+  "reserved_on": "2026-10-25",
+  "occurs_on": "2026-10-26",
+  "title": "SideMプロミ2027先行の入金期限延長",
+  "url": "https://x.com/SideM_official/status/2113561200357482713",
+  "source_type": "公式",
+  "facts": [
+   "ASOBI STOREの緊急メンテナンスで入金手続きが行えなかった人を対象に、アソビストアプレミアム会員先行の入金期限を延長。",
+   "延長後の期限など詳細は告知リンク先の本文を取得できず確認できなかった。",
+   "リンク: https://asobiticket2.asobistore.jp/news/022a9df8-fb50-48fe-b21d-aea1b06953a7",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202610250218-grok-86",
+  "companion_of": "sched-2026-10-26-sidem-promi-2027-payment-extension-開始",
+  "src_dedup_key": "sidem-promise-2027-payment-extension"
  }
 ]

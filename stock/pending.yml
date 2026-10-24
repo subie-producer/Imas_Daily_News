@@ -335,3 +335,9 @@
   subject: SideMプロミ2027 先行の延長後の入金期限
   watch: 延長後の入金期限の日時(詳細ページで案内、判明次第 triggers へ)
   added_on: '2026-10-24'
+  removed_on: '2026-10-25'
+- dedup_key: matsuri-true-ending-reward-design-2026
+  brand: million
+  subject: 徳川まつりTrue Ending報酬「称号」「BG GrafiX」のデザイン変更
+  watch: 記事で「近日中」とされたシルエット解除・デザイン変更の実施日(判明次第 triggers へ)
+  added_on: '2026-10-25'

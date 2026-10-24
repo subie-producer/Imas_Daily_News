@@ -1,0 +1,109 @@
+{
+ "decisions": {
+  "tours-season-2-2026": {
+   "action": "article",
+   "angle": "10月29日稼働のS2弾で、ツアーモードのコミュ200以上と中部エリア、オリジナル楽曲『SYMPHONY』が加わる",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "SPアピールカード2種は10/24既報なので扱いは補足程度。稼働開始まで4日。"
+  },
+  "tours-s1-play-finale-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人の投稿のみで未確認。単体では記事にしない。"
+  },
+  "tours-s2-symphony-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "tours-season-2-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じS2弾稼働開始の施策。楽曲『SYMPHONY』追加として統合。"
+  },
+  "765-961-xr-live-2027": {
+   "action": "article",
+   "angle": "アソビストアプレミアム会員先行の申込締切は10月28日23時59分、あと3日",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "締切3日前のトリガー。新しい事実は無く、既報の期日と手続きを伝え直す。"
+  },
+  "sidem-shinycolors-sparkle-showdown-2027-06": {
+   "action": "article",
+   "angle": "当選者の入金期限は10月28日23時59分、あと3日",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "入金期限3日前のトリガー。10/24の当落発表記事とは行動が別(入金)。"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "joint-tours-season-2-2026",
+    "brand": "joint",
+    "rank": "medium",
+    "angle": "10月29日稼働のS2弾で、ツアーモードのコミュ200以上と中部エリア、オリジナル楽曲『SYMPHONY』が加わる",
+    "purpose": "新情報",
+    "lead_score": 60,
+    "dedup_key": "tours-season-2-2026",
+    "candidate_ids": [
+     "202610250218-grok-109",
+     "202610250218-grok-119"
+    ]
+   },
+   {
+    "slug": "joint-765-961-xr-live-2027",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "アソビストアプレミアム会員先行の申込締切は10月28日23時59分、あと3日",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "765-961-xr-live-2027",
+    "candidate_ids": [
+     "sched-2026-10-25-765-961-xr-live-2027-締切前",
+     "sched-2026-10-25-765-961-xr-live-2027-締切前-src1"
+    ]
+   },
+   {
+    "slug": "joint-sidem-shinycolors-sparkle-showdown-2027-06",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "当選者の入金期限は10月28日23時59分、あと3日",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "sidem-shinycolors-sparkle-showdown-2027-06",
+    "candidate_ids": [
+     "sched-2026-10-25-sidem-shinycolors-sparkle-showdown-2027-06-締切前"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "tours-s1-play-finale-2026",
+    "reason": "個人の話題",
+    "note": "個人の投稿のみで未確認。単体では記事にしない。"
+   }
+  ],
+  "cross_brand": []
+ }
+}

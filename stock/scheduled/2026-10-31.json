@@ -1118,5 +1118,50 @@
   "src_candidate_id": "sched-2026-10-20-manaka-halloween-pumpkin-recipe-2026-締切",
   "companion_of": "sched-2026-10-31-manaka-pumpkin-recipe-fan-replies-2026-開始",
   "src_dedup_key": "manaka-halloween-pumpkin-recipe-2026"
+ },
+ {
+  "id": "sched-2026-10-31-million-halloween-login-bonus-2026-終了",
+  "dedup_key": "million-halloween-login-bonus-2026",
+  "brand": "million",
+  "subject": "ミリシタ ハロウィンスペシャルログインボーナス 最終日",
+  "kind": "終了",
+  "note": "最終日にログインして500ジュエルの残りを受け取れる",
+  "reserved_on": "2026-10-25",
+  "occurs_on": "2026-10-31",
+  "title": "2026年 ハロウィンスペシャルログインボーナス",
+  "url": "https://x.com/imasml_theater/status/2114009015432729021",
+  "source_type": "公式",
+  "facts": [
+   "『2026年 ハロウィンスペシャルログインボーナス』を2026/10/25（日）から2026/10/31（土）まで開催。",
+   "ログインボーナスでミリオンジュエルを全部で500個受け取れる。",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "deadline": "2026-10-31",
+  "src_candidate_id": "202610250218-grok-9"
+ },
+ {
+  "id": "sched-2026-10-31-october-tourmaline-happy-price-2026-終了",
+  "dedup_key": "october-tourmaline-happy-price-2026",
+  "brand": "million",
+  "subject": "ミリシタ トルマリン Happy Price 終了",
+  "kind": "終了",
+  "note": "当日23:59まで無償ジュエル150個で購入できる最終日",
+  "reserved_on": "2026-10-25",
+  "occurs_on": "2026-10-31",
+  "title": "10月誕生石「トルマリン」Happy Price",
+  "url": "https://x.com/imasml_theater/status/2113873123942580498",
+  "source_type": "公式",
+  "facts": [
+   "10月誕生石「トルマリン」がHappy Priceで登場。",
+   "Happy Price期間は2026/10/31（土）23:59まで。",
+   "Happy Price期間中、「トルマリン・S」「トルマリン・L」を無償ミリオンジュエル150個で購入できる。",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "deadline": "2026-10-31",
+  "src_candidate_id": "202610250218-grok-10"
  }
 ]

@@ -1,0 +1,67 @@
+{
+ "decisions": {
+  "touramasu-idol-predictions-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "個人noteの予想記事で未確認。公式発表ではない"
+  },
+  "765-961-idol-ultimate-2027-ticket": {
+   "action": "article",
+   "angle": "765PRO×961PRO『IDOL ULTIMATE “ONCE AND FOR ALL”』の現地チケット受付は10月28日23時59分まで、締切まであと3日",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(締切前)。XRライブとは別公演で重複しない。新しい事実は無く、締切3日前のトリガーで記事にする"
+  },
+  "yayoi-liner-sighting-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿で未確認。単体では記事にしない"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "765-961-idol-ultimate-2027-ticket",
+    "brand": "765",
+    "rank": "small",
+    "angle": "765PRO×961PRO『IDOL ULTIMATE “ONCE AND FOR ALL”』の現地チケット受付は10月28日23時59分まで、締切まであと3日",
+    "purpose": "期日の知らせ",
+    "lead_score": 60,
+    "dedup_key": "765-961-idol-ultimate-2027-ticket",
+    "candidate_ids": [
+     "202610250218-grok-2",
+     "sched-2026-10-25-765-961-idol-ultimate-2027-ticket-締切前"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "touramasu-idol-predictions-2026",
+    "reason": "出典不足",
+    "note": "個人noteの予想記事で未確認。公式発表ではない"
+   },
+   {
+    "dedup_key": "yayoi-liner-sighting-2026",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿で未確認。単体では記事にしない"
+   }
+  ],
+  "cross_brand": []
+ }
+}

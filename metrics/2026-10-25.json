@@ -1,0 +1,104 @@
+{
+ "collect": [
+  {
+   "at": "2026-10-25T02:18:49+09:00",
+   "edition": "2026-10-25",
+   "watch": {
+    "stats": {
+     "imas-portal": {
+      "found": 0,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-sidem": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-shiny": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-million": {
+      "found": 9,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "lantis-shiny": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "lantis-sidem": {
+      "error": "HTTP Error 503: Service Temporarily Unavailable"
+     },
+     "columbia-imas": {
+      "found": 351,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "bnam-tours": {
+      "found": 69,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "imasnews765": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     }
+    },
+    "new": 0,
+    "facted": 0,
+    "deferred": 0,
+    "blocked": 0
+   },
+   "per_query": {
+    "explore:765as": 0,
+    "explore:cinderella": 1,
+    "explore:million": 0,
+    "explore:shiny": 1,
+    "explore:sidem": 0,
+    "explore:gakuen": 0,
+    "explore:dsva": 0,
+    "explore:joint-other": 0,
+    "explore:trend": 0,
+    "grok:765as": 1,
+    "grok:cinderella": 5,
+    "grok:million": 5,
+    "grok:shiny": 64,
+    "grok:sidem": 12,
+    "grok:gakuen": 8,
+    "grok:dsva": 6,
+    "grok:joint-other": 3,
+    "grok:trend": 22,
+    "grok_searches:million": 9,
+    "grok_searches:shiny": 11,
+    "grok_searches:dsva": 10,
+    "grok_searches:gaku": 5,
+    "grok_searches:sidem": 6,
+    "grok_searches:cg": 7,
+    "grok_searches:joint": 6,
+    "grok_searches:765": 5,
+    "grok_searches:general": 8
+   },
+   "normalized": 129,
+   "added": 115,
+   "verify": {
+    "confirmed": 96,
+    "unconfirmed": 32,
+    "failed": 1
+   },
+   "duration_s": 1091
+  }
+ ]
+}

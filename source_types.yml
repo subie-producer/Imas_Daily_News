@@ -253,6 +253,7 @@ party_paths:
   - item.rakuten.co.jp/f272078-takatsuki        # 高槻市ふるさと納税
 
 party_domains:
+  - tv-tower.co.jp        # 合議で追加: 会社概要で展望台運営会社と確認。コラボ催しの会場側の一次発信
   - kinoco-plus.com       # 合議で追加: 提供曲の作家が運営し、ノスオケCDの制作・発売元
   - fujidou.co.jp         # 合議で追加: A3ライセンス商品の卸・予約受付を行う販売元
   - edith.co.jp           # 合議で追加: コラボ企画運営会社。吾妻6町村・彩のイベントの運営側
@@ -1006,6 +1007,7 @@ x_accounts:
 # tiktok.com/@…、ch.nicovideo.jp/…、manga.nicovideo.jp/comic/… など。ドメイン(プラットフォーム)では
 # 決まらず、そのパスの主体で決まる。合議が足す(classify_sources.add_paths)。
 path_types:
+  note.com/senshu_idol: ファン                    # 合議で追加: 大学のファンサークルが書く考察記事。公式の立場はない
   t.co/oXqVG6t5e5: 公式                         # 機械で追加: 展開先 https://bandainamco-am.co.jp/am/vg/idolmaster-tours/rhythmlivefestival2027/
   docs.google.com/forms/d/e/1FAIpQLSfZVNOhPhPThv8acFBOEkdlxhDAGTNUuYtKUJn7gZZd1CjfWg: 公式 # 合議で追加: リンク元@imas_chは登録済み公式。同じ配信企画のフォーム
   t.co/oPYZEyxHYF: 公式                         # 機械で追加: 展開先 https://idolmaster-official.jp/

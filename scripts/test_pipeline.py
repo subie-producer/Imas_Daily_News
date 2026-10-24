@@ -4458,6 +4458,23 @@ ACTIVE_PROMPTS = ("plan-brand", "plan-rules", "plan-lead", "plan-missing", "writ
                   "site-maintenance.write", "site-maintenance.revise", "site-maintenance.review")
 
 
+def test_site_maintenance_scope_x_posts():
+    """メンテナンスの項目は、素材の url そのものがメンテナンス中の素材だけに当たる。X の投稿の素材は、リンク先がメンテナンス中でも
+    facts をそのまま使い・数える(2026-10-25: 書き手が準公式 X の投稿2件を「confirmed でない」として見送り、315プロNight! の記事が落ちた)。
+    執筆・書き直し・校閲の3つに書いてある"""
+    for role in ("write", "revise", "review"):
+        t = pipelib.maintenance_rules(role)
+        check("x.com / twitter.com の投稿の素材は、投稿のリンク先" in t and "メンテナンス中でも" in t,
+              f"site-maintenance.{role}: X の投稿の素材をリンク先のメンテナンスで使わなくなる読み方を塞いでいない")
+    for role in ("write", "revise"):
+        t = pipelib.maintenance_rules(role)
+        check("素材の url そのものがメンテナンス中の素材だけ" in t and "投稿の url を sources に" in t,
+              f"site-maintenance.{role}: 「その url の素材」の範囲・X の投稿の url を出典に載せることが書かれていない")
+    art = {"slug": "s", "brand": "sidem", "rank": "small", "angle": "a", "candidate_ids": ["c1"]}
+    t = compose.article_prompt("2026-10-25", art, [{"id": "c1", "url": "https://x.com/SideM_lantis/status/1"}], [], None)
+    check("素材の url そのものがメンテナンス中の素材だけ" in t, "執筆の依頼文にメンテナンスの項目の範囲が埋まっていない")
+
+
 def test_prompts_are_instructions_only():
     """依頼文は prompts/ に置き、**指示だけ**を書く(編集長 2026-09-18:「意図みたいなデータはプロンプトじゃない」)。
     規則の理由・経緯・事故の記録は PROMPTS.md に置く。依頼文の本文をコードに埋め戻さない。"""
@@ -16113,6 +16130,7 @@ def main() -> int:
     test_assemble_prompt_shape()
     test_ledger_facts_are_cited(tmp / "lfc")
     test_prompts_are_instructions_only()
+    test_site_maintenance_scope_x_posts()
     test_assemble_judge()
     test_claude_traced(tmp / "ct")
     test_time_budget()

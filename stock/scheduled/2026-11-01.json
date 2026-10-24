@@ -1506,12 +1506,12 @@
   "src_candidate_id": "202610240226-grok-10"
  },
  {
-  "id": "sched-2026-11-01-valiv-situation-voice-october-2026-締切",
+  "id": "sched-2026-11-01-valiv-situation-voice-october-2026-終了",
   "dedup_key": "valiv-situation-voice-october-2026",
   "brand": "dsva",
-  "subject": "vα-liv 10月ボイス BOOTH販売終了",
-  "kind": "締切",
-  "note": "23:59までBOOTHで10月ボイスを購入できる最終日",
+  "subject": "vα-liv 10月シチュエーションボイス BOOTH販売",
+  "kind": "終了",
+  "note": "BOOTHでの販売最終日で、23時59分までに購入できる。",
   "reserved_on": "2026-10-25",
   "occurs_on": "2026-11-01",
   "title": "10月シチュエーションボイスのあらすじ公開",

@@ -100,5 +100,49 @@
    },
    "duration_s": 1091
   }
+ ],
+ "compose": [
+  {
+   "at": "2026-10-25T03:20:30+09:00",
+   "edition": "2026-10-25",
+   "rounds": 5,
+   "approved": true,
+   "lint_green": true,
+   "planned": 36,
+   "written": 26,
+   "roundups": 1,
+   "dropped": 0,
+   "coverage": {
+    "subjects": 102,
+    "covered": 102,
+    "missing": 0,
+    "missing_keys": []
+   },
+   "dropped_by_review": [
+    "shiny-chikusei-collab-2026"
+   ],
+   "stages_min": {
+    "選定": 1.87628892660141,
+    "執筆": 3.5219785451889036,
+    "出典の判定": 0.13392112652460733,
+    "組版": 0.8198951482772827,
+    "校閲": 0.6581098556518554,
+    "校閲1波": 0.6581098556518554
+   },
+   "target_min": 60,
+   "over_target": false,
+   "aborted": [
+    "shiny-85th-anniversary-present-2026",
+    "shiny-song-for-prism-third-anniversary-event-2026",
+    "sidem-315-night-2026-11-cast",
+    "cg-astromeda-popup-akihabara-2026",
+    "cg-topic-012-2026",
+    "gaku-curtain-damashii-new-goods-2026",
+    "cg-cinderella-girls-sapporo-tv-tower-2026",
+    "765-961-idol-ultimate-2027-ticket",
+    "shiny-dark-girly-fashion-goods-2026"
+   ],
+   "duration_s": 1193
+  }
  ]
 }

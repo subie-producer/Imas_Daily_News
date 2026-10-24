@@ -33,5 +33,34 @@
   "event_date": "2026-11-07",
   "deadline": "2026-10-28",
   "src_candidate_id": "202610240226-grok-96"
+ },
+ {
+  "id": "sched-2026-11-03-shirube-final-venue-merch-ticket-2026-結果",
+  "dedup_key": "shirube-final-venue-merch-ticket-2026",
+  "brand": "gaku",
+  "subject": "学マス「標」ファイナル物販整理券 当落発表",
+  "kind": "結果",
+  "note": "13時から物販整理券の当落を確認できる。",
+  "reserved_on": "2026-10-25",
+  "occurs_on": "2026-11-03",
+  "title": "LIVE TOUR -標- ファイナル会場物販整理券受付",
+  "url": "https://x.com/gkmas_official/status/2113481775896998035",
+  "source_type": "公式",
+  "facts": [
+   "学園アイドルマスター LIVE TOUR -標- ファイナル公演は11月7日(土)・8日(日)にKアリーナ横浜で開催予定。",
+   "本公演で会場物販を実施する。",
+   "整理券受付期間: 2026年10月23日(金)13:00～10月28日(水)23:59",
+   "当落発表: 2026年11月3日(火・祝)13:00～",
+   "物販日時: 2026年11月7日(土) 10:00～17:00",
+   "物販日時: 2026年11月8日(日) 10:00～17:00",
+   "整理券申込先: https://asobiticket2.asobistore.jp/receptions/c46aa4c6-9e9f-46b8-ba12-1d536ec1d101",
+   "リンク: https://asobiticket2.asobistore.jp/receptions/c46aa4c6-9e9f-46b8-ba12-1d536ec1d101",
+   "エンゲージメント: 高"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "event_date": "2026-11-07",
+  "deadline": "2026-10-28",
+  "src_candidate_id": "202610250218-grok-98"
  }
 ]

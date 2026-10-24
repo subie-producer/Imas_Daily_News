@@ -225,6 +225,7 @@ performer_domains:
 # --- ファン: ファン・サークル活動等の**当事者発信** ---
 # 自分の営みを自分で発信しているもの。他所の発表を写しているものは 二次情報 へ。
 fan_domains:
+  - crow-diary.com        # 合議で追加: 「本ブログについて」で個人カラスの雑記ブログと明記。個人に紐づく発信
   - vtuber-matomeruyon.blog.jp # 合議で追加: about.htmlは管理人のみ・法人名なし。個人なので内容によらずファン
   - nagarestar.booth.pm   # 合議で追加: 個人名義の BOOTH 店。運営者情報なし、個人に紐づくのでファン
   - painful-cycle-jersey.info # 合議で追加: 個人管理人のブログ。FICE等の公式告知を紹介する記事が中心
@@ -252,6 +253,7 @@ party_paths:
   - item.rakuten.co.jp/f272078-takatsuki        # 高槻市ふるさと納税
 
 party_domains:
+  - tv-tower.co.jp        # 合議で追加: 会社概要で展望台運営会社と確認。コラボ催しの会場側の一次発信
   - kinoco-plus.com       # 合議で追加: 提供曲の作家が運営し、ノスオケCDの制作・発売元
   - fujidou.co.jp         # 合議で追加: A3ライセンス商品の卸・予約受付を行う販売元
   - edith.co.jp           # 合議で追加: コラボ企画運営会社。吾妻6町村・彩のイベントの運営側
@@ -615,6 +617,21 @@ x_accounts:
     - imasnews765
     - zutapoke
   ファン:
+    - yoyoyo_masp         # 合議で追加: 個人の灯里愛夏バースデーライブ関連の再生数報告
+    - uooooaaaan          # 合議で追加: 個人のSideM作品に関するファン感想の投稿
+    - syun8679            # 合議で追加: 個人のシャニマスコラボ来訪報告
+    - subtract_dragon     # 合議で追加: 個人のファン漫画の投稿(創作)
+    - p_seika373          # 合議で追加: 個人のSideMに対するファン反応の投稿
+    - mr_2nd_rm           # 合議で追加: 個人名義の入場規制情報の共有。公式告知の転載程度
+    - makachiya119085     # 合議で追加: 個人の学マスのミニキャライラスト投稿(創作)
+    - lunarveil           # 合議で追加: 個人・サークルによるシャニマス楽曲のカバー公開(創作)
+    - isotis_1216         # 合議で追加: 個人の店舗訪問報告。店は当事者でも発信者は個人
+    - icicleblue_moon     # 合議で追加: 個人のツアマス遊び納め・感想の投稿
+    - haruusa52ML         # 合議で追加: 個人の765プロ関連楽曲一覧メモの投稿
+    - akatsuki_mmd        # 合議で追加: 個人名義。プレイリストへの歌唱メンバー注記は個人の発信
+    - Sirasu16            # 合議で追加: 個人のファン絵チャ会の告知・参加の発信
+    - SHION_AFCh          # 合議で追加: 個人の目撃報告。やよいライナーとの遭遇を投稿
+    - LJppbZfcezXF8mP     # 合議で追加: はてなブログの一人称の個人記事。「今年も調べました」の個人発信
     - taki_niconico       # 合議で追加: 個人によるデレステMVの動画投稿
     - s_tyunp_im          # 合議で追加: 個人による踊ってみた動画への反応投稿
     - momotiraori         # 合議で追加: 個人によるSideMコラボ店舗への訪問投稿
@@ -1005,6 +1022,7 @@ x_accounts:
 # tiktok.com/@…、ch.nicovideo.jp/…、manga.nicovideo.jp/comic/… など。ドメイン(プラットフォーム)では
 # 決まらず、そのパスの主体で決まる。合議が足す(classify_sources.add_paths)。
 path_types:
+  note.com/senshu_idol: ファン                    # 合議で追加: 大学のファンサークルが書く考察記事。公式の立場はない
   t.co/oXqVG6t5e5: 公式                         # 機械で追加: 展開先 https://bandainamco-am.co.jp/am/vg/idolmaster-tours/rhythmlivefestival2027/
   docs.google.com/forms/d/e/1FAIpQLSfZVNOhPhPThv8acFBOEkdlxhDAGTNUuYtKUJn7gZZd1CjfWg: 公式 # 合議で追加: リンク元@imas_chは登録済み公式。同じ配信企画のフォーム
   t.co/oPYZEyxHYF: 公式                         # 機械で追加: 展開先 https://idolmaster-official.jp/

@@ -1,0 +1,26 @@
+{
+ "decisions": {
+  "dsva-manaka-birthday-online-live-2026-platform-change": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "重複",
+   "note": "配信先変更・価格・日程は10/24の既報。唯一の新事実の関裕美のゲスト決定は、dsva面の記事が既に扱う。"
+  }
+ },
+ "plan": {
+  "articles": [],
+  "dropped": [
+   {
+    "dedup_key": "dsva-manaka-birthday-online-live-2026-platform-change",
+    "reason": "重複",
+    "note": "配信先変更・価格・日程は10/24の既報。唯一の新事実の関裕美のゲスト決定は、dsva面の記事が既に扱う。"
+   }
+  ],
+  "cross_brand": []
+ }
+}

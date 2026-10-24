@@ -1,0 +1,229 @@
+{
+ "decisions": {
+  "million-platinum-star-tiara-happy-pease-2026": {
+   "action": "article",
+   "angle": "「ハピピス♡」は本日20:59が最終。めちゃカワ弁当の4倍・10倍消費、イベントショップ、報酬SRを使えるのは今日まで",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 50,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同イベントの他3主題を統合"
+  },
+  "million-platinum-star-tiara-hapipisu-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-platinum-star-tiara-happy-pease-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "終了日の続報予約"
+  },
+  "platinum-star-tiara-hapipisu-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-platinum-star-tiara-happy-pease-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "美奈子・エレナのコメント。同イベントなので統合"
+  },
+  "million-hapipisu-event-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-platinum-star-tiara-happy-pease-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "終了日の続報予約"
+  },
+  "million-radio-playlist-otayori-2026": {
+   "action": "article",
+   "angle": "「ラジオ#プレイリスト」のお便り募集は本日23:59が最終締切",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "読者の行動(お便り投稿)が別なので単独"
+  },
+  "matsuri-true-ending-reward-design-2026": {
+   "action": "article",
+   "angle": "徳川まつりのTrue Ending達成報酬「称号」「BG GrafiX」のシルエットを近日解除し、True Endingイラストのデザインに変更する",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "million-halloween-login-bonus-2026": {
+   "action": "article",
+   "angle": "「ハロウィンスペシャルログインボーナス」が本日から10月31日まで開催、ミリオンジュエル計500個",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ログボ単体。roundup は3件未満のため通常記事"
+  },
+  "october-tourmaline-happy-price-2026": {
+   "action": "article",
+   "angle": "10月誕生石「トルマリン」が10月31日23:59まで、無償ミリオンジュエル150個のHappy Priceで購入できる",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "roundup は3件未満のため通常記事"
+  },
+  "million-ibuki-tsubasa-animation-figure-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/24「伊吹翼のミリアニ記念フィギュア予約開始」と同じ商品。二次情報のみ"
+  },
+  "million-harleyquin-idol-grand-prix-pv-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/23記事と同内容。公開は26日で当日のトリガーなし"
+  },
+  "fan-765-song-list-memo-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿、未確認"
+  },
+  "million-anniversary-playlist-vocal-member-notes-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人運営のSpotifyプレイリスト、未確認"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "million-matsuri-true-ending-reward-design-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "徳川まつりのTrue Ending達成報酬「称号」「BG GrafiX」のシルエットを近日解除し、True Endingイラストのデザインに変更する",
+    "purpose": "新情報",
+    "lead_score": 25,
+    "dedup_key": "matsuri-true-ending-reward-design-2026",
+    "candidate_ids": [
+     "202610250218-grok-8"
+    ]
+   },
+   {
+    "slug": "million-halloween-login-bonus-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "「ハロウィンスペシャルログインボーナス」が本日から10月31日まで開催、ミリオンジュエル計500個",
+    "purpose": "新情報",
+    "lead_score": 25,
+    "dedup_key": "million-halloween-login-bonus-2026",
+    "candidate_ids": [
+     "202610250218-grok-9"
+    ]
+   },
+   {
+    "slug": "million-october-tourmaline-happy-price-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "10月誕生石「トルマリン」が10月31日23:59まで、無償ミリオンジュエル150個のHappy Priceで購入できる",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "october-tourmaline-happy-price-2026",
+    "candidate_ids": [
+     "202610250218-grok-10"
+    ]
+   },
+   {
+    "slug": "million-platinum-star-tiara-happy-pease-2026",
+    "brand": "million",
+    "rank": "medium",
+    "angle": "「ハピピス♡」は本日20:59が最終。めちゃカワ弁当の4倍・10倍消費、イベントショップ、報酬SRを使えるのは今日まで",
+    "purpose": "期日の知らせ",
+    "lead_score": 50,
+    "dedup_key": "million-platinum-star-tiara-happy-pease-2026",
+    "candidate_ids": [
+     "sched-2026-10-25-million-platinum-star-tiara-happy-pease-2026-終了",
+     "sched-2026-10-25-million-platinum-star-tiara-happy-pease-2026-終了-src1",
+     "sched-2026-10-25-million-platinum-star-tiara-happy-pease-2026-終了-src2",
+     "202610250218-grok-11",
+     "sched-2026-10-25-million-platinum-star-tiara-hapipisu-2026-終了",
+     "sched-2026-10-25-million-hapipisu-event-2026-終了",
+     "sched-2026-10-25-million-hapipisu-event-2026-終了-src1"
+    ]
+   },
+   {
+    "slug": "million-radio-playlist-otayori-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "「ラジオ#プレイリスト」のお便り募集は本日23:59が最終締切",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "million-radio-playlist-otayori-2026",
+    "candidate_ids": [
+     "sched-2026-10-25-million-radio-playlist-otayori-2026-締切"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "million-ibuki-tsubasa-animation-figure-2026",
+    "reason": "既報",
+    "note": "10/24「伊吹翼のミリアニ記念フィギュア予約開始」と同じ商品。二次情報のみ"
+   },
+   {
+    "dedup_key": "fan-765-song-list-memo-2026",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿、未確認"
+   },
+   {
+    "dedup_key": "million-harleyquin-idol-grand-prix-pv-2026",
+    "reason": "既報",
+    "note": "10/23記事と同内容。公開は26日で当日のトリガーなし"
+   },
+   {
+    "dedup_key": "million-anniversary-playlist-vocal-member-notes-2026",
+    "reason": "個人の話題",
+    "note": "個人運営のSpotifyプレイリスト、未確認"
+   }
+  ],
+  "cross_brand": []
+ }
+}

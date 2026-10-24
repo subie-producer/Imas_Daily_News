@@ -1,0 +1,50 @@
+{
+ "decisions": {
+  "gakumas-mini-character-fanart-2026-10-25": {
+   "action": "article",
+   "angle": "学園アイドルマスターのミニキャラのファンイラストが投稿された、ファン創作の話題",
+   "purpose": "新情報",
+   "rank": "culture",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ファン創作はculture。個人投稿単体にならないよう他のファン創作と1本にまとめる"
+  },
+  "portal-security-maintenance-2026-10": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/24号『アイマスポータル、NEWS先行ポストを削除』と同内容。新事実も当日のトリガーも無い"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "general-gakumas-mini-character-fanart-2026-10-25",
+    "brand": "general",
+    "rank": "culture",
+    "angle": "学園アイドルマスターのミニキャラのファンイラストが投稿された、ファン創作の話題",
+    "purpose": "新情報",
+    "lead_score": 0,
+    "dedup_key": "gakumas-mini-character-fanart-2026-10-25",
+    "candidate_ids": [
+     "202610250218-grok-100"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "portal-security-maintenance-2026-10",
+    "reason": "既報",
+    "note": "10/24号『アイマスポータル、NEWS先行ポストを削除』と同内容。新事実も当日のトリガーも無い"
+   }
+  ],
+  "cross_brand": []
+ }
+}

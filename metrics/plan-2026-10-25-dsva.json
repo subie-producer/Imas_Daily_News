@@ -1,0 +1,172 @@
+{
+ "decisions": {
+  "tomori-birthday-live-platform-change-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/24号「配信先をZ-aNに変更」で記事化済み。スペシャルゲスト以外の事実は既報"
+  },
+  "manaka-birthday-live-special-guest-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "va-liv-manaka-birthday-live-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "10/24号は「coming soon」。関裕美決定は新事実として同じ公演の締切前記事に統合"
+  },
+  "valiv-situation-voice-2026-10": {
+   "action": "article",
+   "angle": "10月シチュエーションボイスのあらすじと、三姉妹それぞれの役柄が公開された",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "10/11号に価格・期間・役割あり。あらすじ詳細と各人の人物像が新規。販売は11/1まで"
+  },
+  "cosmo-ui-dance-post-festival-2026": {
+   "action": "article",
+   "angle": "上水流宇宙としぐれういが『ヴヴヴ』を踊った動画を公開し、10月24日から毎日のダンス投稿祭りが始まる",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公式Xの告知。YouTubeショートあり"
+  },
+  "valiv-fan-drawing-chat-2026-10": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "同人・ファン主催",
+   "note": "ファン主催の絵チャ会。未確認の個人投稿"
+  },
+  "cosmo-kizuna-ai-monster-factory-dance-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/22号と10/23号の宇宙×キズナアイのショート記事で既報。新事実なし"
+  },
+  "valiv-qonnect-ticket-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/24号のQonnect記事と東京公演記事で既報。締切11/15は3日以内でない"
+  },
+  "manaka-live-video-views-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人の再生数メモ。未確認で単体記事にならない"
+  },
+  "va-liv-manaka-birthday-live-2026": {
+   "action": "article",
+   "angle": "愛夏延期公演の現地LVチケット受付は10月28日18時までであと3日。スペシャルゲストは関裕美に決定した",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(締切前)。LV受付の期日と、特別ゲスト決定の新情報を同記事に統合"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "dsva-valiv-situation-voice-2026-10",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "10月シチュエーションボイスのあらすじと、三姉妹それぞれの役柄が公開された",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "valiv-situation-voice-2026-10",
+    "candidate_ids": [
+     "202610250218-grok-104"
+    ]
+   },
+   {
+    "slug": "dsva-cosmo-ui-dance-post-festival-2026",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "上水流宇宙としぐれういが『ヴヴヴ』を踊った動画を公開し、10月24日から毎日のダンス投稿祭りが始まる",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "cosmo-ui-dance-post-festival-2026",
+    "candidate_ids": [
+     "202610250218-grok-105"
+    ]
+   },
+   {
+    "slug": "dsva-va-liv-manaka-birthday-live-2026",
+    "brand": "dsva",
+    "rank": "medium",
+    "angle": "愛夏延期公演の現地LVチケット受付は10月28日18時までであと3日。スペシャルゲストは関裕美に決定した",
+    "purpose": "期日の知らせ",
+    "lead_score": 60,
+    "dedup_key": "va-liv-manaka-birthday-live-2026",
+    "candidate_ids": [
+     "sched-2026-10-25-va-liv-manaka-birthday-live-2026-締切前",
+     "202610250218-grok-103"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "tomori-birthday-live-platform-change-2026",
+    "reason": "既報",
+    "note": "10/24号「配信先をZ-aNに変更」で記事化済み。スペシャルゲスト以外の事実は既報"
+   },
+   {
+    "dedup_key": "valiv-fan-drawing-chat-2026-10",
+    "reason": "同人・ファン主催",
+    "note": "ファン主催の絵チャ会。未確認の個人投稿"
+   },
+   {
+    "dedup_key": "cosmo-kizuna-ai-monster-factory-dance-2026",
+    "reason": "既報",
+    "note": "10/22号と10/23号の宇宙×キズナアイのショート記事で既報。新事実なし"
+   },
+   {
+    "dedup_key": "valiv-qonnect-ticket-2026",
+    "reason": "既報",
+    "note": "10/24号のQonnect記事と東京公演記事で既報。締切11/15は3日以内でない"
+   },
+   {
+    "dedup_key": "manaka-live-video-views-2026",
+    "reason": "個人の話題",
+    "note": "個人の再生数メモ。未確認で単体記事にならない"
+   }
+  ],
+  "cross_brand": []
+ }
+}

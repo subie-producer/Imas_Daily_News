@@ -1,0 +1,241 @@
+{
+ "decisions": {
+  "cinderella-15th-orchestra-concert": {
+   "action": "article",
+   "angle": "シンデレラ15周年オケコンのアソビストアプレミアム会員2次先行(抽選)は本日23時59分が最終日、当落は11月7日",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ2次先行の別主題 cg-orchestra-premium-second-lottery-2026 を統合"
+  },
+  "cg-orchestra-premium-second-lottery-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cinderella-15th-orchestra-concert",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ2次先行の締切"
+  },
+  "cg-astromeda-popup-akihabara-2026": {
+   "action": "article",
+   "angle": "デレマス×AstromedaのPOPUPがアニメイト秋葉原2号館で11月1日まで。モバイルバッテリーとマウスパッド、15名のアイドル",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "cinderella-astromeda-popup-akihabara-2026 を統合。住所表記は二次情報間で差異あり"
+  },
+  "cinderella-astromeda-popup-akihabara-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-astromeda-popup-akihabara-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じPOPUPストア"
+  },
+  "cg-cinderella-party-10th-cd-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/24号が放送日・CD仕様・予約期限まで掲載済み。新事実なし、放送は28日で当日トリガーなし"
+  },
+  "cinderella-girls-sapporo-tv-tower-2026": {
+   "action": "article",
+   "angle": "さっぽろテレビ塔で11月3日までコラボ開催。展望台付きコラボチケットは2,000円でレプリカチケット全7種ランダム、札幌限定グッズも",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "事前・WEB販売なし、現地特設会場のみ"
+  },
+  "cg-popntoybox-revival-general-lottery-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/24号で11月1日まで掲載済み。新事実なく締切も7日先"
+  },
+  "fan-cosmic-symphony-cheering-ad-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "同人・ファン主催",
+   "note": "ファン主催の応援広告クラウドファンディング"
+  },
+  "fan-sweet-melty-whip-osaka-queue-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿のみ。大阪会場の開幕は10/23号で既報"
+  },
+  "fan-comic-manaka-birthday-seki-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "同人・ファン主催",
+   "note": "ファン漫画。culture は general 面のみ"
+  },
+  "cg-sakuma-mayu-necklace-bound-to-you": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/22号で仕様・価格・予約期間まで既報。新事実も当日トリガーも無い(締切は11月30日)"
+  },
+  "cg-sakuma-mayu-necklace-bound-to-you-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "同じネックレスの予約開始で、10/22号で既報。新事実なし"
+  },
+  "topic-012-2026": {
+   "action": "article",
+   "angle": "レース着物ver.マルチデスクマット全10種(各3,960円)の再販受注は本日が締切",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約。AMNIBUS公式通販の受注"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "cg-astromeda-popup-akihabara-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "デレマス×AstromedaのPOPUPがアニメイト秋葉原2号館で11月1日まで。モバイルバッテリーとマウスパッド、15名のアイドル",
+    "purpose": "新情報",
+    "lead_score": 25,
+    "dedup_key": "cg-astromeda-popup-akihabara-2026",
+    "candidate_ids": [
+     "202610240731-explore-0",
+     "202610241231-explore-14",
+     "202610241231-explore-0"
+    ]
+   },
+   {
+    "slug": "cg-cinderella-girls-sapporo-tv-tower-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "さっぽろテレビ塔で11月3日までコラボ開催。展望台付きコラボチケットは2,000円でレプリカチケット全7種ランダム、札幌限定グッズも",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "cinderella-girls-sapporo-tv-tower-2026",
+    "candidate_ids": [
+     "202610242332-explore-6"
+    ]
+   },
+   {
+    "slug": "cg-topic-012-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "レース着物ver.マルチデスクマット全10種(各3,960円)の再販受注は本日が締切",
+    "purpose": "期日の知らせ",
+    "lead_score": 15,
+    "dedup_key": "topic-012-2026",
+    "candidate_ids": [
+     "sched-2026-10-25-topic-012-2026-締切"
+    ]
+   },
+   {
+    "slug": "cg-cinderella-15th-orchestra-concert",
+    "brand": "cg",
+    "rank": "medium",
+    "angle": "シンデレラ15周年オケコンのアソビストアプレミアム会員2次先行(抽選)は本日23時59分が最終日、当落は11月7日",
+    "purpose": "期日の知らせ",
+    "lead_score": 60,
+    "dedup_key": "cinderella-15th-orchestra-concert",
+    "candidate_ids": [
+     "sched-2026-10-25-cinderella-15th-orchestra-concert-締切",
+     "202610250218-grok-4",
+     "sched-2026-10-25-cg-orchestra-premium-second-lottery-2026-締切"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "cg-cinderella-party-10th-cd-2026",
+    "reason": "既報",
+    "note": "10/24号が放送日・CD仕様・予約期限まで掲載済み。新事実なし、放送は28日で当日トリガーなし"
+   },
+   {
+    "dedup_key": "cg-popntoybox-revival-general-lottery-2026",
+    "reason": "既報",
+    "note": "10/24号で11月1日まで掲載済み。新事実なく締切も7日先"
+   },
+   {
+    "dedup_key": "fan-cosmic-symphony-cheering-ad-2026",
+    "reason": "同人・ファン主催",
+    "note": "ファン主催の応援広告クラウドファンディング"
+   },
+   {
+    "dedup_key": "fan-sweet-melty-whip-osaka-queue-2026",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿のみ。大阪会場の開幕は10/23号で既報"
+   },
+   {
+    "dedup_key": "fan-comic-manaka-birthday-seki-2026",
+    "reason": "同人・ファン主催",
+    "note": "ファン漫画。culture は general 面のみ"
+   },
+   {
+    "dedup_key": "cg-sakuma-mayu-necklace-bound-to-you",
+    "reason": "既報",
+    "note": "10/22号で仕様・価格・予約期間まで既報。新事実も当日トリガーも無い(締切は11月30日)"
+   },
+   {
+    "dedup_key": "cg-sakuma-mayu-necklace-bound-to-you-2026",
+    "reason": "既報",
+    "note": "同じネックレスの予約開始で、10/22号で既報。新事実なし"
+   }
+  ],
+  "cross_brand": []
+ }
+}

@@ -1,0 +1,229 @@
+{
+ "decisions": {
+  "kotone-ameagari-no-iris-figure": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/18号の「藤田ことねの1/7フィギュア、22,000円で予約中」と同じ商品。新事実・当日のトリガー無し"
+  },
+  "curtain-damashii-new-goods-2026": {
+   "action": "article",
+   "angle": "カーテン魂から学マス新作グッズ全4種(クッションカバー・特大アクスタ・タペストリー・Tシャツ)が2027年2月発売予定で、予約は11月15日23時59分まで",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "roar-jouo-sena-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/24号でショート動画公開を記事化済み"
+  },
+  "hatsuboshi-radio-guests-20261028": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/22号で28日回ゲストと同じYouTubeリンクのアーカイブを記事化済み。新事実なし"
+  },
+  "agitato-mv-two-million-views": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/24号で200万再生突破を記事化済み"
+  },
+  "yorunite-mv-one-million-views": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/24号で100万再生突破を記事化済み"
+  },
+  "gaku-shirube-final-merch-2026": {
+   "action": "article",
+   "angle": "「標」ファイナル(11/7・8 Kアリーナ横浜)の会場物販整理券の受付は10月28日23時59分まで、締切まであと3日",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "hiro-another-idol-guaranteed-gasha-2026": {
+   "action": "article",
+   "angle": "篠澤広のアナザーアイドル確定無料1連ガシャは本日10時59分まで",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "manaka-birthday-live-guest-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "学マスの話題ではなく、声優個人のバースデーライブ。関裕美はゲスト出演で他ブランド"
+  },
+  "gaku-ichiban-kuji-part7-illustration-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/21号「一番くじPart7、12月12日発売」と同じ内容。新事実・当日のトリガー無し"
+  },
+  "gakumas-hedgehog-hot-water-bottle-2026": {
+   "action": "article",
+   "angle": "秦谷美鈴・月村手毬のハリネズミゆたんぽとアクスタのアソビストア受注は本日10月25日が最終日",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "misuzu-temari-goods-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gakumas-hedgehog-hot-water-bottle-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ受注・同じ締切"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "gaku-curtain-damashii-new-goods-2026",
+    "brand": "gaku",
+    "rank": "medium",
+    "angle": "カーテン魂から学マス新作グッズ全4種(クッションカバー・特大アクスタ・タペストリー・Tシャツ)が2027年2月発売予定で、予約は11月15日23時59分まで",
+    "purpose": "新情報",
+    "lead_score": 30,
+    "dedup_key": "curtain-damashii-new-goods-2026",
+    "candidate_ids": [
+     "202610241231-explore-11"
+    ]
+   },
+   {
+    "slug": "gaku-shirube-final-merch-2026",
+    "brand": "gaku",
+    "rank": "medium",
+    "angle": "「標」ファイナル(11/7・8 Kアリーナ横浜)の会場物販整理券の受付は10月28日23時59分まで、締切まであと3日",
+    "purpose": "期日の知らせ",
+    "lead_score": 60,
+    "dedup_key": "gaku-shirube-final-merch-2026",
+    "candidate_ids": [
+     "202610250218-grok-98",
+     "sched-2026-10-25-gaku-shirube-final-merch-2026-締切前"
+    ]
+   },
+   {
+    "slug": "gaku-hiro-another-idol-guaranteed-gasha-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "篠澤広のアナザーアイドル確定無料1連ガシャは本日10時59分まで",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "hiro-another-idol-guaranteed-gasha-2026",
+    "candidate_ids": [
+     "202610250218-grok-99",
+     "sched-2026-10-25-hiro-another-idol-guaranteed-gasha-2026-終了"
+    ]
+   },
+   {
+    "slug": "gaku-gakumas-hedgehog-hot-water-bottle-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "秦谷美鈴・月村手毬のハリネズミゆたんぽとアクスタのアソビストア受注は本日10月25日が最終日",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "gakumas-hedgehog-hot-water-bottle-2026",
+    "candidate_ids": [
+     "sched-2026-10-25-gakumas-hedgehog-hot-water-bottle-2026-締切",
+     "sched-2026-10-25-misuzu-temari-goods-2026-締切"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "kotone-ameagari-no-iris-figure",
+    "reason": "既報",
+    "note": "10/18号の「藤田ことねの1/7フィギュア、22,000円で予約中」と同じ商品。新事実・当日のトリガー無し"
+   },
+   {
+    "dedup_key": "roar-jouo-sena-2026",
+    "reason": "既報",
+    "note": "10/24号でショート動画公開を記事化済み"
+   },
+   {
+    "dedup_key": "hatsuboshi-radio-guests-20261028",
+    "reason": "既報",
+    "note": "10/22号で28日回ゲストと同じYouTubeリンクのアーカイブを記事化済み。新事実なし"
+   },
+   {
+    "dedup_key": "agitato-mv-two-million-views",
+    "reason": "既報",
+    "note": "10/24号で200万再生突破を記事化済み"
+   },
+   {
+    "dedup_key": "yorunite-mv-one-million-views",
+    "reason": "既報",
+    "note": "10/24号で100万再生突破を記事化済み"
+   },
+   {
+    "dedup_key": "manaka-birthday-live-guest-2026",
+    "reason": "面違い",
+    "note": "学マスの話題ではなく、声優個人のバースデーライブ。関裕美はゲスト出演で他ブランド"
+   },
+   {
+    "dedup_key": "gaku-ichiban-kuji-part7-illustration-2026",
+    "reason": "既報",
+    "note": "10/21号「一番くじPart7、12月12日発売」と同じ内容。新事実・当日のトリガー無し"
+   }
+  ],
+  "cross_brand": []
+ }
+}

@@ -49,5 +49,36 @@
   "candidate_ids": [
    "202610241231-explore-11"
   ]
+ },
+ "cg-cinderella-girls-sapporo-tv-tower-2026": {
+  "title": "シンデレラガールズ、札幌テレビ塔コラボ開催中",
+  "stage": "書き直しで見送り",
+  "why": "SOURCE_MISMATCH I1の指摘どおり、素材にある出典はさっぽろテレビ塔の当事者ページのみで、シンデレラガールズ側の公式・準公式告知や、公式発表を報じた報道を確認できないため、記事を取り下げます。",
+  "candidate_ids": [
+   "202610242332-explore-6"
+  ]
+ },
+ "765-961-idol-ultimate-2027-ticket": {
+  "title": "765PRO×961PROライブ、現地券締切まであと3日",
+  "stage": "書き直しで見送り",
+  "why": "OTHER 校閲指摘I1により、同一公演・同一受付を扱う重複記事として本記事を削除します。",
+  "candidate_ids": [
+   "202610250218-grok-2",
+   "sched-2026-10-25-765-961-idol-ultimate-2027-ticket-締切前"
+  ],
+  "settled": {
+   "rule": "P1",
+   "dup_of": [
+    "joint-765-961-xr-live-2027"
+   ]
+  }
+ },
+ "shiny-dark-girly-fashion-goods-2026": {
+  "title": "Fujidou案内のシャニマス商品、11月4日受注締切",
+  "stage": "書き直しで見送り",
+  "why": "NO_PRIMARY_SOURCE 指定された指摘に応じて一次情報または公式発表を報じた報道を確認しましたが、確認できたのはFujidouの卸売案内とJ-Hobby Collectionの二次情報でした。公式・準公式の発表、またはそれを報じた報道を確認できず、記事を成立させられません。",
+  "candidate_ids": [
+   "202610230227-grok-19"
+  ]
  }
 }

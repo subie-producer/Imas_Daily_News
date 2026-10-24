@@ -25,6 +25,4 @@ lede_fact_ids:
 - F1
 - F2
 ---
-動画は[YouTube Shortsで視聴できる](https://www.youtube.com/shorts/whclRjmbFso)。 <!-- F4 F5 -->
-
 宇宙は今回の衣装について、現地でライブを見て感銘を受けた衣装をリクエストしたと投稿した。 <!-- F3 -->

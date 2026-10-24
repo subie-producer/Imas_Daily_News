@@ -235,12 +235,12 @@
   "src_dedup_key": "sidem-seibuen-retro-rose-party-2026"
  },
  {
-  "id": "sched-2026-11-22-shiny-tokyo-jiyukei-my-time-event-merch-2026-発売",
+  "id": "sched-2026-11-22-shiny-tokyo-jiyukei-my-time-event-merch-2026-開幕",
   "dedup_key": "shiny-tokyo-jiyukei-my-time-event-merch-2026",
   "brand": "shiny",
-  "subject": "シャニソン発売記念イベント 11/22公演の会場物販",
-  "kind": "発売",
-  "note": "12:30から会場で発売記念グッズや「KAMISABI」を購入できる",
+  "subject": "シャニソン発売記念イベント 11/22公演 会場物販",
+  "kind": "開幕",
+  "note": "12:30から会場物販スペースで発売記念グッズやKAMISABIを購入できる",
   "reserved_on": "2026-10-25",
   "occurs_on": "2026-11-22",
   "title": "「Tokyo自由系*ガール / My time」発売記念イベント会場物販",
@@ -276,12 +276,12 @@
   "src_candidate_id": "202610240731-explore-9"
  },
  {
-  "id": "sched-2026-11-22-shiny-tokyo-jiyukei-my-time-event-merch-2026-発売-src1",
+  "id": "sched-2026-11-22-shiny-tokyo-jiyukei-my-time-event-merch-2026-開幕-src1",
   "dedup_key": "shiny-tokyo-jiyukei-my-time-event-merch-2026",
   "brand": "shiny",
-  "subject": "シャニソン発売記念イベント 11/22公演の会場物販",
-  "kind": "発売",
-  "note": "12:30から会場で発売記念グッズや「KAMISABI」を購入できる",
+  "subject": "シャニソン発売記念イベント 11/22公演 会場物販",
+  "kind": "開幕",
+  "note": "12:30から会場物販スペースで発売記念グッズやKAMISABIを購入できる",
   "reserved_on": "2026-10-25",
   "occurs_on": "2026-11-22",
   "title": "「ボーダーレス・ノンストレス / Oh Yeah!!」発売記念イベント会場物販",
@@ -315,16 +315,16 @@
   "verify": "confirmed",
   "event_date": "2026-11-14",
   "src_candidate_id": "202610240731-explore-7",
-  "companion_of": "sched-2026-11-22-shiny-tokyo-jiyukei-my-time-event-merch-2026-発売",
+  "companion_of": "sched-2026-11-22-shiny-tokyo-jiyukei-my-time-event-merch-2026-開幕",
   "src_dedup_key": "shiny-borderless-oh-yeah-event-merch-2026"
  },
  {
-  "id": "sched-2026-11-22-shiny-tokyo-jiyukei-my-time-event-merch-2026-発売-src2",
+  "id": "sched-2026-11-22-shiny-tokyo-jiyukei-my-time-event-merch-2026-開幕-src2",
   "dedup_key": "shiny-tokyo-jiyukei-my-time-event-merch-2026",
   "brand": "shiny",
-  "subject": "シャニソン発売記念イベント 11/22公演の会場物販",
-  "kind": "発売",
-  "note": "12:30から会場で発売記念グッズや「KAMISABI」を購入できる",
+  "subject": "シャニソン発売記念イベント 11/22公演 会場物販",
+  "kind": "開幕",
+  "note": "12:30から会場物販スペースで発売記念グッズやKAMISABIを購入できる",
   "reserved_on": "2026-10-25",
   "occurs_on": "2026-11-22",
   "title": "「Ring Ring Ringの魔法 / 街角メランコリー」発売記念イベント会場物販",
@@ -358,7 +358,7 @@
   "verify": "confirmed",
   "event_date": "2026-11-21",
   "src_candidate_id": "202610240731-explore-8",
-  "companion_of": "sched-2026-11-22-shiny-tokyo-jiyukei-my-time-event-merch-2026-発売",
+  "companion_of": "sched-2026-11-22-shiny-tokyo-jiyukei-my-time-event-merch-2026-開幕",
   "src_dedup_key": "shiny-ring-ring-ring-event-merch-2026"
  }
 ]

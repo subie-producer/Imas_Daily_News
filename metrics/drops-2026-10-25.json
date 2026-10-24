@@ -80,5 +80,14 @@
   "candidate_ids": [
    "202610230227-grok-19"
   ]
+ },
+ "shiny-chikusei-collab-2026": {
+  "title": "筑西市×シャニマス、コラボは本日まで",
+  "stage": "校閲ブロック",
+  "why": "R3 本文の根拠 F19〜F26 は素材 sched-…-終了-src1 から来ているが、その url(https://ibatoco.jp/news/chikusei-shinycolors-collab-2026/)が sources に無い",
+  "candidate_ids": [
+   "sched-2026-10-25-shiny-chikusei-collab-2026-終了",
+   "sched-2026-10-25-shiny-chikusei-collab-2026-終了-src1"
+  ]
  }
 }

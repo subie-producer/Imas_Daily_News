@@ -225,6 +225,7 @@ performer_domains:
 # --- ファン: ファン・サークル活動等の**当事者発信** ---
 # 自分の営みを自分で発信しているもの。他所の発表を写しているものは 二次情報 へ。
 fan_domains:
+  - crow-diary.com        # 合議で追加: 「本ブログについて」で個人カラスの雑記ブログと明記。個人に紐づく発信
   - vtuber-matomeruyon.blog.jp # 合議で追加: about.htmlは管理人のみ・法人名なし。個人なので内容によらずファン
   - nagarestar.booth.pm   # 合議で追加: 個人名義の BOOTH 店。運営者情報なし、個人に紐づくのでファン
   - painful-cycle-jersey.info # 合議で追加: 個人管理人のブログ。FICE等の公式告知を紹介する記事が中心

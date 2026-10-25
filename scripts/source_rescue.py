@@ -31,6 +31,7 @@ import json
 import os
 import re
 import sys
+import threading
 import time
 from pathlib import Path
 
@@ -42,8 +43,8 @@ from pipelib import (CLI_BLOCKED_EXIT, CliBlocked, exit_on_term, now_jst, render
 MAX_PAGES = 4               # 記事1本で読むページの上限(当たりの調べの答え)
 MAX_ASKS = 2                # 記事1本で X の原本を探す問いの上限
 PLAN_TIMEOUT = 600          # 当たりの調べのセッションの上限(秒)
-VERIFY_RESERVE_SEC = 240    # 締切のうち、正規化・裏取り・素材への書き込みに残す秒数
-VERIFY_ONE_MAX = 150        # 候補1件の裏取りに掛かりうる上限(秒。取得 15 秒 + 描画 30 秒 × 3 回 + 余裕)。これが残っていなければ始めない
+VERIFY_RESERVE_SEC = 360    # 締切のうち、正規化・裏取り・素材への書き込みに残す秒数(裏取り1件の待ち VERIFY_ONE_MAX が入る)
+VERIFY_ONE_MAX = 300        # 候補1件の裏取りに掛かりうる待ち(秒。取得 15 秒 + 描画 90 秒 × 3 回 + 余裕)。これが残っていなければ始めない
 VERIFY_PARALLEL = 6
 VERIFY_LATE_NOTE = "出典を揃える入口の締切までに裏取りできなかった(素材に入れない)"
 TASK_SCHEMA = {"type": "object", "required": ["kind", "why"],
@@ -235,17 +236,36 @@ def page_phase(slug: str, pages: list[dict], brand: str, log: dict) -> list[tupl
 
 
 def verify_until(cands: list[dict], until: float | None) -> None:
-    """候補を裏取りする(collect.verify。並列)。締切(until)があれば、1件の裏取りに掛かりうる上限(VERIFY_ONE_MAX。取得と描画の
-    待ちの上限の和)が残っている候補だけを始め、残りは裏取りせずに VERIFY_LATE_NOTE を付ける(締切を越えない。描画を途中で切ると
-    正しい候補を写しの不一致で落とすので、始めた裏取りは切らない)。"""
-    def one(c: dict) -> None:
-        if until is not None and time.time() + VERIFY_ONE_MAX > until:
+    """候補を裏取りする(collect.verify。並列)。締切(until)があれば、締切で待つのをやめる:
+    - 1件の裏取りに掛かりうる上限(VERIFY_ONE_MAX)が締切までに残っていない候補は始めない
+    - 締切までに終わらなかった裏取りは待たずに捨てる(写しの裏取りは複製で行い、終わったものだけを採る。描画・本文の受信が
+      締切を越えて長引いても、入口は締切で先へ進む。Sol 監査 r2: 描画の待ちの上限は1回90秒で、本文の受信にも総時間の上限が無い)
+    どちらも、裏取りしていない候補として VERIFY_LATE_NOTE を付ける(写しの不一致とはしない。素材にも計画にも入れない)。
+    裏取りのスレッドはデーモンにし、捨てた裏取りが工程の終わりを引き延ばさない(残った描画の子は呼び手の当番が刈り取る)。"""
+    if not cands:
+        return
+    gate = threading.Semaphore(VERIFY_PARALLEL)
+    done: dict[int, dict] = {}
+
+    def one(i: int, c: dict) -> None:
+        with gate:
+            if until is not None and time.time() + VERIFY_ONE_MAX > until:
+                return
+            mine = json.loads(json.dumps(c, ensure_ascii=False))
+            collect.verify([mine])
+            done[i] = mine
+    threads = [threading.Thread(target=one, args=(i, c), daemon=True) for i, c in enumerate(cands)]
+    for t in threads:
+        t.start()
+    for t in threads:
+        t.join(None if until is None else max(0.0, until - time.time()))
+    got = dict(done)     # 締切の時点で終わっていた裏取りだけ(このあと終わったものは採らない)
+    for i, c in enumerate(cands):
+        if i in got:
+            c.clear()
+            c.update(got[i])
+        else:
             c["verify"], c["verify_note"] = "unconfirmed", VERIFY_LATE_NOTE
-            return
-        collect.verify([c])
-    if cands:
-        with concurrent.futures.ThreadPoolExecutor(max_workers=min(VERIFY_PARALLEL, len(cands))) as ex:
-            list(ex.map(one, cands))
 
 
 def reverify_stored(date: str, fresh: list[dict], until: float | None) -> None:

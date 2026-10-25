@@ -16771,6 +16771,25 @@ def test_source_rescue_entry(tmp: Path):
     check(len(cands4) == 4 and all(r["outcome"] == "揃わない" for r in rep["articles"].values())
           and source_rescue.VERIFY_LATE_NOTE in source_rescue.report_text(rep),
           f"締切までに裏取りできない候補を素材・計画に入れた: {len(cands4)} {rep['articles']}")
+    # 始めた裏取りが締切を越えて長引いても(描画・本文の受信)、締切で待つのをやめ、裏取りしていない候補にする(Sol 監査 r2)
+    import collect
+    saved = (collect.verify, source_rescue.VERIFY_ONE_MAX)
+    try:
+        def slow(cands):
+            time.sleep(3)
+            for c in cands:
+                c["verify"] = "confirmed"
+        collect.verify, source_rescue.VERIFY_ONE_MAX = slow, 0
+        cs = [{"url": "https://a.example/1"}, {"url": "https://a.example/2"}]
+        t0 = time.time()
+        source_rescue.verify_until(cs, time.time() + 1)
+        took = time.time() - t0
+    finally:
+        collect.verify, source_rescue.VERIFY_ONE_MAX = saved
+    check(took < 2 and all(c["verify_note"] == source_rescue.VERIFY_LATE_NOTE and c["verify"] == "unconfirmed" for c in cs),
+          f"締切を越えた裏取りを待った・採った: {took:.1f}秒 {cs}")
+    time.sleep(2.5)     # 捨てた裏取りが終わっても、候補を書き換えない
+    check(all(c["verify"] == "unconfirmed" for c in cs), f"締切のあとに終わった裏取りが候補を書き換えた: {cs}")
 
 
 def test_oncall_recover_rescues_sources(tmp: Path):
@@ -16780,11 +16799,25 @@ def test_oncall_recover_rescues_sources(tmp: Path):
     import time
     import oncall
     import source_rescue
+    branch = f"edition/{RESCUE_DATE}"
+    run = lambda *a, cwd: subprocess.run(list(a), cwd=cwd, capture_output=True, text=True, check=True).stdout
     for found in (True, False):
         root = tmp / ("found" if found else "notfound")
         rescue_fixture(root)
         posts = root / "docs" / "_posts"
         calls, notes = [], []
+        # 号のブランチを持つ作業ツリーと origin(素の bare リポジトリ)。組版は origin に合わせて始めるので、入口が足した素材と
+        # 計画は origin に届いていなければ組み直しに渡らない(Sol 監査 r2: 送りを外してもテストが通っていた)
+        remote = tmp / f"{root.name}-remote.git"
+        run("git", "init", "-q", "--bare", str(remote), cwd=tmp)
+        run("git", "init", "-q", "-b", branch, str(root), cwd=tmp)
+        for k, v in (("user.email", "t@example.com"), ("user.name", "t")):
+            run("git", "config", k, v, cwd=root)
+        (root / ".gitignore").write_text("metrics/work/\n", encoding="utf-8")
+        run("git", "add", "-A", cwd=root)
+        run("git", "commit", "-q", "-m", "号", cwd=root)
+        run("git", "remote", "add", "origin", str(remote), cwd=root)
+        run("git", "push", "-q", "origin", branch, cwd=root)
 
         def fake_run(cmd, log, limit, root=root):
             if cmd[1].endswith("source_rescue.py"):
@@ -16796,6 +16829,10 @@ def test_oncall_recover_rescues_sources(tmp: Path):
                 finally:
                     sys.argv = saved_argv
             calls.append(("compose", "--reuse-plan" in cmd))
+            # 組版の始め方の偽物: clean な作業ツリーで、号のブランチを origin に合わせる(pipelib.checkout_edition_branch)
+            calls.append(("clean", run("git", "status", "--porcelain", cwd=root) == ""))
+            run("git", "fetch", "-q", "origin", cwd=root)
+            run("git", "checkout", "-q", "-B", branch, f"origin/{branch}", cwd=root)
             # 書き手の偽物: 計画の素材に公式・当事者の出典があれば書く(無ければ NO_PRIMARY_SOURCE で見送る)
             cands = {c["id"]: c for c in json.loads((root / "candidates" / f"{RESCUE_DATE}.json").read_text(encoding="utf-8"))}
             for a in json.loads((root / "metrics" / f"plan-{RESCUE_DATE}.json").read_text(encoding="utf-8"))["articles"]:
@@ -16808,7 +16845,9 @@ def test_oncall_recover_rescues_sources(tmp: Path):
         try:
             with RescueFakes(root, found=found):
                 oncall.ROOT, oncall.run_stage = root, fake_run
-                oncall.commit_paths = lambda paths, msg, branch, push_timeout=120: calls.append(("commit", tuple(paths)))
+                real_commit = saved[2]
+                oncall.commit_paths = lambda paths, msg, branch, push_timeout=120: (
+                    calls.append(("commit", tuple(paths))) or real_commit(paths, msg, branch, push_timeout))
                 oncall.backup_edition = lambda d, e: "backup/x"
                 oncall.restore_edition = lambda d, e, b, u=None: calls.append(("restore", b))
                 oncall.notify = lambda job, msg, ok=True, require=False: notes.append((msg, ok)) or True
@@ -16829,6 +16868,7 @@ def test_oncall_recover_rescues_sources(tmp: Path):
                   f"揃えた素材と計画を組み直しの前に確定していない: {calls}")
             check("rescue" not in kinds or calls[rescue_at][1] <= end - oncall.COMPOSE_AFTER_RESCUE_MIN * 60 + 1,
                   f"入口が組み直しの時間を残さない: {calls}")
+            check(("clean", True) in calls, f"組み直しを汚れた作業ツリーで始めさせた: {calls}")
             check(len(back) == 4 and got == 0, f"出典不足の見送りを当日号に戻していない: {back} exit {got}")
             check(any("戻った 3本" in m for m, _ in notes), f"戻った記事を名指ししない: {notes}")
         else:
@@ -16934,6 +16974,16 @@ def test_assemble_roundup_reservation(tmp: Path):
         clean, notes = assemble.return_reservations(d, inp, out, posts, mats, rejected, notes)
         check(not clean["reservations"] and anomalies and "8.5周年プレゼント受け取り締切" in anomalies[-1],
               f"答え直しが予約を省いたら、黙って消した: {anomalies}")
+        # 同じ日・同じ種別の予約が2つ(まとめ記事の別の項目)差し戻され、片方だけ戻ったら、戻らない分を名指しする(Sol 監査 r2)
+        anomalies.clear()
+        other = dict(wrong, subject="別の項目の受け取り締切")
+        out2 = dict(out, reservations=[wrong, other])
+        assemble.run_session = lambda text, date, name, schema, budget=None: fake_session(text, date, name, schema, answer=right)
+        rejected = []
+        clean, notes = assemble.validate(d, out2, posts, mats, inp, rejected=rejected)
+        clean, notes = assemble.return_reservations(d, inp, out2, posts, mats, rejected, notes)
+        check(len(clean["reservations"]) == 1 and anomalies and "2件のうち 1件が戻らない" in anomalies[-1],
+              f"同じ日・種別の予約の片方が戻らないのを名指ししない: {clean['reservations']} {anomalies}")
     finally:
         assemble.ROOT, assemble.run_session, assemble.anomaly = saved
 

@@ -23,6 +23,7 @@
 - lint はコードが回す。赤なら**組版の欠陥**なので直さずに報告する
 """
 import argparse
+import collections
 import datetime
 import json
 import os
@@ -1223,14 +1224,23 @@ def return_reservations(date: str, inp: dict, out: dict, posts: list[dict], mats
     redo = [r for r in again.get("reservations") or [] if isinstance(r, dict) and r.get("slug") in slugs]
     out = {**out, "reservations": [r for r in out.get("reservations") or [] if r not in gone] + redo}
     clean, notes2 = validate(date, out, posts, mats, inp)
-    # 差し戻した予約ごとに、答え直しで同じ記事・日・種別の予約が採れたかを見る。答え直しが予約を省いた・また採れない形だった、の
-    # どちらも名指しする(答え直しの不合格だけを数えると、予約を省いた答えで黙って消える。Sol 監査 r1)
-    kept = {(r.get("slug"), r.get("date"), r.get("kind")) for r in clean.get("reservations") or []}
-    lost = [(r, why) for r, why in rejected if (r.get("slug"), r.get("date"), r.get("kind")) not in kept]
-    if lost:
-        anomaly("compose", "組版: 差し戻しても採れなかった続報予約(答え直しに無い・素材が合わない・素材にその日付が無い)。この予約は無い:\n"
+    # 差し戻した予約が、答え直しで採れたかを数で照合する: 記事・日・種別ごとに、採れた予約の数から、差し戻していない予約(初めから
+    # 採れていたもの)の数を引いた残りが、差し戻した数に足りなければ、足りない分を名指しする。答え直しが予約を省いた・また採れない形
+    # だった、のどちらも黙って消さない(Sol 監査 r1)。まとめ記事で同じ日・同じ種別の項目が2つあり、片方だけ戻ったときも数が足りない
+    # (Sol 監査 r2)。答え直しは candidate_id も件名も直しうるので、どの予約が戻ったかは数でしか言えない。足りない組の差し戻した予約を全部挙げる
+    key = lambda r: (r.get("slug"), r.get("date"), r.get("kind"))
+    first, _ = validate(date, {**out, "reservations": [r for r in out.get("reservations") or [] if r not in redo]}, posts, mats, inp)
+    had = collections.Counter(key(r) for r in first.get("reservations") or [])
+    got = collections.Counter(key(r) for r in clean.get("reservations") or [])
+    sent = collections.Counter(key(r) for r, _ in rejected)
+    short = {k: n - max(0, got[k] - had[k]) for k, n in sent.items() if n > max(0, got[k] - had[k])}
+    if short:
+        anomaly("compose", "組版: 差し戻しても採れなかった続報予約(答え直しに無い・素材が合わない・素材にその日付が無い)。"
+                           "次の組の予約が、差し戻した数より少ない:\n"
                            + "\n".join(f"- {_v(r.get('slug'))}: {_v(r.get('date'))} {_v(r.get('kind'))}「{_v(r.get('subject'))}」"
-                                       f"(candidate_id {_v(r.get('candidate_id'))}): {why}" for r, why in lost))
+                                       f"(candidate_id {_v(r.get('candidate_id'))}): {why}"
+                                       f"(同じ記事・日・種別の差し戻し {sent[key(r)]}件のうち {short[key(r)]}件が戻らない)"
+                                       for r, why in rejected if key(r) in short))
     return clean, notes + ["差し戻しのあと:"] + notes2
 
 

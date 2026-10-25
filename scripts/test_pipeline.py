@@ -15640,6 +15640,36 @@ def test_oncall_session_waits(tmp: Path):
             check(r.returncode == 1, f"{tool} の道具が本物を呼ばない: {r.returncode} {r.stderr[-200:]}")
         except (OSError, subprocess.TimeoutExpired) as e:
             check(False, f"{tool} の道具が PATH の別の綴りの自分を呼び直した: {e!r}")
+    # 道具は祖先でない本物のプロセスを今までどおり見つけ、止める
+    other = subprocess.Popen([sys.executable, "-c", "import time; time.sleep(60)", mark + "-other"])
+    try:
+        time.sleep(0.3)
+        env = {"PATH": f"{shim}:{os.environ.get('PATH', '')}"}
+        found = subprocess.run(["pgrep", "-f", mark + "-other"], env=env, capture_output=True, text=True, timeout=10).stdout.split()
+        subprocess.run(["pkill", "-f", mark + "-other"], env=env, capture_output=True, timeout=10)
+        try:
+            killed = other.wait(timeout=5) is not None
+        except subprocess.TimeoutExpired:
+            killed = False
+        check(found == [str(other.pid)] and killed, f"道具の pgrep / pkill が祖先でないプロセスを見つけない・止めない: {found} {killed}")
+    finally:
+        if other.poll() is None:
+            other.kill()
+            other.wait()
+    # 答えを見張るあいだに頭が自分で異常終了したら、settled にしない(Sol 監査 r1)。見張りに時間がかかる回を同期して踏ませる
+    exited = tmp / "exited"
+    exited.unlink(missing_ok=True)
+    code = f"import sys, time\nprint({one!r}, flush=True)\ntime.sleep(0.3)\nopen({str(exited)!r}, 'w').close()\nsys.exit(1)\n"
+
+    def slow_answer(out):
+        end = time.monotonic() + 10
+        while not exited.exists() and time.monotonic() < end:
+            time.sleep(0.05)
+        time.sleep(0.3)             # 頭が終わるまで見張りを延ばす
+        return True
+    r = pipelib.run_group([sys.executable, "-c", code], timeout=0.1, answered=slow_answer, settle=0)
+    check(r.returncode == 1 and not r.settled and not oncall.finished(r),
+          f"見張りのあいだに自分で終了 1 で終わったセッションを settled にして採った: {r.returncode} {r.settled}")
     # 監査(codex): 答えのファイルを書いたあと、残った子を待って終わらない
     repo = tmp / "repo"
     repo.mkdir(exist_ok=True)

@@ -1324,6 +1324,10 @@ def _run_group_answered(cmd: list[str], timeout: float | None, answered, *, cwd,
                 time.sleep(ANSWER_POLL_SEC)
             if settled or timed_out:
                 reap(p)             # 頭・グループ・子孫を止めて回収する(出力はファイルにある)
+                # 見張り・回収のあいだに頭が自分で終わっていたら(止めた SIGKILL でない終了コード)、その終わり方を採る。
+                # 自分で異常終了したセッションを settled にしない(Sol 監査 r1: 答えを読むあいだに終了 1 で終わった回を採った)
+                if p.returncode != -signal.SIGKILL:
+                    settled = timed_out = False
             else:
                 finish_group(p, 10)     # 頭は終わっている。グループ・印に残った道具を止める
         except BaseException:

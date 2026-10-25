@@ -2950,6 +2950,8 @@ def render_page(url: str, timeout: int = 30, limit: float | None = None, wait_de
             give_up("工程の締切を過ぎた", False)
         # 429 で控えているほかのホスト: ブラウザはそこへの要求を送らない(描画の中で転送されても控えを素通りしない)
         holds = [f"--hold={h}={t:.3f}" for h, t in sorted(held_hosts().items())]
+        if budget.deadline is not None:
+            holds.append(f"--deadline={budget.deadline:.3f}")       # ブラウザの接続の順番の待ちも描画の締切を越えない
         try:
             # ブラウザ(chromedriver・chrome)ごと止めるため、自前のグループで起動する(run_group)
             r = run_group([str(ROOT / ".venv" / "bin" / "python"), str(ROOT / "scripts" / "fetch_rendered.py"), url, "--timeout", str(timeout)]

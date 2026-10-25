@@ -131,11 +131,21 @@ class HoldProxy:
     """ブラウザの接続をすべて通す中継(127.0.0.1)。接続のたびに、行き先のホストがいま 429 で控えているか(共有の控え。
     pipelib.held_until)を読み、控えていれば相手へ接続しない(要求を送らない)。描画を始めたあとでほかのプロセスが受けた 429 も、
     その接続の時点で守る(Sol 監査 R429 r6。起動時の一覧で名前解決を差し止めるだけでは、描画中の 429 を素通りした)。
-    blocked は差し止めたホスト → 控えの時刻"""
-    def __init__(self, held):
+    blocked は差し止めたホスト → 控えの時刻。
+    確立したトンネルの中でも、ブラウザから相手へ送るたびに控えを読み直し、控えていれば接続を切る(TLS の接続の使い回しで、描画中に
+    ほかのプロセスが受けた 429 を素通りしない。Sol 監査 R429 r7)。turn(host) は新しい接続の前に呼ぶ、ホストの順番(HOST_GAP の間隔)の
+    待ち。暗号化されたトンネルの中の要求の区切りは中継から見えないので、間隔は接続ごとに取る"""
+    def __init__(self, held, turn=None, listen: bool = True, connect=None, select_fn=None):
+        """listen=False は待ち受けを開かない(テストが _handle を偽のソケットで直接呼ぶ。connect・select_fn も差し替える)"""
+        import select
         import socket
         import threading
-        self.held, self.blocked = held, {}
+        self.held, self.turn, self.blocked = held, turn, {}
+        self.connect = connect or socket.create_connection
+        self.select = select_fn or select.select
+        self.sock, self.port = None, 0
+        if not listen:
+            return
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         self.sock.bind(("127.0.0.1", 0))
@@ -145,7 +155,8 @@ class HoldProxy:
 
     def close(self) -> None:
         try:
-            self.sock.close()
+            if self.sock is not None:
+                self.sock.close()
         except OSError:
             pass
 
@@ -159,8 +170,6 @@ class HoldProxy:
             threading.Thread(target=self._handle, args=(c,), daemon=True).start()
 
     def _handle(self, c) -> None:
-        import select
-        import socket
         up = None
         try:
             c.settimeout(60)
@@ -176,7 +185,18 @@ class HoldProxy:
                 self.blocked[host] = until
                 c.sendall(b"HTTP/1.1 403 Forbidden\r\n" + HELD_HEADER + b"\r\nContent-Length: 0\r\nConnection: close\r\n\r\n")
                 return
-            up = socket.create_connection((host, port), timeout=30)
+            if self.turn is not None:
+                try:
+                    self.turn(host)         # 同じホストへの接続の間隔(共有の予約)。締切を越えるなら接続しない
+                except OSError:
+                    c.sendall(b"HTTP/1.1 504 Gateway Timeout\r\nContent-Length: 0\r\nConnection: close\r\n\r\n")
+                    return
+                until = self.held(host) or 0.0      # 順番を待つあいだに受けた 429
+                if until > time.time():
+                    self.blocked[host] = until
+                    c.sendall(b"HTTP/1.1 403 Forbidden\r\n" + HELD_HEADER + b"\r\nContent-Length: 0\r\nConnection: close\r\n\r\n")
+                    return
+            up = self.connect((host, port), timeout=30)
             if out is None:
                 c.sendall(b"HTTP/1.1 200 Connection Established\r\n\r\n")
             else:
@@ -185,13 +205,19 @@ class HoldProxy:
                 up.sendall(extra)
             socks = [c, up]
             while True:
-                r, _, _ = select.select(socks, [], [], 60)
+                r, _, _ = self.select(socks, [], [], 60)
                 if not r:
                     return
                 for s in r:
                     data = s.recv(65536)
                     if not data:
                         return
+                    if s is c:
+                        # ブラウザから相手へ送る前に控えを読み直す(使い回しのトンネルで、描画中に受けた 429 を素通りしない)
+                        until = self.held(host) or 0.0
+                        if until > time.time():
+                            self.blocked[host] = until
+                            return
                     (up if s is c else c).sendall(data)
         except Exception:       # noqa: BLE001  1つの接続の失敗は、その接続だけ閉じる(ブラウザには読み込みの失敗として見える)
             return
@@ -243,7 +269,7 @@ def check_documents(entries, holds: dict[str, float]) -> None:
         raise RateLimited(after, where)
 
 
-def fetch(url: str, wait_css: str | None, timeout: int, holds: dict[str, float] | None = None) -> str:
+def fetch(url: str, wait_css: str | None, timeout: int, holds: dict[str, float] | None = None, deadline: float | None = None) -> str:
     """ブラウザの接続はすべて中継(HoldProxy)を通し、接続のたびに共有の控え(pipelib.held_until)と holds(起動時に渡された控え:
     ホスト → 控えの時刻)を読んで、控えているホストへは要求を送らない(描画の中の転送・描画中にほかのプロセスが受けた 429 も。
     Sol 監査 R429 r5・r6)。主フレームの文書を差し止めた・文書が 429 なら RateLimited"""
@@ -251,13 +277,21 @@ def fetch(url: str, wait_css: str | None, timeout: int, holds: dict[str, float] 
     from selenium.webdriver.support import expected_conditions as EC
     from selenium.webdriver.support.ui import WebDriverWait
     sys.path.insert(0, str(Path(__file__).resolve().parent))
-    from pipelib import held_until
+    from pipelib import _host_reserve, held_until, site_host
     holds = dict(holds or {})
+    deadline = deadline if deadline is not None else time.time() + timeout + 10     # 締切が無くても、読み込みの上限を越えて待たない
 
     def held(host: str) -> float:
         h = held_match(host, holds)
         return max(held_until(host), holds[h] if h else 0.0)
-    proxy = HoldProxy(held)
+
+    def turn(host: str) -> None:
+        """新しい接続の前の、ホストの順番(HOST_GAP の間隔。並列の取得と共有の予約)。deadline(描画の締切)を越える待ちは
+        RateLimitWait(OSError)で、中継は接続しない"""
+        gap = _host_reserve(site_host(f"//{host}"), 0.0, None if deadline is None else deadline - time.time())
+        if gap > 0:
+            time.sleep(gap)
+    proxy = HoldProxy(held, turn)
     try:
         driver = make_driver(proxy.port)
     except Exception:
@@ -309,6 +343,7 @@ def main() -> int:
     ap.add_argument("--timeout", type=int, default=20)
     ap.add_argument("--out", default=None)
     ap.add_argument("--hold", action="append", default=[], help="429 で控えているホスト=控えの時刻(この描画では要求を送らない)")
+    ap.add_argument("--deadline", type=float, default=None, help="描画の締切(時刻)。接続の順番の待ちはこれを越えない")
     args = ap.parse_args()
     holds = {}
     for h in args.hold:
@@ -318,7 +353,7 @@ def main() -> int:
         except ValueError:
             continue
     try:
-        html = fetch(args.url, args.wait_css, args.timeout, holds)
+        html = fetch(args.url, args.wait_css, args.timeout, holds, args.deadline)
     except RateLimited as e:
         print(f"RENDER_FAILED: {e}", file=sys.stderr)
         return RATE_LIMITED

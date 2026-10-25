@@ -17250,7 +17250,7 @@ def test_http429_retry(tmp: Path):
                     """中継の偽物(ソケットを開かない)。差し止めの判断は本物と同じ held を、ブラウザの代わりに呼ぶ"""
                     port = 4321
 
-                    def __init__(self, held):
+                    def __init__(self, held, turn=None):
                         cdp.append(("proxy", held("held.example"), held("free.example")))
                         self.blocked = {"held.example": held("held.example")}
 
@@ -17298,6 +17298,63 @@ def test_http429_retry(tmp: Path):
               and isinstance(g_out, bytes) and g_out.startswith(b"GET /x?y=1 HTTP/1.1\r\n") and b"Connection: close" in g_out
               and b"keep-alive" not in g_out.lower() and b"Accept: */*" in g_out,
               f"中継が接続のたびに共有の控えを読まない・平文の要求を書き換えない: {c_host} {c_until} {sub_until} {g_host} {g_until} {g_out!r}")
+        # 中継の1つの接続(ソケットは偽物): 新しい接続の前にホストの順番を取り、確立したトンネルの中でも送るたびに控えを読み直す
+        # (TLS の接続の使い回しで、描画中に受けた 429 を素通りしない。Sol 監査 R429 r7)
+        live_holds: dict[str, float] = {}
+
+        class FakeSock:
+            def __init__(self, script=()):
+                self.script, self.sent, self.closed = list(script), [], False
+
+            def settimeout(self, t):
+                pass
+
+            def recv(self, n):
+                while self.script:
+                    item = self.script.pop(0)
+                    if callable(item):
+                        item()          # 送る前のでき事(ほかのプロセスが 429 の控えを書く)
+                        continue
+                    return item
+                return b""
+
+            def sendall(self, b):
+                self.sent.append(b)
+
+            def close(self):
+                self.closed = True
+        try:
+            turns: list = []
+            ups: list = []
+
+            def run(script, turn=None):
+                c = FakeSock(script)
+                px = fetch_rendered.HoldProxy(lambda h: live_holds.get(h, 0.0), turn, listen=False,
+                                              connect=lambda addr, timeout=None: (ups.append(FakeSock()), ups[-1])[1],
+                                              select_fn=lambda r, w, x, t: ([r[0]] if c.script else [], [], []))
+                px._handle(c)
+                return px, c
+            live_holds.clear()
+            px, c = run([b"CONNECT tunnel.example:443 HTTP/1.1\r\n\r\n", b"tls-1",
+                         lambda: live_holds.__setitem__("tunnel.example", _time.time() + 60), b"tls-2"],
+                        turn=lambda h: turns.append(h))
+            tunnel_sent = ups[-1].sent if ups else []
+            # 順番の待ちが締切を越える(OSError)なら接続しない
+            n_up = len(ups)
+
+            def late(h):
+                raise OSError("締切を越える")
+            px2, c2 = run([b"CONNECT slow.example:443 HTTP/1.1\r\n\r\n", b"x"], turn=late)
+            # 順番を待つあいだに受けた 429 は、その接続を差し止める
+            px3, c3 = run([b"CONNECT during.example:443 HTTP/1.1\r\n\r\n", b"x"],
+                          turn=lambda h: live_holds.__setitem__("during.example", _time.time() + 60))
+        except Exception as e:      # noqa: BLE001
+            tunnel_sent, turns, px, c, px2, c2, px3, c3, n_up = [repr(e)], [], None, None, None, None, None, None, -1
+        check(tunnel_sent == [b"tls-1"] and turns == ["tunnel.example"] and px is not None and "tunnel.example" in px.blocked,
+              f"中継が使い回しのトンネルで描画中に受けた 429 を素通りした・接続の前に順番を取らない: 送った {tunnel_sent} 順番 {turns}")
+        check(c2 is not None and len(ups) == n_up + 0 and any(b"504" in s for s in c2.sent) and c3 is not None
+              and any(b"X-Imas-Held" in s for s in c3.sent) and "during.example" in px3.blocked,
+              f"中継が締切を越える順番の待ちで接続した・順番を待つあいだに受けた 429 を素通りした: {c2 and c2.sent} {c3 and c3.sent}")
         calls: list[float] = []
 
         def fake_rg(argv, timeout=None, cwd=None, **k):

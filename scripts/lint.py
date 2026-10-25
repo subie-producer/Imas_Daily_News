@@ -29,7 +29,7 @@ from jsonschema import Draft202012Validator
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from pipelib import (classify_source, is_discovery_only,  # noqa: E402  出典種別は URL から判定する
-                     has_editorial, EDITORIAL_UNTIL)
+                     has_editorial, EDITORIAL_UNTIL, browser_only)
 
 ROOT = Path(__file__).resolve().parent.parent
 DOCS = ROOT / "docs"
@@ -435,6 +435,7 @@ def url_alive(url):
       "unreachable" ネットワーク層の失敗(DNS 解決不能・接続不能・タイムアウト等)
       "blocked"     サーバは応答したが機械での死活確認を拒んだ/確定できない
                     (HTTP 403 の WAF・bot 遮断、401 認証要求、429 レート制限、5xx 等)
+      "skipped"     叩かなかった(ok=True)。素の取得に 429 を返すサイト(pipelib.BROWSER_ONLY_HOSTS)
 
     ページの不在を明言する 404/410 だけを "dead"(発行を止める error)とし、それ以外の
     HTTP 応答は "blocked" として警告に格下げする。403 等はサーバがアクセスを拒んだだけで
@@ -445,6 +446,10 @@ def url_alive(url):
     校閲(ブロック項目2)が確かめ、捏造 URL の検査は collect の verify と candidates 系譜検査も
     担っており、ここが最後の砦ではない。
     """
+    # 素の取得に 429 を返すサイト(browser_only)は叩かない。1件に3回まで取り直すので、ここが 429 を招く(2026-10-26 編集長
+    # 「429を出すようなアクセスはするな」)。出典は執筆・校閲が fetch_page.py の描画で読んでいる。生きている扱いで通す(x.com を外すのと同じ)
+    if browser_only(url):
+        return True, "描画でしか読まないサイト(機械の死活確認をしない)", "skipped"
     req = urllib.request.Request(url, headers={"User-Agent": URL_UA})
     last = (False, "unreachable", "unreachable")
     for attempt in (1, 2, 3):

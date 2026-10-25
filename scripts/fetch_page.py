@@ -27,12 +27,11 @@ import os
 import re
 import sys
 import urllib.error
-import urllib.parse
 import urllib.request
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from pipelib import (BROWSER_ONLY_HOSTS, PAGE_READ_BYTES, RenderFailed, extract_periods, html_to_text, http_status, maintenance_http_error,
+from pipelib import (PAGE_READ_BYTES, RenderFailed, browser_only, extract_periods, html_to_text, http_status, maintenance_http_error,
                      maintenance_redirect, needs_render, note_fetched, polite_urlopen, render_page)
 
 UA = "Mozilla/5.0 (compatible; ImasNewsCollect/1.0)"
@@ -49,7 +48,7 @@ class Maintenance(Exception):
 
 def fetch(url: str) -> str:
     # 素の取得に 429 を返すサイトは、素の取得をせずに最初からブラウザで読む(2026-10-26: Anime Store.JP が数回の取得で 429)
-    if urllib.parse.urlsplit(url).hostname in BROWSER_ONLY_HOSTS:
+    if browser_only(url):
         return ""
     req = urllib.request.Request(url, headers={"User-Agent": UA})
     try:

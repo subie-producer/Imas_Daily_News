@@ -15552,6 +15552,117 @@ def test_oncall_answer_reformat(tmp: Path):
               f"監査の形を直させる回({m})の答えを採った・AnswerUnreadable にしない・作業ツリーが残った: {rev!r} {len(calls)}回 {clean}")
 
 
+def test_oncall_session_waits(tmp: Path):
+    """当番・監査のセッションの待ち(2026-10-25 12:31 の当番: `until ! pgrep -f "scripts/selfcheck.py"` が自分のシェルに当たって
+    600 秒待ち、`pkill -f` で自分のテストを止め、最後は裏で走らせた全テストを claude -p が待って、答えを出したあと 1800 秒で
+    時間切れ)。偽の claude / codex を実際に起動して確かめる:
+    - 自分に当たる pgrep -f の待ち・pkill -f が、自分のシェルに当たらない(PATH の先頭の scripts/shim)
+    - 当番の claude に、裏のタスクを作らせない・長い検査を前景で走らせる設定が渡る
+    - schema どおりの答えを出したあと、残った子を待って終わらない・子が出力のパイプを握ったまま残る、は時間切れにせず答えを採り、
+      残った子を止める。監査(codex)の答えのファイルも同じ
+    - 答えが schema どおりでないまま終わらないのは時間切れ、答えを出して異常終了したのは異常終了のまま(採用条件を緩めない)"""
+    import signal
+    import time
+    import uuid
+    import oncall
+    tmp.mkdir(parents=True, exist_ok=True)
+    one = json.dumps(INCIDENT_FIX, ensure_ascii=False)
+    mark = "zz-" + uuid.uuid4().hex[:12]        # 同じ機械で走る本物の selfcheck に当たらない印
+    bindir, mode, pidf, envf = tmp / "bin", tmp / "mode", tmp / "child.pid", tmp / "env.json"
+    bindir.mkdir(exist_ok=True)
+    (bindir / "claude").write_text(
+        f"#!{sys.executable}\nimport json, os, subprocess, sys\na = sys.argv[1:]\n"
+        f"m = open({str(mode)!r}).read()\none = {one!r}\nmark = {mark!r}\n"
+        "keys = ('CLAUDE_CODE_DISABLE_BACKGROUND_TASKS', 'BASH_DEFAULT_TIMEOUT_MS', 'BASH_MAX_TIMEOUT_MS')\n"
+        f"open({str(envf)!r}, 'w').write(json.dumps({{**{{k: os.environ.get(k) for k in keys}}, 'PATH0': os.environ['PATH'].split(':')[0]}}))\n"
+        "if '--resume' in a:\n    sys.exit(0)\n"
+        "if m == 'selfmatch':\n"
+        "    subprocess.run(['bash', '-c', f'until ! pgrep -f \"scripts/selfcheck.py {mark}\" >/dev/null; do sleep 0.1; done'])\n"
+        "    print(one)\n"
+        "elif m == 'pkill':\n"
+        "    r = subprocess.run(['bash', '-c', f'pkill -f \"pgrep -f {mark}\"; echo alive'], capture_output=True, text=True)\n"
+        "    if 'alive' in r.stdout:\n        print(one)\n"
+        "elif m in ('linger', 'linger_bad'):\n"
+        "    print(one if m == 'linger' else '検査が終わるのを待っています', flush=True)\n"
+        f"    c = subprocess.Popen(['sleep', '300'])\n    open({str(pidf)!r}, 'w').write(str(c.pid))\n    c.wait()\n"
+        "elif m == 'pipe':\n"
+        "    print(one, flush=True)\n"
+        f"    c = subprocess.Popen(['sleep', '300'], start_new_session=True)\n    open({str(pidf)!r}, 'w').write(str(c.pid))\n"
+        "elif m == 'exit1':\n    print(one)\n    sys.exit(1)\n", encoding="utf-8")
+    (bindir / "claude").chmod(0o755)
+    wt = tmp / "wt"
+    wt.mkdir(exist_ok=True)
+    sf = SCHEMAS / "oncall-fix.schema.json"
+    saved = (os.environ.get("PATH", ""), pipelib.ROOT, getattr(pipelib, "ANSWER_SETTLE_SEC", None))
+    got = {}
+    try:
+        os.environ["PATH"] = f"{bindir}{os.pathsep}{saved[0]}"
+        pipelib.ROOT = tmp           # 生の出力の控え(save_raw)も一時ディレクトリへ
+        pipelib.ANSWER_SETTLE_SEC = 1
+        for m in ("selfmatch", "pkill", "linger", "linger_bad", "pipe", "exit1"):
+            mode.write_text(m, encoding="utf-8")
+            pidf.unlink(missing_ok=True)
+            t0 = time.monotonic()
+            try:
+                ans = oncall.run_claude("直して", sf, wt, timeout=8)
+            except (RuntimeError, subprocess.TimeoutExpired) as e:
+                ans = e
+            child = int(pidf.read_text()) if pidf.exists() else None
+            time.sleep(0.2)
+            got[m] = (ans, time.monotonic() - t0, child is None or pipelib._proc_gone(child))
+            if child and not pipelib._proc_gone(child):
+                os.kill(child, signal.SIGKILL)
+    finally:
+        os.environ["PATH"], pipelib.ROOT, pipelib.ANSWER_SETTLE_SEC = saved
+    for m, what in (("selfmatch", "自分に当たる pgrep -f の待ちで時間切れになった"), ("pkill", "pkill -f が自分のシェルを止めて答えが出なかった"),
+                    ("linger", "答えのあと子を待って終わらない当番を時間切れにした"), ("pipe", "答えのあと子がパイプを握った当番を時間切れにした")):
+        ans, took, gone = got[m]
+        check(ans == INCIDENT_FIX and took < 7 and gone, f"{what}・残った子を止めない: {type(ans).__name__} {took:.1f}秒 子が消えた={gone}")
+    ans, _, gone = got["linger_bad"]
+    check(isinstance(ans, subprocess.TimeoutExpired) and gone, f"schema どおりでない答えのまま終わらない当番を時間切れにしない: {ans!r}")
+    ans, _, _ = got["exit1"]
+    check(isinstance(ans, RuntimeError) and not isinstance(ans, oncall.AnswerUnreadable) and "異常終了" in str(ans),
+          f"答えを出して異常終了した当番の答えを採った: {ans!r}")
+    seen = json.loads(envf.read_text(encoding="utf-8")) if envf.exists() else {}
+    check(seen.get("CLAUDE_CODE_DISABLE_BACKGROUND_TASKS") == "1" and int(seen.get("BASH_MAX_TIMEOUT_MS") or 0) >= 600000
+          and int(seen.get("BASH_DEFAULT_TIMEOUT_MS") or 0) >= 600000 and seen.get("PATH0") == str(getattr(oncall, "SHIM_DIR", None)),
+          f"当番の claude に裏のタスクを止める・前景で待つ設定と、pgrep の道具の PATH が渡らない: {seen}")
+    # 監査(codex): 答えのファイルを書いたあと、残った子を待って終わらない
+    repo = tmp / "repo"
+    repo.mkdir(exist_ok=True)
+    g = lambda *a: subprocess.run(["git", *a], cwd=repo, capture_output=True, text=True, check=True).stdout
+    g("init", "-q", "-b", "main"); g("config", "user.email", "t@example.com"); g("config", "user.name", "t")
+    (repo / "a").write_text("1"); g("add", "a"); g("commit", "-q", "-m", "base")
+    answer = json.dumps({"verdict": "approve", "verification": AUDIT_RAN, "must_fix": [], "later": [], "editor_summary": None,
+                         "notes": ""}, ensure_ascii=False)
+    (bindir / "codex").write_text(
+        f"#!{sys.executable}\nimport subprocess, sys\na = sys.argv[1:]\no = a[a.index('-o') + 1]\n"
+        f"open(o, 'w', encoding='utf-8').write({answer!r})\n"
+        f"c = subprocess.Popen(['sleep', '300'])\nopen({str(pidf)!r}, 'w').write(str(c.pid))\nc.wait()\n", encoding="utf-8")
+    (bindir / "codex").chmod(0o755)
+    saved = (os.environ.get("PATH", ""), pipelib.ROOT, getattr(pipelib, "ANSWER_SETTLE_SEC", None))
+    pidf.unlink(missing_ok=True)
+    t0 = time.monotonic()
+    try:
+        os.environ["PATH"] = f"{bindir}{os.pathsep}{saved[0]}"
+        pipelib.ROOT = tmp
+        pipelib.ANSWER_SETTLE_SEC = 1
+        try:
+            rev = oncall.run_codex("監査して", SCHEMAS / "oncall-review.schema.json", repo, timeout=8)
+        except (RuntimeError, subprocess.TimeoutExpired) as e:
+            rev = e
+    finally:
+        os.environ["PATH"], pipelib.ROOT, pipelib.ANSWER_SETTLE_SEC = saved
+    took = time.monotonic() - t0
+    child = int(pidf.read_text()) if pidf.exists() else None
+    time.sleep(0.2)
+    gone = child is None or pipelib._proc_gone(child)
+    if child and not gone:
+        os.kill(child, signal.SIGKILL)
+    check(isinstance(rev, dict) and rev.get("verdict") == "approve" and took < 7 and gone,
+          f"答えのファイルを書いたあと終わらない監査を時間切れにした・残った子を止めない: {rev!r} {took:.1f}秒 子が消えた={gone}")
+
+
 def test_oncall_finished_rerun_none(tmp: Path):
     """工程が止まっていない(終わったあとのなぜなぜ、--finished)当番が、承認された「いま再実行しても変わらない(none)」で終わるとき、
     「再実行しても通らない。人の判断が要る」と人に届けず、異常終了にしない(2026-10-23 19:06。exit 1 で systemd が起動し直し、
@@ -16316,6 +16427,7 @@ def main() -> int:
     test_cli_blocked_compose(tmp / "cbc")
     test_cli_blocked_oncall_not_counted(tmp / "cbo")
     test_oncall_answer_reformat(tmp / "oar")
+    test_oncall_session_waits(tmp / "osw")
     test_oncall_finished_rerun_none(tmp / "ofr")
     test_oncall_judged_not_rejudged(tmp / "ojn")
     test_http503_not_whywhy(tmp / "h503")

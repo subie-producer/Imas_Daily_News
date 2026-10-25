@@ -101,6 +101,13 @@ FULL_RERUN_IF = ("scripts/compose.py", "scripts/planlib.py", "scripts/renderlib.
                  "prompts/", "schema/article-out", "schema/assemble")
 # 当番・監査のセッションに渡す環境変数(資格情報は渡さない。監査指摘)
 ENV_ALLOW = ("PATH", "HOME", "LANG", "LC_ALL", "LC_CTYPE", "TERM", "SHELL", "USER", "LOGNAME", "TZ", "TMPDIR")
+# 当番・監査のセッションの PATH の先頭に置く道具(pgrep / pkill を、自分の祖先に当たらない形で呼ぶ。scripts/shim/pgrep)
+SHIM_DIR = Path(__file__).resolve().parent / "shim"
+# 当番の claude に渡す設定: 裏のタスクを作らせず(作れば claude -p は答えのあともその終わりを待つ。待つために当番が pgrep -f の
+# ループを書いて自分に当たった)、長い検査は前景のまま最後まで走らせる(既定の 120 秒で裏へ回さない)。2026-10-25 に実測:
+# 裏の sleep 200 を残した claude -p は答えのあと 209 秒終わらず、この設定では 150 秒のコマンドが前景のまま終わった
+CLAUDE_SESSION_ENV = {"CLAUDE_CODE_DISABLE_BACKGROUND_TASKS": "1",
+                      "BASH_DEFAULT_TIMEOUT_MS": "1800000", "BASH_MAX_TIMEOUT_MS": "1800000"}
 CO_AUTHOR = "\n\nCo-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>"
 
 
@@ -172,7 +179,8 @@ def session_env(tmpdir: Path | None = None) -> dict:
     """当番・監査のセッションの環境。tmpdir を渡したら、セッション(とその中で走るテスト・道具)の一時ファイルはそこへ書かせる
     (/tmp の tmpfs を埋めない。呼び側がセッションの後で消す。2026-10-21 に /tmp が 100% になり当番も描画もテストも止まった)。"""
     env = {k: v for k, v in os.environ.items() if k in ENV_ALLOW}
-    env["PATH"] = tool_path()   # service 由来の PATH には ~/.local/bin(claude/codex)が無い(実測 2026-09-17)
+    # service 由来の PATH には ~/.local/bin(claude/codex)が無い(実測 2026-09-17)。先頭は pgrep / pkill の道具(SHIM_DIR)
+    env["PATH"] = ":".join([str(SHIM_DIR)] + [d for d in tool_path().split(":") if d != str(SHIM_DIR)])
     if tmpdir is not None:
         env["TMPDIR"] = str(tmpdir)
     return env
@@ -505,13 +513,20 @@ def take_answer(text: str, schema: str) -> tuple[dict | None, str]:
     return (ans, "") if not err else (None, f"schema のとおりでない: {err}")
 
 
-def _claude(args: list[str], name: str, cwd: Path, timeout: float) -> subprocess.CompletedProcess:
-    """当番の claude を1回走らせ、生の出力を残し、認証切れ・利用上限を引き取る。"""
+def answer_ready(schema: str):
+    """run_group の answered: 標準出力に、渡した schema どおりの答え(take_answer の形)が出ているか。"""
+    return lambda out: take_answer(Path(out).read_text(encoding="utf-8", errors="replace"), schema)[0] is not None
+
+
+def _claude(args: list[str], name: str, cwd: Path, timeout: float, schema: str) -> subprocess.CompletedProcess:
+    """当番の claude を1回走らせ、生の出力を残し、認証切れ・利用上限を引き取る。
+    schema どおりの答えを出したあと終わらないセッションは、残った道具ごと止めてその答えを採る(戻りの settled。run_group)。"""
     tmp = scratch_dir("oncall-fix-tmp-")
     try:
         # 自前のグループで起動し、時間切れ・中断(SIGTERM)では道具ごと止める。親だけを止めると、失敗を返したあとも道具が
         # 作業ツリーへ書き続けた(監査指摘 2026-10-14)
-        r = run_group(["claude", "-p", *args], timeout=timeout, cwd=cwd, env=session_env(tmp))
+        r = run_group(["claude", "-p", *args], timeout=timeout, cwd=cwd, env={**session_env(tmp), **CLAUDE_SESSION_ENV},
+                      answered=answer_ready(schema))
     except subprocess.TimeoutExpired as e:
         save_raw("oncall", name, *partial_output(e))      # 時間切れの回も、それまでの出力を残す
         raise
@@ -520,10 +535,16 @@ def _claude(args: list[str], name: str, cwd: Path, timeout: float) -> subprocess
     # 作業ツリーは取り込み後に消えるので、生の出力は本体側(metrics/work/oncall/raw/)に残す
     save_raw("oncall", name, r.stdout, r.stderr, r.returncode)
     # 認証切れ・利用上限は当番の失敗ではない(試行の回数に数えない。_main が引き取る)
-    blocked = cli_check("claude", "oncall", f"当番の修正({name})", r.returncode, r.stdout, r.stderr)
+    blocked = cli_check("claude", "oncall", f"当番の修正({name})", r.returncode, r.stdout, r.stderr, answered=finished(r))
     if blocked:
         raise CliBlocked(blocked)
     return r
+
+
+def finished(r) -> bool:
+    """答えの採用条件の「正常終了」の側: 終了コード 0、または schema どおりの答えを出し終えたあと、残った道具を待って終わらない
+    セッションを止めた(settled。答えの形は run_group の見張りが確かめている。CLI は答えを出した時点で仕事を終えている)。"""
+    return r.returncode == 0 or bool(getattr(r, "settled", False))
 
 
 def run_claude(prompt: str, schema_file: Path, cwd: Path, timeout: int = 1800) -> dict:
@@ -535,10 +556,10 @@ def run_claude(prompt: str, schema_file: Path, cwd: Path, timeout: int = 1800) -
     opts = ["--model", ONCALL_MODEL, "--dangerously-skip-permissions", "--json-schema", schema, "--max-budget-usd", ONCALL_MAX_BUDGET_USD]
     sid = str(uuid.uuid4())         # 答えの形を直させるときに、同じセッションを続けられるように名前を決めて始める
     t0 = time.monotonic()
-    r = _claude([short, "--session-id", sid, *opts], name, cwd, timeout)
-    # 採るのは正常に終わったセッションの、渡した schema どおりの答えだけ。{"status":"no_fix_needed"} だけの答えを
+    r = _claude([short, "--session-id", sid, *opts], name, cwd, timeout, schema)
+    # 採るのは正常に終わったセッション(finished)の、渡した schema どおりの答えだけ。{"status":"no_fix_needed"} だけの答えを
     # 診断も報告も無いまま「修正不要」にしない(監査指摘)
-    if r.returncode != 0:
+    if not finished(r):
         raise RuntimeError(f"当番セッションが異常終了した(exit {r.returncode}): {(r.stderr or r.stdout or '')[-300:]}")
     ans, why = take_answer(r.stdout or "", schema)
     rest = timeout - (time.monotonic() - t0)
@@ -547,8 +568,8 @@ def run_claude(prompt: str, schema_file: Path, cwd: Path, timeout: int = 1800) -
         # 2026-10-23 18:56 の当番は正しい答えを2回続けて出して読めない答えになり、作業を終えていた試行を1回失った
         ask = prompt_file("oncall", name + "-reformat", render_prompt("oncall-reformat", WHY=why), base=cwd)
         try:
-            r2 = _claude([ask, "--resume", sid, *opts], name + "-reformat", cwd, min(REFORMAT_TIMEOUT_SEC, rest))
-            ans, why2 = take_answer(r2.stdout or "", schema) if r2.returncode == 0 else (None, f"異常終了(exit {r2.returncode})")
+            r2 = _claude([ask, "--resume", sid, *opts], name + "-reformat", cwd, min(REFORMAT_TIMEOUT_SEC, rest), schema)
+            ans, why2 = take_answer(r2.stdout or "", schema) if finished(r2) else (None, f"異常終了(exit {r2.returncode})")
         except subprocess.TimeoutExpired:
             # 形を直させる回の時間切れも、答えが読めなかったこと(作業は最初の回で終わっている。監査指摘: 「途中で止まった」に戻った)
             ans, why2 = None, "時間切れ"
@@ -644,8 +665,10 @@ def run_codex(prompt: str, schema_file: Path, cwd: Path, timeout: int = 1800) ->
         """codex を1回走らせ、生の出力と答えのファイルを残し、認証切れ・利用上限を引き取る。戻りは (stdout, stderr, 終了値, 答え)。"""
         out_path.unlink(missing_ok=True)        # 前の回の答えを読み違えない
         try:
-            r = run_group(cmd, timeout=limit, cwd=aw, env=session_env(tmp))
-            so, se, code = r.stdout, r.stderr, r.returncode
+            # 答えのファイルが schema どおりに書けたのに終わらないセッションは、残った道具ごと止めてその答えを採る(当番と同じ)
+            r = run_group(cmd, timeout=limit, cwd=aw, env=session_env(tmp), answered=lambda _out: answer_ready(schema)(out_path))
+            so, se = r.stdout, r.stderr
+            code = 0 if finished(r) else r.returncode
         except subprocess.TimeoutExpired as e:
             (so, se), code = partial_output(e), None
             # 時間切れの回も、それまでの出力と答えのファイルを残してから上げる(finally で答えのファイルは消える)

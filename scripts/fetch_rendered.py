@@ -31,30 +31,74 @@ class RateLimited(Exception):
         self.retry_after = retry_after
 
 
-def document_status(entries) -> tuple[int | None, str, str]:
-    """性能ログ(performance)から、最初の文書(Document)の応答の (状態コード, Retry-After, 応答の URL)。見つからなければ (None, "", "")。"""
+def _events(entries):
+    """性能ログ(performance)の1件ずつの (method, params)。読めない行は飛ばす。"""
     for e in entries or []:
         try:
             msg = json.loads(e.get("message") or "{}").get("message") or {}
         except (ValueError, AttributeError):
             continue
-        if msg.get("method") != "Network.responseReceived":
+        yield msg.get("method"), msg.get("params") or {}
+
+
+def _main_frame(entries) -> str | None:
+    """主フレームの id(最初の文書の要求のフレーム)。分からなければ None。"""
+    for method, p in _events(entries):
+        if method == "Network.requestWillBeSent" and p.get("type") == "Document":
+            return p.get("frameId")
+    return None
+
+
+def document_status(entries) -> tuple[int | None, str, str]:
+    """性能ログから、主フレームの最後の文書(Document)の応答の (状態コード, Retry-After, 応答の URL)。見つからなければ (None, "", "")。
+    最後の文書を見る(最初の 200 の文書が JS で別の文書へ移り、そこで 429 になるのを見落とさない)。iframe の文書は見ない(Sol 監査 R429 r5)"""
+    main = _main_frame(entries)
+    last = (None, "", "")
+    for method, p in _events(entries):
+        if method != "Network.responseReceived" or p.get("type") != "Document":
             continue
-        params = msg.get("params") or {}
-        if params.get("type") != "Document":
+        if main is not None and p.get("frameId") not in (None, main):
             continue
-        res = params.get("response") or {}
+        res = p.get("response") or {}
         heads = {str(k).lower(): str(v) for k, v in (res.get("headers") or {}).items()}
         status = res.get("status")
-        return ((int(status) if isinstance(status, (int, float)) else None), heads.get("retry-after", "").strip(),
-                str(res.get("url") or ""))
-    return None, "", ""
+        last = ((int(status) if isinstance(status, (int, float)) else None), heads.get("retry-after", "").strip(), str(res.get("url") or ""))
+    return last
 
 
-def make_driver():
+def held_match(host: str, holds) -> str | None:
+    """host が控えているホスト(holds のどれか、またはその下のホスト)なら、その控えのホスト名。"""
+    host = (host or "").lower()
+    for h in holds or ():
+        if host == h or host.endswith("." + h):
+            return h
+    return None
+
+
+def blocked_document(entries, holds) -> str:
+    """主フレームの文書の要求が、控えているホストとして差し止められた(名前解決の差し止め --host-resolver-rules。転送の行き先を含む)
+    ときの、その URL。無ければ ""。"""
+    import urllib.parse
+    main = _main_frame(entries)
+    urls: dict[str, tuple[str, str | None]] = {}
+    for method, p in _events(entries):
+        if method == "Network.requestWillBeSent" and p.get("type") == "Document":
+            urls[p.get("requestId")] = (str((p.get("request") or {}).get("url") or ""), p.get("frameId"))   # 転送のたびに行き先で上書き
+        elif method == "Network.loadingFailed" and p.get("type") == "Document":
+            u, frame = urls.get(p.get("requestId"), ("", None))
+            if u and (main is None or frame in (None, main)) and held_match(urllib.parse.urlsplit(u).hostname, holds):
+                return u
+    return ""
+
+
+def make_driver(holds=None):
+    """holds(429 で控えているホスト)は名前解決で差し止める: ブラウザは、そのホストへ(転送の行き先・ページの中の要求を含めて)
+    要求を送らない(実測 2026-10-26: CDP の Network.setBlockedURLs はページの中の要求だけを止め、文書の遷移・転送は止めなかった)"""
     from selenium import webdriver
     from selenium.webdriver.chrome.options import Options
     opts = Options()
+    if holds:
+        opts.add_argument("--host-resolver-rules=" + ", ".join(f"MAP {h} ~NOTFOUND, MAP *.{h} ~NOTFOUND" for h in sorted(holds)))
     opts.add_argument("--headless=new")
     opts.add_argument("--no-sandbox")
     opts.add_argument("--disable-dev-shm-usage")
@@ -73,20 +117,44 @@ def make_driver():
     return webdriver.Chrome(options=opts)
 
 
-def fetch(url: str, wait_css: str | None, timeout: int) -> str:
+def check_documents(entries, holds: dict[str, float]) -> None:
+    """ここまでの性能ログで、主フレームの文書が 429 か、控えているホストとして差し止められたなら RateLimited を上げる。"""
+    import urllib.parse
+    blocked = blocked_document(entries, holds)
+    if blocked:
+        until = holds.get(held_match(urllib.parse.urlsplit(blocked).hostname, holds) or "", time.time())
+        raise RateLimited(f"{max(0.0, until - time.time()):.1f}", blocked)
+    status, after, where = document_status(entries)
+    if status == 429:
+        raise RateLimited(after, where)
+
+
+def fetch(url: str, wait_css: str | None, timeout: int, holds: dict[str, float] | None = None) -> str:
+    """holds は 429 で控えているホスト → 控えの時刻。ブラウザはそのホストへの要求を送らずに差し止める(描画の中の転送で、
+    控えているホストへ取得しない。Sol 監査 R429 r5)。主フレームの文書を差し止めた・文書が 429 なら RateLimited"""
     from selenium.webdriver.common.by import By
     from selenium.webdriver.support import expected_conditions as EC
     from selenium.webdriver.support.ui import WebDriverWait
-    driver = make_driver()
+    holds = holds or {}
+    driver = make_driver(holds)
+    logs: list = []
+
+    def drain() -> None:
+        try:
+            logs.extend(driver.get_log("performance"))
+        except Exception:       # noqa: BLE001  ログを取れないブラウザでは見分けない(従来どおり描画を返す)
+            pass
     try:
         driver.set_page_load_timeout(timeout + 10)
-        driver.get(url)
         try:
-            status, after, where = document_status(driver.get_log("performance"))
-        except Exception:       # noqa: BLE001  ログを取れないブラウザでは見分けない(従来どおり描画を返す)
-            status, after, where = None, "", ""
-        if status == 429:
-            raise RateLimited(after, where or driver.current_url)
+            driver.get(url)
+        except Exception:
+            # 読み込みが失敗・時間切れでも、差し止めた・429 だったならそちらを返す
+            drain()
+            check_documents(logs, holds)
+            raise
+        drain()
+        check_documents(logs, holds)
         if wait_css:
             WebDriverWait(driver, timeout).until(
                 EC.presence_of_element_located((By.CSS_SELECTOR, wait_css))
@@ -96,6 +164,9 @@ def fetch(url: str, wait_css: str | None, timeout: int) -> str:
                 lambda d: d.execute_script("return document.readyState") == "complete"
             )
             time.sleep(2)  # CSR の描画待ち
+        # 描画を待つあいだに JS で別の文書へ移って 429 になった・差し止めたなら、その画面を本文にしない
+        drain()
+        check_documents(logs, holds)
         return driver.page_source
     finally:
         driver.quit()
@@ -107,9 +178,17 @@ def main() -> int:
     ap.add_argument("--wait-css", default=None)
     ap.add_argument("--timeout", type=int, default=20)
     ap.add_argument("--out", default=None)
+    ap.add_argument("--hold", action="append", default=[], help="429 で控えているホスト=控えの時刻(この描画では要求を送らない)")
     args = ap.parse_args()
+    holds = {}
+    for h in args.hold:
+        name, _, t = h.partition("=")
+        try:
+            holds[name.strip().lower()] = float(t)
+        except ValueError:
+            continue
     try:
-        html = fetch(args.url, args.wait_css, args.timeout)
+        html = fetch(args.url, args.wait_css, args.timeout, holds)
     except RateLimited as e:
         print(f"RENDER_FAILED: {e}", file=sys.stderr)
         return RATE_LIMITED

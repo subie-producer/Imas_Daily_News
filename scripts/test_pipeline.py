@@ -5411,7 +5411,10 @@ def test_fetch_rendered_skips_images():
     try:
         sys.modules.update(fake)
         sys.modules.pop("fetch_rendered", None)
-        importlib.import_module("fetch_rendered").make_driver()
+        fr = importlib.import_module("fetch_rendered")
+        fr.make_driver({"held.example": 1.0})
+        held_args = list(got.pop("opts").args)
+        fr.make_driver()
     finally:
         for n, m in saved.items():
             if m is None:
@@ -5422,6 +5425,10 @@ def test_fetch_rendered_skips_images():
           f"描画取得が画像を読み込む(画像の多いページで読み込み完了に届かず時間切れになる): {got['opts'].prefs}")
     check(got["opts"].caps.get("goog:loggingPrefs") == {"performance": "ALL"},
           f"描画取得が性能ログを取らない(ページの 429 を見分けられない): {got['opts'].caps}")
+    # 429 で控えているホストは名前解決で差し止める(転送の行き先・ページの中の要求も送らない)。控えが無ければ付けない
+    check("--host-resolver-rules=MAP held.example ~NOTFOUND, MAP *.held.example ~NOTFOUND" in held_args
+          and not any(a.startswith("--host-resolver-rules") for a in got["opts"].args),
+          f"描画取得が 429 で控えているホストを差し止めない: {held_args}")
 
 
 def test_render_failure_keeps_cause(tmp: Path):
@@ -16995,18 +17002,106 @@ def test_http429_retry(tmp: Path):
         check(not after_dl, f"定点観測が収集の締切を過ぎてから取り直した: {[round(t - dl, 2) for t in after_dl]} 秒後")
         collect.DEADLINE = None
         # 7. 描画: ページが 429 なら Retry-After を守って描画し直す。上限を超えたら 429 で読めなかった(状態コードつき)
+        def ev(method, **params):
+            return {"message": json.dumps({"message": {"method": method, "params": params}})}
+
+        def doc_req(rid, url, frame="F1"):
+            return ev("Network.requestWillBeSent", requestId=rid, type="Document", frameId=frame, request={"url": url})
+
+        def doc_res(status, url, frame="F1", after=None):
+            return ev("Network.responseReceived", type="Document", frameId=frame,
+                      response={"status": status, "url": url, "headers": {"Retry-After": after} if after else {}})
         try:
             import fetch_rendered
-            entries = [{"message": json.dumps({"message": {"method": "Network.requestWillBeSent", "params": {}}})},
-                       {"message": json.dumps({"message": {"method": "Network.responseReceived", "params": {
-                           "type": "Document", "response": {"status": 429, "headers": {"Retry-After": "60"},
-                                                            "url": "https://to.example/x"}}}})},
-                       {"message": json.dumps({"message": {"method": "Network.responseReceived", "params": {
-                           "type": "Document", "response": {"status": 200, "headers": {}}}}})}]
-            st = fetch_rendered.document_status(entries)
+            # 主フレームの最後の文書を見る(200 の文書が JS で別の文書へ移って 429)。iframe の 429 は見ない(Sol 監査 R429 r5)
+            st = fetch_rendered.document_status([doc_req("r1", "https://from.example/a"), doc_res(200, "https://from.example/a"),
+                                                 doc_req("r2", "https://to.example/x"), doc_res(429, "https://to.example/x", after="60")])
+            st_iframe = fetch_rendered.document_status([doc_req("r1", "https://from.example/a"), doc_res(200, "https://from.example/a"),
+                                                        doc_req("r3", "https://ads.example/f", "F2"),
+                                                        doc_res(429, "https://ads.example/f", "F2", "60")])
+            # 控えているホストとして差し止めた主フレームの文書(転送の行き先)を見つける。iframe の差し止めは見ない
+            holds = {"held.example": _time.time() + 30}
+            bl = fetch_rendered.blocked_document([doc_req("r1", "https://from.example/a"), doc_req("r1", "https://held.example/b"),
+                                                  ev("Network.loadingFailed", requestId="r1", type="Document",
+                                                     errorText="net::ERR_NAME_NOT_RESOLVED")], holds)
+            bl_iframe = fetch_rendered.blocked_document([doc_req("r1", "https://from.example/a"), doc_req("r4", "https://held.example/c", "F2"),
+                                                         ev("Network.loadingFailed", requestId="r4", type="Document",
+                                                            errorText="net::ERR_NAME_NOT_RESOLVED")], holds)
+            bl_other = fetch_rendered.blocked_document([doc_req("r1", "https://from.example/a"),
+                                                        ev("Network.loadingFailed", requestId="r1", type="Document",
+                                                           errorText="net::ERR_NAME_NOT_RESOLVED")], holds)
+            bl = bl if bl_other == "" else f"控えていないホストを差し止めとした: {bl_other}"
         except Exception as e:      # noqa: BLE001
-            st = f"{type(e).__name__}: {e}"
-        check(st == (429, "60", "https://to.example/x"), f"描画の文書の応答の状態コード・Retry-After・URL を読めない: {st}")
+            st = st_iframe = bl = bl_iframe = f"{type(e).__name__}: {e}"
+        check(st == (429, "60", "https://to.example/x") and st_iframe[0] == 200,
+              f"描画の主フレームの最後の文書の状態コード・Retry-After・URL を読めない・iframe を見た: {st} {st_iframe}")
+        check(bl == "https://held.example/b" and bl_iframe == "", f"差し止めた主フレームの文書を見つけない・iframe を見た: {bl!r} {bl_iframe!r}")
+        # fetch_rendered.fetch(ブラウザだけ偽物): 控えているホストへの要求を差し止め、差し止めた・描画を待つあいだに 429 へ移ったら
+        # 本文にせず RateLimited にする
+        import types
+        cdp: list = []
+
+        class FakeDriver:
+            def __init__(self, logs):
+                self.logs = list(logs)
+                self.page_source = "<html>Too Many Requests</html>"
+                self.current_url = "https://from.example/a"
+
+            def execute_cdp_cmd(self, cmd, params):
+                cdp.append((cmd, params))
+
+            def set_page_load_timeout(self, t):
+                pass
+
+            def get(self, url):
+                pass
+
+            def get_log(self, kind):
+                return self.logs.pop(0) if self.logs else []
+
+            def execute_script(self, s):
+                return "complete"
+
+            def quit(self):
+                pass
+        fake_mods = {n: types.ModuleType(n) for n in ("selenium", "selenium.webdriver", "selenium.webdriver.chrome",
+                                                      "selenium.webdriver.chrome.options", "selenium.webdriver.common",
+                                                      "selenium.webdriver.common.by", "selenium.webdriver.support",
+                                                      "selenium.webdriver.support.ui", "selenium.webdriver.support.expected_conditions")}
+        fake_mods["selenium.webdriver.common.by"].By = object
+        fake_mods["selenium.webdriver.support"].expected_conditions = fake_mods["selenium.webdriver.support.expected_conditions"]
+        fake_mods["selenium.webdriver.support.ui"].WebDriverWait = lambda d, t: types.SimpleNamespace(until=lambda fn: fn(d))
+        saved_mods = {n: sys.modules.get(n) for n in fake_mods}
+        results = []
+        try:
+            sys.modules.update(fake_mods)
+            import fetch_rendered
+            for logs in ([[doc_req("r1", "https://from.example/a"), doc_res(200, "https://from.example/a")],
+                          [doc_req("r2", "https://from.example/b"), doc_res(429, "https://from.example/b", after="7")]],
+                         [[doc_req("r1", "https://from.example/a"), doc_req("r1", "https://held.example/b"),
+                           ev("Network.loadingFailed", requestId="r1", type="Document", errorText="net::ERR_NAME_NOT_RESOLVED")]]):
+                saved_make = fetch_rendered.make_driver
+                fetch_rendered.make_driver = lambda holds=None, logs=logs: (cdp.append(("make_driver", holds)), FakeDriver(logs))[1]
+                try:
+                    fetch_rendered.fetch("https://from.example/a", None, 5, {"held.example": _time.time() + 30})
+                    results.append(None)
+                except Exception as e:      # noqa: BLE001
+                    results.append(e)
+                finally:
+                    fetch_rendered.make_driver = saved_make
+        except Exception as e:      # noqa: BLE001
+            results.append(e)
+        finally:
+            for n, m in saved_mods.items():
+                if m is None:
+                    sys.modules.pop(n, None)
+                else:
+                    sys.modules[n] = m
+        given = [p for c, p in cdp if c == "make_driver"]
+        check(len(results) == 2 and all(type(r).__name__ == "RateLimited" for r in results)
+              and "url=https://from.example/b retry-after=7" in str(results[0]) and "url=https://held.example/b" in str(results[1])
+              and given and all("held.example" in (g or {}) for g in given),
+              f"描画が控えているホストを差し止めない・200→429 の遷移や差し止めを本文にした: {results} {given[:1]}")
         calls: list[float] = []
 
         def fake_rg(argv, timeout=None, cwd=None, **k):
@@ -17080,6 +17175,20 @@ def test_http429_retry(tmp: Path):
               and from_until < calls[0] + 0.5,
               f"描画の転送先の 429 の控えを応答したホストに付けない・守らない: {got[:120]!r} 控え 行き先 {to_until - calls[0]:.2f} "
               f"元 {from_until - calls[0]:.2f} 間隔 {[round(b - a, 2) for a, b in zip(calls, calls[1:])]}")
+        # 描画のブラウザには、いま 429 で控えているほかのホストを渡す(描画の中の転送で控えを素通りしない。Sol 監査 R429 r5)
+        argvs: list = []
+        pipelib._host_defer("held-render.example", 30)
+
+        def capture(argv, timeout=None, cwd=None, **k):
+            argvs.append(argv)
+            return subprocess.CompletedProcess(argv, 0, "<html>描画した本文</html>", "")
+        pipelib.run_group = capture
+        try:
+            pipelib.render_page("http://render-holds.example/x", 5)
+        except Exception as e:      # noqa: BLE001
+            argvs.append([repr(e)])
+        check(argvs and any(a.startswith("--hold=held-render.example=") for a in argvs[0]),
+              f"描画のブラウザに 429 で控えているホストを渡さない: {argvs[:1]}")
         # 裏取りの描画: 429 の待ちは収集の締切で切り(描画そのものは切らない)、429 で写しを照合できなかった候補は failed にしない
         # (Sol 監査 R429 r4)
         calls.clear()

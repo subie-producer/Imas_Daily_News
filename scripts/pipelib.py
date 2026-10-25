@@ -1873,6 +1873,29 @@ def _host_until(host: str) -> float:
     return _host_slots(host, lambda nxt, until: (until, nxt, until))
 
 
+def held_hosts() -> dict[str, float]:
+    """いま 429 で控えているホスト → 控えの時刻(置き場のファイルとプロセスの中の写し)。描画のブラウザは、このホストへの要求を送らない
+    (描画の中の転送の行き先は、描画の前に分からない。Sol 監査 R429 r5)"""
+    now = time.time()
+    out: dict[str, float] = {}
+    try:
+        files = list(host_gap_dir().iterdir())
+    except OSError:
+        files = []
+    for f in files:
+        try:
+            until = float(f.read_text(encoding="ascii", errors="replace").split()[1])
+        except (OSError, IndexError, ValueError):
+            continue
+        if until > now:
+            out[f.name] = until
+    with _HOST_LOCK:
+        for h, (_, until) in _HOST_NEXT.items():
+            if until > now:
+                out[h] = max(out.get(h, 0.0), until)
+    return out
+
+
 class _Budget:
     """1回の取得(転送・取り直しを含む)の待ちの予算: 待った秒数の合計(RATE_LIMIT_WAIT まで)・工程の締切 deadline(待ち・取得の
     どれも越えない)・429 の待ちだけを切る wait_deadline。転送の行き先の待ちも同じ予算から使う(Sol 監査 R429 r2)"""
@@ -2877,10 +2900,12 @@ def render_page(url: str, timeout: int = 30, limit: float | None = None, wait_de
         wait = timeout + 60 if left is None else min(timeout + 60, left)
         if wait <= 0:
             give_up("工程の締切を過ぎた", False)
+        # 429 で控えているほかのホスト: ブラウザはそこへの要求を送らない(描画の中で転送されても控えを素通りしない)
+        holds = [f"--hold={h}={t:.3f}" for h, t in sorted(held_hosts().items())]
         try:
             # ブラウザ(chromedriver・chrome)ごと止めるため、自前のグループで起動する(run_group)
-            r = run_group([str(ROOT / ".venv" / "bin" / "python"), str(ROOT / "scripts" / "fetch_rendered.py"), url, "--timeout", str(timeout)],
-                          timeout=wait, cwd=ROOT)
+            r = run_group([str(ROOT / ".venv" / "bin" / "python"), str(ROOT / "scripts" / "fetch_rendered.py"), url, "--timeout", str(timeout)]
+                          + holds, timeout=wait, cwd=ROOT)
         except subprocess.TimeoutExpired as e:
             raise RenderFailed(f"{url} の描画が {int(wait)} 秒で終わらず打ち切った: "
                                + render_failure("(時間切れ)", partial_output(e)[1])) from None

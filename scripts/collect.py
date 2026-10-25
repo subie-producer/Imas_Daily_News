@@ -1006,7 +1006,8 @@ def stash_pages(wd: Path) -> None:
         print(f"  読んだページの原本を預けられない({Path(wd).name}: {type(e).__name__}: {e})", flush=True)
 
 
-CAND_URL = re.compile(r"https?://[^\s\"'<>()（）「」『』、。]+")
+# 文に書かれた url(url に使える ASCII と括弧。和文が続いても url に含めない。閉じ括弧の食い込みは clean_url が外す)
+CAND_URL = re.compile(r"https?://[A-Za-z0-9\-._~:/?#@!$&*+,;=%()]+")
 
 
 def ingest_spools(cands: list[dict]) -> int:
@@ -1019,8 +1020,11 @@ def ingest_spools(cands: list[dict]) -> int:
             return 0
         wanted: set[str] = set()
         for c in cands:
-            texts = [str(c.get("url") or ""), str(c.get("link_from") or ""), *map(str, c.get("facts") or []), *map(str, c.get("quotes") or [])]
-            wanted |= {page_archive.page_key(u) for t in texts for u in CAND_URL.findall(t)}
+            # 候補の url・リンク元はそのまま鍵にする(文から拾う形で切ると、括弧を含む URL が預かりの鍵と合わない。Sol 監査 r5)
+            wanted |= {page_archive.page_key(u) for u in (c.get("url"), c.get("link_from")) if u}
+            texts = [*map(str, c.get("facts") or []), *map(str, c.get("quotes") or [])]
+            # 文の中の url は、閉じ括弧の食い込みを clean_url が外す(対になった括弧は残す)
+            wanted |= {page_archive.page_key(cu) for t in texts for u in CAND_URL.findall(t) if (cu := clean_url(u))}
         dirs = sorted(p for p in root.iterdir() if p.is_dir())
     except Exception as e:      # noqa: BLE001  預かりの置き場を読めなくても、素材の保存へ進む(Sol 監査 r1)
         print(f"  預かった原本の置き場を読めない({type(e).__name__}: {e})", flush=True)

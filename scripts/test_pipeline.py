@@ -17123,6 +17123,48 @@ def test_page_archive_versions_and_reads(tmp: Path):
             collect.verify([c_first, c_second])
     finally:
         collect.needs_render, collect.rendered_or_note, collect.urllib.request.urlopen = saved_w
+    # 17. 括弧を含む URL の探索の原本も、預かりから写す(候補の url はそのまま鍵。facts の中の url は閉じ括弧の食い込みだけ外す。Sol 監査 r5)
+    p_url, p_link = "https://audit.example/news/item(1)", "https://audit.example/goods(2)"
+    p_wd = tmp / "explore-paren"
+    pa.save(p_url, "括弧の告知。価格は3000円。", via="read", base=p_wd / collect.PAGE_SPOOL_NAME)
+    pa.save(p_link, "リンク先の告知。", via="read", base=p_wd / collect.PAGE_SPOOL_NAME)
+    saved_sp = collect.page_spool_root
+    try:
+        collect.page_spool_root = lambda: tmp / "spool-paren"
+        collect.stash_pages(p_wd)
+        n17 = collect.ingest_spools([cand_row("p", p_url, facts=[f"リンク: {p_link})を参照"])])
+    finally:
+        collect.page_spool_root = saved_sp
+    check(n17 == 2 and pa.baseline(p_url) and pa.baseline(p_link), f"括弧を含む URL の探索の原本を写さなかった: {n17}")
+    # 18. 同じ URL の先の候補がこの回に別の本文を正常に残しても、後の候補(503)は最初の原本で照らす(控えを使う)
+    t_url = "https://audit.example/same-url-2"
+    pa.save(t_url, "公式の本文。" + w_quote, via="collect", at="2026-10-25T20:00:00+09:00")
+    other_body = ("<html><body>" + "別の本文に差し替わった告知です。受注は終了しました。" * 20 + "</body></html>").encode()
+    calls["n"] = 0
+
+    class Other(Res):
+        def geturl(self): return t_url
+        def read(self, n=None): return other_body
+
+    def ok_then_503(req, timeout=15):
+        calls["n"] += 1
+        if calls["n"] == 1:
+            return Other()
+        raise urllib.error.HTTPError(t_url, 503, "Service Unavailable", h503, io.BytesIO(b"busy"))
+    t_first = {"url": t_url, "title": "告知", "facts": ["受注は終了"], "via": "explore", "source_type": "公式"}
+    t_second = {"url": t_url, "title": "告知", "facts": ["価格は3000円"], "quotes": [w_quote], "via": "explore", "source_type": "公式"}
+    saved_w = (collect.needs_render, collect.rendered_or_note, collect.urllib.request.urlopen)
+    try:
+        collect.needs_render = lambda u, t: False
+        collect.rendered_or_note = lambda u, limit=None: ("", "描画しない")
+        collect.urllib.request.urlopen = ok_then_503
+        with contextlib.redirect_stdout(io.StringIO()):
+            collect.verify([t_first, t_second])
+    finally:
+        collect.needs_render, collect.rendered_or_note, collect.urllib.request.urlopen = saved_w
+    check(len(pa.versions(t_url)) == 2 and t_second.get("verify") == "unconfirmed"
+          and t_second.get("archived_at") == "2026-10-25T20:00:00+09:00",
+          f"後の候補を、先の候補がこの回に残した本文で照らした: {t_second.get('verify')} {t_second.get('archived_at')} {t_second.get('verify_note')}")
     check(c_second.get("verify") == "unconfirmed" and not pipelib.candidate_misplaced(c_second) and len(pa.versions(s_url)) == 1,
           f"同じ URL の先の候補がこの回に残した本文で、後の候補を照らした: {c_second.get('verify')} {c_second.get('verify_note')} "
           f"{len(pa.versions(s_url))}")

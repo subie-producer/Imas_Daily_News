@@ -16855,13 +16855,18 @@ def test_page_archive_versions_and_reads(tmp: Path):
     e_url = "https://audit.example/explore-503"
     e_wd = tmp / "explore-wd2"
     quote = "探索が読んだ告知。価格は3000円。"
+    e_url2 = "https://audit.example/explore-503-other"
     pa.save(e_url, quote, via="read", at="2026-10-26T10:00:00+09:00", base=e_wd / collect.PAGE_SPOOL_NAME)
+    pa.save(e_url2, "別の告知。価格は900円。", via="read", at="2026-10-26T10:00:00+09:00", base=e_wd / collect.PAGE_SPOOL_NAME)
     merged: list = []
     h503 = email.message.Message()
 
     def fake_explores(skip_e, skip_g):
         collect.stash_pages(e_wd)
-        return [{"url": e_url, "title": "探索の告知", "facts": ["価格は3000円"], "quotes": [quote], "_via": "explore", "brand": "cg"}], {}
+        # 探索の答えの写しは単数の quote(normalize が quotes にする。Sol 監査 r3 の later: quotes で渡すと写しが照合に届かなかった)
+        return [{"url": e_url, "title": "探索の告知", "facts": ["価格は3000円"], "quote": quote, "_via": "explore", "brand": "cg"},
+                {"url": e_url2, "title": "探索の告知2", "facts": ["価格は900円"], "quote": "原本に無い写しの文です。価格は900円。",
+                 "_via": "explore", "brand": "cg"}], {}
 
     def down(req, timeout=15):
         raise urllib.error.HTTPError(getattr(req, "full_url", req), 503, "Service Unavailable", h503, io.BytesIO(b"busy"))
@@ -16888,9 +16893,49 @@ def test_page_archive_versions_and_reads(tmp: Path):
     check(pipelib.merge_candidate_facts(tgt, dict(tgt, archived_at="2026-10-25T21:00:00+09:00"))
           and tgt["archived_at"] == "2026-10-25T21:00:00+09:00", "原本の時刻だけの更新を、引き継ぎが変わっていないとした")
     got = [c for c in merged if c.get("url") == e_url]
+    got2 = [c for c in merged if c.get("url") == e_url2]
     check(got and got[0]["verify"] == "unconfirmed" and got[0].get("archived_at") == "2026-10-26T10:00:00+09:00"
-          and "収集時点" in got[0].get("verify_note", ""),
-          f"探索で読めた素材が、裏取りの 503 で failed になった: {[(c.get('verify'), c.get('verify_note')) for c in got]}")
+          and "収集時点" in got[0].get("verify_note", "") and got[0].get("quotes") == [quote],
+          f"探索で読めた素材が、裏取りの 503 で failed になった: {[(c.get('verify'), c.get('verify_note'), c.get('quotes')) for c in got]}")
+    check(got2 and got2[0]["verify"] == "failed" and "収集時点" in got2[0].get("verify_note", "") and pipelib.candidate_misplaced(got2[0]),
+          f"写しが原本に無い素材を、原本で照らして通した: {[(c.get('verify'), c.get('verify_note')) for c in got2]}")
+    # 12・13. 裏取り: 描画が要るのに描画できない / 描画で JS がメンテナンス画面へ転送された → 前の原本で照らし、原本を置き換えない(Sol 監査 r3)
+    for k, (render_ret, final_to) in {"timeout": (("", "描画の時間切れ"), None),
+                                      "mainte": (("<html><body>メンテナンス中です</body></html>", ""), "https://audit.example/mainte/index.html")}.items():
+        r_url2 = f"https://audit.example/verify-{k}"
+        long_quote = "新しいアクリルスタンドを11月3日から公式ショップで受注販売します。価格は3000円です。"
+        pa.save(r_url2, "公式の本文。" + long_quote, via="collect", at="2026-10-25T20:00:00+09:00", rendered=True)
+
+        class Nav(Res):
+            def geturl(self): return r_url2
+        c2 = {"url": r_url2, "title": "告知", "facts": ["価格は3000円"], "quotes": [long_quote], "via": "explore", "source_type": "公式"}
+
+        def fake_render(u, limit=None, ret=render_ret, to=final_to):
+            if to:
+                pipelib.RENDER_FINAL[u] = to
+            return ret
+        saved_c = (collect.urllib.request.urlopen, collect.needs_render, collect.rendered_or_note)
+        try:
+            collect.urllib.request.urlopen = lambda req, timeout=15: Nav()
+            collect.needs_render = lambda u, t: True
+            collect.rendered_or_note = fake_render
+            with contextlib.redirect_stdout(io.StringIO()):
+                collect.verify([c2])
+        finally:
+            collect.urllib.request.urlopen, collect.needs_render, collect.rendered_or_note = saved_c
+        b2 = pa.baseline(r_url2) or {}
+        check(c2.get("verify") == "unconfirmed" and c2.get("archived_at") == "2026-10-25T20:00:00+09:00" and "3000円" in b2.get("text", "")
+              and len(pa.versions(r_url2)) == 1, f"{k}: 裏取りが素の本文・案内で照らして落とした・原本を置き換えた: "
+                                                 f"{c2.get('verify')} {c2.get('verify_note')} {[v['at'] for v in pa.versions(r_url2)]}")
+    # 14. 描画で JS が別のページへ移ったら、行き先を転送先として出し、原本もそこで引ける(Sol 監査 r3 の later)
+    j_old, j_new = "https://audit.example/old", "https://audit.example/new"
+
+    def render_moved(url, timeout=30):
+        pipelib.RENDER_FINAL[url] = j_new
+        return "<html><body>移った先の告知。価格は3000円。</body></html>"
+    rc, out = run(j_old, ok("メニュー"), render_moved, needs=True)
+    check(rc == 0 and f"転送先 URL: {j_new}" in out and (pa.latest(j_new) or {}).get("text", "").startswith("移った先の告知")
+          and j_new in pipelib.fetched_urls(rec), f"描画の行き先を出さない・残さない: {out[:200]!r}")
 
 
 def test_page_archive_read_back(tmp: Path):

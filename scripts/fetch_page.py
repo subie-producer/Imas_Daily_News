@@ -194,7 +194,9 @@ def rendered_live(url: str, live: dict) -> dict:
     if maintenance_redirect(url, final):
         return {"kind": "maintenance", "final": final, "why": f"メンテナンス中({final} へ転送された)",
                 "msg": f"FETCH_FAILED: メンテナンス中({final} へ転送された)。このページの本文は今は読めない"}
-    return {**live, "text": html_to_text(rendered.encode("utf-8", "replace")), "html": rendered, "rendered": True}
+    # 描画で JS が別のページへ移ったら、その行き先を転送先として出す・記録する・原本を引けるようにする(Sol 監査 r3)
+    return {**live, "text": html_to_text(rendered.encode("utf-8", "replace")), "html": rendered, "rendered": True,
+            "final": final if final and final != url else live.get("final")}
 
 
 def archived(get, url: str) -> dict | None:

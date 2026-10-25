@@ -2222,6 +2222,7 @@ def verify(cands: list[dict]) -> dict:
     X は Grok の観測をもって verify とする(ログイン必須で機械的に読めないため)。
     """
     counts = {"confirmed": 0, "unconfirmed": 0, "failed": 0}
+    priors: dict[str, dict | None] = {}     # URL → この回の裏取りより前に残っていた原本(page_archive)
     for c in cands:
         try:
             stale = check_stale(c)
@@ -2265,25 +2266,33 @@ def verify(cands: list[dict]) -> dict:
                     # 「URL の取り違え」と記録し、なぜ落ちたかを当番が再現して確かめることになる(監査指摘
                     # render-diagnostic-lost-in-classification と同じ型)
                     render_errs: list[str] = []
+                    mainte: list[str] = []          # 描画で JS がメンテナンス画面へ転送した先
+                    # この回に残す前の原本(探索・前の収集が読んだ版)。描画できない・メンテナンスへ転送されたときはこれで照らす
+                    # (Sol 監査 r3: 描画できないときに素の本文(ナビ)を原本にして、写しが無いとして素材を落とした)
+                    # 同じ URL の候補が並ぶと、先の候補がこの回に残した版を「前の原本」と取り違える。この回の最初に引いた版を使う
+                    if c["url"] not in priors:
+                        try:
+                            priors[c["url"]] = page_archive.baseline(c["url"])
+                        except Exception:       # noqa: BLE001
+                            priors[c["url"]] = None
+                    prior = priors[c["url"]]
+                    best = {"text": text, "html": body, "rendered": False}     # 残す本文(描画できたら描画の本文)
 
-                    def keep(page_text: str, page_html, rendered: bool = False) -> None:
-                        # 収集時点の原本として残す(執筆・校閲が読み直せないときに使う。page_archive)。描画して照合し直した本文も
-                        # 残し、素材の archived_at はいちばん新しく残した版を指す(Sol 監査 r1: 描画で確かめた価格が原本に無かった)
-                        kept = keep_page(c["url"], page_text, page_html, RENDER_FINAL.get(c["url"]) if rendered else final,
-                                         res.status, rendered=rendered)
-                        if kept:
-                            c["archived_at"] = page_archive.fetched_at(kept)
-                    # CSR で本文が空同然か、描画必須のサイト(定点観測の portal)なら描画してから読み直す(定点観測と同じ経路)
-                    if needs_render(c["url"], text):
+                    def render() -> str | None:
+                        # 描画して読み直した本文(描画できない・メンテナンス画面へ転送されたら None。案内を本文として照らさない)
                         rendered, why = rendered_or_note(c["url"])
-                        render_errs += [why] if why else []
-                        if rendered:
-                            text = html_to_text(rendered.encode("utf-8", "replace"))
-                            keep(text, rendered, True)
-                        else:
-                            keep(text, body)
-                    else:
-                        keep(text, body)
+                        if rendered and maintenance_redirect(c["url"], RENDER_FINAL.get(c["url"])):
+                            mainte.append(RENDER_FINAL[c["url"]])
+                            return None
+                        if not rendered:
+                            render_errs.append(why or "描画が空")
+                            return None
+                        best.update(text=html_to_text(rendered.encode("utf-8", "replace")), html=rendered, rendered=True)
+                        return best["text"]
+                    # CSR で本文が空同然か、描画必須のサイト(定点観測の portal)なら描画してから読み直す(定点観測と同じ経路)
+                    must_render = needs_render(c["url"], text)
+                    if must_render:
+                        text = render() or text
                     periods = extract_periods(text)
                     if periods:
                         c["periods"] = periods
@@ -2296,12 +2305,9 @@ def verify(cands: list[dict]) -> dict:
                     # portal 以外のサイトの描画漏れに備え、粒が欠けたときにも描画する
                     unbacked = unbacked_facts(c.get("facts") or [], text)
                     if unbacked:
-                        rendered, why = rendered_or_note(c["url"])
-                        render_errs += [why] if why else []
-                        if rendered:
-                            unbacked = unbacked_facts(c.get("facts") or [],
-                                                      html_to_text(rendered.encode("utf-8", "replace")))
-                            keep(html_to_text(rendered.encode("utf-8", "replace")), rendered, True)
+                        rtext = render()
+                        if rtext is not None:
+                            unbacked = unbacked_facts(c.get("facts") or [], rtext)
                     if unbacked:
                         c["unbacked_facts"] = unbacked[:12]
                     # **写しがそのページに無ければ、URL の取り違え。**事実は別のページのもので、この候補には出典が無い。
@@ -2312,13 +2318,26 @@ def verify(cands: list[dict]) -> dict:
                     missing = [q for q in quotes if quote_on_page(q, text) is False]
                     matched = any(quote_on_page(q, text) for q in quotes)
                     if missing:
-                        rendered, why = rendered_or_note(c["url"])
-                        render_errs += [why] if why else []
-                        if rendered:
-                            rtext = html_to_text(rendered.encode("utf-8", "replace"))
-                            keep(rtext, rendered, True)
+                        rtext = render()
+                        if rtext is not None:
                             missing = [q for q in missing if quote_on_page(q, rtext) is False]
                             matched = matched or any(quote_on_page(q, rtext) for q in quotes)
+                    # 描画で JS がメンテナンス画面へ転送された・描画が要るのに描画できず写しも照らせない: 今は確かめられないだけ。
+                    # 前の原本があればそれで照らし(unconfirmed)、この回の本文は原本にしない
+                    if mainte or (prior and render_errs and (missing or (must_render and not best["rendered"]))):
+                        why = (f"メンテナンス中({mainte[0]} へ転送)" if mainte else f"描画できない({render_errs[-1][:120]})")
+                        if not (prior and archived_check(c, why, base=prior)):
+                            c["verify"] = "unconfirmed"
+                            c["verify_note"] = f"出典が{why}で、facts を本文で確かめられない"[:300]
+                        counts[c["verify"]] += 1
+                        continue
+                    # 収集時点の原本として残す(執筆・校閲が読み直せないときに使う。page_archive)。描画できたら描画の本文を残す。
+                    # 前の原本があって描画できなかったときは上で抜けている(素の本文で前の原本を置き換えない)。
+                    # 素材の archived_at は残した版を指す(Sol 監査 r1: 描画で確かめた価格が原本に無かった)
+                    kept = keep_page(c["url"], best["text"], best["html"],
+                                     RENDER_FINAL.get(c["url"]) if best["rendered"] else final, res.status, rendered=best["rendered"])
+                    if kept:
+                        c["archived_at"] = page_archive.fetched_at(kept)
                     if missing:
                         c["verify"] = "failed"
                         c["verify_note"] = (f"写しが出典の本文に無い(URL の取り違えの疑い): {missing[0][:60]}"
@@ -2356,13 +2375,15 @@ def note_archived(c: dict) -> None:
         c["archived_at"] = page_archive.fetched_at(b)
 
 
-def archived_check(c: dict, why: str) -> bool:
-    """出典を読み直せないとき、収集時点の原本(page_archive)で facts の日付・金額と写しを照らす。原本が無ければ False。
+def archived_check(c: dict, why: str, base: dict | None = None) -> bool:
+    """出典を読み直せないとき、収集時点の原本(page_archive。base を渡せばその版)で facts の日付・金額と写しを照らす。原本が無ければ False。
     照らせたら unconfirmed(読み直していないので confirmed は名乗らない)。写しが原本に無ければ failed(URL の取り違え)"""
-    try:
-        b = page_archive.baseline(c["url"])
-    except Exception:       # noqa: BLE001  置き場を読めなければ原本は無いものとする
-        b = None
+    b = base
+    if b is None:
+        try:
+            b = page_archive.baseline(c["url"])
+        except Exception:       # noqa: BLE001  置き場を読めなければ原本は無いものとする
+            b = None
     if not b:
         return False
     text, at = b["text"], page_archive.fetched_at(b)
@@ -2376,7 +2397,8 @@ def archived_check(c: dict, why: str) -> bool:
     missing = [q for q in c.get("quotes") or [] if quote_on_page(q, text) is False]
     if missing:
         c["verify"] = "failed"
-        c["verify_note"] = f"写しが収集時点({at[:16]})の原本に無い(URL の取り違えの疑い): {missing[0][:60]}"
+        # 書き出しは本文で照らしたときと同じ(candidate_misplaced が取り違えとして見分ける)
+        c["verify_note"] = f"写しが出典の本文に無い(収集時点({at[:16]})の原本で照合。URL の取り違えの疑い): {missing[0][:60]}"
     else:
         c["verify"] = "unconfirmed"
         c["verify_note"] = f"出典を読み直せず({why[:120]})、収集時点({at[:16]})に読んだ原本で照合した"[:300]

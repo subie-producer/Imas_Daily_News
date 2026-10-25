@@ -36,6 +36,7 @@ from pipelib import (ENV, ROOT, COLLECT_MODEL, EXPLORE_MODEL, ID_CASE_HOSTS, QUE
                      edition_date, extract_json_array, html_to_text, notify, render_failure, set_quiet,
                      X_ANON_POST, x_post_author, CLI_BLOCKED_EXIT, CliBlocked, cli_check, link_key, src_rank)
 from pipelib import PAGE_READ_BYTES, run_group   # モデル・道具は自前のグループで起動し、時間切れでは子孫まで止める
+from pipelib import polite_urlopen      # ページの取得は同じホストへの間隔をあけ、429 は Retry-After を守って取り直す
 
 # 合議で足してよい種別。公式・準公式も答えさせる(作品・ブランドの公式アカウントを「不明」で人へ回して
 # いたら、@idolmaster_en もジムシャニ公式も未確認のまま紙面に載った。編集長の指摘)。
@@ -452,7 +453,7 @@ def expand_short_fetch(url: str, hops: int = 5) -> str:
             return cur
         nxt = ""
         try:
-            with opener.open(urllib.request.Request(cur, headers={"User-Agent": UA}), timeout=20) as r:
+            with polite_urlopen(urllib.request.Request(cur, headers={"User-Agent": UA}), timeout=20, opener=opener) as r:
                 body = r.read(100_000).decode("utf-8", "replace")
             m = (re.search(r'http-equiv=["\']?refresh["\']?[^>]*content=["\'][^"\']*?url=([^"\'>]+)', body, re.I)
                  or re.search(r'location\.replace\(["\']([^"\']+)', body))
@@ -730,7 +731,7 @@ def booth_item_shop(item_id: str, fetch=None) -> tuple[str, str]:
         if fetch is None:
             import urllib.request
             req = urllib.request.Request(url, headers={"User-Agent": UA, "Accept": "application/json"})
-            with urllib.request.urlopen(req, timeout=20) as r:
+            with polite_urlopen(req, timeout=20) as r:
                 body = r.read().decode("utf-8")
         else:
             body = fetch(url)
@@ -913,7 +914,7 @@ def page_meta(url: str) -> tuple[str, str, str]:
     try:
         import urllib.request
         req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0", "Accept-Language": "ja"})
-        with urllib.request.urlopen(req, timeout=20) as r:
+        with polite_urlopen(req, timeout=20) as r:
             html = r.read(400_000).decode(r.headers.get_content_charset() or "utf-8", "replace")
         t = re.search(r"<title[^>]*>(.*?)</title>", html, re.S | re.I)
         d = re.search(r'<meta[^>]+(?:name|property)=["\'](?:description|og:description|og:site_name)["\'][^>]+content=["\']([^"\']*)', html, re.I)
@@ -985,7 +986,7 @@ def page_excerpt(url: str, chars: int = 1200) -> str:
     try:
         import urllib.request
         req = urllib.request.Request(url, headers={"User-Agent": UA})
-        with urllib.request.urlopen(req, timeout=20) as r:
+        with polite_urlopen(req, timeout=20) as r:
             text = html_to_text(r.read(PAGE_READ_BYTES), r.headers.get_content_charset())
         return re.sub(r"\s+", " ", text).strip()[:chars]
     except Exception as e:
@@ -1373,7 +1374,7 @@ def nico_channel_alias(ch_id: str, ch_url: str = "") -> str:
     try:
         import urllib.request
         req = urllib.request.Request(ch_url or f"https://ch.nicovideo.jp/channel/{ch_id}", headers={"User-Agent": "Mozilla/5.0"})
-        with urllib.request.urlopen(req, timeout=20) as r:
+        with polite_urlopen(req, timeout=20) as r:
             final = r.geturl()
             cpage = r.read(200_000).decode("utf-8", "replace")
         c = re.search(r'<link rel="canonical" href="https://ch\.nicovideo\.jp/([^"/?#]+)', cpage)
@@ -1397,7 +1398,7 @@ def nico_channel_fetch(vid: str, page: str | None = None, fetch_alias: bool = Tr
         try:
             import urllib.request
             req = urllib.request.Request(nico_watch_url(vid), headers={"User-Agent": "Mozilla/5.0", "Accept-Language": "ja"})
-            with urllib.request.urlopen(req, timeout=20) as r:
+            with polite_urlopen(req, timeout=20) as r:
                 page = r.read(600_000).decode("utf-8", "replace")
         except Exception as e:
             print(f"  ニコニコのページを取得できず {vid}: {type(e).__name__}", flush=True)
@@ -1482,7 +1483,7 @@ def video_author(vid: str) -> tuple[str, str]:
         import urllib.request
         q = urllib.parse.urlencode({"url": f"https://www.youtube.com/watch?v={vid}", "format": "json"})
         req = urllib.request.Request(f"https://www.youtube.com/oembed?{q}", headers={"User-Agent": UA})
-        with urllib.request.urlopen(req, timeout=20) as r:
+        with polite_urlopen(req, timeout=20) as r:
             d = json.loads(r.read().decode("utf-8"))
         handle = urllib.parse.unquote((d.get("author_url") or "").rstrip("/").rsplit("/", 1)[-1]).removeprefix("@")
         return handle, str(d.get("title") or "")
@@ -1494,7 +1495,7 @@ def video_author(vid: str) -> tuple[str, str]:
         import urllib.request
         req = urllib.request.Request(f"https://www.youtube.com/watch?v={vid}",
                                      headers={"User-Agent": "Mozilla/5.0", "Accept-Language": "ja"})
-        with urllib.request.urlopen(req, timeout=20) as r:
+        with polite_urlopen(req, timeout=20) as r:
             html = r.read().decode("utf-8", "replace")
         m = re.search(r'"ownerProfileUrl":"[^"]*?/@([^"/]+)"', html) or re.search(r'"canonicalBaseUrl":"/@([^"/]+)"', html)
         t = re.search(r'<meta name="title" content="([^"]*)"', html) or re.search(r'<title>([^<]*)</title>', html)
@@ -1522,7 +1523,7 @@ def playlist_author(list_id: str, fetch=None) -> tuple[str, str]:
     try:
         if fetch is None:
             req = urllib.request.Request(f"https://www.youtube.com/oembed?{q}", headers={"User-Agent": UA})
-            with urllib.request.urlopen(req, timeout=20) as r:
+            with polite_urlopen(req, timeout=20) as r:
                 body = r.read().decode("utf-8")
         else:
             body = fetch(f"https://www.youtube.com/oembed?{q}")

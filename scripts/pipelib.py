@@ -1670,6 +1670,120 @@ def maintenance_http_error(e: BaseException) -> bool:
     return maintenance_screen(e.code, body, e.headers.get_content_charset() if e.headers else None)
 
 
+# ページの取得の間隔と、HTTP 429(取得が多すぎる)の取り直し。429 は相手の停止ではなく、こちらのアクセスの仕方(間隔・回数)への応答で、
+# こちらで直せる(編集長 2026-10-26「429を外部のせいはちょっとないな」。10/26 号で anime-store.jp・shop.mining-base.co.jp が 429 を返し
+# 見送り5本を「外部」と診断したが、60〜90 秒あけて取り直すだけで読めた)。ページを取る経路(fetch_page.py・定点観測・確かめ・facts 化・
+# 描画・出典の判定)は polite_urlopen / render_page を通す。間隔の予約はホストごとのファイルで、並列の執筆セッション(別プロセス)でも共有する
+HOST_GAP = 1.0                  # 同じホストへの取得の最小の間隔(秒)
+RATE_LIMIT_TRIES = 3            # 429 を受けたあとの取り直しの回数の上限
+RATE_LIMIT_WAIT = 120.0         # 429 で待つ秒数の合計の上限(工程の締切の残りが短ければそちら)
+RATE_LIMIT_DEFAULT = 30.0       # Retry-After が無い・読めない 429 の待ち(秒)
+HOST_GAP_DIR_ENV = "IMAS_HOST_GAP_DIR"     # ホストごとの次に取得してよい時刻の置き場(既定は一時ディレクトリの下)
+_HOST_NEXT: dict[str, list[float]] = {}     # 置き場に書けないときの、このプロセスの中だけの予約([次の枠の時刻, 429 で控える時刻])
+_HOST_LOCK = threading.Lock()
+
+
+class RateLimitWait(OSError):
+    """相手が求めた待ち(429 の Retry-After・ホストの予約)が、待ってよい秒数を超えた。取得はしていない。"""
+
+
+def retry_after_seconds(headers) -> float:
+    """429 の Retry-After(秒数か HTTP の日付)を秒にする。無い・読めないときは RATE_LIMIT_DEFAULT。"""
+    import email.utils
+    v = str((headers.get("Retry-After") if headers is not None else None) or "").strip()
+    if re.fullmatch(r"\d+(?:\.\d+)?", v):
+        return float(v)
+    try:
+        when = email.utils.parsedate_to_datetime(v)
+        return max(0.0, when.timestamp() - time.time())
+    except (TypeError, ValueError, IndexError):
+        return RATE_LIMIT_DEFAULT
+
+
+def host_gap_dir() -> Path:
+    """ホストごとの次に取得してよい時刻の置き場(HOST_GAP_DIR_ENV。無ければ一時ディレクトリの下)。子のセッションには同じ置き場を渡す"""
+    import tempfile
+    return Path(os.environ.get(HOST_GAP_DIR_ENV) or Path(tempfile.gettempdir()) / "imas-host-gap")
+
+
+def _host_reserve(host: str, max_wait: float, defer: float | None = None) -> float:
+    """ホストの次の取得の枠を予約し、その時刻までの秒数を返す(呼び出し側が待つ)。前の取得から HOST_GAP 秒あける。
+    defer を渡すと取得はせず、次に取得してよい時刻を今から defer 秒後より前にしない(429 の Retry-After を同じホストの全員が守る)。
+    429 の求めた待ちが max_wait を超えるなら予約せず RateLimitWait(間隔だけの待ちは max_wait で切らない。429 を受けていないのに
+    429 で読めなかったとしない)。予約はファイル(HOST_GAP_DIR_ENV。中身は「次の枠の時刻 429 で控える時刻」)で、書けなければこのプロセスの中だけ"""
+    import fcntl
+
+    def decide(nxt: float, until: float) -> tuple[float, float, float]:
+        now = time.time()
+        if defer is not None:
+            return 0.0, max(nxt, now + defer), max(until, now + defer)
+        if until - now > max_wait:
+            raise RateLimitWait(f"{host} は {until - now:.0f} 秒後まで取得を控える(429 の求めた待ち)。待ってよい {max(0, max_wait):.0f} 秒を超える")
+        start = max(now, nxt, until)
+        return start - now, start + HOST_GAP, until
+    if not host:
+        return 0.0
+    folder = host_gap_dir()
+    try:
+        folder.mkdir(parents=True, exist_ok=True)
+        fd = os.open(folder / re.sub(r"[^A-Za-z0-9.-]", "_", host), os.O_RDWR | os.O_CREAT, 0o644)
+    except OSError:
+        with _HOST_LOCK:
+            wait, nxt, until = decide(*(_HOST_NEXT.get(host) or (0.0, 0.0)))
+            _HOST_NEXT[host] = [nxt, until]
+            return wait
+    try:
+        fcntl.flock(fd, fcntl.LOCK_EX)
+        try:
+            nxt, until = (float(x) for x in (os.pread(fd, 64, 0).decode("ascii", "replace").split() + ["0", "0"])[:2])
+        except ValueError:
+            nxt, until = 0.0, 0.0
+        wait, nxt, until = decide(nxt, until)
+        os.ftruncate(fd, 0)
+        os.pwrite(fd, f"{nxt:.3f} {until:.3f}".encode("ascii"), 0)
+        return wait
+    finally:
+        os.close(fd)        # 閉じるとロックも外れる
+
+
+def polite_urlopen(req, timeout: float, budget: float | None = None, opener=None):
+    """ページの取得(urlopen と同じ戻り・例外)。同じホストへは HOST_GAP 秒あけ、HTTP 429 は Retry-After(無ければ RATE_LIMIT_DEFAULT)を
+    守って取り直す(RATE_LIMIT_TRIES 回・待ちの合計は RATE_LIMIT_WAIT と budget の小さいほうまで)。上限を超えても 429 なら、最後の
+    HTTPError(code 429)に「429 で読めなかった(取り直し・待ちの合計)」を書き足して上げる。相手の求めた待ちが残りを超えるときは、
+    待たずにその場で上げる。opener は urlopen の代わり(転送を追わない opener 等。open(req, timeout=) を持つもの)"""
+    import urllib.error
+    if isinstance(req, str):
+        req = urllib.request.Request(req)
+    host = site_host(req.full_url)
+    cap = RATE_LIMIT_WAIT if budget is None else max(0.0, min(RATE_LIMIT_WAIT, budget))
+    waited, tries = 0.0, 0
+    while True:
+        try:
+            gap = _host_reserve(host, cap - waited)
+        except RateLimitWait as e:
+            raise urllib.error.HTTPError(req.full_url, 429, f"429 で読めなかった({e}。取り直し {tries} 回・待ち {waited:.0f} 秒)",
+                                         None, None) from None
+        if gap > 0:
+            time.sleep(gap)
+            waited += gap
+        try:
+            return opener.open(req, timeout=timeout) if opener is not None else urllib.request.urlopen(req, timeout=timeout)
+        except urllib.error.HTTPError as e:
+            if e.code != 429:
+                raise
+            wait = retry_after_seconds(e.headers)
+            _host_reserve(host, 0.0, defer=wait)
+            if tries >= RATE_LIMIT_TRIES or waited + wait > cap:
+                e.msg = (f"{e.msg or 'Too Many Requests'}: 429 で読めなかった(取り直し {tries} 回・待ち {waited:.0f} 秒。"
+                         f"相手の求めた待ち {wait:.0f} 秒は上限 {cap:.0f} 秒に収まらない)" if waited + wait > cap else
+                         f"{e.msg or 'Too Many Requests'}: 429 で読めなかった(取り直し {tries} 回・待ち {waited:.0f} 秒)")
+                raise
+            with contextlib.suppress(Exception):
+                e.close()
+            print(f"  {host} が HTTP 429。{wait:.0f} 秒待って取り直す({tries + 1}/{RATE_LIMIT_TRIES})", file=sys.stderr, flush=True)
+            tries += 1
+
+
 # メンテナンスで読めなかったサイトの、断り書きでの呼び名(ここに無いサイトはホスト名で書く)
 MAINTENANCE_SITE_NAMES = {"idolmaster-official.jp": "公式ポータル", "lantis.jp": "ランティス", "asobistore.jp": "ASOBI STORE"}
 # 断り書きを付け始めた号と、それより前に発行した号の文面(発行済みの号は再生成しても文面を変えない)。
@@ -1772,16 +1886,20 @@ def _append_line(path, line: str) -> None:
         os.close(fd)
 
 
-def note_fetched(url: str, final: str | None = None, maintenance: bool = False, failed: bool = False) -> None:
+def note_fetched(url: str, final: str | None = None, maintenance: bool = False, failed: bool = False, http: int | None = None) -> None:
     """本文を取れたページを FETCH_RECORD_ENV の記録に書き足す(変数が無ければ何もしない)。書けなくても読み取りは止めない
     (stderr に出し、書けなかった印(record_failed_marker)を残す。組版が異常として申告する。記録に無いページは検算が差し戻す)。
     maintenance=True はメンテナンス画面へ転送されたページで、隣の記録(maintenance_record)へ書く(根拠にできるページには入れない)。
-    failed=True はメンテナンスでない理由で読めなかったページで、隣の記録(failed_record)へ書く"""
+    failed=True はメンテナンスでない理由で読めなかったページで、隣の記録(failed_record)へ書く。http は読めなかったときの HTTP の状態コード
+    (429 = 取り直しの上限を超えても読めなかった)で、あれば行に残す"""
     base = os.environ.get(FETCH_RECORD_ENV)
     if not base:
         return
     rec = str(maintenance_record(base) if maintenance else failed_record(base) if failed else base)
-    line = json.dumps({"url": url, "final": final if final and final != url else None}, ensure_ascii=False) + "\n"
+    row = {"url": url, "final": final if final and final != url else None}
+    if http is not None:
+        row["http"] = http
+    line = json.dumps(row, ensure_ascii=False) + "\n"
     try:
         _append_line(rec, line)
     except OSError as e:
@@ -2508,7 +2626,14 @@ def render_hosts() -> set[str]:
 
 
 class RenderFailed(RuntimeError):
-    """描画取得(fetch_rendered.py)の失敗。終了コードと stderr の要点を持つ。"""
+    """描画取得(fetch_rendered.py)の失敗。終了コードと stderr の要点を持つ。status はページの HTTP の状態コード(429 で読めなかったとき)"""
+    def __init__(self, msg: str, status: int | None = None):
+        super().__init__(msg)
+        self.status = status
+
+
+# fetch_rendered.py の終了コード: ページ(文書そのもの)が HTTP 429 を返した。stderr に `retry-after=<値>` を出す(render_page が待って描画し直す)
+RENDER_RATE_LIMITED = 75
 
 
 def render_failure(returncode, stderr: str) -> str:
@@ -2524,24 +2649,53 @@ def render_page(url: str, timeout: int = 30, limit: float | None = None) -> str:
     """ヘッドレスブラウザで描画したページの HTML。**失敗を空で返さない**: 非正常終了・時間切れ・空の出力は、
     終了コードと stderr の要点を持った RenderFailed で上げる。以前は空文字に変えていて、呼び出し側の記録は「空の応答」
     だけになり、原因(2026-10-07 コロムビアの一覧の TimeoutException)を当番が別に再現して確かめていた(当番の指摘 dc23e62472)。
-    limit は待ってよい秒数の上限(工程の締切の残り。0 以下なら起動しない)。"""
-    wait = timeout + 60 if limit is None else min(timeout + 60, limit)
-    if wait <= 0:
-        raise RenderFailed(f"{url} を描画しない: 工程の締切を過ぎた")
-    try:
-        # ブラウザ(chromedriver・chrome)ごと止めるため、自前のグループで起動する(run_group)
-        r = run_group([str(ROOT / ".venv" / "bin" / "python"), str(ROOT / "scripts" / "fetch_rendered.py"), url, "--timeout", str(timeout)],
-                      timeout=wait, cwd=ROOT)
-    except subprocess.TimeoutExpired as e:
-        raise RenderFailed(f"{url} の描画が {int(wait)} 秒で終わらず打ち切った: "
-                           + render_failure("(時間切れ)", partial_output(e)[1])) from None
-    except OSError as e:
-        raise RenderFailed(f"{url} の描画を起動できない: {type(e).__name__}: {e}") from None
-    if r.returncode != 0:
-        raise RenderFailed(f"{url} の描画に失敗: " + render_failure(r.returncode, r.stderr))
-    if not (r.stdout or "").strip():
-        raise RenderFailed(f"{url} の描画が空の HTML を返した: " + render_failure(r.returncode, r.stderr))
-    return r.stdout
+    limit は待ってよい秒数の上限(工程の締切の残り。0 以下なら起動しない)。
+    同じホストへは HOST_GAP 秒あけ、ページが HTTP 429 を返したら(fetch_rendered.py が RENDER_RATE_LIMITED で終わる)Retry-After を守って
+    描画し直す(polite_urlopen と同じ回数・待ちの上限。limit があればその残りまで)。上限を超えたら「429 で読めなかった」の RenderFailed"""
+    started = time.time()
+    tries, waited = 0, 0.0
+    host = site_host(url)
+    cap = RATE_LIMIT_WAIT if limit is None else max(0.0, min(RATE_LIMIT_WAIT, limit))     # 待ちの合計の上限
+    while True:
+        left = None if limit is None else limit - (time.time() - started)
+        wait = timeout + 60 if left is None else min(timeout + 60, left)
+        if wait <= 0:
+            raise RenderFailed(f"{url} を描画しない: 工程の締切を過ぎた")
+        try:
+            gap = _host_reserve(host, cap - waited)
+        except RateLimitWait as e:
+            raise RenderFailed(f"{url} の描画: 429 で読めなかった({e}。取り直し {tries} 回・待ち {waited:.0f} 秒)", status=429) from None
+        if gap > 0:
+            time.sleep(gap)
+            waited += gap
+            if left is not None:
+                wait = min(wait, limit - (time.time() - started))
+                if wait <= 0:
+                    raise RenderFailed(f"{url} を描画しない: 工程の締切を過ぎた")
+        try:
+            # ブラウザ(chromedriver・chrome)ごと止めるため、自前のグループで起動する(run_group)
+            r = run_group([str(ROOT / ".venv" / "bin" / "python"), str(ROOT / "scripts" / "fetch_rendered.py"), url, "--timeout", str(timeout)],
+                          timeout=wait, cwd=ROOT)
+        except subprocess.TimeoutExpired as e:
+            raise RenderFailed(f"{url} の描画が {int(wait)} 秒で終わらず打ち切った: "
+                               + render_failure("(時間切れ)", partial_output(e)[1])) from None
+        except OSError as e:
+            raise RenderFailed(f"{url} の描画を起動できない: {type(e).__name__}: {e}") from None
+        if r.returncode == RENDER_RATE_LIMITED:
+            m = re.search(r"retry-after=([^\n]*)", r.stderr or "")
+            after = retry_after_seconds({"Retry-After": m.group(1).strip() if m else ""})
+            _host_reserve(host, 0.0, defer=after)
+            if tries >= RATE_LIMIT_TRIES or waited + after > cap:
+                raise RenderFailed(f"{url} の描画: 429 で読めなかった(取り直し {tries} 回・待ち {waited:.0f} 秒。"
+                                   f"相手の求めた待ち {after:.0f} 秒・上限 {cap:.0f} 秒)", status=429)
+            print(f"  {host} が HTTP 429(描画)。{after:.0f} 秒待って描画し直す({tries + 1}/{RATE_LIMIT_TRIES})", file=sys.stderr, flush=True)
+            tries += 1
+            continue
+        if r.returncode != 0:
+            raise RenderFailed(f"{url} の描画に失敗: " + render_failure(r.returncode, r.stderr))
+        if not (r.stdout or "").strip():
+            raise RenderFailed(f"{url} の描画が空の HTML を返した: " + render_failure(r.returncode, r.stderr))
+        return r.stdout
 
 
 def needs_render(url: str, text: str) -> bool:
@@ -3448,7 +3602,7 @@ def x_post_author(post_id: str, fetch=None) -> str:
 
     def get(url: str) -> str:
         req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0 (compatible; ImasNews/1.0)"})
-        with urllib.request.urlopen(req, timeout=20) as r:
+        with polite_urlopen(req, timeout=20) as r:
             return r.read().decode("utf-8", errors="replace")
     meta = {}
     try:

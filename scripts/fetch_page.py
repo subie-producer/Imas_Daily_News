@@ -31,8 +31,8 @@ import urllib.request
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from pipelib import (PAGE_READ_BYTES, RenderFailed, extract_periods, html_to_text, maintenance_http_error, maintenance_redirect, needs_render,
-                     note_fetched, render_page)
+from pipelib import (PAGE_READ_BYTES, RenderFailed, extract_periods, html_to_text, http_status, maintenance_http_error, maintenance_redirect,
+                     needs_render, note_fetched, polite_urlopen, render_page)
 
 UA = "Mozilla/5.0 (compatible; ImasNewsCollect/1.0)"
 FIXED_PAGES_ENV = "IMAS_FETCH_PAGES"
@@ -49,7 +49,8 @@ class Maintenance(Exception):
 def fetch(url: str) -> str:
     req = urllib.request.Request(url, headers={"User-Agent": UA})
     try:
-        res = urllib.request.urlopen(req, timeout=25)
+        # 同じホストへは間隔をあけ、429 は Retry-After を守って取り直す(上限を超えたら「429 で読めなかった」の HTTPError)
+        res = polite_urlopen(req, timeout=25)
     except urllib.error.HTTPError as e:
         if maintenance_http_error(e):
             raise Maintenance(e.geturl() or url, e.code) from None
@@ -91,7 +92,8 @@ def main() -> int:
         # このページに断り書きを付けない(Sol 監査 Z2 r1)
         # 転送先で失敗したら(/old → /gone → 404)転送先も残す(Sol 監査 Z2 r5)
         final = e.geturl() if isinstance(e, urllib.error.HTTPError) else None
-        note_fetched(args.url, final, failed=True)
+        # 状態コードも記録に残す(429 は取り直しの上限を超えても読めなかった印。相手の停止ではない)
+        note_fetched(args.url, final, failed=True, http=http_status(e))
         print(f"FETCH_FAILED: {type(e).__name__}: {e}")
         return 1
     # メンテナンス画面へ転送されたら、その案内はこのページの本文ではない。読めたことにしない(記録にも残さない)
@@ -103,17 +105,17 @@ def main() -> int:
 
     # JS で描画するページは本文が空同然になる。その場合と、描画必須と分かっているサイトは描画してから読み直す
     # (固定の本文は描画したあとのもの。取りに行かない)
-    render_error = ""
+    render_error, render_status = "", None
     if not fixed and needs_render(args.url, text):
         try:
             text = html_to_text(render_page(args.url, 30).encode("utf-8", "replace"))
         except RenderFailed as e:
             # 素の本文で続けるが、描画できなかった原因(終了コードと stderr の要点)は読み手に見せる
-            render_error = str(e)
+            render_error, render_status = str(e), e.status
             print(f"RENDER_FAILED: {e}", file=sys.stderr)
 
     if not text.strip():
-        note_fetched(args.url, FINAL_URL.get(args.url), failed=True)
+        note_fetched(args.url, FINAL_URL.get(args.url), failed=True, http=render_status)
         print("FETCH_FAILED: 本文を取得できませんでした" + (f"({render_error})" if render_error else ""))
         return 1
     # 本文を取れたページを、執筆・書き直しのセッションの記録に残す(検算は、根拠の URL が素材かこの記録にあるかを見る)

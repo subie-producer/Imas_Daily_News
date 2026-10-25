@@ -103,5 +103,43 @@
    },
    "duration_s": 1179
   }
+ ],
+ "compose": [
+  {
+   "at": "2026-10-26T03:07:52+09:00",
+   "edition": "2026-10-26",
+   "rounds": 1,
+   "approved": true,
+   "lint_green": true,
+   "planned": 22,
+   "written": 17,
+   "roundups": 0,
+   "dropped": 0,
+   "coverage": {
+    "subjects": 66,
+    "covered": 66,
+    "missing": 0,
+    "missing_keys": []
+   },
+   "dropped_by_review": [],
+   "stages_min": {
+    "選定": 1.350818161169688,
+    "執筆": 1.6243208130200704,
+    "出典の判定": 0.35834800799687705,
+    "組版": 0.6631121436754862,
+    "校閲": 2.59810657898585,
+    "校閲1波": 0.8660355263286167
+   },
+   "target_min": 60,
+   "over_target": false,
+   "aborted": [
+    "cg-cinderella-astromeda-popup-akihabara-2026",
+    "sidem-promi-2027-payment-extension",
+    "shiny-85th-anniversary-gifts-2026",
+    "shiny-song-for-prism-third-anniversary-event-2026",
+    "gaku-curtain-damashii-new-goods-2026"
+   ],
+   "duration_s": 434
+  }
  ]
 }

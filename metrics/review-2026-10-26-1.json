@@ -1,0 +1,278 @@
+{
+ "verdict": "approve",
+ "blockers": [],
+ "comments": [
+  {
+   "file": "docs/_posts/2026-10-26-765-961-idol-ultimate-2027-ticket.md",
+   "issue": "分量不足: rank は small(目安250字)で、本文は見出し以外が約130字。素材(202610260219-grok-1 / grok-49)にある公演名・公演日・会場・受付ページは既に入っているため、これ以上は水増しせず、出典にある範囲で足りるかを執筆が判断してよい。",
+   "scope": "article:2026-10-26-765-961-idol-ultimate-2027-ticket.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-26-765-961-idol-ultimate-2027-ticket.md",
+   "issue": "前号との重複: docs/_posts/2026-10-25-joint-765-961-xr-live-2027.md が同じ締切(2026年10月28日23時59分)を「締切まであと3日」として報じている。本記事は新しい事実を足していないが、締切3日以内のため R10 の例外に当たりブロックはしない。ただし両記事が同じ受付のどちらを指すか(アソビストアプレミアム先行か、現地チケット受付か)を見出し・リードで区別して書くと読者に伝わりやすい。",
+   "scope": "article:2026-10-26-765-961-idol-ultimate-2027-ticket.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-26-dsva-cosmo-shigure-ui-uikosen-dance-2026.md",
+   "issue": "分量不足: rank small の目安250字に対し、本文は約100字(リードと本文2段落)。素材の出典(X投稿)にある情報は、動画名『ういこうせん』、投稿日10/25、YouTube Shorts と TikTok での公開、しぐれういの踊ってみた初めての振付を上水流宇宙が教えたこと、のみで、これ以上の事実は素材に無い。一般論や推測での水増しは勧めない。",
+   "scope": "article:2026-10-26-dsva-cosmo-shigure-ui-uikosen-dance-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-26-gaku-rinami-another-idol-free-gacha-2026.md",
+   "issue": "分量不足: rank small の目安250字に対し、本文は約130字。素材(202610260219-grok-38)の facts は告知・対象ガシャ・無料1連・10/27 10:59までの4点だけで、これ以上の具体は素材に無い。水増しはせず、現状の具体(ガシャ名・対象・無料1連・期限)を正しく書けていれば十分",
+   "scope": "article:2026-10-26-gaku-rinami-another-idol-free-gacha-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-26-general-birthday-ueda-suzuho-shimabara-elena-2026.md",
+   "issue": "分量不足: rank small の目安 250字に対して本文が短い。素材 202610260219-grok-47 にあるのは2本のムービーの視聴先(YouTube Shorts)と告知の日付・公式アカウントの投稿だけで、ほかに水増しできる事実はない。一般論での水増しは勧めない。",
+   "scope": "article:2026-10-26-general-birthday-ueda-suzuho-shimabara-elena-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-26-general-birthday-ueda-suzuho-shimabara-elena-2026.md",
+   "issue": "確認メモ: 出典 X (imas_ch) の投稿本文は fetch で読め、2人の誕生日祝いとお祝いムービーのリンクがあることを確認した。YouTube Shorts の2本は fetch で本文を取れたが、動画のタイトル・公開日は取り出せなかった(ブートストラップ JS のみ)。X 投稿の t.co リンクの行き先も機械からは確かめられていないため、素材 facts の YouTube URL との照合にとどめた。",
+   "scope": "article:2026-10-26-general-birthday-ueda-suzuho-shimabara-elena-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-26-general-sohbetsu-producer-repeat-visits-2026.md",
+   "issue": "R15 の確認: リードと1段落目が『壮瞥町を3度目に訪れたプロデューサー』1人の話を中心に組んでいる。名前もハンドルも無く、ブロックには当たらないと判断したが、ファン面で1人が主役にならないよう、紙面全体の話題の並びのなかで扱いを見てほしい。",
+   "scope": "article:2026-10-26-general-sohbetsu-producer-repeat-visits-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-26-general-sohbetsu-producer-repeat-visits-2026.md",
+   "issue": "分量: 本文は約354字で、4段落とも短い。出典(オタク総研の特集、3件のファン投稿)にある範囲で、再訪の経緯や町の受け入れの様子などを足せば埋まる。一般論で水増しはしない。",
+   "scope": "article:2026-10-26-general-sohbetsu-producer-repeat-visits-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-26-general-sohbetsu-producer-repeat-visits-2026.md",
+   "issue": "見出し『ミリオンなど、壮瞥再訪やファン創作の話題』は『ミリオンなど』で主体がぼやけている。壮瞥の話題が中心なら、そこを先に出すと何の記事か伝わりやすい。",
+   "scope": "article:2026-10-26-general-sohbetsu-producer-repeat-visits-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-26-general-sohbetsu-producer-repeat-visits-2026.md",
+   "issue": "タグ『シンデレラガールズ』に対応する本文の記述が無い(本文・リードはミリオン・SideM・シャニマスの話)。タグの見直しを勧める。",
+   "scope": "article:2026-10-26-general-sohbetsu-producer-repeat-visits-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-26-joint-tours-season-2-2026.md",
+   "issue": "分量不足(rank: small、目安250字)。本文は2段落で約110字と薄い。素材(candidates/2026-10-26.json の 202610260219-grok-45)には、コミュの200以上の追加、中部エリアの追加、舞田類・山下次郎の関東エリアのコミュ追加、S2弾の追加楽曲『SYMPHONY』があり、出典にある事実で埋められる。",
+   "scope": "article:2026-10-26-joint-tours-season-2-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-26-joint-tours-season-2-2026.md",
+   "issue": "見出し「ツアマスS2、編成でエクストラコミュ」は作品名と主題が分かるので問題ないが、『アイドルマスター TOURS』の正式名称に寄せると読者に分かりやすい(任意)。",
+   "scope": "article:2026-10-26-joint-tours-season-2-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-26-million-harleyquin-idol-grand-prix-pv-2026.md",
+   "issue": "分量不足(rank: small、目安250字)。本文は「公開後にPVを視聴できます。」の1文だけで、素材は公式Xの「2026/10/26 14:50 公開・coming soon」だけなので、埋められる出典の事実は無い。水増しはしないこと。",
+   "scope": "article:2026-10-26-million-harleyquin-idol-grand-prix-pv-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-26-million-harleyquin-idol-grand-prix-pv-2026.md",
+   "issue": "本文の「公開後にPVを視聴できます。」は一般論で、素材に無い。素材どおりなら「14時50分から視聴できる」と時刻に寄せて書く方が、読者が今日の予定を確かめやすい。",
+   "scope": "article:2026-10-26-million-harleyquin-idol-grand-prix-pv-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-26-million-off-time-voice-series-vol-4-2026.md",
+   "issue": "分量不足(コメント項目): rank small の目安 250字に対し、本文は見出し・リードを含めても 200 字前後。素材(sched-2026-10-26-million-off-time-voice-series-vol-4-2026-発売)には価格・入手方法などの追加の事実が無いので、埋めるなら素材にある事実(琴葉のアイテム入手条件など)を具体的に書く。推測や言い換えでの水増しは勧めない。",
+   "scope": "article:2026-10-26-million-off-time-voice-series-vol-4-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-26-million-off-time-voice-series-vol-4-2026.md",
+   "issue": "表記ゆれ(コメント項目): 見出しは「発売」、リード・本文は「販売」「販売開始」と使い分けている。出典(販売予定)に合わせて「販売」に統一するとよい。",
+   "scope": "article:2026-10-26-million-off-time-voice-series-vol-4-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-26-million-special-solo-records-guinness-2026.md",
+   "issue": "分量不足(rank: lead の目安1000字に対して本文は約230字)。出典にある登壇者(中村繪里子・若林直美・山崎はるか・諏訪彩花・山口立花子・末柄里恵)、参加者100名と名前入り公式参加認定証、収録9曲、価格3,300円(税込)、品番LACA-25181〜25232、特設HPなどを拾えば埋まる。",
+   "scope": "article:2026-10-26-million-special-solo-records-guinness-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-26-million-special-solo-records-guinness-2026.md",
+   "issue": "『達成』と『認定』の時期の書き分けが曖昧。2026-07-24の公式準公式告知(PYLON PORT)は7月15日に『ギネス世界記録を達成』と伝えており、本文の『10月25日の達成イベントで…認定され』は10月25日を認定の日として読める。X投稿と矛盾はないが、7月の達成告知との関係を一文で分けると読者に伝わりやすい。",
+   "scope": "article:2026-10-26-million-special-solo-records-guinness-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-26-million-special-solo-records-guinness-2026.md",
+   "issue": "CD発売期間(2025年7月23日〜2026年7月15日)は終了済みの販売日程。『52週連続』の説明に使われているので R12 には当たらないと判断したが、記事の中心が10月25日のイベントなら一文に縮めてもよい。",
+   "scope": "article:2026-10-26-million-special-solo-records-guinness-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-26-shiny-shinyson-3rd-anniversary-story-episode-3-2026.md",
+   "issue": "分量不足: 本文が「第3話のタイトルは「街のかたち」。」の1文だけで、rank small の目安(250字)に届かない。素材 202610260219-grok-21 の facts は題名と公開の事実だけなので、出典に無い内容を足して水増ししないこと。素材を増やせる場合のみ広げる。",
+   "scope": "article:2026-10-26-shiny-shinyson-3rd-anniversary-story-episode-3-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-26-shiny-shinyson-3rd-anniversary-story-episode-3-2026.md",
+   "issue": "リードと本文が同じ事実(第3話「街のかたち」の公開)を繰り返しており、本文が増えないと記事として薄い。",
+   "scope": "article:2026-10-26-shiny-shinyson-3rd-anniversary-story-episode-3-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-26-shiny-shinyson-pickup-poison-madoka-2026.md",
+   "issue": "本文が2文・約70字で、small の目安250字に届かない。素材(candidate 202610260219-grok-20)の facts は『ピックアップガシャ開催中』『限定★3【毒を喰らわばなんとやら】樋口円香』だけで、提供割合・期間・引ける内容などは素材にない。足せる事実が無いので、一般論で水増ししないこと。",
+   "scope": "article:2026-10-26-shiny-shinyson-pickup-poison-madoka-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-26-shiny-shinyson-pickup-poison-madoka-2026.md",
+   "issue": "同じピックアップは 2026-10-22 の既報(shiny-iroduku-kaze-hiori-luca-gasha-2026、運営まとめ内の記述)で載っている。今号では 10/25 の公式X投稿で『開催中』を案内し直した形になるので、R10 の『定常運営の更新(今日の状態)』の範囲と判断して通した。新事実が無いままの独立記事になることは紙面の判断として確認してほしい。",
+   "scope": "article:2026-10-26-shiny-shinyson-pickup-poison-madoka-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-26-shiny-shinyson-shiny-competition-2026.md",
+   "issue": "分量不足(rank: small、目安250字に対して本文は1文のみ)。出典にある事実は素材の facts(開催中・対象アイドルを育成・10/29 20:59まで)に限られるので、一般論で水増しせず、このままでもよい。",
+   "scope": "article:2026-10-26-shiny-shinyson-shiny-competition-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-26-shiny-shinyson-shiny-competition-2026.md",
+   "issue": "出典2(DMM公式サイト)のトップページには本イベントの記述が見当たらない。事実は出典1(公式X、素材 verify: confirmed)で立つので問題はないが、読者がリンク先で確かめられない。",
+   "scope": "article:2026-10-26-shiny-shinyson-shiny-competition-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-26-shiny-shinyson-shiny-competition-2026.md",
+   "issue": "見出しの「シャイニーコンペ」は正式名「シャイニーコンペティション」の略。リードでは正式名が出ているので誤りではないが、表記をそろえるなら正式名が望ましい。",
+   "scope": "article:2026-10-26-shiny-shinyson-shiny-competition-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-26-sidem-cfirst-lailai-bishoku-mv-100k-2026.md",
+   "issue": "分量不足: rank small(目安250字)に対し本文は約60字。素材にある事実はMVのYouTube視聴・DL/ストリーミング案内・連動ストーリー名のみで、出典にない内容で水増しはしないこと。",
+   "scope": "article:2026-10-26-sidem-cfirst-lailai-bishoku-mv-100k-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-26-sidem-cfirst-lailai-bishoku-mv-100k-2026.md",
+   "issue": "10万回再生の数字の根拠は準公式X投稿(素材 verify: unconfirmed)で、機械からは開けず照合できなかった。R4 はこの理由ではブロックしない。公開前に投稿本文で数字を確かめられるなら確かめること。",
+   "scope": "article:2026-10-26-sidem-cfirst-lailai-bishoku-mv-100k-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-26-sidem-cho-retroseparty-goods-2026.md",
+   "issue": "分量不足(rank: small、目安250字)。本文は2行の箇条書きだけで、素材にある特設サイト(atfes.com/contents/cho-retroseparty)への案内や、グッズが超!!レトローズパーティのものであることを本文で補える。出典にない一般論での水増しは勧めない。",
+   "scope": "article:2026-10-26-sidem-cho-retroseparty-goods-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-26-sidem-cho-retroseparty-goods-2026.md",
+   "issue": "価格(880円・1,650円)と全種数は出典の投稿の素材(x.com、機械からは開けない)とだけ照合した。公式特設サイトの取得テキストにはグッズの価格は無かった。本文との食い違いは無い。",
+   "scope": "article:2026-10-26-sidem-cho-retroseparty-goods-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-26-sidem-cho-retroseparty-goods-2026.md",
+   "issue": "見出し・リードは、作品名(SideM)と催し名(超!!レトローズパーティ)で何の話かが分かる。販売期間・販売場所は素材に無く、記事にも無いことは問題ない。",
+   "scope": "article:2026-10-26-sidem-cho-retroseparty-goods-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-26-sidem-sems-lifes-side-menu-mv-200k-2026.md",
+   "issue": "分量不足(rank small の目安250字に対して本文は2文のみ)。出典の X 投稿にある連動ストーリー『華麗なるあの味を』(ストーリーへの案内)を、出典にある事実として1文足せば埋まる。推測での水増しは不要。",
+   "scope": "article:2026-10-26-sidem-sems-lifes-side-menu-mv-200k-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-26-sidem-sems-lifes-side-menu-mv-200k-2026.md",
+   "issue": "見出し『S.E.M「Life's Side Menu!」2DMVが20万回』は『再生』が抜けていて、何の20万回かが読み取りにくい。『2DMVの再生が20万回を突破』などにするとよい。",
+   "scope": "article:2026-10-26-sidem-sems-lifes-side-menu-mv-200k-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-26-sidem-tabi-masu-nagoya-2026.md",
+   "issue": "ニュース性は薄い。この企画は2026-08-03から実施中で、台帳(metrics/stories-before-2026-10-26.yml)に既報はなく、記事の中核は「10/31で終了」という締切の案内。素材の締切は5日後で、R10 の『3日以内』の例外には当たらない。R11 の例外にも該当しないが、読者が今日この先の引換期間内に行動できる事実(後半の引換期間・場所・営業時間)を記事が伝えているため、R11 ではブロックしないと判断した。",
+   "scope": "article:2026-10-26-sidem-tabi-masu-nagoya-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-26-sidem-tabi-masu-nagoya-2026.md",
+   "issue": "出典を照合した結果、本文の数字・日付・場所・条件はすべて一致した。JR東海の推し旅公式サイトは引換期間(前半8/3〜9/16、後半9/17〜10/31)、営業時間11:30〜18:30、休業日なし、乗車証明の有効期限(翌日23:59、10/31は当日限り)、1日1回、1人1日1回、特典は無くなり次第終了を記載。X の公式投稿(2026-10-24)は『10/31の最後まで』と案内。",
+   "scope": "article:2026-10-26-sidem-tabi-masu-nagoya-2026.md"
+  },
+  {
+   "file": "-",
+   "issue": "記事にすべき公式発表が candidates にあるのに紙面に無い: 『ヴイアライヴ 3rdLIVE＆MEETING』現地チケット最速先行(公式, 申込期限 2026-11-15 23:59)。grok-41",
+   "scope": "paper"
+  },
+  {
+   "file": "-",
+   "issue": "記事にすべき公式発表が candidates にあるのに紙面に無い: 灯里愛夏 BIRTHDAY ONLINE LIVE 2026 延期公演(10/28 19:00開演, 関裕美SPゲスト)。当事者・公式の配信チケット案内が2件(grok-3/43)あるが、紙面にも digest『明日』にも出ていない。grok-3, grok-43",
+   "scope": "paper"
+  },
+  {
+   "file": "-",
+   "issue": "記事にすべき公式発表が candidates にあるのに紙面に無い: 『劇場版SideM』公開記念舞台挨拶・ムビチケ販売(公式X)。詳細はメンテ中で未確認と candidates に明記されている。grok-26",
+   "scope": "paper"
+  },
+  {
+   "file": "-",
+   "issue": "記事にすべき話題が candidates にあるのに紙面に無い: シンデレラガールズ15周年記念曲「HOURGLASS」(10/28 CINDERELLA PARTY!で初公開、CD 11/18発売)。explore-10",
+   "scope": "paper"
+  },
+  {
+   "file": "-",
+   "issue": "面のバランス: シンデレラガールズ(cg)の記事が1本も無い(候補はPOP UP SHOP、佐久間まゆのネックレス、15周年曲など10件前後)。一方 SideM は17本中4本、シャニソンは3本で、ブランド配分が偏っている。",
+   "scope": "paper"
+  },
+  {
+   "file": "-",
+   "issue": "面のバランス: 同じ日の SideM 記事4本のうち3本がグッズ・MV再生数・キャンペーン終了告知で、読者が取れる行動が似ている。小見出しや後ろへの配置を検討してよい。",
+   "scope": "paper"
+  },
+  {
+   "file": "-",
+   "issue": "候補にあるが紙面に無い小さめの公式告知: シャニソン3周年カウントダウンログインボーナス(grok-23)、『Roar』MVショート動画(gaku, grok-39)、SideM 2DMV公開記念グッズ vol.3の予約(event 12/23, grok-36)、CINDERELLA PARTY! CD第5弾『KisS』試聴(grok-54)。どれも落とした理由は見えないが、紙面の余地があれば検討してよい。",
+   "scope": "paper"
+  }
+ ],
+ "reviewed": [
+  "article:2026-10-26-765-961-idol-ultimate-2027-ticket.md",
+  "article:2026-10-26-dsva-cosmo-shigure-ui-uikosen-dance-2026.md",
+  "article:2026-10-26-gaku-rinami-another-idol-free-gacha-2026.md",
+  "article:2026-10-26-general-birthday-ueda-suzuho-shimabara-elena-2026.md",
+  "article:2026-10-26-general-sohbetsu-producer-repeat-visits-2026.md",
+  "article:2026-10-26-joint-tours-season-2-2026.md",
+  "article:2026-10-26-million-elena-birthday-2026.md",
+  "article:2026-10-26-million-harleyquin-idol-grand-prix-pv-2026.md",
+  "article:2026-10-26-million-off-time-voice-series-vol-4-2026.md",
+  "article:2026-10-26-million-special-solo-records-guinness-2026.md",
+  "article:2026-10-26-shiny-shinyson-3rd-anniversary-story-episode-3-2026.md",
+  "article:2026-10-26-shiny-shinyson-pickup-poison-madoka-2026.md",
+  "article:2026-10-26-shiny-shinyson-shiny-competition-2026.md",
+  "article:2026-10-26-sidem-cfirst-lailai-bishoku-mv-100k-2026.md",
+  "article:2026-10-26-sidem-cho-retroseparty-goods-2026.md",
+  "article:2026-10-26-sidem-sems-lifes-side-menu-mv-200k-2026.md",
+  "article:2026-10-26-sidem-tabi-masu-nagoya-2026.md",
+  "paper"
+ ],
+ "checked": {
+  "article:2026-10-26-sidem-cfirst-lailai-bishoku-mv-100k-2026.md": "8a65b81a0c38c8b09652e1e64a642b1716fab36645d03bf684c9ec49a6b63719",
+  "article:2026-10-26-general-birthday-ueda-suzuho-shimabara-elena-2026.md": "71719a7f557c1f62ccd422fa96d45c64bc4e734a39245ecadca5c32d30553558",
+  "article:2026-10-26-sidem-sems-lifes-side-menu-mv-200k-2026.md": "24fbd44f9b1c988e77b39f9a0e97a6f74188f48022af883415841a2f4aefa6d7",
+  "article:2026-10-26-shiny-shinyson-shiny-competition-2026.md": "734ebc81fa107561c76e0e2dd12e0d08c3e3c4981d7414a38390e8a5535854c1",
+  "article:2026-10-26-sidem-tabi-masu-nagoya-2026.md": "76b23bd589a04ed12bb92fab5d1a55b680bc792497c13e354731b83a5769fb9d",
+  "article:2026-10-26-million-off-time-voice-series-vol-4-2026.md": "7cff8db46c51655d21ab80dc3f4ac8d1999afd44acbb535419a78019332962cc",
+  "article:2026-10-26-gaku-rinami-another-idol-free-gacha-2026.md": "b8c3cd8c6d529f3d114742d56f5e49ce4c3e914721b22d4e59b84c807ba689f4",
+  "article:2026-10-26-sidem-cho-retroseparty-goods-2026.md": "311be60ee77524c3d187f27c4715be8a50b099b423dfc3aa1760a4c9d2136ee5",
+  "article:2026-10-26-765-961-idol-ultimate-2027-ticket.md": "a61e3f100abb14d15044509efa1f64d0a5a7204be8e4aa739a05215b6548d5be",
+  "article:2026-10-26-shiny-shinyson-pickup-poison-madoka-2026.md": "40e68746a0a6f1778071e6ec3d25e0a23f023d2e86fd0b48752936c977faff68",
+  "article:2026-10-26-shiny-shinyson-3rd-anniversary-story-episode-3-2026.md": "c4131c1a10a2e5a8e34173cff7f53ed7259ddbdeda99ac5f7ef3c343b1d35f26",
+  "paper": "509a7c0f46227750c455c512a442ba38b6e4bcbd4d13abaf9dc81b2e62d5098a",
+  "article:2026-10-26-million-harleyquin-idol-grand-prix-pv-2026.md": "0408e159dff567d0f230d6f60b840472e2ce74220ea981eb402afa3f65624885",
+  "article:2026-10-26-million-special-solo-records-guinness-2026.md": "13faaac1bc179b0a17de1ec189c59ff1c6e7b5ef8080e2e8a3e4e8fe8feb0e88",
+  "article:2026-10-26-dsva-cosmo-shigure-ui-uikosen-dance-2026.md": "c51cf05dead685b59af76f6c874f19397bb374f16edb4719b03ed1bd3f8d78c3",
+  "article:2026-10-26-joint-tours-season-2-2026.md": "b6285dce19397dd4b455dd184a67b0d5d279c44397333c9ebefa4466adda5a52",
+  "article:2026-10-26-general-sohbetsu-producer-repeat-visits-2026.md": "fe5f79fb7541f678a1fa2952cba0bd406562934c58ab3f148dd0a1d28365e0c9",
+  "article:2026-10-26-million-elena-birthday-2026.md": "f2a04dfdd06eb5b97da056674c5a349e5449ba57e06b91aac7d6196d4b4a6788"
+ },
+ "hashes": {
+  "docs/_posts/2026-10-26-765-961-idol-ultimate-2027-ticket.md": "a61e3f100abb14d15044509efa1f64d0a5a7204be8e4aa739a05215b6548d5be",
+  "docs/_posts/2026-10-26-dsva-cosmo-shigure-ui-uikosen-dance-2026.md": "c51cf05dead685b59af76f6c874f19397bb374f16edb4719b03ed1bd3f8d78c3",
+  "docs/_posts/2026-10-26-gaku-rinami-another-idol-free-gacha-2026.md": "b8c3cd8c6d529f3d114742d56f5e49ce4c3e914721b22d4e59b84c807ba689f4",
+  "docs/_posts/2026-10-26-general-birthday-ueda-suzuho-shimabara-elena-2026.md": "71719a7f557c1f62ccd422fa96d45c64bc4e734a39245ecadca5c32d30553558",
+  "docs/_posts/2026-10-26-general-sohbetsu-producer-repeat-visits-2026.md": "fe5f79fb7541f678a1fa2952cba0bd406562934c58ab3f148dd0a1d28365e0c9",
+  "docs/_posts/2026-10-26-joint-tours-season-2-2026.md": "b6285dce19397dd4b455dd184a67b0d5d279c44397333c9ebefa4466adda5a52",
+  "docs/_posts/2026-10-26-million-elena-birthday-2026.md": "f2a04dfdd06eb5b97da056674c5a349e5449ba57e06b91aac7d6196d4b4a6788",
+  "docs/_posts/2026-10-26-million-harleyquin-idol-grand-prix-pv-2026.md": "0408e159dff567d0f230d6f60b840472e2ce74220ea981eb402afa3f65624885",
+  "docs/_posts/2026-10-26-million-off-time-voice-series-vol-4-2026.md": "7cff8db46c51655d21ab80dc3f4ac8d1999afd44acbb535419a78019332962cc",
+  "docs/_posts/2026-10-26-million-special-solo-records-guinness-2026.md": "13faaac1bc179b0a17de1ec189c59ff1c6e7b5ef8080e2e8a3e4e8fe8feb0e88",
+  "docs/_posts/2026-10-26-shiny-shinyson-3rd-anniversary-story-episode-3-2026.md": "c4131c1a10a2e5a8e34173cff7f53ed7259ddbdeda99ac5f7ef3c343b1d35f26",
+  "docs/_posts/2026-10-26-shiny-shinyson-pickup-poison-madoka-2026.md": "40e68746a0a6f1778071e6ec3d25e0a23f023d2e86fd0b48752936c977faff68",
+  "docs/_posts/2026-10-26-shiny-shinyson-shiny-competition-2026.md": "734ebc81fa107561c76e0e2dd12e0d08c3e3c4981d7414a38390e8a5535854c1",
+  "docs/_posts/2026-10-26-sidem-cfirst-lailai-bishoku-mv-100k-2026.md": "8a65b81a0c38c8b09652e1e64a642b1716fab36645d03bf684c9ec49a6b63719",
+  "docs/_posts/2026-10-26-sidem-cho-retroseparty-goods-2026.md": "311be60ee77524c3d187f27c4715be8a50b099b423dfc3aa1760a4c9d2136ee5",
+  "docs/_posts/2026-10-26-sidem-sems-lifes-side-menu-mv-200k-2026.md": "24fbd44f9b1c988e77b39f9a0e97a6f74188f48022af883415841a2f4aefa6d7",
+  "docs/_posts/2026-10-26-sidem-tabi-masu-nagoya-2026.md": "76b23bd589a04ed12bb92fab5d1a55b680bc792497c13e354731b83a5769fb9d",
+  "docs/_editions/2026-10-26.md": "d6a9cbdc027821071dafbb72cb93375e0cf76fdaac01691148331c459733793f",
+  "metrics/stories-before-2026-10-26.yml": "bfa9ee1ad639fcf5e574e976a40ce3aaf3b049a873ae032c39546ae813e534ad"
+ },
+ "run": "20261026T030037.894765"
+}

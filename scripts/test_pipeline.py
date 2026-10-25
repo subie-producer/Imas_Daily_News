@@ -16882,7 +16882,7 @@ def fake_urlopen(url, phase):
             raise err(url, 503, page("現在メンテナンス中です - 503 Service Temporarily Unavailable", "ご迷惑をおかけします。"))
         if host in ("down.example", "fresh.example"):
             raise err(url, 503, page("503 Service Unavailable", "混み合っています。"))
-        if host == "busy.example":
+        if host in ("busy.example", "facts-only.example"):
             raise err(url, 429, page("429 Too Many Requests", "しばらくお待ちください。"))
         if host == "slow.example":
             raise urllib.error.URLError(socket.timeout("timed out"))
@@ -17595,7 +17595,8 @@ def test_page_archive_read_back(tmp: Path):
                      "new_facts": [{"id": "N1", "text": "価格は3000円", "url": u}], "addressed_issue_ids": [],
                      "blocks": [{"markdown": para, "fact_ids": ["F1", "F2", "N1"]}], "sources": [{"url": u, "label": "告知"}]}
     # 素材の外のページ(other)も、原本で読めたなら根拠にできる(検算が読めたページに数える)
-    other = "https://busy.example/news/other"
+    # 別のホスト(facts-only.example)は verified_facts の url だけに出る: その原本の断り書きも付く(Sol 監査 r10 の later)
+    other = "https://facts-only.example/news/other"
     pa.save(other, "別の告知。価格は3000円。", via="collect", at=collected_at)
     spec = {f"write-{k}": [{"fetch": [u], "answer": ans(u)}] for k, u in urls.items()}
     spec["write-busy"] = [{"fetch": [urls["busy"], other], "answer": dict(ans(urls["busy"]), new_facts=[{"id": "N1", "text": "価格は3000円", "url": other}])}]
@@ -17653,7 +17654,7 @@ def test_page_archive_read_back(tmp: Path):
     read = f"収集時点({cday.month}月{cday.day}日)"
     want = {"mainte": f"※ランティスがメンテナンス中のため、原本は現在確認できていません(2026年10月27日時点)。内容は{read}に読んだ原本に基づきます。",
             "down": f"※down.exampleの原本を読み直せず、現在の内容は確認できていません(2026年10月27日時点)。内容は{read}に読んだ原本に基づきます。",
-            "busy": f"※busy.exampleの原本を読み直せず、現在の内容は確認できていません(2026年10月27日時点)。内容は{read}に読んだ原本に基づきます。",
+            "busy": f"※busy.example・facts-only.exampleの原本を読み直せず、現在の内容は確認できていません(2026年10月27日時点)。内容は{read}に読んだ原本に基づきます。",
             "slow": f"※slow.exampleの原本を読み直せず、現在の内容は確認できていません(2026年10月27日時点)。内容は{read}に読んだ原本に基づきます。"}
     have = {s: notice(s) for s in urls}
     check(all(have[s] == f"{want[s]} {renderlib.NOTICE_MARK}" for s in want) and not any(have[s] for s in ("changed", "gone", "fresh")),

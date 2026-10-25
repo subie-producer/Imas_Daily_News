@@ -2608,6 +2608,16 @@ def looks_unrendered(text: str) -> bool:
 BROWSER_ONLY_HOSTS = {"anime-store.jp", "www.anime-store.jp", "shop.mining-base.co.jp"}
 
 
+def browser_only(url: str) -> bool:
+    """素の取得(urllib)をしてはいけないページか(BROWSER_ONLY_HOSTS)。ページを取る経路(fetch_page・facts 化の本文・裏取り・
+    出典の判定・lint の死活)は、これが真なら urllib で叩かず描画取得(Chrome)で読む(編集長 2026-10-26「429を出すようなアクセスはするな。Chromeを使え。」)"""
+    import urllib.parse
+    try:
+        return urllib.parse.urlsplit(url or "").hostname in BROWSER_ONLY_HOSTS
+    except ValueError:
+        return False
+
+
 def render_hosts() -> set[str]:
     """描画しないと本文が出ないと分かっているサイトのホスト(sources.yml で type: portal の観測先と、BROWSER_ONLY_HOSTS)。"""
     import urllib.parse

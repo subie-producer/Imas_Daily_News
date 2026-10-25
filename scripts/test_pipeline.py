@@ -2987,6 +2987,168 @@ def test_page_body_past_inline_css(tmp: Path):
     check("入金期限延長" in ex and "@font-face" not in ex, f"分類の材料が CSS になった: {ex[:120]!r}")
 
 
+def test_browser_only_hosts_use_chrome(tmp: Path):
+    """素の取得に 429 を返すサイト(pipelib.BROWSER_ONLY_HOSTS)は、ページを取るどの経路も urllib で叩かず描画取得(Chrome)で読む
+    (2026-10-26: Anime Store.JP が数回の取得で 429。編集長「429を出すようなアクセスはするな。Chromeを使え。」)。
+    経路: 執筆・校閲・facts 化のセッションの fetch_page.py / facts 化に渡す本文(page_html_or_note) / 裏取り(verify) /
+    出典の判定の材料(page_meta・page_excerpt) / lint の死活確認(url_alive) / 定点観測の一覧(list_source)。一覧の全ホストで検める
+    (Sol 監査 CHR r1 later: mining-base だけ素の取得へ進む壊し方を見逃した)"""
+    check(pipelib.browser_only("https://anime-store.jp/x") and pipelib.browser_only("https://www.anime-store.jp/x")
+          and pipelib.browser_only("https://shop.mining-base.co.jp/products/1")
+          and not pipelib.browser_only("https://anime-store.jp.example.com/x") and not pipelib.browser_only("https://example.com/")
+          and not pipelib.browser_only(""), "描画でしか読まないサイトの見分け")
+    check(pipelib.BROWSER_ONLY_HOSTS <= pipelib.render_hosts(), "描画でしか読まないサイトを描画必須のサイトに含めない")
+    for host in sorted(pipelib.BROWSER_ONLY_HOSTS):
+        _browser_only_host_case(tmp / host, f"https://{host}/products/4580883066165")
+
+
+def _browser_only_host_case(tmp: Path, url: str):
+    """test_browser_only_hosts_use_chrome の1ホスト分"""
+    import contextlib, io, time
+    import classify_sources
+    import collect
+    import fetch_page
+    import lint
+    tmp.mkdir(parents=True, exist_ok=True)
+    body = "学園アイドルマスター B2タペストリー(十王星南)。予約受付期間: 2026年10月25日～2026年11月15日 23:59。価格 5,500円(税込)。" * 8
+    rendered = (f"<html><head><title>B2タペストリー(十王星南) | Anime Store.JP</title></head><body><p>{body}</p>"
+                f'<ul><li><a href="{url}/item-1">B2タペストリー(十王星南)</a></li></ul></body></html>')
+    raw_calls: list[str] = []
+
+    def raw(req, *a, **k):
+        raw_calls.append(getattr(req, "full_url", req))
+        import urllib.error     # 実際のサイトと同じく 429 で断る
+        raise urllib.error.HTTPError(getattr(req, "full_url", req), 429, "Too Many Requests", {}, None)
+    render_calls: list[str] = []
+    render_limits: list = []        # 描画に渡した待ちの上限(limit。締切の残り)
+
+    def render_ok(u, *a, **k):
+        render_calls.append(u)
+        render_limits.append(k.get("limit"))
+        return rendered
+
+    def render_ng(u, *a, **k):
+        render_calls.append(u)
+        raise pipelib.RenderFailed(f"{u} の描画に失敗: 終了コード 1: RENDER_FAILED: TimeoutException: timeout")
+
+    def run_fetch_page(render, rec):
+        out = io.StringIO()
+        saved = (sys.argv, fetch_page.urllib.request.urlopen, fetch_page.render_page, os.environ.get(pipelib.FETCH_RECORD_ENV))
+        try:
+            os.environ[pipelib.FETCH_RECORD_ENV] = str(rec)
+            fetch_page.urllib.request.urlopen = raw
+            fetch_page.render_page = render
+            sys.argv = ["fetch_page.py", url]
+            with contextlib.redirect_stdout(out), contextlib.redirect_stderr(io.StringIO()):
+                rc = fetch_page.main()
+        finally:
+            sys.argv, fetch_page.urllib.request.urlopen, fetch_page.render_page, env = saved
+            if env is None:
+                os.environ.pop(pipelib.FETCH_RECORD_ENV, None)
+            else:
+                os.environ[pipelib.FETCH_RECORD_ENV] = env
+        return rc, out.getvalue()
+
+    # fetch_page.py: 素の取得をせず、描画した本文を返し、本文を取れたページとして記録する
+    rec = tmp / "ok.jsonl"
+    rc, got = run_fetch_page(render_ok, rec)
+    check(rc == 0 and not raw_calls and render_calls == [url] and "予約受付期間" in got and "5,500円" in got,
+          f"fetch_page.py が描画でしか読まないサイトを素の取得で叩いた・描画の本文を返さない: {rc} {raw_calls} {render_calls} {got[:160]!r}")
+    check(url in pipelib.fetched_urls(rec), "描画で読めたページを本文を取れたページとして記録しない")
+    # 描画に失敗: 素の取得に逃げず、読めなかった(FETCH_FAILED)として返し、読めなかったページの記録に残す
+    raw_calls.clear(), render_calls.clear()
+    rec = tmp / "ng.jsonl"
+    rc, got = run_fetch_page(render_ng, rec)
+    check(rc == 1 and not raw_calls and render_calls == [url] and got.startswith("FETCH_FAILED") and "TimeoutException" in got,
+          f"描画に失敗したときの扱い: {rc} {raw_calls} {got[:200]!r}")
+    check(url not in pipelib.fetched_urls(rec) and url in pipelib.failed_record(rec).read_text(encoding="utf-8")
+          if pipelib.failed_record(rec).exists() else False, "描画に失敗したページを読めなかったページとして記録しない")
+
+    saved_c = (collect.urllib.request.urlopen, collect.fetch_rendered, collect.classify_source)
+    try:
+        collect.urllib.request.urlopen = raw
+        collect.classify_source = lambda u: "公式"
+        # facts 化に渡す本文: 定点観測の portal でなくても(csr=False)素の HTML を取らずに描画する
+        raw_calls.clear(), render_calls.clear()
+        collect.fetch_rendered = render_ok
+        html, why = collect.page_html_or_note(url, False)
+        check(not raw_calls and html == rendered and not why, f"facts 化の本文の取得が素の取得で叩いた: {raw_calls} {why}")
+        # 定点観測の一覧(type: html の観測先): 締切の無い取得(list_source の既定)も、締切のある取得(watch_fetch)も描画する
+        src = {"id": "boh", "type": "html", "url": url, "base": url, "list_regex": r'<a href="([^"]+/item-\d+)">([^<]+)</a>'}
+        saved_d = collect.DEADLINE
+        try:
+            for deadline in (None, time.time() + 30):
+                raw_calls.clear(), render_calls.clear(), render_limits.clear()
+                collect.DEADLINE = deadline
+                try:
+                    listed = collect.list_source(src, set(), fetch=collect.watch_fetch(src))[0]
+                except Exception as e:      # noqa: BLE001  素の取得で 429 を受けた(下の検査で落とす)
+                    listed = f"{type(e).__name__}: {e}"
+                check(not raw_calls and render_calls == [url] and listed == [(url + "/item-1", "B2タペストリー(十王星南)")],
+                      f"定点観測の一覧の取得が素の取得で叩いた(締切 {'あり' if deadline else 'なし'}): {raw_calls} {render_calls} {listed}")
+                # 描画の待ちは締切の残りで切る(締切が無ければ描画の既定の上限)(Sol 監査 CHR r2 later)
+                check(render_limits == [None] if deadline is None
+                      else (len(render_limits) == 1 and render_limits[0] is not None and 0 < render_limits[0] <= 30),
+                      f"定点観測の一覧の描画に締切の残りを渡さない(締切 {'あり' if deadline else 'なし'}): {render_limits}")
+            # 締切を過ぎたら描画を起動しない(一覧の取得は例外で抜け、既読・境界を変えない)
+            raw_calls.clear(), render_calls.clear()
+            collect.DEADLINE = time.time() - 1
+            try:
+                collect.list_source(src, set(), fetch=collect.watch_fetch(src))
+                late = "例外にならなかった"
+            except Exception as e:      # noqa: BLE001
+                late = f"{type(e).__name__}: {e}"
+            check(not raw_calls and not render_calls and "締切" in late, f"締切を過ぎてから一覧を取りに行った: {raw_calls} {render_calls} {late}")
+            # 締切を過ぎてから http_get に直に来ても、描画に渡す待ちは 0(render_page は起動しない)
+            render_limits.clear()
+            collect.http_get(url)
+            check(render_limits == [0.0], f"締切を過ぎた http_get が描画に待ちを渡した: {render_limits}")
+        finally:
+            collect.DEADLINE = saved_d
+        # 裏取り: 描画した本文で照合する。描画は1回だけ(照合のたびにブラウザを起動しない)
+        raw_calls.clear(), render_calls.clear()
+        cv = collect.normalize([{"url": url, "title": "B2タペストリー(十王星南)", "facts": ["予約受付期間: 2026年10月25日～11月15日"],
+                                 "quote": "学園アイドルマスター B2タペストリー(十王星南)。予約受付期間", "_via": "explore"}])
+        collect.verify(cv)
+        check(not raw_calls and len(render_calls) == 1 and cv[0].get("verify") == "confirmed",
+              f"裏取りが素の取得で叩いた・描画の本文で照合しない: {raw_calls} {render_calls} {cv[0].get('verify')} {cv[0].get('verify_note')}")
+        # 描画に失敗: 素の取得に逃げない。今は確かめられないだけ(URL の取り違えとして使えなくしない)。原因は候補に残す
+        raw_calls.clear(), render_calls.clear()
+        collect.fetch_rendered = render_ng
+        cv = collect.normalize([{"url": url, "title": "B2タペストリー(十王星南)", "facts": ["予約受付期間: 2026年10月25日～11月15日"],
+                                 "quote": "学園アイドルマスター B2タペストリー(十王星南)。予約受付期間", "_via": "explore"}])
+        counts = collect.verify(cv)
+        check(not raw_calls and cv[0].get("verify") == "unconfirmed" and counts["unconfirmed"] == 1
+              and "TimeoutException" in (cv[0].get("render_error") or ""),
+              f"裏取りで描画に失敗したときの扱い: {raw_calls} {cv[0].get('verify')} {cv[0].get('verify_note')} {cv[0].get('render_error')}")
+    finally:
+        collect.urllib.request.urlopen, collect.fetch_rendered, collect.classify_source = saved_c
+
+    # 出典の判定の材料: 題名・説明・冒頭も描画で読む
+    saved_s = (classify_sources.__dict__.get("render_page"), pipelib.urllib.request.urlopen)
+    try:
+        pipelib.urllib.request.urlopen = raw
+        classify_sources.render_page = render_ok
+        raw_calls.clear(), render_calls.clear()
+        title, _desc, _html = classify_sources.page_meta(url)
+        ex = classify_sources.page_excerpt(url)
+    finally:
+        classify_sources.render_page, pipelib.urllib.request.urlopen = saved_s
+    check(not raw_calls and title.startswith("B2タペストリー") and "予約受付期間" in ex,
+          f"出典の判定の材料が素の取得で叩いた: {raw_calls} {title!r} {ex[:80]!r}")
+
+    # lint の死活確認: 叩かない(1件に3回まで取り直すので 429 を招く)
+    saved_l = (lint.urllib.request.urlopen, lint.time.sleep)
+    try:
+        lint.urllib.request.urlopen = raw
+        lint.time.sleep = lambda s: None
+        raw_calls.clear()
+        ok, _detail, verdict = lint.url_alive(url)
+    finally:
+        lint.urllib.request.urlopen, lint.time.sleep = saved_l
+    check(ok and verdict == "skipped" and not raw_calls, f"lint の死活確認が描画でしか読まないサイトを叩いた: {ok} {verdict} {raw_calls}")
+
+
 def test_maintenance_page_is_not_read(tmp: Path):
     """メンテナンス画面へ転送された出典は、本文を読めたことにしない(2026-10-22号: 公式ポータルが告知の URL を /mainte/index.html へ
     転送していたあいだ、fetch_page.py が案内を本文として返し、執筆は収集時に確かめた素材の facts を「出典で確認できない」として7本を見送り、
@@ -5415,6 +5577,10 @@ def test_fetch_rendered_skips_images():
                 sys.modules[n] = m
     check(got["opts"].prefs.get("prefs", {}).get("profile.managed_default_content_settings.images") == 2,
           f"描画取得が画像を読み込む(画像の多いページで読み込み完了に届かず時間切れになる): {got['opts'].prefs}")
+    # 自動操作の印を出さない(出すと Anime Store.JP は Google のトップへ転送した。2026-10-26。Sol 監査 CHR r1 later)
+    check("--disable-blink-features=AutomationControlled" in got["opts"].args
+          and got["opts"].prefs.get("excludeSwitches") == ["enable-automation"],
+          f"描画取得が自動操作の印を出す: {got['opts'].args} {got['opts'].prefs}")
 
 
 def test_render_failure_keeps_cause(tmp: Path):
@@ -17298,6 +17464,7 @@ def main() -> int:
     test_compose_recover(tmp / "recover")
     test_revise_apply_decline(tmp / "ra")
     test_maintenance_page_is_not_read(tmp / "mpr")
+    test_browser_only_hosts_use_chrome(tmp / "boh")
     test_page_body_past_inline_css(tmp / "pbc")
     test_revise_carries_verified_facts(tmp / "rcv")
     test_site_maintenance_notice(tmp / "pmw")

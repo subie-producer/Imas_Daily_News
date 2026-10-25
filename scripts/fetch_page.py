@@ -213,8 +213,13 @@ def rendered_live(url: str, live: dict) -> dict:
                     "msg": f"FETCH_FAILED: メンテナンス中(描画したページが HTTP {st} でメンテナンスの画面)。このページの本文は今は読めない"}
         why = f"描画したページが HTTP {st}"
         return {"kind": "gone" if st in GONE_CODES else "failed", "final": final, "why": why, "msg": f"FETCH_FAILED: {why}"}
+    rtext = html_to_text(rendered.encode("utf-8", "replace"))
+    if not rtext.strip():
+        # 枠だけで本文の無い描画は、描画できなかったのと同じ(原本があれば原本を返す。Sol 監査 r9)
+        print("RENDER_FAILED: 描画した本文が空", file=sys.stderr)
+        return {**live, "render_error": "描画した本文が空"}
     # 描画で JS が別のページへ移ったら、その行き先を転送先として出す・記録する・原本を引けるようにする(Sol 監査 r3)
-    return {**live, "text": html_to_text(rendered.encode("utf-8", "replace")), "html": rendered, "rendered": True,
+    return {**live, "text": rtext, "html": rendered, "rendered": True,
             "final": final if final and final != url else live.get("final"), "status": st or 200}
 
 

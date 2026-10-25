@@ -17480,6 +17480,46 @@ def test_page_archive_versions_and_reads(tmp: Path):
     check(m_second.get("verify") == "unconfirmed" and "メンテナンス" in (m_second.get("verify_note") or "")
           and m_second.get("archived_at") == "2026-10-25T20:00:00+09:00",
           f"メンテナンスの分岐が、先の候補がこの回に残した版を指した: {m_second.get('archived_at')} {m_second.get('verify_note')}")
+    # 24. 枠だけで本文の無い描画は描画できなかったのと同じ: fetch_page は原本を返す(Sol 監査 r9)
+    e_url = "https://audit.example/empty-render"
+    pa.save(e_url, "収集時点の告知。" + w_quote, via="collect", at="2026-10-25T21:00:00+09:00", rendered=True)
+    # 素の本文は長いナビで描画は要らない見かけ → 原本が描画した本文なので描画して照らす → 描画は枠だけ
+    rc, out = run(e_url, ok("ニュース一覧、会社概要、お問い合わせ。" * 40), lambda u, t=30: "<html><head><script>x()</script></head><body> </body></html>")
+    check(rc == 0 and "いまは読み直せない" in out and w_quote in out and "変わったところ" not in out and len(pa.versions(e_url)) == 1,
+          f"本文の無い描画を本文の変化として見せた: {out[:300]!r}")
+    # 25・26. 裏取り・定点観測: 本文の無い描画・描画したエラーの画面(503)は原本にせず、裏取りは前の原本で照らす(通常の経路と browser_only)
+    empty_html = "<html><body>  </body></html>"
+    err_html = "<html><body>" + "混み合っています。しばらくしてからお試しください。" * 30 + "</body></html>"
+    for k, (b_url, ret, st) in {"empty": ("https://audit.example/verify-empty", empty_html, None),
+                                "503": ("https://audit.example/verify-503", err_html, 503),
+                                "bo-empty": ("https://www.anime-store.jp/products/verify-empty", empty_html, None),
+                                "bo-503": ("https://www.anime-store.jp/products/verify-503", err_html, 503)}.items():
+        pa.save(b_url, "公式の本文。" + w_quote, via="collect", at="2026-10-25T20:00:00+09:00", rendered=True)
+
+        class NavB(Res):
+            def geturl(self, u=b_url): return u
+            def read(self, n=None): return nav
+
+        def fake_render(u, limit=None, r=ret, s=st):
+            if s:
+                pipelib.RENDER_STATUS[u] = s
+            return r, ""
+        cb = {"url": b_url, "title": "告知", "facts": ["価格は3000円"], "quotes": [w_quote], "via": "explore", "source_type": "公式"}
+        saved_w = (collect.needs_render, collect.rendered_or_note, collect.urllib.request.urlopen)
+        try:
+            collect.needs_render = lambda u, t: True
+            collect.rendered_or_note = fake_render
+            collect.urllib.request.urlopen = lambda req, timeout=15: NavB()
+            with contextlib.redirect_stdout(io.StringIO()):
+                collect.verify([cb])
+                collect.page_html_or_note(b_url, True)       # 定点観測(描画必須の観測先)
+        finally:
+            collect.needs_render, collect.rendered_or_note, collect.urllib.request.urlopen = saved_w
+            pipelib.RENDER_STATUS.pop(b_url, None)
+        check(cb.get("verify") == "unconfirmed" and cb.get("archived_at") == "2026-10-25T20:00:00+09:00" and len(pa.versions(b_url)) == 1
+              and w_quote in (pa.baseline(b_url) or {}).get("text", ""),
+              f"{k}: 本文の無い描画・描画したエラーの画面を原本にした・裏取りで落とした: {cb.get('verify')} {cb.get('verify_note')} "
+              f"{len(pa.versions(b_url))}")
     check(c_second.get("verify") == "unconfirmed" and not pipelib.candidate_misplaced(c_second) and len(pa.versions(s_url)) == 1,
           f"同じ URL の先の候補がこの回に残した本文で、後の候補を照らした: {c_second.get('verify')} {c_second.get('verify_note')} "
           f"{len(pa.versions(s_url))}")

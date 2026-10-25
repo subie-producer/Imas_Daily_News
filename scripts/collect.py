@@ -2290,6 +2290,8 @@ def verify(cands: list[dict]) -> dict:
                         raise urllib.error.HTTPError(c["url"], st, "描画したページが無い", None, None)
                     if st >= 400:
                         why = f"描画したページが HTTP {st}"
+                    elif html and not html_to_text(html.encode("utf-8", "replace")).strip():
+                        why, html = "描画した本文が空", ""        # 枠だけで本文が無い(Sol 監査 r9)
                     if not html or st >= 400 or maintenance_redirect(c["url"], RENDER_FINAL.get(c["url"])):
                         # 前の原本があればそれで照らす(この回の素の本文は無い)
                         why = why or f"メンテナンス中({RENDER_FINAL.get(c['url'])} へ転送)"
@@ -2356,11 +2358,12 @@ def verify(cands: list[dict]) -> dict:
                             # 描画した文書が HTTP のエラー: その画面は本文ではない(描画できなかったのと同じ。Sol 監査 r8)
                             render_errs.append(f"描画したページが HTTP {RENDER_STATUS[c['url']]}")
                             return None
-                        if not rendered:
-                            render_errs.append(why or "描画が空")
+                        rtext = html_to_text(rendered.encode("utf-8", "replace")) if rendered else ""
+                        if not rtext.strip():
+                            # 描画できない・枠だけで本文が無い: 描画できなかったものとして扱う(Sol 監査 r9)
+                            render_errs.append(why or "描画した本文が空")
                             return None
-                        best.update(text=html_to_text(rendered.encode("utf-8", "replace")), html=rendered, rendered=True,
-                                    status=RENDER_STATUS.get(c["url"]) or 200)
+                        best.update(text=rtext, html=rendered, rendered=True, status=RENDER_STATUS.get(c["url"]) or 200)
                         return best["text"]
                     # CSR で本文が空同然か、描画必須のサイト(定点観測の portal)なら描画してから読み直す(定点観測と同じ経路)
                     must_render = not pre and needs_render(c["url"], text)

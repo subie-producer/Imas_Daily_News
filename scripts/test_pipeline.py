@@ -17039,8 +17039,56 @@ def test_assemble_roundup_reservation(tmp: Path):
         assemble.ROOT, assemble.run_session, assemble.anomaly = saved
 
 
+def test_assemble_run_returns_reservations(tmp: Path):
+    """組版本体(assemble.run)が、検算で採らなかった予約を差し戻し、答え直しの予約を続報予約のファイルまで反映する
+    (return_reservations を直接呼ぶテストだけでは、本体からの呼び出しを消しても通る。Sol 監査 r5 の later)。"""
+    import contextlib
+    import io as _io
+    D = "2026-10-24"
+    mats = [cand_row("g22", "https://x.com/imassc_official/status/2113000000000000022", brand="shiny", title="セレチケパッケージ",
+                     facts=["セレチケパッケージを販売中"], dedup_key="shiny-celechike"),
+            cand_row("g34", "https://x.com/imassc_official/status/2113000000000000034", brand="shiny", title="8.5周年ログインプレゼント",
+                     facts=["受け取り可能期間は10/26 23:59まで"], deadline="2026-10-26", dedup_key="shiny-85-login")]
+    wrong = {"slug": "shiny-ops-roundup", "candidate_id": "g22", "date": "2026-10-26", "occurs_on": "2026-10-26", "kind": "締切",
+             "subject": "8.5周年プレゼント受け取り締切", "note": "受け取りの最終日"}
+    answer = {"digest": [{"label": l, "rows": []} for l in DIGEST_LABELS], "stories": [], "reservations": [wrong],
+              "pending_add": [], "pending_remove": []}
+    asked = []
+    with assemble_at(tmp):
+        (assemble.POSTS / f"{D}-shiny-ops-roundup.md").write_text(
+            "---\n" + article_fm("shiny-ops-roundup", D, brand="shiny", rank="roundup", title="シャニマス運営まとめ",
+                                 candidate_ids=["g22", "g34"]) + "---\n本文。\n", encoding="utf-8")
+        (tmp / "candidates" / f"{D}.json").write_text(json.dumps(mats, ensure_ascii=False), encoding="utf-8")
+        assemble.dump_yaml(assemble.STORIES, [])
+        assemble.dump_yaml(assemble.PENDING, [])
+        (tmp / "scripts").mkdir(exist_ok=True)
+        for name in ("derive", "lint"):
+            (tmp / "scripts" / f"{name}.py").write_text("print('lint: 0 errors')\n", encoding="utf-8")
+        shutil.copytree(pipelib.ROOT / "schema", tmp / "schema", dirs_exist_ok=True)
+        saved = (assemble.judge, assemble.notify, assemble.run_session, assemble.classify_source)
+        assemble.judge = lambda date, inp, budget=None: json.loads(json.dumps(answer))
+        assemble.notify = lambda job, msg, ok=True, **k: None
+        assemble.classify_source = lambda u: "公式"
+
+        def fake_session(text, date, name, schema, budget=None):
+            asked.append(name)
+            return {"stories": [], "reservations": [dict(wrong, candidate_id="g34")], "pending_add": [], "pending_remove": []}
+        assemble.run_session = fake_session
+        try:
+            with contextlib.redirect_stdout(_io.StringIO()):
+                code = assemble.run(D, 1)
+        finally:
+            assemble.judge, assemble.notify, assemble.run_session, assemble.classify_source = saved
+        p = tmp / "stock" / "scheduled" / "2026-10-26.json"
+        rows = json.loads(p.read_text(encoding="utf-8")) if p.exists() else []
+    check(code == 0 and asked == ["assemble-ledger-returned"]
+          and any(r.get("src_candidate_id") == "g34" and r.get("kind") == "締切" and r.get("reserved_on") == D for r in rows),
+          f"組版本体が、採らなかった予約を差し戻して反映しない: exit {code} {asked} {rows}")
+
+
 def main() -> int:
     tmp = Path(tempfile.mkdtemp(prefix="imas-test-"))
+    test_assemble_run_returns_reservations(tmp / "arrr")
     test_assemble_roundup_reservation(tmp / "arr")
     test_storylink_roundup_topic(tmp / "srt")
     test_source_rescue_entry(tmp / "sre")

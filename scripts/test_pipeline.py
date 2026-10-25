@@ -2919,6 +2919,74 @@ def test_oncall_apply_integrate():
           f"複数行の risk の重複除去: {fix4}")
 
 
+def test_page_body_past_inline_css(tmp: Path):
+    """本文を取る経路は、head に巨大なインライン CSS があるページでも本文を取る(2026-10-26号: 執筆の fetch_page.py が HTML を 400KB で
+    切り、閉じタグの前で切れた CSS が本文として残った。アソビチケットの告知(JS で描くページ)は CSS で字数が足りて描画し直されず、
+    SideM の入金延長の記事が見送られた。gameo.jp の記事は本文が 490KB 目から始まり、題名しか取れなかった)。
+    切れた CSS は本文に残さない(描画し直す判断に回す)。収集の裏取り・分類の材料も同じ読み方で本文に届く"""
+    import contextlib, io
+    import classify_sources
+    import collect
+    import fetch_page
+    tmp.mkdir(parents=True, exist_ok=True)
+    css = "<style>" + "@font-face{font-family:'Barlow';src:url(x.woff2)}" * 10_000 + "</style>"
+    body = "入金期限延長のお知らせ。延長後の入金期間: 2026年10月26日（月）15:00～10月28日（水）23:59まで。" * 12
+    page = f"<html><head><title>ASOBI TICKET</title>{css}</head><body><p>{body}</p></body></html>".encode("utf-8")
+    check(len(page) > 450_000, "事例のページが小さい")
+    # 閉じタグの前で切れた style / script は本文に残さない(残すと描画し直す判断が「本文あり」になる)
+    for cut in (page[:400_000], (b"<html><head><title>t</title><script>" + b"var a=1;" * 60_000)):
+        t = pipelib.html_to_text(cut, "utf-8")
+        check("@font-face" not in t and "var a" not in t and pipelib.looks_unrendered(t),
+              f"切れた CSS・JS を本文として残した: {t[:120]!r}")
+
+    class U:
+        status = 200
+        headers = type("H", (), {"get_content_charset": lambda self: "utf-8"})()
+        def geturl(self): return url
+        def read(self, n=None): return page if n is None else page[:n]
+        def __enter__(self): return self
+        def __exit__(self, *a): return False
+    url = "https://asobiticket2.asobistore.jp/news/x"
+    rec = tmp / "rec.jsonl"
+    saved = (sys.argv, fetch_page.urllib.request.urlopen, fetch_page.render_page, os.environ.get(pipelib.FETCH_RECORD_ENV))
+    out = io.StringIO()
+    try:
+        os.environ[pipelib.FETCH_RECORD_ENV] = str(rec)
+        fetch_page.urllib.request.urlopen = lambda req, timeout=25: U()
+        fetch_page.render_page = lambda u, t=30: ""
+        sys.argv = ["fetch_page.py", url]
+        with contextlib.redirect_stdout(out):
+            rc = fetch_page.main()
+    finally:
+        sys.argv, fetch_page.urllib.request.urlopen, fetch_page.render_page, env = saved
+        if env is None:
+            os.environ.pop(pipelib.FETCH_RECORD_ENV, None)
+        else:
+            os.environ[pipelib.FETCH_RECORD_ENV] = env
+    got = out.getvalue()
+    check(rc == 0 and "延長後の入金期間" in got and "@font-face" not in got, f"fetch_page.py が CSS の後ろの本文を取らない: {rc} {got[:160]!r}")
+    # 収集の裏取り: 写しは CSS の後ろの本文にある。描画しなくても確かめられる
+    saved_c = (collect.urllib.request.urlopen, collect.fetch_rendered, collect.classify_source)
+    try:
+        collect.urllib.request.urlopen = lambda req, timeout=15: U()
+        collect.fetch_rendered = lambda url, **k: ""
+        collect.classify_source = lambda u: "公式"
+        cv = collect.normalize([{"url": url, "title": "入金期限延長", "facts": ["延長後の入金期間: 2026年10月26日～10月28日"],
+                                 "quote": "延長後の入金期間: 2026年10月26日（月）15:00～10月28日（水）23:59まで", "_via": "explore"}])
+        collect.verify(cv)
+    finally:
+        collect.urllib.request.urlopen, collect.fetch_rendered, collect.classify_source = saved_c
+    check(cv[0].get("verify") == "confirmed", f"収集の裏取りが CSS の後ろの本文に届かない: {cv[0].get('verify')} {cv[0].get('verify_note')}")
+    # 分類の材料(ページ本文の冒頭)も、CSS ではなく本文
+    saved_u = pipelib.urllib.request.urlopen
+    try:
+        pipelib.urllib.request.urlopen = lambda req, timeout=20: U()
+        ex = classify_sources.page_excerpt(url)
+    finally:
+        pipelib.urllib.request.urlopen = saved_u
+    check("入金期限延長" in ex and "@font-face" not in ex, f"分類の材料が CSS になった: {ex[:120]!r}")
+
+
 def test_maintenance_page_is_not_read(tmp: Path):
     """メンテナンス画面へ転送された出典は、本文を読めたことにしない(2026-10-22号: 公式ポータルが告知の URL を /mainte/index.html へ
     転送していたあいだ、fetch_page.py が案内を本文として返し、執筆は収集時に確かめた素材の facts を「出典で確認できない」として7本を見送り、
@@ -15634,10 +15702,16 @@ def test_oncall_session_waits(tmp: Path):
     alias = tmp / "shim-alias"
     if shim.is_dir() and not alias.exists():
         alias.symlink_to(shim)
+    # 別の作業ツリーの写し(同じファイルではない)とも呼び合わない(2026-10-26: 当番の作業ツリーで、本体の道具と互いを呼び続けた)
+    copy = tmp / "shim-copy"
+    if shim.is_dir() and not copy.exists():
+        copy.mkdir()
+        shutil.copy2(shim / "pgrep", copy / "pgrep")
+        (copy / "pkill").symlink_to("pgrep")
     odd = f"{shim}/../{shim.name}"      # 正規化していない綴り
     for tool in ("pgrep", "pkill"):
         try:
-            r = subprocess.run([f"{odd}/{tool}", "-x", mark], env={"PATH": f"{odd}:{alias}:{shim}:{os.environ.get('PATH', '')}"},
+            r = subprocess.run([f"{odd}/{tool}", "-x", mark], env={"PATH": f"{odd}:{copy}:{alias}:{shim}:{copy}:{os.environ.get('PATH', '')}"},
                                capture_output=True, text=True, timeout=5)
             check(r.returncode == 1, f"{tool} の道具が本物を呼ばない: {r.returncode} {r.stderr[-200:]}")
         except (OSError, subprocess.TimeoutExpired) as e:
@@ -16569,6 +16643,7 @@ def main() -> int:
     test_compose_recover(tmp / "recover")
     test_revise_apply_decline(tmp / "ra")
     test_maintenance_page_is_not_read(tmp / "mpr")
+    test_page_body_past_inline_css(tmp / "pbc")
     test_revise_carries_verified_facts(tmp / "rcv")
     test_site_maintenance_notice(tmp / "pmw")
     test_classify_prompt_not_swallowed()

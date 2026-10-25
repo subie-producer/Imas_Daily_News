@@ -2447,7 +2447,13 @@ PERIOD_LABELS = (
     "応募締切", "申込締切", "販売終了", "受付終了",
 )
 _DATE_RE = re.compile(r"(?:\d{4}\s*年)?\s*\d{1,2}\s*月\s*\d{1,2}\s*日|\d{4}[/.-]\d{1,2}[/.-]\d{1,2}|\d{1,2}/\d{1,2}")
-_TAG_RE = re.compile(r"(?is)<(script|style)[^>]*>.*?</\1>|<[^>]+>")
+# 閉じタグの無い script / style は末尾まで落とす。取り出す側はバイト数で HTML を切る(fetch_page の 400KB 等)ので、
+# 巨大なインライン CSS の途中で切れると閉じタグが無く、CSS が本文として残る。残った CSS で字数が足り、JS で描くページを
+# 描画し直さずに「本文あり」として執筆へ渡していた(2026-10-26: アソビチケットの告知が CSS だけになり、SideM の記事が見送られた)
+_TAG_RE = re.compile(r"(?is)<(script|style)[^>]*>.*?(?:</\1>|\Z)|<[^>]+>")
+# 本文を取る応答の読み取りの上限(バイト)。head にインライン CSS を数百 KB 積むページがあり、400KB で切ると本文の手前で切れる
+# (2026-10-26: gameo.jp の記事は本文が 490KB 目から始まり、取れたのは題名だけだった)
+PAGE_READ_BYTES = 5_000_000
 
 
 def decode_html(raw: bytes, charset: str | None = None) -> str:

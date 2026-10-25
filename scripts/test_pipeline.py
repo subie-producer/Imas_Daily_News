@@ -27,6 +27,8 @@ TEST_TMP = Path(tempfile.mkdtemp(prefix="imas-test-"))
 tempfile.tempdir = str(TEST_TMP)
 os.environ["TMPDIR"] = str(TEST_TMP)
 os.environ["IMAS_SCRATCH"] = str(TEST_TMP / "scratch")
+# 出典ページの原本の置き場(page_archive)も一時ディレクトリへ(本体の置き場に書かない・本物の原本を読まない)
+os.environ["IMAS_PAGE_ARCHIVE"] = str(TEST_TMP / "pages")
 pipelib.CLI_BLOCK_STATE = TEST_TMP / "cli-blocked.json"
 atexit.register(shutil.rmtree, TEST_TMP, True)
 import assemble
@@ -5556,6 +5558,8 @@ def test_render_failure_reaches_classify_and_verify(tmp: Path):
         cs.page_meta = lambda url: ("t", "d", "")
         profile = cs.site_profile("idolmaster-official.jp", "https://idolmaster-official.jp/news/01_1")
         plain["body"] = ""
+        # 保存の原本が無いページとして読む(あれば読み直せないときに原本を返す: test_page_archive_*)
+        os.environ["IMAS_PAGE_ARCHIVE"] = str(tmp / "no-pages")
         body2, status2 = cs.rendered_excerpt("https://idolmaster-official.jp/")
     finally:
         cs.run_group, fetch_page.fetch, fetch_page.render_page, cs.page_meta = saved
@@ -10181,7 +10185,10 @@ for rel, text in (step.get("touch") or {}).items():
     else:
         pathlib.Path(rel).write_text(text, encoding="utf-8")
 for u in step.get("fetch") or []:
-    subprocess.run([sys.executable, os.environ["FAKE_FETCH_PAGE"], u], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    r = subprocess.run([sys.executable, os.environ["FAKE_FETCH_PAGE"], u], capture_output=True, text=True)
+    if os.environ.get("FAKE_FETCH_LOG"):        # 書き手が読んだ出力(fetch_page.py の stdout)を残す
+        with open(os.environ["FAKE_FETCH_LOG"], "a", encoding="utf-8") as f:
+            f.write(json.dumps({"key": key, "url": u, "rc": r.returncode, "out": r.stdout}, ensure_ascii=False) + "\n")
 if step.get("say"):
     print(step["say"], file=sys.stderr)
 if step.get("answer") is not None:
@@ -16557,6 +16564,287 @@ def test_oncall_recover_keeps_handed_exit(tmp: Path):
               f"exit {c1}/{c2} 期待 {HANDED} {[m[:40] for m in n1]}")
 
 
+FAKE_FETCH_ARCHIVE = r'''#!/usr/bin/env python3
+# テスト用: 本物の fetch_page.py を、通信だけ差し替えて走らせる(fake_urlopen)。FAKE_PHASE=collect は全部読める(収集時点)。
+# down は相手ごとに読めない形: lantis.jp は 503 のメンテナンスの画面、down.example・fresh.example はただの 503、busy.example は 429、
+# slow.example は時間切れ、gone.example は 404、changed.example は内容が変わった(締切の延長)
+import email.message, io, os, socket, sys, urllib.error, urllib.parse
+class U:
+    status = 200
+    def __init__(self, final, body):
+        self.final, self.body = final, body
+        self.headers = type("H", (), {"get_content_charset": lambda s: "utf-8"})()
+    def geturl(self): return self.final
+    def read(self, n=None): return self.body.encode("utf-8")
+    def __enter__(self): return self
+    def __exit__(self, *a): return False
+def page(title, text):
+    return f"<html><head><title>{title}</title></head><body><p>" + text + "</p></body></html>"
+OLD = "告知の本文。販売を開始する。価格は3000円。\n応募締切は10月30日。\n" * 3
+NEW = OLD.replace("応募締切は10月30日。", "応募締切は11月3日まで延長しました。")
+def err(url, code, body):
+    h = email.message.Message()
+    h["Content-Type"] = "text/html; charset=utf-8"
+    return urllib.error.HTTPError(url, code, "x", h, io.BytesIO(body.encode("utf-8")))
+def fake_urlopen(url, phase):
+    host = urllib.parse.urlsplit(url).hostname or ""
+    if phase == "down":
+        if host == "lantis.jp":
+            raise err(url, 503, page("現在メンテナンス中です - 503 Service Temporarily Unavailable", "ご迷惑をおかけします。"))
+        if host in ("down.example", "fresh.example"):
+            raise err(url, 503, page("503 Service Unavailable", "混み合っています。"))
+        if host == "busy.example":
+            raise err(url, 429, page("429 Too Many Requests", "しばらくお待ちください。"))
+        if host == "slow.example":
+            raise urllib.error.URLError(socket.timeout("timed out"))
+        if host == "gone.example":
+            raise err(url, 404, page("404 Not Found", "ページが見つかりません。"))
+        if host == "changed.example":
+            return U(url, page("告知", NEW))
+    return U(url, page("告知", OLD))
+if __name__ == "__main__":
+    sys.path.insert(0, os.environ["FAKE_SCRIPTS"])
+    import fetch_page
+    phase = os.environ.get("FAKE_PHASE", "collect")
+    fetch_page.urllib.request.urlopen = lambda req, timeout=25: fake_urlopen(req.full_url, phase)
+    fetch_page.needs_render = lambda u, t: False
+    sys.exit(fetch_page.main())
+'''
+
+
+def test_page_archive_store(tmp: Path):
+    """出典ページの原本の置き場(page_archive)の形: 同じ本文は版を増やさない(確かめた時刻だけ更新)・版の数の上限(収集時点の版は残す)・
+    古いもの・大きさの上限で消す・預かりから素材に関わるページだけを写す・当番の作業ツリー(git worktree)からも本体の置き場を引く"""
+    import collect
+    import page_archive as pa
+    base = tmp / "pages"
+    u = "https://example.com/news/1"
+    v1 = pa.save(u, "本文A\n\n\n価格3000円", html=b"<p>A</p>", via="collect", at="2026-10-25T21:03:00+09:00", base=base)
+    v1b = pa.save(u + "/", "本文A\n価格3000円  ", via="read", at="2026-10-26T04:30:00+09:00", base=base)
+    vs = pa.versions(u, base)
+    check(len(vs) == 1 and v1b["n"] == v1["n"] and vs[0]["seen"] == "2026-10-26T04:30:00+09:00" and vs[0]["via"] == "collect",
+          f"同じ本文(空白・末尾の / の違いだけ)で版を増やした・確かめた時刻を残さない: {vs}")
+    check(pa.html_of(u, vs[0], base) == b"<p>A</p>" and pa.latest(u, base)["text"] == "本文A\n\n価格3000円",
+          "版の HTML・本文を読み戻せない")
+    for i in range(12):
+        pa.save(u, f"本文B{i}", via="read", at=f"2026-10-26T05:{i:02d}:00+09:00", base=base)
+    vs = pa.versions(u, base)
+    check(len(vs) == pa.MAX_VERSIONS and vs[0]["n"] == v1["n"] and pa.baseline(u, base)["text"].startswith("本文A")
+          and pa.latest(u, base)["text"] == "本文B11", f"版の上限で収集時点の版を消した・上限を守らない: {[v['n'] for v in vs]}")
+    d = "\n".join(pa.diff("締切は10月30日\n価格3000円", "締切は11月3日\n価格3000円").splitlines())
+    check("-締切は10月30日" in d and "+締切は11月3日" in d, f"新旧の違い: {d!r}")
+    # 古いもの・大きさの上限
+    old = "https://example.com/old"
+    pa.save(old, "古いページ", via="collect", at="2026-05-01T00:00:00+09:00", base=base)
+    now = __import__("datetime").datetime.fromisoformat("2026-10-26T06:00:00+09:00").timestamp()
+    r = pa.prune(now=now, base=base)
+    check(r["removed"] == 1 and not pa.versions(old, base) and pa.versions(u, base), f"120日より古い URL を消さない: {r}")
+    pa.save(old, "古いページ" * 100, via="collect", at="2026-10-01T00:00:00+09:00", base=base)
+    r = pa.prune(now=now, base=base, max_bytes=r["bytes"] + 10)
+    check(not pa.versions(old, base) and pa.versions(u, base), f"大きさの上限で、最後に読んだのが古い URL から消さない: {r}")
+    # 預かり(探索・X の確かめのセッション)から、素材に関わるページだけを収集時点の原本として写す
+    spool_root = tmp / "spool-root"
+    saved = collect.page_spool_root
+    try:
+        collect.page_spool_root = lambda: spool_root
+        wd = tmp / "explore-x"
+        (wd / collect.PAGE_SPOOL_NAME).mkdir(parents=True)
+        pa.save("https://link.example/a", "リンク先の告知", via="read", base=wd / collect.PAGE_SPOOL_NAME)
+        pa.save("https://other.example/z", "関係のないページ", via="read", base=wd / collect.PAGE_SPOOL_NAME)
+        collect.stash_pages(wd)
+        cands = [cand_row("x1", "https://x.com/a/status/1", facts=["リンク: https://link.example/a"])]
+        env_saved = os.environ.get("IMAS_PAGE_ARCHIVE")
+        os.environ["IMAS_PAGE_ARCHIVE"] = str(base)
+        try:
+            n = collect.ingest_spools(cands)
+        finally:
+            os.environ["IMAS_PAGE_ARCHIVE"] = env_saved
+    finally:
+        collect.page_spool_root = saved
+    check(n == 1 and pa.baseline("https://link.example/a", base)["via"] == "collect" and not pa.versions("https://other.example/z", base)
+          and not any(spool_root.iterdir()), f"預かりから素材に関わるページだけを写す、になっていない: {n}")
+    stub = collect.explore_workdir("t")
+    try:
+        check(f"os.environ[{pa.ARCHIVE_ENV!r}] = {str(stub / collect.PAGE_SPOOL_NAME)!r}" in (stub / "fetch_page.py").read_text(encoding="utf-8"),
+              "探索の入口が、読んだページの原本を作業ディレクトリの中に残させない")
+    finally:
+        shutil.rmtree(stub, ignore_errors=True)
+    # 当番の作業ツリー(git worktree)から走っても、本体の置き場を読む(.env も環境変数も無い)。本物の fetch_page.py を作業ツリーで走らせ、
+    # 相手が読めない(127.0.0.1 の閉じたポート)ときに本体に残した原本を返す
+    repo = Path(__file__).resolve().parent.parent
+    main_wt, wt = tmp / "ops", tmp / "oncall-wt"
+    (main_wt / "scripts").mkdir(parents=True)
+    for f in (repo / "scripts").glob("*.py"):
+        shutil.copy(f, main_wt / "scripts" / f.name)
+    shutil.copytree(repo / "prompts", main_wt / "prompts")
+    shutil.copytree(repo / "schema", main_wt / "schema")
+    g = lambda *a, cwd=main_wt: subprocess.run(["git", *a], cwd=cwd, capture_output=True, text=True, stdin=subprocess.DEVNULL)
+    g("init", "-q")
+    g("add", "-A")
+    g("-c", "user.name=t", "-c", "user.email=t@example.com", "commit", "-qm", "x")
+    r = g("worktree", "add", "-q", "--detach", str(wt), "HEAD")
+    check(r.returncode == 0, f"作業ツリーを作れない: {r.stderr}")
+    check(pa.main_worktree(wt).resolve() == main_wt.resolve() and pa.main_worktree(main_wt) == main_wt,
+          f"作業ツリーから本体を辿れない: {pa.main_worktree(wt)}")
+    dead = "http://127.0.0.1:9/news/1"
+    pa.save(dead, "本体に残した原本。価格は3000円。", via="collect", at="2026-10-25T21:03:00+09:00", base=main_wt / "metrics" / "work" / "pages")
+    env = {k: v for k, v in os.environ.items() if k not in ("IMAS_PAGE_ARCHIVE", pipelib.FETCH_RECORD_ENV, "IMAS_FETCH_PAGES")}
+    r = subprocess.run([sys.executable, str(wt / "scripts" / "fetch_page.py"), dead], cwd=wt, env=env, capture_output=True, text=True,
+                       timeout=120, stdin=subprocess.DEVNULL)
+    check(r.returncode == 0 and "本体に残した原本" in r.stdout and "いまは読み直せない" in r.stdout and "収集時点(2026-10-25 21:03)" in r.stdout,
+          f"当番の作業ツリーから本体の置き場の原本を読めない: {r.returncode} {r.stdout[:300]!r} {r.stderr[-300:]!r}")
+    g("worktree", "remove", "--force", str(wt))
+
+
+def test_page_archive_read_back(tmp: Path):
+    """収集で読んだ原本を残し、執筆が読み直せないときはそれで書く(編集長 2026-10-26「収集するタイミングでこういう記事だった(HTMLぺたー)
+    すりゃいいんだよ。読み直す度にアクセスするから失敗するんだよ」)。10/22・10/26 号は公式ポータルのメンテナンス・ランティスの 503・
+    Anime Store.JP の 429 で読めず、収集時に本文で確かめた素材まで見送った。
+    - 収集(裏取り・定点観測の本文)が原本を残し、素材から引ける(archived_at)
+    - 相手がメンテナンス・503・429・時間切れ → fetch_page.py は原本を取得時刻つきで返し、読めたページに数える。記事は書かれ、
+      組版が「収集時点(…)に読んだ原本に基づきます」の断り書きを付ける
+    - 内容が変わった → いまの版と新旧の違いが書き手に渡り、変化の台帳・記事の記録に残る(断り書きは付けない)
+    - 404 → 取り下げ・移動の可能性として渡し、読めたページに数えない
+    - 原本の無い URL は従来どおり(FETCH_FAILED)"""
+    import contextlib, importlib.util, io
+    import collect
+    import page_archive as pa
+    repo = Path(__file__).resolve().parent.parent
+    date = "2026-10-27"
+    urls = {"mainte": "https://lantis.jp/sidem/extra/index.html", "down": "https://down.example/news/1",
+            "busy": "https://busy.example/news/1", "slow": "https://slow.example/news/1", "changed": "https://changed.example/news/1",
+            "gone": "https://gone.example/news/1", "fresh": "https://fresh.example/news/1"}
+    fake_fetch = tmp / "spec" / "fake_fetch.py"
+    fake_fetch.parent.mkdir(parents=True)
+    fake_fetch.write_text(FAKE_FETCH_ARCHIVE, encoding="utf-8")
+    ff_spec = importlib.util.spec_from_file_location("fake_fetch_archive", fake_fetch)
+    ff = importlib.util.module_from_spec(ff_spec)
+    ff_spec.loader.exec_module(ff)
+    # 収集: 裏取り(verify)が出典を読み、原本を残す(原本の無い fresh は収集が読まなかったページ)
+    saved_c = (collect.urllib.request.urlopen, collect.fetch_rendered, collect.classify_source)
+    try:
+        collect.urllib.request.urlopen = lambda req, timeout=15: ff.fake_urlopen(req.full_url, "collect")
+        collect.fetch_rendered = lambda url, **k: ""
+        collect.classify_source = lambda u: "公式"
+        cv = collect.normalize([{"url": u, "title": f"t{k}", "facts": ["価格は3000円"], "_via": "explore"}
+                                for k, u in urls.items() if k != "fresh"])
+        collect.verify(cv)
+    finally:
+        collect.urllib.request.urlopen, collect.fetch_rendered, collect.classify_source = saved_c
+    check(all(c.get("archived_at") for c in cv) and all((pa.baseline(c["url"]) or {}).get("via") == "collect" for c in cv),
+          f"収集の裏取りが原本を残さない・素材から引けない: {[(c['url'], c.get('archived_at')) for c in cv]}")
+    (tmp / "candidates").mkdir(parents=True)
+    pipelib.write_checked(tmp / "candidates" / f"{date}.json", json.dumps(cv, ensure_ascii=False))     # archived_at は書式に合う
+    if not pa.baseline(urls["mainte"]):
+        return
+    collected_at = pa.baseline(urls["mainte"])["at"]
+    cday = __import__("datetime").datetime.fromisoformat(collected_at)
+    # 定点観測の本文(facts 化に渡すページ)も原本を残す
+    saved_w = collect.watch_get
+    try:
+        collect.watch_get = lambda u, t: (b"<html><body><p>" + ("定点観測の新着。" * 80).encode() + b"</p></body></html>", "utf-8")
+        collect.page_html_or_note("https://watch.example/news/9", False)
+    finally:
+        collect.watch_get = saved_w
+    check((pa.baseline("https://watch.example/news/9") or {}).get("via") == "collect", "定点観測の新着ページの原本を残さない")
+    # 執筆: 相手が読めない・変わった・無くなった
+    posts = tmp / "docs" / "_posts"
+    posts.mkdir(parents=True)
+    (tmp / "metrics").mkdir()
+    shutil.copytree(repo / "schema", tmp / "schema")
+    shutil.copy(repo / "source_types.yml", tmp / "source_types.yml")
+    bindir = tmp / "bin"
+    bindir.mkdir()
+    (bindir / "codex").write_text(FAKE_CODEX, encoding="utf-8")
+    os.chmod(bindir / "codex", 0o755)
+    spec_p = tmp / "spec" / "spec.json"
+    log = tmp / "spec" / "fetch-log.jsonl"
+    cands = {f"c{k}": cand_row(f"c{k}", u, facts=["販売開始", "価格は3000円"], dedup_key=k) for k, u in urls.items()}
+    para = "販売を開始する。価格は3000円。" * 6
+    ans = lambda u: {"status": "ok", "decline_code": "", "decline_detail": "", "title": "シンデレラガールズ販売開始", "title_fact_ids": ["F1"],
+                     "lede": "販売を開始する。", "lede_fact_ids": ["F1"], "tags": ["シンデレラガールズ", "販売"], "event_date": None,
+                     "new_facts": [{"id": "N1", "text": "価格は3000円", "url": u}], "addressed_issue_ids": [],
+                     "blocks": [{"markdown": para, "fact_ids": ["F1", "F2", "N1"]}], "sources": [{"url": u, "label": "告知"}]}
+    # 素材の外のページ(other)も、原本で読めたなら根拠にできる(検算が読めたページに数える)
+    other = "https://busy.example/news/other"
+    pa.save(other, "別の告知。価格は3000円。", via="collect", at=collected_at)
+    spec = {f"write-{k}": [{"fetch": [u], "answer": ans(u)}] for k, u in urls.items()}
+    spec["write-busy"] = [{"fetch": [urls["busy"], other], "answer": dict(ans(urls["busy"]), new_facts=[{"id": "N1", "text": "価格は3000円", "url": other}])}]
+    spec_p.write_text(json.dumps(spec, ensure_ascii=False), encoding="utf-8")
+    plan = {"articles": [{"slug": k, "brand": "cg", "rank": "small", "angle": "知らせ", "candidate_ids": [f"c{k}"], "dedup_key": k} for k in urls]}
+    env_keys = ("FAKE_CODEX_SPEC", "FAKE_FETCH_PAGE", "FAKE_SCRIPTS", "FAKE_PHASE", "FAKE_FETCH_LOG", "IMAS_FETCH_PAGES", "PATH")
+    saved = (compose.ROOT, pipelib.ROOT, compose.classify_source, compose.storylink.prior_lookup, compose.DEADLINE,
+             {k: os.environ.get(k) for k in env_keys})
+    try:
+        compose.ROOT = pipelib.ROOT = tmp
+        compose.classify_source = pipelib.classify_source
+        compose.storylink.prior_lookup = lambda *a: (lambda *b: [])
+        compose.DEADLINE = None
+        os.environ["PATH"] = f"{bindir}{os.pathsep}{os.environ.get('PATH', '')}"
+        os.environ.pop("IMAS_FETCH_PAGES", None)
+        os.environ.update(FAKE_CODEX_SPEC=str(spec_p), FAKE_FETCH_PAGE=str(fake_fetch), FAKE_SCRIPTS=str(repo / "scripts"),
+                          FAKE_PHASE="down", FAKE_FETCH_LOG=str(log))
+        compose.FACT_MAP.clear()
+        with contextlib.redirect_stdout(io.StringIO()):
+            written, aborted = compose.write_articles(date, plan, cands, [], {}, wave=4)
+        wp = (tmp / "metrics" / "work" / date / "write-mainte-0.md").read_text(encoding="utf-8")
+    finally:
+        compose.ROOT, pipelib.ROOT, compose.classify_source, compose.storylink.prior_lookup, compose.DEADLINE, env = saved
+        for k, v in env.items():
+            if v is None:
+                os.environ.pop(k, None)
+            else:
+                os.environ[k] = v
+    seen = {}
+    for ln in log.read_text(encoding="utf-8").splitlines():
+        row = json.loads(ln)
+        seen[row["url"]] = row
+    got = {k: (seen[u]["rc"], seen[u]["out"]) for k, u in urls.items()}
+    for k in ("mainte", "down", "busy", "slow"):
+        check(got[k][0] == 0 and "いまは読み直せない" in got[k][1] and f"収集時点({collected_at[:16].replace('T', ' ')})" in got[k][1]
+              and "応募締切は10月30日" in got[k][1] and "FETCH_FAILED" not in got[k][1],
+              f"{k}: 読み直せないときに収集時点の原本を返さない: {got[k][1][:300]!r}")
+    ch = got["changed"][1]
+    check(got["changed"][0] == 0 and "内容が変わっている" in ch and "-応募締切は10月30日。" in ch and "+応募締切は11月3日まで延長しました。" in ch
+          and ch.index("--- 変わったところ ---") < ch.index("--- 本文(要約なし) ---") and "11月3日" in ch.split("--- 本文(要約なし) ---")[1],
+          f"内容が変わったページの新旧が書き手に渡らない: {ch[:400]!r}")
+    check(got["gone"][0] == 1 and got["gone"][1].startswith("FETCH_FAILED: HTTPError") and "取り下げ・移動の可能性" in got["gone"][1]
+          and "出典にしない" in got["gone"][1], f"404 を取り下げ・移動の可能性として渡さない: {got['gone'][1][:300]!r}")
+    check(got["fresh"][0] == 1 and got["fresh"][1].startswith("FETCH_FAILED: HTTPError") and "原本" not in got["fresh"][1],
+          f"原本の無いページが従来どおりでない: {got['fresh'][1][:200]!r}")
+    rec = lambda s: tmp / "metrics" / "work" / date / "fetched" / f"{s}.jsonl"     # compose.fetch_record の置き場(ROOT は tmp)
+    check(all(urls[k] in pipelib.fetched_urls(rec(k)) for k in ("mainte", "down", "busy", "slow", "changed"))
+          and other in pipelib.fetched_urls(rec("busy")) and urls["gone"] not in pipelib.fetched_urls(rec("gone"))
+          and urls["fresh"] not in pipelib.fetched_urls(rec("fresh")),
+          "原本で読んだページを読めたページに数えない・404 を数えた")
+    check(sorted(a["slug"] for a in written) == sorted(urls) and not aborted,
+          f"原本で読めた記事を書けなかった(素材の外の原本のページを検算が落とした など): {[a['slug'] for a in written]} {aborted}")
+    notice = lambda s: next((l for l in ((posts / f"{date}-{s}.md").read_text(encoding="utf-8").splitlines()
+                                          if (posts / f"{date}-{s}.md").exists() else ["(記事が無い)"]) if renderlib.NOTICE_MARK in l), "")
+    read = f"収集時点({cday.month}月{cday.day}日)"
+    want = {"mainte": f"※ランティスがメンテナンス中のため、原本は現在確認できていません(2026年10月27日時点)。内容は{read}に読んだ原本に基づきます。",
+            "down": f"※down.exampleの原本を読み直せず、現在の内容は確認できていません(2026年10月27日時点)。内容は{read}に読んだ原本に基づきます。",
+            "busy": f"※busy.exampleの原本を読み直せず、現在の内容は確認できていません(2026年10月27日時点)。内容は{read}に読んだ原本に基づきます。",
+            "slow": f"※slow.exampleの原本を読み直せず、現在の内容は確認できていません(2026年10月27日時点)。内容は{read}に読んだ原本に基づきます。"}
+    have = {s: notice(s) for s in urls}
+    check(all(have[s] == f"{want[s]} {renderlib.NOTICE_MARK}" for s in want) and not any(have[s] for s in ("changed", "gone", "fresh")),
+          f"原本で書いた記事の断り書き: {have}")
+    p = posts / f"{date}-down.md"
+    check(p.exists() and renderlib.with_notice(p.read_text(encoding="utf-8"), want["down"]) == p.read_text(encoding="utf-8")
+          and renderlib.NOTICE_MARK not in renderlib.with_notice(p.read_text(encoding="utf-8"), None)
+          and compose.body_length(p) == len(para), "原本の断り書きの付け外しが冪等でない・字数に数えた")
+    # 変わった事実は続報・訂正の材料として残る(置き場の台帳と記事の記録)
+    chg = [r for r in pa.changes() if r["url"] == urls["changed"]]
+    rows = pipelib.record_rows(pipelib.changed_record(rec("changed")))
+    check(len(chg) == 1 and chg[0]["from_at"] == collected_at and rows and rows[0]["url"] == urls["changed"],
+          f"内容の変化を台帳・記事の記録に残さない: {chg} {rows}")
+    check("原本の照合" in wp and "いまは読み直せない" in wp and "取り下げ・移動の可能性" in wp, "執筆の依頼文に原本の照合の扱いが無い")
+    for role in ("revise", "review"):
+        r_ = pipelib.maintenance_rules(role)
+        check("いまは読み直せない" in r_ and "内容が変わっている" in r_ and "取り下げ・移動の可能性" in r_,
+              f"{role} の依頼文に原本の照合の扱いが無い")
+
+
 def main() -> int:
     tmp = Path(tempfile.mkdtemp(prefix="imas-test-"))
     test_stray_governed_write_is_caught(tmp / "sgw")
@@ -16764,12 +17052,35 @@ def main() -> int:
     test_bench_tools_check_read_pages(tmp / "btr")
     test_fetch_page_shows_redirect_target(tmp / "fpr")
     test_draft_key_ignores_portal_notice(tmp / "dkn")
+    test_page_archive_store(tmp / "pas")
+    test_page_archive_read_back(tmp / "parb")
     check(not STRAY_WRITES, "書式で決めたファイルを write_checked を通さずに書いた本番のコード(書く前に書式で検めること): "
           + "; ".join(sorted(set(STRAY_WRITES))[:10]))
     for f in FAILS:
         print(f"  [FAIL] {f}")
     print(f"test_pipeline: {len(FAILS)} failures")
     return 1 if FAILS else 0
+
+
+def _own_archive(fn):
+    """テストごとに原本の置き場(page_archive)を空の別の置き場にする(前のテストが読んだページの原本を、次のテストの fetch_page.py が
+    「読み直せないときの原本」として返さない)"""
+    import functools
+
+    @functools.wraps(fn)
+    def run(*a, **k):
+        saved = os.environ.get("IMAS_PAGE_ARCHIVE")
+        os.environ["IMAS_PAGE_ARCHIVE"] = tempfile.mkdtemp(prefix=f"pages-{fn.__name__[:40]}-")
+        try:
+            return fn(*a, **k)
+        finally:
+            os.environ["IMAS_PAGE_ARCHIVE"] = saved
+    return run
+
+
+for _name, _fn in list(globals().items()):
+    if _name.startswith("test_") and callable(_fn):
+        globals()[_name] = _own_archive(_fn)
 
 
 if __name__ == "__main__":

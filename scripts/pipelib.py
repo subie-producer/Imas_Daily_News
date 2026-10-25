@@ -72,7 +72,10 @@ def merge_candidate_facts(tgt: dict, c: dict) -> bool:
     # リンク元(そのリンクが載っていた投稿・ページ)も、無ければ引き継ぐ。出典の種別の判定がリンク元を引く(classify_sources)
     if c.get("link_from") and not tgt.get("link_from"):
         tgt["link_from"], dl_changed = c["link_from"], True
-    merged = list(dict.fromkeys((tgt.get("facts") or []) + (c.get("facts") or [])))
+    # 収集時点の原本(page_archive)は、新しく読んだほうの取得時刻を指す
+    if c.get("archived_at") and str(c["archived_at"]) > str(tgt.get("archived_at") or ""):
+        tgt["archived_at"] = c["archived_at"]
+    merged =list(dict.fromkeys((tgt.get("facts") or []) + (c.get("facts") or [])))
     if len(merged) <= len(tgt.get("facts") or []):
         return dl_changed
     tgt["facts"] = merged
@@ -1658,6 +1661,12 @@ def maintenance_screen(status: int, body: bytes, charset: str | None = None) -> 
     return bool(MAINTENANCE_WORD.search(title) or MAINTENANCE_WORD.search(text))
 
 
+def maintenance_page(text: str) -> bool:
+    """取り出した本文が、メンテナンスの案内だけの短い画面か(メンテナンスの言葉があり、空白を除いて 2000字に満たない)。
+    描画したページは転送先が分からないので、原本(page_archive)として残す前に本文で見分ける"""
+    return bool(MAINTENANCE_WORD.search(text or "")) and len(re.sub(r"\s+", "", text or "")) < 2000
+
+
 def maintenance_http_error(e: BaseException) -> bool:
     """urlopen の HTTPError がメンテナンスの画面の応答か(maintenance_screen)。本文を読むので、1つの例外に1回だけ呼ぶ。"""
     import urllib.error
@@ -1681,6 +1690,13 @@ MAINTENANCE_LEGACY_NOTICES = {
                   "内容は収集時点の公式の告知・公式Xなどに基づきます。",
 }
 MAINTENANCE_NOTICE_TAIL = "がメンテナンス中のため、原本は確認できていません({date}時点)。内容は収集時点の公式の告知・公式Xなどに基づきます。"
+# 読み直せず、保存の原本(page_archive)で書いた出典の断り書き(編集長 2026-10-26。読み直して同じ内容を読めたら付けない)。
+# {read} は原本を読んだ日(収集が読んだ版は「収集時点(10月25日)」、執筆などが読み直した版は「10月26日」)
+ARCHIVE_NOTICE_FROM = "2026-10-27"
+ARCHIVE_NOTICE_TAILS = {
+    "maintenance": "がメンテナンス中のため、原本は現在確認できていません({date}時点)。内容は{read}に読んだ原本に基づきます。",
+    "failed": "の原本を読み直せず、現在の内容は確認できていません({date}時点)。内容は{read}に読んだ原本に基づきます。",
+}
 
 
 def site_host(url) -> str:
@@ -1704,24 +1720,43 @@ def maintenance_site_name(host: str) -> str:
     return host
 
 
-def maintenance_notice(edition: str, hosts) -> str | None:
-    """メンテナンスで原本を読めなかったホスト(hosts)の断り書き(1つにまとめる)。無ければ None。
-    MAINTENANCE_NOTICE_FROM より前の号は発行したときの規則のまま(10/23 号は公式ポータルだけ、その前の号は付けない)"""
+def maintenance_notice(edition: str, hosts, archived=None) -> str | None:
+    """メンテナンスで原本を読めなかったホスト(hosts)と、読み直せず保存の原本で書いたホスト(archived: (ホスト, why, 原本の取得時刻,
+    via) の並び)の断り書き(1つの段落にまとめる)。無ければ None。
+    MAINTENANCE_NOTICE_FROM より前の号は発行したときの規則のまま(10/23 号は公式ポータルだけ、その前の号は付けない)。
+    保存の原本の断り書きは ARCHIVE_NOTICE_FROM の号から"""
     import datetime
     hosts = sorted({h for h in hosts if h})
     edition = str(edition)
     if edition in MAINTENANCE_LEGACY_NOTICES:
         return MAINTENANCE_LEGACY_NOTICES[edition] if any(maintenance_site_name(h) == "公式ポータル" for h in hosts) else None
-    if not hosts or edition < MAINTENANCE_NOTICE_FROM:
+    if edition < MAINTENANCE_NOTICE_FROM:
         return None
-    names = sorted({maintenance_site_name(h) for h in hosts})       # 同じサイトの別ホストは1つにまとめ、並びは名前で決める
     d = datetime.date.fromisoformat(edition)
-    return "※" + "・".join(names) + MAINTENANCE_NOTICE_TAIL.format(date=f"{d.year}年{d.month}月{d.day}日")
+    day = f"{d.year}年{d.month}月{d.day}日"
+    parts = []
+    if hosts:
+        names = sorted({maintenance_site_name(h) for h in hosts})       # 同じサイトの別ホストは1つにまとめ、並びは名前で決める
+        parts.append("・".join(names) + MAINTENANCE_NOTICE_TAIL.format(date=day))
+    groups: dict[tuple[str, str], set[str]] = {}
+    for host, why, at, via in (archived or []) if edition >= ARCHIVE_NOTICE_FROM else []:
+        try:
+            t = datetime.datetime.fromisoformat(str(at))
+        except ValueError:
+            continue
+        if not host:
+            continue
+        read = f"収集時点({t.month}月{t.day}日)" if via == "collect" else f"{t.month}月{t.day}日"
+        groups.setdefault(("maintenance" if why == "maintenance" else "failed", read), set()).add(maintenance_site_name(host))
+    for (why, read), names in sorted(groups.items(), key=lambda kv: (sorted(kv[1]), kv[0])):
+        parts.append("・".join(sorted(names)) + ARCHIVE_NOTICE_TAILS[why].format(date=day, read=read))
+    return ("※" + "".join(parts)) if parts else None
 
 
 def maintenance_rules(role: str) -> str:
-    """執筆・書き直し・校閲の依頼文に足す、メンテナンス中の出典の扱い(prompts/site-maintenance.<role>.md。常設)。"""
-    return render_prompt(f"site-maintenance.{role}")
+    """執筆・書き直し・校閲の依頼文に足す、メンテナンス中の出典の扱い(prompts/site-maintenance.<role>.md。常設)と、
+    保存の原本(page_archive)で読んだ・内容が変わった・無くなった出典の扱い(prompts/source-archive.<role>.md)。"""
+    return render_prompt(f"site-maintenance.{role}") + render_prompt(f"source-archive.{role}")
 
 
 def maintenance_record(rec) -> Path:
@@ -1733,6 +1768,38 @@ def failed_record(rec) -> Path:
     """fetch_page.py がメンテナンスでない理由(404・メンテナンスの表示の無い 5xx・時間切れ・本文が空 など)で読めなかったページの記録。
     同じホストの別のページがメンテナンスでも、これらのページに断り書きを付けない(Sol 監査 Z2 r1)"""
     return Path(rec).with_suffix(".failed")
+
+
+def changed_record(rec) -> Path:
+    """fetch_page.py が読み直して、保存の原本(page_archive)から内容が変わっていたページの記録(続報・訂正の材料)。"""
+    return Path(rec).with_suffix(".changed")
+
+
+def record_rows(path) -> list[dict]:
+    """記録(JSON Lines)の行。記録が無ければ空。読めない行は飛ばす。"""
+    try:
+        lines = Path(path).read_text(encoding="utf-8", errors="replace").splitlines()
+    except OSError:
+        return []
+    out = []
+    for ln in lines:
+        try:
+            row = json.loads(ln)
+        except ValueError:
+            continue
+        if isinstance(row, dict) and isinstance(row.get("url"), str) and row["url"]:
+            out.append(row)
+    return out
+
+
+def archived_reads(rec) -> list[dict]:
+    """記録のうち、読み直せず保存の原本を返したページ({url, final, archived: 原本の取得時刻, why: maintenance / failed})。"""
+    return [r for r in record_rows(rec) if r.get("archived")]
+
+
+def live_fetched_urls(rec) -> set[str]:
+    """記録のうち、相手のサイトから本文を読めたページ(保存の原本を返したものを除く)の URL(頼んだ URL と転送先)。"""
+    return {r[k] for r in record_rows(rec) if not r.get("archived") for k in ("url", "final") if isinstance(r.get(k), str) and r[k]}
 
 
 def record_failed_marker(rec) -> Path:
@@ -1772,16 +1839,27 @@ def _append_line(path, line: str) -> None:
         os.close(fd)
 
 
-def note_fetched(url: str, final: str | None = None, maintenance: bool = False, failed: bool = False) -> None:
+def note_fetched(url: str, final: str | None = None, maintenance: bool = False, failed: bool = False,
+                 archived: str | None = None, why: str | None = None, changed: dict | None = None, via: str | None = None) -> None:
     """本文を取れたページを FETCH_RECORD_ENV の記録に書き足す(変数が無ければ何もしない)。書けなくても読み取りは止めない
     (stderr に出し、書けなかった印(record_failed_marker)を残す。組版が異常として申告する。記録に無いページは検算が差し戻す)。
     maintenance=True はメンテナンス画面へ転送されたページで、隣の記録(maintenance_record)へ書く(根拠にできるページには入れない)。
-    failed=True はメンテナンスでない理由で読めなかったページで、隣の記録(failed_record)へ書く"""
+    failed=True はメンテナンスでない理由で読めなかったページで、隣の記録(failed_record)へ書く。
+    archived は、読み直せず保存の原本(page_archive)を返したときのその版の取得時刻。本文を取れたページとして書き(根拠にできる)、
+    why(maintenance / failed)・via(その版を読んだのが収集 collect か、執筆などの読み直し read か)と一緒に残す(組版が断り書きを付ける)。
+    changed は読み直して内容が変わったページ({from_at, to_at})で、
+    隣の記録(changed_record)へ書く"""
     base = os.environ.get(FETCH_RECORD_ENV)
     if not base:
         return
-    rec = str(maintenance_record(base) if maintenance else failed_record(base) if failed else base)
-    line = json.dumps({"url": url, "final": final if final and final != url else None}, ensure_ascii=False) + "\n"
+    rec = str(maintenance_record(base) if maintenance else failed_record(base) if failed
+              else changed_record(base) if changed else base)
+    row = {"url": url, "final": final if final and final != url else None}
+    if archived and not (maintenance or failed or changed):
+        row.update(archived=archived, why=why or "failed", via=via or "collect")
+    if changed:
+        row.update({k: changed.get(k) for k in ("from_at", "to_at")})
+    line = json.dumps(row, ensure_ascii=False) + "\n"
     try:
         _append_line(rec, line)
     except OSError as e:

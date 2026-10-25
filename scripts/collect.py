@@ -43,7 +43,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from pipelib import (ENV, ROOT, COLLECT_MODEL, CODEX_WRITE_MODEL, EXPLORE_MODEL,
                      EXPLORE_MAX_BUDGET_USD, JST, JobLockTimeout, job_lock, prompt_file, clean_url, append_metric, classify_source,
                      extract_periods, decode_html, html_to_text, loads_strict, needs_render, partial_output, quote_on_page, read_for_raw, reap, save_raw, schema_ok,
-                     RenderFailed, render_page, candidate_misplaced, maintenance_http_error, maintenance_redirect,
+                     RenderFailed, render_page, candidate_misplaced, maintenance_http_error, maintenance_redirect, maintenance_page,
                      merge_candidate_facts,
                      set_quiet, unbacked_facts,
                      anomaly, anomaly_shape, http_status, whywhy_exempt_status, checkout_edition_branch, classify_retag_lint, collect_oncall_end, commit_and_push, diagnose_anomalies,
@@ -53,6 +53,7 @@ from pipelib import (ENV, ROOT, COLLECT_MODEL, CODEX_WRITE_MODEL, EXPLORE_MODEL,
                      CLI_BLOCKED, CLI_BLOCKED_EXIT, CLI_STOPPED, CliBlocked, cli_blocked_reason, cli_check, grok_session_reasons,
                      scratch_dir, link_key)
 from storylink import url_key
+import page_archive
 # モデル・道具のセッションの起動と回収(自前のプロセスグループ。時間切れ・中断では子孫まで止める)
 from pipelib import PAGE_READ_BYTES, STOPPING, exit_on_term, finish_group, next_slot_end, run_group, start_group, stop_groups
 
@@ -162,6 +163,9 @@ COLLECT_RULES = prompt_part("collect-rules")
 COLLECT_ITEM = prompt_part("collect-item")
 
 
+WATCH_FINAL: dict[str, str] = {}       # 定点観測で取ったページ → 転送先
+
+
 def http_get(url: str, timeout: int = 20) -> str:
     return watch_get(url, timeout)[0].decode("utf-8", errors="replace")
 
@@ -174,6 +178,7 @@ def watch_get(url: str, timeout: float) -> tuple[bytes, str | None]:
     def get() -> tuple[bytes, str | None]:
         req = urllib.request.Request(url, headers={"User-Agent": UA})
         with urllib.request.urlopen(req, timeout=timeout) as res:
+            WATCH_FINAL[url] = res.geturl() if hasattr(res, "geturl") else url     # 転送先(メンテナンス画面への転送を原本として残さない: page_html_or_note)
             return watch_read(res), res.headers.get_content_charset()
     if not DEADLINE:
         return get()
@@ -286,8 +291,13 @@ def page_html_or_note(url: str, csr: bool) -> tuple[str, str]:
     素の HTML のページも本文を渡す。WebFetch は要約しか返さず、写し(原文どおりの引用)が取れないので読めなかった扱いになる
     (2026-10-09: ランティスの SideM 特典告知2件)"""
     BODY_HTTP.pop(url, None)      # 前の回の状態コードを持ち越さない(この回の取得の結果だけ)
+    WATCH_FINAL.pop(url, None)
+    # facts 化に渡すページは、収集時点の原本として残す(page_archive。執筆・校閲が読み直せないときに使う)
     if csr:
-        return rendered_or_note(url, limit=watch_limit(90))
+        t, why = rendered_or_note(url, limit=watch_limit(90))
+        if t:
+            keep_watched(url, html_to_text(t.encode("utf-8", "replace")), t)
+        return t, why
     left = watch_limit(20)
     if left is not None and left <= 0:
         return "", "収集の締切を過ぎたので取得しなかった"
@@ -300,10 +310,34 @@ def page_html_or_note(url: str, csr: bool) -> tuple[str, str]:
     if needs_render(url, html_to_text(raw, cs)):
         t, why = rendered_or_note(url, limit=watch_limit(90))
         if t:
+            keep_watched(url, html_to_text(t.encode("utf-8", "replace")), t)
             return t, ""
+    keep_watched(url, html_to_text(raw, cs), raw, WATCH_FINAL.get(url))
     # 文字コードの判定は本文の取得の共通処理(decode_html)と同じ。Shift_JIS 宣言で CP932 の拡張文字を含むページを、ここだけ
     # 置換文字だらけで読んでいた(監査指摘 2026-10-14)
     return decode_html(raw, cs), ""
+
+
+def keep_watched(url: str, text: str, html, final: str | None = None) -> None:
+    """定点観測の新着ページを原本として残す。メンテナンス画面へ転送されたものは残さない(案内は頼んだページの本文ではない)"""
+    if maintenance_redirect(url, final):
+        return
+    keep_page(url, text, html, final)
+
+
+def keep_page(url: str, text: str, html, final: str | None = None, status: int | None = 200) -> dict | None:
+    """収集が読んだページを、収集時点の原本として残す(page_archive。転送先の URL でも引けるようにする)。戻りは残した版の情報。
+    残せなくても収集は止めない(ログに出す)。メンテナンスの画面・空の本文は残さない(描画は転送先が分からないので本文で見分ける)"""
+    if maintenance_page(text):
+        return None
+    try:
+        got = page_archive.save(url, text, html=html, final=final, status=status, via="collect")
+        if got and final and final != url and not maintenance_redirect(url, final):
+            page_archive.save(final, text, html=html, final=final, status=status, via="collect")
+        return got
+    except Exception as e:      # noqa: BLE001
+        print(f"  原本を残せない({url[:100]}: {type(e).__name__}: {e})", flush=True)
+        return None
 
 
 def fragment_section(html: str, url: str) -> str:
@@ -919,6 +953,8 @@ def explore_workdir(key: str, entry: str = "fetch_page.py") -> Path:
             "#!/usr/bin/env python3\n"
             "# 本体はリポジトリ側(読み取り専用)。ここは呼び出すだけの入口\n"
             "import os, sys\n"
+            # 読んだページの原本は、書ける作業ディレクトリの中に残す(収集が素材に関わるものを本体の置き場へ写す: stash_pages)
+            f"os.environ[{page_archive.ARCHIVE_ENV!r}] = {str(wd / PAGE_SPOOL_NAME)!r}\n"
             f"os.execv(sys.executable, [sys.executable, {str(ROOT / 'scripts' / 'fetch_page.py')!r}]\n"
             "         + sys.argv[1:])\n", encoding="utf-8")
     except BaseException:
@@ -926,6 +962,52 @@ def explore_workdir(key: str, entry: str = "fetch_page.py") -> Path:
         shutil.rmtree(wd, ignore_errors=True)
         raise
     return wd
+
+
+PAGE_SPOOL_NAME = ".pages"      # 隔離されたセッションが読んだページの原本の一時の置き場(作業ディレクトリの中)
+
+
+def page_spool_root() -> Path:
+    """収集の回のあいだ、隔離されたセッションの原本を預かる置き場(Git 管理外)。"""
+    return ROOT / "metrics" / "work" / edition_date() / "page-spool"
+
+
+def stash_pages(wd: Path) -> None:
+    """隔離されたセッション(探索・X の確かめ)が fetch_page.py で読んだページの原本を、作業ディレクトリを消す前に預かる。
+    どれを本体の置き場へ写すかは、裏取りのあと素材と照らして決める(ingest_spools)。預けられなくても収集は止めない"""
+    src = Path(wd) / PAGE_SPOOL_NAME
+    if not src.is_dir():
+        return
+    try:
+        dst = page_spool_root() / Path(wd).name
+        dst.parent.mkdir(parents=True, exist_ok=True)
+        shutil.rmtree(dst, ignore_errors=True)
+        shutil.move(str(src), str(dst))
+    except (OSError, shutil.Error) as e:
+        print(f"  読んだページの原本を預けられない({Path(wd).name}: {type(e).__name__}: {e})", flush=True)
+
+
+CAND_URL = re.compile(r"https?://[^\s\"'<>()（）「」『』、。]+")
+
+
+def ingest_spools(cands: list[dict]) -> int:
+    """預かった原本のうち、素材に関わるページ(候補の url・リンク元・facts と写しに書かれた url)だけを、収集時点の原本として
+    本体の置き場へ写し、預かりを消す。戻りは写した版の数。写せなくても収集は止めない"""
+    root = page_spool_root()
+    if not root.is_dir():
+        return 0
+    wanted: set[str] = set()
+    for c in cands:
+        texts = [str(c.get("url") or ""), str(c.get("link_from") or ""), *map(str, c.get("facts") or []), *map(str, c.get("quotes") or [])]
+        wanted |= {page_archive.page_key(u) for t in texts for u in CAND_URL.findall(t)}
+    n = 0
+    for d in sorted(p for p in root.iterdir() if p.is_dir()):
+        try:
+            n += page_archive.ingest(d, keep=lambda u: bool(u) and page_archive.page_key(u) in wanted)
+        except Exception as e:      # noqa: BLE001
+            print(f"  預かった原本を写せない({d.name}: {type(e).__name__}: {e})", flush=True)
+        shutil.rmtree(d, ignore_errors=True)
+    return n
 
 
 def explore_argv(short: str) -> list[str]:
@@ -1289,6 +1371,7 @@ def verify_grok_faces(queries: list[dict], outdir: Path, suffix: str = "",
                               "(深掘りの機会を失う)", ok=False)
         if asks and wants_deep:
             deep[q["key"]] = asks
+        stash_pages(wd)     # Luna がリンク先を読んだページの原本(素材に関わるものを、裏取りのあと ingest_spools が残す)
         shutil.rmtree(wd, ignore_errors=True)
     print(f"grok: 確かめ{suffix or ''} {len(jobs)}面 → 候補 {len(items)}件、原本の問い {sum(len(v) for v in deep.values())}件", flush=True)
     if again:
@@ -1715,6 +1798,7 @@ def run_explores(skip_explore: bool, skip_grok: bool) -> tuple[list[dict], dict]
                 per[f"explore_failed:{key}"] = 1     # 0件(正常な空振り)と取得の失敗を分ける(collect_health)
             elif err.endswith("[CLI 停止]"):
                 per[f"explore_blocked:{key}"] = 1    # CLI の認証切れ・利用上限(取得の失敗に数えない)
+            stash_pages(wd)     # 探索が読んだページの原本(素材に関わるものを、裏取りのあと ingest_spools が残す)
             shutil.rmtree(wd, ignore_errors=True)
     finally:
         stop_groups([p for _, p, _, _, _ in explore_procs])
@@ -2179,12 +2263,18 @@ def verify(cands: list[dict]) -> dict:
                     # 「URL の取り違え」と記録し、なぜ落ちたかを当番が再現して確かめることになる(監査指摘
                     # render-diagnostic-lost-in-classification と同じ型)
                     render_errs: list[str] = []
+                    page_html = body
                     # CSR で本文が空同然か、描画必須のサイト(定点観測の portal)なら描画してから読み直す(定点観測と同じ経路)
                     if needs_render(c["url"], text):
                         rendered, why = rendered_or_note(c["url"])
                         render_errs += [why] if why else []
                         if rendered:
                             text = html_to_text(rendered.encode("utf-8", "replace"))
+                            page_html = rendered
+                    # 収集時点の原本として残す(執筆・校閲が読み直せないときに使う。page_archive)
+                    kept = keep_page(c["url"], text, page_html, final, res.status)
+                    if kept:
+                        c["archived_at"] = kept["at"]
                     periods = extract_periods(text)
                     if periods:
                         c["periods"] = periods
@@ -2356,6 +2446,13 @@ def run_collect(args, date: str, branch: str, t0: float) -> int:
     explore_items, per_query = run_explores(args.skip_explore, skip_grok)
     cands = normalize(watch_cands + explore_items)
     vcounts = verify(cands)
+    # 探索・X の確かめが読んだページの原本のうち素材に関わるものを残し、置き場の古いものを片付ける(page_archive)
+    kept = ingest_spools(cands)
+    try:
+        pruned = page_archive.prune()
+        print(f"原本の置き場: 探索・確かめの {kept}版を残した / 古い {pruned['removed']}件を消した(残り {pruned['bytes'] // 2**20}MB)", flush=True)
+    except Exception as e:      # noqa: BLE001  片付けの失敗で収集を止めない
+        print(f"原本の置き場を片付けられない({type(e).__name__}: {e})", flush=True)
     added = merge_into_day_file(cands, date)
     # candidates が保存できてから、定点観測の既読を確定する(同じ成功境界。監査指摘)
     watch_state = (watch_info.get("stats") or {}).pop("_state", None) if isinstance(watch_info, dict) else None

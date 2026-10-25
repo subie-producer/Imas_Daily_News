@@ -596,10 +596,20 @@ NOTICE_MARK = "<!-- notice:portal-maintenance -->"
 
 def strip_notice(body: str) -> str:
     """本文から断り書きの段落を外す(無ければそのまま)。"""
-    from pipelib import MAINTENANCE_LEGACY_NOTICES, MAINTENANCE_NOTICE_TAIL, MAINTENANCE_SITE_NAMES   # 循環を避けて関数の中で読む
+    from pipelib import (ARCHIVE_NOTICE_TAILS, MAINTENANCE_LEGACY_NOTICES, MAINTENANCE_NOTICE_TAIL,   # 循環を避けて関数の中で読む
+                         MAINTENANCE_SITE_NAMES)
     name = "(?:" + "|".join([*(re.escape(n) for n in MAINTENANCE_SITE_NAMES.values()), r"[a-z0-9_-]+(?:\.[a-z0-9_-]+)+"]) + ")"
+    names = name + "(?:・" + name + ")*"
+    day = r"\d{4}年\d{1,2}月\d{1,2}日"
+    read = r"(?:収集時点\(\d{1,2}月\d{1,2}日\)|\d{1,2}月\d{1,2}日)"
     head, tail = MAINTENANCE_NOTICE_TAIL.split("{date}")
-    generic = "※" + name + "(?:・" + name + ")*" + re.escape(head) + r"\d{4}年\d{1,2}月\d{1,2}日" + re.escape(tail)
+    # 1文ずつ: メンテナンス(原本なし)・保存の原本で書いた(メンテナンス / 読み直せない)。断り書きはこれらの文を「※」1つで続けたもの
+    sentences = [names + re.escape(head) + day + re.escape(tail)]
+    for t in ARCHIVE_NOTICE_TAILS.values():
+        a, rest = t.split("{date}")
+        b, c = rest.split("{read}")
+        sentences.append(names + re.escape(a) + day + re.escape(b) + read + re.escape(c))
+    generic = "※(?:" + "|".join(sentences) + ")+"
     alts = "|".join([generic, *(re.escape(n) for n in MAINTENANCE_LEGACY_NOTICES.values())])
     return re.sub(r"(?:\A|\n[ \t]*\n)(?:" + alts + r") " + re.escape(NOTICE_MARK) + r"[ \t]*(?=\n|\Z)", "", body or "")
 

@@ -23,6 +23,7 @@
 - lint はコードが回す。赤なら**組版の欠陥**なので直さずに報告する
 """
 import argparse
+import collections
 import datetime
 import json
 import os
@@ -362,13 +363,20 @@ def build_input(date: str, posts: list[dict], mats: dict, stories: list[dict], p
                         raw.append(f)
         dated = [f for f in raw if DATE_RE.search(f)]
         undated = [f for f in raw if not DATE_RE.search(f)]
-        facts = [{"id": f"F{n + 1}", "text": f[:140]} for n, f in enumerate((dated[:6] + undated)[:9])]
+        # 事実ごとに出所の素材(その文を facts に持つ素材)を、素材ごとに見出し・締切・開催日を添える。まとめ記事は別々の話題の素材を
+        # 束ねるので、事実だけを並べると、どの素材の日付かが分からず、予約が日付を持たない素材を指して検算で捨てられた
+        # (2026-10-24: シャニマスのまとめ記事の「8.5周年プレゼント 10/26 23:59 まで」の締切予約が、セレチケの素材を指して捨てられた)
+        src_of = lambda f: next((i for i in ids if f in ((mats.get(i) or {}).get("facts") or [])), "")
+        facts = [{"id": f"F{n + 1}", "text": f[:140], "src": src_of(f)} for n, f in enumerate((dated[:6] + undated)[:9])]
+        materials = [{"id": i, "title": str((mats.get(i) or {}).get("title") or "")[:60],
+                      "deadline": str((mats.get(i) or {}).get("deadline") or ""),
+                      "event_date": str((mats.get(i) or {}).get("event_date") or "")} for i in ids]
         exist = by_id.get(key)
         arts.append({
             "slug": fm.get("slug"), "brand": fm.get("brand"), "rank": fm.get("rank"),
             "title": fm.get("title"), "lede": fm.get("lede"),
             "event_date": str(fm.get("event_date") or ""),
-            "dedup_key": key, "candidate_ids": ids,
+            "dedup_key": key, "candidate_ids": ids, "materials": materials,
             "existing_story": ({"story_id": exist.get("story_id"), "subject": exist.get("subject"),
                                 "known_facts": (exist.get("published_facts") or [])[-3:]} if exist else None),
             "facts": facts,
@@ -406,14 +414,21 @@ def render_articles(arts: list[dict], full: bool) -> list[str]:
             L.append(f"  event_date: {_v(a.get('event_date'))}")
         if not full:
             continue
-        L.append(f"  candidate_ids: {', '.join(_v(i) for i in a.get('candidate_ids') or [])}")
+        mats = a.get("materials")
+        if mats is None:
+            L.append(f"  candidate_ids: {', '.join(_v(i) for i in a.get('candidate_ids') or [])}")
+        for m in mats or []:
+            L.append(f"  candidate {_v(m.get('id'))}: {_v(m.get('title'))}"
+                     + (f" / deadline: {_v(m['deadline'])}" if m.get("deadline") else "")
+                     + (f" / event_date: {_v(m['event_date'])}" if m.get("event_date") else ""))
         ex = a.get("existing_story")
         if ex:
             L.append(f"  existing_story: story_id: {_v(ex.get('story_id'))} / subject: {_v(ex.get('subject'))}")
             L.extend(f"    known_fact: {_v(k)}" for k in ex.get("known_facts") or [])
         else:
             L.append("  existing_story: なし")
-        L.extend(f"  fact {_v(f.get('id'))}: {_v(f.get('text'))}" for f in a.get("facts") or [])
+        L.extend(f"  fact {_v(f.get('id'))}" + (f" [{_v(f['src'])}]" if f.get("src") else "") + f": {_v(f.get('text'))}"
+                 for f in a.get("facts") or [])
     return L
 
 
@@ -712,8 +727,10 @@ def _supported(fact: str, text: str, n: int = 6) -> bool:
     return any(f[i:i + n] in t for i in range(0, max(1, len(f) - n + 1)))
 
 
-def validate(date: str, out: dict, posts: list[dict], mats: dict, inp: dict) -> tuple[dict, list[str]]:
+def validate(date: str, out: dict, posts: list[dict], mats: dict, inp: dict,
+             rejected: list | None = None) -> tuple[dict, list[str]]:
     """モデルの答えを機械で検める。通らないものは捨てて理由を残す(直しはしない)。
+    rejected を渡すと、素材が合わない・素材に日付が無いので捨てた予約の行を (行, 理由) で足す(呼び手が差し戻す)。
 
     schema は形しか守らない。中身の危険(入力に無い記事を digest に書く、無関係な話題へ
     結合する、入力に無い事実を既報にする、素材に無い日付を予約する)はここで止める(監査指摘)。
@@ -827,7 +844,10 @@ def validate(date: str, out: dict, posts: list[dict], mats: dict, inp: dict) -> 
         s = r.get("slug")
         cid = r.get("candidate_id")
         if s not in slugs or cid not in ids_of.get(s, set()) or cid not in mats:
-            notes.append(f"reservations: 記事か素材が合わないので捨てた({s}/{cid})"); continue
+            notes.append(f"reservations: 記事か素材が合わないので捨てた({s}/{cid})")
+            if rejected is not None and s in slugs:
+                rejected.append((r, f"candidate_id {cid} はこの記事の素材に無い"))
+            continue
         try:
             dt = datetime.date.fromisoformat(r.get("date") or "")
         except ValueError:
@@ -854,7 +874,10 @@ def validate(date: str, out: dict, posts: list[dict], mats: dict, inp: dict) -> 
                          f"合わない。出来事の日を付けずに予約する({s})")
             occ = None
         if occ is None and not any(renderlib.date_mentioned(p.isoformat(), hay, years) for p in probe):
-            notes.append(f"reservations: 素材に無い日付 {dt.isoformat()} を捨てた({s})"); continue
+            notes.append(f"reservations: 素材に無い日付 {dt.isoformat()} を捨てた({s})")
+            if rejected is not None:
+                rejected.append((r, f"candidate_id {cid} の素材に {dt.isoformat()} の日付が無い"))
+            continue
         res.append({"slug": s, "candidate_id": cid, "date": dt.isoformat(), "kind": r["kind"],
                     "subject": (r.get("subject") or "")[:60], "note": (r.get("note") or "")[:120],
                     **({"occurs_on": occ.isoformat()} if occ else {})})
@@ -1120,7 +1143,7 @@ def apply(date: str, number: int, out: dict, posts: list[dict], mats: dict, dry:
         if rows is None:
             rows = json.loads(p.read_text(encoding="utf-8")) if p.exists() else []
         dk = c.get("dedup_key") or r["slug"]
-        rid = f"sched-{r['date']}-{dk}-{r['kind']}"
+        rid = reservation_id(r, mats)
         # 添えを素材に付けた予約は、話題は添え先の予約のまま、素材の元の話題を src_dedup_key に残す(上書きしない)
         src_dk = source_topic(c, {})
         if any(x.get("id") == rid for x in rows):
@@ -1180,6 +1203,59 @@ def write_snapshot(ed_path: Path, snap: dict) -> None:
         tmp.unlink(missing_ok=True)
 
 
+def reservation_id(r: dict, mats: dict) -> str:
+    """予約の行が反映される予約の id(日・素材の話題・種別。apply は同じ id を重ねない)。"""
+    c = mats.get(r.get("candidate_id")) or {}
+    return f"sched-{r.get('date')}-{c.get('dedup_key') or r.get('slug')}-{r.get('kind')}"
+
+
+def return_reservations(date: str, inp: dict, out: dict, posts: list[dict], mats: dict, rejected: list,
+                        notes: list[str], budget=None) -> tuple[dict, list[str]]:
+    """検算で採らなかった予約(素材が合わない・素材にその日付が無い)を、その記事だけ理由を添えて1回だけ答え直させる
+    (捨てて終えない。2026-10-24: まとめ記事の締切予約が日付を持たない素材を指して捨てられ、10/26 の当日締切の知らせが
+    その号の素材に戻らなかった)。答え直しの予約で置き換えて検め直し、それでも採れない記事は名指しして異常にする。
+    戻りは validate と同じ (検めた答え, 検算の記録)。"""
+    slugs = list(dict.fromkeys(r.get("slug") for r, _ in rejected))
+    arts = [a for a in inp.get("articles") or [] if a.get("slug") in slugs]
+    items = "\n".join(f"- {_v(r.get('slug'))}: {_v(r.get('date'))} {_v(r.get('kind'))}「{_v(r.get('subject'))}」"
+                      f"(candidate_id {_v(r.get('candidate_id'))}): {why}" for r, why in rejected)
+    print(f"  組版: 採らなかった予約 {len(rejected)}件を、記事 {len(arts)}本に差し戻す", flush=True)
+    try:
+        again = run_session(prompt_ledger(date, inp, arts) + render_prompt("assemble-ledger.returned", ITEMS=items),
+                            date, "assemble-ledger-returned", sub_schema(LEDGER_KEYS), budget)
+    except RuntimeError as e:
+        anomaly("compose", f"組版: 採らなかった続報予約の差し戻しに答えが無い({str(e)[:200]})。この予約は無い:\n{items}")
+        return validate(date, out, posts, mats, inp)
+    gone = [r for r, _ in rejected]
+    redo = [r for r in again.get("reservations") or [] if isinstance(r, dict) and r.get("slug") in slugs]
+    kept_rows = [r for r in out.get("reservations") or [] if r not in gone]
+    # 初めから採れていた予約(差し戻していないもの)は、答え直しを足す前の答えで検めて控える(答え直しと同じ行を除かない。Sol 監査 r3)
+    first, _ = validate(date, {**out, "reservations": kept_rows}, posts, mats, inp)
+    out = {**out, "reservations": kept_rows + redo}
+    clean, notes2 = validate(date, out, posts, mats, inp)
+    # 差し戻した予約が、答え直しで採れたかを数で照合する: 記事・日・種別ごとに、答え直しで**新しく反映される**予約(反映が重ねない
+    # 単位 reservation_id で、初めから採れていた予約に無いもの)の数が、差し戻した数に足りなければ、その組を名指しする。答え直しが
+    # 予約を省いた・また採れない形だった(Sol 監査 r1)、同じ日・種別の2件の片方だけ戻った(r2)、採れていた予約を答え直しが繰り返した
+    # (r3。繰り返しは反映で1件になり、戻ったことにならない)のどれも黙って消さない。答え直しは candidate_id も件名も直しうるので、
+    # どの予約が戻ったかは数でしか言えない。足りない組の差し戻した予約を全部挙げる
+    key = lambda r: (r.get("slug"), r.get("date"), r.get("kind"))
+    had = {reservation_id(r, mats) for r in first.get("reservations") or []}
+    new: dict[tuple, set] = collections.defaultdict(set)
+    for r in clean.get("reservations") or []:
+        if reservation_id(r, mats) not in had:
+            new[key(r)].add(reservation_id(r, mats))
+    sent = collections.Counter(key(r) for r, _ in rejected)
+    short = {k: n - len(new[k]) for k, n in sent.items() if n > len(new[k])}
+    if short:
+        anomaly("compose", "組版: 差し戻しても採れなかった続報予約(答え直しに無い・素材が合わない・素材にその日付が無い)。"
+                           "次の組の予約が、差し戻した数より少ない:\n"
+                           + "\n".join(f"- {_v(r.get('slug'))}: {_v(r.get('date'))} {_v(r.get('kind'))}「{_v(r.get('subject'))}」"
+                                       f"(candidate_id {_v(r.get('candidate_id'))}): {why}"
+                                       f"(同じ記事・日・種別の差し戻し {sent[key(r)]}件のうち {short[key(r)]}件が戻らない)"
+                                       for r, why in rejected if key(r) in short))
+    return clean, notes + ["差し戻しのあと:"] + notes2
+
+
 def run(date: str, number: int | None = None, dry: bool = False, budget=None) -> int:
     posts = load_posts(date)
     if not posts:
@@ -1191,7 +1267,10 @@ def run(date: str, number: int | None = None, dry: bool = False, budget=None) ->
     pending = baseline_pending(date, dry)
     inp = build_input(date, posts, mats, stories, pending)
     out = judge(date, inp, budget)
-    clean, notes = validate(date, out, posts, mats, inp)
+    rejected: list = []
+    clean, notes = validate(date, out, posts, mats, inp, rejected=rejected)
+    if rejected:
+        clean, notes = return_reservations(date, inp, out, posts, mats, rejected, notes, budget)
     for n in notes:
         print("  検算:", n, flush=True)
     for line in apply(date, number, clean, posts, mats, dry, stories=stories):

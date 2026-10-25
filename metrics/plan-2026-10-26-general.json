@@ -1,0 +1,153 @@
+{
+ "decisions": {
+  "sohbetsu-producer-repeat-visits-2026": {
+   "action": "article",
+   "angle": "北海道壮瞥町を3度目に訪れたプロデューサーの話や、私服を着せる創作・ちびぐるみ動画・衣装交換ファンアートなど、界隈の細かな盛り上がりをまとめる",
+   "purpose": "新情報",
+   "rank": "culture",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ファン面の1本。他のファン創作主題をここへ統合"
+  },
+  "fan-outfits-for-shin-2026-10-25": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sohbetsu-producer-repeat-visits-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ファン創作としてcultureに統合"
+  },
+  "shiny-fan-chibiguru-photostudio-video-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sohbetsu-producer-repeat-visits-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ファン動画としてcultureに統合"
+  },
+  "sidem-shiny-costume-swap-fanart-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sohbetsu-producer-repeat-visits-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ファンアートとしてcultureに統合"
+  },
+  "birthday-ueda-suzuho-shimabara-elena-2026": {
+   "action": "article",
+   "angle": "アイドルマスターチャンネルが10月26日の誕生日を迎えた上田鈴帆と島原エレナのお祝いムービーを公開した",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "エレナのガシャ・装飾等はミリオン面の記事。こちらはお祝いムービーという別施策"
+  },
+  "tomori-manaka-birthday-online-live-2026-guest-seki": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "声優個人の主催オンラインライブでアイマス公式の催しではない"
+  },
+  "portal-security-maintenance-2026-10": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/24号で同内容を記事化済み。新事実・当日のトリガーなし"
+  },
+  "cinderella-party-kiss-preview-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "シンデレラガールズ単独の話題でCG面の担当。generalでは扱わない"
+  },
+  "765as-million-song-list-memo-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sohbetsu-producer-repeat-visits-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ファン作成の楽曲一覧メモとしてcultureに統合"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "general-sohbetsu-producer-repeat-visits-2026",
+    "brand": "general",
+    "rank": "culture",
+    "angle": "北海道壮瞥町を3度目に訪れたプロデューサーの話や、私服を着せる創作・ちびぐるみ動画・衣装交換ファンアートなど、界隈の細かな盛り上がりをまとめる",
+    "purpose": "新情報",
+    "lead_score": 5,
+    "dedup_key": "sohbetsu-producer-repeat-visits-2026",
+    "candidate_ids": [
+     "202610251832-explore-4",
+     "202610260219-grok-7",
+     "202610260219-grok-24",
+     "202610260219-grok-31",
+     "202610260219-grok-56"
+    ]
+   },
+   {
+    "slug": "general-birthday-ueda-suzuho-shimabara-elena-2026",
+    "brand": "general",
+    "rank": "small",
+    "angle": "アイドルマスターチャンネルが10月26日の誕生日を迎えた上田鈴帆と島原エレナのお祝いムービーを公開した",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "birthday-ueda-suzuho-shimabara-elena-2026",
+    "candidate_ids": [
+     "202610260219-grok-47"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "tomori-manaka-birthday-online-live-2026-guest-seki",
+    "reason": "個人の話題",
+    "note": "声優個人の主催オンラインライブでアイマス公式の催しではない"
+   },
+   {
+    "dedup_key": "portal-security-maintenance-2026-10",
+    "reason": "既報",
+    "note": "10/24号で同内容を記事化済み。新事実・当日のトリガーなし"
+   },
+   {
+    "dedup_key": "cinderella-party-kiss-preview-2026",
+    "reason": "面違い",
+    "note": "シンデレラガールズ単独の話題でCG面の担当。generalでは扱わない"
+   }
+  ],
+  "cross_brand": []
+ }
+}

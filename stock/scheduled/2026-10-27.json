@@ -780,5 +780,29 @@
   "src_candidate_id": "sched-2026-10-25-million-hapipisu-event-2026-終了",
   "companion_of": "sched-2026-10-27-million-platinum-star-tiara-happy-pease-2026-終了",
   "src_dedup_key": "million-hapipisu-event-2026"
+ },
+ {
+  "id": "sched-2026-10-27-gaku-rinami-another-idol-free-gacha-2026-終了",
+  "dedup_key": "gaku-rinami-another-idol-free-gacha-2026",
+  "brand": "gaku",
+  "subject": "姫崎莉波 アナザーアイドル確定無料ガシャ終了",
+  "kind": "終了",
+  "note": "10時59分まで。無料1連ガシャを引ける最終日。",
+  "reserved_on": "2026-10-26",
+  "occurs_on": "2026-10-27",
+  "title": "姫崎莉波のアナザーアイドル確定無料ガシャ",
+  "url": "https://x.com/gkmas_official/status/2114190219235012724",
+  "source_type": "公式",
+  "facts": [
+   "『アナザーアイドルアップデート記念！SSR アナザーアイドル 確定ガシャ』が告知された。",
+   "姫崎莉波のシーズン限定「アナザーアイドル」のいずれかが確定で手に入る無料1連ガシャ。",
+   "ガシャ開催時期：10/27(火) 10:59まで（予定）",
+   "エンゲージメント: 中",
+   "言及アイドル: 姫崎莉波"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "deadline": "2026-10-27",
+  "src_candidate_id": "202610260219-grok-38"
  }
 ]

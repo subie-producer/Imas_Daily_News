@@ -2495,16 +2495,20 @@ def looks_unrendered(text: str) -> bool:
     return len(re.sub(r"\s+", "", text or "")) < 400
 
 
+# 素の取得に 429 を返すため、最初からブラウザで読むサイト(2026-10-26: Anime Store.JP・mining-base が数回の取得で 429)
+BROWSER_ONLY_HOSTS = {"anime-store.jp", "www.anime-store.jp", "shop.mining-base.co.jp"}
+
+
 def render_hosts() -> set[str]:
-    """描画しないと本文が出ないと分かっているサイトのホスト(sources.yml で type: portal の観測先)。"""
+    """描画しないと本文が出ないと分かっているサイトのホスト(sources.yml で type: portal の観測先と、BROWSER_ONLY_HOSTS)。"""
     import urllib.parse
     import yaml
     try:
         sources = yaml.safe_load((ROOT / "sources.yml").read_text(encoding="utf-8")) or []
     except OSError:
-        return set()
+        return set(BROWSER_ONLY_HOSTS)
     return {urllib.parse.urlsplit(u).hostname for s in sources if s.get("type") == "portal"
-            for u in (s.get("url"), s.get("base")) if u}
+            for u in (s.get("url"), s.get("base")) if u} | BROWSER_ONLY_HOSTS
 
 
 class RenderFailed(RuntimeError):

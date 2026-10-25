@@ -15582,8 +15582,9 @@ def test_oncall_session_waits(tmp: Path):
         "elif m == 'pkill':\n"
         "    r = subprocess.run(['bash', '-c', f'pkill -f \"pgrep -f {mark}\"; echo alive'], capture_output=True, text=True)\n"
         "    if 'alive' in r.stdout:\n        print(one)\n"
-        "elif m in ('linger', 'linger_bad'):\n"
-        "    print(one if m == 'linger' else '検査が終わるのを待っています', flush=True)\n"
+        "elif m in ('linger', 'linger_bad', 'linger_schema'):\n"
+        "    print({'linger': one, 'linger_bad': '検査が終わるのを待っています',\n"
+        "           'linger_schema': json.dumps({'status': 'no_fix_needed'})}[m], flush=True)\n"
         f"    c = subprocess.Popen(['sleep', '300'])\n    open({str(pidf)!r}, 'w').write(str(c.pid))\n    c.wait()\n"
         "elif m == 'pipe':\n"
         "    print(one, flush=True)\n"
@@ -15599,7 +15600,7 @@ def test_oncall_session_waits(tmp: Path):
         os.environ["PATH"] = f"{bindir}{os.pathsep}{saved[0]}"
         pipelib.ROOT = tmp           # 生の出力の控え(save_raw)も一時ディレクトリへ
         pipelib.ANSWER_SETTLE_SEC = 1
-        for m in ("selfmatch", "pkill", "linger", "linger_bad", "pipe", "exit1"):
+        for m in ("selfmatch", "pkill", "linger", "linger_bad", "linger_schema", "pipe", "exit1"):
             mode.write_text(m, encoding="utf-8")
             pidf.unlink(missing_ok=True)
             t0 = time.monotonic()
@@ -15618,8 +15619,9 @@ def test_oncall_session_waits(tmp: Path):
                     ("linger", "答えのあと子を待って終わらない当番を時間切れにした"), ("pipe", "答えのあと子がパイプを握った当番を時間切れにした")):
         ans, took, gone = got[m]
         check(ans == INCIDENT_FIX and took < 7 and gone, f"{what}・残った子を止めない: {type(ans).__name__} {took:.1f}秒 子が消えた={gone}")
-    ans, _, gone = got["linger_bad"]
-    check(isinstance(ans, subprocess.TimeoutExpired) and gone, f"schema どおりでない答えのまま終わらない当番を時間切れにしない: {ans!r}")
+    for m in ("linger_bad", "linger_schema"):       # JSON でない / JSON だが渡した schema のとおりでない(Sol 監査 r3)
+        ans, _, gone = got[m]
+        check(isinstance(ans, subprocess.TimeoutExpired) and gone, f"schema どおりでない答え({m})のまま終わらない当番を時間切れにしない: {ans!r}")
     ans, _, _ = got["exit1"]
     check(isinstance(ans, RuntimeError) and not isinstance(ans, oncall.AnswerUnreadable) and "異常終了" in str(ans),
           f"答えを出して異常終了した当番の答えを採った: {ans!r}")
@@ -15677,6 +15679,26 @@ def test_oncall_session_waits(tmp: Path):
     r = pipelib.run_group([sys.executable, "-c", code], timeout=0.1, answered=slow_answer, settle=0)
     check(r.returncode == -signal.SIGKILL and not r.settled and not oncall.finished(r),
           f"見張りのあいだに SIGKILL で終わったセッションを settled にして採った: {r.returncode} {r.settled}")
+    # 凍らせる合図を送った直後はまだ止まっていない。止まる前に自分で終わった頭を「凍った」としない(Sol 監査 r3)。
+    # 合図と同時に終わる頭を繰り返し起動して、隙間を踏ませる(r3 の実装では 3000 回中 205 回踏んだ)
+    wrong = 0
+    for _ in range(1500):
+        rfd, wfd = os.pipe()
+        q = subprocess.Popen(["/bin/sh", "-c", "echo ready; read x; exit 1"], stdin=rfd, stdout=subprocess.PIPE,
+                             stderr=subprocess.DEVNULL)
+        os.close(rfd)
+        q.stdout.readline()         # 頭が読み待ちに入った
+        os.write(wfd, b"go\n")
+        os.close(wfd)
+        frozen = pipelib._alive_frozen(q)
+        try:
+            q.kill()
+        except OSError:
+            pass
+        wrong += bool(frozen and q.wait() == 1)
+        q.wait()
+        q.stdout.close()
+    check(wrong == 0, f"止まる前に自分で終わった頭を凍ったとした: 1500 回中 {wrong} 回")
     # 監査(codex): 答えのファイルを書いたあと、残った子を待って終わらない
     repo = tmp / "repo"
     repo.mkdir(exist_ok=True)

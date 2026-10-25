@@ -1287,17 +1287,26 @@ def run_group(cmd: list[str], timeout: float | None, *, cwd=None, env: dict | No
     return subprocess.CompletedProcess(cmd, p.returncode, so, se)
 
 
-def _alive_frozen(p) -> bool:
-    """頭を凍らせ(SIGSTOP。凍った頭は自分では終われない)、まだ終わっていないか。終わっていれば(ゾンビ・回収済み)False。
-    回収前の終了は WNOWAIT で覗く(状態を消さないので、終了コードはあとの回収で Popen が読む)。"""
+def _alive_frozen(p, wait: float = 5) -> bool:
+    """頭を凍らせ(SIGSTOP。凍った頭は自分では終われない)、凍ったことを停止の通知(CLD_STOPPED)で確かめられたら True。
+    先に終わった(終了の通知)・確かめられない(回収済み・wait 秒で通知が来ない)は False。送っただけでは止まっていない
+    (Sol 監査 r3: 送った直後の覗きでは生きていて、止まる前に自分で終了 1 になった回を採った)。
+    通知は WNOWAIT で覗く(状態を消さないので、終了コードはあとの回収で Popen が読む。Popen は停止の通知を読まない)。"""
     try:
         os.kill(p.pid, signal.SIGSTOP)
     except OSError:
         return False
-    try:
-        return os.waitid(os.P_PID, p.pid, os.WEXITED | os.WNOHANG | os.WNOWAIT) is None
-    except ChildProcessError:
-        return False
+    end = time.monotonic() + wait
+    while True:
+        try:
+            info = os.waitid(os.P_PID, p.pid, os.WEXITED | os.WSTOPPED | os.WNOHANG | os.WNOWAIT)
+        except ChildProcessError:
+            return False
+        if info is not None:
+            return info.si_code == os.CLD_STOPPED
+        if time.monotonic() >= end:
+            return False
+        time.sleep(0.005)
 
 
 def _run_group_answered(cmd: list[str], timeout: float | None, answered, *, cwd, env, settle: float) -> subprocess.CompletedProcess:

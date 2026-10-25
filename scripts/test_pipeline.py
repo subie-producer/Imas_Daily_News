@@ -3010,7 +3010,8 @@ def test_browser_only_hosts_use_chrome(tmp: Path):
 
     def raw(req, *a, **k):
         raw_calls.append(getattr(req, "full_url", req))
-        raise AssertionError("素の取得をした")
+        import urllib.error     # 実際のサイトと同じく 429 で断る
+        raise urllib.error.HTTPError(getattr(req, "full_url", req), 429, "Too Many Requests", {}, None)
     render_calls: list[str] = []
 
     def render_ok(u, *a, **k):
@@ -3083,7 +3084,7 @@ def test_browser_only_hosts_use_chrome(tmp: Path):
         collect.urllib.request.urlopen, collect.fetch_rendered, collect.classify_source = saved_c
 
     # 出典の判定の材料: 題名・説明・冒頭も描画で読む
-    saved_s = (classify_sources.render_page, pipelib.urllib.request.urlopen)
+    saved_s = (classify_sources.__dict__.get("render_page"), pipelib.urllib.request.urlopen)
     try:
         pipelib.urllib.request.urlopen = raw
         classify_sources.render_page = render_ok

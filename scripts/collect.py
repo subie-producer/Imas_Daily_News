@@ -274,11 +274,18 @@ def rendered_or_note(url: str, limit: float | None = None) -> tuple[str, str]:
         return "", str(e)
 
 
+# 新着ページの本文の取得が HTTP の応答で失敗したときの状態コード(URL → コード)。facts 化で読めなかった新着のうち、
+# 本文が 503 だったものをなぜなぜの対象外にするのに使う(WHYWHY_EXEMPT_HTTP。Sol 監査 N503 r1: 一覧は読めても本文が 503 だと、
+# 「facts 化で読めなかった新着」と新規0件のまとめが当番を起こした)
+BODY_HTTP: dict[str, int] = {}
+
+
 def page_html_or_note(url: str, csr: bool) -> tuple[str, str]:
     """facts 化に渡す新着ページの HTML: (HTML, 失敗の要点)。描画必須の観測先は描画し、それ以外は素の HTML を取る
     (素の HTML で本文が空同然なら描画し直す)。取れなければ ("", 要点) で、呼び出し側はセッションの fetch_page.py に任せる。
     素の HTML のページも本文を渡す。WebFetch は要約しか返さず、写し(原文どおりの引用)が取れないので読めなかった扱いになる
     (2026-10-09: ランティスの SideM 特典告知2件)"""
+    BODY_HTTP.pop(url, None)      # 前の回の状態コードを持ち越さない(この回の取得の結果だけ)
     if csr:
         return rendered_or_note(url, limit=watch_limit(90))
     left = watch_limit(20)
@@ -287,6 +294,8 @@ def page_html_or_note(url: str, csr: bool) -> tuple[str, str]:
     try:
         raw, cs = watch_get(url, 20 if left is None else max(1, left))
     except (OSError, ValueError) as e:
+        if http_status(e) is not None:
+            BODY_HTTP[url] = http_status(e)
         return "", f"取得に失敗({type(e).__name__}: {e})"[:400]
     if needs_render(url, html_to_text(raw, cs)):
         t, why = rendered_or_note(url, limit=watch_limit(90))
@@ -479,10 +488,10 @@ def run_watch(claude_call, oncall_rerun: bool = False) -> tuple[list[dict], dict
     # 次回へ回るのは、出力が読めなかったバッチ(やり直し)だけ
     from concurrent.futures import ThreadPoolExecutor
     batches = [new_items[i:i + WATCH_BATCH] for i in range(0, len(new_items), WATCH_BATCH)]
-    cands, attempted, blocked = [], set(), set()
+    cands, attempted, blocked, unavailable = [], set(), set(), set()
     with ThreadPoolExecutor(max_workers=max(1, WATCH_PARALLEL)) as ex:
         try:
-            for got, tried in ex.map(lambda b: facts_batch(b, claude_call, state, oncall_rerun, blocked), batches):
+            for got, tried in ex.map(lambda b: facts_batch(b, claude_call, state, oncall_rerun, blocked, unavailable), batches):
                 cands += got
                 attempted |= tried
         except BaseException:
@@ -492,13 +501,14 @@ def run_watch(claude_call, oncall_rerun: bool = False) -> tuple[list[dict], dict
             raise
     return finish_watch(new_items, attempted, found_by_source, stats, state, cands,
                         retried_given_up={it["url"] for it in state.get("_given_up", []) if isinstance(it, dict)} if oncall_rerun else set(),
-                        blocked=blocked)
+                        blocked=blocked, unavailable=unavailable)
 
 
 def facts_batch(batch: list[dict], claude_call, state: dict, oncall_rerun: bool = False,
-                blocked: set | None = None) -> tuple[list[dict], set[str]]:
+                blocked: set | None = None, unavailable: set | None = None) -> tuple[list[dict], set[str]]:
     """新着1バッチを facts 化する。戻りは (候補, 処理を試みた URL)。読めなかったページは、2回目で諦めたもの以外は試みたことにしない。
-    モデルの CLI が認証切れ・利用上限で答えなかったバッチは、読めなかった回に数えず、全部を未処理の列に残す(URL を blocked に足す)。"""
+    モデルの CLI が認証切れ・利用上限で答えなかったバッチは、読めなかった回に数えず、全部を未処理の列に残す(URL を blocked に足す)。
+    本文が HTTP 503 で読めなかったページも、回数に数えず未処理の列に残す(URL を unavailable に足す。なぜなぜの対象外)。"""
     cands = []
     if batch and claude_call and "claude" in CLI_BLOCKED:
         # この収集で既に認証切れ・利用上限を見た: 本文を取りに行かず、そのまま未処理の列へ(下と同じ扱い)
@@ -506,11 +516,12 @@ def facts_batch(batch: list[dict], claude_call, state: dict, oncall_rerun: bool 
             blocked |= {it["url"] for it in batch}
         return [], set()
     if batch and claude_call:
-        blobs = []
+        blobs, codes = [], {}
         for it in batch:
             if deadline_passed() or STOPPING.is_set():
                 break       # 収集の締切を過ぎた・工程を終えるところなら本文も取らない(下で、このバッチを始めずに未処理の列へ残す)
             t, why = page_html_or_note(it["url"], it["csr"])
+            codes[it["url"]] = BODY_HTTP.get(it["url"])     # この回の本文の取得の状態コード(HTTP の応答で失敗したときだけ)
             # 本文の切り詰めは facts の情報量に直結する。2500字にしていたとき、
             # 本文8,219字のページから facts を359字しか起こせていなかった
             body = html_to_text(fragment_section(t, it["url"]).encode("utf-8", "replace"), "utf-8")[:WATCH_BODY_CHARS]
@@ -546,6 +557,15 @@ def facts_batch(batch: list[dict], claude_call, state: dict, oncall_rerun: bool 
         # 本文を読めなかったページも黙って既読になり、新着を失った(監査指摘 watch-read-status-contract)
         done = watch_page_results(got, len(batch))
         failed = [it for i, it in enumerate(batch) if i + 1 not in done]
+        # 本文が 503 で読めなかった新着は、なぜなぜの対象外(WHYWHY_EXEMPT_HTTP)。人には知らせ、読めなかった回数に数えず
+        # (諦めて既読にしない。当番の取り直しも来ないので、諦めると新着を失う)、未処理の列に残して次の収集が読み直す
+        unavail = [it for it in failed if whywhy_exempt_status(codes.get(it["url"]))]
+        failed = [it for it in failed if it not in unavail]
+        if unavail:
+            if unavailable is not None:
+                unavailable |= {it["url"] for it in unavail}
+            notify("collect", f"定点観測: 新着 {len(unavail)}件の本文が HTTP 503 で読めなかった。次回に持ち越す"
+                              + "".join(f"\n  - {it['url']}" for it in unavail), ok=False, ledger=False)
         bad = state.setdefault("_unreadable", {})   # url → 読めなかった回数
         give_up = []
         if failed and not oncall_rerun:
@@ -611,7 +631,7 @@ def watch_page_results(got, n: int) -> dict[int, list[dict]]:
 
 def finish_watch(new_items: list[dict], attempted: set[str], found_by_source: dict, stats: dict, state: dict,
                  cands: list[dict], retried_given_up: set[str] = frozenset(),
-                 blocked: set[str] = frozenset()) -> tuple[list[dict], dict]:
+                 blocked: set[str] = frozenset(), unavailable: set[str] = frozenset()) -> tuple[list[dict], dict]:
     # 状態の保存は facts 化の**後**。既知にするのは「今回処理を試みた URL」だけで、
     # 上限を超えて手つかずのまま残った新着は未読のままにする。
     #   - 巡回直後に全件を既知にすると、上限超過分は次回 new と判定されず、
@@ -648,9 +668,11 @@ def finish_watch(new_items: list[dict], attempted: set[str], found_by_source: di
     if deferred:
         print(f"定点観測: 新着 {len(new_items)}件のうち {len(attempted)}件を処理、"
               f"{len(deferred)}件を次回へ繰り越し", flush=True)
-    # 繰り越しのうち、モデルの CLI が認証切れ・利用上限で答えなかった分(取得の失敗ではない。異常にしない。投稿は済み)
+    # 繰り越しのうち、モデルの CLI が認証切れ・利用上限で答えなかった分(取得の失敗ではない。異常にしない。投稿は済み)と、
+    # 本文が HTTP 503 で読めなかった分(人には通知済み。なぜなぜの対象外)
     return cands, {"stats": stats, "new": len(new_items), "facted": len(cands),
-                   "deferred": len(deferred), "blocked": len([n for n in deferred if n["url"] in blocked])}
+                   "deferred": len(deferred), "blocked": len([n for n in deferred if n["url"] in blocked]),
+                   "unavailable": len([n for n in deferred if n["url"] in unavailable and n["url"] not in blocked])}
 
 
 # ---- A-2 / B 探索 --------------------------------------------------------------
@@ -1000,6 +1022,14 @@ def write_grok_prompt(outdir: Path, q: dict, retry: bool = False) -> Path:
     return pp
 
 
+def facts_left(watch_info, whywhy: bool = False) -> int:
+    """事実に起こせず次回へ回した新着の数(CLI の認証切れ・利用上限の分を除く)。whywhy=True は、本文が HTTP 503 で
+    読めなかった分(unavailable)も除く(なぜなぜ・当番の取り直しの成否に数えるもの)。"""
+    if not isinstance(watch_info, dict):
+        return 0
+    return watch_info.get("deferred", 0) - watch_info.get("blocked", 0) - (watch_info.get("unavailable", 0) if whywhy else 0)
+
+
 def collect_health(watch_info, per_query: dict, whywhy: bool = False) -> list[str]:
     """収集の各系統で、取得に失敗したもの(人が読める説明)。空なら全系統の取得は正常。
     定点観測は観測先ごとの取得の誤りと未処理の繰り越し、探索は出力が読めない・打ち切られた面(per_query の explore_failed:<面>)。
@@ -1010,8 +1040,10 @@ def collect_health(watch_info, per_query: dict, whywhy: bool = False) -> list[st
         if isinstance(st, dict) and st.get("error") and not (whywhy and whywhy_exempt_status(st.get("http"))):
             out.append(f"定点観測 {sid}: 一覧を読めなかった({st['error'][:80]})")
     # モデルの CLI の認証切れ・利用上限で答えなかった分は取得の失敗に数えない(人には見つけたときに投稿済み。当番に回さない)
-    if isinstance(watch_info, dict) and watch_info.get("deferred", 0) - watch_info.get("blocked", 0) > 0:
-        out.append(f"定点観測: 事実に起こせず次回へ回した新着 {watch_info['deferred'] - watch_info.get('blocked', 0)}件")
+    # whywhy=True は本文が 503 で読めなかった分も除く(facts_left)
+    left = facts_left(watch_info, whywhy)
+    if left > 0:
+        out.append(f"定点観測: 事実に起こせず次回へ回した新着 {left}件")
     out += [f"探索 {k.split(':', 1)[1]}: 出力が読めない・打ち切られた" for k, v in per_query.items() if k.startswith("explore_failed:") and v]
     return out
 
@@ -2391,9 +2423,10 @@ def run_collect(args, date: str, branch: str, t0: float) -> int:
     elif added == 0:
         print(f"新規0件({'/'.join(skipped)} を手動でスキップ中のため通知しない)", flush=True)
     # 当番の拾い直しで、読めないバッチが残った(=諦めずに繰り越した)場合は、直しが効いていない。
-    # 読めた分と繰り越しは保存済み(既読にしていない)。成功として終えず、当番へ非0で返す(監査指摘)
-    if args.oncall_rerun and (watch_info.get("deferred", 0) - watch_info.get("blocked", 0) if isinstance(watch_info, dict) else 0) > 0:
-        notify("collect", f"{date}: 当番の拾い直しでも facts 化できないバッチが {watch_info['deferred'] - watch_info.get('blocked', 0)}件 残った。"
+    # 読めた分と繰り越しは保存済み(既読にしていない)。成功として終えず、当番へ非0で返す(監査指摘)。
+    # 本文が 503 で読めなかった分は当番の仕事の外なので数えない(未処理の列に残り、次の定時収集が読み直す)
+    if args.oncall_rerun and facts_left(watch_info, whywhy=True) > 0:
+        notify("collect", f"{date}: 当番の拾い直しでも facts 化できないバッチが {facts_left(watch_info, whywhy=True)}件 残った。"
                           f"繰り越しは既読にせず保持した。直しが効いていない(原因が未確定の可能性)", ok=False)
         return 1
     if args.oncall_rerun and isinstance(watch_info, dict) and watch_info.get("blocked"):

@@ -16074,6 +16074,138 @@ def test_http503_not_whywhy(tmp: Path):
           f"当番の取り直しで、503 の観測先を「一覧が取れない」に数えた・404 を落とした: {[rerun_failed(i) for i in infos]}")
 
 
+def test_http503_collect_run(tmp: Path):
+    """収集の本体(run_collect)を通して、503 だけの回は当番を起こさず、503 以外が混ざればそれで起こす(Sol 監査 N503 r1:
+    一覧は読めても新着の本文が 503 だと「facts 化で読めなかった新着」と新規0件のまとめが当番を起こした。まとめの処理を
+    壊しても下請けの関数の試験だけでは落ちなかった)。本物の lantis-sidem の設定・一覧の解析・本文の取得(HTTP の応答だけ偽)
+    ・facts 化の結果の読み取り(モデルの答えは契約どおりの unreadable)・台帳・diagnose_anomalies(Popen だけ偽)で確かめる:
+    - 一覧が 503: 当番を起こさない。当番の取り直しは成功で終える
+    - 一覧は読めて本文が 503(2回続けても): 当番を起こさない。人には通知する。新着を諦めず未処理の列に残す。取り直しは成功
+    - 本文が 404: 従来どおり当番を起こし、取り直しは失敗にする"""
+    import email.message
+    import io
+    import time
+    import types
+    import urllib.error
+    import collect
+    import yaml
+    tmp.mkdir(parents=True, exist_ok=True)
+    work = tmp / "ops"
+    (work / "scripts").mkdir(parents=True); (work / "metrics").mkdir()
+    (work / "scripts" / "oncall.py").write_text("print('oncall')\n", encoding="utf-8")
+    src = next(s for s in yaml.safe_load((Path(__file__).resolve().parent.parent / "sources.yml").read_text(encoding="utf-8"))
+               if s["id"] == "lantis-sidem")
+    (work / "sources.yml").write_text(yaml.safe_dump([src]), encoding="utf-8")
+    old, new = "https://lantis.jp/sidem/event/index.html#20261020", "https://lantis.jp/sidem/extra/index.html#20261025"
+    mode = {"list": None, "body": None}
+    launches: list = []
+    notes: list = []
+    prompts: list = []
+
+    def opener(req, timeout=None, **k):
+        """一覧と新着の本文の HTTP の応答(mode の状態コードなら HTTPError)"""
+        url = getattr(req, "full_url", req)
+        code = mode["list"] if url == src["url"] else mode["body"]
+        if code:
+            raise urllib.error.HTTPError(url, code, {503: "Service Temporarily Unavailable", 404: "Not Found"}[code], None, None)
+        res = io.BytesIO(b'<a href="extra/index.html#20261025">new</a><a href="event/index.html#20261020">old</a>'
+                         if url == src["url"] else b"<p>body</p>")
+        res.headers = email.message.Message()
+        res.headers["Content-Type"] = "text/html; charset=utf-8"
+        res.status = 200
+        res.geturl = lambda: url
+        return res
+
+    def model(prompt, **k):
+        prompts.append(prompt)
+        return [{"page": 1, "status": "unreadable", "items": []}]
+
+    # 系統を手で止めない(止めると新規0件のまとめを出さない)。探索・Grok は run_explores ごと偽
+    args = types.SimpleNamespace(skip_watch=False, skip_explore=False, skip_grok=False, force_grok=False, no_git=True, oncall_rerun=False)
+
+    def run(lst=None, body=None, rerun=False, state=None) -> tuple:
+        mode.update(list=lst, body=body)
+        if state is not None:
+            collect.STATE_PATH.write_text(json.dumps(state), encoding="utf-8")
+        pipelib.ANOMALIES.clear()
+        pipelib._ESCALATED = False
+        notes.clear()
+        args.oncall_rerun = rerun
+        pipelib.set_quiet(True)
+        try:
+            code = collect.run_collect(args, "2026-10-26", "unused", time.time())
+        finally:
+            pipelib.set_quiet(False)
+        ledger = list(pipelib.ANOMALIES)
+        n = len(launches)
+        saved_popen = subprocess.Popen
+        subprocess.Popen = lambda a, **k: launches.append(list(a))
+        try:
+            pipelib.diagnose_anomalies("collect", "2026-10-26", rerun=True, extra_args=["--end-at", "0"])
+        finally:
+            subprocess.Popen = saved_popen
+        st = json.loads(collect.STATE_PATH.read_text(encoding="utf-8"))
+        return code, len(launches) > n, ledger, list(notes), st
+
+    names =("ROOT", "STATE_PATH", "DEADLINE", "run_explores", "normalize", "verify", "merge_into_day_file", "append_metric",
+             "needs_classify", "claude_exec", "notify")
+    saved = {k: getattr(collect, k) for k in names if hasattr(collect, k)}
+    saved_p = (pipelib.ROOT, pipelib.ENV, pipelib.oncall_clis_blocked, list(pipelib.ANOMALIES), pipelib._ESCALATED)
+    saved_open = collect.urllib.request.urlopen
+    saved_inv = os.environ.pop("INVOCATION_ID", None)
+    real_notify = collect.notify
+    r = {}
+    try:
+        pipelib.ROOT = collect.ROOT = work
+        collect.STATE_PATH = work / "watch-state.json"
+        pipelib.ENV = dict(pipelib.ENV, ONCALL="on")
+        pipelib.oncall_clis_blocked = lambda: []
+        collect.DEADLINE = None
+        collect.run_explores = lambda *a: ([], {})
+        collect.normalize = lambda x: x
+        collect.verify = lambda x: {"confirmed": 0, "unconfirmed": 0, "failed": 0}
+        collect.merge_into_day_file = lambda *a: 0
+        collect.append_metric = lambda *a, **k: None
+        collect.needs_classify = lambda *a, **k: False
+        collect.claude_exec = model
+        collect.notify = lambda job, msg, ok=True, **k: notes.append((msg, ok)) or real_notify(job, msg, ok=ok, **k)
+        collect.urllib.request.urlopen = opener
+        r["一覧503"] = run(lst=503, state={"lantis-sidem": [old]})
+        r["一覧503・取り直し"] = run(lst=503, rerun=True, state={"lantis-sidem": [old]})
+        r["本文503-1"] = run(body=503, state={"lantis-sidem": [old]})
+        r["本文503-2"] = run(body=503)
+        r["本文503・取り直し"] = run(body=503, rerun=True)
+        r["本文404"] = run(body=404, state={"lantis-sidem": [old]})
+        r["本文404・取り直し"] = run(body=404, rerun=True, state={"lantis-sidem": [old]})
+    finally:
+        for k, v in saved.items():
+            setattr(collect, k, v)
+        pipelib.ROOT, pipelib.ENV, pipelib.oncall_clis_blocked = saved_p[:3]
+        pipelib.ANOMALIES[:] = saved_p[3]
+        pipelib._ESCALATED = saved_p[4]
+        collect.urllib.request.urlopen = saved_open
+        if saved_inv is not None:
+            os.environ["INVOCATION_ID"] = saved_inv
+    pend = lambda st: [it.get("url") for it in st.get("_pending", [])]
+    code, launched, ledger, ns, _ = r["一覧503"]
+    check(code == 0 and not launched and not ledger and any(not ok and "lantis-sidem" in m for m, ok in ns),
+          f"一覧が 503 の収集が当番を起こした・台帳に積んだ・人に知らせない: exit {code} 起動 {launched} 台帳 {ledger} 通知 {ns}")
+    check(r["一覧503・取り直し"][0] == 0, f"一覧が 503 だけの当番の取り直しを失敗にした: exit {r['一覧503・取り直し'][0]}")
+    for what in ("本文503-1", "本文503-2"):
+        code, launched, ledger, ns, st = r[what]
+        check(code == 0 and not launched and not ledger,
+              f"{what}: 新着の本文が 503 で読めなかった収集が当番を起こした・台帳に積んだ: exit {code} 起動 {launched} 台帳 {ledger}")
+        check(any(not ok and new in m for m, ok in ns), f"{what}: 本文が 503 で読めなかった新着を人に知らせない: {ns}")
+        check(pend(st) == [new] and not st.get("_given_up") and new not in st.get("lantis-sidem", []),
+              f"{what}: 本文が 503 の新着を未処理の列に残さない・諦めた・既読にした: 未処理 {pend(st)} 諦めた {st.get('_given_up')}")
+    check(r["本文503・取り直し"][0] == 0, f"本文が 503 だけの当番の取り直しを失敗にした: exit {r['本文503・取り直し'][0]}")
+    code, launched, ledger, _, st = r["本文404"]
+    check(launched and any("facts 化で読めなかった" in a for a in ledger) and any("新規0件" in a for a in ledger) and pend(st) == [new],
+          f"本文が 404 の新着で当番を起こさない・未処理の列に残さない: 起動 {launched} 台帳 {ledger} 未処理 {pend(st)}")
+    check(r["本文404・取り直し"][0] == 1, f"本文が 404 で読めない当番の取り直しを成功にした: exit {r['本文404・取り直し'][0]}")
+    check(prompts and any("503" in p for p in prompts), f"本文の取得の失敗がモデルへの素材に載らない: {[p[-200:] for p in prompts[:1]]}")
+
+
 def test_oncall_recover_keeps_handed_exit(tmp: Path):
     """落とした記事を戻す当番(--recover)の後段(main)が、人に渡し終えた終わり方を 1 に上書きして systemd に起動し直させない
     (監査指摘 2026-10-24 r2: 枠切れで _main が 0 / 79 を返しても、後段の「戻す時間が無い」「組み直しが失敗」で 1 になり、
@@ -16176,6 +16308,7 @@ def main() -> int:
     test_oncall_finished_rerun_none(tmp / "ofr")
     test_oncall_judged_not_rejudged(tmp / "ojn")
     test_http503_not_whywhy(tmp / "h503")
+    test_http503_collect_run(tmp / "h503c")
     test_oncall_recover_keeps_handed_exit(tmp / "orh")
     test_cli_block_detect_and_post(tmp / "cbd")
     test_cli_blocked_paths_r2(tmp / "cb2")

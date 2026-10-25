@@ -1681,6 +1681,7 @@ RATE_LIMIT_DEFAULT = 30.0       # Retry-After が無い・読めない 429 の�
 HOST_GAP_DIR_ENV = "IMAS_HOST_GAP_DIR"     # ホストごとの次に取得してよい時刻の置き場(既定は一時ディレクトリの下)
 _HOST_NEXT: dict[str, list[float]] = {}     # 置き場に書けないときの、このプロセスの中だけの予約([次の枠の時刻, 429 で控える時刻])
 _HOST_LOCK = threading.Lock()
+_HOST_SLOT_WARNED: list[str] = []           # 予約の置き場に書けなかったことを知らせたか(1つのプロセスで1回)
 
 
 class RateLimitWait(OSError):
@@ -1691,7 +1692,7 @@ class RateLimitWait(OSError):
         self.rate_limited = rate_limited
 
 
-_POLITE = threading.local()     # 取得中の締切(転送の行き先の間隔の待ちも、この締切を越えない)
+_POLITE = threading.local()     # 取得中の待ちの予算(_Budget。転送の行き先の待ちも、この予算から使う)
 
 
 def retry_after_seconds(headers) -> float:
@@ -1717,35 +1718,42 @@ def _host_slots(host: str, fn):
     """ホストの予約(次の枠の時刻・429 で控える時刻)を、ロックの中で fn(nxt, until) -> (戻り, nxt, until) に通して書き戻し、戻りを返す。
     予約はファイル(host_gap_dir。中身は「次の枠の時刻 429 で控える時刻」)を flock して読み書きする(並列のプロセスと共有)。
     置き場を作れない・開けない・ロックや読み書きに失敗したら、このプロセスの中の予約で続ける(取得を止めない。Sol 監査 R429 r1)。
-    fn は時刻から決めるだけで副作用を持たない(ファイルで失敗したあとプロセスの中でもう一度呼ぶ)"""
+    プロセスの中の予約はいつも写しを持ち、ファイルの値と遅いほうを採る(書けなかったあとも、読めた控えと自分の控えを失わない。
+    Sol 監査 R429 r2)。ファイルは空にせず固定長で上書きする(書けなくても前の値が残る)"""
     import fcntl
     if not host:
         return fn(0.0, 0.0)[0]
-    fd = None
-    try:
-        folder = host_gap_dir()
-        folder.mkdir(parents=True, exist_ok=True)
-        fd = os.open(folder / re.sub(r"[^A-Za-z0-9.-]", "_", host), os.O_RDWR | os.O_CREAT, 0o644)
-        fcntl.flock(fd, fcntl.LOCK_EX)
-        raw = os.pread(fd, 64, 0).decode("ascii", "replace").split()
-        try:
-            nxt, until = float(raw[0]), float(raw[1])
-        except (IndexError, ValueError):
-            nxt, until = 0.0, 0.0
-        out, nxt, until = fn(nxt, until)
-        os.ftruncate(fd, 0)
-        os.pwrite(fd, f"{nxt:.3f} {until:.3f}".encode("ascii"), 0)
-        return out
-    except RateLimitWait:
-        raise
-    except OSError as e:
-        print(f"  取得の間隔の予約を置き場に書けない({type(e).__name__}: {e})。このプロセスの中で予約する", file=sys.stderr, flush=True)
-    finally:
-        if fd is not None:
-            with contextlib.suppress(OSError):
-                os.close(fd)        # 閉じるとロックも外れる
     with _HOST_LOCK:
-        out, nxt, until = fn(*(_HOST_NEXT.get(host) or (0.0, 0.0)))
+        nxt, until = _HOST_NEXT.get(host) or (0.0, 0.0)
+        done, out, fd = False, None, None
+        try:
+            folder = host_gap_dir()
+            folder.mkdir(parents=True, exist_ok=True)
+            fd = os.open(folder / re.sub(r"[^A-Za-z0-9.-]", "_", host), os.O_RDWR | os.O_CREAT, 0o644)
+            fcntl.flock(fd, fcntl.LOCK_EX)
+            raw = os.pread(fd, 64, 0).decode("ascii", "replace").split()
+            try:
+                nxt, until = max(nxt, float(raw[0])), max(until, float(raw[1]))
+            except (IndexError, ValueError):
+                pass
+            out, nxt, until = fn(nxt, until)
+            done = True
+            _HOST_NEXT[host] = [nxt, until]
+            os.pwrite(fd, f"{nxt:.3f} {until:.3f}".ljust(63).encode("ascii") + b"\n", 0)
+            return out
+        except RateLimitWait:
+            raise
+        except OSError as e:
+            if not _HOST_SLOT_WARNED:       # 1つのプロセスで1回だけ知らせる(取得のたびに出さない)
+                _HOST_SLOT_WARNED.append(str(e))
+                print(f"  取得の間隔の予約を置き場に書けない({type(e).__name__}: {e})。このプロセスの中で予約する", file=sys.stderr, flush=True)
+        finally:
+            if fd is not None:
+                with contextlib.suppress(OSError):
+                    os.close(fd)        # 閉じるとロックも外れる
+        if done:            # 決めたあとで書けなかった: 決めた予約はプロセスの中に持っている
+            return out
+        out, nxt, until = fn(nxt, until)
         _HOST_NEXT[host] = [nxt, until]
         return out
 
@@ -1779,16 +1787,54 @@ def _host_until(host: str) -> float:
     return _host_slots(host, lambda nxt, until: (until, nxt, until))
 
 
+class _Budget:
+    """1回の取得(転送・取り直しを含む)の待ちの予算: 待った秒数の合計(RATE_LIMIT_WAIT まで)・工程の締切 deadline(待ち・取得の
+    どれも越えない)・429 の待ちだけを切る wait_deadline。転送の行き先の待ちも同じ予算から使う(Sol 監査 R429 r2)"""
+    def __init__(self, deadline: float | None = None, wait_deadline: float | None = None):
+        self.deadline, self.wait_deadline, self.waited = deadline, wait_deadline, 0.0
+
+    def left(self, now: float) -> float | None:
+        return None if self.deadline is None else self.deadline - now
+
+    def left429(self, now: float) -> float:
+        cap = RATE_LIMIT_WAIT - self.waited
+        for d in (self.deadline, self.wait_deadline):
+            if d is not None:
+                cap = min(cap, d - now)
+        return cap
+
+
+def _wait_turn(host: str, budget: _Budget) -> None:
+    """ホストへの取得の順番(間隔・429 の控え)まで待つ。待った秒数は budget に足す。起きたあとで同じホストの控えが延びていれば
+    (予約のあとで誰かが 429 を受けた)、待ち直す(Sol 監査 R429 r1)。締切・上限を超えるなら取得せず RateLimitWait"""
+    while True:
+        now = time.time()
+        left = budget.left(now)
+        if left is not None and left <= 0:
+            raise RateLimitWait(f"{host} への取得の前に締切を過ぎた", _host_until(host) > now)
+        gap = _host_reserve(host, budget.left429(now), left)
+        if gap > 0:
+            time.sleep(gap)
+            budget.waited += gap
+        if _host_until(host) <= time.time():
+            return
+
+
 class _PoliteRedirect(urllib.request.HTTPRedirectHandler):
     """転送の行き先へ取得する前にも、行き先のホストの間隔と 429 の控えを守る(Sol 監査 R429 r1: 転送先への取得が間隔を素通りした)。
-    待ちは取得中の締切(_POLITE.deadline)を越えない。越えるなら RateLimitWait(取得しない)"""
+    待ちは取得中の予算(_POLITE.budget: 待ちの合計・締切)から使い、超えるなら RateLimitWait(取得しない)。締切があれば、行き先の
+    取得の待ち時間を残りに縮める(urllib は元の要求の timeout を行き先の取得に渡す。Sol 監査 R429 r2)"""
     def redirect_request(self, req, fp, code, msg, headers, newurl):
         new = super().redirect_request(req, fp, code, msg, headers, newurl)
-        if new is not None:
-            deadline = getattr(_POLITE, "deadline", None)
-            gap = _host_reserve(site_host(newurl), RATE_LIMIT_WAIT, None if deadline is None else deadline - time.time())
-            if gap > 0:
-                time.sleep(gap)
+        if new is None:
+            return new
+        budget = getattr(_POLITE, "budget", None) or _Budget()
+        _wait_turn(site_host(newurl), budget)
+        left = budget.left(time.time())
+        if left is not None:
+            if left <= 0:
+                raise RateLimitWait(f"{newurl} への転送の前に締切を過ぎた", False)
+            req.timeout = min(req.timeout, left) if isinstance(req.timeout, (int, float)) else left
         return new
 
 
@@ -1807,44 +1853,30 @@ def polite_urlopen(req, timeout: float, deadline: float | None = None, wait_dead
     if isinstance(req, str):
         req = urllib.request.Request(req)
     host = site_host(req.full_url)
-    waited, tries, seen429 = 0.0, 0, False
+    budget = _Budget(deadline, wait_deadline)
+    tries, seen429 = 0, False
 
     def give_up(why: str, rate: bool):
         if seen429 or rate:
-            raise urllib.error.HTTPError(req.full_url, 429, f"429 で読めなかった({why}。取り直し {tries} 回・待ち {waited:.0f} 秒)",
+            raise urllib.error.HTTPError(req.full_url, 429, f"429 で読めなかった({why}。取り直し {tries} 回・待ち {budget.waited:.0f} 秒)",
                                          None, None) from None
         raise TimeoutError(f"{req.full_url} を取得しない: {why}")
-
-    def left429(now: float) -> float:
-        cap = RATE_LIMIT_WAIT - waited
-        for d in (deadline, wait_deadline):
-            if d is not None:
-                cap = min(cap, d - now)
-        return cap
     while True:
-        now = time.time()
-        if deadline is not None and deadline - now <= 0:
-            give_up("締切を過ぎた", False)
         try:
-            gap = _host_reserve(host, left429(now), None if deadline is None else deadline - now)
+            _wait_turn(host, budget)
         except RateLimitWait as e:
             give_up(str(e), e.rate_limited)
-        if gap > 0:
-            time.sleep(gap)
-            waited += gap
-        # 予約のあとで同じホストが 429 を返していたら(並列の取得)、控えている時刻まで予約し直す(Sol 監査 R429 r1)
-        if _host_until(host) > time.time():
-            continue
         t = timeout
-        if deadline is not None:
-            t = deadline - time.time()
-            if t <= 0:
+        left = budget.left(time.time())
+        if left is not None:
+            if left <= 0:
                 give_up("締切を過ぎた", False)
-            t = min(timeout, t)
-        _POLITE.deadline = deadline
+            t = min(timeout, left)
+        prev = getattr(_POLITE, "budget", None)
+        _POLITE.budget = budget         # 転送の行き先の待ち(_PoliteRedirect)も同じ予算から使う
         try:
             return opener.open(req, timeout=t) if opener is not None else urllib.request.urlopen(req, timeout=t)
-        except RateLimitWait as e:      # 転送の行き先の待ち(_PoliteRedirect)が締切・上限を超えた
+        except RateLimitWait as e:      # 転送の行き先の待ちが締切・上限を超えた
             give_up(str(e), e.rate_limited)
         except urllib.error.HTTPError as e:
             if e.code != 429:
@@ -1853,9 +1885,9 @@ def polite_urlopen(req, timeout: float, deadline: float | None = None, wait_dead
             wait = retry_after_seconds(e.headers)
             # 控えるのは実際に 429 を返したホスト(転送の行き先なら行き先)
             _host_defer(site_host(e.geturl() or req.full_url) or host, wait)
-            left = left429(time.time())
+            left = budget.left429(time.time())
             if tries >= RATE_LIMIT_TRIES or wait > left:
-                e.msg = (f"{e.msg or 'Too Many Requests'}: 429 で読めなかった(取り直し {tries} 回・待ち {waited:.0f} 秒"
+                e.msg = (f"{e.msg or 'Too Many Requests'}: 429 で読めなかった(取り直し {tries} 回・待ち {budget.waited:.0f} 秒"
                          + (f"。相手の求めた待ち {wait:.0f} 秒が残り {max(0.0, left):.0f} 秒に収まらない)" if wait > left else ")"))
                 raise
             with contextlib.suppress(Exception):
@@ -1863,7 +1895,7 @@ def polite_urlopen(req, timeout: float, deadline: float | None = None, wait_dead
             print(f"  {host} が HTTP 429。{wait:.0f} 秒待って取り直す({tries + 1}/{RATE_LIMIT_TRIES})", file=sys.stderr, flush=True)
             tries += 1
         finally:
-            _POLITE.deadline = None
+            _POLITE.budget = prev
 
 
 # メンテナンスで読めなかったサイトの、断り書きでの呼び名(ここに無いサイトはホスト名で書く)
@@ -2734,32 +2766,20 @@ def render_page(url: str, timeout: int = 30, limit: float | None = None) -> str:
     limit は待ってよい秒数の上限(工程の締切の残り。0 以下なら起動しない)。
     同じホストへは HOST_GAP 秒あけ、ページが HTTP 429 を返したら(fetch_rendered.py が RENDER_RATE_LIMITED で終わる)Retry-After を守って
     描画し直す(polite_urlopen と同じ回数・待ちの上限。limit があればその残りまで)。上限を超えたら「429 で読めなかった」の RenderFailed"""
-    deadline = None if limit is None else time.time() + limit     # 待ち・描画・描画し直しのどれもこれを越えない
-    tries, waited, seen429 = 0, 0.0, False
+    budget = _Budget(None if limit is None else time.time() + limit)     # 待ち・描画・描画し直しのどれも締切を越えない
+    tries, seen429 = 0, False
     host = site_host(url)
 
     def give_up(why: str, rate: bool):
         if seen429 or rate:
-            raise RenderFailed(f"{url} の描画: 429 で読めなかった({why}。取り直し {tries} 回・待ち {waited:.0f} 秒)", status=429)
+            raise RenderFailed(f"{url} の描画: 429 で読めなかった({why}。取り直し {tries} 回・待ち {budget.waited:.0f} 秒)", status=429)
         raise RenderFailed(f"{url} を描画しない: {why}")
-
-    def left_of(now: float) -> float | None:
-        return None if deadline is None else deadline - now
     while True:
-        now = time.time()
-        left = left_of(now)
-        if left is not None and left <= 0:
-            give_up("工程の締切を過ぎた", False)
         try:
-            gap = _host_reserve(host, RATE_LIMIT_WAIT - waited if left is None else min(RATE_LIMIT_WAIT - waited, left), left)
+            _wait_turn(host, budget)
         except RateLimitWait as e:
             give_up(str(e), e.rate_limited)
-        if gap > 0:
-            time.sleep(gap)
-            waited += gap
-        if _host_until(host) > time.time():         # 予約のあとで同じホストが 429 を返した(並列の取得)
-            continue
-        left = left_of(time.time())
+        left = budget.left(time.time())
         wait = timeout + 60 if left is None else min(timeout + 60, left)
         if wait <= 0:
             give_up("工程の締切を過ぎた", False)
@@ -2777,10 +2797,9 @@ def render_page(url: str, timeout: int = 30, limit: float | None = None) -> str:
             after = retry_after_seconds({"Retry-After": m.group(1).strip() if m else ""})
             seen429 = True
             _host_defer(host, after)
-            left = left_of(time.time())
-            room = RATE_LIMIT_WAIT - waited if left is None else min(RATE_LIMIT_WAIT - waited, left)
+            room = budget.left429(time.time())
             if tries >= RATE_LIMIT_TRIES or after > room:
-                raise RenderFailed(f"{url} の描画: 429 で読めなかった(取り直し {tries} 回・待ち {waited:.0f} 秒。"
+                raise RenderFailed(f"{url} の描画: 429 で読めなかった(取り直し {tries} 回・待ち {budget.waited:.0f} 秒。"
                                    f"相手の求めた待ち {after:.0f} 秒・残り {max(0.0, room):.0f} 秒)", status=429)
             print(f"  {host} が HTTP 429(描画)。{after:.0f} 秒待って描画し直す({tries + 1}/{RATE_LIMIT_TRIES})", file=sys.stderr, flush=True)
             tries += 1

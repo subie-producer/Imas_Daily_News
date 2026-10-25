@@ -16727,7 +16727,7 @@ def test_http429_retry(tmp: Path):
             pipelib._PoliteRedirect().redirect_request(urllib.request.Request("http://from.example/a"), None, 302, "Found",
                                                        email.message.Message(), "http://redirect-target.example/b")
             spent = _time.time() - t0
-            pipelib._POLITE.deadline = _time.time() + 0.1       # 締切を越える待ちは待たずに上げる
+            pipelib._POLITE.budget = pipelib._Budget(_time.time() + 0.1)       # 締切を越える待ちは待たずに上げる
             try:
                 pipelib._PoliteRedirect().redirect_request(urllib.request.Request("http://from.example/a"), None, 302, "Found",
                                                            email.message.Message(), "http://redirect-target.example/b")
@@ -16735,13 +16735,111 @@ def test_http429_retry(tmp: Path):
             except Exception as e:      # noqa: BLE001
                 cut = e
             finally:
-                pipelib._POLITE.deadline = None
+                pipelib._POLITE.budget = None
         except Exception as e:      # noqa: BLE001
             installed, spent, cut = False, 0.0, e
         finally:
             pipelib.HOST_GAP = 0.0
         check(installed and spent >= 0.35 and isinstance(cut, OSError),
               f"転送の行き先のホストの間隔を守らない・締切を越えて待つ: 入れた {installed} 待ち {spent:.2f} 秒 締切 {cut!r}")
+        # 転送を urllib の本物の処理で通す(通信だけ偽物): 行き先の待ちも、予約のあとの 429・待ちの合計・締切・取得の待ち時間を
+        # 呼び出しと共有する(Sol 監査 R429 r2)
+        rhits: dict[str, list[float]] = {}
+        rtmo: dict[str, list] = {}
+
+        class FakeHTTP(urllib.request.HTTPHandler):
+            def http_open(self, req):
+                u = urllib.parse.urlsplit(req.full_url)
+                key = f"{u.hostname}{u.path}"
+                with lock:
+                    rhits.setdefault(key, []).append(_time.time())
+                    rtmo.setdefault(key, []).append(req.timeout)
+                h = email.message.Message()
+                code, msg, data = 200, "OK", body
+                if u.hostname.startswith("from"):
+                    h["Location"] = f"http://{u.hostname.replace('from', 'to')}{u.path}"
+                    code, msg, data = 302, "Found", b""
+                elif u.path.startswith("/always"):
+                    h["Retry-After"] = "0.2"
+                    code, msg, data = 429, "Too Many Requests", b""
+                else:
+                    h["Content-Type"] = "text/html; charset=utf-8"
+                r = urllib.response.addinfourl(io.BytesIO(data), h, req.full_url, code)
+                r.msg = msg
+                return r
+        real_opener = urllib.request.build_opener(getattr(pipelib, "_PoliteRedirect", urllib.request.HTTPRedirectHandler), FakeHTTP)
+        urllib.request.urlopen = lambda req, data=None, timeout=None, **k: real_opener.open(req, data, timeout)
+        late.clear()
+        try:
+            # (a) 行き先の順番を待つあいだに行き先が 429 で控えたら、控えの時刻まで待ち直す
+            pipelib.HOST_GAP = 0.3
+            pipelib._host_reserve("to-a.example", 10)
+            t0 = _time.time()
+            threading.Timer(0.15, lambda: pipelib._host_defer("to-a.example", 0.45)).start()
+            try:
+                with pipelib.polite_urlopen(urllib.request.Request("http://from-a.example/p"), timeout=10) as r:
+                    r.read()
+            except Exception as e:      # noqa: BLE001
+                late.append(e)
+            got = [t - t0 for t in rhits.get("to-a.example/p", [])]
+            check(not late and got and got[0] >= 0.55,
+                  f"転送の行き先が、順番を待つあいだに受けた 429 の控えを守らずに取得した: {[round(x, 2) for x in got]} 秒 {late}")
+            pipelib.HOST_GAP = 0.0
+            # (b) 行き先の 429 の控えが 429 の待ちの締切(wait_deadline)を超えるなら、行き先を取得せず 429 で読めなかった
+            pipelib._host_defer("to-b.example", 0.3)
+            t0 = _time.time()
+            try:
+                pipelib.polite_urlopen(urllib.request.Request("http://from-b.example/p"), timeout=10, wait_deadline=_time.time() + 0.05)
+                err = None
+            except Exception as e:      # noqa: BLE001
+                err = e
+            check(isinstance(err, urllib.error.HTTPError) and err.code == 429 and not rhits.get("to-b.example/p")
+                  and _time.time() - t0 < 0.2, f"転送の行き先の待ちが 429 の待ちの締切を越えた: {err!r} 行き先の取得 {rhits.get('to-b.example/p')}")
+            # (c) 行き先の待ちも待ちの合計(RATE_LIMIT_WAIT)に数える
+            pipelib.RATE_LIMIT_WAIT = 0.5
+            t0 = _time.time()
+            try:
+                pipelib.polite_urlopen(urllib.request.Request("http://from-c.example/always"), timeout=10)
+                err = None
+            except Exception as e:      # noqa: BLE001
+                err = e
+            n = len(rhits.get("to-c.example/always", []))
+            check(isinstance(err, urllib.error.HTTPError) and err.code == 429 and n <= 3 and _time.time() - t0 < 0.8,
+                  f"転送の行き先の待ちを待ちの合計に数えない: {err!r} 行き先の取得 {n} 回 {_time.time() - t0:.2f} 秒")
+            pipelib.RATE_LIMIT_WAIT = 6.0
+            # (d) 行き先の順番を待ったあとの取得の待ち時間を、締切の残りに縮める
+            pipelib.HOST_GAP = 0.15
+            pipelib._host_reserve("to-d.example", 10)
+            try:
+                with pipelib.polite_urlopen(urllib.request.Request("http://from-d.example/p"), timeout=10,
+                                            deadline=_time.time() + 0.2) as r:
+                    r.read()
+            except Exception as e:      # noqa: BLE001
+                late.append(e)
+            tmo = rtmo.get("to-d.example/p") or [None]
+            check(isinstance(tmo[0], (int, float)) and tmo[0] <= 0.1,
+                  f"転送の行き先の取得の待ち時間が締切の残りに縮まらない: {tmo}")
+        finally:
+            pipelib.HOST_GAP = 0.0
+            pipelib.RATE_LIMIT_WAIT = 6.0
+            urllib.request.urlopen = fake_server
+        # 置き場に控えを残したあとで書けなくなっても、その控え(429)を守る(Sol 監査 R429 r2)
+        pipelib._host_defer("wf.example", 0.4)
+        real_pwrite = os.pwrite
+
+        def broken(*a, **k):
+            raise OSError(28, "No space left on device")
+        os.pwrite = broken
+        t0 = _time.time()
+        try:
+            with pipelib.polite_urlopen(urllib.request.Request("http://wf.example/x"), timeout=10) as r:
+                r.read()
+        except Exception as e:      # noqa: BLE001
+            late.append(e)
+        finally:
+            os.pwrite = real_pwrite
+        got = [t - t0 for t in hits.get("/x", [])]
+        check(got and got[0] >= 0.35, f"置き場に書けなくなったとき、残っていた 429 の控えを捨てて取得した: {[round(x, 2) for x in got]} 秒")
         # 予約の置き場に開いたあとで書けなくても(容量不足)、取得を止めない
         real_pwrite = os.pwrite
 

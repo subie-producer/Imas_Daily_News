@@ -6255,6 +6255,27 @@ def test_compose_collect_slot_gaps(tmp: Path):
               "2026-10-26T02:00+09:00"], f"号に入る定時の収集の回が違う: {pipelib.collect_slots('2026-10-26')}")
     check(pipelib.scheduled_times() == ((1, 30), (2, 0), (3, 0), (6, 0), (7, 30), (12, 30), (18, 30), (23, 30)),
           f"定時工程の時刻が timer の定義と違う: {pipelib.scheduled_times()}")
+    # timer の時刻を変えたら、号に入る回・工程の排他を手放す時刻(next_slot_end)がそれに従う(コードに時刻の直書きが戻ったら落ちる。Sol 監査 r1 later)
+    moved = tmp / "moved"
+    moved.mkdir()
+    for name, times in (("update", ["01:40"]), ("collect", ["07:45", "13:00", "19:00", "23:50", "02:10"]),
+                        ("compose", ["03:05"]), ("release", ["06:00"])):
+        (moved / f"imas-{name}.timer").write_text(
+            "[Timer]\n" + "".join(f"OnCalendar=*-*-* {t}:00 Asia/Tokyo\n" for t in times) + "Persistent=true\n", encoding="utf-8")
+    saved_dir = pipelib.TIMER_DIR
+    try:
+        pipelib.TIMER_DIR = moved
+        sched = pipelib.scheduled_times()
+        slots = [t.isoformat(timespec="minutes") for t in pipelib.collect_slots("2026-10-26")]
+        end_0100 = _dt.datetime.fromtimestamp(pipelib.next_slot_end(T("2026-10-26", "01:00")), pipelib.JST)
+        end_0300 = _dt.datetime.fromtimestamp(pipelib.next_slot_end(T("2026-10-26", "02:30"), 40), pipelib.JST)
+    finally:
+        pipelib.TIMER_DIR = saved_dir
+    check(sched == ((1, 40), (2, 10), (3, 5), (6, 0), (7, 45), (13, 0), (19, 0), (23, 50)), f"定時工程の時刻が timer の定義に従わない: {sched}")
+    check(slots == ["2026-10-25T07:45+09:00", "2026-10-25T13:00+09:00", "2026-10-25T19:00+09:00", "2026-10-25T23:50+09:00",
+                    "2026-10-26T02:10+09:00"], f"号に入る定時の収集の回が timer の定義に従わない: {slots}")
+    check(end_0100 == T("2026-10-26", "01:25") and end_0300 == T("2026-10-26", "03:30"),
+          f"工程の排他を手放す時刻が timer の定義に従わない(01:40 − 15分 / 03:05 + 40 − 15分): {end_0100} {end_0300}")
     td = tmp / "timers"
     td.mkdir()
     (td / "imas-collect.timer").write_text("[Timer]\nOnCalendar=*-*-* 07:30:00 Asia/Tokyo\nOnCalendar=Mon *-*-* 09:00\n", encoding="utf-8")

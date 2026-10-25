@@ -51,7 +51,7 @@ from pipelib import (ENV, ROOT, COLLECT_MODEL, CODEX_WRITE_MODEL, EXPLORE_MODEL,
                      extract_json_array, git, notify, notify_crash, now_jst, prompt_part, render_prompt,
                      X_ANON_POST, x_post_author, x_status_time, align_x_published_date,
                      CLI_BLOCKED, CLI_BLOCKED_EXIT, CLI_STOPPED, CliBlocked, cli_blocked_reason, cli_check, grok_session_reasons,
-                     scratch_dir, link_key, polite_urlopen, RATE_LIMIT_WAIT)
+                     scratch_dir, link_key, polite_urlopen)
 from storylink import url_key
 # モデル・道具のセッションの起動と回収(自前のプロセスグループ。時間切れ・中断では子孫まで止める)
 from pipelib import PAGE_READ_BYTES, STOPPING, exit_on_term, finish_group, next_slot_end, run_group, start_group, stop_groups
@@ -173,8 +173,8 @@ def watch_get(url: str, timeout: float) -> tuple[bytes, str | None]:
     本文の受信は watch_read が受信ごとに締切で切る。締切が無ければ今までどおりこのスレッドで取る。"""
     def get() -> tuple[bytes, str | None]:
         req = urllib.request.Request(url, headers={"User-Agent": UA})
-        # 同じホストへは間隔をあけ、429 は Retry-After を守って取り直す(待ちの合計は収集の締切の残りまで)
-        with polite_urlopen(req, timeout=timeout, budget=session_left(RATE_LIMIT_WAIT) if DEADLINE else None) as res:
+        # 同じホストへは間隔をあけ、429 は Retry-After を守って取り直す(待ち・取得・取り直しのどれも収集の締切を越えない)
+        with polite_urlopen(req, timeout=timeout, deadline=DEADLINE) as res:
             return watch_read(res), res.headers.get_content_charset()
     if not DEADLINE:
         return get()
@@ -2152,7 +2152,8 @@ def verify(cands: list[dict]) -> dict:
             else:
                 req = urllib.request.Request(c["url"], headers={"User-Agent": UA})
                 try:
-                    opened = polite_urlopen(req, timeout=15)     # 間隔をあけ、429 は Retry-After を守って取り直す
+                    # 間隔をあけ、429 は Retry-After を守って取り直す。429 の待ちは収集の締切を越えない(裏取り自体は締切で切らない)
+                    opened = polite_urlopen(req, timeout=15, wait_deadline=DEADLINE)
                 except urllib.error.HTTPError as e:
                     # 取り直しの上限を超えても 429 なら、今は確かめられないだけ(URL の取り違えではない。failed にしない)
                     if e.code == 429:

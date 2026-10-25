@@ -16485,17 +16485,20 @@ def test_http429_retry(tmp: Path):
     """HTTP 429(取得が多すぎる)は相手の停止ではなく、こちらのアクセスの仕方への応答。ページを取る経路は Retry-After を守って取り直し、
     同じホストへの取得の間隔をあける。上限を超えたら「429 で読めなかった」と形で残す(編集長 2026-10-26「429を外部のせいはちょっとないな」。
     10/26 号で anime-store.jp・shop.mining-base.co.jp の 429 を当番が「外部」と診断し見送り5本を承認したが、60〜90 秒あけて取り直すだけで読めた)。
-    偽のサーバー(429 → Retry-After 後に 200)を立て、本物の取得の道具で確かめる:
+    偽のサーバー(429 → Retry-After 後に 200。urlopen の差し替えで、ソケットは開かない: 監査・当番の sandbox はソケットを開けない)で、
+    本物の取得の道具を確かめる:
     - fetch_page.py・定点観測の取得(締切あり・なし)・確かめ(verify)・facts 化の本文・出典の判定のページ取得・描画が、取り直して本文を得る
-    - 同じホストへの取得の間隔(同じプロセスの中と、並列の fetch_page.py の間)
-    - 上限(回数・待ちの合計・相手の求めた待ちが残りを超える)を超えたら、429 で読めなかったと記録に残す。429 はなぜなぜの対象外にしない"""
+    - 同じホストへの取得の間隔(同じプロセスの中・並列の fetch_page.py の間・転送の行き先)。予約のあとで同じホストが 429 を返したら待ち直す
+    - 上限(回数・待ちの合計・相手の求めた待ちが残りを超える・工程の締切)を超えたら、429 で読めなかったと記録に残し、締切を越えて待たない。
+      予約の置き場に書けなくても取得を止めない。429 はなぜなぜの対象外にしない"""
     import contextlib
+    import email.message
     import io
     import threading
     import time as _time
     import urllib.error
     import urllib.parse
-    from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+    import urllib.response
     import classify_sources
     import collect
     import fetch_page
@@ -16504,42 +16507,34 @@ def test_http429_retry(tmp: Path):
     lock = threading.Lock()
     body = ("<html><head><title>告知</title></head><body><p>"
             + "本文の告知です。受付期間: 2026年10月26日〜2026年11月1日。" * 30 + "</p></body></html>").encode("utf-8")
+    base = "http://site429.example"
 
-    class H(BaseHTTPRequestHandler):
-        def log_message(self, *a):
-            pass
-
-        def do_GET(self):
-            with lock:
-                hits.setdefault(self.path, []).append(_time.time())
-                n = len(hits[self.path])
-            p = self.path
-            after = {"/long": "3600"}.get(p, "1")
-            if p.startswith("/always") or p == "/long" or (p.startswith("/once") and n == 1) or (p.startswith("/twice") and n <= 2):
-                self.send_response(429)
-                self.send_header("Retry-After", after)
-                self.send_header("Content-Type", "text/html")
-                self.end_headers()
-                self.wfile.write(b"<html><title>429 Too Many Requests</title></html>")
-                return
-            self.send_response(200)
-            self.send_header("Content-Type", "text/html; charset=utf-8")
-            self.send_header("Content-Length", str(len(body)))
-            self.end_headers()
-            self.wfile.write(body)
-    srv = ThreadingHTTPServer(("127.0.0.1", 0), H)
-    threading.Thread(target=srv.serve_forever, daemon=True).start()
-    base = f"http://127.0.0.1:{srv.server_address[1]}"
-    direct = urllib.request.build_opener(urllib.request.ProxyHandler({}))
-
-    def local_urlopen(req, data=None, timeout=None, **k):
+    def fake_server(req, data=None, timeout=None, **k):
+        """偽のサーバー: /always… は常に 429(Retry-After 1)、/long は 429(Retry-After 3600)、/once… は1回目だけ 429、
+        /slow… は 0.3 秒かけて応答する(/slowalways… は 0.4 秒かけて 429・Retry-After 0.2)。ほかは 200 の本文"""
         url = req.full_url if isinstance(req, urllib.request.Request) else str(req)
-        if urllib.parse.urlsplit(url).hostname != "127.0.0.1":
+        if not (urllib.parse.urlsplit(url).hostname or "").endswith(".example"):
             raise AssertionError(f"テストから本物の通信を試みた: {url}")
-        return direct.open(req, data, timeout)
+        p = urllib.parse.urlsplit(url).path
+        with lock:
+            hits.setdefault(p, []).append(_time.time())
+            n = len(hits[p])
+        if p.startswith("/slowalways"):
+            _time.sleep(0.4)
+        elif p.startswith("/slow"):
+            _time.sleep(0.3)
+        after = {"/long": "3600"}.get(p, "0.2" if p.startswith("/slowalways") else "1")
+        if p.startswith(("/always", "/slowalways")) or p == "/long" or (p.startswith(("/once", "/slowonce")) and n == 1):
+            h = email.message.Message()
+            h["Retry-After"] = after
+            h["Content-Type"] = "text/html"
+            raise urllib.error.HTTPError(url, 429, "Too Many Requests", h, io.BytesIO(b"<title>429</title>"))
+        h = email.message.Message()
+        h["Content-Type"] = "text/html; charset=utf-8"
+        return urllib.response.addinfourl(io.BytesIO(body), h, url, 200)
     saved = (urllib.request.urlopen, getattr(pipelib, "RATE_LIMIT_WAIT", None), sys.argv, os.environ.get("IMAS_FETCH_RECORD"),
              collect.DEADLINE, pipelib.run_group)
-    urllib.request.urlopen = local_urlopen
+    urllib.request.urlopen = fake_server
     if saved[1] is not None:
         pipelib.RATE_LIMIT_WAIT = 6.0       # 待ちの合計の上限(本番は 120 秒。テストは Retry-After 1 秒で 3 回まで)
     rec = tmp / "fetched.jsonl"
@@ -16633,9 +16628,9 @@ def test_http429_retry(tmp: Path):
                 except AttributeError:
                     with urllib.request.urlopen(urllib.request.Request(base + "/gap-in"), timeout=10) as r:
                         r.read()
-            # 間隔だけの待ちは、429 の待ちの上限(残り 0 秒)で「429 で読めなかった」にしない
+            # 間隔だけの待ちは、429 の待ちの締切(過ぎている)で「429 で読めなかった」にしない
             try:
-                with pipelib.polite_urlopen(urllib.request.Request(base + "/gap-budget"), timeout=10, budget=0) as r:
+                with pipelib.polite_urlopen(urllib.request.Request(base + "/gap-budget"), timeout=10, wait_deadline=_time.time() - 1) as r:
                     gb = r.read().decode("utf-8")
             except Exception as e:      # noqa: BLE001
                 gb = f"{type(e).__name__}: {e}"
@@ -16666,16 +16661,118 @@ def test_http429_retry(tmp: Path):
         ts = hits.get("/gap-mem", [])
         check(len(ts) == 2 and ts[1] - ts[0] >= 0.45 and "/gap-mem-err" not in hits,
               f"予約の置き場に書けないときに取得を止めた・間隔をあけない: {[round(b - a, 2) for a, b in zip(ts, ts[1:])]}")
-        # 並列の fetch_page.py(別プロセス)のあいだでも間隔をあける(並列の執筆セッションが同じサイトを読む)
-        env = {**os.environ, "NO_PROXY": "127.0.0.1", "no_proxy": "127.0.0.1"}
+        # 並列の fetch_page.py(別プロセス)のあいだでも間隔をあける(並列の執筆セッションが同じサイトを読む)。子の中の urlopen を
+        # 偽物に替え、取得した時刻をファイルに残す(間隔は本番の既定値)
+        child, log = tmp / "child_fetch.py", tmp / "child_hits.txt"
+        child.write_text(
+            "import email.message, io, sys, time, urllib.request, urllib.response\n"
+            "sys.path.insert(0, sys.argv[1])\n"
+            "LOG = sys.argv[3]\n"
+            "import fetch_page\n"
+            "def fake(req, data=None, timeout=None, **k):\n"
+            "    with open(LOG, 'a', encoding='utf-8') as f:\n"
+            "        f.write(f'{time.time()}\\n')\n"
+            "    h = email.message.Message()\n"
+            "    h['Content-Type'] = 'text/html; charset=utf-8'\n"
+            "    return urllib.response.addinfourl(io.BytesIO(('<p>' + '並列の本文。' * 200 + '</p>').encode('utf-8')), h, req.full_url, 200)\n"
+            "urllib.request.urlopen = fake\n"
+            "fetch_page.needs_render = lambda u, t: False\n"
+            "sys.argv = ['fetch_page.py', sys.argv[2]]\n"
+            "sys.exit(fetch_page.main())\n", encoding="utf-8")
+        env = dict(os.environ)
         env.pop("IMAS_FETCH_RECORD", None)
-        procs = [subprocess.Popen([sys.executable, str(Path(__file__).resolve().parent / "fetch_page.py"), base + f"/gap-p{i}"], env=env,
-                                  stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True) for i in range(2)]
+        procs = [subprocess.Popen([sys.executable, str(child), str(Path(__file__).resolve().parent), base + f"/gap-p{i}", str(log)],
+                                  env=env, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True) for i in range(2)]
         outs = [p.communicate(timeout=60) for p in procs]
-        ts = sorted(t for i in range(2) for t in hits.get(f"/gap-p{i}", []))
+        ts = sorted(float(x) for x in (log.read_text(encoding="utf-8").split() if log.exists() else []))
         check(len(ts) == 2 and ts[1] - ts[0] >= 0.9 and all(p.returncode == 0 for p in procs),
               f"並列の fetch_page.py が同じホストへ間隔をあけずに取得した: {[round(b - a, 2) for a, b in zip(ts, ts[1:])]} "
-              f"{[(p.returncode, o[1][-200:]) for p, o in zip(procs, outs)]}")
+              f"{[(p.returncode, o[0][-200:], o[1][-200:]) for p, o in zip(procs, outs)]}")
+        # 予約したあとで同じホストが 429 を返したら(並列の取得)、起きてから控えの時刻まで待ち直す(Sol 監査 R429 r1)
+        pipelib.HOST_GAP = 0.5
+        got429: list[float] = []
+        late: list = []
+
+        def first():
+            try:
+                with pipelib.polite_urlopen(urllib.request.Request(base + "/slowonce-a"), timeout=10) as r:
+                    r.read()
+            except Exception as e:      # noqa: BLE001
+                late.append(e)
+            got429.append(_time.time())
+
+        def second():
+            _time.sleep(0.05)
+            try:
+                with pipelib.polite_urlopen(urllib.request.Request(base + "/after-b"), timeout=10) as r:
+                    r.read()
+            except Exception as e:      # noqa: BLE001
+                late.append(e)
+        try:
+            ths = [threading.Thread(target=first), threading.Thread(target=second)]
+            for t in ths:
+                t.start()
+            for t in ths:
+                t.join(30)
+        finally:
+            pipelib.HOST_GAP = 0.0
+        a429, b = (hits.get("/slowonce-a") or [0.0])[0] + 0.3, (hits.get("/after-b") or [0.0])[0]
+        check(not late and b - a429 >= 0.9, f"予約のあとで同じホストが返した 429 の控えを守らずに取得した: 429 から {b - a429:.2f} 秒 {late}")
+        # 転送の行き先へ取得する前にも、行き先のホストの間隔を守る(Sol 監査 R429 r1)。本物の urlopen の転送はこの扱いを通る
+        try:
+            installed = any(isinstance(h, pipelib._PoliteRedirect) for h in getattr(urllib.request, "_opener").handlers)
+            pipelib.HOST_GAP = 0.4
+            pipelib._host_reserve("redirect-target.example", 10)
+            t0 = _time.time()
+            pipelib._PoliteRedirect().redirect_request(urllib.request.Request("http://from.example/a"), None, 302, "Found",
+                                                       email.message.Message(), "http://redirect-target.example/b")
+            spent = _time.time() - t0
+            pipelib._POLITE.deadline = _time.time() + 0.1       # 締切を越える待ちは待たずに上げる
+            try:
+                pipelib._PoliteRedirect().redirect_request(urllib.request.Request("http://from.example/a"), None, 302, "Found",
+                                                           email.message.Message(), "http://redirect-target.example/b")
+                cut = None
+            except Exception as e:      # noqa: BLE001
+                cut = e
+            finally:
+                pipelib._POLITE.deadline = None
+        except Exception as e:      # noqa: BLE001
+            installed, spent, cut = False, 0.0, e
+        finally:
+            pipelib.HOST_GAP = 0.0
+        check(installed and spent >= 0.35 and isinstance(cut, OSError),
+              f"転送の行き先のホストの間隔を守らない・締切を越えて待つ: 入れた {installed} 待ち {spent:.2f} 秒 締切 {cut!r}")
+        # 予約の置き場に開いたあとで書けなくても(容量不足)、取得を止めない
+        real_pwrite = os.pwrite
+
+        def full(*a, **k):
+            raise OSError(28, "No space left on device")
+        os.pwrite = full
+        try:
+            with pipelib.polite_urlopen(urllib.request.Request(base + "/enospc"), timeout=10) as r:
+                r.read()
+        except Exception as e:      # noqa: BLE001
+            late.append(e)
+        finally:
+            os.pwrite = real_pwrite
+        check(len(hits.get("/enospc", [])) == 1, f"予約の置き場に書けないときに取得を止めた: {late[-1:]!r}")
+        # 締切: 確かめは 429 の待ちを収集の締切で切る。定点観測は締切を過ぎてから取り直さない(裏のスレッドも)
+        collect.DEADLINE = _time.time() + 0.1
+        t0 = _time.time()
+        cands = [cand_row("v3", base + "/always-vd", via="watch")]
+        collect.verify(cands)
+        check(_time.time() - t0 < 0.8 and cands[0].get("verify") == "unconfirmed" and len(hits.get("/always-vd", [])) == 1,
+              f"確かめが収集の締切を越えて 429 を待った: {_time.time() - t0:.2f} 秒 {cands[0].get('verify')} 取得 {len(hits.get('/always-vd', []))} 回")
+        collect.DEADLINE = _time.time() + 0.5
+        dl = collect.DEADLINE
+        try:
+            collect.http_get("http://watch-deadline.example/slowalways-w")     # 前の 429 の控えの無いホスト
+        except Exception:       # noqa: BLE001
+            pass
+        _time.sleep(0.8)
+        after_dl = [t for t in hits.get("/slowalways-w", []) if t > dl]
+        check(not after_dl, f"定点観測が収集の締切を過ぎてから取り直した: {[round(t - dl, 2) for t in after_dl]} 秒後")
+        collect.DEADLINE = None
         # 7. 描画: ページが 429 なら Retry-After を守って描画し直す。上限を超えたら 429 で読めなかった(状態コードつき)
         try:
             import fetch_rendered
@@ -16710,6 +16807,39 @@ def test_http429_retry(tmp: Path):
             err = e
         check(isinstance(err, pipelib.RenderFailed) and getattr(err, "status", None) == 429 and "429 で読めなかった" in str(err)
               and len(calls) == 4, f"描画の上限を超えた 429 を形どおりに失敗にしない: {err!r} 描画 {len(calls)} 回")
+        # 描画の締切(limit): 間隔の待ちが残りを超えるなら描画も待ちもしない。描画に時間を使ったあとの 429 は、残りに収まらなければ
+        # その場で status=429 で上げる(Sol 監査 R429 r1)
+        calls.clear()
+        pipelib.HOST_GAP = 0.4
+        try:
+            pipelib._host_reserve("render-limit.example", 10)
+            t0 = _time.time()
+            try:
+                pipelib.render_page("http://render-limit.example/x", 5, limit=0.05)
+                err = None
+            except Exception as e:      # noqa: BLE001
+                err = e
+            spent = _time.time() - t0
+        finally:
+            pipelib.HOST_GAP = 0.0
+        check(isinstance(err, pipelib.RenderFailed) and spent < 0.2 and not calls,
+              f"描画が締切を越えて間隔を待った・描画した: {err!r} {spent:.2f} 秒 描画 {len(calls)} 回")
+
+        def slow_429(argv, timeout=None, cwd=None, **k):
+            calls.append(_time.time())
+            _time.sleep(0.3)
+            return subprocess.CompletedProcess(argv, 75, "", "RENDER_FAILED: HTTP 429 retry-after=1\n")
+        pipelib.run_group = slow_429
+        calls.clear()
+        t0 = _time.time()
+        try:
+            pipelib.render_page("http://render-slow.example/x", 5, limit=1.1)
+            err = None
+        except Exception as e:      # noqa: BLE001
+            err = e
+        spent = _time.time() - t0
+        check(isinstance(err, pipelib.RenderFailed) and getattr(err, "status", None) == 429 and spent < 0.6 and len(calls) == 1,
+              f"描画の締切に収まらない 429 の待ちを待った・状態コードを落とした: {err!r} {spent:.2f} 秒 描画 {len(calls)} 回")
         # 8. 相手の求めた待ちが上限を超えるときは、待たずにその場で 429 で読めなかったとする
         t0 = _time.time()
         rc, out = run_fetch_page(base + "/long")
@@ -16723,10 +16853,8 @@ def test_http429_retry(tmp: Path):
             os.environ.pop("IMAS_FETCH_RECORD", None)
         else:
             os.environ["IMAS_FETCH_RECORD"] = env_rec
-        srv.shutdown()
-        srv.server_close()
         # 偽のサーバーのホストに残った予約(Retry-After 3600 秒)を、ほかのテストへ持ち越さない
-        for f in Path(os.environ.get("IMAS_HOST_GAP_DIR") or tmp).glob("127.0.0.1*"):
+        for f in Path(os.environ.get("IMAS_HOST_GAP_DIR") or tmp).glob("*.example"):
             f.unlink(missing_ok=True)
         getattr(pipelib, "_HOST_NEXT", {}).clear()
 

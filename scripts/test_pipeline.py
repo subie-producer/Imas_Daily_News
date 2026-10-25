@@ -3020,9 +3020,11 @@ def _browser_only_host_case(tmp: Path, url: str):
         import urllib.error     # 実際のサイトと同じく 429 で断る
         raise urllib.error.HTTPError(getattr(req, "full_url", req), 429, "Too Many Requests", {}, None)
     render_calls: list[str] = []
+    render_limits: list = []        # 描画に渡した待ちの上限(limit。締切の残り)
 
     def render_ok(u, *a, **k):
         render_calls.append(u)
+        render_limits.append(k.get("limit"))
         return rendered
 
     def render_ng(u, *a, **k):
@@ -3075,8 +3077,8 @@ def _browser_only_host_case(tmp: Path, url: str):
         src = {"id": "boh", "type": "html", "url": url, "base": url, "list_regex": r'<a href="([^"]+/item-\d+)">([^<]+)</a>'}
         saved_d = collect.DEADLINE
         try:
-            for deadline in (None, time.time() + 600):
-                raw_calls.clear(), render_calls.clear()
+            for deadline in (None, time.time() + 30):
+                raw_calls.clear(), render_calls.clear(), render_limits.clear()
                 collect.DEADLINE = deadline
                 try:
                     listed = collect.list_source(src, set(), fetch=collect.watch_fetch(src))[0]
@@ -3084,6 +3086,23 @@ def _browser_only_host_case(tmp: Path, url: str):
                     listed = f"{type(e).__name__}: {e}"
                 check(not raw_calls and render_calls == [url] and listed == [(url + "/item-1", "B2タペストリー(十王星南)")],
                       f"定点観測の一覧の取得が素の取得で叩いた(締切 {'あり' if deadline else 'なし'}): {raw_calls} {render_calls} {listed}")
+                # 描画の待ちは締切の残りで切る(締切が無ければ描画の既定の上限)(Sol 監査 CHR r2 later)
+                check(render_limits == [None] if deadline is None
+                      else (len(render_limits) == 1 and render_limits[0] is not None and 0 < render_limits[0] <= 30),
+                      f"定点観測の一覧の描画に締切の残りを渡さない(締切 {'あり' if deadline else 'なし'}): {render_limits}")
+            # 締切を過ぎたら描画を起動しない(一覧の取得は例外で抜け、既読・境界を変えない)
+            raw_calls.clear(), render_calls.clear()
+            collect.DEADLINE = time.time() - 1
+            try:
+                collect.list_source(src, set(), fetch=collect.watch_fetch(src))
+                late = "例外にならなかった"
+            except Exception as e:      # noqa: BLE001
+                late = f"{type(e).__name__}: {e}"
+            check(not raw_calls and not render_calls and "締切" in late, f"締切を過ぎてから一覧を取りに行った: {raw_calls} {render_calls} {late}")
+            # 締切を過ぎてから http_get に直に来ても、描画に渡す待ちは 0(render_page は起動しない)
+            render_limits.clear()
+            collect.http_get(url)
+            check(render_limits == [0.0], f"締切を過ぎた http_get が描画に待ちを渡した: {render_limits}")
         finally:
             collect.DEADLINE = saved_d
         # 裏取り: 描画した本文で照合する。描画は1回だけ(照合のたびにブラウザを起動しない)

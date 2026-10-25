@@ -1,0 +1,383 @@
+#!/usr/bin/env python3
+"""出典が足りずに見送った記事(slug)について、出典を取りに行き、確かめて号の素材に入れる入口。
+
+組版で NO_PRIMARY_SOURCE・SOURCE_MISMATCH の見送りになった記事を、その号に戻すための正規の道具。
+当番の組版の復帰(oncall.rerun_stage)が、落とした記事を組み直す(--reuse-plan --carry-review)前にこれを呼ぶ。
+2026-10-26 号: 当番は取得の欠陥を直して2本を戻したが、残る3本(当日 23:59 締切のシャニマス8.5周年プレゼントを含む)を
+「外部」「後続号に戻るかもしれない」で終えた。公式 X・当事者のページは実在し、手での救済(Grok の深掘り → Luna の確かめ →
+verify → 素材への merge → 計画の素材への追加)で3本とも当日号に戻った。その手順を道具にしたもの。
+
+手順(どれも収集の既存の関数。素材の事実はこの道具が作らない):
+1. 当たりの調べ(記事ごと・並列): モデル(定点観測の facts 化と同じ道具立て)が、記事の素材と見送りの理由から、
+   公式・当事者・報道のページの URL と、X の原本で確かめる問いを挙げる(prompts/source-rescue.md)
+2. 並列に:
+   - X: 問いを面ごとにまとめ、週の予算(deep_budget)の範囲で Grok に深掘りさせ(deep_dive_grok)、Luna が確かめる
+     (verify_grok_faces)。答えの無い問いは予算の範囲で1回だけ角度を変えて投げ直す(収集の深掘りと同じ)
+   - ページ: 記事ごとに facts 化する(facts_batch)
+3. 正規化(normalize)→ 裏取り(verify)→ 号の素材へ入れる(merge_into_day_file)
+4. 使える候補(verify が failed でないもの)を、その記事の計画(metrics/plan-<号>.json)の candidate_ids に足す
+
+冪等: 素材は URL で重ねずに合わせ(merge_into_day_file)、計画の candidate_ids は重ねない。何度走らせても素材・計画は増えない。
+結果は metrics/work/<号>/source-rescue/report.json と標準出力に残す。出典に届かなかった記事は、試した出典(URL・応答・
+問いと見つかった投稿)を書く(当番の報告と組み直しの通知がそれを載せる)。
+
+使い方: source_rescue.py --date YYYY-MM-DD --slug SLUG [--slug SLUG ...] [--until EPOCH] [--dry-run]
+"""
+from __future__ import annotations
+
+import argparse
+import concurrent.futures
+import json
+import os
+import re
+import sys
+import time
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import collect  # noqa: E402
+from pipelib import (CLI_BLOCKED_EXIT, CliBlocked, exit_on_term, now_jst, render_prompt, schema_ok,  # noqa: E402
+                     source_lacking_drops)
+
+MAX_PAGES = 4               # 記事1本で読むページの上限(当たりの調べの答え)
+MAX_ASKS = 2                # 記事1本で X の原本を探す問いの上限
+PLAN_TIMEOUT = 600          # 当たりの調べのセッションの上限(秒)
+VERIFY_RESERVE_SEC = 240    # 締切のうち、正規化・裏取り・素材への書き込みに残す秒数
+TASK_SCHEMA = {"type": "object", "required": ["kind", "why"],
+               "properties": {"kind": {"enum": ["page", "x"]}, "why": {"type": "string"},
+                              "url": {"type": "string", "pattern": r"^https?://\S+$"},
+                              "question": {"type": "string", "minLength": 1}}}
+GOOD_SOURCE_TYPES = collect.GOOD_SOURCE_TYPES
+
+
+def root() -> Path:
+    return collect.ROOT
+
+
+def rescue_dir(date: str) -> Path:
+    return root() / "metrics" / "work" / date / "source-rescue"
+
+
+def read_json(p: Path, default):
+    try:
+        return json.loads(p.read_text(encoding="utf-8")) if p.exists() else default
+    except (OSError, ValueError):
+        return default
+
+
+def materials(date: str) -> dict[str, dict]:
+    """号の素材(候補ファイルと当日の続報予約)の id → 素材。"""
+    out = {c["id"]: c for c in read_json(root() / "candidates" / f"{date}.json", []) if isinstance(c, dict) and c.get("id")}
+    out.update({s["id"]: s for s in read_json(root() / "stock" / "scheduled" / f"{date}.json", [])
+                if isinstance(s, dict) and s.get("id")})
+    return out
+
+
+def material_text(ids: list[str], mats: dict[str, dict]) -> str:
+    """当たりの調べに渡す素材(人が読める形。1行が長くならない)。"""
+    rows = []
+    for i, cid in enumerate(ids):
+        c = mats.get(cid)
+        if not c:
+            rows.append(f"### {i + 1}. {cid}\n- (号の素材に無い)")
+            continue
+        facts = "\n".join(f"  - {f}" for f in (c.get("facts") or [])[:15])
+        rows.append(f"### {i + 1}. {c.get('title') or '(無題)'}\n- url: {c.get('url')}\n- 種別: {c.get('source_type')}"
+                    f" / 裏取り: {c.get('verify')}{' (' + str(c['verify_note'])[:200] + ')' if c.get('verify_note') else ''}"
+                    + (f"\n- リンク元: {c['link_from']}" if c.get("link_from") else "")
+                    + (f"\n- 締切: {c['deadline']}" if c.get("deadline") else "")
+                    + (f"\n- 開催日: {c['event_date']}" if c.get("event_date") else "")
+                    + (f"\n- facts:\n{facts}" if facts else ""))
+    return "\n\n".join(rows) or "(素材なし)"
+
+
+def plan_tasks(date: str, art: dict, why: str, mats: dict[str, dict]) -> tuple[list[dict] | None, str]:
+    """記事1本の出典の当たり(page / x)。戻りは (当たり, 失敗の理由)。答えが読めない・形が崩れていれば (None, 理由)。
+    形の崩れた当たりが1つでもあれば答え全体を採らない(渡した形で検める。部分だけ採って黙って当たりを失わない)。"""
+    prompt = render_prompt("source-rescue", DATE=date, TODAY=now_jst().strftime("%Y-%m-%d"), SLUG=art["slug"],
+                           BRAND=art.get("brand") or "", ANGLE=art.get("angle") or "", WHY=why or "(記録なし)",
+                           MAX_PAGES=MAX_PAGES, MAX_ASKS=MAX_ASKS, MATERIAL=material_text(art.get("candidate_ids") or [], mats))
+    try:
+        got = collect.claude_exec(prompt, timeout=PLAN_TIMEOUT, what=f"出典を揃える入口の当たりの調べ {art['slug']}",
+                                  kind="source-rescue")
+    except CliBlocked as e:
+        return None, f"モデル CLI の停止({e})"
+    if got is collect.DEADLINE_CUT:
+        return None, "締切で起動しなかった・打ち切った"
+    if got is None:
+        return None, "答えが読めない(時間切れ・異常終了・JSON でない)"
+    if not all(schema_ok(t, TASK_SCHEMA) and (t.get("url") if t["kind"] == "page" else t.get("question")) for t in got):
+        return None, "答えが渡した形のとおりでない"
+    pages = [t for t in got if t["kind"] == "page"][:MAX_PAGES]
+    asks = [t for t in got if t["kind"] == "x"][:MAX_ASKS]
+    return pages + asks, ""
+
+
+def face_of(brand: str, queries: list[dict]) -> dict | None:
+    """記事の面(brand)の Grok の面(queries.yml)。合同は joint-other、総合はトレンドの面。"""
+    by_brand = {}
+    for q in queries:
+        by_brand.setdefault(q["brand"], q)
+    return by_brand.get(brand) or by_brand.get("general")
+
+
+def answered_asks(text: str, asks: list[dict]) -> dict[str, int]:
+    """深掘りの書き出しの投稿 → 答えた問いの番号(1始まり)。番号の無い投稿は、問いが1つならその問い。"""
+    out = {}
+    for b in collect.post_blocks(text):
+        u = collect.post_url(b)
+        if not u:
+            continue
+        m = collect.DEEP_ASK_NO.search(b)
+        n = int(m.group(1)) if m else (1 if len(asks) == 1 else 0)
+        if n:
+            out[collect.post_key(u)] = n
+    return out
+
+
+def grok_phase(asks_by_slug: dict[str, list[dict]], arts: dict[str, dict], outdir: Path, log: dict) -> list[tuple[str, dict]]:
+    """X の原本の深掘り。戻りは [(slug, Luna が確かめた候補)]。問いごとの結果(見つかった投稿)は log に書く。"""
+    queries = collect.build_prompts()
+    deep: dict[str, list[dict]] = {}
+    owner: dict[tuple[str, int], str] = {}     # (面, 問いの位置) → slug
+    for slug, asks in asks_by_slug.items():
+        q = face_of(arts[slug].get("brand") or "", queries)
+        if not q:
+            continue
+        for a in asks:
+            owner[(q["key"], len(deep.get(q["key"], [])))] = slug
+            deep.setdefault(q["key"], []).append({"question": a["question"], "why": a.get("why") or ""})
+    if not deep:
+        return []
+    used = collect.grok_week_usage()
+    budget = collect.deep_budget(used)
+    log["grok"] = {"budget": budget, "used_7d": used}
+    out: list[tuple[str, dict]] = []
+    ledger = collect.lost_posts_ledger()
+    errs: dict[str, str] = {}
+    by_key = {q["key"]: q for q in queries}
+
+    def one_round(chosen: dict[str, list[dict]], suffix: str, retry: bool) -> None:
+        failed = collect.deep_dive_grok(queries, outdir, chosen, errs, suffix=suffix, retry=retry)
+        items, _ = collect.verify_grok_faces([by_key[k] for k in chosen], outdir, suffix=suffix, ledger=ledger)
+        posts: dict[str, str] = {}
+        for k, asks in chosen.items():
+            text = collect.read_written(outdir / f"{k}{suffix}.md")
+            for pk, n in answered_asks(text, asks).items():
+                idx = deep[k].index(asks[n - 1]) if 0 < n <= len(asks) else -1
+                if (k, idx) in owner:
+                    posts[pk] = owner[(k, idx)]
+                    log.setdefault("asks", {}).setdefault(owner[(k, idx)], {}).setdefault(asks[n - 1]["question"], []).append(
+                        next((collect.post_url(b) for b in collect.post_blocks(text) if collect.post_key(collect.post_url(b)) == pk), pk))
+            for i, a in enumerate(asks):
+                slug = owner.get((k, deep[k].index(a)))
+                if slug:
+                    st = log.setdefault("asks", {}).setdefault(slug, {}).setdefault(a["question"], [])
+                    if k in failed:
+                        st.append(f"(深掘りが正常に終わらなかった: {errs.get(k, '')[:160]})")
+        for it in items:
+            it["_via"] = "grok"
+            slug = posts.get(collect.post_key(it["url"])) or posts.get(collect.post_key(it.get("link_from") or ""))
+            if not slug:
+                # 投稿に結び付かない候補(リンク先)は、その面の問いが1記事だけならその記事の素材
+                slugs = {owner[(k, i)] for k in chosen for i in range(len(deep[k])) if (k, i) in owner}
+                slug = next(iter(slugs)) if len(slugs) == 1 else None
+            if slug:
+                out.append((slug, it))
+            else:
+                log.setdefault("unattributed", []).append(it.get("url"))
+
+    chosen = collect.plan_deep_dive(deep, budget)
+    if chosen:
+        started = time.time()
+        one_round(chosen, "-deep", False)
+        retry = {k: v for k, asks in chosen.items()
+                 for v in [collect.unanswered_asks(collect.read_written(outdir / f"{k}-deep.md"), asks)] if v}
+        spent = sum(collect.grok_search_counts(started).values())
+        budget2 = max(0, min(budget - max(2 * sum(len(v) for v in chosen.values()), spent),
+                             collect.deep_budget(collect.grok_week_usage())))
+        chosen2 = collect.plan_deep_dive(retry, budget2)
+        if chosen2:
+            one_round(chosen2, "-deep2", True)
+    skipped = {owner[(k, i)] for k, asks in deep.items() for i, a in enumerate(asks)
+               if (k, i) in owner and a not in (chosen.get(k) or [])}
+    for slug in skipped:
+        log.setdefault("asks", {}).setdefault(slug, {})["(予算)"] = [f"週の予算の外で調べなかった(予算 {budget}回・直近7日 {used}回)"]
+    collect.report_lost_posts(ledger)
+    return out
+
+
+def page_phase(slug: str, pages: list[dict], brand: str, log: dict) -> list[tuple[str, dict]]:
+    """記事1本の公式・当事者・報道のページを facts 化する。ページごとの応答は log に書く。"""
+    batch = [{"url": p["url"], "title": "", "brand": brand, "csr": False} for p in pages]
+    try:
+        cands, tried = collect.facts_batch(batch, collect.claude_exec, {}, oncall_rerun=True, blocked=set(), unavailable=set())
+    except CliBlocked as e:
+        cands, tried = [], set()
+        log.setdefault("pages", {})[slug] = [{"url": p["url"], "why": p.get("why"), "result": f"モデル CLI の停止({e})"} for p in pages]
+        return []
+    rows = []
+    for p in pages:
+        key = collect.page_key(p["url"])
+        got = [c for c in cands if collect.page_key(collect.clean_url(c.get("url")) or "") == key or c.get("link_from") == p["url"]]
+        code = collect.BODY_HTTP.get(p["url"])
+        rows.append({"url": p["url"], "why": p.get("why"),
+                     "result": (f"候補 {len(got)}件" if got else ("事実を起こせなかった" if p["url"] in tried else "読めなかった"))
+                               + (f"(本文の取得 HTTP {code})" if code else "")})
+    log.setdefault("pages", {})[slug] = rows
+    for c in cands:
+        c["_via"] = "explore"     # URL はモデルが選んだ(定点観測の巡回先ではない): 写しの照合を省かせない(collect.verify)
+    return [(slug, c) for c in cands]
+
+
+def unique_ids(cands: list[dict], taken: set[str]) -> None:
+    """正規化の id(分・経路・番号)が、号の素材の id と重ならないようにする(同じ分の収集・入口の再実行)。"""
+    for c in cands:
+        base, n = c["id"], 1
+        while c["id"] in taken:
+            c["id"] = f"{base}-r{n}"
+            n += 1
+        taken.add(c["id"])
+
+
+def write_plan(date: str, plan: dict) -> None:
+    """計画を一時ファイルに書いてから差し替える(書きかけで止まっても壊れた計画を残さない)。"""
+    p = root() / "metrics" / f"plan-{date}.json"
+    tmp = root() / "metrics" / "work" / f".{p.name}.{os.getpid()}"
+    tmp.parent.mkdir(parents=True, exist_ok=True)
+    tmp.write_text(json.dumps(plan, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+    os.replace(tmp, p)
+
+
+def rescue(date: str, slugs: list[str], until: float | None = None, dry_run: bool = False) -> dict:
+    """出典を揃える本体。戻りは記事ごとの結果(report.json と同じ形)。"""
+    collect.DEADLINE = (until - VERIFY_RESERVE_SEC) if until else None
+    plan = read_json(root() / "metrics" / f"plan-{date}.json", {})
+    arts = {a["slug"]: a for a in (plan.get("articles") or []) if isinstance(a, dict) and a.get("slug") in slugs}
+    whys = source_lacking_drops(date, root())
+    drops = read_json(root() / "metrics" / f"drops-{date}.json", {})
+    mats = materials(date)
+    report: dict = {"date": date, "at": now_jst().isoformat(timespec="seconds"), "dry_run": dry_run, "articles": {}}
+    for s in slugs:
+        if s not in arts:
+            report["articles"][s] = {"outcome": "計画に無い記事", "why": "", "tried": []}
+    if not arts:
+        return report
+    log: dict = {}
+    outdir = rescue_dir(date)
+    outdir.mkdir(parents=True, exist_ok=True)
+    # 1. 当たりの調べ(記事ごとに並列)
+    tasks: dict[str, list[dict]] = {}
+    with concurrent.futures.ThreadPoolExecutor(max_workers=len(arts)) as ex:
+        futs = {s: ex.submit(plan_tasks, date, a, whys.get(s) or str((drops.get(s) or {}).get("why") or ""), mats)
+                for s, a in arts.items()}
+        for s, f in futs.items():
+            got, err = f.result()
+            tasks[s] = got or []
+            if err:
+                log.setdefault("plan_error", {})[s] = err
+    # 2. X の原本とページを並列に
+    asks = {s: [t for t in ts if t["kind"] == "x"] for s, ts in tasks.items()}
+    pages = {s: [t for t in ts if t["kind"] == "page"] for s, ts in tasks.items()}
+    found: list[tuple[str, dict]] = []
+    with concurrent.futures.ThreadPoolExecutor(max_workers=len(arts) + 1) as ex:
+        futs = [ex.submit(grok_phase, {s: v for s, v in asks.items() if v}, arts, outdir, log)]
+        futs += [ex.submit(page_phase, s, v, arts[s].get("brand") or "other", log) for s, v in pages.items() if v]
+        for f in futs:
+            try:
+                found += f.result()
+            except Exception as e:      # noqa: BLE001  片方の失敗で、もう片方の結果を捨てない
+                log.setdefault("errors", []).append(f"{type(e).__name__}: {str(e)[:300]}")
+    # 3. 正規化 → 裏取り → 素材へ
+    by_slug: dict[str, list[dict]] = {}
+    for s, it in found:
+        by_slug.setdefault(s, []).append(it)
+    cands_of = {s: collect.normalize(items) for s, items in by_slug.items()}
+    every = [c for cs in cands_of.values() for c in cs]
+    unique_ids(every, set(mats))
+    if every:
+        collect.DEADLINE = None      # 裏取りは締切の残し分で行う(セッションを起動しない)
+        collect.verify(every)
+    added: dict[str, list[str]] = {}
+    if every and not dry_run:
+        collect.merge_into_day_file(every, date)
+        day = {c.get("url"): c for c in read_json(root() / "candidates" / f"{date}.json", []) if isinstance(c, dict)}
+        for s, cs in cands_of.items():
+            ids = [day[c["url"]]["id"] for c in cs if c["url"] in day and day[c["url"]].get("verify") != "failed"]
+            a = arts[s]
+            new = [i for i in dict.fromkeys(ids) if i not in (a.get("candidate_ids") or [])]
+            if new:
+                a["candidate_ids"] = list(a.get("candidate_ids") or []) + new
+                added[s] = new
+        if added:
+            write_plan(date, plan)
+    # 4. 記事ごとの結果
+    for s in arts:
+        cs = cands_of.get(s, [])
+        good = [c for c in cs if c.get("verify") != "failed" and c.get("source_type") in GOOD_SOURCE_TYPES]
+        tried = [{"page": r["url"], "why": r.get("why"), "result": r["result"]} for r in (log.get("pages") or {}).get(s, [])]
+        tried += [{"x": q, "posts": v} for q, v in ((log.get("asks") or {}).get(s) or {}).items()]
+        report["articles"][s] = {
+            "outcome": "揃えた" if good else "揃わない",
+            "why": whys.get(s) or str((drops.get(s) or {}).get("why") or ""),
+            "plan_error": (log.get("plan_error") or {}).get(s, ""),
+            "tried": tried,
+            "candidates": [{"id": c["id"], "url": c["url"], "source_type": c.get("source_type"), "verify": c.get("verify"),
+                            "note": str(c.get("verify_note") or "")[:200]} for c in cs],
+            "added_ids": added.get(s, []),
+        }
+    report["grok"] = log.get("grok")
+    report["errors"] = log.get("errors", []) + [f"投稿に結び付かない候補: {u}" for u in log.get("unattributed", [])]
+    return report
+
+
+def report_text(report: dict, slugs: list[str] | None = None) -> str:
+    """結果を人が読める形にする(当番の報告・組み直しの通知に載せる)。揃わなかった記事は、試した出典を具体的に書く。"""
+    lines = []
+    for s, r in report.get("articles", {}).items():
+        if slugs is not None and s not in slugs:
+            continue
+        lines.append(f"- {s}: {r['outcome']}" + (f"(足した素材 {', '.join(r.get('added_ids') or [])})" if r.get("added_ids") else ""))
+        if r.get("plan_error"):
+            lines.append(f"  当たりの調べ: {r['plan_error']}")
+        if r["outcome"] != "揃えた":
+            for t in r.get("tried") or []:
+                if "page" in t:
+                    lines.append(f"  ページ {t['page']}: {t['result']}")
+                else:
+                    lines.append(f"  X「{str(t['x'])[:80]}」: " + (", ".join(map(str, t['posts'])) or "投稿なし"))
+            for c in r.get("candidates") or []:
+                lines.append(f"  候補 {c['url']}: {c['source_type']} / {c['verify']}" + (f"({c['note']})" if c.get("note") else ""))
+            if not r.get("tried") and not r.get("plan_error"):
+                lines.append("  当たりが1つも無かった(出典の当たりの調べが [] を答えた)")
+    return "\n".join(lines)
+
+
+def main() -> int:
+    exit_on_term()
+    ap = argparse.ArgumentParser(description="出典が足りずに見送った記事の出典を揃え、号の素材に入れる")
+    ap.add_argument("--date", required=True)
+    ap.add_argument("--slug", action="append", default=[], help="対象の記事。省くと出典不足の見送り(drops の記録)の全部")
+    ap.add_argument("--until", type=float, default=None, help="終える時刻(epoch 秒)")
+    ap.add_argument("--dry-run", action="store_true", help="素材・計画を書き換えず、当たりと確かめの結果だけを出す")
+    a = ap.parse_args()
+    if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", a.date):
+        ap.error("--date は YYYY-MM-DD")
+    slugs = a.slug or sorted(source_lacking_drops(a.date, root()))
+    if not slugs:
+        print("出典不足の見送りは無い", flush=True)
+        return 0
+    rep = rescue(a.date, slugs, a.until, a.dry_run)
+    out = rescue_dir(a.date) / "report.json"
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text(json.dumps(rep, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+    text = report_text(rep)
+    out.with_suffix(".txt").write_text(text + "\n", encoding="utf-8")     # 当番の組み直しの通知が載せる
+    print(text, flush=True)
+    print(f"結果: {out}", flush=True)
+    blocked = [s for s, r in rep["articles"].items() if "モデル CLI の停止" in str(r.get("plan_error"))]
+    return CLI_BLOCKED_EXIT if blocked and len(blocked) == len(rep["articles"]) else 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

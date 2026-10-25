@@ -943,8 +943,9 @@ def explore_argv(short: str) -> list[str]:
             "-c", "sandbox_workspace_write.network_access=true", short]
 
 
-def claude_exec(prompt: str, timeout: int = 300):
-    """定点観測の facts 化に使う Claude 呼び出し(探索とは別役)。
+def claude_exec(prompt: str, timeout: int = 300, what: str = "定点観測の facts 化", kind: str = "watch"):
+    """定点観測の facts 化に使う Claude 呼び出し(探索とは別役)。出典を揃える入口(source_rescue)の当たりの調べも同じ道具立てで呼ぶ
+    (what は記録・通知の名前、kind は依頼文と生の出力のファイル名の頭)。
 
     **読めなかったら None を返す**(0件の [] とは別)。呼び出し側はそのバッチを
     既読にしない。以前は読めない出力も0件として既読にし、新着が二度と候補に
@@ -952,7 +953,7 @@ def claude_exec(prompt: str, timeout: int = 300):
     """
     from pipelib import extract_json_array_strict, prompt_file
     import hashlib as _hl
-    name = "watch-" + _hl.sha256(prompt.encode("utf-8")).hexdigest()[:8]
+    name = f"{kind}-" + _hl.sha256(prompt.encode("utf-8")).hexdigest()[:8]
     short = prompt_file(edition_date(), name, prompt)
     if deadline_passed():
         return DEADLINE_CUT     # 依頼文を書くあいだに収集の締切を過ぎた: 起動しない(読めなかったのとは別)
@@ -977,21 +978,21 @@ def claude_exec(prompt: str, timeout: int = 300):
         if deadline_passed():
             return DEADLINE_CUT     # 収集の締切で打ち切った(読めなかったのとは別。読めなかった回数に数えない)
         # 1バッチの失敗で収集全体を落とさない。読めなかった扱い(既読にしない)
-        print(f"定点観測: facts 化のセッションが失敗({type(e).__name__})。このバッチは既読にしない", flush=True)
+        print(f"{what}: セッションが失敗({type(e).__name__})。答えにしない", flush=True)
         return None
     # 生の出力を必ず残す(依頼文 metrics/work/<日付>/<name>.md と同じ名前。候補が出なかった理由を後から確かめるため。
     # 2026-10-04: まとめサイトの新着1件を失ったが出力が残っておらず、当番も原因を確定できなかった。当番の指摘 b39801ce34・8bdc37f36c)
     save_raw(edition_date(), name, r.stdout, r.stderr, r.returncode)
-    blocked = cli_check("claude", "collect", f"{now_jst():%H:%M} の収集 定点観測の facts 化", r.returncode, r.stdout, r.stderr)
+    blocked = cli_check("claude", "collect", f"{now_jst():%H:%M} の収集 {what}", r.returncode, r.stdout, r.stderr)
     if blocked:
         raise CliBlocked(blocked)      # 読めなかった回ではない(facts_batch が数えずに未処理の列へ残す)
     if r.returncode != 0:
         # 異常終了の間際の出力は答えにしない(読めなかった扱い。既読にしない。監査指摘)
-        print(f"定点観測: facts 化のセッションが異常終了(exit {r.returncode})。このバッチは既読にしない", flush=True)
+        print(f"{what}: セッションが異常終了(exit {r.returncode})。答えにしない", flush=True)
         return None
     got = extract_json_array_strict(r.stdout)
     if got is None:
-        print(f"定点観測: facts 化の出力が読めない(stderr: {(r.stderr or '')[-160:]})", flush=True)
+        print(f"{what}: 出力が読めない(stderr: {(r.stderr or '')[-160:]})", flush=True)
     return got
 
 

@@ -235,6 +235,30 @@ def settled_drops(date: str, root: Path | None = None) -> dict[str, str]:
     return out
 
 
+# 出典が足りずに見送った理由コード(renderlib.DECLINE_CODES のうち、出典を揃えれば書ける見送り)
+SOURCE_DECLINE_CODES = ("NO_PRIMARY_SOURCE", "SOURCE_MISMATCH")
+
+
+def source_lacking_drops(date: str, root: Path | None = None) -> dict[str, str]:
+    """その号で出典が足りずに見送った記事(metrics/drops-<日付>.json の理由が SOURCE_DECLINE_CODES で始まり、紙面に無いもの)の
+    {slug: 理由}。組み直しの前に出典を揃える入口(scripts/source_rescue.py)の対象(2026-10-26: 当番が「外部」で閉じ、
+    当日 23:59 締切のプレゼントを戻さなかった)。記録が無い・読めないときは空。"""
+    root = root or ROOT
+    p = root / "metrics" / f"drops-{date}.json"
+    try:
+        rows = json.loads(p.read_text(encoding="utf-8")) if p.exists() else {}
+    except (OSError, ValueError):
+        return {}
+    settled = settled_drops(date, root)
+    out = {}
+    for slug, r in (rows if isinstance(rows, dict) else {}).items():
+        why = str(r.get("why") or "").strip() if isinstance(r, dict) else ""
+        if (why.split(" ", 1)[0].rstrip(":") in SOURCE_DECLINE_CODES and slug not in settled
+                and not (root / "docs" / "_posts" / f"{date}-{slug}.md").exists()):
+            out[slug] = why
+    return out
+
+
 # --- 当番(oncall)への引き継ぎ -------------------------------------------------
 # 工程が「人間判断が必要」で止まるとき、人へ投げる前に scripts/oncall.py を起動する。
 # 当番(Opus)が診断・修正し、監査(Sol)の敵対的レビューを通ったものだけを取り込んで再実行する。

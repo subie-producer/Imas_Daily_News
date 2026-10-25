@@ -79,7 +79,7 @@ from pipelib import (COLLECT_ONCALL_MARK, COLLECT_OUTPUTS, ENV, ROOT, classify_t
                      JobLockTimeout, anomaly,
                      job_lock, mark_collect_oncall,
                      next_slot_end, notify, now_jst, partial_output, prompt_file, read_answer, render_prompt, save_raw, schema_error,
-                     schema_ok, settled_drops,
+                     schema_ok, settled_drops, source_lacking_drops,
                      tool_path, CLI_BLOCKED_EXIT, CliBlocked, cli_check, oncall_clis_blocked, scratch_dir,
                      ONCALL_HANDED_EXIT, settled_keys_of)
 from pipelib import exit_on_term, run_group   # モデルのセッションは自前のグループで起動し、時間切れ・中断では道具ごと止める
@@ -386,6 +386,11 @@ STAGE_END_AT: float | None = None
 # 組み直し(--reuse-plan の書き直しと校閲)に残す時間。終える時刻は組版が --end-at で渡す(発行の締切)
 RECOVER_RERUN_RESERVE_MIN = 25
 RECOVER = False
+# 出典が足りずに見送った記事は、組み直しの前に出典を揃える入口(scripts/source_rescue.py)を通す。入口に使う時間の上限と、
+# 入口のあとの組み直し(書き直しと校閲)に残す時間。入口に使える時間がこれより短ければ入口を通さずに組み直す
+SOURCE_RESCUE_MIN = 20
+SOURCE_RESCUE_FLOOR_MIN = 5
+COMPOSE_AFTER_RESCUE_MIN = 20
 
 
 def backlog_deadline(now: datetime.datetime) -> float | None:
@@ -1537,6 +1542,51 @@ def recover_outcome(before: set[str], after: set[str], planned: list[str]) -> tu
     return (sorted(after - before), [s for s in planned if s not in after], sorted(before - after))
 
 
+def recover_reserve_min(date: str) -> int:
+    """落とした記事を戻す当番が、往復のあとに残す分。出典が足りずに見送った記事があれば、出典を揃える入口の分も残す。"""
+    return RECOVER_RERUN_RESERVE_MIN + (SOURCE_RESCUE_MIN if source_lacking_drops(date, ROOT) else 0)
+
+
+def rescue_sources(date: str, edition: str, log: Path) -> str:
+    """出典が足りずに見送った記事(source_lacking_drops)の出典を、組み直しの前に入口(scripts/source_rescue.py)で揃える。
+    入口は出典を取りに行き、確かめて号の素材と計画の candidate_ids に入れる(このあとの --reuse-plan が、その素材で書き直す)。
+    2026-10-26: 当番は出典不足の3本を「外部」「後続号に戻るかもしれない」で終え、公式 X が実在したのに当日号に戻さなかった。
+    依頼文に頼まず、組み直しの流れで必ず通す。終える時刻は、組み直しの分(COMPOSE_AFTER_RESCUE_MIN)を発行の締切から残す。
+    戻りは入口の結果の文(揃わなかった記事は試した出典。組み直しの通知に載せる)。対象が無ければ空。"""
+    slugs = sorted(source_lacking_drops(date, ROOT))
+    if not slugs:
+        return ""
+    now = time.time()
+    end = STAGE_END_AT or (now + (SOURCE_RESCUE_MIN + COMPOSE_AFTER_RESCUE_MIN) * 60)
+    until = min(now + SOURCE_RESCUE_MIN * 60, end - COMPOSE_AFTER_RESCUE_MIN * 60)
+    if until - now < SOURCE_RESCUE_FLOOR_MIN * 60:
+        text = (f"発行の締切までに出典を揃える時間が無い(残り {int(end - now) // 60}分)。入口を通さずに組み直す: "
+                + ", ".join(slugs))
+        notify("oncall", f"{date} compose: {text}", ok=False)
+        return text
+    out = ROOT / "metrics" / "work" / date / "source-rescue" / "report.txt"
+    out.unlink(missing_ok=True)     # 前の回の結果を今回の結果と取り違えない
+    code = run_stage([sys.executable, str(ROOT / "scripts" / "source_rescue.py"), "--date", date,
+                      *[x for s in slugs for x in ("--slug", s)], "--until", str(int(until))], log, int(until - now) + 120)
+    try:
+        text = out.read_text(encoding="utf-8").strip()
+    except OSError:
+        text = ""
+    print(f"{date} compose: 出典を揃える入口(exit {code}): {', '.join(slugs)}\n{text}", flush=True)
+    # 組版は clean な作業ツリーで号のブランチを origin に合わせて始めるので、足した素材と計画はここで確定して送る。
+    # 送れなければ足した分を戻して組み直しは続ける(入口の失敗で、ほかの落とした記事の組み直しまで止めない)
+    paths = [f"candidates/{date}.json", f"metrics/plan-{date}.json"]
+    try:
+        commit_paths(paths, f"oncall: {date} 出典不足の見送りの出典を揃える({', '.join(slugs)})", edition)
+    except Exception as e:      # noqa: BLE001
+        sh(["git", "checkout", "-q", "HEAD", "--", *paths], cwd=ROOT)
+        notify("oncall", f"{date} compose: 揃えた出典を確定できない({type(e).__name__}: {str(e)[:200]})。足した素材を戻して組み直す", ok=False)
+        text += f"\n揃えた出典を確定できず、足した素材を戻した({type(e).__name__})"
+    if code != 0 or not text:
+        text = (text + "\n" if text else "") + f"出典を揃える入口が正常に終わらなかった(exit {code})。metrics/oncall-{date}-compose-rerun.log を見ること"
+    return text
+
+
 def rerun_stage(stage: str, date: str, edition: str, full: bool, recover: bool = False) -> int:
     """止まった工程を再実行する。作り直し(full)なら、release 起点でも compose を先頭から走らせてから
     release する(生成層を直したのに生成済みの号をそのまま発行しない。監査指摘)。
@@ -1560,6 +1610,9 @@ def rerun_stage(stage: str, date: str, edition: str, full: bool, recover: bool =
                 RECOVER_TRIED = True
                 before, planned = posted_slugs(date), planned_slugs(date)
                 backup = backup_edition(date, edition)
+            # 出典が足りずに見送った記事は、出典を揃えてから組み直す(控えを取ったあと。組み直しが採られなければ素材ごと控えに戻る)
+            rescued = rescue_sources(date, edition, log)
+            if recover:
                 limit = max(60, int((STAGE_END_AT or time.time() + 3600) - time.time()))
                 # 承認済みの校閲結果を控えて組版に渡す(承認済みの記事の判定を引き継ぎ、今回書いた記事だけを校閲させる)
                 carry = latest_review(date)
@@ -1583,7 +1636,8 @@ def rerun_stage(stage: str, date: str, edition: str, full: bool, recover: bool =
                 notify("oncall", f"{date} compose: 落とした記事を戻す組み直し(exit {code})。"
                                  f"戻った {len(back)}本: {', '.join(back) or 'なし'} / 戻らない {len(still)}本: {', '.join(still) or 'なし'}"
                                  + (f" / 承認済みだったのに組み直しで外れた {len(lost)}本: {', '.join(lost)}(採らずに控えへ戻す)" if lost else "")
-                                 + ("" if code == 0 else "。承認済みの紙面(控え)で発行する"),
+                                 + ("" if code == 0 else "。承認済みの紙面(控え)で発行する")
+                                 + (f"\n出典を揃える入口の結果:\n{rescued}" if rescued else ""),
                        ok=(code == 0 and not still))
         elif stage == "classify":
             # 取り込んだあとのコードで、その号の出典の判定(合議 → 紙面の付け直し → lint)をやり直し、結果を commit する。
@@ -1806,7 +1860,7 @@ def _main() -> int:
         # 「落としていいと誰が言った? 復帰保証までが Opus/Sol の仕事だ」)。往復は組み直しの時間を残して終える
         RECOVER, RECOVER_TARGET = True, (date, edition)
         STAGE_END_AT = float(a.end_at)
-        DEADLINE_AT = STAGE_END_AT - RECOVER_RERUN_RESERVE_MIN * 60
+        DEADLINE_AT = STAGE_END_AT - recover_reserve_min(date) * 60
     elif stage == "collect" and not a.no_rerun:
         # 収集で落とした新着は、直して**取り直し、その号の選定リスト(素材)に入れる**までが当番の仕事(編集長 2026-10-07
         # 「やらかしてドロップしたのは責任を持って修正して紙面に乗せろ」「正しくは選定リストにちゃんと乗せろ」)。

@@ -180,10 +180,19 @@ def save(url: str, text: str, html=None, final: str | None = None, status: int |
         if prev and prev[-1].get("sha") == sha:
             v = prev[-1]
             v["seen"] = max(str(v.get("seen") or ""), at)
-            if via == "collect":
-                v["via"] = "collect"      # 収集も同じ本文を読んだ: 収集時点の版として扱う
-                v["collected"] = max(str(v.get("collected") or ""), at)
-            v["rendered"] = bool(v.get("rendered") or rendered)
+            if via == "collect" and at >= str(v.get("collected") or ""):
+                # 収集も同じ本文を読んだ: 収集時点の版として扱い、収集が読んだ HTML・最終 URL・状態コード・描画したかに揃える
+                # (本文が同じでもリンク先などが違うことがある。Sol 監査 r6: 前に読み直したときの HTML と転送先が残った)
+                v["via"], v["collected"] = "collect", at
+                v["final"], v["status"], v["rendered"] = (final if final and final != url else None), status, bool(rendered)
+                if html:
+                    raw = html.encode("utf-8", "replace") if isinstance(html, str) else bytes(html)
+                    _write_atomic(d / f"v{v['n']}.html.gz", gzip.compress(raw[:HTML_MAX_BYTES], compresslevel=6))
+                    v["html"] = f"v{v['n']}.html.gz"
+            elif via == "collect":
+                v["via"] = "collect"      # もっと新しい収集が読んだ版を既に持つ(古い預かりを写した): 情報はそのまま
+            else:
+                v["rendered"] = bool(v.get("rendered") or rendered)
             _write_atomic(d / "index.json", json.dumps(idx, ensure_ascii=False).encode("utf-8"))
             return dict(v)
         n = max([int(v.get("n") or 0) for v in vs] + [0]) + 1

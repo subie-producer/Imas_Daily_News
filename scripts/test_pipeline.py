@@ -17136,6 +17136,15 @@ def test_page_archive_versions_and_reads(tmp: Path):
     finally:
         collect.page_spool_root = saved_sp
     check(n17 == 2 and pa.baseline(p_url) and pa.baseline(p_link), f"括弧を含む URL の探索の原本を写さなかった: {n17}")
+    # 19. 読み直しの版と本文が同じでも、収集が読んだ HTML・最終 URL・状態コード・描画したかに揃える(Sol 監査 r6)
+    h_url = "https://audit.example/same-text"
+    pa.save(h_url, "申し込みはこちら。価格は3000円。", html=b"<a href='/old-apply'>x</a>", via="read", at="2026-10-24T20:00:00+09:00")
+    collect.keep_page(h_url, "申し込みはこちら。価格は3000円。", "<a href='/new-apply'>x</a>", "https://audit.example/same-text/new",
+                      200, rendered=True)
+    hb = pa.baseline(h_url)
+    check(len(pa.versions(h_url)) == 1 and hb["via"] == "collect" and hb["final"] == "https://audit.example/same-text/new"
+          and hb["rendered"] is True and b"/new-apply" in (pa.html_of(h_url, hb) or b""),
+          f"本文が同じ収集の版に、収集が読んだ HTML・転送先を残さない: {hb.get('final')} {pa.html_of(h_url, hb)}")
     # 18. 同じ URL の先の候補がこの回に別の本文を正常に残しても、後の候補(503)は最初の原本で照らす(控えを使う)
     t_url = "https://audit.example/same-url-2"
     pa.save(t_url, "公式の本文。" + w_quote, via="collect", at="2026-10-25T20:00:00+09:00")

@@ -2243,6 +2243,7 @@ def verify(cands: list[dict]) -> dict:
                         raise
                     c["verify"] = "unconfirmed"
                     c["verify_note"] = f"出典がメンテナンス中(HTTP {e.code} でメンテナンスの画面)で、facts を本文で確かめられない"
+                    note_archived(c)
                     counts["unconfirmed"] += 1
                     continue
                 with opened as res:
@@ -2255,6 +2256,7 @@ def verify(cands: list[dict]) -> dict:
                 if ok and maintenance_redirect(c["url"], final):
                     c["verify"] = "unconfirmed"
                     c["verify_note"] = f"出典がメンテナンス中({final} へ転送)で、facts を本文で確かめられない"[:300]
+                    note_archived(c)
                     counts["unconfirmed"] += 1
                     continue
                 if ok:
@@ -2335,11 +2337,50 @@ def verify(cands: list[dict]) -> dict:
                 c["verify"] = ("confirmed" if ok and good_type and not c.get("unbacked_facts") and not c.get("verify_note")
                                else ("unconfirmed" if ok else "failed"))
         except Exception as e:
-            # 取れなかった原因を候補に残す(採否・当番の診断で「なぜ failed か」を追えるように)
-            c["verify"] = "failed"
-            c["verify_note"] = f"出典を取得できない: {type(e).__name__}: {e}"[:300]
+            # 読み直せない(404・410 以外)なら、収集時点の原本(探索・定点観測が読んだ版)で照らす(Sol 監査 r2: 探索で読めた素材が
+            # 裏取りの 503 で failed になり、選定から消えた)。原本が無ければ、取れなかった原因を候補に残す
+            if http_status(e) in (404, 410) or not archived_check(c, f"{type(e).__name__}: {e}"):
+                c["verify"] = "failed"
+                c["verify_note"] = f"出典を取得できない: {type(e).__name__}: {e}"[:300]
         counts[c["verify"]] += 1
     return counts
+
+
+def note_archived(c: dict) -> None:
+    """メンテナンスで読み直せない素材に、収集時点の原本があればその時刻を付ける(執筆は fetch_page.py でその原本を読める)。"""
+    try:
+        b = page_archive.baseline(c["url"])
+    except Exception:       # noqa: BLE001
+        b = None
+    if b:
+        c["archived_at"] = page_archive.fetched_at(b)
+
+
+def archived_check(c: dict, why: str) -> bool:
+    """出典を読み直せないとき、収集時点の原本(page_archive)で facts の日付・金額と写しを照らす。原本が無ければ False。
+    照らせたら unconfirmed(読み直していないので confirmed は名乗らない)。写しが原本に無ければ failed(URL の取り違え)"""
+    try:
+        b = page_archive.baseline(c["url"])
+    except Exception:       # noqa: BLE001  置き場を読めなければ原本は無いものとする
+        b = None
+    if not b:
+        return False
+    text, at = b["text"], page_archive.fetched_at(b)
+    c["archived_at"] = at
+    periods = extract_periods(text)
+    if periods:
+        c["periods"] = periods
+    unbacked = unbacked_facts(c.get("facts") or [], text)
+    if unbacked:
+        c["unbacked_facts"] = unbacked[:12]
+    missing = [q for q in c.get("quotes") or [] if quote_on_page(q, text) is False]
+    if missing:
+        c["verify"] = "failed"
+        c["verify_note"] = f"写しが収集時点({at[:16]})の原本に無い(URL の取り違えの疑い): {missing[0][:60]}"
+    else:
+        c["verify"] = "unconfirmed"
+        c["verify_note"] = f"出典を読み直せず({why[:120]})、収集時点({at[:16]})に読んだ原本で照合した"[:300]
+    return True
 
 
 def merge_into_day_file(cands: list[dict], day: str) -> int:
@@ -2454,9 +2495,11 @@ def run_collect(args, date: str, branch: str, t0: float) -> int:
     watch_cands, watch_info = ([], {"skipped": True}) if args.skip_watch else run_watch(claude_exec, args.oncall_rerun)
     explore_items, per_query = run_explores(args.skip_explore, skip_grok)
     cands = normalize(watch_cands + explore_items)
-    vcounts = verify(cands)
-    # 探索・X の確かめが読んだページの原本のうち素材に関わるものを残し、置き場の古いものを片付ける(page_archive)
+    # 探索・X の確かめが読んだページの原本のうち素材に関わるものを残す(page_archive)。裏取りの前に写す: 裏取りで読み直せない素材は
+    # この原本で照らす(Sol 監査 r2)。版は取得時刻で並べるので、裏取りが読んだ新しい版が基準になる
     kept = ingest_spools(cands)
+    vcounts = verify(cands)
+    # 置き場の古いものを片付ける
     try:
         pruned = page_archive.prune()
         print(f"原本の置き場: 探索・確かめの {kept}版を残した / 古い {pruned['removed']}件を消した(残り {pruned['bytes'] // 2**20}MB)", flush=True)

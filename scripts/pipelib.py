@@ -61,7 +61,7 @@ def candidate_misplaced(c: dict) -> bool:
 
 def merge_candidate_facts(tgt: dict, c: dict) -> bool:
     """同じページの候補 c の facts を tgt へ増分マージする(収集の再検出と、組版が前の号の未読の事実を引き継ぐときの共通)。
-    足したら裏取りの結果も引き継ぎ、弱いほうを採る。締切(deadline)は遅いほうを採る。facts か締切かリンク元が変わったら True。"""
+    足したら裏取りの結果も引き継ぎ、弱いほうを採る。締切(deadline)は遅いほうを採る。facts か締切かリンク元か原本の時刻が変わったら True。"""
     # **締切は facts と別に、遅いほうを採る。**同じページに締切が複数ある(受付締切と入金期限)と、候補ごとに deadline が違う。
     # 既存の候補の早い締切のままだと、まとめた素材が翌号への戻しで締切切れとして捨てられる(2026-10-15 監査指摘: 入金期限
     # 10/18 のレトラの予約の素材が、同じ URL の候補の受付締切 10/11 で 10/17 号に戻らない)。facts が増えなくても採る
@@ -74,7 +74,7 @@ def merge_candidate_facts(tgt: dict, c: dict) -> bool:
         tgt["link_from"], dl_changed = c["link_from"], True
     # 収集時点の原本(page_archive)は、新しく読んだほうの取得時刻を指す
     if c.get("archived_at") and str(c["archived_at"]) > str(tgt.get("archived_at") or ""):
-        tgt["archived_at"] = c["archived_at"]
+        tgt["archived_at"], dl_changed = c["archived_at"], True     # 変わったら保存させる(Sol 監査 r2)
     merged =list(dict.fromkeys((tgt.get("facts") or []) + (c.get("facts") or [])))
     if len(merged) <= len(tgt.get("facts") or []):
         return dl_changed

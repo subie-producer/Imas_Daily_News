@@ -97,7 +97,12 @@ def main() -> int:
             and page_archive.text_sha(live["text"]) != base.get("sha")):
         # 原本は描画して読んだ本文で、いまは素の本文だけ。違いは描画の有無かもしれないので、描画して照らし直す
         # (描画しないと、素の本文に無い価格・日程を「消えた」と見せる)
-        live = rendered_live(args.url, live)
+        if not live.get("render_error"):
+            live = rendered_live(args.url, live)
+        if live["kind"] == "ok" and not live.get("rendered"):
+            # 描画できなかった: 素の本文だけでは原本と照らせない。読み直せなかったとして原本を返す(Sol 監査 r2)
+            why = f"描画できず、素の本文だけでは原本と照らせない({live.get('render_error', '')[:200]})"
+            live = {"kind": "failed", "final": live.get("final"), "why": why, "msg": f"FETCH_FAILED: {why}"}
     # 読めなかったことは隣の記録に残す(組版が、原本を読めないまま書いた記事に断り書きを付けるのに使う)。
     # メンテナンスでない失敗(404・表示の無い 5xx・時間切れ 等)も記録する。同じホストの別のページがメンテナンスでも、
     # このページに断り書きを付けない(Sol 監査 Z2 r1)。転送先で失敗したら(/old → /gone → 404)転送先も残す(Sol 監査 Z2 r5)

@@ -16831,6 +16831,66 @@ def test_page_archive_versions_and_reads(tmp: Path):
     pa.save(q, "描画した本文。価格は3000円。", via="collect", at="2026-10-25T21:00:00+09:00", rendered=True)
     rc, out = run(q, ok("メニューだけ"), lambda u, t=30: "<html><body>描画した本文。価格は3000円。</body></html>")
     check(rc == 0 and "同じ内容を" in out and "変わったところ" not in out, f"描画の有無を内容の変化と見せた: {out[:300]!r}")
+    # 8. 描画できなければ(時間切れ)、素の本文を「変わった本文」にせず、読み直せなかったとして原本を返す(Sol 監査 r2)
+    q2 = "https://audit.example/csr-timeout"
+    pa.save(q2, "描画した本文。価格は3000円。締切は10月30日。", via="collect", at="2026-10-25T21:00:00+09:00", rendered=True)
+    rc, out = run(q2, ok("メニューだけ"))
+    check(rc == 0 and "いまは読み直せない" in out and "価格は3000円" in out and "変わったところ" not in out
+          and any(r["url"] == q2 for r in pipelib.archived_reads(rec)) and "メニューだけ" not in pa.latest(q2)["text"],
+          f"描画の時間切れを本文の変化として見せた: {out[:300]!r}")
+    # 9. 本物の render_page が描画し終えた URL(RENDERED_URL)を受け取り、JS のメンテナンス画面への転送を見分ける
+    v2 = "https://idolmaster-official.jp/news/01_2"
+    pa.save(v2, "公式の告知その2。価格は5000円。", via="collect", at="2026-10-25T21:00:00+09:00")
+    saved_rg = pipelib.run_group
+    try:
+        pipelib.run_group = lambda cmd, timeout=None, **k: subprocess.CompletedProcess(
+            cmd, 0, "<html><body>メンテナンス中です</body></html>", "RENDERED_URL: https://idolmaster-official.jp/mainte/index.html\n")
+        rc, out = run(v2, ok("メニュー"), pipelib.render_page, needs=True)
+    finally:
+        pipelib.run_group = saved_rg
+    check(rc == 0 and "いまは読み直せない" in out and "価格は5000円" in out and v2 in pipelib.maintenance_urls(rec),
+          f"描画し終えた URL を受け取らず、JS の転送を見分けない: {out[:300]!r}")
+    # 10. 収集: 探索で読めた素材は、裏取りで 503 でも探索の原本で照らし、選定から消さない(Sol 監査 r2)
+    import time as _time, types
+    e_url = "https://audit.example/explore-503"
+    e_wd = tmp / "explore-wd2"
+    quote = "探索が読んだ告知。価格は3000円。"
+    pa.save(e_url, quote, via="read", at="2026-10-26T10:00:00+09:00", base=e_wd / collect.PAGE_SPOOL_NAME)
+    merged: list = []
+    h503 = email.message.Message()
+
+    def fake_explores(skip_e, skip_g):
+        collect.stash_pages(e_wd)
+        return [{"url": e_url, "title": "探索の告知", "facts": ["価格は3000円"], "quotes": [quote], "_via": "explore", "brand": "cg"}], {}
+
+    def down(req, timeout=15):
+        raise urllib.error.HTTPError(getattr(req, "full_url", req), 503, "Service Unavailable", h503, io.BytesIO(b"busy"))
+    names = ("run_explores", "page_spool_root", "merge_into_day_file", "append_metric", "needs_classify", "classify_source")
+    saved_c = {k: getattr(collect, k) for k in names}
+    saved_open = collect.urllib.request.urlopen
+    try:
+        collect.run_explores = fake_explores
+        collect.page_spool_root = lambda: tmp / "spool-root2"
+        collect.merge_into_day_file = lambda cs, day: (merged.extend(cs), len(cs))[1]
+        collect.append_metric = lambda *a, **k: None
+        collect.needs_classify = lambda cs: False
+        collect.classify_source = lambda u: "公式"
+        collect.urllib.request.urlopen = down
+        args = types.SimpleNamespace(skip_watch=True, skip_explore=False, skip_grok=True, force_grok=False, no_git=True, oncall_rerun=False)
+        with contextlib.redirect_stdout(io.StringIO()):
+            collect.run_collect(args, "2026-10-27", "unused", _time.time())
+    finally:
+        for k, v in saved_c.items():
+            setattr(collect, k, v)
+        collect.urllib.request.urlopen = saved_open
+    # 11. 原本の時刻だけが新しくなった素材の引き継ぎも、変わったとして保存させる(Sol 監査 r2 の later)
+    tgt = cand_row("m1", e_url, facts=["価格は3000円"], archived_at="2026-10-25T20:00:00+09:00")
+    check(pipelib.merge_candidate_facts(tgt, dict(tgt, archived_at="2026-10-25T21:00:00+09:00"))
+          and tgt["archived_at"] == "2026-10-25T21:00:00+09:00", "原本の時刻だけの更新を、引き継ぎが変わっていないとした")
+    got = [c for c in merged if c.get("url") == e_url]
+    check(got and got[0]["verify"] == "unconfirmed" and got[0].get("archived_at") == "2026-10-26T10:00:00+09:00"
+          and "収集時点" in got[0].get("verify_note", ""),
+          f"探索で読めた素材が、裏取りの 503 で failed になった: {[(c.get('verify'), c.get('verify_note')) for c in got]}")
 
 
 def test_page_archive_read_back(tmp: Path):

@@ -1268,14 +1268,105 @@ def finish_group(p, timeout: float | None) -> tuple[str, str, bool]:
     return so or "", se or "", False
 
 
-def run_group(cmd: list[str], timeout: float | None, *, cwd=None, env: dict | None = None) -> subprocess.CompletedProcess:
+ANSWER_SETTLE_SEC = 30     # 答えが出てから、セッションが自分で終わるのを待つ秒数(過ぎたら残った道具ごと止めて、その答えを採る)
+ANSWER_POLL_SEC = 0.5
+
+
+def run_group(cmd: list[str], timeout: float | None, *, cwd=None, env: dict | None = None,
+              answered=None, settle: float | None = None) -> subprocess.CompletedProcess:
     """モデル・道具を1つ走らせて終わりを待つ(subprocess.run(capture_output=True, text=True, stdin=DEVNULL, timeout=) の代わり)。
-    時間切れは TimeoutExpired(それまでの出力を持つ。partial_output で読める)で上げる。起動できなければ終了コード 127(理由は stderr)。"""
+    時間切れは TimeoutExpired(それまでの出力を持つ。partial_output で読める)で上げる。起動できなければ終了コード 127(理由は stderr)。
+    answered(標準出力のファイルの Path → 答えが採用の形で出ているか)を渡すと、待つあいだ答えを見張る(_run_group_answered)。"""
+    if answered is not None:
+        return _run_group_answered(cmd, timeout, answered, cwd=cwd, env=env,
+                                   settle=ANSWER_SETTLE_SEC if settle is None else settle)
     p = start_group(cmd, cwd=cwd, env=env)
     so, se, timed_out = finish_group(p, timeout)
     if timed_out:
         raise subprocess.TimeoutExpired(cmd, timeout, output=so, stderr=se)
     return subprocess.CompletedProcess(cmd, p.returncode, so, se)
+
+
+def _alive_frozen(p, wait: float = 5) -> bool:
+    """頭を凍らせ(SIGSTOP。凍った頭は自分では終われない)、凍ったことを停止の通知(CLD_STOPPED)で確かめられたら True。
+    先に終わった(終了の通知)・確かめられない(回収済み・wait 秒で通知が来ない)は False。送っただけでは止まっていない
+    (Sol 監査 r3: 送った直後の覗きでは生きていて、止まる前に自分で終了 1 になった回を採った)。
+    通知は WNOWAIT で覗く(状態を消さないので、終了コードはあとの回収で Popen が読む。Popen は停止の通知を読まない)。"""
+    try:
+        os.kill(p.pid, signal.SIGSTOP)
+    except OSError:
+        return False
+    end = time.monotonic() + wait
+    while True:
+        try:
+            info = os.waitid(os.P_PID, p.pid, os.WEXITED | os.WSTOPPED | os.WNOHANG | os.WNOWAIT)
+        except ChildProcessError:
+            return False
+        if info is not None:
+            return info.si_code == os.CLD_STOPPED
+        if time.monotonic() >= end:
+            return False
+        time.sleep(0.005)
+
+
+def _run_group_answered(cmd: list[str], timeout: float | None, answered, *, cwd, env, settle: float) -> subprocess.CompletedProcess:
+    """答えを見張りながらセッションを待つ。標準出力・エラーはパイプでなくファイルに受ける(答えのあとに残った道具がパイプを
+    握っていても待たされない)。答えが出たのに頭が settle 秒で終わらない、または締切の時点で答えが出ているなら、頭と子孫を
+    止めてその答えを採る(戻りの settled が True。終了コードは止めたときのもの)。答えが出ないまま締切なら TimeoutExpired。
+    2026-10-25 12:31 の当番は 13:00:15 に schema どおりの答えを出したが、裏で走らせたままの全テストを claude -p が待って終わらず、
+    13:01:52 に 1800 秒の時間切れになり「当番の作業が途中で止まった」と人に届いた。"""
+    box = scratch_dir("session-out-")
+    out, err = box / "stdout", box / "stderr"
+    try:
+        with open(out, "a", encoding="utf-8") as fo, open(err, "a", encoding="utf-8") as fe:
+            p = start_group(cmd, cwd=cwd, env=env, stdout=fo, stderr=fe)
+        if isinstance(p, LaunchFailed):
+            return subprocess.CompletedProcess(cmd, p.returncode, "", p.error)
+
+        def has_answer() -> bool:
+            try:
+                return bool(answered(out))
+            except Exception:       # noqa: BLE001  見張りの失敗は「まだ答えが無い」(待ちを止めない)
+                return False
+        end = None if timeout is None else time.monotonic() + max(0, timeout)
+        seen = None
+        settled = timed_out = False
+        try:
+            while p.poll() is None:
+                now = time.monotonic()
+                if seen is None and has_answer():
+                    seen = now
+                late = end is not None and now >= end
+                if seen is not None and (late or now - seen >= settle):
+                    settled = True
+                    break
+                if late:
+                    timed_out = True
+                    break
+                time.sleep(ANSWER_POLL_SEC)
+            if settled or timed_out:
+                # 見張りのあいだに頭が終わっていたら(自分で・ほかの誰かに止められて)、その終わり方を採る。settled・時間切れに
+                # するのは、生きている頭をここで止めたときだけ(Sol 監査 r1: 答えを読むあいだに終了 1 で終わった回を採った。
+                # r2: 終了コードが SIGKILL でも、こちらが止めた証拠にはならない)
+                if not _alive_frozen(p):
+                    settled = timed_out = False
+                reap(p)             # 頭・グループ・子孫を止めて回収する(出力はファイルにある)
+            else:
+                finish_group(p, 10)     # 頭は終わっている。グループ・印に残った道具を止める
+        except BaseException:
+            stop_groups([p])        # 待ち・回収の途中の中断でも止めてから上げる
+            raise
+        so = out.read_text(encoding="utf-8", errors="replace")
+        se = err.read_text(encoding="utf-8", errors="replace")
+        if timed_out:
+            raise subprocess.TimeoutExpired(cmd, timeout, output=so, stderr=se + "\n(時間切れ)")
+        if settled:
+            se += f"\n(答えを出したあと {settle:.0f} 秒で終わらなかったので、残った道具ごと止めて答えを採った)"
+        r = subprocess.CompletedProcess(cmd, p.returncode, so, se)
+        r.settled = settled
+        return r
+    finally:
+        shutil.rmtree(box, ignore_errors=True)
 
 
 def stop_groups(procs=None) -> None:

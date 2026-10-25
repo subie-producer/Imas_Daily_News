@@ -1,0 +1,174 @@
+{
+ "decisions": {
+  "shiny-85th-anniversary-gifts-2026": {
+   "action": "article",
+   "angle": "8.5周年記念ログインプレゼント(8.5アニバーサリーケーキとフェザージュエル3,000個)の受け取りは本日10月26日23時59分まで",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "既報(10/24号)の受取期限が本日。衣装配布は11/18まで"
+  },
+  "shinyson-pickup-poison-madoka-2026": {
+   "action": "article",
+   "angle": "シャニソンで限定★3【毒を喰らわばなんとやら】樋口円香のピックアップガシャが開催中",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公式X。期間の記載なし"
+  },
+  "shinyson-3rd-anniversary-story-episode-3-2026": {
+   "action": "article",
+   "angle": "シャニソン3周年記念ストーリー第3話「街のかたち」が公開された",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "プロローグは10/23号で既報、第3話は新規"
+  },
+  "shinyson-shiny-competition-2026": {
+   "action": "article",
+   "angle": "プロデュースミニイベント「シャイニーコンペティション」は10月29日20時59分まで、総合力の高いアイドルの育成に挑む",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "締切まで3日。シャニソン杯とは別イベント"
+  },
+  "shiny-3-0-25": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/25号と同内容(ジュエル300個・ガシャチケット1枚)で、新事実も当日のトリガーも無い"
+  },
+  "shiny-fan-producer-business-card-osaka-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿で、公式の発表ではない。shiny面にはculture枠が無い"
+  },
+  "shiny-song-for-prism-third-anniversary-event-2026": {
+   "action": "article",
+   "angle": "シャニソン3周年記念ライブイベントは10月31日12時開始、アイドル別ランキング報酬と全体順位報酬が判明",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ランキング報酬は既報記事に無い新事実。出典は二次情報で、校閲で要確認。楽曲の歌い分けは10/24号で既報なので触れない"
+  },
+  "shiny-chikusei-collab-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "コラボは10/25で終了済み。事実も既報(9/1号・10/10号・10/17号)と同じ"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "shiny-85th-anniversary-gifts-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "8.5周年記念ログインプレゼント(8.5アニバーサリーケーキとフェザージュエル3,000個)の受け取りは本日10月26日23時59分まで",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "shiny-85th-anniversary-gifts-2026",
+    "candidate_ids": [
+     "202610251832-explore-5"
+    ]
+   },
+   {
+    "slug": "shiny-shinyson-pickup-poison-madoka-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "シャニソンで限定★3【毒を喰らわばなんとやら】樋口円香のピックアップガシャが開催中",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "shinyson-pickup-poison-madoka-2026",
+    "candidate_ids": [
+     "202610260219-grok-20"
+    ]
+   },
+   {
+    "slug": "shiny-shinyson-3rd-anniversary-story-episode-3-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "シャニソン3周年記念ストーリー第3話「街のかたち」が公開された",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "shinyson-3rd-anniversary-story-episode-3-2026",
+    "candidate_ids": [
+     "202610260219-grok-21"
+    ]
+   },
+   {
+    "slug": "shiny-shinyson-shiny-competition-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "プロデュースミニイベント「シャイニーコンペティション」は10月29日20時59分まで、総合力の高いアイドルの育成に挑む",
+    "purpose": "期日の知らせ",
+    "lead_score": 15,
+    "dedup_key": "shinyson-shiny-competition-2026",
+    "candidate_ids": [
+     "202610260219-grok-22"
+    ]
+   },
+   {
+    "slug": "shiny-song-for-prism-third-anniversary-event-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "シャニソン3周年記念ライブイベントは10月31日12時開始、アイドル別ランキング報酬と全体順位報酬が判明",
+    "purpose": "新情報",
+    "lead_score": 60,
+    "dedup_key": "shiny-song-for-prism-third-anniversary-event-2026",
+    "candidate_ids": [
+     "202610241231-explore-4"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "shiny-3-0-25",
+    "reason": "既報",
+    "note": "10/25号と同内容(ジュエル300個・ガシャチケット1枚)で、新事実も当日のトリガーも無い"
+   },
+   {
+    "dedup_key": "shiny-fan-producer-business-card-osaka-2026",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿で、公式の発表ではない。shiny面にはculture枠が無い"
+   },
+   {
+    "dedup_key": "shiny-chikusei-collab-2026",
+    "reason": "その他",
+    "note": "コラボは10/25で終了済み。事実も既報(9/1号・10/10号・10/17号)と同じ"
+   }
+  ],
+  "cross_brand": []
+ }
+}

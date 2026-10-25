@@ -1096,6 +1096,8 @@ x_posts:
 
 # --- リンク元から引き継いだ種別(リンク先1つずつ。キーは pipelib.link_key)。合議がリンク元の告知と関係していると確かめたものだけ(classify_sources.inherit_from_links)。リンク先そのものの種別より強いときだけ効く ---
 link_types:
+  recommend.jr-central.co.jp/oshi-tabi/idolmaster_sidem/: 当事者 # リンク元から引き継ぎ(合議で関係を確認): https://x.com/oshitabi_update/status/2113828027998281898(当事者)。リンク先は告知と同じJR東海×SideM旅マス企画の案内ページ
+  lnk.to/S.E.M_2DMV: 準公式                       # リンク元から引き継ぎ(合議で関係を確認): https://x.com/SideM_lantis/status/2110339838813573374(準公式)。リンク先は告知と同じ楽曲Life's Side Menu!の2DMVページ
   t.co/dVaE8WMfgp: 公式                         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/valiv_official/status/2113266096036065319(公式)。告知のURLが展開する3rdLIVE現地チケット先行受付ページ
   nicovideo.jp/watch/lv351405530: 準公式          # リンク元から引き継ぎ(合議で関係を確認): https://columbia.jp/idolmaster/imasnews/261023.html(準公式)。告知の番組配信URLで、HOURGLASS初公開回のCINDERELLA PAR
   lnk.to/FRAME_2DMV: 準公式                       # リンク元から引き継ぎ(合議で関係を確認): https://x.com/SideM_lantis/status/2113616430545686544(準公式)。ULTIMATE FLAMEの配信・DLページで、2DMV告知と同じ楽曲

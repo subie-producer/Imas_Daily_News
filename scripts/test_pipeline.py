@@ -15658,7 +15658,8 @@ def test_oncall_judged_not_rejudged(tmp: Path):
     (偽の claude・監査は承認)を通して確かめる:
     - 2回目以降の同じ 503 では当番を起こさない。新しい事柄(別の観測先の失敗・同じ観測先の別の種類の失敗)が混ざれば、その事柄だけで起こす
     - 止まった収集は、判定済みの事柄でも従来どおり起こす
-    - 枠切れ: 止まっていない工程は通知も異常終了もしない。止まった工程は人への通知が1度だけで、systemd に起動し直させない終了値で終える"""
+    - 枠切れ: 止まっていない工程は通知も異常終了もしない。止まった工程は人への通知が1度だけで、systemd に起動し直させない終了値で終える
+    2026-10-25 から 503 はなぜなぜの対象外(test_http503_not_whywhy)なので、判定済みの型の例は同じ観測先の HTTP 500 にした。"""
     import shutil as _sh
     import time
     import types
@@ -15694,7 +15695,7 @@ def test_oncall_judged_not_rejudged(tmp: Path):
     def fake_list(s, known, fetch=None, resume=None):
         f = fails.get(s["id"])
         if isinstance(f, int):
-            raise urllib.error.HTTPError(s["url"], f, {503: "Service Temporarily Unavailable", 404: "Not Found"}[f], None, None)
+            raise urllib.error.HTTPError(s["url"], f, {500: "Internal Server Error", 404: "Not Found"}[f], None, None)
         if f:
             raise RuntimeError(f)
         return [(u, "") for u in seen[s["id"]]], 1, []
@@ -15775,8 +15776,8 @@ def test_oncall_judged_not_rejudged(tmp: Path):
         oncall.REFORMAT_TIMEOUT_SEC = 1
         os.environ["PATH"] = f"{bindir}{os.pathsep}{saved_path}"
 
-        # 10/23 18:33 の収集: lantis-sidem が 503 → 当番(1回目は答えが読めない、起動し直した2回目で直す箇所なしを承認)
-        collect_run({"lantis-sidem": 503})
+        # 10/23 18:33 の収集(の形): lantis-sidem が 500 → 当番(1回目は答えが読めない、起動し直した2回目で直す箇所なしを承認)
+        collect_run({"lantis-sidem": 500})
         a1833 = diagnose()
         r["18:33 鍵"] = keys_of(a1833)
         twice()          # 偽の CLI を置き(実行権付き)、中身を読めない答えに差し替える
@@ -15787,14 +15788,14 @@ def test_oncall_judged_not_rejudged(tmp: Path):
         r["19:06 通知"] = list(notes)
         st = json.loads((root / "metrics" / f"oncall-{date}-collect.json").read_text(encoding="utf-8"))
         r["記録"] = st["log"]
-        # 23:30 の収集: 同じ 503(エラーの文面が同じ)→ 当番を起こさない
-        collect_run({"lantis-sidem": 503})
+        # 23:30 の収集: 同じ 500(エラーの文面が同じ)→ 当番を起こさない
+        collect_run({"lantis-sidem": 500})
         r["23:30"] = diagnose()
         # 起動し直し・手での起動で、判定済みの事柄だけの依頼が当番に来ても、判定し直さない(通知も異常終了もしない)
         oncall.DEADLINE_AT = oncall.STAGE_END_AT = None
         r["判定済みの依頼"] = (run_oncall(a1833 or []), list(notes))
-        # 02:00 の収集: 同じ 503 に、別の観測先の新しい失敗が混ざる → その事柄だけで起こす
-        collect_run({"lantis-sidem": 503, "columbia": 404})
+        # 02:00 の収集: 同じ 500 に、別の観測先の新しい失敗が混ざる → その事柄だけで起こす
+        collect_run({"lantis-sidem": 500, "columbia": 404})
         a0200 = diagnose()
         r["02:00"] = (reason_of(a0200), keys_of(a0200))
         # 同じ観測先でも別の種類の失敗は新しい事柄
@@ -15804,7 +15805,7 @@ def test_oncall_judged_not_rejudged(tmp: Path):
         oncall.DEADLINE_AT = oncall.STAGE_END_AT = None
         r["枠切れ・止まっていない"] = (run_oncall(a0200 or []), list(notes))
         # 止まった収集は、判定済みの事柄でも起こす。枠切れなら人への通知は1度だけ、起動し直させない終了値
-        collect_run({"lantis-sidem": 503})
+        collect_run({"lantis-sidem": 500})
         stop = diagnose("収集が止まった(exit 1)。下の一覧をなぜなぜし、原因を直して取り直すこと")
         r["止まった"] = (stop is not None and "--finished" not in stop, "lantis-sidem" in reason_of(stop))
         oncall.DEADLINE_AT = oncall.STAGE_END_AT = None
@@ -15826,7 +15827,7 @@ def test_oncall_judged_not_rejudged(tmp: Path):
         r["systemd"] = runs[0] if runs else []
 
         # 鍵を残すのは「承認された no_fix_needed で、報告が人に届いた」回だけ(監査指摘 r1)。日付ごとに別の記録で確かめる
-        k = ["collect:watch-unreadable:lantis-sidem:HTTP503"]
+        k = ["collect:watch-unreadable:lantis-sidem:HTTP500"]
         def case(day: str, fix: dict, review: dict, note_fn, minutes: int = 180, finished: bool = True) -> tuple:
             fake_cli(bindir, "claude", out=json.dumps(fix, ensure_ascii=False))
             if fix.get("status") == "fixed":
@@ -15891,17 +15892,17 @@ def test_oncall_judged_not_rejudged(tmp: Path):
         os.environ["PATH"] = saved_path
         if saved_inv is not None:
             os.environ["INVOCATION_ID"] = saved_inv
-    k503 = "collect:watch-unreadable:lantis-sidem:HTTP503"
-    check(r["18:33 鍵"] == [k503], f"18:33 の 503 の形の鍵(観測先と失敗の種類)を当番に渡さない: {r['18:33 鍵']}")
-    check(r["18:56"] == 1 and r["19:06"] == 0 and [e.get("settled_keys") for e in r["記録"]] == [None, [k503]],
+    k500 = "collect:watch-unreadable:lantis-sidem:HTTP500"
+    check(r["18:33 鍵"] == [k500], f"18:33 の 500 の形の鍵(観測先と失敗の種類)を当番に渡さない: {r['18:33 鍵']}")
+    check(r["18:56"] == 1 and r["19:06"] == 0 and [e.get("settled_keys") for e in r["記録"]] == [None, [k500]],
           f"承認された直す箇所なしの診断が、渡された鍵を記録に残さない: 18:56 exit {r['18:56']} / 19:06 exit {r['19:06']} "
           f"記録 {[(e.get('approved'), e.get('status'), e.get('settled_keys')) for e in r['記録']]}")
-    check(r["23:30"] is None, f"判定済みの 503 で 23:30 の収集が当番を起こした: {reason_of(r['23:30'])[-200:]}")
+    check(r["23:30"] is None, f"判定済みの 500 で 23:30 の収集が当番を起こした: {reason_of(r['23:30'])[-200:]}")
     code, ns = r["判定済みの依頼"]
     check(code == 0 and not [m for m, ok in ns if not ok], f"判定済みの事柄だけの依頼で、当番が通知した・異常終了した: exit {code} {ns}")
     why, keys = r["02:00"]
     check(keys == ["collect:watch-unreadable:columbia:HTTP404"] and "columbia" in why and "lantis-sidem" not in why,
-          f"新しい事柄だけで当番を起こさない(判定済みの 503 を混ぜた・新しい失敗を落とした): 鍵 {keys} 依頼 {why[-300:]}")
+          f"新しい事柄だけで当番を起こさない(判定済みの 500 を混ぜた・新しい失敗を落とした): 鍵 {keys} 依頼 {why[-300:]}")
     check(r["別の種類"] == ["collect:watch-unreadable:lantis-sidem:RuntimeError"],
           f"同じ観測先の別の種類の失敗を、判定済みとして当番を起こさない: {r['別の種類']}")
     code, ns = r["枠切れ・止まっていない"]
@@ -15922,10 +15923,10 @@ def test_oncall_judged_not_rejudged(tmp: Path):
     check(code == 0 and any("取り込みました" in m for m, ok in ns),
           f"fixed の回が承認・取り込みまで進まない(鍵を残さないことを確かめられない): exit {code} {[m[:50] for m, ok in ns]}")
     (c1, _, l1), (c2, _, l2) = r["取り直し失敗"], r["取り直し再起動"]
-    check(c1 == 1 and not any(l1) and c2 == 0 and r["取り直し"] == ("2", True) and l2[-1] == [k503],
+    check(c1 == 1 and not any(l1) and c2 == 0 and r["取り直し"] == ("2", True) and l2[-1] == [k500],
           f"取り直しが失敗した回で鍵を残した・起動し直した当番が取り直さない: exit {c1}/{c2} 記録 {l1}/{l2} 取り直し(回数, 拾えた) {r['取り直し']}")
     code, ns, logged = r["承認"]
-    check(code == 0 and logged == [[k503]], f"承認され報告が届いた no_fix_needed の回で鍵を残さない: exit {code} 記録 {logged}")
+    check(code == 0 and logged == [[k500]], f"承認され報告が届いた no_fix_needed の回で鍵を残さない: exit {code} 記録 {logged}")
     for what in ("残り少ない・判定済み", "残り少ない・枠切れ"):
         code, ns, logged = r[what]
         check(code == 0 and not [m for m, ok in ns if not ok],
@@ -15937,6 +15938,140 @@ def test_oncall_judged_not_rejudged(tmp: Path):
     code, ns, _ = r["汚れ"]
     check(code == HANDED and [m for m, ok in ns if not ok and "clean でない" in m],
           f"作業ツリーが汚れていて何もしない当番が、起動し直させる終了値で終えた(同じ通知が重なる): exit {code} {[m[:40] for m, ok in ns]}")
+
+
+def test_http503_not_whywhy(tmp: Path):
+    """HTTP 503 の取得の失敗はなぜなぜ(当番の起動)の対象外(編集長 2026-10-25「503はなぜなぜの対象外にしろ」)。10/25 の実際の形:
+    07:32 は号が変わった(10/26 号)最初の回で、前の号で承認済みの lantis-sidem の 503 が当番を起こした。12:31 は収集のまとめの文
+    「2026-10-26号向け: 新規0件(…) — 新規0件。取得に失敗した系統がある:\\n- 定点観測 lantis-sidem: …503…」が text: の鍵で渡り、
+    当番が30分の時間切れで止まった。本物の run_watch(一覧の取得だけ偽)→ report_zero_new → diagnose_anomalies → escalate
+    (起動の Popen だけ偽)で確かめる:
+    - 定点観測の 503 単独・まとめの文に 503 だけ・号が変わった最初の回: 人には知らせる(異常の通知)が当番を起こさない。既読は進めない
+    - 503 と 404 が混ざる: 404 の失敗だけで当番を起こす(依頼に 503 の観測先を含めない)"""
+    import urllib.error
+    import collect
+    import yaml
+    tmp.mkdir(parents=True, exist_ok=True)
+    root, col = tmp / "ops", tmp / "col"
+    (root / "scripts").mkdir(parents=True); (root / "metrics").mkdir()
+    (root / "scripts" / "oncall.py").write_text("print('oncall')\n", encoding="utf-8")
+    col.mkdir()
+    (col / "sources.yml").write_text(yaml.safe_dump([
+        {"id": "lantis-sidem", "brand": "sidem", "type": "html", "url": "https://lantis.jp/sidem/", "base": "https://lantis.jp",
+         "list_regex": "x", "enabled": True},
+        {"id": "columbia", "brand": "general", "type": "html", "url": "https://columbia.jp/idolmaster/", "base": "https://columbia.jp",
+         "list_regex": "x", "enabled": True}]), encoding="utf-8")
+    seen = {"lantis-sidem": ["https://lantis.jp/sidem/old"], "columbia": ["https://columbia.jp/old"]}
+    fails: dict = {}
+
+    def fake_list(s, known, fetch=None, resume=None):
+        f = fails.get(s["id"])
+        if f:
+            raise urllib.error.HTTPError(s["url"], f, {503: "Service Temporarily Unavailable", 404: "Not Found"}[f], None, None)
+        return [(u, "") for u in seen[s["id"]]], 1, []
+
+    # 10/25 07:40 に承認された 10/26 号の記録(503 の鍵)と、その前の号(10/25)の記録は別の号。号が変わった最初の回は前の号の記録が効かない
+    (root / "metrics" / "oncall-2026-10-25-collect.json").write_text(json.dumps({"log": [
+        {"at": "2026-10-24T19:06", "approved": True, "status": "no_fix_needed",
+         "settled_keys": ["collect:watch-unreadable:lantis-sidem:HTTP503"]}]}), encoding="utf-8")
+    launches: list[list[str]] = []
+    notes: list = []
+    summary = "2026-10-26号向け: 新規0件(正規化1・{'confirmed': 0, 'unconfirmed': 1, 'failed': 0}) 63秒"
+    report = getattr(collect, "report_zero_new", None)
+
+    def zero_new(info: dict) -> None:
+        if report:
+            report(summary, info, {})
+            return
+        failed = collect.collect_health(info, {})        # 直す前の main の新規0件の通知
+        if failed:
+            collect.notify("collect", f"{summary} — 新規0件。取得に失敗した系統がある:\n- " + "\n- ".join(failed), ok=False)
+
+    def run(failing: dict, date: str = "2026-10-26", summary_too: bool = True):
+        """定時の収集1回(一覧の取得 → 新規0件のまとめ → 工程の終わりの diagnose_anomalies)。止まっていない収集"""
+        fails.clear(); fails.update(failing)
+        pipelib.ANOMALIES.clear()
+        pipelib._ESCALATED = False
+        notes.clear()
+        (col / "watch-state.json").write_text(json.dumps(seen), encoding="utf-8")
+        pipelib.set_quiet(True)
+        try:
+            _, info = collect.run_watch(lambda prompt, timeout=0: [])
+            if summary_too:
+                zero_new(info)
+        finally:
+            pipelib.set_quiet(False)
+        ledger = list(pipelib.ANOMALIES)
+        n = len(launches)
+        saved_popen = subprocess.Popen
+        subprocess.Popen = lambda args, **k: launches.append(list(args))
+        try:
+            pipelib.diagnose_anomalies("collect", date, rerun=True, extra_args=["--end-at", "0"])
+        finally:
+            subprocess.Popen = saved_popen
+        state = json.loads((col / "watch-state.json").read_text(encoding="utf-8"))
+        infos.append(info)
+        return (launches[-1] if len(launches) > n else None), ledger, list(notes), state
+
+    def rerun_failed(info: dict) -> list[str]:
+        """当番の取り直しで「一覧が取れない」に数える観測先(直す前は main の中で 503 も数えた)"""
+        f = getattr(collect, "unreadable_for_oncall", None)
+        if f:
+            return f(info)
+        return sorted(sid for sid, st in (info.get("stats") or {}).items() if isinstance(st, dict) and st.get("error"))
+    infos: list = []
+
+    def reason_of(args) -> str:
+        return args[args.index("--reason") + 1] if args and "--reason" in args else ""
+
+    def keys_of(args) -> list[str]:
+        if not args or "--anomaly-keys" not in args:
+            return []
+        return args[args.index("--anomaly-keys") + 1:]
+
+    real_notify = collect.notify
+    saved_p = (pipelib.ROOT, pipelib.ENV, pipelib.oncall_clis_blocked, list(pipelib.ANOMALIES), pipelib._ESCALATED)
+    saved_c = (collect.ROOT, collect.STATE_PATH, collect.list_source, collect.notify)
+    saved_inv = os.environ.pop("INVOCATION_ID", None)
+    r = {}
+    try:
+        pipelib.ROOT = root
+        pipelib.ENV = dict(pipelib.ENV, ONCALL="on")
+        pipelib.oncall_clis_blocked = lambda: []
+        collect.ROOT, collect.STATE_PATH, collect.list_source = col, col / "watch-state.json", fake_list
+        collect.notify = lambda job, msg, ok=True, **k: notes.append((msg, ok)) or real_notify(job, msg, ok=ok, **k)
+        r["単独"] = run({"lantis-sidem": 503}, summary_too=False)
+        r["まとめ"] = run({"lantis-sidem": 503})
+        r["号が変わった最初"] = run({"lantis-sidem": 503}, date="2026-10-27")
+        r["混ざる"] = run({"lantis-sidem": 503, "columbia": 404})
+    finally:
+        pipelib.ROOT, pipelib.ENV, pipelib.oncall_clis_blocked = saved_p[:3]
+        pipelib.ANOMALIES[:] = saved_p[3]
+        pipelib._ESCALATED = saved_p[4]
+        collect.ROOT, collect.STATE_PATH, collect.list_source, collect.notify = saved_c
+        if saved_inv is not None:
+            os.environ["INVOCATION_ID"] = saved_inv
+    for what in ("単独", "まとめ", "号が変わった最初"):
+        launched, ledger, ns, state = r[what]
+        check(launched is None and not ledger,
+              f"{what}: HTTP 503 だけの取得の失敗で当番を起こした・台帳に積んだ: 依頼 {reason_of(launched)[-200:]!r} 台帳 {ledger}")
+        check(any(not ok and "lantis-sidem" in m and "503" in m for m, ok in ns),
+              f"{what}: HTTP 503 の取得の失敗を人に知らせない: {ns}")
+        check(state.get("lantis-sidem") == seen["lantis-sidem"], f"{what}: 503 で読めなかった観測先の既読を変えた: {state.get('lantis-sidem')}")
+    _, _, ns, _ = r["まとめ"]
+    check(any(not ok and m.startswith(summary) and "lantis-sidem" in m for m, ok in ns),
+          f"まとめ: 新規0件・取得に失敗した系統の通知を人に出さない: {ns}")
+    launched, ledger, ns, _ = r["混ざる"]
+    why, keys = reason_of(launched), keys_of(launched)
+    check(launched is not None and "columbia" in why and "lantis-sidem" not in why
+          and "collect:watch-unreadable:columbia:HTTP404" in keys and not any("lantis" in k for k in keys)
+          and not any("lantis-sidem" in a for a in ledger),
+          f"混ざる: 404 の失敗だけで当番を起こさない(503 の観測先を依頼・台帳に含めた): 鍵 {keys} 台帳 {ledger} 依頼 {why[-300:]!r}")
+    check(any(not ok and "lantis-sidem" in m and "columbia" in m for m, ok in ns),
+          f"混ざる: 人へのまとめの通知から 503 の観測先を落とした: {ns}")
+    # 当番の取り直し(--oncall-rerun)で、503 の観測先だけが読めないなら取り直しを失敗にしない。404 が混ざればそれで失敗にする
+    check([rerun_failed(i) for i in (infos[0], infos[3])] == [[], ["columbia"]],
+          f"当番の取り直しで、503 の観測先を「一覧が取れない」に数えた・404 を落とした: {[rerun_failed(i) for i in infos]}")
 
 
 def test_oncall_recover_keeps_handed_exit(tmp: Path):
@@ -16040,6 +16175,7 @@ def main() -> int:
     test_oncall_answer_reformat(tmp / "oar")
     test_oncall_finished_rerun_none(tmp / "ofr")
     test_oncall_judged_not_rejudged(tmp / "ojn")
+    test_http503_not_whywhy(tmp / "h503")
     test_oncall_recover_keeps_handed_exit(tmp / "orh")
     test_cli_block_detect_and_post(tmp / "cbd")
     test_cli_blocked_paths_r2(tmp / "cb2")

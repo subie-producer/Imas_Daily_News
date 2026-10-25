@@ -269,6 +269,25 @@ def anomaly(job: str, text: str) -> None:
         ANOMALIES.append(f"[{job}] {text.strip()}")
 
 
+# 取得の失敗のうち、なぜなぜ(当番の起動)の対象にしない HTTP の状態コード。503 は相手のサイトの一時的な停止(メンテナンスの画面か
+# 否かを問わない)で、こちらに直す箇所は無い。人への通知と「既読を進めず次回読み直す」は変えない。号・工程をまたいで常に対象外
+# (編集長 2026-10-25「503はなぜなぜの対象外にしろ」。10/25 07:32・12:31 の収集が号の変わった lantis-sidem の 503 で当番を起こし、
+# 12:31 は収集のまとめの文が text: の鍵で渡って、当番が30分の時間切れで止まった)
+WHYWHY_EXEMPT_HTTP = frozenset({503})
+
+
+def http_status(e: BaseException) -> int | None:
+    """例外が HTTP の応答(urllib の HTTPError)なら、その状態コード。それ以外(時間切れ・描画の失敗 等)は None。"""
+    import urllib.error
+    code = getattr(e, "code", None) if isinstance(e, urllib.error.HTTPError) else None
+    return code if isinstance(code, int) and not isinstance(code, bool) else None
+
+
+def whywhy_exempt_status(code) -> bool:
+    """HTTP の状態コード(http_status)が、なぜなぜの対象外(WHYWHY_EXEMPT_HTTP)か。None・数でないものは対象(当番を起こす側に倒す)。"""
+    return isinstance(code, int) and not isinstance(code, bool) and code in WHYWHY_EXEMPT_HTTP
+
+
 def anomaly_shape(job: str, text: str, key: str) -> None:
     """これから積む(notify(ok=False) / anomaly で)事柄の文面に、形の鍵を付ける。key は観測先・失敗の種類などをコードで決めた文字列。"""
     if text and text.strip() and key:

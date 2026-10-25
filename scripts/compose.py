@@ -57,7 +57,7 @@ from pipelib import (ENV, ROOT, CLAUDE_MODEL, CODEX_WRITE_MODEL, COMPOSE_WAVE, E
                      partial_output, reap, loads_strict, read_answer, schema_ok, read_for_raw, compose_lock_wait_min,
                      collect_oncall_handover_pending, candidate_misplaced, merge_candidate_facts, write_checked,
                      FETCH_RECORD_ENV, fetched_urls, failed_urls, maintenance_urls, maintenance_notice, maintenance_rules, site_host,
-                     MAINTENANCE_LEGACY_NOTICES, MAINTENANCE_NOTICE_FROM,
+                     MAINTENANCE_LEGACY_NOTICES, MAINTENANCE_NOTICE_FROM, ARCHIVE_NOTICE_FROM, archived_reads, live_fetched_urls,
                      align_x_published_date, CLI_BLOCKED, CLI_BLOCKED_EXIT, CLI_STOPPED, CliBlocked, cli_check)
 # モデルのセッションの起動と回収(自前のプロセスグループ。時間切れ・中断では子孫まで止める)
 from pipelib import LaunchFailed, finish_group, run_group, start_group, stop_groups
@@ -2376,7 +2376,8 @@ def maintenance_unread_hosts(date: str, slug: str, urls) -> set[str]:
     (読み直して本文を取れたページは、読めたページとして扱う。Sol 監査 r1。同じサイトでも別のホストは動いていることがある:
     2026-10-23 ASOBI STORE のメンテナンス中も ASOBI TICKET は読めた)"""
     rec = fetch_record(date, slug)
-    read = fetched_urls(rec)
+    # 保存の原本で読んだページは、その断り書き(archive_read_hosts)を付ける号からは読めたページとして扱う(メンテナンスの文面と重ねない)
+    read = fetched_urls(rec) if str(date) >= ARCHIVE_NOTICE_FROM else live_fetched_urls(rec)
     # ページの照合はホストの一致も要る(same_page は m.・mobile. も外すが、メンテナンスはホストごと。Sol 監査 Z2 r4:
     # m. のホストで読めた・404 だったページが、本体のホストのメンテナンスを打ち消した)
     same = lambda a, b: site_host(a) == site_host(b) and renderlib.same_page(a, b)
@@ -2391,6 +2392,23 @@ def maintenance_unread_hosts(date: str, slug: str, urls) -> set[str]:
     was_failed = lambda u: any(same(u, x) for x in failed) and not any(same(u, m) for m in mainte_all)
     hosts |= {site_host(u) for u in urls if site_host(u) in hit and not was_read(u) and not was_failed(u)}
     return {h for h in hosts if h}
+
+
+def archive_read_hosts(date: str, slug: str, urls) -> list[tuple[str, str, str, str]]:
+    """この記事のセッションが読み直せず保存の原本(page_archive)で読んだ出典・素材のページの (ホスト, why, 原本の取得時刻, via)。
+    同じページをこの記事のセッションがあとで相手のサイトから読めていれば含めない(読み直して確かめられた。編集長 2026-10-26)"""
+    rec = fetch_record(date, slug)
+    live = live_fetched_urls(rec)
+    same = lambda a, b: site_host(a) == site_host(b) and renderlib.same_page(a, b)
+    out = []
+    for r in archived_reads(rec):
+        pages = [u for u in (r.get("url"), r.get("final")) if u]
+        if not any(same(p, u) for p in pages for u in urls if u):
+            continue        # 記事の出典・素材に使っていないページ
+        if any(same(p, x) for p in pages for x in live):
+            continue
+        out.append((site_host(r["url"]), str(r.get("why") or "failed"), str(r.get("archived")), str(r.get("via") or "collect")))
+    return out
 
 
 RECORD_FAILED_SEEN: set[str] = set()      # 申告済みの「記録を書けなかった」印(同じ印を記事ごとに重ねて申告しない)
@@ -2435,7 +2453,10 @@ def attach_maintenance_notice(date: str, slug: str, path: Path, materials: list[
         fm = parse_front_matter(path) or {}
         urls = [str(x.get("url") or "") for x in [*(materials or []), *(fm.get("sources") or [])] if isinstance(x, dict)]
         text = path.read_text(encoding="utf-8")
-        notice = maintenance_notice(date, maintenance_unread_hosts(date, slug, urls))
+        # 原本で読んだページの断り書きは、執筆が確かめた事実(verified_facts)の url も見る(素材の外の原本のページで書いた事実)
+        facts_urls = [str(x.get("url") or "") for x in fm.get("verified_facts") or [] if isinstance(x, dict)]
+        notice = maintenance_notice(date, maintenance_unread_hosts(date, slug, urls),
+                                    archived=archive_read_hosts(date, slug, urls + facts_urls))
         new = renderlib.with_notice(text, notice)
         if renderlib.with_notice(new, notice) != new:
             # 外せない文面(strip_notice の型に合わないホスト名)を付けると、掛け直すたびに重なり字数・指紋にも入る。付けずに申告する

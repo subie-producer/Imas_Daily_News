@@ -134,6 +134,10 @@
         "type": "string",
         "description": "verify が出典をヘッドレスブラウザで描画し直そうとして失敗した原因(終了コードと stderr の要点)。素の HTML の本文で照合を続けたことを示す。診断用"
       },
+      "archived_at": {
+        "type": "string",
+        "description": "収集が出典ページを読んだ時点の原本(scripts/page_archive.py の置き場。url で引く)の取得時刻(ISO 8601, JST)。fetch_page.py は読み直せないときにこの原本を返す"
+      },
       "unbacked_facts": {
         "type": "array",
         "items": {

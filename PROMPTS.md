@@ -23,6 +23,9 @@
 | write-article(+ .roundup / .culture) | 執筆(`compose.article_prompt`) | Codex luna | 記事(schema/article-out) |
 | revise-article | 校閲の指摘を受けた書き直し(`compose.revise_prompt`) | Codex luna | 記事(同上) |
 | review-article / review-paper | 校閲(`compose.claude_review`) | Claude haiku | 判定(prompts/review-schema.json) |
+| site-maintenance.* / source-archive.* | 執筆・書き直し・校閲に足す、出典のサイトのメンテナンスと原本の照合の扱い(`pipelib.maintenance_rules`) | — | — |
+| source-update(+ .retry)| 発行済み記事の出典の変化の判定と、記事に足す「その後の動き」の文(`source_watch.judge`。収集の終わり) | Codex luna | 種類と文(schema/source-update) |
+| source-update-review | 「その後の動き」の案の校閲(`source_watch.review`) | Claude haiku | approve / block(schema/source-update-review) |
 | assemble-digest / assemble-ledger | 組版の判断(`assemble.prompt_digest` / `prompt_ledger`) | Claude sonnet | digest / 既報・予約・pending |
 | assemble-ledger.returned | 検算で採らなかった続報予約を、その記事だけ理由を添えて答え直させる追記(`assemble.return_reservations`。1回) | Claude sonnet | assemble-ledger と同じ |
 | collect-rules / collect-item | 収集の共通部品(何を書いてよいか / 候補1件の形) | — | — |
@@ -86,6 +89,10 @@
 - 記事の目的(purpose)の定義は plan-rules に1か所置き、拾い直し(plan-missing)にも返させる(2026-10-14): 目的は面別選定の出力にしか無く、
   面の答えが欠けて拾い直しで記事にした予約の無い締切の再告知が、目的を捨てて執筆へ「新情報」で渡った(執筆の規則で既報と同じ事実を軸に
   できず、期日の知らせを見送らせる依頼になる。監査指摘)。拾い直しの答えの形(`compose.MISSING_ROW_SCHEMA`)も目的を必須にした
+
+- `source_change` の主題(plan-rules。2026-10-26): 編集長「記事の中で時系列を扱え」。発行済み記事の出典のページが変わったとき
+  (source_watch が見回りで見つける)、記事の「その後の動き」に積むのとは別に、読者に関わる変更は続報の記事の材料にする。既報と同じ話題キーに
+  つながるので、「既報と同じ内容」で落とさず、変わった点を新しい事実として扱わせる。表示の揺れは選ばせない
 
 ### 一面(plan-lead)
 - 社説の起点を選ばせていた頃の注意(主題を1文にまとめると社説が一般論になる)は、社説の終了とともに依頼文から外した
@@ -191,6 +198,8 @@
   読めなければ(メンテナンス・5xx・429・時間切れ)原本を取得時刻つきで返す。原本で読んだページは検算でも読めたページに数え、組版が
   「…の原本を読み直せず、現在の内容は確認できていません。内容は収集時点(10月25日)に読んだ原本に基づきます」の断り書きを付ける
   (読み直して同じ内容を読めたら付けない)。404・410 は取り下げ・移動の可能性なので、原本を参考に見せるだけで書き通させない
+- `source_change` の素材(source-archive.write。2026-10-26): 出典元が告知を変えた続報は、変わった点を軸にし、前の値を「当初は」で書かせる
+  (読者は前の記事で前の値を読んでいる)。前の値は今のページに無いので、facts の「変更前」の行を根拠にさせる
 
 ### 書き直し(revise-article)
 - event_date は指摘が掛かっていなければコードが元の稿の値を写す(2026-10-03): 「現在の記事」の frontmatter には null の event_date が出ないので、
@@ -315,6 +324,15 @@
   2026-10-21 号で、アイマスch 公式の配信告知が張ったお便りフォームが「準公式 / 不明」に割れて未確認のまま載った。
   classify-link はモデルに関係だけを答えさせ(運営が誰かは問わない)、強いほうを採るのはコード(pipelib.classify_source)。
   classify-site の文書の規則も同じにした(以前の「複数なら弱いほう」「第三者の受付を紹介しているだけなら第三者の種別」は、この決定と食い違う)
+
+### 出典の変化(source-update / source-update-review)
+- 編集長 2026-10-26「履歴を全部追っているんだから、『訂正欄ではない(訂正欄は私たちが悪いものでやる)』。元のデータを出したヤツの責任として
+  訂正するべきだ。『変更になったので注意してください』なのか、『当初〇〇が参加するとありましたが訂正されました』なのか、『お詫びの品が
+  増えました』なのか。記事の中で時系列を扱え」。種類(変更・出典元の訂正・追加)はこの3つの言い方に対応させ、読者に関わらない変化
+  (表示の揺れ)と、同じページの別の告知の変化(記事に関係なし)は足させない
+- 判定と文はモデル(書き手と校閲の別ベンダーの2段)、追記・日付・出典の表示はコード。文に日付や出典を書かせないのは、表示をコードが
+  付けて形を揃えるため。校閲は「変化の行に無い事実」「前後の取り違え」「種類の取り違え」だけを止め、言い回しの好みでは止めない
+  (止めると、出典が変わったのに記事が古いまま残る)
 
 ### 当番(oncall-*)
 - 範囲は「発行に必要な最小限で、今後もちゃんと動く正しい修正」。範囲内(must_fix)は合意まで、発行後でよいもの(later)は保管、起きる道筋を言えないものは書かない(編集長 2026-09-18)。

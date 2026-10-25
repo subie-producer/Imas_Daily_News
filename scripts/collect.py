@@ -2443,6 +2443,25 @@ def verify(cands: list[dict]) -> dict:
     return counts
 
 
+def watch_sources(late=lambda: False, recheck: bool = True) -> list[dict]:
+    """発行済み記事の出典の見回りと、出典の変更の扱い(source_watch)。戻りはこの号に足す「出典の更新」の素材。
+    当番の取り直し(recheck=False)は見回らず、台帳に残った変化だけを扱う(取り直しは次の定時工程の前に終える)。
+    失敗しても収集(素材の保存)は止めない(異常として申告する)"""
+    import source_watch
+    today = now_jst().date().isoformat()
+    try:
+        arts = source_watch.published(today, ROOT)
+        if recheck:
+            source_watch.recheck(today, arts, late, root=ROOT)
+        found, applied = source_watch.process_changes(today, arts, ROOT)
+        if found or applied:
+            print(f"出典の変更: 記事に足した更新 {len(applied)}件、出典の更新の素材 {len(found)}件", flush=True)
+        return found
+    except Exception as e:      # noqa: BLE001
+        anomaly("collect", f"出典の見回り・変更の扱いが止まった({type(e).__name__}: {str(e)[:200]})。素材の保存は続ける")
+        return []
+
+
 def note_archived(c: dict, b: dict | None) -> None:
     """メンテナンスで読み直せない素材に、裏取りの最初に控えた原本(b)があればその時刻を付ける(執筆は fetch_page.py でその原本を
     読める)。控えを引き直さない(同じ URL の先の候補がこの回に残した版を指さない。Sol 監査 r8)"""
@@ -2598,6 +2617,8 @@ def run_collect(args, date: str, branch: str, t0: float) -> int:
     # この原本で照らす(Sol 監査 r2)。版は取得時刻で並べるので、裏取りが読んだ新しい版が基準になる
     kept = ingest_spools(cands)
     vcounts = verify(cands)
+    # 発行済み記事の出典の見回り(読み直して変わっていれば、記事の「その後の動き」と、この号の「出典の更新」の素材にする)
+    cands += watch_sources(deadline_passed, recheck=not args.oncall_rerun)
     # 置き場の古いものを片付ける
     try:
         pruned = page_archive.prune()

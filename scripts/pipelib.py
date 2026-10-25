@@ -75,6 +75,10 @@ def merge_candidate_facts(tgt: dict, c: dict) -> bool:
     # 収集時点の原本(page_archive)は、新しく読んだほうの取得時刻を指す
     if c.get("archived_at") and str(c["archived_at"]) > str(tgt.get("archived_at") or ""):
         tgt["archived_at"], dl_changed = c["archived_at"], True     # 変わったら保存させる(Sol 監査 r2)
+    # 出典の更新(source_change)は、同じページの候補に混ぜても失わない(続報の記事が元の記事を指すのに使う)。新しい変化を採る
+    sc = c.get("source_change")
+    if isinstance(sc, dict) and str(sc.get("to_at") or "") > str((tgt.get("source_change") or {}).get("to_at") or ""):
+        tgt["source_change"], dl_changed = sc, True
     merged =list(dict.fromkeys((tgt.get("facts") or []) + (c.get("facts") or [])))
     if len(merged) <= len(tgt.get("facts") or []):
         return dl_changed

@@ -62,6 +62,36 @@ layout: default
     <span>人間による確認なし</span>
   </div>
 
+  <!-- その後の動き(出典の変更を時系列で積む。訂正欄とは別。出典元の変更で、こちらの誤りではない) -->
+  {% capture pid %}{{ page.path | split: "/" | last | remove: ".md" }}{% endcapture %}
+  {% assign later = "" | split: "" %}
+  {% for p in site.posts %}{% if p.follows contains pid %}{% assign later = later | push: p %}{% endif %}{% endfor %}
+  {% if page.updates.size > 0 or later.size > 0 %}
+  <div style="margin-top:16px;border:1px solid #c9b37a;background:#fbf7ec">
+    <div style="display:flex;align-items:center;gap:8px;padding:8px 14px;border-bottom:1px solid #e6dcbf">
+      <span style="width:58px;box-sizing:border-box;text-align:center;font-size:10px;font-weight:700;letter-spacing:.08em;padding:3px 0;background:#8a6d1f;color:#fbf7ec">更新</span>
+      <span style="font-family:var(--font-serif);font-weight:700;font-size:13px;letter-spacing:.08em;color:#6b5418">その後の動き</span>
+    </div>
+    {% for u in page.updates %}
+    <div style="padding:10px 14px;font-size:12.5px;line-height:1.95;color:#4f4530;border-bottom:1px dashed #e6dcbf">
+      <span style="font-family:var(--font-mono);font-size:10px;color:#8a7a4f">{{ u.at | date: "%Y.%m.%d" }} ・ {{ u.kind }}</span><br>
+      {{ u.text }} <a href="{{ u.source }}" rel="noopener" style="font-size:11px;text-decoration:underline;text-underline-offset:3px;text-decoration-color:#c9b37a">出典</a>
+    </div>
+    {% endfor %}
+    {% for p in later %}
+    <div style="padding:10px 14px;font-size:12.5px;line-height:1.95;color:#4f4530;border-bottom:1px dashed #e6dcbf">
+      <span style="font-family:var(--font-mono);font-size:10px;color:#8a7a4f">{{ p.edition | date: "%Y.%m.%d" }} ・ 続報</span><br>
+      <a href="{{ p.url | relative_url }}" style="text-decoration:underline;text-underline-offset:3px">{{ p.title }}</a>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+  {% if page.follows.size > 0 %}
+  <div style="margin-top:12px;font-size:12px;color:#55524b">この記事は
+    {% for f in page.follows %}{% for p in site.posts %}{% capture fid %}{{ p.path | split: "/" | last | remove: ".md" }}{% endcapture %}{% if fid == f %}<a href="{{ p.url | relative_url }}" style="text-decoration:underline;text-underline-offset:3px">{{ p.title }}</a>{% endif %}{% endfor %}{% unless forloop.last %}・{% endunless %}{% endfor %}
+    の続報です。</div>
+  {% endif %}
+
   <div style="margin-top:20px;border-top:1px solid #dedad0"></div>
 
   <!-- 本文 -->

@@ -81,7 +81,7 @@ def materials_with_ids(materials: list[dict]) -> tuple[list[dict], dict[str, str
             fact_by_id[fid] = str(f)
             facts.append({"id": fid, "text": str(f)})
         row = {k: c.get(k) for k in ("id", "title", "url", "source_type", "published_date", "event_date",
-                                     "deadline", "verify", "via", "unbacked_facts") if c.get(k) not in (None, "", [])}
+                                     "deadline", "verify", "via", "unbacked_facts", "source_change") if c.get(k) not in (None, "", [])}
         # 続報予約に添えた素材が予約と別の話題から来たとき(まとめ記事の別の話題)、元の話題を見せる
         if c.get("src_dedup_key") and c.get("src_dedup_key") != c.get("dedup_key"):
             row["other_topic"] = c["src_dedup_key"]
@@ -625,8 +625,9 @@ def with_notice(text: str, notice: str | None) -> str:
 
 
 def render_article(path: Path, date: str, art: dict, out: dict, source_type_of, weakest_src,
-                   dump_yaml) -> None:
-    """検算済みの出力から記事ファイルを作る。段落の根拠 id は HTML コメントで残す。"""
+                   dump_yaml, follows: list[str] | None = None) -> None:
+    """検算済みの出力から記事ファイルを作る。段落の根拠 id は HTML コメントで残す。
+    follows は、素材の「出典の更新」(source_change)が指す発行済み記事(この記事はその続報。紙面で互いにリンクする)"""
     sources = []
     for s in out.get("sources") or []:
         sources.append({"label": clean_label(s.get("label")), "url": s["url"], "type": source_type_of(s["url"])})
@@ -641,6 +642,8 @@ def render_article(path: Path, date: str, art: dict, out: dict, source_type_of, 
     }
     if out.get("event_date"):
         fm["event_date"] = out["event_date"]
+    if follows:
+        fm["follows"] = sorted(dict.fromkeys(str(f) for f in follows))
     # 見出し・リードの根拠も残す(校閲が突き合わせる。監査指摘)
     fm["title_fact_ids"] = [str(i) for i in (out.get("title_fact_ids") or [])]
     fm["lede_fact_ids"] = [str(i) for i in (out.get("lede_fact_ids") or [])]

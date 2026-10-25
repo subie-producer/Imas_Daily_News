@@ -145,6 +145,28 @@
     "corrected": {
       "type": "boolean"
     },
+    "updates": {
+      "type": "array",
+      "description": "その後の動き: 出典元が告知を変えたことを時系列で積む(scripts/source_watch.py。訂正欄とは別で、こちらの誤りではない。末尾への追記だけ)",
+      "items": {
+        "type": "object",
+        "required": ["at", "kind", "text", "source"],
+        "additionalProperties": false,
+        "properties": {
+          "at": {"type": "string", "description": "追記した日時(ISO 8601, JST)"},
+          "kind": {"enum": ["変更", "出典元の訂正", "追加"], "description": "変更=日程・締切・条件の変更(注意喚起) / 出典元の訂正=出典元が誤記載を直した / 追加=出演者・品目・特典などが増えた"},
+          "text": {"type": "string", "minLength": 1},
+          "source": {"type": "string", "pattern": "^https?://"},
+          "from_at": {"type": "string", "description": "変わる前の版を読んだ時刻"},
+          "to_at": {"type": "string", "description": "変わった後の版を読んだ時刻"}
+        }
+      }
+    },
+    "follows": {
+      "type": "array",
+      "description": "この記事が続報として扱った発行済み記事(docs/_posts のファイル名。拡張子なし)。素材の source_change から組版が付ける",
+      "items": {"type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}-.+"}
+    },
     "corrections": {
       "type": "array",
       "items": {

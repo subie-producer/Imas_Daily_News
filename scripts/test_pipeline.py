@@ -3078,7 +3078,10 @@ def _browser_only_host_case(tmp: Path, url: str):
             for deadline in (None, time.time() + 600):
                 raw_calls.clear(), render_calls.clear()
                 collect.DEADLINE = deadline
-                listed, _pages, _cut = collect.list_source(src, set(), fetch=collect.watch_fetch(src))
+                try:
+                    listed = collect.list_source(src, set(), fetch=collect.watch_fetch(src))[0]
+                except Exception as e:      # noqa: BLE001  素の取得で 429 を受けた(下の検査で落とす)
+                    listed = f"{type(e).__name__}: {e}"
                 check(not raw_calls and render_calls == [url] and listed == [(url + "/item-1", "B2タペストリー(十王星南)")],
                       f"定点観測の一覧の取得が素の取得で叩いた(締切 {'あり' if deadline else 'なし'}): {raw_calls} {render_calls} {listed}")
         finally:

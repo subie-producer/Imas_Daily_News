@@ -33,12 +33,11 @@ import json
 import os
 import sys
 import urllib.error
-import urllib.parse
 import urllib.request
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from pipelib import (BROWSER_ONLY_HOSTS, PAGE_READ_BYTES, RENDER_FINAL, RenderFailed, extract_periods, html_to_text,
+from pipelib import (PAGE_READ_BYTES, RENDER_FINAL, RenderFailed, browser_only, extract_periods, html_to_text,
                      maintenance_http_error, maintenance_redirect, needs_render, note_fetched, render_page)
 import page_archive
 
@@ -57,7 +56,7 @@ class Maintenance(Exception):
 
 def fetch(url: str) -> str:
     # 素の取得に 429 を返すサイトは、素の取得をせずに最初からブラウザで読む(2026-10-26: Anime Store.JP が数回の取得で 429)
-    if urllib.parse.urlsplit(url).hostname in BROWSER_ONLY_HOSTS:
+    if browser_only(url):
         return ""
     req = urllib.request.Request(url, headers={"User-Agent": UA})
     try:
@@ -97,6 +96,11 @@ def main() -> int:
     # 保存の原本(固定の本文で走る事例は使わない)。置き場を読めなくても読み直しは続ける
     base = None if fixed else archived(page_archive.baseline, args.url)
     live = read_live(args.url, fixed)
+    if live["kind"] == "ok" and base and live.get("render_error") and page_archive.text_sha(live["text"]) != base.get("sha"):
+        # いまの読み直しは描画が要るのに描画できなかった(素の本文はナビだけのことがある)。原本の描画の有無にかかわらず、
+        # 素の本文で原本を置き換えず・変化として見せず、読み直せなかったとして原本を返す(Sol 監査 r7)
+        why = f"描画できず、素の本文だけでは原本と照らせない({live['render_error'][:200]})"
+        live = {"kind": "failed", "final": live.get("final"), "why": why, "msg": f"FETCH_FAILED: {why}"}
     if (live["kind"] == "ok" and base and base.get("rendered") and not live.get("rendered")
             and page_archive.text_sha(live["text"]) != base.get("sha")):
         # 原本は描画して読んだ本文で、いまは素の本文だけ。違いは描画の有無かもしれないので、描画して照らし直す

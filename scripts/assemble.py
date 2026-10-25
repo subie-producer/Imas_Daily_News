@@ -1222,12 +1222,15 @@ def return_reservations(date: str, inp: dict, out: dict, posts: list[dict], mats
     gone = [r for r, _ in rejected]
     redo = [r for r in again.get("reservations") or [] if isinstance(r, dict) and r.get("slug") in slugs]
     out = {**out, "reservations": [r for r in out.get("reservations") or [] if r not in gone] + redo}
-    still: list = []
-    clean, notes2 = validate(date, out, posts, mats, inp, rejected=still)
-    if still:
-        anomaly("compose", "組版: 差し戻しても採れなかった続報予約(素材が合わない・素材にその日付が無い)。この予約は無い:\n"
-                           + "\n".join(f"- {_v(r.get('slug'))}: {_v(r.get('date'))} {_v(r.get('kind'))}"
-                                       f"(candidate_id {_v(r.get('candidate_id'))}): {why}" for r, why in still))
+    clean, notes2 = validate(date, out, posts, mats, inp)
+    # 差し戻した予約ごとに、答え直しで同じ記事・日・種別の予約が採れたかを見る。答え直しが予約を省いた・また採れない形だった、の
+    # どちらも名指しする(答え直しの不合格だけを数えると、予約を省いた答えで黙って消える。Sol 監査 r1)
+    kept = {(r.get("slug"), r.get("date"), r.get("kind")) for r in clean.get("reservations") or []}
+    lost = [(r, why) for r, why in rejected if (r.get("slug"), r.get("date"), r.get("kind")) not in kept]
+    if lost:
+        anomaly("compose", "組版: 差し戻しても採れなかった続報予約(答え直しに無い・素材が合わない・素材にその日付が無い)。この予約は無い:\n"
+                           + "\n".join(f"- {_v(r.get('slug'))}: {_v(r.get('date'))} {_v(r.get('kind'))}「{_v(r.get('subject'))}」"
+                                       f"(candidate_id {_v(r.get('candidate_id'))}): {why}" for r, why in lost))
     return clean, notes + ["差し戻しのあと:"] + notes2
 
 

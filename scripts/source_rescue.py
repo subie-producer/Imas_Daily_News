@@ -37,12 +37,15 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import collect  # noqa: E402
 from pipelib import (CLI_BLOCKED_EXIT, CliBlocked, exit_on_term, now_jst, render_prompt, schema_ok,  # noqa: E402
-                     source_lacking_drops)
+                     source_lacking_drops, write_checked)
 
 MAX_PAGES = 4               # 記事1本で読むページの上限(当たりの調べの答え)
 MAX_ASKS = 2                # 記事1本で X の原本を探す問いの上限
 PLAN_TIMEOUT = 600          # 当たりの調べのセッションの上限(秒)
 VERIFY_RESERVE_SEC = 240    # 締切のうち、正規化・裏取り・素材への書き込みに残す秒数
+VERIFY_ONE_MAX = 150        # 候補1件の裏取りに掛かりうる上限(秒。取得 15 秒 + 描画 30 秒 × 3 回 + 余裕)。これが残っていなければ始めない
+VERIFY_PARALLEL = 6
+VERIFY_LATE_NOTE = "出典を揃える入口の締切までに裏取りできなかった(素材に入れない)"
 TASK_SCHEMA = {"type": "object", "required": ["kind", "why"],
                "properties": {"kind": {"enum": ["page", "x"]}, "why": {"type": "string"},
                               "url": {"type": "string", "pattern": r"^https?://\S+$"},
@@ -210,11 +213,12 @@ def grok_phase(asks_by_slug: dict[str, list[dict]], arts: dict[str, dict], outdi
 def page_phase(slug: str, pages: list[dict], brand: str, log: dict) -> list[tuple[str, dict]]:
     """記事1本の公式・当事者・報道のページを facts 化する。ページごとの応答は log に書く。"""
     batch = [{"url": p["url"], "title": "", "brand": brand, "csr": False} for p in pages]
-    try:
-        cands, tried = collect.facts_batch(batch, collect.claude_exec, {}, oncall_rerun=True, blocked=set(), unavailable=set())
-    except CliBlocked as e:
-        cands, tried = [], set()
-        log.setdefault("pages", {})[slug] = [{"url": p["url"], "why": p.get("why"), "result": f"モデル CLI の停止({e})"} for p in pages]
+    blocked: set[str] = set()
+    cands, tried = collect.facts_batch(batch, collect.claude_exec, {}, oncall_rerun=True, blocked=blocked, unavailable=set())
+    if blocked:
+        # facts 化のモデル CLI が認証切れ・利用上限で答えなかった(facts_batch が受けて、読めなかった回に数えない)
+        log.setdefault("pages", {})[slug] = [{"url": p["url"], "why": p.get("why"), "result": "モデル CLI の停止で facts 化できなかった"}
+                                             for p in pages]
         return []
     rows = []
     for p in pages:
@@ -228,6 +232,42 @@ def page_phase(slug: str, pages: list[dict], brand: str, log: dict) -> list[tupl
     for c in cands:
         c["_via"] = "explore"     # URL はモデルが選んだ(定点観測の巡回先ではない): 写しの照合を省かせない(collect.verify)
     return [(slug, c) for c in cands]
+
+
+def verify_until(cands: list[dict], until: float | None) -> None:
+    """候補を裏取りする(collect.verify。並列)。締切(until)があれば、1件の裏取りに掛かりうる上限(VERIFY_ONE_MAX。取得と描画の
+    待ちの上限の和)が残っている候補だけを始め、残りは裏取りせずに VERIFY_LATE_NOTE を付ける(締切を越えない。描画を途中で切ると
+    正しい候補を写しの不一致で落とすので、始めた裏取りは切らない)。"""
+    def one(c: dict) -> None:
+        if until is not None and time.time() + VERIFY_ONE_MAX > until:
+            c["verify"], c["verify_note"] = "unconfirmed", VERIFY_LATE_NOTE
+            return
+        collect.verify([c])
+    if cands:
+        with concurrent.futures.ThreadPoolExecutor(max_workers=min(VERIFY_PARALLEL, len(cands))) as ex:
+            list(ex.map(one, cands))
+
+
+def reverify_stored(date: str, fresh: list[dict], until: float | None) -> None:
+    """取り直した候補と同じ URL の既存の候補が、取得の失敗(相手の 429 等)で failed のまま号の素材にあれば、いま裏取りし直して
+    結果を置き換える。素材への合わせ方(merge_into_day_file)は弱いほうの裏取りを採るので、古い取得の失敗が残り、取り直せた出典が
+    使えないままになる。写しの不一致(URL の取り違え)など、取得の失敗以外の failed は置き換えない。"""
+    p = root() / "candidates" / f"{date}.json"
+    rows = read_json(p, [])
+    urls = {c["url"] for c in fresh if c.get("verify") != "failed"}
+    stale = [r for r in rows if isinstance(r, dict) and r.get("url") in urls and r.get("verify") == "failed"
+             and str(r.get("verify_note") or "").startswith("出典を取得できない")]
+    if not stale:
+        return
+    redo = [{k: v for k, v in r.items() if k not in ("verify", "verify_note", "unbacked_facts", "periods", "render_error")} for r in stale]
+    verify_until(redo, until)
+    changed = False
+    for r, n in zip(stale, redo):
+        if n.get("verify_note") != VERIFY_LATE_NOTE and n.get("verify") != "failed":
+            rows[rows.index(r)] = n
+            changed = True
+    if changed:
+        write_checked(p, json.dumps(rows, ensure_ascii=False, indent=2) + "\n")   # 書式(candidates.schema)で検めてから書く
 
 
 def unique_ids(cands: list[dict], taken: set[str]) -> None:
@@ -295,15 +335,19 @@ def rescue(date: str, slugs: list[str], until: float | None = None, dry_run: boo
     cands_of = {s: collect.normalize(items) for s, items in by_slug.items()}
     every = [c for cs in cands_of.values() for c in cs]
     unique_ids(every, set(mats))
-    if every:
-        collect.DEADLINE = None      # 裏取りは締切の残し分で行う(セッションを起動しない)
-        collect.verify(every)
+    collect.DEADLINE = None      # 裏取りはセッションを起動しない。締切は verify_until が候補ごとに守る
+    verify_until(every, until)
+    # 締切までに裏取りできなかった候補は、素材にも計画にも入れない(確かめていない出典で書かせない)
+    checked = {s: [c for c in cs if c.get("verify_note") != VERIFY_LATE_NOTE] for s, cs in cands_of.items()}
     added: dict[str, list[str]] = {}
-    if every and not dry_run:
-        collect.merge_into_day_file(every, date)
-        day = {c.get("url"): c for c in read_json(root() / "candidates" / f"{date}.json", []) if isinstance(c, dict)}
-        for s, cs in cands_of.items():
-            ids = [day[c["url"]]["id"] for c in cs if c["url"] in day and day[c["url"]].get("verify") != "failed"]
+    stored: dict[str, dict] = {}
+    if not dry_run and any(checked.values()):
+        fresh = [c for cs in checked.values() for c in cs]
+        reverify_stored(date, fresh, until)
+        collect.merge_into_day_file(fresh, date)
+        stored = {c.get("url"): c for c in read_json(root() / "candidates" / f"{date}.json", []) if isinstance(c, dict)}
+        for s, cs in checked.items():
+            ids = [stored[c["url"]]["id"] for c in cs if c["url"] in stored and stored[c["url"]].get("verify") != "failed"]
             a = arts[s]
             new = [i for i in dict.fromkeys(ids) if i not in (a.get("candidate_ids") or [])]
             if new:
@@ -311,10 +355,15 @@ def rescue(date: str, slugs: list[str], until: float | None = None, dry_run: boo
                 added[s] = new
         if added:
             write_plan(date, plan)
-    # 4. 記事ごとの結果
+    # 4. 記事ごとの結果。素材に入れたなら、保存した候補(同じ URL の既存の候補と合わせた後)がその記事の計画にあるかで決める
     for s in arts:
         cs = cands_of.get(s, [])
-        good = [c for c in cs if c.get("verify") != "failed" and c.get("source_type") in GOOD_SOURCE_TYPES]
+        if dry_run:
+            usable = [c for c in checked.get(s, [])]
+        else:
+            ids = set(arts[s].get("candidate_ids") or [])
+            usable = [stored[c["url"]] for c in checked.get(s, []) if c["url"] in stored and stored[c["url"]].get("id") in ids]
+        good = [c for c in usable if c.get("verify") != "failed" and c.get("source_type") in GOOD_SOURCE_TYPES]
         tried = [{"page": r["url"], "why": r.get("why"), "result": r["result"]} for r in (log.get("pages") or {}).get(s, [])]
         tried += [{"x": q, "posts": v} for q, v in ((log.get("asks") or {}).get(s) or {}).items()]
         report["articles"][s] = {
@@ -322,8 +371,9 @@ def rescue(date: str, slugs: list[str], until: float | None = None, dry_run: boo
             "why": whys.get(s) or str((drops.get(s) or {}).get("why") or ""),
             "plan_error": (log.get("plan_error") or {}).get(s, ""),
             "tried": tried,
-            "candidates": [{"id": c["id"], "url": c["url"], "source_type": c.get("source_type"), "verify": c.get("verify"),
-                            "note": str(c.get("verify_note") or "")[:200]} for c in cs],
+            "candidates": [{"id": c["id"], "url": c["url"], "source_type": c.get("source_type"),
+                            "verify": (stored.get(c["url"]) or c).get("verify"),
+                            "note": str((stored.get(c["url"]) or c).get("verify_note") or "")[:200]} for c in cs],
             "added_ids": added.get(s, []),
         }
     report["grok"] = log.get("grok")

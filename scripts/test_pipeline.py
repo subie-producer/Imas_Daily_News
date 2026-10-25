@@ -16562,6 +16562,7 @@ RESCUE_X = {"8.5周年": "https://x.com/imassc_official/status/21136468794940665
             "3周年記念ライブ": "https://x.com/imassc_prism/status/2113594635725807862"}
 RESCUE_PAGE = "https://www.curtain-damashii.com/item/tag/gkmas/"
 RESCUE_429 = "https://anime-store.jp/products/4580883066332"
+RESCUE_WRONG = "https://www.curtain-damashii.com/item/other-goods/"
 
 
 def rescue_fixture(tmp: Path) -> None:
@@ -16616,7 +16617,10 @@ class RescueFakes:
             return [{"page": 1, "status": "unreadable", "items": []}]
         return [{"page": 1, "status": "extracted", "items": [
             {"url": RESCUE_PAGE, "title": "学マス新作グッズ", "brand": "gaku", "facts": ["予約は2026年11月15日まで"],
-             "quote": "クッションカバー 予約は2026年11月15日まで", "deadline": "2026-11-15"}]}]
+             "quote": "クッションカバー 予約は2026年11月15日まで", "deadline": "2026-11-15"},
+            # 写しがそのページに無い候補(URL の取り違え): 裏取りで failed になり、計画に入れない
+            {"url": RESCUE_WRONG, "title": "別の商品", "brand": "gaku", "facts": ["発売は2027年3月"],
+             "quote": "このページには無い文", "deadline": "2027-03-01"}]}]
 
     def page(self, url, csr):
         if url == RESCUE_429:
@@ -16722,6 +16726,9 @@ def test_source_rescue_entry(tmp: Path):
             check(by_url.get(u, {}).get("id") in plan[s]["candidate_ids"], f"{s} の計画の素材に {u} を足していない: {plan[s]['candidate_ids']}")
             check(rep["articles"][s]["outcome"] == "揃えた", f"{s} の結果: {rep['articles'][s]}")
         check(plan["cg-ok"]["candidate_ids"] == ["c-ok"], "対象外の記事の素材を変えた")
+        wrong = by_url.get(RESCUE_WRONG) or {}
+        check(wrong.get("verify") == "failed" and wrong.get("id") not in plan["gaku-curtain-damashii-new-goods-2026"]["candidate_ids"],
+              f"裏取りで落ちる候補(写しが本文に無い)を計画に入れた・裏取りしていない: {wrong}")
         check(len({c["id"] for c in cands}) == len(cands), "素材の id が重なった")
         # 冪等: もう一度走らせても素材・計画は増えない
         n, ids = len(cands), {s: list(a["candidate_ids"]) for s, a in plan.items()}
@@ -16740,6 +16747,30 @@ def test_source_rescue_entry(tmp: Path):
     check(plan["gaku-curtain-damashii-new-goods-2026"]["candidate_ids"] == ["c-matome"], "届かないのに計画の素材を変えた")
     check(RESCUE_429 in text and "HTTP 429" in text, f"試したページと応答を書いていない:\n{text}")
     check("@imassc_official の8.5周年ログインプレゼントの告知" in text and "投稿なし" in text, f"X の問いと結果を書いていない:\n{text}")
+    # 同じ URL の既存の素材が取得の失敗(429)で failed のまま: 取り直せたら裏取りし直して置き換え、計画に入れる(Sol 監査 r1)
+    tmp3 = tmp / "stale"
+    rescue_fixture(tmp3)
+    p3 = tmp3 / "candidates" / f"{RESCUE_DATE}.json"
+    rows = json.loads(p3.read_text(encoding="utf-8")) + [cand_row("c-old", RESCUE_PAGE, brand="gaku", source_type="当事者", verify="failed",
+                                                                   verify_note="出典を取得できない: HTTPError: HTTP Error 429", facts=["予約は2026年11月15日まで"])]
+    p3.write_text(json.dumps(rows, ensure_ascii=False), encoding="utf-8")
+    with RescueFakes(tmp3):
+        rep = source_rescue.rescue(RESCUE_DATE, ["gaku-curtain-damashii-new-goods-2026"])
+    old = next(c for c in json.loads(p3.read_text(encoding="utf-8")) if c["id"] == "c-old")
+    plan = {a["slug"]: a for a in json.loads((tmp3 / "metrics" / f"plan-{RESCUE_DATE}.json").read_text(encoding="utf-8"))["articles"]}
+    check(old["verify"] != "failed" and "c-old" in plan["gaku-curtain-damashii-new-goods-2026"]["candidate_ids"]
+          and rep["articles"]["gaku-curtain-damashii-new-goods-2026"]["outcome"] == "揃えた",
+          f"取り直せた出典を、既存の取得の失敗のまま残した・計画に入れない: {old.get('verify')} {plan['gaku-curtain-damashii-new-goods-2026']} {rep['articles']}")
+    # 締切(until): 1件の裏取りの上限が残っていなければ裏取りを始めず、素材にも計画にも入れない(締切を越えない。Sol 監査 r1)
+    tmp4 = tmp / "late"
+    rescue_fixture(tmp4)
+    import time
+    with RescueFakes(tmp4):
+        rep = source_rescue.rescue(RESCUE_DATE, slugs, until=time.time() + source_rescue.VERIFY_ONE_MAX - 30)
+    cands4 = json.loads((tmp4 / "candidates" / f"{RESCUE_DATE}.json").read_text(encoding="utf-8"))
+    check(len(cands4) == 4 and all(r["outcome"] == "揃わない" for r in rep["articles"].values())
+          and source_rescue.VERIFY_LATE_NOTE in source_rescue.report_text(rep),
+          f"締切までに裏取りできない候補を素材・計画に入れた: {len(cands4)} {rep['articles']}")
 
 
 def test_oncall_recover_rescues_sources(tmp: Path):
@@ -16894,6 +16925,15 @@ def test_assemble_roundup_reservation(tmp: Path):
         clean, notes = assemble.validate(d, out, posts, mats, inp, rejected=rejected)
         clean, notes = assemble.return_reservations(d, inp, out, posts, mats, rejected, notes)
         check(not clean["reservations"] and anomalies and "shiny-ops-roundup" in anomalies[-1], f"差し戻しても採れない予約を名指ししない: {anomalies}")
+        # 答え直しが予約を省いた(正しい形の空の答え)ときも、黙って消さずに名指しする(Sol 監査 r1)
+        anomalies.clear()
+        assemble.run_session = lambda text, date, name, schema, budget=None: {"stories": [], "reservations": [],
+                                                                              "pending_add": [], "pending_remove": []}
+        rejected = []
+        clean, notes = assemble.validate(d, out, posts, mats, inp, rejected=rejected)
+        clean, notes = assemble.return_reservations(d, inp, out, posts, mats, rejected, notes)
+        check(not clean["reservations"] and anomalies and "8.5周年プレゼント受け取り締切" in anomalies[-1],
+              f"答え直しが予約を省いたら、黙って消した: {anomalies}")
     finally:
         assemble.ROOT, assemble.run_session, assemble.anomaly = saved
 

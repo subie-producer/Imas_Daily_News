@@ -5412,7 +5412,7 @@ def test_fetch_rendered_skips_images():
         sys.modules.update(fake)
         sys.modules.pop("fetch_rendered", None)
         fr = importlib.import_module("fetch_rendered")
-        fr.make_driver({"held.example": 1.0})
+        fr.make_driver(12345)
         held_args = list(got.pop("opts").args)
         fr.make_driver()
     finally:
@@ -5425,10 +5425,10 @@ def test_fetch_rendered_skips_images():
           f"描画取得が画像を読み込む(画像の多いページで読み込み完了に届かず時間切れになる): {got['opts'].prefs}")
     check(got["opts"].caps.get("goog:loggingPrefs") == {"performance": "ALL"},
           f"描画取得が性能ログを取らない(ページの 429 を見分けられない): {got['opts'].caps}")
-    # 429 で控えているホストは名前解決で差し止める(転送の行き先・ページの中の要求も送らない)。控えが無ければ付けない
-    check("--host-resolver-rules=MAP held.example ~NOTFOUND, MAP *.held.example ~NOTFOUND" in held_args
-          and not any(a.startswith("--host-resolver-rules") for a in got["opts"].args),
-          f"描画取得が 429 で控えているホストを差し止めない: {held_args}")
+    # ブラウザの接続はすべて中継(429 で控えているホストへは送らない)に通す。127.0.0.1 の宛先も通す
+    check("--proxy-server=http://127.0.0.1:12345" in held_args and "--proxy-bypass-list=<-loopback>" in held_args
+          and not any(a.startswith("--proxy-server") for a in got["opts"].args),
+          f"描画取得がブラウザの接続を中継に通さない: {held_args}")
 
 
 def test_render_failure_keeps_cause(tmp: Path):
@@ -17080,15 +17080,26 @@ def test_http429_retry(tmp: Path):
                           [doc_req("r2", "https://from.example/b"), doc_res(429, "https://from.example/b", after="7")]],
                          [[doc_req("r1", "https://from.example/a"), doc_req("r1", "https://held.example/b"),
                            ev("Network.loadingFailed", requestId="r1", type="Document", errorText="net::ERR_NAME_NOT_RESOLVED")]]):
-                saved_make = fetch_rendered.make_driver
-                fetch_rendered.make_driver = lambda holds=None, logs=logs: (cdp.append(("make_driver", holds)), FakeDriver(logs))[1]
+                class FakeProxy:
+                    """中継の偽物(ソケットを開かない)。差し止めの判断は本物と同じ held を、ブラウザの代わりに呼ぶ"""
+                    port = 4321
+
+                    def __init__(self, held):
+                        cdp.append(("proxy", held("held.example"), held("free.example")))
+                        self.blocked = {"held.example": held("held.example")}
+
+                    def close(self):
+                        cdp.append(("proxy-closed",))
+                saved_make, saved_proxy = fetch_rendered.make_driver, fetch_rendered.HoldProxy
+                fetch_rendered.make_driver = lambda proxy_port=None, logs=logs: (cdp.append(("make_driver", proxy_port)), FakeDriver(logs))[1]
+                fetch_rendered.HoldProxy = FakeProxy
                 try:
                     fetch_rendered.fetch("https://from.example/a", None, 5, {"held.example": _time.time() + 30})
                     results.append(None)
                 except Exception as e:      # noqa: BLE001
                     results.append(e)
                 finally:
-                    fetch_rendered.make_driver = saved_make
+                    fetch_rendered.make_driver, fetch_rendered.HoldProxy = saved_make, saved_proxy
         except Exception as e:      # noqa: BLE001
             results.append(e)
         finally:
@@ -17097,11 +17108,30 @@ def test_http429_retry(tmp: Path):
                     sys.modules.pop(n, None)
                 else:
                     sys.modules[n] = m
-        given = [p for c, p in cdp if c == "make_driver"]
+        given = [x[1] for x in cdp if x[0] == "make_driver"]
+        proxied = [x for x in cdp if x[0] == "proxy"]
         check(len(results) == 2 and all(type(r).__name__ == "RateLimited" for r in results)
               and "url=https://from.example/b retry-after=7" in str(results[0]) and "url=https://held.example/b" in str(results[1])
-              and given and all("held.example" in (g or {}) for g in given),
-              f"描画が控えているホストを差し止めない・200→429 の遷移や差し止めを本文にした: {results} {given[:1]}")
+              and given == [4321, 4321] and all(p[1] > _time.time() and p[2] == 0 for p in proxied)
+              and sum(1 for x in cdp if x[0] == "proxy-closed") == 2,
+              f"描画が接続を中継に通さない・控えを差し止めない・200→429 の遷移や差し止めを本文にした: {results} {cdp[:4]}")
+        # 中継の判断(接続のたびに読む): 描画を始めたあとで記録された控えも、その接続で守る。平文の HTTP は1回の要求で閉じる
+        try:
+            pipelib._host_defer("late-hold.example", 30)          # 描画中にほかのプロセスが受けた 429(共有の控え)
+            live = lambda h: pipelib.held_until(h)               # noqa: E731
+            c_host, c_port, c_out, c_until = fetch_rendered.proxy_request(b"CONNECT late-hold.example:443 HTTP/1.1\r\nHost: x\r\n\r\n", live)
+            g_host, g_port, g_out, g_until = fetch_rendered.proxy_request(
+                b"GET http://free.example:8080/x?y=1 HTTP/1.1\r\nHost: free.example:8080\r\nProxy-Connection: keep-alive\r\n"
+                b"Connection: keep-alive\r\nAccept: */*\r\n\r\n", live)
+            sub_until = fetch_rendered.proxy_request(b"CONNECT www.late-hold.example:443 HTTP/1.1\r\n\r\n", live)[3]
+        except Exception as e:      # noqa: BLE001
+            c_host = c_until = g_out = sub_until = f"{type(e).__name__}: {e}"
+            c_port = g_host = g_port = g_until = None
+        check(c_host == "late-hold.example" and c_port == 443 and isinstance(c_until, float) and c_until > _time.time()
+              and sub_until and sub_until > _time.time() and g_host == "free.example" and g_port == 8080 and g_until == 0.0
+              and isinstance(g_out, bytes) and g_out.startswith(b"GET /x?y=1 HTTP/1.1\r\n") and b"Connection: close" in g_out
+              and b"keep-alive" not in g_out.lower() and b"Accept: */*" in g_out,
+              f"中継が接続のたびに共有の控えを読まない・平文の要求を書き換えない: {c_host} {c_until} {sub_until} {g_host} {g_until} {g_out!r}")
         calls: list[float] = []
 
         def fake_rg(argv, timeout=None, cwd=None, **k):

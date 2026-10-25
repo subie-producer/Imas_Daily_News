@@ -1897,6 +1897,20 @@ def _host_until(host: str) -> float:
     return _host_slots(host, lambda nxt, until: (until, nxt, until))
 
 
+def held_until(host: str) -> float:
+    """ホストが 429 で控えている時刻(置き場のファイルとプロセスの中の写しを読むだけ。ファイルを作らない。無ければ 0)。
+    描画のブラウザの中継が、接続のたびに読む(描画を始めたあとでほかのプロセスが受けた 429 も守る)"""
+    host = site_host(f"//{host}") or (host or "").lower()
+    until = 0.0
+    try:
+        until = float((host_gap_dir() / re.sub(r"[^A-Za-z0-9.-]", "_", host)).read_text(encoding="ascii", errors="replace").split()[1])
+    except (OSError, IndexError, ValueError):
+        pass
+    with _HOST_LOCK:
+        mem = _HOST_NEXT.get(host)
+    return max(until, mem[1] if mem else 0.0)
+
+
 def held_hosts() -> dict[str, float]:
     """いま 429 で控えているホスト → 控えの時刻(置き場のファイルとプロセスの中の写し)。描画のブラウザは、このホストへの要求を送らない
     (描画の中の転送の行き先は、描画の前に分からない。Sol 監査 R429 r5)"""

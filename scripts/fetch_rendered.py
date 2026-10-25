@@ -14,6 +14,7 @@ import argparse
 import json
 import sys
 import time
+from pathlib import Path
 
 # selenium は描画するときだけ読む(429 の見分け document_status を、selenium の無い環境のテストからも動かせるように)
 
@@ -76,29 +77,142 @@ def held_match(host: str, holds) -> str | None:
 
 
 def blocked_document(entries, holds) -> str:
-    """主フレームの文書の要求が、控えているホストとして差し止められた(名前解決の差し止め --host-resolver-rules。転送の行き先を含む)
-    ときの、その URL。無ければ ""。"""
+    """主フレームの文書の要求が、控えているホスト(holds。中継 HoldProxy が差し止めたホスト)として差し止められたときの、その URL
+    (転送の行き先を含む)。HTTPS は接続の失敗(Network.loadingFailed)、平文の HTTP は中継の印の付いた応答で見える。無ければ ""。"""
     import urllib.parse
     main = _main_frame(entries)
     urls: dict[str, tuple[str, str | None]] = {}
     for method, p in _events(entries):
-        if method == "Network.requestWillBeSent" and p.get("type") == "Document":
+        if p.get("type") != "Document":
+            continue
+        if method == "Network.requestWillBeSent":
             urls[p.get("requestId")] = (str((p.get("request") or {}).get("url") or ""), p.get("frameId"))   # 転送のたびに行き先で上書き
-        elif method == "Network.loadingFailed" and p.get("type") == "Document":
+            continue
+        if method == "Network.loadingFailed":
             u, frame = urls.get(p.get("requestId"), ("", None))
-            if u and (main is None or frame in (None, main)) and held_match(urllib.parse.urlsplit(u).hostname, holds):
-                return u
+        elif method == "Network.responseReceived":
+            res = p.get("response") or {}
+            if not any(str(k).lower() == "x-imas-held" for k in (res.get("headers") or {})):
+                continue
+            u, frame = str(res.get("url") or ""), p.get("frameId")
+        else:
+            continue
+        if u and (main is None or frame in (None, main)) and held_match(urllib.parse.urlsplit(u).hostname, holds):
+            return u
     return ""
 
 
-def make_driver(holds=None):
-    """holds(429 で控えているホスト)は名前解決で差し止める: ブラウザは、そのホストへ(転送の行き先・ページの中の要求を含めて)
-    要求を送らない(実測 2026-10-26: CDP の Network.setBlockedURLs はページの中の要求だけを止め、文書の遷移・転送は止めなかった)"""
+HELD_HEADER = b"X-Imas-Held: 429"      # 中継が控えているホストへの要求を差し止めた印(平文の HTTP の応答に付ける)
+
+
+def proxy_request(head: bytes, held) -> tuple[str, int, bytes | None, float]:
+    """中継が受けた要求の頭(要求行と見出し)から (ホスト, ポート, 送る頭, 控えの時刻)。held(host) は控えの時刻(無ければ 0)。
+    CONNECT(HTTPS)は送る頭が None(中継は 200 を返して中身をそのまま通す)。平文の HTTP は要求行を origin-form にし、接続は1回の
+    要求で閉じる(1つの接続で別のホストへの要求を続けて送らせない)。控えの時刻が今より後なら、中継は相手へ接続しない"""
+    import urllib.parse
+    line, _, rest = head.partition(b"\r\n")
+    method, target, version = line.decode("latin-1").split(" ", 2)
+    if method.upper() == "CONNECT":
+        host, _, port = target.rpartition(":")
+        host, port, out = host, int(port or 443), None
+    else:
+        u = urllib.parse.urlsplit(target)
+        host, port = u.hostname or "", u.port or 80
+        keep = [h for h in rest.split(b"\r\n") if h and h.split(b":", 1)[0].strip().lower()
+                not in (b"connection", b"proxy-connection", b"keep-alive")]
+        path = (u.path or "/") + (f"?{u.query}" if u.query else "")
+        out = f"{method} {path} {version}".encode("latin-1") + b"\r\n" + b"\r\n".join(keep + [b"Connection: close"]) + b"\r\n\r\n"
+    host = host.strip("[]").lower()
+    until = held(host) or 0.0
+    return host, port, out, until if until > time.time() else 0.0
+
+
+class HoldProxy:
+    """ブラウザの接続をすべて通す中継(127.0.0.1)。接続のたびに、行き先のホストがいま 429 で控えているか(共有の控え。
+    pipelib.held_until)を読み、控えていれば相手へ接続しない(要求を送らない)。描画を始めたあとでほかのプロセスが受けた 429 も、
+    その接続の時点で守る(Sol 監査 R429 r6。起動時の一覧で名前解決を差し止めるだけでは、描画中の 429 を素通りした)。
+    blocked は差し止めたホスト → 控えの時刻"""
+    def __init__(self, held):
+        import socket
+        import threading
+        self.held, self.blocked = held, {}
+        self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        self.sock.bind(("127.0.0.1", 0))
+        self.sock.listen(128)
+        self.port = self.sock.getsockname()[1]
+        threading.Thread(target=self._serve, daemon=True).start()
+
+    def close(self) -> None:
+        try:
+            self.sock.close()
+        except OSError:
+            pass
+
+    def _serve(self) -> None:
+        import threading
+        while True:
+            try:
+                c, _ = self.sock.accept()
+            except OSError:
+                return
+            threading.Thread(target=self._handle, args=(c,), daemon=True).start()
+
+    def _handle(self, c) -> None:
+        import select
+        import socket
+        up = None
+        try:
+            c.settimeout(60)
+            head = b""
+            while b"\r\n\r\n" not in head:
+                b = c.recv(65536)
+                if not b or len(head) > 1 << 20:
+                    return
+                head += b
+            head, _, extra = head.partition(b"\r\n\r\n")
+            host, port, out, until = proxy_request(head + b"\r\n\r\n", self.held)
+            if until:
+                self.blocked[host] = until
+                c.sendall(b"HTTP/1.1 403 Forbidden\r\n" + HELD_HEADER + b"\r\nContent-Length: 0\r\nConnection: close\r\n\r\n")
+                return
+            up = socket.create_connection((host, port), timeout=30)
+            if out is None:
+                c.sendall(b"HTTP/1.1 200 Connection Established\r\n\r\n")
+            else:
+                up.sendall(out)
+            if extra:
+                up.sendall(extra)
+            socks = [c, up]
+            while True:
+                r, _, _ = select.select(socks, [], [], 60)
+                if not r:
+                    return
+                for s in r:
+                    data = s.recv(65536)
+                    if not data:
+                        return
+                    (up if s is c else c).sendall(data)
+        except Exception:       # noqa: BLE001  1つの接続の失敗は、その接続だけ閉じる(ブラウザには読み込みの失敗として見える)
+            return
+        finally:
+            for s in (c, up):
+                if s is not None:
+                    try:
+                        s.close()
+                    except OSError:
+                        pass
+
+
+def make_driver(proxy_port: int | None = None):
+    """proxy_port があれば、ブラウザの接続(転送の行き先・ページの中の要求を含む)をすべてその中継(HoldProxy)に通す。
+    127.0.0.1 の宛先も中継に通す(<-loopback>)"""
     from selenium import webdriver
     from selenium.webdriver.chrome.options import Options
     opts = Options()
-    if holds:
-        opts.add_argument("--host-resolver-rules=" + ", ".join(f"MAP {h} ~NOTFOUND, MAP *.{h} ~NOTFOUND" for h in sorted(holds)))
+    if proxy_port:
+        opts.add_argument(f"--proxy-server=http://127.0.0.1:{proxy_port}")
+        opts.add_argument("--proxy-bypass-list=<-loopback>")
     opts.add_argument("--headless=new")
     opts.add_argument("--no-sandbox")
     opts.add_argument("--disable-dev-shm-usage")
@@ -122,7 +236,7 @@ def check_documents(entries, holds: dict[str, float]) -> None:
     import urllib.parse
     blocked = blocked_document(entries, holds)
     if blocked:
-        until = holds.get(held_match(urllib.parse.urlsplit(blocked).hostname, holds) or "", time.time())
+        until = holds.get(held_match(urllib.parse.urlsplit(blocked).hostname, holds) or "", time.time())   # 控えの残りを Retry-After にする
         raise RateLimited(f"{max(0.0, until - time.time()):.1f}", blocked)
     status, after, where = document_status(entries)
     if status == 429:
@@ -130,13 +244,25 @@ def check_documents(entries, holds: dict[str, float]) -> None:
 
 
 def fetch(url: str, wait_css: str | None, timeout: int, holds: dict[str, float] | None = None) -> str:
-    """holds は 429 で控えているホスト → 控えの時刻。ブラウザはそのホストへの要求を送らずに差し止める(描画の中の転送で、
-    控えているホストへ取得しない。Sol 監査 R429 r5)。主フレームの文書を差し止めた・文書が 429 なら RateLimited"""
+    """ブラウザの接続はすべて中継(HoldProxy)を通し、接続のたびに共有の控え(pipelib.held_until)と holds(起動時に渡された控え:
+    ホスト → 控えの時刻)を読んで、控えているホストへは要求を送らない(描画の中の転送・描画中にほかのプロセスが受けた 429 も。
+    Sol 監査 R429 r5・r6)。主フレームの文書を差し止めた・文書が 429 なら RateLimited"""
     from selenium.webdriver.common.by import By
     from selenium.webdriver.support import expected_conditions as EC
     from selenium.webdriver.support.ui import WebDriverWait
-    holds = holds or {}
-    driver = make_driver(holds)
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    from pipelib import held_until
+    holds = dict(holds or {})
+
+    def held(host: str) -> float:
+        h = held_match(host, holds)
+        return max(held_until(host), holds[h] if h else 0.0)
+    proxy = HoldProxy(held)
+    try:
+        driver = make_driver(proxy.port)
+    except Exception:
+        proxy.close()
+        raise
     logs: list = []
 
     def drain() -> None:
@@ -144,6 +270,9 @@ def fetch(url: str, wait_css: str | None, timeout: int, holds: dict[str, float] 
             logs.extend(driver.get_log("performance"))
         except Exception:       # noqa: BLE001  ログを取れないブラウザでは見分けない(従来どおり描画を返す)
             pass
+
+    def check() -> None:
+        check_documents(logs, {**holds, **proxy.blocked})
     try:
         driver.set_page_load_timeout(timeout + 10)
         try:
@@ -151,10 +280,10 @@ def fetch(url: str, wait_css: str | None, timeout: int, holds: dict[str, float] 
         except Exception:
             # 読み込みが失敗・時間切れでも、差し止めた・429 だったならそちらを返す
             drain()
-            check_documents(logs, holds)
+            check()
             raise
         drain()
-        check_documents(logs, holds)
+        check()
         if wait_css:
             WebDriverWait(driver, timeout).until(
                 EC.presence_of_element_located((By.CSS_SELECTOR, wait_css))
@@ -166,10 +295,11 @@ def fetch(url: str, wait_css: str | None, timeout: int, holds: dict[str, float] 
             time.sleep(2)  # CSR の描画待ち
         # 描画を待つあいだに JS で別の文書へ移って 429 になった・差し止めたなら、その画面を本文にしない
         drain()
-        check_documents(logs, holds)
+        check()
         return driver.page_source
     finally:
         driver.quit()
+        proxy.close()
 
 
 def main() -> int:

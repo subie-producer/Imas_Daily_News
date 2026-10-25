@@ -54,7 +54,7 @@ from pipelib import (ENV, ROOT, COLLECT_MODEL, CODEX_WRITE_MODEL, EXPLORE_MODEL,
                      scratch_dir, link_key)
 from storylink import url_key
 # モデル・道具のセッションの起動と回収(自前のプロセスグループ。時間切れ・中断では子孫まで止める)
-from pipelib import STOPPING, exit_on_term, finish_group, next_slot_end, run_group, start_group, stop_groups
+from pipelib import PAGE_READ_BYTES, STOPPING, exit_on_term, finish_group, next_slot_end, run_group, start_group, stop_groups
 
 
 def page_key(url) -> str | None:
@@ -2163,7 +2163,7 @@ def verify(cands: list[dict]) -> dict:
                     continue
                 with opened as res:
                     ok = res.status < 400
-                    body = res.read(400_000) if ok else b""
+                    body = res.read(PAGE_READ_BYTES) if ok else b""
                     cs = res.headers.get_content_charset()
                     final = res.geturl()
                 # メンテナンス画面へ転送されたら、案内は出典の本文ではない。写しが無いのは URL の取り違えではなく、今は確かめられないだけ

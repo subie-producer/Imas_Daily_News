@@ -1764,10 +1764,11 @@ def _host_reserve(host: str, max_wait: float, limit: float | None = None) -> flo
     limit(締切までの残り)を超える待ちも予約せず RateLimitWait(間隔だけなら rate_limited でない。429 を受けていないのに 429 としない)"""
     def decide(nxt: float, until: float):
         now = time.time()
-        if until > now and until - now > max_wait:
-            raise RateLimitWait(f"{host} は {until - now:.0f} 秒後まで取得を控える(429 の求めた待ち)。"
-                                f"待ってよい {max(0.0, max_wait):.0f} 秒を超える", True)
         start = max(now, nxt, until)
+        # 429 で控えているあいだは、控えのあとの枠(並列の取得が先に予約した分を含む)までの実際の待ちを上限と比べる(Sol 監査 R429 r3)
+        if until > now and start - now > max_wait:
+            raise RateLimitWait(f"{host} は 429 で控えていて、取得の順番が {start - now:.0f} 秒後。"
+                                f"待ってよい {max(0.0, max_wait):.0f} 秒を超える", True)
         if limit is not None and start - now > limit:
             raise RateLimitWait(f"{host} への取得の順番({start - now:.1f} 秒後)が締切までの残り {max(0.0, limit):.1f} 秒を超える", until > now)
         return start - now, start + HOST_GAP, until
@@ -2769,6 +2770,7 @@ def render_page(url: str, timeout: int = 30, limit: float | None = None) -> str:
     budget = _Budget(None if limit is None else time.time() + limit)     # 待ち・描画・描画し直しのどれも締切を越えない
     tries, seen429 = 0, False
     host = site_host(url)
+    hosts = [host]      # 描画の前に順番を待つホスト(転送の行き先が 429 を返したら、そのホストも足す)
 
     def give_up(why: str, rate: bool):
         if seen429 or rate:
@@ -2776,7 +2778,8 @@ def render_page(url: str, timeout: int = 30, limit: float | None = None) -> str:
         raise RenderFailed(f"{url} を描画しない: {why}")
     while True:
         try:
-            _wait_turn(host, budget)
+            for h in hosts:
+                _wait_turn(h, budget)
         except RateLimitWait as e:
             give_up(str(e), e.rate_limited)
         left = budget.left(time.time())
@@ -2796,7 +2799,12 @@ def render_page(url: str, timeout: int = 30, limit: float | None = None) -> str:
             m = re.search(r"retry-after=([^\n]*)", r.stderr or "")
             after = retry_after_seconds({"Retry-After": m.group(1).strip() if m else ""})
             seen429 = True
-            _host_defer(host, after)
+            # 控えは 429 を返した文書のホスト(ブラウザが転送したなら行き先。Sol 監査 R429 r3)。描画し直す前はそのホストの順番も待つ
+            w = re.search(r"\burl=(\S+)", r.stderr or "")
+            responder = (site_host(w.group(1)) if w and w.group(1) != "-" else "") or host
+            _host_defer(responder, after)
+            if responder not in hosts:
+                hosts.append(responder)
             room = budget.left429(time.time())
             if tries >= RATE_LIMIT_TRIES or after > room:
                 raise RenderFailed(f"{url} の描画: 429 で読めなかった(取り直し {tries} 回・待ち {budget.waited:.0f} 秒。"

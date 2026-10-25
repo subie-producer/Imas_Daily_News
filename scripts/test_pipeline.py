@@ -16876,13 +16876,14 @@ def test_http429_retry(tmp: Path):
             import fetch_rendered
             entries = [{"message": json.dumps({"message": {"method": "Network.requestWillBeSent", "params": {}}})},
                        {"message": json.dumps({"message": {"method": "Network.responseReceived", "params": {
-                           "type": "Document", "response": {"status": 429, "headers": {"Retry-After": "60"}}}}})},
+                           "type": "Document", "response": {"status": 429, "headers": {"Retry-After": "60"},
+                                                            "url": "https://to.example/x"}}}})},
                        {"message": json.dumps({"message": {"method": "Network.responseReceived", "params": {
                            "type": "Document", "response": {"status": 200, "headers": {}}}}})}]
             st = fetch_rendered.document_status(entries)
         except Exception as e:      # noqa: BLE001
             st = f"{type(e).__name__}: {e}"
-        check(st == (429, "60"), f"描画の文書の応答の状態コード・Retry-After を読めない: {st}")
+        check(st == (429, "60", "https://to.example/x"), f"描画の文書の応答の状態コード・Retry-After・URL を読めない: {st}")
         calls: list[float] = []
 
         def fake_rg(argv, timeout=None, cwd=None, **k):
@@ -16938,6 +16939,40 @@ def test_http429_retry(tmp: Path):
         spent = _time.time() - t0
         check(isinstance(err, pipelib.RenderFailed) and getattr(err, "status", None) == 429 and spent < 0.6 and len(calls) == 1,
               f"描画の締切に収まらない 429 の待ちを待った・状態コードを落とした: {err!r} {spent:.2f} 秒 描画 {len(calls)} 回")
+        # 描画のページが別のホストへ転送されて 429 なら、控えは応答したホストに付け、描画し直す前にそのホストの順番を待つ(Sol 監査 R429 r3)
+        calls.clear()
+
+        def redirected_429(argv, timeout=None, cwd=None, **k):
+            calls.append(_time.time())
+            if len(calls) == 1:
+                return subprocess.CompletedProcess(argv, 75, "", "RENDER_FAILED: HTTP 429 url=http://render-to.example/x retry-after=1\n")
+            return subprocess.CompletedProcess(argv, 0, "<html>描画した本文</html>", "")
+        pipelib.run_group = redirected_429
+        try:
+            got = pipelib.render_page("http://render-from.example/x", 5)
+        except Exception as e:      # noqa: BLE001
+            got = f"{type(e).__name__}: {e}"
+        to_until, from_until = pipelib._host_until("render-to.example"), pipelib._host_until("render-from.example")
+        check("描画した本文" in got and len(calls) == 2 and calls[1] - calls[0] >= 0.9 and to_until >= calls[0] + 0.9
+              and from_until < calls[0] + 0.5,
+              f"描画の転送先の 429 の控えを応答したホストに付けない・守らない: {got[:120]!r} 控え 行き先 {to_until - calls[0]:.2f} "
+              f"元 {from_until - calls[0]:.2f} 間隔 {[round(b - a, 2) for a, b in zip(calls, calls[1:])]}")
+        # 429 の控えと並列の取得の予約が重なるときは、予約を含む実際の待ちを上限と比べる(Sol 監査 R429 r3)
+        pipelib.HOST_GAP = 0.3
+        try:
+            pipelib._host_defer("overlap.example", 0.2)
+            pipelib._host_reserve("overlap.example", 10)       # 並列の取得が控えのあとの最初の枠を取った
+            t0 = _time.time()
+            try:
+                pipelib.polite_urlopen(urllib.request.Request("http://overlap.example/ov"), timeout=10, wait_deadline=_time.time() + 0.3)
+                err = None
+            except Exception as e:      # noqa: BLE001
+                err = e
+            spent = _time.time() - t0
+        finally:
+            pipelib.HOST_GAP = 0.0
+        check(isinstance(err, urllib.error.HTTPError) and err.code == 429 and not hits.get("/ov") and spent < 0.15,
+              f"429 の控えと予約が重なり、上限を越えて待って取得した: {err!r} 取得 {len(hits.get('/ov', []))} 回 {spent:.2f} 秒")
         # 8. 相手の求めた待ちが上限を超えるときは、待たずにその場で 429 で読めなかったとする
         t0 = _time.time()
         rc, out = run_fetch_page(base + "/long")

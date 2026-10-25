@@ -24,14 +24,15 @@ RATE_LIMITED = 75
 
 
 class RateLimited(Exception):
-    """文書の応答が HTTP 429(2026-10-26: 描画した 429 の画面を本文として返していた。呼び出し側が Retry-After を守って描画し直す)"""
-    def __init__(self, retry_after: str):
-        super().__init__(f"HTTP 429 retry-after={retry_after or '-'}")
+    """文書の応答が HTTP 429(2026-10-26: 描画した 429 の画面を本文として返していた。呼び出し側が Retry-After を守って描画し直す)。
+    url は 429 を返した文書の URL(転送されたなら行き先。呼び出し側は、そのホストに控えを付ける)"""
+    def __init__(self, retry_after: str, url: str = ""):
+        super().__init__(f"HTTP 429 url={url or '-'} retry-after={retry_after or '-'}")
         self.retry_after = retry_after
 
 
-def document_status(entries) -> tuple[int | None, str]:
-    """性能ログ(performance)から、最初の文書(Document)の応答の (状態コード, Retry-After)。見つからなければ (None, "")。"""
+def document_status(entries) -> tuple[int | None, str, str]:
+    """性能ログ(performance)から、最初の文書(Document)の応答の (状態コード, Retry-After, 応答の URL)。見つからなければ (None, "", "")。"""
     for e in entries or []:
         try:
             msg = json.loads(e.get("message") or "{}").get("message") or {}
@@ -45,8 +46,9 @@ def document_status(entries) -> tuple[int | None, str]:
         res = params.get("response") or {}
         heads = {str(k).lower(): str(v) for k, v in (res.get("headers") or {}).items()}
         status = res.get("status")
-        return (int(status) if isinstance(status, (int, float)) else None), heads.get("retry-after", "").strip()
-    return None, ""
+        return ((int(status) if isinstance(status, (int, float)) else None), heads.get("retry-after", "").strip(),
+                str(res.get("url") or ""))
+    return None, "", ""
 
 
 def make_driver():
@@ -77,11 +79,11 @@ def fetch(url: str, wait_css: str | None, timeout: int) -> str:
         driver.set_page_load_timeout(timeout + 10)
         driver.get(url)
         try:
-            status, after = document_status(driver.get_log("performance"))
+            status, after, where = document_status(driver.get_log("performance"))
         except Exception:       # noqa: BLE001  ログを取れないブラウザでは見分けない(従来どおり描画を返す)
-            status, after = None, ""
+            status, after, where = None, "", ""
         if status == 429:
-            raise RateLimited(after)
+            raise RateLimited(after, where or driver.current_url)
         if wait_css:
             WebDriverWait(driver, timeout).until(
                 EC.presence_of_element_located((By.CSS_SELECTOR, wait_css))

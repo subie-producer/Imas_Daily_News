@@ -178,6 +178,10 @@ COLLECT_ITEM = prompt_part("collect-item")
 
 
 def http_get(url: str, timeout: int = 20) -> str:
+    # 素の取得に 429 を返すサイト(browser_only)は描画して読む。定点観測の一覧(type: html の観測先)もここを通る
+    # (2026-10-26 編集長「429を出すようなアクセスはするな」。Sol 監査 CHR r1 later)。締切があれば待ちは残り時間で切る
+    if browser_only(url):
+        return fetch_rendered(url, limit=watch_limit(90))
     return watch_get(url, timeout)[0].decode("utf-8", errors="replace")
 
 

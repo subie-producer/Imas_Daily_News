@@ -2991,21 +2991,28 @@ def test_browser_only_hosts_use_chrome(tmp: Path):
     """素の取得に 429 を返すサイト(pipelib.BROWSER_ONLY_HOSTS)は、ページを取るどの経路も urllib で叩かず描画取得(Chrome)で読む
     (2026-10-26: Anime Store.JP が数回の取得で 429。編集長「429を出すようなアクセスはするな。Chromeを使え。」)。
     経路: 執筆・校閲・facts 化のセッションの fetch_page.py / facts 化に渡す本文(page_html_or_note) / 裏取り(verify) /
-    出典の判定の材料(page_meta・page_excerpt) / lint の死活確認(url_alive)"""
-    import contextlib, io
+    出典の判定の材料(page_meta・page_excerpt) / lint の死活確認(url_alive) / 定点観測の一覧(list_source)。一覧の全ホストで検める
+    (Sol 監査 CHR r1 later: mining-base だけ素の取得へ進む壊し方を見逃した)"""
+    check(pipelib.browser_only("https://anime-store.jp/x") and pipelib.browser_only("https://www.anime-store.jp/x")
+          and pipelib.browser_only("https://shop.mining-base.co.jp/products/1")
+          and not pipelib.browser_only("https://anime-store.jp.example.com/x") and not pipelib.browser_only("https://example.com/")
+          and not pipelib.browser_only(""), "描画でしか読まないサイトの見分け")
+    check(pipelib.BROWSER_ONLY_HOSTS <= pipelib.render_hosts(), "描画でしか読まないサイトを描画必須のサイトに含めない")
+    for host in sorted(pipelib.BROWSER_ONLY_HOSTS):
+        _browser_only_host_case(tmp / host, f"https://{host}/products/4580883066165")
+
+
+def _browser_only_host_case(tmp: Path, url: str):
+    """test_browser_only_hosts_use_chrome の1ホスト分"""
+    import contextlib, io, time
     import classify_sources
     import collect
     import fetch_page
     import lint
     tmp.mkdir(parents=True, exist_ok=True)
-    url = "https://anime-store.jp/products/4580883066165"
     body = "学園アイドルマスター B2タペストリー(十王星南)。予約受付期間: 2026年10月25日～2026年11月15日 23:59。価格 5,500円(税込)。" * 8
-    rendered = f"<html><head><title>B2タペストリー(十王星南) | Anime Store.JP</title></head><body><p>{body}</p></body></html>"
-    check(pipelib.browser_only(url) and pipelib.browser_only("https://www.anime-store.jp/x")
-          and pipelib.browser_only("https://shop.mining-base.co.jp/products/1")
-          and not pipelib.browser_only("https://anime-store.jp.example.com/x") and not pipelib.browser_only("https://example.com/")
-          and not pipelib.browser_only(""), "描画でしか読まないサイトの見分け")
-    check(pipelib.BROWSER_ONLY_HOSTS <= pipelib.render_hosts(), "描画でしか読まないサイトを描画必須のサイトに含めない")
+    rendered = (f"<html><head><title>B2タペストリー(十王星南) | Anime Store.JP</title></head><body><p>{body}</p>"
+                f'<ul><li><a href="{url}/item-1">B2タペストリー(十王星南)</a></li></ul></body></html>')
     raw_calls: list[str] = []
 
     def raw(req, *a, **k):
@@ -3064,6 +3071,18 @@ def test_browser_only_hosts_use_chrome(tmp: Path):
         collect.fetch_rendered = render_ok
         html, why = collect.page_html_or_note(url, False)
         check(not raw_calls and html == rendered and not why, f"facts 化の本文の取得が素の取得で叩いた: {raw_calls} {why}")
+        # 定点観測の一覧(type: html の観測先): 締切の無い取得(list_source の既定)も、締切のある取得(watch_fetch)も描画する
+        src = {"id": "boh", "type": "html", "url": url, "base": url, "list_regex": r'<a href="([^"]+/item-\d+)">([^<]+)</a>'}
+        saved_d = collect.DEADLINE
+        try:
+            for deadline in (None, time.time() + 600):
+                raw_calls.clear(), render_calls.clear()
+                collect.DEADLINE = deadline
+                listed, _pages, _cut = collect.list_source(src, set(), fetch=collect.watch_fetch(src))
+                check(not raw_calls and render_calls == [url] and listed == [(url + "/item-1", "B2タペストリー(十王星南)")],
+                      f"定点観測の一覧の取得が素の取得で叩いた(締切 {'あり' if deadline else 'なし'}): {raw_calls} {render_calls} {listed}")
+        finally:
+            collect.DEADLINE = saved_d
         # 裏取り: 描画した本文で照合する。描画は1回だけ(照合のたびにブラウザを起動しない)
         raw_calls.clear(), render_calls.clear()
         cv = collect.normalize([{"url": url, "title": "B2タペストリー(十王星南)", "facts": ["予約受付期間: 2026年10月25日～11月15日"],
@@ -5536,6 +5555,10 @@ def test_fetch_rendered_skips_images():
                 sys.modules[n] = m
     check(got["opts"].prefs.get("prefs", {}).get("profile.managed_default_content_settings.images") == 2,
           f"描画取得が画像を読み込む(画像の多いページで読み込み完了に届かず時間切れになる): {got['opts'].prefs}")
+    # 自動操作の印を出さない(出すと Anime Store.JP は Google のトップへ転送した。2026-10-26。Sol 監査 CHR r1 later)
+    check("--disable-blink-features=AutomationControlled" in got["opts"].args
+          and got["opts"].prefs.get("excludeSwitches") == ["enable-automation"],
+          f"描画取得が自動操作の印を出す: {got['opts'].args} {got['opts'].prefs}")
 
 
 def test_render_failure_keeps_cause(tmp: Path):

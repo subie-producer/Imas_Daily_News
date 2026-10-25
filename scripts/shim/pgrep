@@ -3,13 +3,12 @@
 # 本物を -A(自分の祖先を除く)付きで呼ぶ。待ちのループを回すシェル・セッションの CLI・当番自身は、コマンド行に名前を含んでいても
 # 当たらない・止められない。2026-10-25 12:31 の当番は `until ! pgrep -f "scripts/selfcheck.py"` が自分のシェルに当たって
 # 600 秒待ち、`pkill -f "pgrep -f scripts/selfcheck"` で自分のテストを止めた。
-here=$(cd "$(dirname "$0")" && pwd)
-p=
+# 本物は PATH のうち、このファイル(リンクの先も)と同じでない最初のものを絶対パスで呼ぶ(自分を呼び直さない)。
+name=${0##*/}
 IFS=:
 for d in $PATH; do
-    [ "$d" = "$here" ] || p="${p:+$p:}$d"
+    [ -n "$d" ] && [ -x "$d/$name" ] && [ ! "$d/$name" -ef "$0" ] && { unset IFS; exec "$d/$name" -A "$@"; }
 done
 unset IFS
-PATH=$p
-export PATH
-exec "$(basename "$0")" -A "$@"
+echo "$name: 本物の $name が PATH に無い" >&2
+exit 127

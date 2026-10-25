@@ -15627,6 +15627,19 @@ def test_oncall_session_waits(tmp: Path):
     check(seen.get("CLAUDE_CODE_DISABLE_BACKGROUND_TASKS") == "1" and int(seen.get("BASH_MAX_TIMEOUT_MS") or 0) >= 600000
           and int(seen.get("BASH_DEFAULT_TIMEOUT_MS") or 0) >= 600000 and seen.get("PATH0") == str(getattr(oncall, "SHIM_DIR", None)),
           f"当番の claude に裏のタスクを止める・前景で待つ設定と、pgrep の道具の PATH が渡らない: {seen}")
+    # 道具は PATH に別の綴り(リンク)で載っていても自分を呼び直さない
+    shim = Path(getattr(oncall, "SHIM_DIR", tmp / "none"))
+    alias = tmp / "shim-alias"
+    if shim.is_dir() and not alias.exists():
+        alias.symlink_to(shim)
+    odd = f"{shim}/../{shim.name}"      # 正規化していない綴り
+    for tool in ("pgrep", "pkill"):
+        try:
+            r = subprocess.run([f"{odd}/{tool}", "-x", mark], env={"PATH": f"{odd}:{alias}:{shim}:{os.environ.get('PATH', '')}"},
+                               capture_output=True, text=True, timeout=5)
+            check(r.returncode == 1, f"{tool} の道具が本物を呼ばない: {r.returncode} {r.stderr[-200:]}")
+        except (OSError, subprocess.TimeoutExpired) as e:
+            check(False, f"{tool} の道具が PATH の別の綴りの自分を呼び直した: {e!r}")
     # 監査(codex): 答えのファイルを書いたあと、残った子を待って終わらない
     repo = tmp / "repo"
     repo.mkdir(exist_ok=True)

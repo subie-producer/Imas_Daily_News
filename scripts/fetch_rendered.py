@@ -33,6 +33,9 @@ def make_driver() -> webdriver.Chrome:
     opts.add_argument("--window-size=1280,2400")
     opts.add_argument("--lang=ja-JP")
     opts.add_argument(f"--user-agent={UA}")
+    # 自動操作の印を出さない。出すと Anime Store.JP などは Google のトップへ転送し、本文の代わりに検索ページを返す(2026-10-26)
+    opts.add_argument("--disable-blink-features=AutomationControlled")
+    opts.add_experimental_option("excludeSwitches", ["enable-automation"])
     # 画像は読み込まない。読むのは文字だけで、画像の多い一覧ページは画像の読み込みが終わらず読み込み完了を待つ所で
     # 時間切れになっていた(実測 2026-10-07: columbia.jp/idolmaster/ が 700件超の画像待ちで毎回 40 秒で落ちた)
     opts.add_experimental_option("prefs", {"profile.managed_default_content_settings.images": 2})

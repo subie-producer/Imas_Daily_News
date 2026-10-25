@@ -145,6 +145,21 @@ def collect_deadline(oncall_rerun: bool, now: datetime.datetime | None = None) -
     return next_slot_end(now or now_jst())
 
 
+# この実行の記録(started_at・trigger、記録を積んだか recorded)。main が起動時に決め、実行記録(append_metric)に載せる
+RUN: dict = {}
+
+
+def run_trigger(oncall_rerun: bool) -> str:
+    """起動のされ方: 当番の取り直し(oncall)/ systemd の timer(INVOCATION_ID がある: timer)/ 手で回した(manual)。
+    当番は timer の起動した収集から呼ばれて INVOCATION_ID を受け継ぐので、取り直しを先に見る(collect_deadline と同じ)。"""
+    return "oncall" if oncall_rerun else "timer" if os.environ.get("INVOCATION_ID") else "manual"
+
+
+def run_record() -> dict:
+    """実行記録に載せる開始時刻と起動のされ方(main を通らない呼び出しでは空)。"""
+    return {k: RUN[k] for k in ("started_at", "trigger") if k in RUN}
+
+
 def deadline_passed() -> bool:
     """収集の締切を過ぎたか。過ぎたら新しいセッション(やり直し・深掘りも)を起動しない。"""
     return bool(DEADLINE) and time.time() >= DEADLINE
@@ -2478,6 +2493,8 @@ def main() -> int:
     # 収集の締切は**排他を待つ前**に決める(待った分だけ延ばさない)
     global DEADLINE
     DEADLINE = collect_deadline(args.oncall_rerun)
+    # 実行記録の開始と起動のされ方(組版が、定時の回ごとに記録があるかを検める: pipelib.collect_slot_gaps)
+    RUN.update(started_at=now_jst().isoformat(timespec="seconds"), trigger=run_trigger(args.oncall_rerun), recorded=False)
     exit_on_term()      # SIGTERM でも、起動したセッションを子孫ごと止めてから終わる(既定の SIGTERM は後始末を走らせない)
     # 同じ作業ツリーを compose/release/当番と同時に触らない(監査指摘)。当番の再実行が長引くと
     # ここで待つ。空かなければこの回は諦める(次の timer で拾う)
@@ -2534,9 +2551,10 @@ def run_collect(args, date: str, branch: str, t0: float) -> int:
         # 一度に差し替える(直接の上書きが途中で止まると、切れた JSON が残り次の収集が既読を読めない。監査指摘 2026-10-14)
         write_atomic(STATE_PATH, json.dumps(watch_state, ensure_ascii=False, indent=1) + "\n")
     dur = int(time.time() - t0)
-    append_metric("collect", {"edition": date, "watch": watch_info, "per_query": per_query,
+    append_metric("collect", {"edition": date, **run_record(), "watch": watch_info, "per_query": per_query,
                               "normalized": len(cands), "added": added, "verify": vcounts,
                               "duration_s": dur})
+    RUN["recorded"] = True
     summary = f"{date}号向け: 新規{added}件(正規化{len(cands)}・{vcounts}) {dur}秒"
     print(summary, flush=True)
     # 判定表に無い出典は「未確認」になる。放っておくと未確認の記事が増えるだけなので、
@@ -2654,6 +2672,12 @@ def settle_interrupted(date: str, branch: str, e: BaseException) -> None:
     確定できなければ、作業ツリーに残ったものを名指しする(当番のなぜなぜへ)。"""
     _TERM["defer"] = True
     why = "SIGTERM で打ち切られた" if isinstance(e, Terminated) else f"例外 {type(e).__name__}"
+    if not RUN.get("recorded"):
+        # 実行記録を残す前に終わった回は、終わり方を記録に積んで素材と一緒に確定する(組版が定時の回ごとに名指しする)
+        try:
+            append_metric("collect", {"edition": date, **run_record(), "interrupted": why})
+        except Exception as e3:      # noqa: BLE001
+            print(f"途中で終わった実行の記録を積めなかった: {type(e3).__name__}: {e3}", flush=True)
     try:
         dropped = settle_collect_outputs(ROOT)
         ok = commit_and_push(branch, f"collect {now_jst().strftime('%H:%M')}: 途中で終わった収集の素材を確定({why})",

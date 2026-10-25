@@ -5978,12 +5978,27 @@ def test_collect_oncall_rerun_exit(tmp: Path):
         collect.ROOT = tmp
         collect.job_lock = lambda *a, **k: None
         collect.run_explores = lambda *a, **k: ([], {})
-        collect.append_metric = lambda *a, **k: None
+        metrics = []
+        collect.append_metric = lambda kind, data: metrics.append((kind, data))
         collect.notify = lambda *a, **k: True
         argv = ["collect", "--no-git", "--oncall-rerun", "--skip-explore", "--skip-grok", "--date", "2026-09-13"]
         collect.run_watch = lambda call, oncall_rerun=False: ([], {"deferred": 2, "new": 2, "facted": 0})
         sys.argv = list(argv)
         check(collect.main() == 1, "拾い直しで読めないバッチが残ったのに成功(0)で終えた")
+        # 実行記録に開始と起動のされ方を載せる。取り直しは定時の回の代わりにならない(組版の collect_slot_gaps が見分ける)
+        check(len(metrics) == 1 and metrics[0][1].get("trigger") == "oncall" and isinstance(metrics[0][1].get("started_at"), str)
+              and metrics[0][1].get("edition") == "2026-09-13", f"実行記録に開始・起動のされ方(当番の取り直し)が無い: {metrics}")
+        saved_inv = os.environ.get("INVOCATION_ID")
+        try:
+            os.environ["INVOCATION_ID"] = "test"
+            check(collect.run_trigger(False) == "timer" and collect.run_trigger(True) == "oncall",
+                  "systemd の起動(INVOCATION_ID)を timer、当番の取り直しを oncall にしない")
+            del os.environ["INVOCATION_ID"]
+            check(collect.run_trigger(False) == "manual", "手で回した収集を manual にしない")
+        finally:
+            os.environ.pop("INVOCATION_ID", None)
+            if saved_inv is not None:
+                os.environ["INVOCATION_ID"] = saved_inv
         check((tmp / "candidates" / "2026-09-13.json").exists(), "候補を --date の号(取り込み先)へ書いていない")
         collect.run_watch = lambda call, oncall_rerun=False: ([], {"deferred": 0, "new": 2, "facted": 2})
         sys.argv = list(argv)
@@ -6110,7 +6125,10 @@ pipelib.ENV.pop("DISCORD_WEBHOOK_URL", None)
 root = Path({str(root)!r})
 collect.ROOT = pipelib.ROOT = root
 collect.STATE_PATH = root / "stock" / "watch-state.json"
+real_metric = collect.append_metric
 def pause(*a, **k):
+    if Path({str(ready)!r}).exists():      # 止めるのは最初の1回(後始末が途中で終わった記録を積むときは止めない)
+        return real_metric(*a, **k)
     Path({str(ready)!r}).write_text("ここで止めた")
     time.sleep(60)
 def note(job, msg, ok=True, require=False):
@@ -6165,8 +6183,111 @@ sys.exit(code)
     # 素材と既読状態を保存したあと(記録・判定・commit の前)
     out = run("saved", "append_metric", [])
     check("SIGTERM" in out, f"打ち切られたことを申告しない: {out[-400:]}")
+    # 実行記録を積む前に打ち切られた回は、終わり方(interrupted)と開始・起動のされ方を記録に積んで確定する(組版が定時の回ごとに検める)
+    day = pipelib.now_jst().strftime("%Y-%m-%d")
+    recs = (_json_or_none(_remote_file(tmp / "saved" / "w", f"metrics/{day}.json")) or {}).get("collect", [])
+    check(len(recs) == 1 and recs[0].get("interrupted") == "SIGTERM で打ち切られた" and recs[0].get("edition") == "2026-10-14"
+          and recs[0].get("trigger") in ("manual", "timer") and isinstance(recs[0].get("started_at"), str),
+          f"打ち切られた収集の終わり方を実行記録に残して確定しない: {recs}")
     # 確定(commit・push)のあとの通知の最中: 飲み込まずに終える(監査指摘: 確定のあとも SIGTERM を遅らせ続けて 0 で終えた)
     run("committed", "notify", ["--oncall-rerun"])
+
+
+def test_compose_collect_slot_gaps(tmp: Path):
+    """組版は、その号の素材を集める定時の収集(前号の発行のあと〜締切前スイープ 02:00)の回ごとに実行記録を検め、欠けた回だけを
+    名指しして通知し、異常の台帳に積む。時刻の窓では見ない(2026-10-26: 定時は全部走っていたのに、04:41 の再実行が「直近2時間の
+    collect 実行記録が無い」と通知した。編集長「定時にやったログ(それぞれの時間)が無いときに問題である」)。
+    記録は 10/26 号の実物の形(at・duration_s。started_at・trigger の無い古い記録)と、新しい形(started_at・trigger・interrupted)。"""
+    import datetime as _dt
+    T = lambda d, hm: _dt.datetime.fromisoformat(f"{d}T{hm}:00+09:00")
+
+    def rec(at, dur, edition="2026-10-26", **extra):
+        return {"at": at, "edition": edition, "added": 1, "duration_s": dur, **extra}
+
+    real = {"2026-10-25": [rec("2026-10-25T02:18:49+09:00", 1091, "2026-10-25"), rec("2026-10-25T07:31:53+09:00", 76),
+                           rec("2026-10-25T12:31:41+09:00", 63), rec("2026-10-25T18:34:20+09:00", 223),
+                           rec("2026-10-25T23:32:45+09:00", 127)],
+            "2026-10-26": [rec("2026-10-26T02:20:17+09:00", 1179)]}
+
+    def run(case: str, files: dict, times: list[str]):
+        root = tmp / case
+        (root / "metrics").mkdir(parents=True)
+        for day, runs in files.items():
+            (root / "metrics" / f"{day}.json").write_text(json.dumps({"collect": runs}, ensure_ascii=False), encoding="utf-8")
+        saved = (compose.ROOT, pipelib._QUIET, list(pipelib.ANOMALIES), dict(pipelib.ANOMALY_KEYS))
+        out = []
+        try:
+            compose.ROOT = root
+            pipelib.set_quiet(True)
+            for hm in times:
+                del pipelib.ANOMALIES[:]
+                gaps = compose.warn_collect_gaps("2026-10-26", T(hm[:10], hm[11:]) if "T" in hm else T("2026-10-26", hm))
+                out.append((gaps, list(pipelib.ANOMALIES), [pipelib.anomaly_key(e) for e in pipelib.ANOMALIES]))
+        finally:
+            compose.ROOT, pipelib._QUIET = saved[0], saved[1]
+            pipelib.ANOMALIES[:] = saved[2]
+            pipelib.ANOMALY_KEYS.clear()
+            pipelib.ANOMALY_KEYS.update(saved[3])
+        return out
+
+    # 1) 10/26 の形: 定時は全部あり、組版の再実行が 04:00・04:41・05:15 → 何も言わない
+    for gaps, entries, _ in run("all", real, ["04:00", "04:41", "05:15"]):
+        check(not gaps and not entries, f"定時の収集が全部あるのに、組版の再実行の時刻で欠けたと通知した: {gaps} {entries}")
+    # 2) 02:00 の回が無い・23:30 の回が異常終了(後始末が interrupted を積んだ)。当番の取り直し・手で回した収集はその回の代わりにしない
+    broken = {"2026-10-25": real["2026-10-25"][:4] + [
+                  {"at": "2026-10-25T23:41:02+09:00", "edition": "2026-10-26", "started_at": "2026-10-25T23:30:04+09:00",
+                   "trigger": "timer", "interrupted": "SIGTERM で打ち切られた"}],
+              "2026-10-26": [rec("2026-10-26T02:41:00+09:00", 300, started_at="2026-10-26T02:36:00+09:00", trigger="oncall"),
+                             rec("2026-10-26T02:58:00+09:00", 200, started_at="2026-10-26T02:54:40+09:00", trigger="manual")]}
+    res = run("gaps", broken, ["04:41", "05:15"])
+    for gaps, entries, keys in res:
+        named = [t.isoformat(timespec="minutes") for t, _ in gaps]
+        text = " ".join(entries)
+        check(named == ["2026-10-25T23:30+09:00", "2026-10-26T02:00+09:00"] and len(entries) == 1
+              and "10/25 23:30 の回 = 途中で終わった(SIGTERM で打ち切られた)" in text and "10/26 02:00 の回 = 実行記録が無い" in text
+              and "07:30" not in text and "18:30" not in text,
+              f"欠けた回(02:00 が無い・23:30 が異常終了)を名指しして台帳に積まない: {named} {entries}")
+        check(keys == ["compose:collect-slot-gaps:2026-10-25T23:30+09:00,2026-10-26T02:00+09:00"],
+              f"欠けた回を鍵にしない(再実行で同じ事柄として照合されない): {keys}")
+    check(len(res) == 2 and res[0][1] == res[1][1], f"組版の再実行の時刻で判定が変わった: {[r[1] for r in res]}")
+    # 3) 02:00 より前に組版を回した(手で): まだ来ていない 02:00 の回は欠けたとしない
+    early = run("early", {"2026-10-25": real["2026-10-25"]}, ["2026-10-26T01:00"])
+    check(not early[0][0] and not early[0][1], f"まだ来ていない定時の回を欠けたとした: {early}")
+    # 4) 定時の時刻は timer の定義だけから読む(工程の排他の時刻も同じ)。読めない OnCalendar は黙って落とさない
+    check([t.isoformat(timespec="minutes") for t in pipelib.collect_slots("2026-10-26")]
+          == ["2026-10-25T07:30+09:00", "2026-10-25T12:30+09:00", "2026-10-25T18:30+09:00", "2026-10-25T23:30+09:00",
+              "2026-10-26T02:00+09:00"], f"号に入る定時の収集の回が違う: {pipelib.collect_slots('2026-10-26')}")
+    check(pipelib.scheduled_times() == ((1, 30), (2, 0), (3, 0), (6, 0), (7, 30), (12, 30), (18, 30), (23, 30)),
+          f"定時工程の時刻が timer の定義と違う: {pipelib.scheduled_times()}")
+    # timer の時刻を変えたら、号に入る回・工程の排他を手放す時刻(next_slot_end)がそれに従う(コードに時刻の直書きが戻ったら落ちる。Sol 監査 r1 later)
+    moved = tmp / "moved"
+    moved.mkdir()
+    for name, times in (("update", ["01:40"]), ("collect", ["07:45", "13:00", "19:00", "23:50", "02:10"]),
+                        ("compose", ["03:05"]), ("release", ["06:00"])):
+        (moved / f"imas-{name}.timer").write_text(
+            "[Timer]\n" + "".join(f"OnCalendar=*-*-* {t}:00 Asia/Tokyo\n" for t in times) + "Persistent=true\n", encoding="utf-8")
+    saved_dir = pipelib.TIMER_DIR
+    try:
+        pipelib.TIMER_DIR = moved
+        sched = pipelib.scheduled_times()
+        slots = [t.isoformat(timespec="minutes") for t in pipelib.collect_slots("2026-10-26")]
+        end_0100 = _dt.datetime.fromtimestamp(pipelib.next_slot_end(T("2026-10-26", "01:00")), pipelib.JST)
+        end_0300 = _dt.datetime.fromtimestamp(pipelib.next_slot_end(T("2026-10-26", "02:30"), 40), pipelib.JST)
+    finally:
+        pipelib.TIMER_DIR = saved_dir
+    check(sched == ((1, 40), (2, 10), (3, 5), (6, 0), (7, 45), (13, 0), (19, 0), (23, 50)), f"定時工程の時刻が timer の定義に従わない: {sched}")
+    check(slots == ["2026-10-25T07:45+09:00", "2026-10-25T13:00+09:00", "2026-10-25T19:00+09:00", "2026-10-25T23:50+09:00",
+                    "2026-10-26T02:10+09:00"], f"号に入る定時の収集の回が timer の定義に従わない: {slots}")
+    check(end_0100 == T("2026-10-26", "01:25") and end_0300 == T("2026-10-26", "03:30"),
+          f"工程の排他を手放す時刻が timer の定義に従わない(01:40 − 15分 / 03:05 + 40 − 15分): {end_0100} {end_0300}")
+    td = tmp / "timers"
+    td.mkdir()
+    (td / "imas-collect.timer").write_text("[Timer]\nOnCalendar=*-*-* 07:30:00 Asia/Tokyo\nOnCalendar=Mon *-*-* 09:00\n", encoding="utf-8")
+    try:
+        pipelib.timer_times("collect", td)
+        check(False, "毎日の時刻として読めない OnCalendar を黙って落とした")
+    except ValueError:
+        pass
 
 
 def test_collect_state_write_is_atomic(tmp: Path):
@@ -17261,6 +17382,7 @@ def main() -> int:
     test_collect_oncall_rerun_exit(tmp / "cre")
     test_collect_settles_on_exception(tmp / "cse")
     test_collect_settles_on_sigterm(tmp / "cst")
+    test_compose_collect_slot_gaps(tmp / "csg")
     test_collect_state_write_is_atomic(tmp / "csa")
     test_oncall_collect_rerun_settles_broken_output(tmp / "ocb")
     test_storylink(tmp / "sl")

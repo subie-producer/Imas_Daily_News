@@ -52,7 +52,8 @@ from pipelib import (ENV, ROOT, CLAUDE_MODEL, CODEX_WRITE_MODEL, COMPOSE_WAVE, E
                      checkout_edition_branch, classify_retag_lint, classify_source, commit_and_push,
                      edition_date, escalate, extract_json_array, git, has_editorial, EDITORIAL_UNTIL,
                      SETTLED_DROP_RULES, settled_drops,
-                     notify, notify_crash, now_jst, render_prompt, PROMPTS, ANOMALIES, anomaly, diagnose_anomalies, save_raw,
+                     notify, notify_crash, now_jst, render_prompt, PROMPTS, ANOMALIES, anomaly, anomaly_shape, diagnose_anomalies, save_raw,
+                     collect_slot_gaps,
                      partial_output, reap, loads_strict, read_answer, schema_ok, read_for_raw, compose_lock_wait_min,
                      collect_oncall_handover_pending, candidate_misplaced, merge_candidate_facts, write_checked,
                      FETCH_RECORD_ENV, fetched_urls, failed_urls, maintenance_urls, maintenance_notice, maintenance_rules, site_host,
@@ -4045,6 +4046,20 @@ def classify_revised_sources(date: str, branch: str, t0: float) -> bool:
     return True
 
 
+def warn_collect_gaps(date: str, now: datetime.datetime) -> list:
+    """この号の素材を集める定時の収集(前号の発行のあと〜締切前スイープ 02:00。pipelib.collect_slot_gaps)に欠けた回があれば、
+    回(日時)と終わり方を名指しして通知し、異常の台帳に積む(なぜなぜの対象)。組版は手持ちの candidates で続ける。全部あれば何も言わない。
+    時刻の窓では見ない(2026-10-26: 定時は全部走っていたのに、04:41 の再実行が「直近2時間の collect 実行記録が無い」と通知した)。
+    鍵は欠けた回なので、再実行でも同じ事柄として照合される。戻り値は欠けた回の一覧。"""
+    gaps = collect_slot_gaps(date, now, ROOT)
+    if gaps:
+        msg = (f"{date}: この号の定時の収集に欠けた回がある: "
+               + " / ".join(f"{t:%m/%d %H:%M} の回 = {why}" for t, why in gaps) + "。手持ちの candidates で続行")
+        anomaly_shape("compose", msg, "collect-slot-gaps:" + ",".join(t.isoformat(timespec="minutes") for t, _ in gaps))
+        notify("compose", msg, ok=False)
+    return gaps
+
+
 def main() -> int:
     missing = self_check()
     if missing:
@@ -4133,19 +4148,7 @@ def main() -> int:
         notify("compose", f"{date}: 号スナップショットが既に存在(compose 済み?)。中止")
         return 0
 
-    # 締切ガード(規程: 締切=04:00時点の candidates)。スイープ未実施なら警告して続行
-    latest = None
-    # 日付名ファイルのみ対象(review-*.json が辞書順で後ろに並び、誤検知するため)
-    for md in sorted((ROOT / "metrics").glob("????-??-??.json"))[-2:]:
-        try:
-            for run in json.loads(md.read_text(encoding="utf-8")).get("collect", []):
-                latest = max(latest or run["at"], run["at"])
-        except Exception:
-            pass
-    stale = (latest is None or
-             (now_jst() - datetime.datetime.fromisoformat(latest)).total_seconds() > 7200)
-    if stale:
-        notify("compose", f"{date}: 直近2時間の collect 実行記録が無い(締切前スイープ未実施?)。手持ちの candidates で続行", ok=False)
+    warn_collect_gaps(date, now_jst())
 
     # 1a. 選定: 記事計画の生成と機械検証(1回だけ再計画を許す)
     # 旧い組版が先頭12件で切った予約の facts を、素材として読む前に元素材から復元する(実測 2026-10-07)

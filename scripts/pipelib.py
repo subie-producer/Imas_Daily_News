@@ -323,8 +323,30 @@ def settled_keys_of(state) -> set[str]:
 
 
 # --- 定時工程の時刻(当番が工程の排他を手放すべき時刻の計算) ------------------------------------------
-# 定時工程の開始(時, 分)。01:30 道具の更新 / 02:00 収集 / 03:00 組版 / 06:00 発行 / 07:30・12:30・18:30・23:30 収集
-SCHEDULED = ((1, 30), (2, 0), (3, 0), (6, 0), (7, 30), (12, 30), (18, 30), (23, 30))
+TIMER_DIR = ROOT / "ops" / "systemd"     # 定時の時刻の定義(install.sh が systemd へ入れるもの)。時刻はここだけに持つ
+_ON_CALENDAR = re.compile(r"OnCalendar=\*-\*-\* (\d{2}):(\d{2})(?::00)? Asia/Tokyo")
+
+
+def timer_times(name: str, timer_dir: Path | None = None) -> tuple[tuple[int, int], ...]:
+    """ops/systemd/imas-<name>.timer の起動時刻(時, 分)。毎日の時刻(`*-*-* HH:MM[:00] Asia/Tokyo`)だけを読み、それ以外の
+    OnCalendar があれば読めないとして例外にする(黙って落とすと、その回を定時として数えなくなる)。"""
+    path = (timer_dir or TIMER_DIR) / f"imas-{name}.timer"
+    times = []
+    for line in path.read_text(encoding="utf-8").splitlines():
+        if line.strip().startswith("OnCalendar="):
+            m = _ON_CALENDAR.fullmatch(line.strip())
+            if not m:
+                raise ValueError(f"{path.name} の {line.strip()!r} は毎日の時刻として読めない")
+            times.append((int(m.group(1)), int(m.group(2))))
+    if not times:
+        raise ValueError(f"{path.name} に OnCalendar が無い")
+    return tuple(sorted(set(times)))
+
+
+def scheduled_times() -> tuple[tuple[int, int], ...]:
+    """工程の排他を取る定時工程の開始(時, 分)。01:30 道具の更新 / 収集 / 03:00 組版 / 06:00 発行(09:00 の watch は排他を取らない)。
+    時刻は timer の定義から読む(2026-10-26: 定時の時刻をコードと timer の2か所に持っていた)。使うときに読む(取り込んだだけでは読まない)"""
+    return tuple(sorted({t for name in ("update", "collect", "compose", "release") for t in timer_times(name)}))
 SLOT_MARGIN_MIN = 15             # 次の定時工程の何分前に工程の排他を手放すか
 # 組版は、収集の当番(落とした新着の取り直し)が動いていれば、開始をこの分だけ待つ。組版の締切は 06:00 の8分前なので、
 # 03:40 に始めても実測の所要(40〜60分)と当番の立て直しの余裕は残る。その間に取り直して、落とした新着をその号の選定に間に合わせる
@@ -338,11 +360,11 @@ COLLECT_HANDOVER_SEC = 180
 def next_slot_end(now: datetime.datetime, compose_grace_min: int = 0) -> float:
     """次の定時工程の SLOT_MARGIN_MIN 分前(epoch 秒)。当番はこの時刻までに工程の排他を手放す。
     compose_grace_min は、03:00 の組版をその分だけ遅く数える(組版が収集の当番を待つ分)。"""
-    cands = []
+    cands, compose_times = [], timer_times("compose")
     for d in (0, 1):
-        for h, m in SCHEDULED:
+        for h, m in scheduled_times():
             t = (now + datetime.timedelta(days=d)).replace(hour=h, minute=m, second=0, microsecond=0)
-            if (h, m) == (3, 0):
+            if (h, m) in compose_times:
                 t += datetime.timedelta(minutes=compose_grace_min)
             if t > now:
                 cands.append(t)
@@ -354,6 +376,69 @@ def collect_oncall_end(now: datetime.datetime) -> float:
     当番が起動し直しても延びない(監査指摘)。02:00 の収集なら、組版が待つ分を見込む: 組版は「この時刻+5分」まで
     (上限 COMPOSE_WAITS_FOR_COLLECT_ONCALL_MIN)待つので、終える時刻は 03:00 + 上限 - 5分(=03:35)。"""
     return next_slot_end(now, COMPOSE_WAITS_FOR_COLLECT_ONCALL_MIN + SLOT_MARGIN_MIN - 5)
+
+
+def collect_slots(edition: str) -> list[datetime.datetime]:
+    """号 edition の素材を集める定時の収集の時刻(JST)。号の割り当て(edition_date)でその号に入る回を全部: 前号の 06:00 発行の
+    あと(前日の 07:30・12:30・18:30・23:30)から、この号の締切前スイープ(当日の 02:00)まで。"""
+    d = datetime.date.fromisoformat(edition)
+    slots = [datetime.datetime.combine(d + datetime.timedelta(days=k), datetime.time(h, m), tzinfo=JST)
+             for k in (-1, 0) for h, m in timer_times("collect")]
+    return sorted(t for t in slots if edition_date(t) == edition)
+
+
+def _collect_run_started(run: dict) -> datetime.datetime | None:
+    """収集の実行記録の開始時刻。started_at が無い古い記録は、終えた時刻(at)から所要(duration_s)を引く。読めなければ None。"""
+    try:
+        if isinstance(run.get("started_at"), str):
+            s = datetime.datetime.fromisoformat(run["started_at"])
+        else:
+            s = datetime.datetime.fromisoformat(run["at"])
+            dur = run.get("duration_s")
+            if isinstance(dur, (int, float)) and not isinstance(dur, bool):
+                s -= datetime.timedelta(seconds=dur)
+    except (KeyError, TypeError, ValueError, OverflowError):
+        return None
+    return s if s.tzinfo is not None else None
+
+
+def collect_slot_gaps(edition: str, now: datetime.datetime, root: Path | None = None) -> list[tuple[datetime.datetime, str]]:
+    """号 edition の定時の収集(collect_slots のうち now より前の回)で、終えた実行記録が無い回と、その理由。全部あれば空。
+    実行記録は metrics/<日付>.json の collect(収集が素材を保存してから積む。途中で終わった回は interrupted 付きで積む)。
+    回ごとに、その号の、timer が起動した(trigger が timer。古い記録は trigger が無い)実行のうち、その回の時刻から次の定時の
+    収集の時刻までに始まったものを探す。当番の取り直し・手で回した実行はその回の代わりにしない。
+    直近の時間の窓では見ない(2026-10-26: 04:41 の組版の再実行が「直近2時間の collect 実行記録が無い」と誤って通知した。
+    編集長「定時にやったログ(それぞれの時間)が無いときに問題である」)。"""
+    root = root or ROOT
+    slots = [t for t in collect_slots(edition) if t < now]
+    if not slots:
+        return []
+    runs, unreadable = [], []
+    for day in sorted({t.date().isoformat() for t in slots} | {edition}):
+        p = root / "metrics" / f"{day}.json"
+        if not p.exists():
+            continue
+        try:
+            got = json.loads(p.read_text(encoding="utf-8")).get("collect", [])
+            runs += [r for r in got if isinstance(r, dict)] if isinstance(got, list) else []
+        except (OSError, ValueError, AttributeError):
+            unreadable.append(f"metrics/{day}.json")
+    gaps, times = [], timer_times("collect")
+    for t in slots:
+        nxt = min(u for u in (datetime.datetime.combine(t.date() + datetime.timedelta(days=k), datetime.time(h, m), tzinfo=JST)
+                              for k in (0, 1) for h, m in times) if u > t)
+        mine = [r for r in runs if r.get("edition") == edition and r.get("trigger", "timer") == "timer"
+                and (s := _collect_run_started(r)) is not None and t <= s < nxt]
+        if any(not r.get("interrupted") for r in mine):
+            continue
+        if mine:
+            why = "途中で終わった(" + " / ".join(str(r["interrupted"]) for r in mine) + ")"
+        else:
+            why = "実行記録が無い(起動しなかった・素材を保存する前に終わった)"
+        if unreadable:
+            why += f"。実行記録が読めない: {', '.join(unreadable)}"
+        gaps.append((t, why))
+    return gaps
 
 
 def compose_lock_wait_min(now_ts: float | None = None) -> int:
@@ -2567,16 +2652,20 @@ def looks_unrendered(text: str) -> bool:
     return len(re.sub(r"\s+", "", text or "")) < 400
 
 
+# 素の取得に 429 を返すため、最初からブラウザで読むサイト(2026-10-26: Anime Store.JP・mining-base が数回の取得で 429)
+BROWSER_ONLY_HOSTS = {"anime-store.jp", "www.anime-store.jp", "shop.mining-base.co.jp"}
+
+
 def render_hosts() -> set[str]:
-    """描画しないと本文が出ないと分かっているサイトのホスト(sources.yml で type: portal の観測先)。"""
+    """描画しないと本文が出ないと分かっているサイトのホスト(sources.yml で type: portal の観測先と、BROWSER_ONLY_HOSTS)。"""
     import urllib.parse
     import yaml
     try:
         sources = yaml.safe_load((ROOT / "sources.yml").read_text(encoding="utf-8")) or []
     except OSError:
-        return set()
+        return set(BROWSER_ONLY_HOSTS)
     return {urllib.parse.urlsplit(u).hostname for s in sources if s.get("type") == "portal"
-            for u in (s.get("url"), s.get("base")) if u}
+            for u in (s.get("url"), s.get("base")) if u} | BROWSER_ONLY_HOSTS
 
 
 class RenderFailed(RuntimeError):

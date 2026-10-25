@@ -1,0 +1,219 @@
+{
+ "decisions": {
+  "kinoshita-hinata-sobetsu-ringo-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/5と10/11の記事で祭りの日程・りんご大使就任は既報。町長コメントや漫画の背景は新しい出来事ではなく、トリガーも無い"
+  },
+  "elena-birthday-2026": {
+   "action": "article",
+   "angle": "島原エレナの誕生日に、バースデーガシャ・Birthdayセット2026・劇場の特別装飾とバースデーライブが一斉に登場した",
+   "purpose": "新情報",
+   "rank": "large",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ガシャ・セット・劇場装飾を1記事に統合"
+  },
+  "elena-birthday-gasha-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "elena-birthday-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ誕生日施策"
+  },
+  "elena-birthday-set-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "elena-birthday-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ誕生日施策"
+  },
+  "elena-birthday-theater-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "elena-birthday-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ誕生日施策"
+  },
+  "matsuri-true-ending-reward-design-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/25の記事と同内容で新事実なし"
+  },
+  "million-halloween-login-bonus-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/25の記事と同内容。終了は10/31で3日以内ではない"
+  },
+  "october-tourmaline-happy-price-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/25の記事と同内容。終了は10/31で3日以内ではない"
+  },
+  "special-solo-records-guinness-2026": {
+   "action": "article",
+   "angle": "ミリオンライブ!の「52週連続52枚CDリリース企画」が、同一楽曲の異なるバージョンをCDで連続リリースした最多週数としてギネス世界記録に認定された",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 80,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "出典は準公式・未確認。裏取りは校閲で"
+  },
+  "sobetsu-apple-festival-hinata-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "二次情報で、物産市の開催と就任4年目は既報と同じ。新事実もトリガーも無い"
+  },
+  "million-harleyquin-idol-grand-prix-pv-2026": {
+   "action": "article",
+   "angle": "『週末だけのハーレクイン』のiDOL GRAND-PRIX PVが本日14時50分に公開される",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約。当日のトリガー"
+  },
+  "million-off-time-voice-series-vol-4-2026": {
+   "action": "article",
+   "angle": "Off Time Voice Series vol.4(菊地真・馬場このみ)が本日15時に販売開始。両方の購入で琴葉のボイスも入手できる",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約。当日のトリガー"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "million-elena-birthday-2026",
+    "brand": "million",
+    "rank": "large",
+    "angle": "島原エレナの誕生日に、バースデーガシャ・Birthdayセット2026・劇場の特別装飾とバースデーライブが一斉に登場した",
+    "purpose": "新情報",
+    "lead_score": 30,
+    "dedup_key": "elena-birthday-2026",
+    "candidate_ids": [
+     "202610260219-grok-12",
+     "202610260219-grok-13",
+     "202610260219-grok-14",
+     "202610260219-grok-15"
+    ]
+   },
+   {
+    "slug": "million-special-solo-records-guinness-2026",
+    "brand": "million",
+    "rank": "medium",
+    "angle": "ミリオンライブ!の「52週連続52枚CDリリース企画」が、同一楽曲の異なるバージョンをCDで連続リリースした最多週数としてギネス世界記録に認定された",
+    "purpose": "新情報",
+    "lead_score": 80,
+    "dedup_key": "special-solo-records-guinness-2026",
+    "candidate_ids": [
+     "202610260219-grok-19"
+    ]
+   },
+   {
+    "slug": "million-harleyquin-idol-grand-prix-pv-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "『週末だけのハーレクイン』のiDOL GRAND-PRIX PVが本日14時50分に公開される",
+    "purpose": "期日の知らせ",
+    "lead_score": 10,
+    "dedup_key": "million-harleyquin-idol-grand-prix-pv-2026",
+    "candidate_ids": [
+     "sched-2026-10-26-million-harleyquin-idol-grand-prix-pv-2026-開始"
+    ]
+   },
+   {
+    "slug": "million-off-time-voice-series-vol-4-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "Off Time Voice Series vol.4(菊地真・馬場このみ)が本日15時に販売開始。両方の購入で琴葉のボイスも入手できる",
+    "purpose": "期日の知らせ",
+    "lead_score": 10,
+    "dedup_key": "million-off-time-voice-series-vol-4-2026",
+    "candidate_ids": [
+     "sched-2026-10-26-million-off-time-voice-series-vol-4-2026-発売"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "kinoshita-hinata-sobetsu-ringo-2026",
+    "reason": "既報",
+    "note": "9/5と10/11の記事で祭りの日程・りんご大使就任は既報。町長コメントや漫画の背景は新しい出来事ではなく、トリガーも無い"
+   },
+   {
+    "dedup_key": "matsuri-true-ending-reward-design-2026",
+    "reason": "既報",
+    "note": "10/25の記事と同内容で新事実なし"
+   },
+   {
+    "dedup_key": "million-halloween-login-bonus-2026",
+    "reason": "既報",
+    "note": "10/25の記事と同内容。終了は10/31で3日以内ではない"
+   },
+   {
+    "dedup_key": "october-tourmaline-happy-price-2026",
+    "reason": "既報",
+    "note": "10/25の記事と同内容。終了は10/31で3日以内ではない"
+   },
+   {
+    "dedup_key": "sobetsu-apple-festival-hinata-2026",
+    "reason": "既報",
+    "note": "二次情報で、物産市の開催と就任4年目は既報と同じ。新事実もトリガーも無い"
+   }
+  ],
+  "cross_brand": []
+ }
+}

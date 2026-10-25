@@ -18616,11 +18616,14 @@
   - 2026年10月26日15:00より販売予定。
   - Off Time Voice Series vol.4のボイスアイテムとして、真とこのみの商品が登場する。
   - 真とこのみの両方を購入すると、琴葉の『ちょこっとおふたいむ ～ 片恋ハッピーエンド ～』も入手できる。
+  - Off Time Voice Series vol.4は、アイドルとのオフタイムを臨場感たっぷりに楽しめるボイスアイテム。
   edition_facts:
     '2026-10-23':
     - 2026年10月26日15:00より販売予定。
     - Off Time Voice Series vol.4のボイスアイテムとして、真とこのみの商品が登場する。
     - 真とこのみの両方を購入すると、琴葉の『ちょこっとおふたいむ ～ 片恋ハッピーエンド ～』も入手できる。
+    '2026-10-26':
+    - Off Time Voice Series vol.4は、アイドルとのオフタイムを臨場感たっぷりに楽しめるボイスアイテム。
 - story_id: shiny-shatter-the-limits-2026
   brand: shiny
   subject: シャニソン「Shatter the Limits」開催中施策
@@ -19452,12 +19455,19 @@
   - S2弾ではツアーモードのコミュを200以上追加する。
   - S2弾では中部エリアが追加される。
   - S2弾からオリジナル楽曲『SYMPHONY』が追加される。
+  - 『アイドルマスター TOURS』S2弾は10月29日稼働開始。
+  - 特定の編成でツアーモードをプレイするとエクストラコミュが発生する。
+  - 投稿では舞田類とのハイタッチ、山下次郎へのプレゼント渡しが紹介された。
   edition_facts:
     '2026-10-25':
     - S2弾は2026年10月29日に稼働開始する。
     - S2弾ではツアーモードのコミュを200以上追加する。
     - S2弾では中部エリアが追加される。
     - S2弾からオリジナル楽曲『SYMPHONY』が追加される。
+    '2026-10-26':
+    - 『アイドルマスター TOURS』S2弾は10月29日稼働開始。
+    - 特定の編成でツアーモードをプレイするとエクストラコミュが発生する。
+    - 投稿では舞田類とのハイタッチ、山下次郎へのプレゼント渡しが紹介された。
 - story_id: million-halloween-login-bonus-2026
   brand: million
   subject: ミリシタ ハロウィンスペシャルログインボーナス
@@ -19570,7 +19580,266 @@
   published_facts:
   - '延長後の入金期間: 2026年10月26日(月)15:00 ～ 10月28日(水)'
   - ASOBI STOREの緊急メンテナンスで入金手続きが行えなかった人を対象に、アソビストアプレミアム会員先行の入金期限を延長。
+  - 延長後の入金期間は2026年10月26日（月）15:00～10月28日（水）23:59まで。
+  - 延長対象受付は「THE IDOLM@STER SideM PRODUCER MEETING ～AJewelholIc!!!～」のアソビストアプレミアム会員先行。緊急メンテナンスの影響により入金手続きが行えなかった人が対象。
+  - 上記日時を過ぎると入金できなくなる。延長後の入金期間になったら改めて詳細を案内すると告知している。
   edition_facts:
     '2026-10-25':
     - '延長後の入金期間: 2026年10月26日(月)15:00 ～ 10月28日(水)'
     - ASOBI STOREの緊急メンテナンスで入金手続きが行えなかった人を対象に、アソビストアプレミアム会員先行の入金期限を延長。
+    '2026-10-26':
+    - 延長後の入金期間は2026年10月26日（月）15:00～10月28日（水）23:59まで。
+    - 延長対象受付は「THE IDOLM@STER SideM PRODUCER MEETING ～AJewelholIc!!!～」のアソビストアプレミアム会員先行。緊急メンテナンスの影響により入金手続きが行えなかった人が対象。
+    - 上記日時を過ぎると入金できなくなる。延長後の入金期間になったら改めて詳細を案内すると告知している。
+- story_id: 765-961-idol-ultimate-2027
+  brand: '765'
+  subject: 765×961ライブ「ONCE AND FOR ALL」現地チケット受付
+  status: active
+  first_published: '2026-10-26'
+  published_facts:
+  - 現地チケット受付は2026年10月28日(水)23:59まで。
+  - 開催日は2027年7月24日・25日。
+  - イベント名は「765 PRO×961 PRO IDOL ULTIMATE “ONCE AND FOR ALL”」。
+  - 会場は京王アリーナTOKYO。
+  edition_facts:
+    '2026-10-26':
+    - 現地チケット受付は2026年10月28日(水)23:59まで。
+    - 開催日は2027年7月24日・25日。
+    - イベント名は「765 PRO×961 PRO IDOL ULTIMATE “ONCE AND FOR ALL”」。
+    - 会場は京王アリーナTOKYO。
+- story_id: cinderella-astromeda-popup-akihabara-2026
+  brand: cg
+  subject: デレマス×Astromeda 秋葉原POP UPストア
+  status: active
+  first_published: '2026-10-26'
+  published_facts:
+  - '開催期間: 2026年10月24日～11月1日'
+  - 会場はアニメイト秋葉原2号館6階（東京都千代田区外神田4-3-1）。
+  - モバイルバッテリーは各7,580円（税込）。
+  - 'ラバーマウスパッドの価格: 各3,980円(税込)'
+  edition_facts:
+    '2026-10-26':
+    - '開催期間: 2026年10月24日～11月1日'
+    - 会場はアニメイト秋葉原2号館6階（東京都千代田区外神田4-3-1）。
+    - モバイルバッテリーは各7,580円（税込）。
+    - 'ラバーマウスパッドの価格: 各3,980円(税込)'
+- story_id: cosmo-shigure-ui-uikosen-dance-2026
+  brand: dsva
+  subject: 上水流宇宙としぐれうい『ういこうせん』ダンス動画
+  status: active
+  first_published: '2026-10-26'
+  published_facts:
+  - 上水流宇宙がしぐれういと『ういこうせん』を踊ったショート動画がYouTubeとTikTokに投稿された。
+  - 上水流宇宙の投稿によると、しぐれういはこの振付を踊るのが初めてで、上水流宇宙が教えた。
+  edition_facts:
+    '2026-10-26':
+    - 上水流宇宙がしぐれういと『ういこうせん』を踊ったショート動画がYouTubeとTikTokに投稿された。
+    - 上水流宇宙の投稿によると、しぐれういはこの振付を踊るのが初めてで、上水流宇宙が教えた。
+- story_id: gaku-b2-tapestry-juo-sena
+  brand: gaku
+  subject: 学マス カーテン魂 新作グッズ4種の予約販売
+  status: active
+  first_published: '2026-10-26'
+  published_facts:
+  - '予約受付期間: 〜2026年11月15日(日)'
+  - '商品名: 『学園アイドルマスター』B2タペストリー(十王星南/キミとセミブルー)Wスエード'
+  - '発売時期: 2027年2月予定'
+  - '価格: ¥4,400(税込)'
+  edition_facts:
+    '2026-10-26':
+    - '予約受付期間: 〜2026年11月15日(日)'
+    - '商品名: 『学園アイドルマスター』B2タペストリー(十王星南/キミとセミブルー)Wスエード'
+    - '発売時期: 2027年2月予定'
+    - '価格: ¥4,400(税込)'
+- story_id: gaku-rinami-another-idol-free-gacha-2026
+  brand: gaku
+  subject: 学マス 姫崎莉波 アナザーアイドル確定無料ガシャ
+  status: active
+  first_published: '2026-10-26'
+  published_facts:
+  - ガシャ開催時期：10/27(火) 10:59まで（予定）
+  - 姫崎莉波のシーズン限定「アナザーアイドル」のいずれかが確定で手に入る無料1連ガシャ。
+  - 『アナザーアイドルアップデート記念！SSR アナザーアイドル 確定ガシャ』が告知された。
+  edition_facts:
+    '2026-10-26':
+    - ガシャ開催時期：10/27(火) 10:59まで（予定）
+    - 姫崎莉波のシーズン限定「アナザーアイドル」のいずれかが確定で手に入る無料1連ガシャ。
+    - 『アナザーアイドルアップデート記念！SSR アナザーアイドル 確定ガシャ』が告知された。
+- story_id: birthday-ueda-suzuho-shimabara-elena-2026
+  brand: general
+  subject: 上田鈴帆・島原エレナ誕生日ムービー
+  status: active
+  first_published: '2026-10-26'
+  published_facts:
+  - アイドルマスターチャンネルが10月26日を上田鈴帆と島原エレナの誕生日として祝った。
+  - '上田鈴帆のお祝いムービー: YouTube: https://www.youtube.com/shorts/kMewqc9ku_g'
+  - '島原エレナのお祝いムービー: YouTube: https://www.youtube.com/shorts/yXp0U1hcZvE'
+  edition_facts:
+    '2026-10-26':
+    - アイドルマスターチャンネルが10月26日を上田鈴帆と島原エレナの誕生日として祝った。
+    - '上田鈴帆のお祝いムービー: YouTube: https://www.youtube.com/shorts/kMewqc9ku_g'
+    - '島原エレナのお祝いムービー: YouTube: https://www.youtube.com/shorts/yXp0U1hcZvE'
+- story_id: sohbetsu-producer-repeat-visits-2026
+  brand: general
+  subject: 壮瞥再訪やファン創作の話題
+  status: active
+  first_published: '2026-10-26'
+  published_facts:
+  - そのプロデューサーは壮瞥町を訪れるのは3回目で、りんごのおいしさと町の人柄にひかれて訪問していると話した。
+  - 「担当に私の私服を着てもらう」というテーマで、4着分をまとめた投稿。
+  - 投稿に「領域展開-彼岸流-【ちびぐるみ フォトスタジオ】」と題した動画が添付されている。
+  - SideMとシャニマスの衣装を交換するファンアートのアイデアが投稿され、斑鳩ルカとC.FIRSTの組み合わせが示された。
+  edition_facts:
+    '2026-10-26':
+    - そのプロデューサーは壮瞥町を訪れるのは3回目で、りんごのおいしさと町の人柄にひかれて訪問していると話した。
+    - 「担当に私の私服を着てもらう」というテーマで、4着分をまとめた投稿。
+    - 投稿に「領域展開-彼岸流-【ちびぐるみ フォトスタジオ】」と題した動画が添付されている。
+    - SideMとシャニマスの衣装を交換するファンアートのアイデアが投稿され、斑鳩ルカとC.FIRSTの組み合わせが示された。
+- story_id: elena-birthday-2026
+  brand: million
+  subject: ミリシタ 島原エレナ誕生日(Birthdayガシャ・セット2026)
+  status: active
+  first_published: '2026-10-26'
+  published_facts:
+  - 『島原エレナBirthdayガシャ』を開催すると告知した。
+  - 『島原エレナBirthdayセット2026』が登場すると告知した。
+  - 島原エレナの誕生日に合わせたバースデーライブが行われる。
+  - バースデーライブに合わせ、劇場外観がエレナ特別仕様に装飾されている。
+  edition_facts:
+    '2026-10-26':
+    - 『島原エレナBirthdayガシャ』を開催すると告知した。
+    - 『島原エレナBirthdayセット2026』が登場すると告知した。
+    - 島原エレナの誕生日に合わせたバースデーライブが行われる。
+    - バースデーライブに合わせ、劇場外観がエレナ特別仕様に装飾されている。
+- story_id: special-solo-records-guinness-2026
+  brand: million
+  subject: SPECIAL SOLO RECORDS ギネス世界記録認定
+  status: active
+  first_published: '2026-10-26'
+  published_facts:
+  - 企画は2026年7月15日をもって全商品の発売を完了し、ギネス世界記録を達成した。
+  - 「音楽アーティストが同一楽曲の異なるバージョンをCDで連続リリースした最多週数」としてTHE IDOLM@STER MILLION LIVE!がギネス世界記録に認定された。
+  - 「SPECIAL SOLO RECORDS」のギネス世界記録達成イベントを開催した。
+  - 公式認定証を受け取った。
+  edition_facts:
+    '2026-10-26':
+    - 企画は2026年7月15日をもって全商品の発売を完了し、ギネス世界記録を達成した。
+    - 「音楽アーティストが同一楽曲の異なるバージョンをCDで連続リリースした最多週数」としてTHE IDOLM@STER MILLION LIVE!がギネス世界記録に認定された。
+    - 「SPECIAL SOLO RECORDS」のギネス世界記録達成イベントを開催した。
+    - 公式認定証を受け取った。
+- story_id: shiny-85th-anniversary-gifts-2026
+  brand: shiny
+  subject: シャニマス8.5周年記念プレゼント
+  status: active
+  first_published: '2026-10-26'
+  published_facts:
+  - シャニマスは2026年10月24日にサービス開始から8.5周年を迎えた。
+  - '受け取り可能期間: 10/26 23:59まで'
+  - 記念としてゲーム内にログインすると『8.5アニバーサリーケーキ×1』を受け取れる。
+  - 記念としてゲーム内にログインすると『フェザージュエル×3,000』を受け取れる。
+  edition_facts:
+    '2026-10-26':
+    - シャニマスは2026年10月24日にサービス開始から8.5周年を迎えた。
+    - '受け取り可能期間: 10/26 23:59まで'
+    - 記念としてゲーム内にログインすると『8.5アニバーサリーケーキ×1』を受け取れる。
+    - 記念としてゲーム内にログインすると『フェザージュエル×3,000』を受け取れる。
+- story_id: shinyson-3rd-anniversary-story-episode-3-2026
+  brand: shiny
+  subject: シャニソン 3rd Anniversary Story 第3話
+  status: active
+  first_published: '2026-10-26'
+  published_facts:
+  - シャニソンの「3rd Anniversary Story」第3話「街のかたち」が公開された。
+  edition_facts:
+    '2026-10-26':
+    - シャニソンの「3rd Anniversary Story」第3話「街のかたち」が公開された。
+- story_id: shinyson-pickup-poison-madoka-2026
+  brand: shiny
+  subject: シャニソン 限定★3樋口円香ピックアップガシャ
+  status: active
+  first_published: '2026-10-26'
+  published_facts:
+  - シャニソンでピックアップガシャが開催中。
+  - 限定★3【毒を喰らわばなんとやら】樋口円香がピックアップされて登場。
+  edition_facts:
+    '2026-10-26':
+    - シャニソンでピックアップガシャが開催中。
+    - 限定★3【毒を喰らわばなんとやら】樋口円香がピックアップされて登場。
+- story_id: shinyson-shiny-competition-2026
+  brand: shiny
+  subject: シャニソン シャイニーコンペティション
+  status: active
+  first_published: '2026-10-26'
+  published_facts:
+  - '開催期間: 10/29 20:59まで'
+  - プロデュースミニイベント「シャイニーコンペティション」が開催中。
+  - イベント対象のアイドルをプロデュースし、「総合力」の高いアイドルの育成に挑戦するイベント。
+  edition_facts:
+    '2026-10-26':
+    - '開催期間: 10/29 20:59まで'
+    - プロデュースミニイベント「シャイニーコンペティション」が開催中。
+    - イベント対象のアイドルをプロデュースし、「総合力」の高いアイドルの育成に挑戦するイベント。
+- story_id: shiny-song-3rd-anniversary-event-2026
+  brand: shiny
+  subject: シャニソン3周年記念イベント
+  status: active
+  first_published: '2026-10-26'
+  published_facts:
+  - 'シャニソン3周年記念イベント開催予定: 10月31日 12:00～'
+  - 総合観客数ランキングの報酬として限定SSRセレクトBOXを用意。
+  - 総合観客数ランキングの報酬としてイベント限定のSSRサポートキャラ【翼の城】櫻木 真乃を用意。
+  edition_facts:
+    '2026-10-26':
+    - 'シャニソン3周年記念イベント開催予定: 10月31日 12:00～'
+    - 総合観客数ランキングの報酬として限定SSRセレクトBOXを用意。
+    - 総合観客数ランキングの報酬としてイベント限定のSSRサポートキャラ【翼の城】櫻木 真乃を用意。
+- story_id: sidem-cfirst-lailai-bishoku-mv-100k-2026
+  brand: sidem
+  subject: C.FIRST『来来美食』2DMV 10万回再生
+  status: active
+  first_published: '2026-10-26'
+  published_facts:
+  - C.FIRST『来来美食』の2DMVが10万回再生を突破した。
+  - 連動ストーリーは『この世界の主人公』。
+  edition_facts:
+    '2026-10-26':
+    - C.FIRST『来来美食』の2DMVが10万回再生を突破した。
+    - 連動ストーリーは『この世界の主人公』。
+- story_id: sidem-cho-retroseparty-goods-2026
+  brand: sidem
+  subject: SideM「超!!レトローズパーティ」新作グッズ
+  status: active
+  first_published: '2026-10-26'
+  published_facts:
+  - ミニスカーフは全3種で、フィジカル・インテリ・メンタルのラインナップ。価格は880円（税込）。
+  - レトロクリアポーチは全5種。価格は1,650円（税込）。
+  edition_facts:
+    '2026-10-26':
+    - ミニスカーフは全3種で、フィジカル・インテリ・メンタルのラインナップ。価格は880円（税込）。
+    - レトロクリアポーチは全5種。価格は1,650円（税込）。
+- story_id: sidem-sems-lifes-side-menu-mv-200k-2026
+  brand: sidem
+  subject: S.E.M「Life's Side Menu!」2DMV 20万回再生
+  status: active
+  first_published: '2026-10-26'
+  published_facts:
+  - S.E.M『Life's Side Menu!』の2DMVが20万回再生を突破した。
+  edition_facts:
+    '2026-10-26':
+    - S.E.M『Life's Side Menu!』の2DMVが20万回再生を突破した。
+- story_id: sidem-tabi-masu-nagoya-2026
+  brand: sidem
+  subject: SideM旅マス名古屋企画
+  status: active
+  first_published: '2026-10-26'
+  published_facts:
+  - 推し旅公式は旅マス企画が10月31日までと案内した。
+  - 東海道新幹線車内限定で、名古屋へ向かう道中と帰路それぞれのオリジナルボイスドラマを楽しめる。
+  - 乗車特典はオリジナルデザインのSNS風クリアカード。
+  - '引換場所: でらます×アイドルマスター SideM2026 ポップアップストア at マンガ展（愛知県名古屋市中区栄3-25-39 サカエサウススクエア3D）。'
+  edition_facts:
+    '2026-10-26':
+    - 推し旅公式は旅マス企画が10月31日までと案内した。
+    - 東海道新幹線車内限定で、名古屋へ向かう道中と帰路それぞれのオリジナルボイスドラマを楽しめる。
+    - 乗車特典はオリジナルデザインのSNS風クリアカード。
+    - '引換場所: でらます×アイドルマスター SideM2026 ポップアップストア at マンガ展（愛知県名古屋市中区栄3-25-39 サカエサウススクエア3D）。'

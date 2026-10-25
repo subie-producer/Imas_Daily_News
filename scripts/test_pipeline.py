@@ -16117,8 +16117,9 @@ def test_http503_collect_run(tmp: Path):
         return res
 
     def model(prompt, **k):
+        """facts 化の答え。既定は契約どおりの unreadable。mode["answer"] が None なら時間切れ・出力が読めない(claude_exec が None を返す)"""
         prompts.append(prompt)
-        return [{"page": 1, "status": "unreadable", "items": []}]
+        return mode.get("answer", [{"page": 1, "status": "unreadable", "items": []}])
 
     # 系統を手で止めない(止めると新規0件のまとめを出さない)。探索・Grok は run_explores ごと偽
     args = types.SimpleNamespace(skip_watch=False, skip_explore=False, skip_grok=False, force_grok=False, no_git=True, oncall_rerun=False)
@@ -16177,6 +16178,11 @@ def test_http503_collect_run(tmp: Path):
         r["本文503・取り直し"] = run(body=503, rerun=True)
         r["本文404"] = run(body=404, state={"lantis-sidem": [old]})
         r["本文404・取り直し"] = run(body=404, rerun=True, state={"lantis-sidem": [old]})
+        # 本文が 503 でも、facts 化のセッションが時間切れ(答えが読めない)なら、503 と別の失敗として当番を起こす(Sol 監査 r2)
+        mode["answer"] = None
+        r["本文503・時間切れ"] = run(body=503, state={"lantis-sidem": [old]})
+        r["本文503・時間切れ・取り直し"] = run(body=503, rerun=True, state={"lantis-sidem": [old]})
+        mode.pop("answer")
     finally:
         for k, v in saved.items():
             setattr(collect, k, v)
@@ -16203,6 +16209,11 @@ def test_http503_collect_run(tmp: Path):
     check(launched and any("facts 化で読めなかった" in a for a in ledger) and any("新規0件" in a for a in ledger) and pend(st) == [new],
           f"本文が 404 の新着で当番を起こさない・未処理の列に残さない: 起動 {launched} 台帳 {ledger} 未処理 {pend(st)}")
     check(r["本文404・取り直し"][0] == 1, f"本文が 404 で読めない当番の取り直しを成功にした: exit {r['本文404・取り直し'][0]}")
+    code, launched, ledger, _, st = r["本文503・時間切れ"]
+    check(launched and any("facts 化で読めなかった" in a and "出力が読めない" in a for a in ledger) and pend(st) == [new],
+          f"本文が 503 で facts 化が時間切れの収集が、当番を起こさない(503 が別の失敗を隠した): 起動 {launched} 台帳 {ledger} 未処理 {pend(st)}")
+    check(r["本文503・時間切れ・取り直し"][0] == 1,
+          f"本文が 503 で facts 化が時間切れの当番の取り直しを成功にした: exit {r['本文503・時間切れ・取り直し'][0]}")
     check(prompts and any("503" in p for p in prompts), f"本文の取得の失敗がモデルへの素材に載らない: {[p[-200:] for p in prompts[:1]]}")
 
 

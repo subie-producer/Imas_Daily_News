@@ -559,7 +559,12 @@ def facts_batch(batch: list[dict], claude_call, state: dict, oncall_rerun: bool 
         failed = [it for i, it in enumerate(batch) if i + 1 not in done]
         # 本文が 503 で読めなかった新着は、なぜなぜの対象外(WHYWHY_EXEMPT_HTTP)。人には知らせ、読めなかった回数に数えず
         # (諦めて既読にしない。当番の取り直しも来ないので、諦めると新着を失う)、未処理の列に残して次の収集が読み直す
-        unavail = [it for it in failed if whywhy_exempt_status(codes.get(it["url"]))]
+        # 503 のせいと言えるのは、モデルが契約どおりに答え、そのページを unreadable とした場合だけ。出力が読めない・時間切れ・
+        # 答えに無い・形が崩れたページは、503 と別の失敗として従来どおり扱う(Sol 監査 N503 r2: 本文の 503 が facts 化の時間切れを隠した)
+        said = {r["page"] for r in (got if isinstance(got, list) else [])
+                if schema_ok(r, WATCH_PAGE_SCHEMA) and type(r.get("page")) is int and r.get("status") == "unreadable"}
+        unavail = [it for i, it in enumerate(batch) if i + 1 in said and i + 1 not in done
+                   and whywhy_exempt_status(codes.get(it["url"]))]
         failed = [it for it in failed if it not in unavail]
         if unavail:
             if unavailable is not None:

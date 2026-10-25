@@ -16814,6 +16814,21 @@ def test_page_archive_store(tmp: Path):
                        timeout=120, stdin=subprocess.DEVNULL)
     check(r.returncode == 0 and "本体に残した原本" in r.stdout and "いまは読み直せない" in r.stdout and "収集時点(2026-10-25 21:03)" in r.stdout,
           f"当番の作業ツリーから本体の置き場の原本を読めない: {r.returncode} {r.stdout[:300]!r} {r.stderr[-300:]!r}")
+    # 本体の .env の PAGE_ARCHIVE が相対なら、本体の作業ツリーから解く(当番の作業ツリーからも同じ置き場。Sol 監査 r4 の later)
+    saved_root, saved_env = pa.ROOT, os.environ.pop("IMAS_PAGE_ARCHIVE", None)
+    try:
+        (main_wt / ".env").write_text("PAGE_ARCHIVE=metrics/rel-pages\n", encoding="utf-8")
+        pa.ROOT = wt
+        from_wt = pa.archive_dir()
+        pa.ROOT = main_wt
+        from_main = pa.archive_dir()
+    finally:
+        pa.ROOT = saved_root
+        if saved_env is not None:
+            os.environ["IMAS_PAGE_ARCHIVE"] = saved_env
+        (main_wt / ".env").unlink(missing_ok=True)
+    check(from_wt.resolve() == from_main.resolve() == (main_wt / "metrics" / "rel-pages").resolve(),
+          f"相対の PAGE_ARCHIVE を作業ツリーごとに別の場所へ解いた: {from_wt} / {from_main}")
     g("worktree", "remove", "--force", str(wt))
 
 
@@ -17057,6 +17072,60 @@ def test_page_archive_versions_and_reads(tmp: Path):
     rc, out = run(j_old, ok("メニュー"), render_moved, needs=True)
     check(rc == 0 and f"転送先 URL: {j_new}" in out and (pa.latest(j_new) or {}).get("text", "").startswith("移った先の告知")
           and j_new in pipelib.fetched_urls(rec), f"描画の行き先を出さない・残さない: {out[:200]!r}")
+    # 15. 定点観測: 描画が要るのに描画できなかった素の本文(ナビ)で、前の原本を置き換えない。続く裏取りも前の原本で照らす(Sol 監査 r4)
+    w_url = "https://audit.example/watch-csr"
+    w_quote = "新しいアクリルスタンドを11月3日から公式ショップで受注販売します。価格は3000円です。"
+    pa.save(w_url, "公式の本文。" + w_quote, via="collect", at="2026-10-25T20:00:00+09:00", rendered=True)
+    nav = ("<html><body>" + "ニュース一覧、会社概要、お問い合わせ。" * 3 + "</body></html>").encode()
+    saved_w = (collect.watch_get, collect.needs_render, collect.rendered_or_note, collect.urllib.request.urlopen)
+
+    class NavRes(Res):
+        def geturl(self): return w_url
+        def read(self, n=None): return nav
+    try:
+        collect.watch_get = lambda u, t: (nav, "utf-8")
+        collect.needs_render = lambda u, t: True
+        collect.rendered_or_note = lambda u, limit=None: ("", "描画の時間切れ")
+        collect.page_html_or_note(w_url, False)
+        n_after_watch = len(pa.versions(w_url))
+        cw = {"url": w_url, "title": "告知", "facts": ["価格は3000円"], "quotes": [w_quote], "via": "watch", "source_type": "公式"}
+        collect.urllib.request.urlopen = lambda req, timeout=15: NavRes()
+        with contextlib.redirect_stdout(io.StringIO()):
+            collect.verify([cw])
+    finally:
+        collect.watch_get, collect.needs_render, collect.rendered_or_note, collect.urllib.request.urlopen = saved_w
+    check(n_after_watch == 1 and len(pa.versions(w_url)) == 1 and cw.get("verify") == "unconfirmed"
+          and w_quote in (pa.baseline(w_url) or {}).get("text", ""),
+          f"定点観測が描画できなかったナビで原本を置き換えた・裏取りが落とした: {n_after_watch} {cw.get('verify')} {cw.get('verify_note')}")
+    # 16. 同じ URL の2候補: 先の候補(写しなし)はナビで粒が欠けて描画も失敗、後の候補は 503。後の候補はこの回の最初の原本で照らす
+    s_url = "https://audit.example/same-url"
+    pa.save(s_url, "公式の本文。" + w_quote, via="collect", at="2026-10-25T20:00:00+09:00", rendered=True)
+    long_nav = ("<html><body>" + "ニュース一覧、会社概要、お問い合わせ、サイトマップ。" * 40 + "</body></html>").encode()
+    calls = {"n": 0}
+
+    class LongNav(Res):
+        def geturl(self): return s_url
+        def read(self, n=None): return long_nav
+
+    def first_nav_then_503(req, timeout=15):
+        calls["n"] += 1
+        if calls["n"] == 1:
+            return LongNav()
+        raise urllib.error.HTTPError(s_url, 503, "Service Unavailable", h503, io.BytesIO(b"busy"))
+    c_first = {"url": s_url, "title": "告知", "facts": ["価格は3000円"], "via": "explore", "source_type": "公式"}
+    c_second = {"url": s_url, "title": "告知", "facts": ["価格は3000円"], "quotes": [w_quote], "via": "explore", "source_type": "公式"}
+    saved_w = (collect.needs_render, collect.rendered_or_note, collect.urllib.request.urlopen)
+    try:
+        collect.needs_render = lambda u, t: False
+        collect.rendered_or_note = lambda u, limit=None: ("", "描画の時間切れ")
+        collect.urllib.request.urlopen = first_nav_then_503
+        with contextlib.redirect_stdout(io.StringIO()):
+            collect.verify([c_first, c_second])
+    finally:
+        collect.needs_render, collect.rendered_or_note, collect.urllib.request.urlopen = saved_w
+    check(c_second.get("verify") == "unconfirmed" and not pipelib.candidate_misplaced(c_second) and len(pa.versions(s_url)) == 1,
+          f"同じ URL の先の候補がこの回に残した本文で、後の候補を照らした: {c_second.get('verify')} {c_second.get('verify_note')} "
+          f"{len(pa.versions(s_url))}")
 
 
 def test_page_archive_read_back(tmp: Path):

@@ -68,7 +68,8 @@ def archive_dir() -> Path:
         for line in (main / ".env").read_text(encoding="utf-8").splitlines():
             k, _, val = line.strip().partition("=")
             if k.strip() == ARCHIVE_CONF and val.strip():
-                return Path(val.strip())
+                p = Path(val.strip()).expanduser()
+                return p if p.is_absolute() else main / p      # 相対は本体の作業ツリーから(当番の作業ツリーからも同じ置き場。Sol 監査 r4)
     except OSError:
         pass
     return main / "metrics" / "work" / "pages"

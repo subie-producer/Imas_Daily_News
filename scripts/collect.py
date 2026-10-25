@@ -323,23 +323,32 @@ def page_html_or_note(url: str, csr: bool) -> tuple[str, str]:
         if http_status(e) is not None:
             BODY_HTTP[url] = http_status(e)
         return "", f"取得に失敗({type(e).__name__}: {e})"[:400]
-    if needs_render(url, html_to_text(raw, cs)):
+    unrendered = needs_render(url, html_to_text(raw, cs))
+    if unrendered:
         t, why = rendered_or_note(url, limit=watch_limit(90))
         if t:
             keep_page(url, html_to_text(t.encode("utf-8", "replace")), t, RENDER_FINAL.get(url), rendered=True)
             return t, ""
-    keep_page(url, html_to_text(raw, cs), raw, WATCH_FINAL.get(url))
+    keep_page(url, html_to_text(raw, cs), raw, WATCH_FINAL.get(url), unrendered=unrendered)
     # 文字コードの判定は本文の取得の共通処理(decode_html)と同じ。Shift_JIS 宣言で CP932 の拡張文字を含むページを、ここだけ
     # 置換文字だらけで読んでいた(監査指摘 2026-10-14)
     return decode_html(raw, cs), ""
 
 
-def keep_page(url: str, text: str, html, final: str | None = None, status: int | None = 200, rendered: bool = False) -> dict | None:
+def keep_page(url: str, text: str, html, final: str | None = None, status: int | None = 200, rendered: bool = False,
+              unrendered: bool = False) -> dict | None:
     """収集が読んだページを、収集時点の原本として残す(page_archive。転送先の URL でも引けるようにする)。戻りは残した版の情報。
     残せなくても収集は止めない(ログに出す)。メンテナンス画面へ転送されたもの(素の取得の転送先・描画し終えたときの URL で見分ける)は
-    残さない(案内は頼んだページの本文ではない)。空の本文も残さない"""
+    残さない(案内は頼んだページの本文ではない)。空の本文も残さない。
+    unrendered は、描画が要るのに描画できなかった素の本文(ナビだけのことがある)。原本が既にあれば残さない(前の原本を置き換えない。
+    Sol 監査 r4: 定点観測が描画に失敗したナビの本文を原本にし、続く裏取りが写しの無いナビで正しい候補を落とした)"""
     if maintenance_redirect(url, final):
         return None
+    try:
+        if unrendered and page_archive.versions(url):
+            return None
+    except Exception:       # noqa: BLE001  置き場を読めなければ、下の保存も失敗として扱う
+        pass
     try:
         got = page_archive.save(url, text, html=html, final=final, status=status, via="collect", rendered=rendered)
         if got and final and final != url:
@@ -2239,6 +2248,13 @@ def verify(cands: list[dict]) -> dict:
     counts = {"confirmed": 0, "unconfirmed": 0, "failed": 0}
     priors: dict[str, dict | None] = {}     # URL → この回の裏取りより前に残っていた原本(page_archive)
     for c in cands:
+        # この回に残す前の原本を URL ごとに控える(描画できない・メンテナンス・読み直せない、のどれでもこの控えで照らす。同じ URL の
+        # 先の候補がこの回に残した版を「前の原本」と取り違えない。原本が無かったことも控える。Sol 監査 r3・r4)
+        if c.get("url") and c["url"] not in priors and not is_x(c["url"]):
+            try:
+                priors[c["url"]] = page_archive.baseline(c["url"])
+            except Exception:       # noqa: BLE001
+                priors[c["url"]] = None
         try:
             stale = check_stale(c)
             if stale:
@@ -2285,12 +2301,7 @@ def verify(cands: list[dict]) -> dict:
                     # この回に残す前の原本(探索・前の収集が読んだ版)。描画できない・メンテナンスへ転送されたときはこれで照らす
                     # (Sol 監査 r3: 描画できないときに素の本文(ナビ)を原本にして、写しが無いとして素材を落とした)
                     # 同じ URL の候補が並ぶと、先の候補がこの回に残した版を「前の原本」と取り違える。この回の最初に引いた版を使う
-                    if c["url"] not in priors:
-                        try:
-                            priors[c["url"]] = page_archive.baseline(c["url"])
-                        except Exception:       # noqa: BLE001
-                            priors[c["url"]] = None
-                    prior = priors[c["url"]]
+                    prior = priors.get(c["url"])
                     best = {"text": text, "html": body, "rendered": False}     # 残す本文(描画できたら描画の本文)
 
                     def render() -> str | None:
@@ -2350,7 +2361,8 @@ def verify(cands: list[dict]) -> dict:
                     # 前の原本があって描画できなかったときは上で抜けている(素の本文で前の原本を置き換えない)。
                     # 素材の archived_at は残した版を指す(Sol 監査 r1: 描画で確かめた価格が原本に無かった)
                     kept = keep_page(c["url"], best["text"], best["html"],
-                                     RENDER_FINAL.get(c["url"]) if best["rendered"] else final, res.status, rendered=best["rendered"])
+                                     RENDER_FINAL.get(c["url"]) if best["rendered"] else final, res.status, rendered=best["rendered"],
+                                     unrendered=not best["rendered"] and (must_render or bool(render_errs)))
                     if kept:
                         c["archived_at"] = page_archive.fetched_at(kept)
                     if missing:
@@ -2373,7 +2385,7 @@ def verify(cands: list[dict]) -> dict:
         except Exception as e:
             # 読み直せない(404・410 以外)なら、収集時点の原本(探索・定点観測が読んだ版)で照らす(Sol 監査 r2: 探索で読めた素材が
             # 裏取りの 503 で failed になり、選定から消えた)。原本が無ければ、取れなかった原因を候補に残す
-            if http_status(e) in (404, 410) or not archived_check(c, f"{type(e).__name__}: {e}"):
+            if http_status(e) in (404, 410) or not archived_check(c, f"{type(e).__name__}: {e}", base=priors.get(c.get("url")) or {}):
                 c["verify"] = "failed"
                 c["verify_note"] = f"出典を取得できない: {type(e).__name__}: {e}"[:300]
         counts[c["verify"]] += 1

@@ -5,7 +5,7 @@
 
 - 今日の号が main に存在するか(発行確認)
 - 発行日を過ぎた edition ブランチの残存(発行忘れ)
-- 昨日〜今日の collect 実行回数(metrics)
+- 直近の collect で探索・X 調査の取得が全滅していないか(metrics。定時の収集が回ごとに走ったかは組版が号ごとに検める)
 異常があれば Discord に通知する。正常時は標準出力のみ。
 """
 import collections
@@ -52,17 +52,9 @@ def main() -> int:
                 problems.append(f"発行日超過の {name} が残存(発行忘れ/失敗)")
     # 今日のブランチが残っている=今日の発行が済んでいない(1 と重複するので個別には出さない)
 
-    # 3. collect の実行回数(今日+昨日)
-    runs = 0
-    for d in (today, (now_jst() - datetime.timedelta(days=1)).strftime("%Y-%m-%d")):
-        p = ROOT / "metrics" / f"{d}.json"
-        if p.exists():
-            try:
-                runs += len(json.loads(p.read_text(encoding="utf-8")).get("collect", []))
-            except Exception:
-                pass
-    if runs == 0:
-        problems.append("直近2日間 collect の実行記録が無い(timer 停止?)")
+    # 3. 収集が定時に走ったかは、ここ(直近2日の回数)では見ない。組版が号ごとに、その号の定時の収集の回ごとに実行記録を検めて
+    # 欠けた回を名指しする(compose.warn_collect_gaps)。どの回もちょうど1つの号に入るので、1回ずつ1度だけ検められる
+    # (2026-10-26 編集長「定時にやったログ(それぞれの時間)が無いときに問題である」。時間の窓で数えると、ここでも同じ誤報・見落としになる)
 
     # 4. 探索エンジンの静かな全滅検知: 直近の collect で claude/grok の取得数合計が 0
     # 系統ごとに「その系統を回した最新の回」を見る。Grok は 02:00 の回でしか回らないので、単に最新の回(07:30)を見ると

@@ -1,0 +1,223 @@
+{
+ "decisions": {
+  "cg-astromeda-popup-akihabara-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cinderella-astromeda-popup-akihabara-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じアニメイト秋葉原のAstromedaポップアップ。素材を統合"
+  },
+  "cinderella-astromeda-popup-akihabara-2026": {
+   "action": "article",
+   "angle": "デレマス×Astromedaのポップアップがアニメイト秋葉原2号館で11月1日まで開催。15人のモバイルバッテリー(7,580円)とマウスパッド(3,980円)を販売",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 40,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "過去号に既報なし。10/24〜11/1開催中の新規発表"
+  },
+  "cg-cinderella-party-10th-cd-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/24号が放送日・CD発売日・価格・収録曲を掲載済み。放送は10/28で今日のトリガーなし"
+  },
+  "va-liv-manaka-birthday-live-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "vα-livの公演でcg面の話題ではない。関裕美はゲスト出演にとどまる。既報(Z-aN配信・関裕美発表)も多い"
+  },
+  "cinderella-girls-sapporo-tv-tower-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/25号に期間・販売・特典を掲載済み。新事実なし、終了は11/3で3日以内でもない"
+  },
+  "cinderella-sweet-melty-whip-osaka-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/23号が期間・会場・グッズ・特典・OSMOスタンプ・パネルを網羅。終了は11/1で3日以内でもない"
+  },
+  "cinderella-sweet-melty-whip-osaka-stock-2026-10-25": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "同じ大阪POP UP SHOP。完売なしの在庫状況のみで単独の新情報にならない"
+  },
+  "fan-deresute-screenshot-arisu-2026-10-25": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "個人のSNS投稿。ファン創作はgeneral面のculture枠で扱う"
+  },
+  "fan-kozue-illustration-2026-10-25": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "個人のSNS投稿。ファン創作はgeneral面のculture枠で扱う"
+  },
+  "fan-aiko-seaside-illustration-2026-10-25": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "個人のSNS投稿。ファン創作はgeneral面のculture枠で扱う"
+  },
+  "fan-mai-illustration-2026-10-24": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "個人のSNS投稿。ファン創作はgeneral面のculture枠で扱う"
+  },
+  "cg-sakuma-mayu-necklace-bound-to-you": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/22号で掲載済み。新事実なし。締切は11/30で当日のトリガーなし"
+  },
+  "cg-sakuma-mayu-necklace-bound-to-you-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/22号で掲載済み。新事実なし。締切は11/30で当日のトリガーなし"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "cg-cinderella-astromeda-popup-akihabara-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "デレマス×Astromedaのポップアップがアニメイト秋葉原2号館で11月1日まで開催。15人のモバイルバッテリー(7,580円)とマウスパッド(3,980円)を販売",
+    "purpose": "新情報",
+    "lead_score": 40,
+    "dedup_key": "cinderella-astromeda-popup-akihabara-2026",
+    "candidate_ids": [
+     "202610251832-explore-3",
+     "202610241231-explore-0",
+     "202610250731-explore-0"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "cg-cinderella-party-10th-cd-2026",
+    "reason": "既報",
+    "note": "10/24号が放送日・CD発売日・価格・収録曲を掲載済み。放送は10/28で今日のトリガーなし"
+   },
+   {
+    "dedup_key": "va-liv-manaka-birthday-live-2026",
+    "reason": "面違い",
+    "note": "vα-livの公演でcg面の話題ではない。関裕美はゲスト出演にとどまる。既報(Z-aN配信・関裕美発表)も多い"
+   },
+   {
+    "dedup_key": "cinderella-girls-sapporo-tv-tower-2026",
+    "reason": "既報",
+    "note": "10/25号に期間・販売・特典を掲載済み。新事実なし、終了は11/3で3日以内でもない"
+   },
+   {
+    "dedup_key": "cinderella-sweet-melty-whip-osaka-2026",
+    "reason": "既報",
+    "note": "10/23号が期間・会場・グッズ・特典・OSMOスタンプ・パネルを網羅。終了は11/1で3日以内でもない"
+   },
+   {
+    "dedup_key": "cinderella-sweet-melty-whip-osaka-stock-2026-10-25",
+    "reason": "既報",
+    "note": "同じ大阪POP UP SHOP。完売なしの在庫状況のみで単独の新情報にならない"
+   },
+   {
+    "dedup_key": "fan-deresute-screenshot-arisu-2026-10-25",
+    "reason": "面違い",
+    "note": "個人のSNS投稿。ファン創作はgeneral面のculture枠で扱う"
+   },
+   {
+    "dedup_key": "fan-kozue-illustration-2026-10-25",
+    "reason": "面違い",
+    "note": "個人のSNS投稿。ファン創作はgeneral面のculture枠で扱う"
+   },
+   {
+    "dedup_key": "fan-aiko-seaside-illustration-2026-10-25",
+    "reason": "面違い",
+    "note": "個人のSNS投稿。ファン創作はgeneral面のculture枠で扱う"
+   },
+   {
+    "dedup_key": "fan-mai-illustration-2026-10-24",
+    "reason": "面違い",
+    "note": "個人のSNS投稿。ファン創作はgeneral面のculture枠で扱う"
+   },
+   {
+    "dedup_key": "cg-sakuma-mayu-necklace-bound-to-you",
+    "reason": "既報",
+    "note": "10/22号で掲載済み。新事実なし。締切は11/30で当日のトリガーなし"
+   },
+   {
+    "dedup_key": "cg-sakuma-mayu-necklace-bound-to-you-2026",
+    "reason": "既報",
+    "note": "10/22号で掲載済み。新事実なし。締切は11/30で当日のトリガーなし"
+   }
+  ],
+  "cross_brand": []
+ }
+}

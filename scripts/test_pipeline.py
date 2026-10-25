@@ -16696,6 +16696,143 @@ def test_page_archive_store(tmp: Path):
     g("worktree", "remove", "--force", str(wt))
 
 
+def test_page_archive_versions_and_reads(tmp: Path):
+    """原本の版の選び方と読み直しの細部(Sol 監査 r1):
+    - 「メンテナンス終了・締切延長」の普通の告知を、言葉と字数でメンテナンスの画面と取り違えない(転送先の URL で見分ける。描画の JS の転送も)
+    - 版は取得時刻で並べる: 裏取りのあとに探索の預かりの古い版を写しても、収集時点の原本は新しい版のまま。版の上限でも消さない
+    - 描画して確かめ直した本文も原本に残り、素材の archived_at はその版を指す
+    - 読み直しの版を、収集が同じ本文を読んだら収集の版に格上げする(収集が読んだ時刻で表示する)
+    - 預かりの置き場を読めなくても収集は止まらない
+    - 410 も 404 と同じく取り下げ・移動の可能性(読めたページに数えない)
+    - 原本が描画した本文で、いま素の本文だけ読めたときは、描画して照らし直す(描画の有無を「変わった」と見せない)"""
+    import contextlib, io, urllib.error, email.message
+    import collect
+    import fetch_page
+    import page_archive as pa
+    rec = tmp / "fetched" / "r.jsonl"
+    rec.parent.mkdir(parents=True)
+
+    def run(url, fetch=None, render=None, needs=False):
+        saved = (fetch_page.fetch, fetch_page.render_page, fetch_page.needs_render, sys.argv, os.environ.get(pipelib.FETCH_RECORD_ENV))
+        out = io.StringIO()
+        try:
+            fetch_page.FINAL_URL.clear()
+            fetch_page.fetch = fetch
+            fetch_page.render_page = render or (lambda u, t=30: (_ for _ in ()).throw(pipelib.RenderFailed("描画しない")))
+            fetch_page.needs_render = lambda u, t: needs
+            sys.argv = ["fetch_page.py", url]
+            os.environ[pipelib.FETCH_RECORD_ENV] = str(rec)
+            with contextlib.redirect_stdout(out), contextlib.redirect_stderr(io.StringIO()):
+                rc = fetch_page.main()
+        finally:
+            fetch_page.fetch, fetch_page.render_page, fetch_page.needs_render, sys.argv, env = saved
+            os.environ[pipelib.FETCH_RECORD_ENV] = env if env is not None else ""
+            if env is None:
+                os.environ.pop(pipelib.FETCH_RECORD_ENV, None)
+        return rc, out.getvalue()
+
+    def ok(text):
+        def f(u):
+            fetch_page.FINAL_URL[u] = u
+            return text
+        return f
+    # 1. 「メンテナンス」を含む短い普通の告知は、読めた本文(変わったところとして見せ、原本にも残す)
+    u = "https://audit.example/maintenance-news"
+    pa.save(u, "応募締切は10月30日。", via="collect", at="2026-10-25T21:00:00+09:00")
+    new = "定期メンテナンス終了のお知らせ。応募締切を11月3日まで延長しました。通常どおり利用できます。"
+    rc, out = run(u, ok(new))
+    check(rc == 0 and "内容が変わっている" in out and "11月3日" in out.split("--- 本文(要約なし) ---")[1]
+          and pa.latest(u)["text"] == new, f"メンテナンスの言葉を含む普通の告知を捨てた: {out[:300]!r}")
+    check(collect.keep_page("https://audit.example/new-maintenance-news", new, "<p>x</p>") is not None,
+          "収集がメンテナンスの言葉を含む普通の告知を原本に残さない")
+    # 1b. 描画で JS がメンテナンス画面へ転送したら、読めなかった(原本を返す)
+    v = "https://idolmaster-official.jp/news/01_1"
+    pa.save(v, "公式の告知。価格は3000円。", via="collect", at="2026-10-25T21:00:00+09:00")
+
+    def render_to_mainte(url, timeout=30):
+        pipelib.RENDER_FINAL[url] = "https://idolmaster-official.jp/mainte/index.html"
+        return "<html><body>メンテナンス中です</body></html>"
+    rc, out = run(v, ok("メニュー"), render_to_mainte, needs=True)
+    check(rc == 0 and "いまは読み直せない" in out and "価格は3000円" in out and "メンテナンス中です" not in out
+          and v in pipelib.maintenance_urls(rec), f"描画の転送でメンテナンス画面になったのに、案内を本文として返した: {out[:300]!r}")
+    # 2. 取得時刻で版を選ぶ(裏取り 21時 → 探索の預かり 20時を写す)
+    w = "https://audit.example/spool-news"
+    spool_root, spool = tmp / "spools", tmp / "explore-wd"
+    pa.save(w, "応募締切は10月30日。", via="read", at="2026-10-25T20:00:00+09:00", base=spool / collect.PAGE_SPOOL_NAME)
+    pa.save(w, "応募締切は11月3日。", via="collect", at="2026-10-25T21:00:00+09:00")
+    saved = collect.page_spool_root
+    try:
+        collect.page_spool_root = lambda: spool_root
+        collect.stash_pages(spool)
+        n = collect.ingest_spools([cand_row("s", w)])
+    finally:
+        collect.page_spool_root = saved
+    for i in range(12):
+        pa.save(w, f"読み直し版{i}", via="read")
+    check(n == 1 and pa.fetched_at(pa.baseline(w)) == "2026-10-25T21:00:00+09:00" and "11月3日" in pa.baseline(w)["text"],
+          f"探索の古い版を写したら、収集時点の原本が古い版へ戻った・版の上限で消えた: {pa.versions(w)}")
+    # 3. 描画して確かめ直した本文も原本に残る(素材の archived_at はその版)
+    r_url = "https://audit.example/render-news"
+    quote = "新商品を販売します。価格は3000円。応募締切は10月30日です。"
+
+    class Res:
+        status = 200
+        headers = type("H", (), {"get_content_charset": lambda s: "utf-8"})()
+        def geturl(self): return r_url
+        def read(self, n=None): return ("<html><body>" + "ニュース一覧、会社概要、お問い合わせ。" * 40 + "</body></html>").encode()
+        def __enter__(self): return self
+        def __exit__(self, *a): return False
+    c = {"url": r_url, "title": "新商品", "facts": ["価格は3000円"], "quotes": [quote], "via": "explore", "source_type": "公式"}
+    saved_c = (collect.urllib.request.urlopen, collect.needs_render, collect.rendered_or_note)
+    try:
+        collect.urllib.request.urlopen = lambda req, timeout=15: Res()
+        collect.needs_render = lambda u, t: False
+        collect.rendered_or_note = lambda u, limit=None: ("<html><body>" + quote + "</body></html>", "")
+        collect.verify([c])
+    finally:
+        collect.urllib.request.urlopen, collect.needs_render, collect.rendered_or_note = saved_c
+    b = pa.baseline(r_url) or {}
+    check(c.get("verify") == "confirmed" and "3000円" in b.get("text", "") and c.get("archived_at") == pa.fetched_at(b),
+          f"描画して確かめた本文が原本に無い・archived_at が別の版: {c.get('verify')} {c.get('archived_at')} {b.get('at')}")
+    # 4. 読み直しの版を収集の版に格上げする
+    p = "https://audit.example/promote"
+    pa.save(p, "同じ本文", via="read", at="2026-10-24T20:00:00+09:00")
+    pa.save(p, "同じ本文", via="collect", at="2026-10-25T21:00:00+09:00")
+    b = pa.baseline(p)
+    check(b["via"] == "collect" and pa.fetched_at(b) == "2026-10-25T21:00:00+09:00" and fetch_page.when(b) == "収集時点(2026-10-25 21:00)",
+          f"収集の版への格上げが読み戻しで失われた: {b}")
+    # 5. 預かりの置き場を読めなくても止まらない
+    bad = tmp / "unreadable"
+    (bad / "x").mkdir(parents=True)
+    os.chmod(bad, 0)
+    try:
+        collect.page_spool_root = lambda: bad
+        try:
+            n = collect.ingest_spools([cand_row("s", w)])
+            stopped = None
+        except Exception as e:      # noqa: BLE001
+            stopped = e
+    finally:
+        collect.page_spool_root = saved
+        os.chmod(bad, 0o755)
+    check(stopped is None and n == 0, f"預かりの置き場を読めないと収集が止まる: {stopped!r}")
+    # 6. 410 も取り下げ・移動の可能性
+    g = "https://audit.example/gone410"
+    pa.save(g, "前はあった告知。", via="collect", at="2026-10-25T21:00:00+09:00")
+    h = email.message.Message()
+
+    def gone(u):
+        raise urllib.error.HTTPError(u, 410, "Gone", h, io.BytesIO(b""))
+    rc, out = run(g, gone)
+    check(rc == 1 and out.startswith("FETCH_FAILED: HTTPError") and "取り下げ・移動の可能性" in out and "前はあった告知" in out
+          and g not in pipelib.fetched_urls(rec), f"410 を取り下げ・移動の可能性として渡さない: {out[:200]!r}")
+    # 7. 原本が描画した本文なら、素の本文だけの読み直しは描画して照らし直す(同じなら確認済み)
+    q = "https://audit.example/csr"
+    pa.save(q, "描画した本文。価格は3000円。", via="collect", at="2026-10-25T21:00:00+09:00", rendered=True)
+    rc, out = run(q, ok("メニューだけ"), lambda u, t=30: "<html><body>描画した本文。価格は3000円。</body></html>")
+    check(rc == 0 and "同じ内容を" in out and "変わったところ" not in out, f"描画の有無を内容の変化と見せた: {out[:300]!r}")
+
+
 def test_page_archive_read_back(tmp: Path):
     """収集で読んだ原本を残し、執筆が読み直せないときはそれで書く(編集長 2026-10-26「収集するタイミングでこういう記事だった(HTMLぺたー)
     すりゃいいんだよ。読み直す度にアクセスするから失敗するんだよ」)。10/22・10/26 号は公式ポータルのメンテナンス・ランティスの 503・
@@ -17054,6 +17191,7 @@ def main() -> int:
     test_draft_key_ignores_portal_notice(tmp / "dkn")
     test_page_archive_store(tmp / "pas")
     test_page_archive_read_back(tmp / "parb")
+    test_page_archive_versions_and_reads(tmp / "pavr")
     check(not STRAY_WRITES, "書式で決めたファイルを write_checked を通さずに書いた本番のコード(書く前に書式で検めること): "
           + "; ".join(sorted(set(STRAY_WRITES))[:10]))
     for f in FAILS:

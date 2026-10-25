@@ -1661,12 +1661,6 @@ def maintenance_screen(status: int, body: bytes, charset: str | None = None) -> 
     return bool(MAINTENANCE_WORD.search(title) or MAINTENANCE_WORD.search(text))
 
 
-def maintenance_page(text: str) -> bool:
-    """取り出した本文が、メンテナンスの案内だけの短い画面か(メンテナンスの言葉があり、空白を除いて 2000字に満たない)。
-    描画したページは転送先が分からないので、原本(page_archive)として残す前に本文で見分ける"""
-    return bool(MAINTENANCE_WORD.search(text or "")) and len(re.sub(r"\s+", "", text or "")) < 2000
-
-
 def maintenance_http_error(e: BaseException) -> bool:
     """urlopen の HTTPError がメンテナンスの画面の応答か(maintenance_screen)。本文を読むので、1つの例外に1回だけ呼ぶ。"""
     import urllib.error
@@ -2619,7 +2613,17 @@ def render_page(url: str, timeout: int = 30, limit: float | None = None) -> str:
         raise RenderFailed(f"{url} の描画に失敗: " + render_failure(r.returncode, r.stderr))
     if not (r.stdout or "").strip():
         raise RenderFailed(f"{url} の描画が空の HTML を返した: " + render_failure(r.returncode, r.stderr))
+    m = re.search(r"(?m)^RENDERED_URL: (\S+)\s*$", getattr(r, "stderr", None) or "")
+    if m:
+        RENDER_FINAL[url] = m.group(1)
+    else:
+        RENDER_FINAL.pop(url, None)
     return r.stdout
+
+
+# 描画したページ → 描画し終えたときの URL(JS でメンテナンス画面へ転送されたページを、原本として残さない・読めたことにしない。
+# Sol 監査 r1: 本文の言葉と字数で見分けると、「メンテナンス終了・締切延長」の普通の告知を案内の画面として捨てた)
+RENDER_FINAL: dict[str, str] = {}
 
 
 def needs_render(url: str, text: str) -> bool:

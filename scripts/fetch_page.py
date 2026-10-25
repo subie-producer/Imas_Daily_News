@@ -37,7 +37,7 @@ import urllib.request
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from pipelib import (PAGE_READ_BYTES, RenderFailed, extract_periods, html_to_text, maintenance_http_error, maintenance_page,
+from pipelib import (PAGE_READ_BYTES, RENDER_FINAL, RenderFailed, extract_periods, html_to_text, maintenance_http_error,
                      maintenance_redirect, needs_render, note_fetched, render_page)
 import page_archive
 
@@ -93,10 +93,11 @@ def main() -> int:
     # 保存の原本(固定の本文で走る事例は使わない)。置き場を読めなくても読み直しは続ける
     base = None if fixed else archived(page_archive.baseline, args.url)
     live = read_live(args.url, fixed)
-    if live["kind"] == "ok" and base and maintenance_page(live["text"]):
-        # 描画した結果がメンテナンスの案内だけ(描画は転送先が分からない)。保存の原本があれば、読み直せなかったとして扱う
-        live = {"kind": "maintenance", "final": live.get("final"), "why": "メンテナンス中(本文がメンテナンスの案内だけ)",
-                "msg": "FETCH_FAILED: メンテナンス中(本文がメンテナンスの案内だけ)。このページの本文は今は読めない"}
+    if (live["kind"] == "ok" and base and base.get("rendered") and not live.get("rendered")
+            and page_archive.text_sha(live["text"]) != base.get("sha")):
+        # 原本は描画して読んだ本文で、いまは素の本文だけ。違いは描画の有無かもしれないので、描画して照らし直す
+        # (描画しないと、素の本文に無い価格・日程を「消えた」と見せる)
+        live = rendered_live(args.url, live)
     # 読めなかったことは隣の記録に残す(組版が、原本を読めないまま書いた記事に断り書きを付けるのに使う)。
     # メンテナンスでない失敗(404・表示の無い 5xx・時間切れ 等)も記録する。同じホストの別のページがメンテナンスでも、
     # このページに断り書きを付けない(Sol 監査 Z2 r1)。転送先で失敗したら(/old → /gone → 404)転送先も残す(Sol 監査 Z2 r5)
@@ -107,7 +108,7 @@ def main() -> int:
     if live["kind"] != "ok":
         if base and live["kind"] != "gone":
             # 読み直せない(メンテナンス・5xx・429・時間切れ)。保存の原本で書ける(読めたページに数え、組版は断り書きを付ける)
-            note_fetched(args.url, base.get("final"), archived=base.get("at"), via=base.get("via"),
+            note_fetched(args.url, base.get("final"), archived=page_archive.fetched_at(base), via=base.get("via"),
                          why="maintenance" if live["kind"] == "maintenance" else "failed")
             emit(args.url, base.get("final"), base["text"], args.chars,
                  f"原本の照合: いまは読み直せない({live['why']})。下の本文は{when(base)}に読んだ原本。出典として使ってよい")
@@ -125,7 +126,7 @@ def main() -> int:
     note_fetched(args.url, final)
     note = None
     if not fixed:
-        saved = keep(args.url, text, live.get("html"), final)
+        saved = keep(args.url, text, live.get("html"), final, bool(live.get("rendered")))
         if base and page_archive.text_sha(text) == base.get("sha"):
             note = f"原本の照合: {when(base)}の原本と同じ内容を、いま({page_archive.now_iso()[:16].replace('T', ' ')})読み直して確かめた"
         elif base:
@@ -134,7 +135,7 @@ def main() -> int:
                     f"下の本文はいまの版。違いは「--- 変わったところ ---」(- が{when(base)}の版、+ がいまの版)\n"
                     "--- 変わったところ ---\n" + page_archive.diff(base["text"], text))
             new = saved or {"at": page_archive.now_iso(), "sha": page_archive.text_sha(text)}
-            note_fetched(args.url, final, changed={"from_at": base.get("at"), "to_at": new.get("at")})
+            note_fetched(args.url, final, changed={"from_at": page_archive.fetched_at(base), "to_at": new.get("at")})
             try:
                 page_archive.note_change(args.url, final, base, new)
             except Exception as e:      # noqa: BLE001  台帳を書けなくても読み取りは止めない
@@ -166,21 +167,29 @@ def read_live(url: str, fixed: str = "") -> dict:
 
     # JS で描画するページは本文が空同然になる。その場合と、描画必須と分かっているサイトは描画してから読み直す
     # (固定の本文は描画したあとのもの。取りに行かない)
-    render_error = ""
-    html = FETCH_HTML.get(url)
+    live = {"kind": "ok", "text": text, "final": final, "html": FETCH_HTML.get(url), "rendered": False}
     if not fixed and needs_render(url, text):
-        try:
-            rendered = render_page(url, 30)
-            text, html = html_to_text(rendered.encode("utf-8", "replace")), rendered
-        except RenderFailed as e:
-            # 素の本文で続けるが、描画できなかった原因(終了コードと stderr の要点)は読み手に見せる
-            render_error = str(e)
-            print(f"RENDER_FAILED: {e}", file=sys.stderr)
-
-    if not text.strip():
-        why = "本文を取得できませんでした" + (f"({render_error})" if render_error else "")
+        live = rendered_live(url, live)
+    if live["kind"] == "ok" and not live["text"].strip():
+        why = "本文を取得できませんでした" + (f"({live['render_error']})" if live.get("render_error") else "")
         return {"kind": "failed", "final": final, "why": why, "msg": f"FETCH_FAILED: {why}"}
-    return {"kind": "ok", "text": text, "final": final, "html": html}
+    return live
+
+
+def rendered_live(url: str, live: dict) -> dict:
+    """素の本文で読めたページ(live)を描画して読み直す。描画できなければ素の本文のまま(原因は render_error と stderr)。
+    描画で JS がメンテナンス画面へ転送したら、読めなかった(maintenance)にする"""
+    try:
+        rendered = render_page(url, 30)
+    except RenderFailed as e:
+        # 素の本文で続けるが、描画できなかった原因(終了コードと stderr の要点)は読み手に見せる
+        print(f"RENDER_FAILED: {e}", file=sys.stderr)
+        return {**live, "render_error": str(e)}
+    final = RENDER_FINAL.get(url)
+    if maintenance_redirect(url, final):
+        return {"kind": "maintenance", "final": final, "why": f"メンテナンス中({final} へ転送された)",
+                "msg": f"FETCH_FAILED: メンテナンス中({final} へ転送された)。このページの本文は今は読めない"}
+    return {**live, "text": html_to_text(rendered.encode("utf-8", "replace")), "html": rendered, "rendered": True}
 
 
 def archived(get, url: str) -> dict | None:
@@ -192,15 +201,12 @@ def archived(get, url: str) -> dict | None:
         return None
 
 
-def keep(url: str, text: str, html, final: str | None) -> dict | None:
-    """読めたページを原本として残す(転送先の URL でも引けるようにする)。書けない置き場(読み取り専用のセッション)でも止めない。
-    メンテナンスの案内だけの本文は残さない"""
-    if maintenance_page(text):
-        return None
+def keep(url: str, text: str, html, final: str | None, rendered: bool = False) -> dict | None:
+    """読めたページを原本として残す(転送先の URL でも引けるようにする)。書けない置き場(読み取り専用のセッション)でも止めない。"""
     try:
-        got = page_archive.save(url, text, html=html, final=final, via="read")
+        got = page_archive.save(url, text, html=html, final=final, via="read", rendered=rendered)
         if final and final != url and not maintenance_redirect(url, final):
-            page_archive.save(final, text, html=html, final=final, via="read")
+            page_archive.save(final, text, html=html, final=final, via="read", rendered=rendered)
         return got
     except Exception as e:      # noqa: BLE001
         print(f"PAGE_ARCHIVE_FAILED: {type(e).__name__}: {e}", file=sys.stderr)
@@ -209,7 +215,7 @@ def keep(url: str, text: str, html, final: str | None) -> dict | None:
 
 def when(v: dict) -> str:
     """版をいつ・誰が読んだか(「収集時点(2026-10-25 21:03)」/「2026-10-26 04:30」)。"""
-    at = str(v.get("at") or "")[:16].replace("T", " ")
+    at = page_archive.fetched_at(v)[:16].replace("T", " ")
     return f"収集時点({at})" if v.get("via") == "collect" else at
 
 

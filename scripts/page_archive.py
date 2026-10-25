@@ -142,13 +142,30 @@ def _load(d: Path, v: dict) -> dict | None:
         return None
     if not isinstance(row, dict) or not isinstance(row.get("text"), str):
         return None
-    return {**v, **row}
+    return {**row, **v, "text": row["text"]}       # 版の情報は index が正(収集の版への格上げ・確かめた時刻は index だけを更新する)
+
+
+def fetched_at(v: dict) -> str:
+    """版をいつ読んだか: 収集の版は収集が読んだいちばん新しい時刻(collected)、ほかは取得時刻(at)。"""
+    return str((v.get("collected") if v.get("via") == "collect" else None) or v.get("at") or "")
+
+
+def _by_time(vs: list[dict]) -> list[dict]:
+    """版を取得時刻の古い順に並べる(取り込みの順ではない。Sol 監査 r1: 探索の預かりの古い版をあとで写すと、いちばん新しい版を取り違えた)。"""
+    return sorted(vs, key=lambda v: (str(v.get("at") or ""), int(v.get("n") or 0)))
+
+
+def _keep_collect(vs: list[dict]):
+    """残す収集の版(収集が読んだ時刻のいちばん新しい版)の番号。"""
+    col = [v for v in vs if v.get("via") == "collect"]
+    return max(col, key=lambda v: (fetched_at(v), int(v.get("n") or 0)))["n"] if col else None
 
 
 def save(url: str, text: str, html=None, final: str | None = None, status: int | None = 200, via: str = "read",
-         at: str | None = None, base: Path | None = None) -> dict | None:
-    """読めたページの原本を残す。いちばん新しい版と本文が同じなら版を増やさず、確かめた時刻(seen)だけ更新する。
-    戻りはその版の情報(本文は含まない)。本文が空なら残さない。via は collect(収集が読んだ)/ read(執筆・校閲などが読み直した)。"""
+         at: str | None = None, base: Path | None = None, rendered: bool = False) -> dict | None:
+    """読めたページの原本を残す。その時刻の直前の版(取得時刻で並べる)と本文が同じなら版を増やさず、確かめた時刻(seen)だけ更新する
+    (収集が同じ本文を読んだら収集の版に格上げし、収集が読んだ時刻を collected に残す)。戻りはその版の情報(本文は含まない)。
+    本文が空なら残さない。via は collect(収集が読んだ)/ read(執筆・校閲などが読み直した)。rendered は描画して読んだ本文か"""
     text = norm_text(text)
     if not text:
         return None
@@ -158,15 +175,20 @@ def save(url: str, text: str, html=None, final: str | None = None, status: int |
     with _Lock(d):
         idx = _index(d)
         vs = idx["versions"]
-        if vs and vs[-1].get("sha") == sha:
-            vs[-1]["seen"] = max(str(vs[-1].get("seen") or ""), at)
-            if via == "collect" and vs[-1].get("via") != "collect":
-                vs[-1]["via"] = "collect"      # 収集も同じ本文を読んだ: 収集時点の版として扱う
+        prev = [v for v in _by_time(vs) if str(v.get("at") or "") <= at]
+        if prev and prev[-1].get("sha") == sha:
+            v = prev[-1]
+            v["seen"] = max(str(v.get("seen") or ""), at)
+            if via == "collect":
+                v["via"] = "collect"      # 収集も同じ本文を読んだ: 収集時点の版として扱う
+                v["collected"] = max(str(v.get("collected") or ""), at)
+            v["rendered"] = bool(v.get("rendered") or rendered)
             _write_atomic(d / "index.json", json.dumps(idx, ensure_ascii=False).encode("utf-8"))
-            return dict(vs[-1])
+            return dict(v)
         n = max([int(v.get("n") or 0) for v in vs] + [0]) + 1
-        meta = {"n": n, "at": at, "seen": at, "via": via, "url": url, "final": final if final and final != url else None,
-                "status": status, "sha": sha, "chars": len(text), "html": None}
+        meta = {"n": n, "at": at, "seen": at, "via": via, "collected": at if via == "collect" else None, "url": url,
+                "final": final if final and final != url else None, "status": status, "sha": sha, "chars": len(text),
+                "rendered": bool(rendered), "html": None}
         if html:
             raw = html.encode("utf-8", "replace") if isinstance(html, str) else bytes(html)
             _write_atomic(d / f"v{n}.html.gz", gzip.compress(raw[:HTML_MAX_BYTES], compresslevel=6))
@@ -174,28 +196,28 @@ def save(url: str, text: str, html=None, final: str | None = None, status: int |
         _write_atomic(d / f"v{n}.json", json.dumps({**meta, "text": text}, ensure_ascii=False).encode("utf-8"))
         vs.append(meta)
         idx["url"] = url
-        # 版の数を抑える: 古い版から消す。収集時点のいちばん新しい版と、いまの版は残す
-        keep_collect = next((v["n"] for v in reversed(vs) if v.get("via") == "collect"), None)
+        # 版の数を抑える: 取得時刻の古い版から消す。収集が読んだいちばん新しい版と、取得時刻のいちばん新しい版は残す
         while len(vs) > MAX_VERSIONS:
-            drop = next((v for v in vs[:-1] if v["n"] != keep_collect), None)
+            keep = {_keep_collect(vs), _by_time(vs)[-1]["n"]}
+            drop = next((v for v in _by_time(vs) if v["n"] not in keep), None)
             if drop is None:
                 break
             vs.remove(drop)
             for name in (f"v{drop['n']}.json", f"v{drop['n']}.html.gz"):
                 (d / name).unlink(missing_ok=True)
         _write_atomic(d / "index.json", json.dumps(idx, ensure_ascii=False).encode("utf-8"))
-        return dict(meta)
+        return dict(meta) if any(v["n"] == n for v in vs) else None
 
 
 def versions(url: str, base: Path | None = None) -> list[dict]:
-    """残っている版(古い順。本文は含まない)。"""
-    return list(_index(page_dir(url, base))["versions"])
+    """残っている版(取得時刻の古い順。本文は含まない)。"""
+    return _by_time(_index(page_dir(url, base))["versions"])
 
 
 def latest(url: str, base: Path | None = None) -> dict | None:
-    """いちばん新しい版(本文つき)。無ければ None。"""
+    """取得時刻のいちばん新しい版(本文つき)。無ければ None。"""
     d = page_dir(url, base)
-    for v in reversed(_index(d)["versions"]):
+    for v in reversed(_by_time(_index(d)["versions"])):
         got = _load(d, v)
         if got:
             return got
@@ -203,10 +225,12 @@ def latest(url: str, base: Path | None = None) -> dict | None:
 
 
 def baseline(url: str, base: Path | None = None) -> dict | None:
-    """読み直しと照らす版(本文つき): 収集時点のいちばん新しい版。収集が読んでいないページは、いちばん新しい版。"""
+    """読み直しと照らす版(本文つき): 収集が読んだ時刻のいちばん新しい版(素材の archived_at の版)。収集が読んでいないページは、
+    取得時刻のいちばん新しい版"""
     d = page_dir(url, base)
     vs = _index(d)["versions"]
-    for v in reversed([v for v in vs if v.get("via") == "collect"] or vs):
+    col = sorted((v for v in vs if v.get("via") == "collect"), key=lambda v: (fetched_at(v), int(v.get("n") or 0)))
+    for v in reversed(col or _by_time(vs)):
         got = _load(d, v)
         if got:
             return got
@@ -277,7 +301,7 @@ def ingest(spool: Path, keep=None, base: Path | None = None) -> int:
             if not got or (keep is not None and not (keep(got.get("url") or "") or keep(got.get("final") or ""))):
                 continue
             if save(got["url"], got["text"], html=html_of(got["url"], got, base=Path(spool)), final=got.get("final"),
-                    status=got.get("status"), via="collect", at=got.get("at"), base=base):
+                    status=got.get("status"), via="collect", at=got.get("at"), base=base, rendered=bool(got.get("rendered"))):
                 n += 1
     return n
 
@@ -292,7 +316,7 @@ def prune(now: float | None = None, base: Path | None = None, max_age_days: floa
     for idx_p in root.glob("*/*/index.json"):
         d = idx_p.parent
         vs = _index(d)["versions"]
-        last = max([str(v.get("seen") or v.get("at") or "") for v in vs] or [""])
+        last = max([str(t or "") for v in vs for t in (v.get("seen"), v.get("at"), v.get("collected"))] or [""])
         try:
             ts = datetime.datetime.fromisoformat(last).timestamp() if last else idx_p.stat().st_mtime
         except ValueError:

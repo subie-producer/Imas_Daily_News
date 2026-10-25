@@ -43,7 +43,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from pipelib import (ENV, ROOT, COLLECT_MODEL, CODEX_WRITE_MODEL, EXPLORE_MODEL,
                      EXPLORE_MAX_BUDGET_USD, JST, JobLockTimeout, job_lock, prompt_file, clean_url, append_metric, classify_source,
                      extract_periods, decode_html, html_to_text, loads_strict, needs_render, partial_output, quote_on_page, read_for_raw, reap, save_raw, schema_ok,
-                     RenderFailed, render_page, candidate_misplaced, maintenance_http_error, maintenance_redirect, maintenance_page,
+                     RenderFailed, render_page, candidate_misplaced, maintenance_http_error, maintenance_redirect, RENDER_FINAL,
                      merge_candidate_facts,
                      set_quiet, unbacked_facts,
                      anomaly, anomaly_shape, http_status, whywhy_exempt_status, checkout_edition_branch, classify_retag_lint, collect_oncall_end, commit_and_push, diagnose_anomalies,
@@ -272,6 +272,7 @@ def watch_fetch(s: dict):
 def rendered_or_note(url: str, limit: float | None = None) -> tuple[str, str]:
     """描画を補いとして使う呼び出し側(facts 化の本文・裏取りの読み直し)向け: (HTML, 失敗の要点)。
     失敗しても素の HTML やセッション側の fetch_page.py で続けられるので止めないが、原因はログと呼び出し側の記録に残す"""
+    RENDER_FINAL.pop(url, None)       # 描画し終えたときの URL は、この回の描画のものだけ
     try:
         return (fetch_rendered(url) if limit is None else fetch_rendered(url, limit=limit)) or "", ""
     except RenderFailed as e:
@@ -296,7 +297,7 @@ def page_html_or_note(url: str, csr: bool) -> tuple[str, str]:
     if csr:
         t, why = rendered_or_note(url, limit=watch_limit(90))
         if t:
-            keep_watched(url, html_to_text(t.encode("utf-8", "replace")), t)
+            keep_page(url, html_to_text(t.encode("utf-8", "replace")), t, RENDER_FINAL.get(url), rendered=True)
         return t, why
     left = watch_limit(20)
     if left is not None and left <= 0:
@@ -310,30 +311,24 @@ def page_html_or_note(url: str, csr: bool) -> tuple[str, str]:
     if needs_render(url, html_to_text(raw, cs)):
         t, why = rendered_or_note(url, limit=watch_limit(90))
         if t:
-            keep_watched(url, html_to_text(t.encode("utf-8", "replace")), t)
+            keep_page(url, html_to_text(t.encode("utf-8", "replace")), t, RENDER_FINAL.get(url), rendered=True)
             return t, ""
-    keep_watched(url, html_to_text(raw, cs), raw, WATCH_FINAL.get(url))
+    keep_page(url, html_to_text(raw, cs), raw, WATCH_FINAL.get(url))
     # 文字コードの判定は本文の取得の共通処理(decode_html)と同じ。Shift_JIS 宣言で CP932 の拡張文字を含むページを、ここだけ
     # 置換文字だらけで読んでいた(監査指摘 2026-10-14)
     return decode_html(raw, cs), ""
 
 
-def keep_watched(url: str, text: str, html, final: str | None = None) -> None:
-    """定点観測の新着ページを原本として残す。メンテナンス画面へ転送されたものは残さない(案内は頼んだページの本文ではない)"""
-    if maintenance_redirect(url, final):
-        return
-    keep_page(url, text, html, final)
-
-
-def keep_page(url: str, text: str, html, final: str | None = None, status: int | None = 200) -> dict | None:
+def keep_page(url: str, text: str, html, final: str | None = None, status: int | None = 200, rendered: bool = False) -> dict | None:
     """収集が読んだページを、収集時点の原本として残す(page_archive。転送先の URL でも引けるようにする)。戻りは残した版の情報。
-    残せなくても収集は止めない(ログに出す)。メンテナンスの画面・空の本文は残さない(描画は転送先が分からないので本文で見分ける)"""
-    if maintenance_page(text):
+    残せなくても収集は止めない(ログに出す)。メンテナンス画面へ転送されたもの(素の取得の転送先・描画し終えたときの URL で見分ける)は
+    残さない(案内は頼んだページの本文ではない)。空の本文も残さない"""
+    if maintenance_redirect(url, final):
         return None
     try:
-        got = page_archive.save(url, text, html=html, final=final, status=status, via="collect")
-        if got and final and final != url and not maintenance_redirect(url, final):
-            page_archive.save(final, text, html=html, final=final, status=status, via="collect")
+        got = page_archive.save(url, text, html=html, final=final, status=status, via="collect", rendered=rendered)
+        if got and final and final != url:
+            page_archive.save(final, text, html=html, final=final, status=status, via="collect", rendered=rendered)
         return got
     except Exception as e:      # noqa: BLE001
         print(f"  原本を残せない({url[:100]}: {type(e).__name__}: {e})", flush=True)
@@ -993,15 +988,20 @@ CAND_URL = re.compile(r"https?://[^\s\"'<>()（）「」『』、。]+")
 def ingest_spools(cands: list[dict]) -> int:
     """預かった原本のうち、素材に関わるページ(候補の url・リンク元・facts と写しに書かれた url)だけを、収集時点の原本として
     本体の置き場へ写し、預かりを消す。戻りは写した版の数。写せなくても収集は止めない"""
-    root = page_spool_root()
-    if not root.is_dir():
-        return 0
-    wanted: set[str] = set()
-    for c in cands:
-        texts = [str(c.get("url") or ""), str(c.get("link_from") or ""), *map(str, c.get("facts") or []), *map(str, c.get("quotes") or [])]
-        wanted |= {page_archive.page_key(u) for t in texts for u in CAND_URL.findall(t)}
     n = 0
-    for d in sorted(p for p in root.iterdir() if p.is_dir()):
+    try:
+        root = page_spool_root()
+        if not root.is_dir():
+            return 0
+        wanted: set[str] = set()
+        for c in cands:
+            texts = [str(c.get("url") or ""), str(c.get("link_from") or ""), *map(str, c.get("facts") or []), *map(str, c.get("quotes") or [])]
+            wanted |= {page_archive.page_key(u) for t in texts for u in CAND_URL.findall(t)}
+        dirs = sorted(p for p in root.iterdir() if p.is_dir())
+    except Exception as e:      # noqa: BLE001  預かりの置き場を読めなくても、素材の保存へ進む(Sol 監査 r1)
+        print(f"  預かった原本の置き場を読めない({type(e).__name__}: {e})", flush=True)
+        return 0
+    for d in dirs:
         try:
             n += page_archive.ingest(d, keep=lambda u: bool(u) and page_archive.page_key(u) in wanted)
         except Exception as e:      # noqa: BLE001
@@ -2263,18 +2263,25 @@ def verify(cands: list[dict]) -> dict:
                     # 「URL の取り違え」と記録し、なぜ落ちたかを当番が再現して確かめることになる(監査指摘
                     # render-diagnostic-lost-in-classification と同じ型)
                     render_errs: list[str] = []
-                    page_html = body
+
+                    def keep(page_text: str, page_html, rendered: bool = False) -> None:
+                        # 収集時点の原本として残す(執筆・校閲が読み直せないときに使う。page_archive)。描画して照合し直した本文も
+                        # 残し、素材の archived_at はいちばん新しく残した版を指す(Sol 監査 r1: 描画で確かめた価格が原本に無かった)
+                        kept = keep_page(c["url"], page_text, page_html, RENDER_FINAL.get(c["url"]) if rendered else final,
+                                         res.status, rendered=rendered)
+                        if kept:
+                            c["archived_at"] = page_archive.fetched_at(kept)
                     # CSR で本文が空同然か、描画必須のサイト(定点観測の portal)なら描画してから読み直す(定点観測と同じ経路)
                     if needs_render(c["url"], text):
                         rendered, why = rendered_or_note(c["url"])
                         render_errs += [why] if why else []
                         if rendered:
                             text = html_to_text(rendered.encode("utf-8", "replace"))
-                            page_html = rendered
-                    # 収集時点の原本として残す(執筆・校閲が読み直せないときに使う。page_archive)
-                    kept = keep_page(c["url"], text, page_html, final, res.status)
-                    if kept:
-                        c["archived_at"] = kept["at"]
+                            keep(text, rendered, True)
+                        else:
+                            keep(text, body)
+                    else:
+                        keep(text, body)
                     periods = extract_periods(text)
                     if periods:
                         c["periods"] = periods
@@ -2292,6 +2299,7 @@ def verify(cands: list[dict]) -> dict:
                         if rendered:
                             unbacked = unbacked_facts(c.get("facts") or [],
                                                       html_to_text(rendered.encode("utf-8", "replace")))
+                            keep(html_to_text(rendered.encode("utf-8", "replace")), rendered, True)
                     if unbacked:
                         c["unbacked_facts"] = unbacked[:12]
                     # **写しがそのページに無ければ、URL の取り違え。**事実は別のページのもので、この候補には出典が無い。
@@ -2306,6 +2314,7 @@ def verify(cands: list[dict]) -> dict:
                         render_errs += [why] if why else []
                         if rendered:
                             rtext = html_to_text(rendered.encode("utf-8", "replace"))
+                            keep(rtext, rendered, True)
                             missing = [q for q in missing if quote_on_page(q, rtext) is False]
                             matched = matched or any(quote_on_page(q, rtext) for q in quotes)
                     if missing:

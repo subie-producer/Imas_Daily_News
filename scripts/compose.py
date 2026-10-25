@@ -2452,7 +2452,10 @@ def attach_maintenance_notice(date: str, slug: str, path: Path, materials: list[
         fm = parse_front_matter(path) or {}
         urls = [str(x.get("url") or "") for x in [*(materials or []), *(fm.get("sources") or [])] if isinstance(x, dict)]
         text = path.read_text(encoding="utf-8")
-        notice = maintenance_notice(date, maintenance_unread_hosts(date, slug, urls), archived=archive_read_hosts(date, slug, urls))
+        # 原本で読んだページの断り書きは、執筆が確かめた事実(verified_facts)の url も見る(素材の外の原本のページで書いた事実)
+        facts_urls = [str(x.get("url") or "") for x in fm.get("verified_facts") or [] if isinstance(x, dict)]
+        notice = maintenance_notice(date, maintenance_unread_hosts(date, slug, urls),
+                                    archived=archive_read_hosts(date, slug, urls + facts_urls))
         new = renderlib.with_notice(text, notice)
         if renderlib.with_notice(new, notice) != new:
             # 外せない文面(strip_notice の型に合わないホスト名)を付けると、掛け直すたびに重なり字数・指紋にも入る。付けずに申告する

@@ -39,6 +39,9 @@ def make_driver() -> webdriver.Chrome:
     return webdriver.Chrome(options=opts)
 
 
+FINAL: dict[str, str] = {}      # 頼んだ URL → 描画し終えたときの URL(JS の転送(メンテナンス画面へ)を呼び出し側が見分ける)
+
+
 def fetch(url: str, wait_css: str | None, timeout: int) -> str:
     driver = make_driver()
     try:
@@ -53,6 +56,7 @@ def fetch(url: str, wait_css: str | None, timeout: int) -> str:
                 lambda d: d.execute_script("return document.readyState") == "complete"
             )
             time.sleep(2)  # CSR の描画待ち
+        FINAL[url] = driver.current_url
         return driver.page_source
     finally:
         driver.quit()
@@ -73,6 +77,9 @@ def main() -> int:
         msg = (str(e).strip().splitlines() or [""])[0].removeprefix("Message:").strip()
         print(f"RENDER_FAILED: {type(e).__name__}: {msg}"[:300], file=sys.stderr)
         return 1
+    # 描画し終えたときの URL(呼び出し側の pipelib.render_page が RENDER_FINAL に残す。メンテナンス画面への転送の見分けに使う)
+    if FINAL.get(args.url):
+        print(f"RENDERED_URL: {FINAL[args.url]}", file=sys.stderr)
     if args.out:
         with open(args.out, "w", encoding="utf-8") as f:
             f.write(html)

@@ -1,0 +1,51 @@
+{
+ "decisions": {
+  "765-961-idol-ultimate-2027-ticket": {
+   "action": "article",
+   "angle": "アソビストアプレミアム会員先行の現地チケット受付が10月28日23時59分に締切、あと2日であることを伝え直す",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "締切が3日以内で当日のトリガーあり。prior本文にある価格・会場・日程は新情報に数えない。"
+  },
+  "cositai-seven-park-amami-765as-report-2026-10-25": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "個人のSNS投稿によるファンのコスプレ報告(未確認)。単体では記事にならず、culture記事はgeneral面の扱い。"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "765-961-idol-ultimate-2027-ticket",
+    "brand": "765",
+    "rank": "medium",
+    "angle": "アソビストアプレミアム会員先行の現地チケット受付が10月28日23時59分に締切、あと2日であることを伝え直す",
+    "purpose": "期日の知らせ",
+    "lead_score": 60,
+    "dedup_key": "765-961-idol-ultimate-2027-ticket",
+    "candidate_ids": [
+     "202610260219-grok-1",
+     "202610260219-grok-49"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "cositai-seven-park-amami-765as-report-2026-10-25",
+    "reason": "面違い",
+    "note": "個人のSNS投稿によるファンのコスプレ報告(未確認)。単体では記事にならず、culture記事はgeneral面の扱い。"
+   }
+  ],
+  "cross_brand": []
+ }
+}

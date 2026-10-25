@@ -1,0 +1,33 @@
+{
+ "decisions": {
+  "tours-season-2-2026": {
+   "action": "article",
+   "angle": "S2弾で特定の編成のツアーモードにエクストラコミュが発生し、舞田類とのハイタッチや山下次郎へのプレゼント渡しも紹介された",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 50,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "稼働日・コミュ200以上・中部追加・SYMPHONYは10/25の記事に既出。エクストラコミュとハイタッチ・プレゼントは既報の本文に無い新しい事実。"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "joint-tours-season-2-2026",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "S2弾で特定の編成のツアーモードにエクストラコミュが発生し、舞田類とのハイタッチや山下次郎へのプレゼント渡しも紹介された",
+    "purpose": "新情報",
+    "lead_score": 50,
+    "dedup_key": "tours-season-2-2026",
+    "candidate_ids": [
+     "202610260219-grok-45"
+    ]
+   }
+  ],
+  "dropped": [],
+  "cross_brand": []
+ }
+}

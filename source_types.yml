@@ -89,6 +89,7 @@ suffix_types:
 
 # --- 報道: 独立した報道メディア ---
 press_domains:
+  - 0115765.com           # 合議で追加: 署名記者の現地取材特集(取材・撮影を明記)。独立の報道媒体
   - kai-you.net           # 合議で追加: 独立系メディアの自社執筆コラム。公式発表の写しではない
   - radichubu.jp          # 合議で追加: 自社番組で取材した内容の記事化。報道メディアの自主取材による情報発信
   - toyamamikke.com       # 合議で追加: 富山の独立した地域メディア。自ら取材して記事を執筆
@@ -253,6 +254,9 @@ party_paths:
   - item.rakuten.co.jp/f272078-takatsuki        # 高槻市ふるさと納税
 
 party_domains:
+  - anime-store.jp        # 合議で追加: 多作品の通販で学マス品を予約受付。販売元の立場。社名は未確認
+  - d3p.co.jp             # 合議で追加: Astromeda POPUPの告知を掲載。他作品のゲーム販売元サイト
+  - anicloset.com         # 合議で追加: ポップアップ商品を自社ECとハンズで販売。版権表記は版権元のみ
   - tv-tower.co.jp        # 合議で追加: 会社概要で展望台運営会社と確認。コラボ催しの会場側の一次発信
   - kinoco-plus.com       # 合議で追加: 提供曲の作家が運営し、ノスオケCDの制作・発売元
   - fujidou.co.jp         # 合議で追加: A3ライセンス商品の卸・予約受付を行う販売元
@@ -617,6 +621,15 @@ x_accounts:
     - imasnews765
     - zutapoke
   ファン:
+    - ykdrmsm_2303        # 合議で追加: 個人によるコスプレ撮影の参加報告
+    - tanakafuyuko        # 合議で追加: 個人による高森藍子のファンイラスト投稿
+    - mygasen2            # 合議で追加: 個人が手毬の語録やGT7用デカールを公開
+    - kanipai_sya67       # 合議で追加: 個人によるちびぐるみフォトスタジオのファン動画
+    - hiroeloz_RWSM       # 合議で追加: 個人によるファンアートの話題発信
+    - hinatapiyoko        # 合議で追加: 個人によるファン創作(私服を担当アイドルに着せる)
+    - churasan4649        # 合議で追加: 個人のファンイラスト投稿
+    - MP_emup             # 合議で追加: 個人によるゲーム画面のスクリーンショット投稿
+    - Kansaiadmiral       # 合議で追加: 個人の創作(プロデューサー名刺の作成)の発信
     - yoyoyo_masp         # 合議で追加: 個人の灯里愛夏バースデーライブ関連の再生数報告
     - uooooaaaan          # 合議で追加: 個人のSideM作品に関するファン感想の投稿
     - syun8679            # 合議で追加: 個人のシャニマスコラボ来訪報告
@@ -911,6 +924,7 @@ x_accounts:
     - procinen1
     - yutaleP
   当事者:
+    - deramasu2025        # 合議で追加: でらますコラボの主催・名鉄観光サービスが参加者アンケートを一次発信
     - uneru55             # 合議で追加: 湯～ねるのコラボライブロウリュ予告、会場側の一次発信
     - renaissance_IP      # 合議で追加: コラボ版チケット販売を行うルネサンス側の一次発信
     - animateunagi        # 合議で追加: 特典付与条件と終了日を告知する販売元の一次発信
@@ -1084,6 +1098,9 @@ x_posts:
 
 # --- リンク元から引き継いだ種別(リンク先1つずつ。キーは pipelib.link_key)。合議がリンク元の告知と関係していると確かめたものだけ(classify_sources.inherit_from_links)。リンク先そのものの種別より強いときだけ効く ---
 link_types:
+  asobiticket2.asobistore.jp/news/022a9df8-fb50-48fe-b21d-aea1b06953a7: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://x.com/SideM_official/status/2113561200357482713(公式)。SideMプロミ2027先行の入金期限延長の告知そのもの。リンク元と同じ内容
+  recommend.jr-central.co.jp/oshi-tabi/idolmaster_sidem/: 当事者 # リンク元から引き継ぎ(合議で関係を確認): https://x.com/oshitabi_update/status/2113828027998281898(当事者)。リンク先は告知と同じJR東海×SideM旅マス企画の案内ページ
+  lnk.to/S.E.M_2DMV: 準公式                       # リンク元から引き継ぎ(合議で関係を確認): https://x.com/SideM_lantis/status/2110339838813573374(準公式)。リンク先は告知と同じ楽曲Life's Side Menu!の2DMVページ
   t.co/dVaE8WMfgp: 公式                         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/valiv_official/status/2113266096036065319(公式)。告知のURLが展開する3rdLIVE現地チケット先行受付ページ
   nicovideo.jp/watch/lv351405530: 準公式          # リンク元から引き継ぎ(合議で関係を確認): https://columbia.jp/idolmaster/imasnews/261023.html(準公式)。告知の番組配信URLで、HOURGLASS初公開回のCINDERELLA PAR
   lnk.to/FRAME_2DMV: 準公式                       # リンク元から引き継ぎ(合議で関係を確認): https://x.com/SideM_lantis/status/2113616430545686544(準公式)。ULTIMATE FLAMEの配信・DLページで、2DMV告知と同じ楽曲

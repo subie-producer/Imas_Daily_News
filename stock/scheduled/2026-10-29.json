@@ -1087,5 +1087,28 @@
   "src_candidate_id": "202610250218-grok-119",
   "companion_of": "sched-2026-10-29-tours-season-2-2026-開始",
   "src_dedup_key": "tours-s2-symphony-2026"
+ },
+ {
+  "id": "sched-2026-10-29-shinyson-shiny-competition-2026-締切",
+  "dedup_key": "shinyson-shiny-competition-2026",
+  "brand": "shiny",
+  "subject": "シャニソン シャイニーコンペティション 本日20時59分まで",
+  "kind": "締切",
+  "note": "本日20時59分の終了までに、イベント対象アイドルのプロデュースに挑戦できる",
+  "reserved_on": "2026-10-26",
+  "occurs_on": "2026-10-29",
+  "title": "シャニソン「シャイニーコンペティション」開催",
+  "url": "https://x.com/imassc_prism/status/2114190224112910653",
+  "source_type": "公式",
+  "facts": [
+   "プロデュースミニイベント「シャイニーコンペティション」が開催中。",
+   "イベント対象のアイドルをプロデュースし、「総合力」の高いアイドルの育成に挑戦するイベント。",
+   "開催期間: 10/29 20:59まで",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "deadline": "2026-10-29",
+  "src_candidate_id": "202610260219-grok-22"
  }
 ]

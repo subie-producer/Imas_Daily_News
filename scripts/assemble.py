@@ -1143,7 +1143,7 @@ def apply(date: str, number: int, out: dict, posts: list[dict], mats: dict, dry:
         if rows is None:
             rows = json.loads(p.read_text(encoding="utf-8")) if p.exists() else []
         dk = c.get("dedup_key") or r["slug"]
-        rid = f"sched-{r['date']}-{dk}-{r['kind']}"
+        rid = reservation_id(r, mats)
         # 添えを素材に付けた予約は、話題は添え先の予約のまま、素材の元の話題を src_dedup_key に残す(上書きしない)
         src_dk = source_topic(c, {})
         if any(x.get("id") == rid for x in rows):
@@ -1203,6 +1203,12 @@ def write_snapshot(ed_path: Path, snap: dict) -> None:
         tmp.unlink(missing_ok=True)
 
 
+def reservation_id(r: dict, mats: dict) -> str:
+    """予約の行が反映される予約の id(日・素材の話題・種別。apply は同じ id を重ねない)。"""
+    c = mats.get(r.get("candidate_id")) or {}
+    return f"sched-{r.get('date')}-{c.get('dedup_key') or r.get('slug')}-{r.get('kind')}"
+
+
 def return_reservations(date: str, inp: dict, out: dict, posts: list[dict], mats: dict, rejected: list,
                         notes: list[str], budget=None) -> tuple[dict, list[str]]:
     """検算で採らなかった予約(素材が合わない・素材にその日付が無い)を、その記事だけ理由を添えて1回だけ答え直させる
@@ -1222,18 +1228,24 @@ def return_reservations(date: str, inp: dict, out: dict, posts: list[dict], mats
         return validate(date, out, posts, mats, inp)
     gone = [r for r, _ in rejected]
     redo = [r for r in again.get("reservations") or [] if isinstance(r, dict) and r.get("slug") in slugs]
-    out = {**out, "reservations": [r for r in out.get("reservations") or [] if r not in gone] + redo}
+    kept_rows = [r for r in out.get("reservations") or [] if r not in gone]
+    # 初めから採れていた予約(差し戻していないもの)は、答え直しを足す前の答えで検めて控える(答え直しと同じ行を除かない。Sol 監査 r3)
+    first, _ = validate(date, {**out, "reservations": kept_rows}, posts, mats, inp)
+    out = {**out, "reservations": kept_rows + redo}
     clean, notes2 = validate(date, out, posts, mats, inp)
-    # 差し戻した予約が、答え直しで採れたかを数で照合する: 記事・日・種別ごとに、採れた予約の数から、差し戻していない予約(初めから
-    # 採れていたもの)の数を引いた残りが、差し戻した数に足りなければ、足りない分を名指しする。答え直しが予約を省いた・また採れない形
-    # だった、のどちらも黙って消さない(Sol 監査 r1)。まとめ記事で同じ日・同じ種別の項目が2つあり、片方だけ戻ったときも数が足りない
-    # (Sol 監査 r2)。答え直しは candidate_id も件名も直しうるので、どの予約が戻ったかは数でしか言えない。足りない組の差し戻した予約を全部挙げる
+    # 差し戻した予約が、答え直しで採れたかを数で照合する: 記事・日・種別ごとに、答え直しで**新しく反映される**予約(反映が重ねない
+    # 単位 reservation_id で、初めから採れていた予約に無いもの)の数が、差し戻した数に足りなければ、その組を名指しする。答え直しが
+    # 予約を省いた・また採れない形だった(Sol 監査 r1)、同じ日・種別の2件の片方だけ戻った(r2)、採れていた予約を答え直しが繰り返した
+    # (r3。繰り返しは反映で1件になり、戻ったことにならない)のどれも黙って消さない。答え直しは candidate_id も件名も直しうるので、
+    # どの予約が戻ったかは数でしか言えない。足りない組の差し戻した予約を全部挙げる
     key = lambda r: (r.get("slug"), r.get("date"), r.get("kind"))
-    first, _ = validate(date, {**out, "reservations": [r for r in out.get("reservations") or [] if r not in redo]}, posts, mats, inp)
-    had = collections.Counter(key(r) for r in first.get("reservations") or [])
-    got = collections.Counter(key(r) for r in clean.get("reservations") or [])
+    had = {reservation_id(r, mats) for r in first.get("reservations") or []}
+    new: dict[tuple, set] = collections.defaultdict(set)
+    for r in clean.get("reservations") or []:
+        if reservation_id(r, mats) not in had:
+            new[key(r)].add(reservation_id(r, mats))
     sent = collections.Counter(key(r) for r, _ in rejected)
-    short = {k: n - max(0, got[k] - had[k]) for k, n in sent.items() if n > max(0, got[k] - had[k])}
+    short = {k: n - len(new[k]) for k, n in sent.items() if n > len(new[k])}
     if short:
         anomaly("compose", "組版: 差し戻しても採れなかった続報予約(答え直しに無い・素材が合わない・素材にその日付が無い)。"
                            "次の組の予約が、差し戻した数より少ない:\n"

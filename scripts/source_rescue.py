@@ -31,6 +31,7 @@ import json
 import os
 import re
 import sys
+import tempfile
 import threading
 import time
 from pathlib import Path
@@ -324,8 +325,10 @@ def rescue(date: str, slugs: list[str], until: float | None = None, dry_run: boo
     if not arts:
         return report
     log: dict = {}
-    outdir = rescue_dir(date)
-    outdir.mkdir(parents=True, exist_ok=True)
+    # Grok の書き出しは実行ごとに新しい置き場へ(前の実行の書き出しが残る置き場だと、今回 Grok が書かずに終わった面で、前の実行の
+    # 答えを今回の問いの答えとして読む。Sol 監査 r3)。中身は記録として残す(metrics/work は Git 管理外)
+    rescue_dir(date).mkdir(parents=True, exist_ok=True)
+    outdir = Path(tempfile.mkdtemp(prefix=f"grok-{now_jst():%H%M%S}-", dir=rescue_dir(date)))
     # 1. 当たりの調べ(記事ごとに並列)
     tasks: dict[str, list[dict]] = {}
     with concurrent.futures.ThreadPoolExecutor(max_workers=len(arts)) as ex:

@@ -16771,6 +16771,21 @@ def test_source_rescue_entry(tmp: Path):
     check(len(cands4) == 4 and all(r["outcome"] == "揃わない" for r in rep["articles"].values())
           and source_rescue.VERIFY_LATE_NOTE in source_rescue.report_text(rep),
           f"締切までに裏取りできない候補を素材・計画に入れた: {len(cands4)} {rep['articles']}")
+    # 前の実行の Grok の書き出しを、今回の別の問いの答えとして読まない(今回 Grok が何も書かずに終わった。Sol 監査 r3)
+    tmp5 = tmp / "oldgrok"
+    rescue_fixture(tmp5)
+    with RescueFakes(tmp5):
+        source_rescue.rescue(RESCUE_DATE, ["shiny-85th-anniversary-gifts-2026"])
+    silent = RescueFakes(tmp5)
+    silent.deep = lambda queries, outdir, chosen, errs, suffix="-deep", retry=False: set()     # 正常に終わったが書かなかった
+    with silent:
+        rep = source_rescue.rescue(RESCUE_DATE, ["shiny-song-for-prism-third-anniversary-event-2026"])
+    cands5 = {c["id"]: c["url"] for c in json.loads((tmp5 / "candidates" / f"{RESCUE_DATE}.json").read_text(encoding="utf-8"))}
+    plan5 = {a["slug"]: a for a in json.loads((tmp5 / "metrics" / f"plan-{RESCUE_DATE}.json").read_text(encoding="utf-8"))["articles"]}
+    song = plan5["shiny-song-for-prism-third-anniversary-event-2026"]
+    check(not any(cands5.get(i) in RESCUE_X.values() for i in song["candidate_ids"])
+          and rep["articles"]["shiny-song-for-prism-third-anniversary-event-2026"]["outcome"] == "揃わない",
+          f"前の実行の Grok の書き出しを今回の問いの答えにした: {song['candidate_ids']} {rep['articles']}")
     # 始めた裏取りが締切を越えて長引いても(描画・本文の受信)、締切で待つのをやめ、裏取りしていない候補にする(Sol 監査 r2)
     import collect
     saved = (collect.verify, source_rescue.VERIFY_ONE_MAX)
@@ -16984,6 +16999,16 @@ def test_assemble_roundup_reservation(tmp: Path):
         clean, notes = assemble.return_reservations(d, inp, out2, posts, mats, rejected, notes)
         check(len(clean["reservations"]) == 1 and anomalies and "2件のうち 1件が戻らない" in anomalies[-1],
               f"同じ日・種別の予約の片方が戻らないのを名指ししない: {clean['reservations']} {anomalies}")
+        # 初めから採れていた予約 A と、差し戻した B(同じ日・種別)。答え直しが A を繰り返しただけなら、B は戻っていない(Sol 監査 r3)
+        anomalies.clear()
+        out3 = dict(out, reservations=[right, other])
+        assemble.run_session = lambda text, date, name, schema, budget=None: fake_session(text, date, name, schema, answer=right)
+        rejected = []
+        clean, notes = assemble.validate(d, out3, posts, mats, inp, rejected=rejected)
+        clean, notes = assemble.return_reservations(d, inp, out3, posts, mats, rejected, notes)
+        check(len({assemble.reservation_id(r, mats) for r in clean["reservations"]}) == 1 and anomalies
+              and "別の項目の受け取り締切" in anomalies[-1],
+              f"採れていた予約の繰り返しを、差し戻した予約が戻ったと数えた: {clean['reservations']} {anomalies}")
     finally:
         assemble.ROOT, assemble.run_session, assemble.anomaly = saved
 

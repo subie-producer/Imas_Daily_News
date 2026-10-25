@@ -75,7 +75,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import hashlib
 
-from pipelib import (COLLECT_ONCALL_MARK, COLLECT_OUTPUTS, ENV, ROOT, classify_txn_settled, settle_collect_outputs, SCHEDULED, SLOT_MARGIN_MIN,
+from pipelib import (COLLECT_ONCALL_MARK, COLLECT_OUTPUTS, ENV, ROOT, classify_txn_settled, settle_collect_outputs, scheduled_times, SLOT_MARGIN_MIN,
                      JobLockTimeout, anomaly,
                      job_lock, mark_collect_oncall,
                      next_slot_end, notify, now_jst, partial_output, prompt_file, read_answer, render_prompt, save_raw, schema_error,
@@ -372,7 +372,7 @@ def paper_record(dates: list[str], root: Path) -> str:
 BACKLOG_ROWS: list[dict] = []
 # 往復を終える時刻の上限(None なら ONCALL_LIMIT_MIN だけ)。backlog は次の定時工程の前に終える(backlog_deadline)
 DEADLINE_AT: float | None = None
-# 定時工程の時刻は pipelib(SCHEDULED・next_slot_end)と共有する。backlog はこの前に終え、発行の時間帯には始めない
+# 定時工程の時刻は pipelib(scheduled_times・next_slot_end。timer の定義から読む)と共有する。backlog はこの前に終え、発行の時間帯には始めない
 # (01:30 は道具の CLI の更新。同じ工程の排他を使い、02:00 の収集の前に終える必要がある。監査指摘)
 BACKLOG_MARGIN_MIN = SLOT_MARGIN_MIN   # 次の定時工程の何分前に終えるか
 BACKLOG_MIN_WINDOW_MIN = 60  # これより短い枠なら始めない(取り込みの分を残して1往復も回らない)
@@ -401,7 +401,7 @@ def backlog_deadline(now: datetime.datetime) -> float | None:
         return None
     cands = []
     for d in (0, 1):
-        for h, m in SCHEDULED:
+        for h, m in scheduled_times():
             t = (now + datetime.timedelta(days=d)).replace(hour=h, minute=m, second=0, microsecond=0)
             if t > now:
                 cands.append(t)

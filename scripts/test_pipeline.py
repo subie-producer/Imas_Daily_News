@@ -15670,6 +15670,13 @@ def test_oncall_session_waits(tmp: Path):
     r = pipelib.run_group([sys.executable, "-c", code], timeout=0.1, answered=slow_answer, settle=0)
     check(r.returncode == 1 and not r.settled and not oncall.finished(r),
           f"見張りのあいだに自分で終了 1 で終わったセッションを settled にして採った: {r.returncode} {r.settled}")
+    # こちらが止める前に SIGKILL で終わったセッションも、止めた証拠にならない(Sol 監査 r2)
+    exited.unlink(missing_ok=True)
+    code = (f"import os, signal, sys\nprint({one!r}, flush=True)\nopen({str(exited)!r}, 'w').close()\n"
+            "os.kill(os.getpid(), signal.SIGKILL)\n")
+    r = pipelib.run_group([sys.executable, "-c", code], timeout=0.1, answered=slow_answer, settle=0)
+    check(r.returncode == -signal.SIGKILL and not r.settled and not oncall.finished(r),
+          f"見張りのあいだに SIGKILL で終わったセッションを settled にして採った: {r.returncode} {r.settled}")
     # 監査(codex): 答えのファイルを書いたあと、残った子を待って終わらない
     repo = tmp / "repo"
     repo.mkdir(exist_ok=True)

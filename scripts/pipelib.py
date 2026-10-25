@@ -1287,6 +1287,19 @@ def run_group(cmd: list[str], timeout: float | None, *, cwd=None, env: dict | No
     return subprocess.CompletedProcess(cmd, p.returncode, so, se)
 
 
+def _alive_frozen(p) -> bool:
+    """頭を凍らせ(SIGSTOP。凍った頭は自分では終われない)、まだ終わっていないか。終わっていれば(ゾンビ・回収済み)False。
+    回収前の終了は WNOWAIT で覗く(状態を消さないので、終了コードはあとの回収で Popen が読む)。"""
+    try:
+        os.kill(p.pid, signal.SIGSTOP)
+    except OSError:
+        return False
+    try:
+        return os.waitid(os.P_PID, p.pid, os.WEXITED | os.WNOHANG | os.WNOWAIT) is None
+    except ChildProcessError:
+        return False
+
+
 def _run_group_answered(cmd: list[str], timeout: float | None, answered, *, cwd, env, settle: float) -> subprocess.CompletedProcess:
     """答えを見張りながらセッションを待つ。標準出力・エラーはパイプでなくファイルに受ける(答えのあとに残った道具がパイプを
     握っていても待たされない)。答えが出たのに頭が settle 秒で終わらない、または締切の時点で答えが出ているなら、頭と子孫を
@@ -1323,11 +1336,12 @@ def _run_group_answered(cmd: list[str], timeout: float | None, answered, *, cwd,
                     break
                 time.sleep(ANSWER_POLL_SEC)
             if settled or timed_out:
-                reap(p)             # 頭・グループ・子孫を止めて回収する(出力はファイルにある)
-                # 見張り・回収のあいだに頭が自分で終わっていたら(止めた SIGKILL でない終了コード)、その終わり方を採る。
-                # 自分で異常終了したセッションを settled にしない(Sol 監査 r1: 答えを読むあいだに終了 1 で終わった回を採った)
-                if p.returncode != -signal.SIGKILL:
+                # 見張りのあいだに頭が終わっていたら(自分で・ほかの誰かに止められて)、その終わり方を採る。settled・時間切れに
+                # するのは、生きている頭をここで止めたときだけ(Sol 監査 r1: 答えを読むあいだに終了 1 で終わった回を採った。
+                # r2: 終了コードが SIGKILL でも、こちらが止めた証拠にはならない)
+                if not _alive_frozen(p):
                     settled = timed_out = False
+                reap(p)             # 頭・グループ・子孫を止めて回収する(出力はファイルにある)
             else:
                 finish_group(p, 10)     # 頭は終わっている。グループ・印に残った道具を止める
         except BaseException:

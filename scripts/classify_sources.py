@@ -34,7 +34,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from pipelib import (ENV, ROOT, COLLECT_MODEL, EXPLORE_MODEL, ID_CASE_HOSTS, QUERY_DOC_PAGES, SHORTENERS, classify_source,
                      source_type_table, write_source_table, prompt_part, render_prompt, query_doc_key, path_type_norm,
                      edition_date, extract_json_array, html_to_text, notify, render_failure, set_quiet,
-                     X_ANON_POST, x_post_author, CLI_BLOCKED_EXIT, CliBlocked, cli_check, link_key, src_rank)
+                     X_ANON_POST, x_post_author, CLI_BLOCKED_EXIT, CliBlocked, cli_check, link_key, src_rank,
+                     browser_only, render_page)
 from pipelib import PAGE_READ_BYTES, run_group   # モデル・道具は自前のグループで起動し、時間切れでは子孫まで止める
 
 # 合議で足してよい種別。公式・準公式も答えさせる(作品・ブランドの公式アカウントを「不明」で人へ回して
@@ -911,10 +912,14 @@ def unresolved_post_sources(date: str | None = None, only: set[str] | None = Non
 def page_meta(url: str) -> tuple[str, str, str]:
     """(title, meta description, 生 HTML)。JS で描画するページでも title/description は残っている。"""
     try:
-        import urllib.request
-        req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0", "Accept-Language": "ja"})
-        with urllib.request.urlopen(req, timeout=20) as r:
-            html = r.read(400_000).decode(r.headers.get_content_charset() or "utf-8", "replace")
+        if browser_only(url):
+            # 素の取得に 429 を返すサイトは描画して読む(2026-10-26 編集長「429を出すようなアクセスはするな。Chromeを使え。」)
+            html = render_page(url, 30)
+        else:
+            import urllib.request
+            req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0", "Accept-Language": "ja"})
+            with urllib.request.urlopen(req, timeout=20) as r:
+                html = r.read(400_000).decode(r.headers.get_content_charset() or "utf-8", "replace")
         t = re.search(r"<title[^>]*>(.*?)</title>", html, re.S | re.I)
         d = re.search(r'<meta[^>]+(?:name|property)=["\'](?:description|og:description|og:site_name)["\'][^>]+content=["\']([^"\']*)', html, re.I)
         return (re.sub(r"\s+", " ", t.group(1)).strip() if t else "", (d.group(1).strip() if d else ""), html)
@@ -983,10 +988,13 @@ def site_profile(host: str, url: str, top: str | None = None) -> str:
 def page_excerpt(url: str, chars: int = 1200) -> str:
     """判断材料としてページ本文の冒頭を取る。取れなくても続ける。"""
     try:
-        import urllib.request
-        req = urllib.request.Request(url, headers={"User-Agent": UA})
-        with urllib.request.urlopen(req, timeout=20) as r:
-            text = html_to_text(r.read(PAGE_READ_BYTES), r.headers.get_content_charset())
+        if browser_only(url):
+            text = html_to_text(render_page(url, 30).encode("utf-8", "replace"))     # 素の取得に 429 を返すサイトは描画して読む(page_meta)
+        else:
+            import urllib.request
+            req = urllib.request.Request(url, headers={"User-Agent": UA})
+            with urllib.request.urlopen(req, timeout=20) as r:
+                text = html_to_text(r.read(PAGE_READ_BYTES), r.headers.get_content_charset())
         return re.sub(r"\s+", " ", text).strip()[:chars]
     except Exception as e:
         return f"(取得できず: {type(e).__name__}: {e})"[:300]

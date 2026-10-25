@@ -43,7 +43,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from pipelib import (ENV, ROOT, COLLECT_MODEL, CODEX_WRITE_MODEL, EXPLORE_MODEL,
                      EXPLORE_MAX_BUDGET_USD, JST, JobLockTimeout, job_lock, prompt_file, clean_url, append_metric, classify_source,
                      extract_periods, decode_html, html_to_text, loads_strict, needs_render, partial_output, quote_on_page, read_for_raw, reap, save_raw, schema_ok,
-                     RenderFailed, render_page, candidate_misplaced, maintenance_http_error, maintenance_redirect,
+                     RenderFailed, browser_only, render_page, candidate_misplaced, maintenance_http_error, maintenance_redirect,
                      merge_candidate_facts,
                      set_quiet, unbacked_facts,
                      anomaly, anomaly_shape, http_status, whywhy_exempt_status, checkout_edition_branch, classify_retag_lint, collect_oncall_end, commit_and_push, diagnose_anomalies,
@@ -301,7 +301,8 @@ def page_html_or_note(url: str, csr: bool) -> tuple[str, str]:
     素の HTML のページも本文を渡す。WebFetch は要約しか返さず、写し(原文どおりの引用)が取れないので読めなかった扱いになる
     (2026-10-09: ランティスの SideM 特典告知2件)"""
     BODY_HTTP.pop(url, None)      # 前の回の状態コードを持ち越さない(この回の取得の結果だけ)
-    if csr:
+    # 素の取得に 429 を返すサイト(browser_only)は素の HTML を取らずに描画する(2026-10-26 編集長「429を出すようなアクセスはするな」)
+    if csr or browser_only(url):
         return rendered_or_note(url, limit=watch_limit(90))
     left = watch_limit(20)
     if left is not None and left <= 0:
@@ -2164,23 +2165,38 @@ def verify(cands: list[dict]) -> dict:
             if is_x(c["url"]):
                 c["verify"] = "confirmed" if (c["via"] == "grok" and c["source_type"] == "公式") else "unconfirmed"
             else:
-                req = urllib.request.Request(c["url"], headers={"User-Agent": UA})
-                try:
-                    opened = urllib.request.urlopen(req, timeout=15)
-                except urllib.error.HTTPError as e:
-                    # 転送せずに 5xx でメンテナンスの画面を返すサイト(2026-10-23: ランティスの 503)も、今は確かめられないだけ。
-                    # 404・メンテナンスの表示の無い 5xx は従来どおり取得できない(failed)
-                    if not maintenance_http_error(e):
-                        raise
-                    c["verify"] = "unconfirmed"
-                    c["verify_note"] = f"出典がメンテナンス中(HTTP {e.code} でメンテナンスの画面)で、facts を本文で確かめられない"
-                    counts["unconfirmed"] += 1
-                    continue
-                with opened as res:
-                    ok = res.status < 400
-                    body = res.read(PAGE_READ_BYTES) if ok else b""
-                    cs = res.headers.get_content_charset()
-                    final = res.geturl()
+                # 素の取得に 429 を返すサイト(browser_only)は urllib で叩かず、描画した本文で照合する(2026-10-26 編集長
+                # 「429を出すようなアクセスはするな。Chromeを使え。」)。描画できなければ、今は確かめられないだけ(メンテナンスと同じ扱い)
+                pre = browser_only(c["url"])
+                if pre:
+                    html, why = rendered_or_note(c["url"])
+                    if not html:
+                        c["verify"] = "unconfirmed"
+                        c["verify_note"] = "出典は描画でしか読まないサイトで、描画できず facts を本文で確かめられない"
+                        c["render_error"] = why[:300]
+                        counts["unconfirmed"] += 1
+                        continue
+                    ok, body, cs, final = True, html.encode("utf-8", "replace"), "utf-8", c["url"]
+                else:
+                    req = urllib.request.Request(c["url"], headers={"User-Agent": UA})
+                    try:
+                        opened = urllib.request.urlopen(req, timeout=15)
+                    except urllib.error.HTTPError as e:
+                        # 転送せずに 5xx でメンテナンスの画面を返すサイト(2026-10-23: ランティスの 503)も、今は確かめられないだけ。
+                        # 404・メンテナンスの表示の無い 5xx は従来どおり取得できない(failed)
+                        if not maintenance_http_error(e):
+                            raise
+                        c["verify"] = "unconfirmed"
+                        c["verify_note"] = f"出典がメンテナンス中(HTTP {e.code} でメンテナンスの画面)で、facts を本文で確かめられない"
+                        counts["unconfirmed"] += 1
+                        continue
+                    with opened as res:
+                        ok = res.status < 400
+                        body = res.read(PAGE_READ_BYTES) if ok else b""
+                        cs = res.headers.get_content_charset()
+                        final = res.geturl()
+                # 読み直しの描画。描画で読んだページ(pre)は描画済みなので、ブラウザをもう一度起動しない
+                reread = (lambda: ("", "")) if pre else (lambda: rendered_or_note(c["url"]))
                 # メンテナンス画面へ転送されたら、案内は出典の本文ではない。写しが無いのは URL の取り違えではなく、今は確かめられないだけ
                 # (failed にすると、メンテナンスのあいだに集めた公式の候補を使えなくする)
                 if ok and maintenance_redirect(c["url"], final):
@@ -2196,7 +2212,7 @@ def verify(cands: list[dict]) -> dict:
                     render_errs: list[str] = []
                     # CSR で本文が空同然か、描画必須のサイト(定点観測の portal)なら描画してから読み直す(定点観測と同じ経路)
                     if needs_render(c["url"], text):
-                        rendered, why = rendered_or_note(c["url"])
+                        rendered, why = reread()
                         render_errs += [why] if why else []
                         if rendered:
                             text = html_to_text(rendered.encode("utf-8", "replace"))
@@ -2212,7 +2228,7 @@ def verify(cands: list[dict]) -> dict:
                     # portal 以外のサイトの描画漏れに備え、粒が欠けたときにも描画する
                     unbacked = unbacked_facts(c.get("facts") or [], text)
                     if unbacked:
-                        rendered, why = rendered_or_note(c["url"])
+                        rendered, why = reread()
                         render_errs += [why] if why else []
                         if rendered:
                             unbacked = unbacked_facts(c.get("facts") or [],
@@ -2227,7 +2243,7 @@ def verify(cands: list[dict]) -> dict:
                     missing = [q for q in quotes if quote_on_page(q, text) is False]
                     matched = any(quote_on_page(q, text) for q in quotes)
                     if missing:
-                        rendered, why = rendered_or_note(c["url"])
+                        rendered, why = reread()
                         render_errs += [why] if why else []
                         if rendered:
                             rtext = html_to_text(rendered.encode("utf-8", "replace"))

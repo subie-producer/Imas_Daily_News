@@ -31,7 +31,7 @@ import urllib.request
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from pipelib import (RenderFailed, extract_periods, html_to_text, maintenance_http_error, maintenance_redirect, needs_render,
+from pipelib import (PAGE_READ_BYTES, RenderFailed, extract_periods, html_to_text, maintenance_http_error, maintenance_redirect, needs_render,
                      note_fetched, render_page)
 
 UA = "Mozilla/5.0 (compatible; ImasNewsCollect/1.0)"
@@ -58,7 +58,7 @@ def fetch(url: str) -> str:
         if res.status >= 400:
             return ""
         FINAL_URL[url] = res.geturl()
-        return html_to_text(res.read(400_000), res.headers.get_content_charset())
+        return html_to_text(res.read(PAGE_READ_BYTES), res.headers.get_content_charset())
 
 
 def fixed_page(pages_file: str, url: str) -> str:

@@ -35,7 +35,7 @@ from pipelib import (ENV, ROOT, COLLECT_MODEL, EXPLORE_MODEL, ID_CASE_HOSTS, QUE
                      source_type_table, write_source_table, prompt_part, render_prompt, query_doc_key, path_type_norm,
                      edition_date, extract_json_array, html_to_text, notify, render_failure, set_quiet,
                      X_ANON_POST, x_post_author, CLI_BLOCKED_EXIT, CliBlocked, cli_check, link_key, src_rank)
-from pipelib import run_group   # モデル・道具は自前のグループで起動し、時間切れでは子孫まで止める
+from pipelib import PAGE_READ_BYTES, run_group   # モデル・道具は自前のグループで起動し、時間切れでは子孫まで止める
 
 # 合議で足してよい種別。公式・準公式も答えさせる(作品・ブランドの公式アカウントを「不明」で人へ回して
 # いたら、@idolmaster_en もジムシャニ公式も未確認のまま紙面に載った。編集長の指摘)。
@@ -986,7 +986,7 @@ def page_excerpt(url: str, chars: int = 1200) -> str:
         import urllib.request
         req = urllib.request.Request(url, headers={"User-Agent": UA})
         with urllib.request.urlopen(req, timeout=20) as r:
-            text = html_to_text(r.read(200_000), r.headers.get_content_charset())
+            text = html_to_text(r.read(PAGE_READ_BYTES), r.headers.get_content_charset())
         return re.sub(r"\s+", " ", text).strip()[:chars]
     except Exception as e:
         return f"(取得できず: {type(e).__name__}: {e})"[:300]

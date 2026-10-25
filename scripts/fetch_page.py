@@ -37,14 +37,15 @@ import urllib.request
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from pipelib import (PAGE_READ_BYTES, RENDER_FINAL, RenderFailed, browser_only, extract_periods, html_to_text,
-                     maintenance_http_error, maintenance_redirect, needs_render, note_fetched, render_page)
+from pipelib import (PAGE_READ_BYTES, RENDER_FINAL, RENDER_STATUS, RenderFailed, browser_only, extract_periods, html_to_text,
+                     maintenance_http_error, maintenance_redirect, maintenance_screen, needs_render, note_fetched, render_page)
 import page_archive
 
 UA = "Mozilla/5.0 (compatible; ImasNewsCollect/1.0)"
 FIXED_PAGES_ENV = "IMAS_FETCH_PAGES"
 FINAL_URL: dict[str, str] = {}     # 頼んだ URL → リダイレクトの行き先(本文を取れたページの記録に両方を残す。執筆は行き先を出典に書くことがある)
 FETCH_HTML: dict[str, bytes] = {}  # 頼んだ URL → 取った HTML(原本の保存に使う)
+FETCH_STATUS: dict[str, int] = {}  # 頼んだ URL → 素の取得の状態コード(原本の保存に使う)
 
 
 class Maintenance(Exception):
@@ -69,6 +70,7 @@ def fetch(url: str) -> str:
         if res.status >= 400:
             return ""
         FINAL_URL[url] = res.geturl()
+        FETCH_STATUS[url] = res.status      # 原本に残す状態コード
         raw = res.read(PAGE_READ_BYTES)
         FETCH_HTML[url] = raw       # 原本の保存(page_archive)に HTML も残す
         return html_to_text(raw, res.headers.get_content_charset())
@@ -139,7 +141,7 @@ def main() -> int:
     note_fetched(args.url, final)
     note = None
     if not fixed:
-        saved = keep(args.url, text, live.get("html"), final, bool(live.get("rendered")))
+        saved = keep(args.url, text, live.get("html"), final, bool(live.get("rendered")), live.get("status") or 200)
         if base and page_archive.text_sha(text) == base.get("sha"):
             note = f"原本の照合: {when(base)}の原本と同じ内容を、いま({page_archive.now_iso()[:16].replace('T', ' ')})読み直して確かめた"
         elif base:
@@ -180,7 +182,8 @@ def read_live(url: str, fixed: str = "") -> dict:
 
     # JS で描画するページは本文が空同然になる。その場合と、描画必須と分かっているサイトは描画してから読み直す
     # (固定の本文は描画したあとのもの。取りに行かない)
-    live = {"kind": "ok", "text": text, "final": final, "html": FETCH_HTML.get(url), "rendered": False}
+    live = {"kind": "ok", "text": text, "final": final, "html": FETCH_HTML.get(url), "rendered": False,
+            "status": FETCH_STATUS.get(url) or 200}
     if not fixed and needs_render(url, text):
         live = rendered_live(url, live)
     if live["kind"] == "ok" and not live["text"].strip():
@@ -202,9 +205,17 @@ def rendered_live(url: str, live: dict) -> dict:
     if maintenance_redirect(url, final):
         return {"kind": "maintenance", "final": final, "why": f"メンテナンス中({final} へ転送された)",
                 "msg": f"FETCH_FAILED: メンテナンス中({final} へ転送された)。このページの本文は今は読めない"}
+    # 描画した文書が HTTP のエラー(404・410・5xx・429)なら、その画面は本文ではない(素の取得と同じ扱い。Sol 監査 r8)
+    st = RENDER_STATUS.get(url) or 0
+    if st >= 400:
+        if maintenance_screen(st, rendered.encode("utf-8", "replace")):
+            return {"kind": "maintenance", "final": final, "why": f"メンテナンス中(描画したページが HTTP {st} でメンテナンスの画面)",
+                    "msg": f"FETCH_FAILED: メンテナンス中(描画したページが HTTP {st} でメンテナンスの画面)。このページの本文は今は読めない"}
+        why = f"描画したページが HTTP {st}"
+        return {"kind": "gone" if st in GONE_CODES else "failed", "final": final, "why": why, "msg": f"FETCH_FAILED: {why}"}
     # 描画で JS が別のページへ移ったら、その行き先を転送先として出す・記録する・原本を引けるようにする(Sol 監査 r3)
     return {**live, "text": html_to_text(rendered.encode("utf-8", "replace")), "html": rendered, "rendered": True,
-            "final": final if final and final != url else live.get("final")}
+            "final": final if final and final != url else live.get("final"), "status": st or 200}
 
 
 def archived(get, url: str) -> dict | None:
@@ -216,12 +227,12 @@ def archived(get, url: str) -> dict | None:
         return None
 
 
-def keep(url: str, text: str, html, final: str | None, rendered: bool = False) -> dict | None:
+def keep(url: str, text: str, html, final: str | None, rendered: bool = False, status: int = 200) -> dict | None:
     """読めたページを原本として残す(転送先の URL でも引けるようにする)。書けない置き場(読み取り専用のセッション)でも止めない。"""
     try:
-        got = page_archive.save(url, text, html=html, final=final, via="read", rendered=rendered)
+        got = page_archive.save(url, text, html=html, final=final, status=status, via="read", rendered=rendered)
         if final and final != url and not maintenance_redirect(url, final):
-            page_archive.save(final, text, html=html, final=final, via="read", rendered=rendered)
+            page_archive.save(final, text, html=html, final=final, status=status, via="read", rendered=rendered)
         return got
     except Exception as e:      # noqa: BLE001
         print(f"PAGE_ARCHIVE_FAILED: {type(e).__name__}: {e}", file=sys.stderr)

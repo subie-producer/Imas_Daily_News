@@ -43,7 +43,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from pipelib import (ENV, ROOT, COLLECT_MODEL, CODEX_WRITE_MODEL, EXPLORE_MODEL,
                      EXPLORE_MAX_BUDGET_USD, JST, JobLockTimeout, job_lock, prompt_file, clean_url, append_metric, classify_source,
                      extract_periods, decode_html, html_to_text, loads_strict, needs_render, partial_output, quote_on_page, read_for_raw, reap, save_raw, schema_ok,
-                     RenderFailed, browser_only, render_page, candidate_misplaced, maintenance_http_error, maintenance_redirect, RENDER_FINAL,
+                     RenderFailed, browser_only, render_page, candidate_misplaced, maintenance_http_error, maintenance_redirect, RENDER_FINAL, RENDER_STATUS,
                      merge_candidate_facts,
                      set_quiet, unbacked_facts,
                      anomaly, anomaly_shape, http_status, whywhy_exempt_status, checkout_edition_branch, classify_retag_lint, collect_oncall_end, commit_and_push, diagnose_anomalies,
@@ -179,6 +179,7 @@ COLLECT_ITEM = prompt_part("collect-item")
 
 
 WATCH_FINAL: dict[str, str] = {}       # 定点観測で取ったページ → 転送先
+WATCH_STATUS: dict[str, int] = {}      # 定点観測で取ったページ → 状態コード
 
 
 def http_get(url: str, timeout: int = 20) -> str:
@@ -198,6 +199,7 @@ def watch_get(url: str, timeout: float) -> tuple[bytes, str | None]:
         req = urllib.request.Request(url, headers={"User-Agent": UA})
         with urllib.request.urlopen(req, timeout=timeout) as res:
             WATCH_FINAL[url] = res.geturl() if hasattr(res, "geturl") else url     # 転送先(メンテナンス画面への転送を原本として残さない: page_html_or_note)
+            WATCH_STATUS[url] = int(getattr(res, "status", None) or 200)          # 原本に残す状態コード
             return watch_read(res), res.headers.get_content_charset()
     if not DEADLINE:
         return get()
@@ -291,7 +293,8 @@ def watch_fetch(s: dict):
 def rendered_or_note(url: str, limit: float | None = None) -> tuple[str, str]:
     """描画を補いとして使う呼び出し側(facts 化の本文・裏取りの読み直し)向け: (HTML, 失敗の要点)。
     失敗しても素の HTML やセッション側の fetch_page.py で続けられるので止めないが、原因はログと呼び出し側の記録に残す"""
-    RENDER_FINAL.pop(url, None)       # 描画し終えたときの URL は、この回の描画のものだけ
+    RENDER_FINAL.pop(url, None)       # 描画し終えたときの URL・状態コードは、この回の描画のものだけ
+    RENDER_STATUS.pop(url, None)
     try:
         return (fetch_rendered(url) if limit is None else fetch_rendered(url, limit=limit)) or "", ""
     except RenderFailed as e:
@@ -314,10 +317,11 @@ def page_html_or_note(url: str, csr: bool) -> tuple[str, str]:
     WATCH_FINAL.pop(url, None)
     # facts 化に渡すページは、収集時点の原本として残す(page_archive。執筆・校閲が読み直せないときに使う)
     # 素の取得に 429 を返すサイト(browser_only)は素の HTML を取らずに描画する(2026-10-26 編集長「429を出すようなアクセスはするな」)
+    WATCH_STATUS.pop(url, None)
     if csr or browser_only(url):
         t, why = rendered_or_note(url, limit=watch_limit(90))
         if t:
-            keep_page(url, html_to_text(t.encode("utf-8", "replace")), t, RENDER_FINAL.get(url), rendered=True)
+            keep_page(url, html_to_text(t.encode("utf-8", "replace")), t, RENDER_FINAL.get(url), RENDER_STATUS.get(url) or 200, rendered=True)
         return t, why
     left = watch_limit(20)
     if left is not None and left <= 0:
@@ -332,9 +336,9 @@ def page_html_or_note(url: str, csr: bool) -> tuple[str, str]:
     if unrendered:
         t, why = rendered_or_note(url, limit=watch_limit(90))
         if t:
-            keep_page(url, html_to_text(t.encode("utf-8", "replace")), t, RENDER_FINAL.get(url), rendered=True)
+            keep_page(url, html_to_text(t.encode("utf-8", "replace")), t, RENDER_FINAL.get(url), RENDER_STATUS.get(url) or 200, rendered=True)
             return t, ""
-    keep_page(url, html_to_text(raw, cs), raw, WATCH_FINAL.get(url), unrendered=unrendered)
+    keep_page(url, html_to_text(raw, cs), raw, WATCH_FINAL.get(url), WATCH_STATUS.get(url) or 200, unrendered=unrendered)
     # 文字コードの判定は本文の取得の共通処理(decode_html)と同じ。Shift_JIS 宣言で CP932 の拡張文字を含むページを、ここだけ
     # 置換文字だらけで読んでいた(監査指摘 2026-10-14)
     return decode_html(raw, cs), ""
@@ -347,8 +351,8 @@ def keep_page(url: str, text: str, html, final: str | None = None, status: int |
     残さない(案内は頼んだページの本文ではない)。空の本文も残さない。
     unrendered は、描画が要るのに描画できなかった素の本文(ナビだけのことがある)。原本が既にあれば残さない(前の原本を置き換えない。
     Sol 監査 r4: 定点観測が描画に失敗したナビの本文を原本にし、続く裏取りが写しの無いナビで正しい候補を落とした)"""
-    if maintenance_redirect(url, final):
-        return None
+    if maintenance_redirect(url, final) or int(status or 200) >= 400:
+        return None     # エラーの画面(描画した 404・503・429 など)も本文ではない(Sol 監査 r8)
     try:
         if unrendered and page_archive.versions(url):
             return None
@@ -2280,7 +2284,13 @@ def verify(cands: list[dict]) -> dict:
                 pre = browser_only(c["url"])
                 if pre:
                     html, why = rendered_or_note(c["url"])
-                    if not html or maintenance_redirect(c["url"], RENDER_FINAL.get(c["url"])):
+                    st = RENDER_STATUS.get(c["url"]) or 0
+                    if st in (404, 410):
+                        # 描画した文書が無い: 素の取得の 404・410 と同じく取得できない(原本でも照らさない)
+                        raise urllib.error.HTTPError(c["url"], st, "描画したページが無い", None, None)
+                    if st >= 400:
+                        why = f"描画したページが HTTP {st}"
+                    if not html or st >= 400 or maintenance_redirect(c["url"], RENDER_FINAL.get(c["url"])):
                         # 前の原本があればそれで照らす(この回の素の本文は無い)
                         why = why or f"メンテナンス中({RENDER_FINAL.get(c['url'])} へ転送)"
                         if not archived_check(c, f"描画できない({why[:120]})", base=priors.get(c["url"]) or {}):
@@ -2302,7 +2312,7 @@ def verify(cands: list[dict]) -> dict:
                             raise
                         c["verify"] = "unconfirmed"
                         c["verify_note"] = f"出典がメンテナンス中(HTTP {e.code} でメンテナンスの画面)で、facts を本文で確かめられない"
-                        note_archived(c)
+                        note_archived(c, priors.get(c["url"]))
                         counts["unconfirmed"] += 1
                         continue
                     with opened as res:
@@ -2315,7 +2325,7 @@ def verify(cands: list[dict]) -> dict:
                 if ok and maintenance_redirect(c["url"], final):
                     c["verify"] = "unconfirmed"
                     c["verify_note"] = f"出典がメンテナンス中({final} へ転送)で、facts を本文で確かめられない"[:300]
-                    note_archived(c)
+                    note_archived(c, priors.get(c["url"]))
                     counts["unconfirmed"] += 1
                     continue
                 if ok:
@@ -2329,7 +2339,9 @@ def verify(cands: list[dict]) -> dict:
                     # (Sol 監査 r3: 描画できないときに素の本文(ナビ)を原本にして、写しが無いとして素材を落とした)
                     # 同じ URL の候補が並ぶと、先の候補がこの回に残した版を「前の原本」と取り違える。この回の最初に引いた版を使う
                     prior = priors.get(c["url"])
-                    best = {"text": text, "html": body, "rendered": pre}     # 残す本文(描画できたら描画の本文)
+                    # 残す本文(描画できたら描画の本文)と、その状態コード
+                    best = {"text": text, "html": body, "rendered": pre,
+                            "status": (RENDER_STATUS.get(c["url"]) or 200) if pre else (res.status if res else 200)}
 
                     def render() -> str | None:
                         # 描画して読み直した本文(描画できない・メンテナンス画面へ転送されたら None。案内を本文として照らさない)。
@@ -2340,10 +2352,15 @@ def verify(cands: list[dict]) -> dict:
                         if rendered and maintenance_redirect(c["url"], RENDER_FINAL.get(c["url"])):
                             mainte.append(RENDER_FINAL[c["url"]])
                             return None
+                        if rendered and (RENDER_STATUS.get(c["url"]) or 0) >= 400:
+                            # 描画した文書が HTTP のエラー: その画面は本文ではない(描画できなかったのと同じ。Sol 監査 r8)
+                            render_errs.append(f"描画したページが HTTP {RENDER_STATUS[c['url']]}")
+                            return None
                         if not rendered:
                             render_errs.append(why or "描画が空")
                             return None
-                        best.update(text=html_to_text(rendered.encode("utf-8", "replace")), html=rendered, rendered=True)
+                        best.update(text=html_to_text(rendered.encode("utf-8", "replace")), html=rendered, rendered=True,
+                                    status=RENDER_STATUS.get(c["url"]) or 200)
                         return best["text"]
                     # CSR で本文が空同然か、描画必須のサイト(定点観測の portal)なら描画してから読み直す(定点観測と同じ経路)
                     must_render = not pre and needs_render(c["url"], text)
@@ -2391,7 +2408,7 @@ def verify(cands: list[dict]) -> dict:
                     # 前の原本があって描画できなかったときは上で抜けている(素の本文で前の原本を置き換えない)。
                     # 素材の archived_at は残した版を指す(Sol 監査 r1: 描画で確かめた価格が原本に無かった)
                     kept = keep_page(c["url"], best["text"], best["html"],
-                                     RENDER_FINAL.get(c["url"]) if best["rendered"] else final, res.status if res else 200,
+                                     RENDER_FINAL.get(c["url"]) if best["rendered"] else final, best["status"],
                                      rendered=best["rendered"],
                                      unrendered=not best["rendered"] and (must_render or bool(render_errs)))
                     if kept:
@@ -2423,12 +2440,9 @@ def verify(cands: list[dict]) -> dict:
     return counts
 
 
-def note_archived(c: dict) -> None:
-    """メンテナンスで読み直せない素材に、収集時点の原本があればその時刻を付ける(執筆は fetch_page.py でその原本を読める)。"""
-    try:
-        b = page_archive.baseline(c["url"])
-    except Exception:       # noqa: BLE001
-        b = None
+def note_archived(c: dict, b: dict | None) -> None:
+    """メンテナンスで読み直せない素材に、裏取りの最初に控えた原本(b)があればその時刻を付ける(執筆は fetch_page.py でその原本を
+    読める)。控えを引き直さない(同じ URL の先の候補がこの回に残した版を指さない。Sol 監査 r8)"""
     if b:
         c["archived_at"] = page_archive.fetched_at(b)
 

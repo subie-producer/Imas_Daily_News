@@ -2741,12 +2741,20 @@ def render_page(url: str, timeout: int = 30, limit: float | None = None) -> str:
         RENDER_FINAL[url] = m.group(1)
     else:
         RENDER_FINAL.pop(url, None)
+    m = re.search(r"(?m)^RENDERED_STATUS: (\d+)\s*$", getattr(r, "stderr", None) or "")
+    if m:
+        RENDER_STATUS[url] = int(m.group(1))
+    else:
+        RENDER_STATUS.pop(url, None)
     return r.stdout
 
 
 # 描画したページ → 描画し終えたときの URL(JS でメンテナンス画面へ転送されたページを、原本として残さない・読めたことにしない。
 # Sol 監査 r1: 本文の言葉と字数で見分けると、「メンテナンス終了・締切延長」の普通の告知を案内の画面として捨てた)
 RENDER_FINAL: dict[str, str] = {}
+# 描画したページ → 描画した文書の HTTP の状態コード(fetch_rendered.py の RENDERED_STATUS)。404・503・429 の画面を本文として残さない・
+# 読めたことにしない(Sol 監査 r8: 描画の経路では状態コードが渡らず、エラーの画面で原本を置き換えた)
+RENDER_STATUS: dict[str, int] = {}
 
 
 def needs_render(url: str, text: str) -> bool:

@@ -17362,6 +17362,124 @@ def test_page_archive_versions_and_reads(tmp: Path):
     check(len(pa.versions(t_url)) == 2 and t_second.get("verify") == "unconfirmed"
           and t_second.get("archived_at") == "2026-10-25T20:00:00+09:00",
           f"後の候補を、先の候補がこの回に残した本文で照らした: {t_second.get('verify')} {t_second.get('archived_at')} {t_second.get('verify_note')}")
+    # 21. 描画の経路の HTTP の状態: 本物の fetch_rendered.py(ブラウザだけ偽物)が RENDERED_URL・RENDERED_STATUS を出し、本物の
+    # render_page が受け取り、fetch_page が 404・410 は取り下げの可能性、503・429 は読み直せないとして原本を返す。エラーの画面は残さない(Sol 監査 r8)
+    import importlib, types as _types
+    fake_mods = {n: _types.ModuleType(n) for n in ("selenium", "selenium.webdriver", "selenium.webdriver.chrome",
+                                                   "selenium.webdriver.chrome.options", "selenium.webdriver.common",
+                                                   "selenium.webdriver.common.by", "selenium.webdriver.support",
+                                                   "selenium.webdriver.support.ui", "selenium.webdriver.support.expected_conditions")}
+    fake_mods["selenium"].webdriver = fake_mods["selenium.webdriver"]
+    fake_mods["selenium.webdriver.chrome.options"].Options = object
+    fake_mods["selenium.webdriver.common.by"].By = object
+
+    class Wait:
+        def __init__(self, d, t): self.d = d
+        def until(self, fn): return fn(self.d)
+    fake_mods["selenium.webdriver.support.ui"].WebDriverWait = Wait
+    fake_mods["selenium.webdriver.support"].expected_conditions = fake_mods["selenium.webdriver.support.expected_conditions"]
+    saved_m = {n: sys.modules.get(n) for n in list(fake_mods) + ["fetch_rendered"]}
+
+    def render_child(url, status, body, moved=None):
+        """本物の fetch_rendered.main をブラウザだけ偽物で走らせ、(終了コード, 標準出力, 標準エラー)を返す"""
+        class Driver:
+            current_url = moved or url
+            page_source = body
+            def set_page_load_timeout(self, t): pass
+            def get(self, u): pass
+            def execute_script(self, js): return status if "responseStatus" in js else "complete"
+            def quit(self): pass
+        saved_argv = sys.argv
+        out, err = io.StringIO(), io.StringIO()
+        try:
+            sys.modules.update(fake_mods)
+            sys.modules.pop("fetch_rendered", None)
+            fr = importlib.import_module("fetch_rendered")
+            fr.make_driver = lambda: Driver()
+            fr.time.sleep = lambda s: None
+            sys.argv = ["fetch_rendered.py", url, "--timeout", "1"]
+            with contextlib.redirect_stdout(out), contextlib.redirect_stderr(err):
+                code = fr.main()
+        finally:
+            sys.argv = saved_argv
+            for n, m in saved_m.items():
+                if m is None:
+                    sys.modules.pop(n, None)
+                else:
+                    sys.modules[n] = m
+        return code, out.getvalue(), err.getvalue()
+    results = {}
+    for code_, body_ in ((404, "<html><body>ページが見つかりません</body></html>"), (410, "<html><body>削除されました</body></html>"),
+                         (503, "<html><body>混み合っています</body></html>"), (429, "<html><body>Too Many Requests</body></html>"),
+                         (200, "<html><body>描画した告知。価格は3000円。</body></html>")):
+        r_u = f"https://audit.example/render-status-{code_}"
+        pa.save(r_u, "収集時点の告知。価格は3000円。締切は10月30日。", via="collect", at="2026-10-25T21:00:00+09:00", rendered=True)
+        child = render_child(r_u, code_, body_, moved=f"{r_u}/moved" if code_ == 200 else None)
+        saved_rg = pipelib.run_group
+        try:
+            pipelib.run_group = lambda cmd, timeout=None, ch=child, **k: subprocess.CompletedProcess(cmd, ch[0], ch[1], ch[2])
+            rc, out = run(r_u, ok("メニュー"), pipelib.render_page, needs=True)
+        finally:
+            pipelib.run_group = saved_rg
+        results[code_] = (rc, out, child[2], len(pa.versions(r_u)), r_u in pipelib.fetched_urls(rec))
+    check(all(f"RENDERED_STATUS: {k}" in v[2] for k, v in results.items()) and f"RENDERED_URL: https://audit.example/render-status-200/moved" in results[200][2],
+          f"描画の子が描画した URL・状態コードを出さない: {[v[2][:120] for v in results.values()]}")
+    check(all(results[k][0] == 1 and "取り下げ・移動の可能性" in results[k][1] and not results[k][4] for k in (404, 410))
+          and all(results[k][0] == 0 and "いまは読み直せない" in results[k][1] and "収集時点の告知" in results[k][1] and results[k][3] == 1
+                  for k in (503, 429))
+          and results[200][0] == 0 and "描画した告知" in results[200][1] and "転送先 URL: https://audit.example/render-status-200/moved" in results[200][1],
+          f"描画したエラーの画面を本文として扱った: {({k: (v[0], v[1][:100], v[3]) for k, v in results.items()})}")
+    # 22. 素の取得の状態コードも原本に残す(fetch_page・定点観測。Sol 監査 r8 の later)
+    s203 = "https://audit.example/status-203"
+
+    class R203:
+        status = 203
+        headers = type("H", (), {"get_content_charset": lambda s: "utf-8"})()
+        def __init__(self, u): self.u = u
+        def geturl(self): return self.u
+        def read(self, n=None): return ("<html><body>" + "状態コードの告知。価格は3000円。" * 30 + "</body></html>").encode()
+        def __enter__(self): return self
+        def __exit__(self, *a): return False
+    saved_o = (fetch_page.urllib.request.urlopen, collect.urllib.request.urlopen)
+    try:
+        fetch_page.urllib.request.urlopen = lambda req, timeout=25: R203(req.full_url)
+        rc, out = run(s203, fetch_page.fetch)
+        collect.urllib.request.urlopen = lambda req, timeout=20: R203(req.full_url)
+        collect.page_html_or_note(s203 + "/watch", False)
+    finally:
+        fetch_page.urllib.request.urlopen, collect.urllib.request.urlopen = saved_o
+    check((pa.latest(s203) or {}).get("status") == 203 and (pa.latest(s203 + "/watch") or {}).get("status") == 203,
+          f"素の取得の状態コードを原本に残さない: {(pa.latest(s203) or {}).get('status')} {(pa.latest(s203 + '/watch') or {}).get('status')}")
+    # 23. メンテナンスの分岐も、裏取りの最初に控えた原本の時刻を付ける(同じ URL の先の候補がこの回に残した版を指さない。Sol 監査 r8 の later)
+    m_url = "https://audit.example/same-url-mainte"
+    pa.save(m_url, "公式の本文。" + w_quote, via="collect", at="2026-10-25T20:00:00+09:00")
+    calls["n"] = 0
+    hm = email.message.Message()
+    hm["Content-Type"] = "text/html; charset=utf-8"
+
+    class OtherM(Res):
+        def geturl(self): return m_url
+        def read(self, n=None): return other_body
+
+    def ok_then_mainte(req, timeout=15):
+        calls["n"] += 1
+        if calls["n"] == 1:
+            return OtherM()
+        raise urllib.error.HTTPError(m_url, 503, "x", hm, io.BytesIO("<title>現在メンテナンス中です</title>".encode()))
+    m_first = {"url": m_url, "title": "告知", "facts": ["受注は終了"], "via": "explore", "source_type": "公式"}
+    m_second = {"url": m_url, "title": "告知", "facts": ["価格は3000円"], "quotes": [w_quote], "via": "explore", "source_type": "公式"}
+    saved_w = (collect.needs_render, collect.rendered_or_note, collect.urllib.request.urlopen)
+    try:
+        collect.needs_render = lambda u, t: False
+        collect.rendered_or_note = lambda u, limit=None: ("", "描画しない")
+        collect.urllib.request.urlopen = ok_then_mainte
+        with contextlib.redirect_stdout(io.StringIO()):
+            collect.verify([m_first, m_second])
+    finally:
+        collect.needs_render, collect.rendered_or_note, collect.urllib.request.urlopen = saved_w
+    check(m_second.get("verify") == "unconfirmed" and "メンテナンス" in (m_second.get("verify_note") or "")
+          and m_second.get("archived_at") == "2026-10-25T20:00:00+09:00",
+          f"メンテナンスの分岐が、先の候補がこの回に残した版を指した: {m_second.get('archived_at')} {m_second.get('verify_note')}")
     check(c_second.get("verify") == "unconfirmed" and not pipelib.candidate_misplaced(c_second) and len(pa.versions(s_url)) == 1,
           f"同じ URL の先の候補がこの回に残した本文で、後の候補を照らした: {c_second.get('verify')} {c_second.get('verify_note')} "
           f"{len(pa.versions(s_url))}")

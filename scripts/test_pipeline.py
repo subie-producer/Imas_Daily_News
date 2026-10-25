@@ -16531,6 +16531,8 @@ def test_http429_retry(tmp: Path):
             raise urllib.error.HTTPError(url, 429, "Too Many Requests", h, io.BytesIO(b"<title>429</title>"))
         h = email.message.Message()
         h["Content-Type"] = "text/html; charset=utf-8"
+        if p.startswith("/frame"):      # JS で描く外枠だけのページ(描画が要る)
+            return urllib.response.addinfourl(io.BytesIO(b"<html><body><div id=app></div></body></html>"), h, url, 200)
         return urllib.response.addinfourl(io.BytesIO(body), h, url, 200)
     saved = (urllib.request.urlopen, getattr(pipelib, "RATE_LIMIT_WAIT", None), sys.argv, os.environ.get("IMAS_FETCH_RECORD"),
              collect.DEADLINE, pipelib.run_group)
@@ -16957,6 +16959,36 @@ def test_http429_retry(tmp: Path):
               and from_until < calls[0] + 0.5,
               f"描画の転送先の 429 の控えを応答したホストに付けない・守らない: {got[:120]!r} 控え 行き先 {to_until - calls[0]:.2f} "
               f"元 {from_until - calls[0]:.2f} 間隔 {[round(b - a, 2) for a, b in zip(calls, calls[1:])]}")
+        # 裏取りの描画: 429 の待ちは収集の締切で切り(描画そのものは切らない)、429 で写しを照合できなかった候補は failed にしない
+        # (Sol 監査 R429 r4)
+        calls.clear()
+
+        def render_429_then_ok(argv, timeout=None, cwd=None, **k):
+            calls.append(_time.time())
+            if len(calls) == 1:
+                return subprocess.CompletedProcess(argv, 75, "", "RENDER_FAILED: HTTP 429 url=- retry-after=1\n")
+            return subprocess.CompletedProcess(argv, 0, "<html>" + "描画した本文。" * 100 + "</html>", "")
+        pipelib.run_group = render_429_then_ok
+        collect.DEADLINE = _time.time() - 1
+        t0 = _time.time()
+        cands = [cand_row("vr1", "http://verify-render.example/frame-1", via="watch")]
+        try:
+            collect.verify(cands)
+        finally:
+            collect.DEADLINE = None
+        check(len(calls) == 1 and _time.time() - t0 < 0.6,
+              f"裏取りの描画が収集の締切を過ぎてから 429 を待って描画し直した: 描画 {len(calls)} 回 {_time.time() - t0:.2f} 秒 {cands[0].get('verify')}")
+        calls.clear()
+
+        def render_429_long(argv, timeout=None, cwd=None, **k):
+            calls.append(_time.time())
+            return subprocess.CompletedProcess(argv, 75, "", "RENDER_FAILED: HTTP 429 url=- retry-after=3600\n")
+        pipelib.run_group = render_429_long
+        cands = [cand_row("vr2", "http://verify-render2.example/frame-2", via="watch", quotes=["本文にあるはずの写しの一節です"])]
+        collect.verify(cands)
+        check(cands[0].get("verify") == "unconfirmed" and "429" in str(cands[0].get("verify_note")) and len(calls) == 1,
+              f"描画が 429 で写しを照合できなかった候補を URL の取り違えにした・描画を重ねた: {cands[0].get('verify')} "
+              f"{cands[0].get('verify_note')} 描画 {len(calls)} 回")
         # 429 の控えと並列の取得の予約が重なるときは、予約を含む実際の待ちを上限と比べる(Sol 監査 R429 r3)
         pipelib.HOST_GAP = 0.3
         try:

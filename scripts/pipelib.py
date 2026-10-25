@@ -2760,14 +2760,16 @@ def render_failure(returncode, stderr: str) -> str:
     return f"終了コード {returncode}: " + (" / ".join(key[-2:])[:300] if key else "(stderr なし)")
 
 
-def render_page(url: str, timeout: int = 30, limit: float | None = None) -> str:
+def render_page(url: str, timeout: int = 30, limit: float | None = None, wait_deadline: float | None = None) -> str:
     """ヘッドレスブラウザで描画したページの HTML。**失敗を空で返さない**: 非正常終了・時間切れ・空の出力は、
     終了コードと stderr の要点を持った RenderFailed で上げる。以前は空文字に変えていて、呼び出し側の記録は「空の応答」
     だけになり、原因(2026-10-07 コロムビアの一覧の TimeoutException)を当番が別に再現して確かめていた(当番の指摘 dc23e62472)。
     limit は待ってよい秒数の上限(工程の締切の残り。0 以下なら起動しない)。
     同じホストへは HOST_GAP 秒あけ、ページが HTTP 429 を返したら(fetch_rendered.py が RENDER_RATE_LIMITED で終わる)Retry-After を守って
-    描画し直す(polite_urlopen と同じ回数・待ちの上限。limit があればその残りまで)。上限を超えたら「429 で読めなかった」の RenderFailed"""
-    budget = _Budget(None if limit is None else time.time() + limit)     # 待ち・描画・描画し直しのどれも締切を越えない
+    描画し直す(polite_urlopen と同じ回数・待ちの上限。limit があればその残りまで。wait_deadline(時刻)は 429 の待ちだけを切る:
+    裏取り)。上限を超えたら「429 で読めなかった」の RenderFailed(status=429)"""
+    # limit: 待ち・描画・描画し直しのどれも越えない締切 / wait_deadline: 429 の待ちだけの締切
+    budget = _Budget(None if limit is None else time.time() + limit, wait_deadline)
     tries, seen429 = 0, False
     host = site_host(url)
     hosts = [host]      # 描画の前に順番を待つホスト(転送の行き先が 429 を返したら、そのホストも足す)

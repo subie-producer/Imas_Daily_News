@@ -237,10 +237,11 @@ def watch_read(res) -> bytes:
         chunks.append(b)
 
 
-def fetch_rendered(url: str, timeout: int = 30, limit: float | None = None) -> str:
+def fetch_rendered(url: str, timeout: int = 30, limit: float | None = None, wait_deadline: float | None = None) -> str:
     """描画したページの HTML。失敗は RenderFailed(終了コードと stderr の要点つき)で上げる(空で返さない)。
-    limit は待ってよい秒数の上限(定点観測は収集の締切の残り: watch_limit)。"""
-    return render_page(url, timeout, limit=limit) if limit is not None else render_page(url, timeout)
+    limit は待ってよい秒数の上限(定点観測は収集の締切の残り: watch_limit)。wait_deadline(時刻)は 429 の待ちだけを切る(裏取り)"""
+    kw = {k: v for k, v in (("limit", limit), ("wait_deadline", wait_deadline)) if v is not None}
+    return render_page(url, timeout, **kw)
 
 
 def watch_limit(cap: float) -> float | None:
@@ -265,13 +266,22 @@ def watch_fetch(s: dict):
     return get
 
 
-def rendered_or_note(url: str, limit: float | None = None) -> tuple[str, str]:
+# 描画が HTTP の状態コードつきで失敗したページ(URL → コード。429 で読めなかった 等)。裏取りが、429 で照合できなかった候補を
+# URL の取り違え(failed)にしないのに使う(Sol 監査 R429 r4)
+RENDER_HTTP: dict[str, int] = {}
+
+
+def rendered_or_note(url: str, limit: float | None = None, wait_deadline: float | None = None) -> tuple[str, str]:
     """描画を補いとして使う呼び出し側(facts 化の本文・裏取りの読み直し)向け: (HTML, 失敗の要点)。
-    失敗しても素の HTML やセッション側の fetch_page.py で続けられるので止めないが、原因はログと呼び出し側の記録に残す"""
+    失敗しても素の HTML やセッション側の fetch_page.py で続けられるので止めないが、原因はログと呼び出し側の記録に残す。
+    状態コードつきの失敗(429)は RENDER_HTTP に残す"""
+    kw = {k: v for k, v in (("limit", limit), ("wait_deadline", wait_deadline)) if v is not None}
     try:
-        return (fetch_rendered(url) if limit is None else fetch_rendered(url, limit=limit)) or "", ""
+        return fetch_rendered(url, **kw) or "", ""
     except RenderFailed as e:
         print(f"  描画取得の失敗: {e}", flush=True)
+        if getattr(e, "status", None) is not None:
+            RENDER_HTTP[url] = e.status
         return "", str(e)
 
 
@@ -2187,9 +2197,17 @@ def verify(cands: list[dict]) -> dict:
                     # 「URL の取り違え」と記録し、なぜ落ちたかを当番が再現して確かめることになる(監査指摘
                     # render-diagnostic-lost-in-classification と同じ型)
                     render_errs: list[str] = []
+                    RENDER_HTTP.pop(c["url"], None)
+
+                    def rerender(url=c["url"]) -> tuple[str, str]:
+                        """裏取りの描画。429 の待ちは収集の締切を越えない(描画そのものは締切で切らない)。この候補の描画が 429 で
+                        読めなかったら、描画し直さない(待ちを重ねない。Sol 監査 R429 r4)"""
+                        if RENDER_HTTP.get(url) == 429:
+                            return "", ""
+                        return rendered_or_note(url, wait_deadline=DEADLINE)
                     # CSR で本文が空同然か、描画必須のサイト(定点観測の portal)なら描画してから読み直す(定点観測と同じ経路)
                     if needs_render(c["url"], text):
-                        rendered, why = rendered_or_note(c["url"])
+                        rendered, why = rerender()
                         render_errs += [why] if why else []
                         if rendered:
                             text = html_to_text(rendered.encode("utf-8", "replace"))
@@ -2205,7 +2223,7 @@ def verify(cands: list[dict]) -> dict:
                     # portal 以外のサイトの描画漏れに備え、粒が欠けたときにも描画する
                     unbacked = unbacked_facts(c.get("facts") or [], text)
                     if unbacked:
-                        rendered, why = rendered_or_note(c["url"])
+                        rendered, why = rerender()
                         render_errs += [why] if why else []
                         if rendered:
                             unbacked = unbacked_facts(c.get("facts") or [],
@@ -2220,12 +2238,19 @@ def verify(cands: list[dict]) -> dict:
                     missing = [q for q in quotes if quote_on_page(q, text) is False]
                     matched = any(quote_on_page(q, text) for q in quotes)
                     if missing:
-                        rendered, why = rendered_or_note(c["url"])
+                        rendered, why = rerender()
                         render_errs += [why] if why else []
                         if rendered:
                             rtext = html_to_text(rendered.encode("utf-8", "replace"))
                             missing = [q for q in missing if quote_on_page(q, rtext) is False]
                             matched = matched or any(quote_on_page(q, rtext) for q in quotes)
+                    # 描画が 429 で読めず写しを照合できなかったのは、今は確かめられないだけ(URL の取り違えにしない。Sol 監査 R429 r4)
+                    if missing and RENDER_HTTP.get(c["url"]) == 429:
+                        c["verify"] = "unconfirmed"
+                        c["verify_note"] = (f"描画が 429 で読めず、写しを出典の本文で確かめられない"
+                                            f"({(render_errs[-1] if render_errs else '')[:200]})")[:300]
+                        counts["unconfirmed"] += 1
+                        continue
                     if missing:
                         c["verify"] = "failed"
                         c["verify_note"] = (f"写しが出典の本文に無い(URL の取り違えの疑い): {missing[0][:60]}"

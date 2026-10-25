@@ -17328,8 +17328,542 @@ def test_page_archive_read_back(tmp: Path):
               f"{role} の依頼文に原本の照合の扱いが無い")
 
 
+RESCUE_DATE = "2026-10-26"
+RESCUE_X = {"8.5周年": "https://x.com/imassc_official/status/2113646879494066539",
+            "3周年記念ライブ": "https://x.com/imassc_prism/status/2113594635725807862"}
+RESCUE_PAGE = "https://www.curtain-damashii.com/item/tag/gkmas/"
+RESCUE_429 = "https://anime-store.jp/products/4580883066332"
+RESCUE_WRONG = "https://www.curtain-damashii.com/item/other-goods/"
+
+
+def rescue_fixture(tmp: Path) -> None:
+    """10/26 号の形: 出典不足の見送り3本(当日 23:59 締切の8.5周年プレゼント、シャニソン3周年イベント、カーテン魂の学マスグッズ)。
+    素材は二次情報だけ。計画・外れた記事の記録・素材を書く。"""
+    (tmp / "metrics").mkdir(parents=True, exist_ok=True)
+    (tmp / "candidates").mkdir(parents=True, exist_ok=True)
+    (tmp / "docs" / "_posts").mkdir(parents=True, exist_ok=True)
+    arts = [{"slug": "shiny-85th-anniversary-gifts-2026", "brand": "shiny", "rank": "small",
+             "angle": "8.5周年記念ログインプレゼントの受け取りは本日10月26日23時59分まで", "candidate_ids": ["c-gameo"]},
+            {"slug": "shiny-song-for-prism-third-anniversary-event-2026", "brand": "shiny", "rank": "small",
+             "angle": "シャニソン3周年記念ライブイベントは10月31日12時開始", "candidate_ids": ["c-fan"]},
+            {"slug": "gaku-curtain-damashii-new-goods-2026", "brand": "gaku", "rank": "medium",
+             "angle": "カーテン魂の学マス新作グッズ全4種。予約は11月15日まで", "candidate_ids": ["c-matome"]},
+            {"slug": "cg-ok", "brand": "cg", "rank": "small", "angle": "載った記事", "candidate_ids": ["c-ok"]}]
+    (tmp / "metrics" / f"plan-{RESCUE_DATE}.json").write_text(json.dumps({"articles": arts}, ensure_ascii=False), encoding="utf-8")
+    drops = {a["slug"]: {"title": a["angle"], "stage": "執筆で見送り", "candidate_ids": a["candidate_ids"],
+                         "why": "NO_PRIMARY_SOURCE 素材は二次情報だけで、公式の告知に届かない"} for a in arts[:3]}
+    (tmp / "metrics" / f"drops-{RESCUE_DATE}.json").write_text(json.dumps(drops, ensure_ascii=False), encoding="utf-8")
+    rows = [cand_row("c-gameo", "https://gameo.jp/imassc/169460", brand="shiny", source_type="二次情報", verify="unconfirmed",
+                     facts=["8.5周年記念ログインプレゼント"]),
+            cand_row("c-fan", "https://fan.example/shinysong", brand="shiny", source_type="未確認", verify="unconfirmed", facts=["3周年"]),
+            cand_row("c-matome", "https://matome.example/gkmas", brand="gaku", source_type="二次情報", verify="unconfirmed", facts=["新作グッズ"]),
+            cand_row("c-ok", "https://idolmaster-official.jp/news/1", facts=["載った"])]
+    (tmp / "candidates" / f"{RESCUE_DATE}.json").write_text(json.dumps(rows, ensure_ascii=False, indent=2), encoding="utf-8")
+    (tmp / "docs" / "_posts" / f"{RESCUE_DATE}-cg-ok.md").write_text("x", encoding="utf-8")
+
+
+class RescueFakes:
+    """出典を揃える入口の外の世界(モデル・Grok・Luna・相手のサイト)の偽物。found=False なら公式 X は見つからず、
+    当事者のページの代わりに 429 を返す販売サイトを挙げる(入口でも出典に届かない形)。"""
+
+    def __init__(self, tmp: Path, found: bool = True):
+        self.tmp, self.found, self.saved, self.calls = tmp, found, {}, []
+
+    def planner(self, prompt: str) -> list:
+        slug = re.search(r"記事: `([^`]+)`", prompt).group(1)
+        if slug.startswith("shiny-85"):
+            return [{"kind": "x", "question": "@imassc_official の8.5周年ログインプレゼントの告知", "why": "公式の原本が要る"}]
+        if slug.startswith("shiny-song"):
+            return [{"kind": "x", "question": "@imassc_prism の3周年記念ライブイベントの告知", "why": "公式の原本が要る"}]
+        if slug.startswith("gaku"):
+            return ([{"kind": "page", "url": RESCUE_PAGE, "why": "販売元の商品一覧"}] if self.found
+                    else [{"kind": "page", "url": RESCUE_429, "why": "販売サイトの商品ページ(HTTP 429)"}])
+        return []
+
+    def claude_exec(self, prompt, timeout=300, what="", kind="watch"):
+        self.calls.append(kind)
+        if kind == "source-rescue":
+            return self.planner(prompt)
+        if RESCUE_429 in prompt:
+            return [{"page": 1, "status": "unreadable", "items": []}]
+        return [{"page": 1, "status": "extracted", "items": [
+            {"url": RESCUE_PAGE, "title": "学マス新作グッズ", "brand": "gaku", "facts": ["予約は2026年11月15日まで"],
+             "quote": "クッションカバー 予約は2026年11月15日まで", "deadline": "2026-11-15"},
+            # 写しがそのページに無い候補(URL の取り違え): 裏取りで failed になり、計画に入れない
+            {"url": RESCUE_WRONG, "title": "別の商品", "brand": "gaku", "facts": ["発売は2027年3月"],
+             "quote": "このページには無い文", "deadline": "2027-03-01"}]}]
+
+    def page(self, url, csr):
+        if url == RESCUE_429:
+            import collect
+            collect.BODY_HTTP[url] = 429
+            return "", "取得に失敗(HTTPError: HTTP Error 429: Too Many Requests)"
+        return "<html><body>" + "クッションカバー 予約は2026年11月15日まで。" * 40 + "</body></html>", ""
+
+    def deep(self, queries, outdir, chosen, errs, suffix="-deep", retry=False):
+        for k, asks in chosen.items():
+            blocks = []
+            for i, a in enumerate(asks):
+                u = next((v for w, v in RESCUE_X.items() if w in a["question"]), None)
+                if self.found and u:
+                    blocks.append(f"### {len(blocks) + 1}\n- url: {u}\n- 問い: {i + 1}\n- 投稿者: 公式\n- 投稿日時: 2026-10-23\n- 本文:\n"
+                                  f"{a['question']} 受け取りは10月26日23:59まで\n- リンク: なし")
+            (outdir / f"{k}{suffix}.md").write_text("\n\n".join(blocks) or "見つからない", encoding="utf-8")
+        return set()
+
+    def luna(self, queries, outdir, suffix="", ledger=None):
+        import collect
+        items = []
+        for q in queries:
+            text = collect.read_written(outdir / f"{q['key']}{suffix}.md")
+            for b in collect.post_blocks(text):
+                u = collect.post_url(b)
+                if u:
+                    items.append({"url": u, "title": "公式の告知", "brand": q["brand"], "facts": ["受け取りは2026年10月26日23:59まで"],
+                                  "deadline": "2026-10-26"})
+        return items, {}
+
+    def urlopen(self, req, timeout=15):
+        body = self.page(req.full_url, False)[0].encode("utf-8")
+
+        class Res:
+            status = 200
+            headers = type("H", (), {"get_content_charset": staticmethod(lambda: "utf-8")})()
+
+            def read(self, n=-1):
+                return body
+
+            def geturl(self):
+                return req.full_url
+
+            def __enter__(self):
+                return self
+
+            def __exit__(self, *a):
+                return False
+        return Res()
+
+    def __enter__(self):
+        import collect
+        import yaml
+        names = ("ROOT", "claude_exec", "page_html_or_note", "deep_dive_grok", "verify_grok_faces", "grok_week_usage",
+                 "grok_search_counts", "report_lost_posts", "check_stale", "rendered_or_note", "notify", "build_prompts")
+        self.saved = {n: getattr(collect, n) for n in names}
+        self.saved_open = collect.urllib.request.urlopen
+        collect.ROOT = self.tmp
+        collect.claude_exec = self.claude_exec
+        collect.page_html_or_note = self.page
+        collect.deep_dive_grok = self.deep
+        collect.verify_grok_faces = self.luna
+        collect.grok_week_usage = lambda now_ts=None: 100
+        collect.grok_search_counts = lambda since: {}
+        collect.report_lost_posts = lambda ledger: None
+        collect.check_stale = lambda c: None
+        collect.rendered_or_note = lambda url, limit=None: ("", "テストでは描画しない")
+        collect.notify = lambda *a, **k: True
+        collect.build_prompts = lambda: yaml.safe_load((pipelib.PROMPTS / "queries.yml").read_text(encoding="utf-8"))
+        collect.urllib.request.urlopen = self.urlopen
+        return self
+
+    def __exit__(self, *a):
+        import collect
+        for n, v in self.saved.items():
+            setattr(collect, n, v)
+        collect.urllib.request.urlopen = self.saved_open
+        collect.DEADLINE = None
+        collect.BODY_HTTP.clear()
+        return False
+
+
+def test_source_rescue_entry(tmp: Path):
+    """出典を揃える入口(source_rescue): 10/26 号の形で、公式 X の原本と当事者のページを取りに行き、確かめて号の素材に入れ、
+    計画のその記事の candidate_ids に足す。冪等。出典に届かないときは、試した出典(URL と応答、X の問いと結果)を書く。"""
+    import source_rescue
+    rescue_fixture(tmp)
+    slugs = sorted(pipelib.source_lacking_drops(RESCUE_DATE, tmp))
+    check(len(slugs) == 3 and "cg-ok" not in slugs, f"出典不足の見送りの取り出し: {slugs}")
+    with RescueFakes(tmp):
+        rep = source_rescue.rescue(RESCUE_DATE, slugs)
+        cands = json.loads((tmp / "candidates" / f"{RESCUE_DATE}.json").read_text(encoding="utf-8"))
+        plan = {a["slug"]: a for a in json.loads((tmp / "metrics" / f"plan-{RESCUE_DATE}.json").read_text(encoding="utf-8"))["articles"]}
+        by_url = {c["url"]: c for c in cands}
+        for u in [*RESCUE_X.values(), RESCUE_PAGE]:
+            c = by_url.get(u)
+            check(c and c["verify"] != "failed" and c["source_type"] in ("公式", "当事者"), f"出典を素材に入れていない・確かめていない: {u} {c}")
+        want = {"shiny-85th-anniversary-gifts-2026": RESCUE_X["8.5周年"],
+                "shiny-song-for-prism-third-anniversary-event-2026": RESCUE_X["3周年記念ライブ"],
+                "gaku-curtain-damashii-new-goods-2026": RESCUE_PAGE}
+        for s, u in want.items():
+            check(by_url.get(u, {}).get("id") in plan[s]["candidate_ids"], f"{s} の計画の素材に {u} を足していない: {plan[s]['candidate_ids']}")
+            check(rep["articles"][s]["outcome"] == "揃えた", f"{s} の結果: {rep['articles'][s]}")
+        check(plan["cg-ok"]["candidate_ids"] == ["c-ok"], "対象外の記事の素材を変えた")
+        wrong = by_url.get(RESCUE_WRONG) or {}
+        check(wrong.get("verify") == "failed" and wrong.get("id") not in plan["gaku-curtain-damashii-new-goods-2026"]["candidate_ids"],
+              f"裏取りで落ちる候補(写しが本文に無い)を計画に入れた・裏取りしていない: {wrong}")
+        check(len({c["id"] for c in cands}) == len(cands), "素材の id が重なった")
+        # 冪等: もう一度走らせても素材・計画は増えない
+        n, ids = len(cands), {s: list(a["candidate_ids"]) for s, a in plan.items()}
+        source_rescue.rescue(RESCUE_DATE, slugs)
+        cands2 = json.loads((tmp / "candidates" / f"{RESCUE_DATE}.json").read_text(encoding="utf-8"))
+        plan2 = {a["slug"]: a["candidate_ids"] for a in json.loads((tmp / "metrics" / f"plan-{RESCUE_DATE}.json").read_text(encoding="utf-8"))["articles"]}
+        check(len(cands2) == n and plan2 == ids, f"入口を2回走らせたら素材・計画が増えた: {len(cands2)}/{n} {plan2}")
+    # 出典に届かない: 公式 X は見つからず、販売サイトは 429。素材・計画は変えず、試した出典を書く
+    tmp2 = tmp / "notfound"
+    rescue_fixture(tmp2)
+    with RescueFakes(tmp2, found=False):
+        rep = source_rescue.rescue(RESCUE_DATE, slugs)
+    text = source_rescue.report_text(rep)
+    plan = {a["slug"]: a for a in json.loads((tmp2 / "metrics" / f"plan-{RESCUE_DATE}.json").read_text(encoding="utf-8"))["articles"]}
+    check(all(r["outcome"] == "揃わない" for r in rep["articles"].values()), f"届かないのに揃えたとした: {rep['articles']}")
+    check(plan["gaku-curtain-damashii-new-goods-2026"]["candidate_ids"] == ["c-matome"], "届かないのに計画の素材を変えた")
+    check(RESCUE_429 in text and "HTTP 429" in text, f"試したページと応答を書いていない:\n{text}")
+    check("@imassc_official の8.5周年ログインプレゼントの告知" in text and "投稿なし" in text, f"X の問いと結果を書いていない:\n{text}")
+    # 同じ URL の既存の素材が取得の失敗(429)で failed のまま: 取り直せたら裏取りし直して置き換え、計画に入れる(Sol 監査 r1)
+    tmp3 = tmp / "stale"
+    rescue_fixture(tmp3)
+    p3 = tmp3 / "candidates" / f"{RESCUE_DATE}.json"
+    rows = json.loads(p3.read_text(encoding="utf-8")) + [cand_row("c-old", RESCUE_PAGE, brand="gaku", source_type="当事者", verify="failed",
+                                                                   verify_note="出典を取得できない: HTTPError: HTTP Error 429", facts=["予約は2026年11月15日まで"])]
+    p3.write_text(json.dumps(rows, ensure_ascii=False), encoding="utf-8")
+    with RescueFakes(tmp3):
+        rep = source_rescue.rescue(RESCUE_DATE, ["gaku-curtain-damashii-new-goods-2026"])
+    old = next(c for c in json.loads(p3.read_text(encoding="utf-8")) if c["id"] == "c-old")
+    plan = {a["slug"]: a for a in json.loads((tmp3 / "metrics" / f"plan-{RESCUE_DATE}.json").read_text(encoding="utf-8"))["articles"]}
+    check(old["verify"] != "failed" and "c-old" in plan["gaku-curtain-damashii-new-goods-2026"]["candidate_ids"]
+          and rep["articles"]["gaku-curtain-damashii-new-goods-2026"]["outcome"] == "揃えた",
+          f"取り直せた出典を、既存の取得の失敗のまま残した・計画に入れない: {old.get('verify')} {plan['gaku-curtain-damashii-new-goods-2026']} {rep['articles']}")
+    # 締切(until): 1件の裏取りの上限が残っていなければ裏取りを始めず、素材にも計画にも入れない(締切を越えない。Sol 監査 r1)
+    tmp4 = tmp / "late"
+    rescue_fixture(tmp4)
+    import time
+    with RescueFakes(tmp4):
+        rep = source_rescue.rescue(RESCUE_DATE, slugs, until=time.time() + source_rescue.VERIFY_ONE_MAX - 30)
+    cands4 = json.loads((tmp4 / "candidates" / f"{RESCUE_DATE}.json").read_text(encoding="utf-8"))
+    check(len(cands4) == 4 and all(r["outcome"] == "揃わない" for r in rep["articles"].values())
+          and source_rescue.VERIFY_LATE_NOTE in source_rescue.report_text(rep),
+          f"締切までに裏取りできない候補を素材・計画に入れた: {len(cands4)} {rep['articles']}")
+    # 前の実行の Grok の書き出しを、今回の別の問いの答えとして読まない(今回 Grok が何も書かずに終わった。Sol 監査 r3)
+    tmp5 = tmp / "oldgrok"
+    rescue_fixture(tmp5)
+    with RescueFakes(tmp5):
+        source_rescue.rescue(RESCUE_DATE, ["shiny-85th-anniversary-gifts-2026"])
+    silent = RescueFakes(tmp5)
+    silent.deep = lambda queries, outdir, chosen, errs, suffix="-deep", retry=False: set()     # 正常に終わったが書かなかった
+    with silent:
+        rep = source_rescue.rescue(RESCUE_DATE, ["shiny-song-for-prism-third-anniversary-event-2026"])
+    cands5 = {c["id"]: c["url"] for c in json.loads((tmp5 / "candidates" / f"{RESCUE_DATE}.json").read_text(encoding="utf-8"))}
+    plan5 = {a["slug"]: a for a in json.loads((tmp5 / "metrics" / f"plan-{RESCUE_DATE}.json").read_text(encoding="utf-8"))["articles"]}
+    song = plan5["shiny-song-for-prism-third-anniversary-event-2026"]
+    check(not any(cands5.get(i) in RESCUE_X.values() for i in song["candidate_ids"])
+          and rep["articles"]["shiny-song-for-prism-third-anniversary-event-2026"]["outcome"] == "揃わない",
+          f"前の実行の Grok の書き出しを今回の問いの答えにした: {song['candidate_ids']} {rep['articles']}")
+    # 2記事の問いの文が同じでも、問いごとの答えをそれぞれの記事へ渡す。同じ投稿が両方の問いに答えたら両方へ(Sol 監査 r4)
+    two = ["shiny-85th-anniversary-gifts-2026", "shiny-song-for-prism-third-anniversary-event-2026"]
+    for same_post in (False, True):
+        tmp6 = tmp / f"samequestion-{same_post}"
+        rescue_fixture(tmp6)
+        fakes = RescueFakes(tmp6)
+        fakes.planner = lambda prompt: [{"kind": "x", "question": "@imassc_official の公式の告知", "why": "公式の原本が要る"}]
+
+        def deep_by_order(queries, outdir, chosen, errs, suffix="-deep", retry=False, same_post=same_post):
+            for k, asks in chosen.items():
+                urls = [RESCUE_X["8.5周年"]] * 2 if same_post else [RESCUE_X["8.5周年"], RESCUE_X["3周年記念ライブ"]]
+                (outdir / f"{k}{suffix}.md").write_text("\n\n".join(
+                    f"### {i + 1}\n- url: {u}\n- 問い: {i + 1}\n- 本文:\n告知\n- リンク: なし" for i, u in enumerate(urls[:len(asks)])),
+                    encoding="utf-8")
+            return set()
+        fakes.deep = deep_by_order
+        with fakes:
+            rep = source_rescue.rescue(RESCUE_DATE, two)
+        c6 = {c["id"]: c["url"] for c in json.loads((tmp6 / "candidates" / f"{RESCUE_DATE}.json").read_text(encoding="utf-8"))}
+        p6 = {a["slug"]: [c6.get(i) for i in a["candidate_ids"]]
+              for a in json.loads((tmp6 / "metrics" / f"plan-{RESCUE_DATE}.json").read_text(encoding="utf-8"))["articles"]}
+        want_song = RESCUE_X["8.5周年"] if same_post else RESCUE_X["3周年記念ライブ"]
+        check(RESCUE_X["8.5周年"] in p6[two[0]] and want_song in p6[two[1]]
+              and all(rep["articles"][s]["outcome"] == "揃えた" for s in two)
+              and all(any("x" in t for t in rep["articles"][s]["tried"]) for s in two),
+              f"同じ文の問いの答えを、片方の記事へ寄せた(同じ投稿 {same_post}): {p6[two[0]]} / {p6[two[1]]} {rep['articles']}")
+    # 始めた裏取りが締切を越えて長引いても(描画・本文の受信)、締切で待つのをやめ、裏取りしていない候補にする(Sol 監査 r2)
+    import collect
+    saved = (collect.verify, source_rescue.VERIFY_ONE_MAX)
+    try:
+        def slow(cands):
+            time.sleep(3)
+            for c in cands:
+                c["verify"] = "confirmed"
+        collect.verify, source_rescue.VERIFY_ONE_MAX = slow, 0
+        cs = [{"url": "https://a.example/1"}, {"url": "https://a.example/2"}]
+        t0 = time.time()
+        source_rescue.verify_until(cs, time.time() + 1)
+        took = time.time() - t0
+    finally:
+        collect.verify, source_rescue.VERIFY_ONE_MAX = saved
+    check(took < 2 and all(c["verify_note"] == source_rescue.VERIFY_LATE_NOTE and c["verify"] == "unconfirmed" for c in cs),
+          f"締切を越えた裏取りを待った・採った: {took:.1f}秒 {cs}")
+    time.sleep(2.5)     # 捨てた裏取りが終わっても、候補を書き換えない
+    check(all(c["verify"] == "unconfirmed" for c in cs), f"締切のあとに終わった裏取りが候補を書き換えた: {cs}")
+
+
+def test_oncall_recover_rescues_sources(tmp: Path):
+    """当番の組版の復帰: 出典不足の見送りは、組み直しの前に入口で出典を揃え(素材と計画を確定して送り)、--reuse-plan で書き直して
+    当日号に戻す(2026-10-26: 3本を「外部」「後続号に戻るかも」で終え、当日 23:59 締切のプレゼントを戻さなかった)。
+    入口の終える時刻は、組み直しの分を発行の締切から残す。戻らなかった記事は、試した出典を通知に書く。"""
+    import time
+    import oncall
+    import source_rescue
+    branch = f"edition/{RESCUE_DATE}"
+    run = lambda *a, cwd: subprocess.run(list(a), cwd=cwd, capture_output=True, text=True, check=True).stdout
+    for found in (True, False):
+        root = tmp / ("found" if found else "notfound")
+        rescue_fixture(root)
+        posts = root / "docs" / "_posts"
+        calls, notes = [], []
+        # 号のブランチを持つ作業ツリーと origin(素の bare リポジトリ)。組版は origin に合わせて始めるので、入口が足した素材と
+        # 計画は origin に届いていなければ組み直しに渡らない(Sol 監査 r2: 送りを外してもテストが通っていた)
+        remote = tmp / f"{root.name}-remote.git"
+        run("git", "init", "-q", "--bare", str(remote), cwd=tmp)
+        run("git", "init", "-q", "-b", branch, str(root), cwd=tmp)
+        for k, v in (("user.email", "t@example.com"), ("user.name", "t")):
+            run("git", "config", k, v, cwd=root)
+        (root / ".gitignore").write_text("metrics/work/\n", encoding="utf-8")
+        run("git", "add", "-A", cwd=root)
+        run("git", "commit", "-q", "-m", "号", cwd=root)
+        run("git", "remote", "add", "origin", str(remote), cwd=root)
+        run("git", "push", "-q", "origin", branch, cwd=root)
+
+        def fake_run(cmd, log, limit, root=root):
+            if cmd[1].endswith("source_rescue.py"):
+                calls.append(("rescue", float(cmd[cmd.index("--until") + 1])))
+                saved_argv = sys.argv
+                try:
+                    sys.argv = cmd[1:]
+                    return source_rescue.main()
+                finally:
+                    sys.argv = saved_argv
+            calls.append(("compose", "--reuse-plan" in cmd))
+            # 組版の始め方の偽物: clean な作業ツリーで、号のブランチを origin に合わせる(pipelib.checkout_edition_branch)
+            calls.append(("clean", run("git", "status", "--porcelain", cwd=root) == ""))
+            run("git", "fetch", "-q", "origin", cwd=root)
+            run("git", "checkout", "-q", "-B", branch, f"origin/{branch}", cwd=root)
+            # 書き手の偽物: 計画の素材に公式・当事者の出典があれば書く(無ければ NO_PRIMARY_SOURCE で見送る)
+            cands = {c["id"]: c for c in json.loads((root / "candidates" / f"{RESCUE_DATE}.json").read_text(encoding="utf-8"))}
+            for a in json.loads((root / "metrics" / f"plan-{RESCUE_DATE}.json").read_text(encoding="utf-8"))["articles"]:
+                if any(cands.get(i, {}).get("source_type") in ("公式", "当事者") and cands[i].get("verify") != "failed"
+                       for i in a["candidate_ids"]):
+                    (posts / f"{RESCUE_DATE}-{a['slug']}.md").write_text("x", encoding="utf-8")
+            return 0
+        saved = (oncall.ROOT, oncall.run_stage, oncall.commit_paths, oncall.backup_edition, oncall.restore_edition, oncall.notify,
+                 oncall.STAGE_END_AT, oncall.RECOVER_TRIED)
+        try:
+            with RescueFakes(root, found=found):
+                oncall.ROOT, oncall.run_stage = root, fake_run
+                real_commit = saved[2]
+                oncall.commit_paths = lambda paths, msg, branch, push_timeout=120: (
+                    calls.append(("commit", tuple(paths))) or real_commit(paths, msg, branch, push_timeout))
+                oncall.backup_edition = lambda d, e: "backup/x"
+                oncall.restore_edition = lambda d, e, b, u=None: calls.append(("restore", b))
+                oncall.notify = lambda job, msg, ok=True, require=False: notes.append((msg, ok)) or True
+                end = time.time() + 3600
+                oncall.STAGE_END_AT = end
+                got = oncall.rerun_stage("compose", RESCUE_DATE, f"edition/{RESCUE_DATE}", False, recover=True)
+        finally:
+            (oncall.ROOT, oncall.run_stage, oncall.commit_paths, oncall.backup_edition, oncall.restore_edition, oncall.notify,
+             oncall.STAGE_END_AT, oncall.RECOVER_TRIED) = saved
+        kinds = [c[0] for c in calls]
+        back = sorted(p.stem[len(RESCUE_DATE) + 1:] for p in posts.glob("*.md"))
+        msg = "\n".join(m for m, _ in notes)
+        if found:
+            check("rescue" in kinds and "compose" in kinds and kinds.index("rescue") < kinds.index("compose"),
+                  f"組み直しの前に入口を通していない: {calls}")
+            rescue_at = kinds.index("rescue") if "rescue" in kinds else 0
+            check(("commit", (f"candidates/{RESCUE_DATE}.json", f"metrics/plan-{RESCUE_DATE}.json")) in calls[rescue_at:],
+                  f"揃えた素材と計画を組み直しの前に確定していない: {calls}")
+            check("rescue" not in kinds or calls[rescue_at][1] <= end - oncall.COMPOSE_AFTER_RESCUE_MIN * 60 + 1,
+                  f"入口が組み直しの時間を残さない: {calls}")
+            check(("clean", True) in calls, f"組み直しを汚れた作業ツリーで始めさせた: {calls}")
+            check(len(back) == 4 and got == 0, f"出典不足の見送りを当日号に戻していない: {back} exit {got}")
+            check(any("戻った 3本" in m for m, _ in notes), f"戻った記事を名指ししない: {notes}")
+        else:
+            check(len(back) == 1, f"出典に届かないのに戻った: {back}")
+            check(RESCUE_429 in msg and "HTTP 429" in msg and "投稿なし" in msg,
+                  f"戻らなかった記事に、試した出典(URL・応答・X の問い)を書いていない:\n{msg}")
+    # 往復は、組み直しの分に加えて入口の分を残して終える(出典不足の見送りがあるときだけ)
+    saved_root = oncall.ROOT
+    try:
+        oncall.ROOT = tmp / "notfound"
+        with_src = oncall.recover_reserve_min(RESCUE_DATE)
+        oncall.ROOT = tmp / "none"
+        without = oncall.recover_reserve_min(RESCUE_DATE)
+    finally:
+        oncall.ROOT = saved_root
+    check(with_src == oncall.RECOVER_RERUN_RESERVE_MIN + oncall.SOURCE_RESCUE_MIN and without == oncall.RECOVER_RERUN_RESERVE_MIN,
+          f"往復が入口の時間を残さない: {with_src} / {without}")
+
+
+def test_storylink_roundup_topic(tmp: Path):
+    """まとめ記事(roundup)の素材の url は、記事の話題ではなく素材自身の話題に結ぶ(2026-10-26: 10/25 のシャニマスのまとめ記事が
+    素材に持っていた8.5周年の投稿の url で、今日の8.5周年プレゼントの候補が、まとめ記事の話題 shiny-3-0-25 へ結ばれた)。
+    まとめ記事でない記事は従来どおり、素材の url を記事の話題に結ぶ。"""
+    import storylink as sl
+    import yaml
+    d, prev = "2026-10-26", "2026-10-25"
+    (tmp / "docs" / "_posts").mkdir(parents=True, exist_ok=True)
+    (tmp / "metrics").mkdir(exist_ok=True)
+    (tmp / "candidates").mkdir(exist_ok=True)
+    x_count, x_85, x_solo = ("https://x.com/imassc_prism/status/2113000000000000001", "https://x.com/imassc_official/status/2113646879494066539",
+                             "https://x.com/imassc_official/status/2113000000000000009")
+    for slug, rank, ids, src in (("shiny-ops-roundup", "roundup", ["g14", "g35"], x_count), ("shiny-solo", "small", ["g40", "g41"], x_solo)):
+        (tmp / "docs" / "_posts" / f"{prev}-{slug}.md").write_text(
+            "---\n" + yaml.safe_dump({"slug": slug, "brand": "shiny", "rank": rank, "title": slug, "candidate_ids": ids,
+                                      "sources": [{"url": src, "label": "l"}]}, allow_unicode=True) + "---\n本文\n", encoding="utf-8")
+    (tmp / "metrics" / f"plan-{prev}.json").write_text(json.dumps({"articles": [
+        {"slug": "shiny-ops-roundup", "dedup_key": "shiny-3-0-25"}, {"slug": "shiny-solo", "dedup_key": "shiny-solo-topic"}]}), encoding="utf-8")
+    (tmp / "candidates" / f"{prev}.json").write_text(json.dumps([
+        {"id": "g14", "dedup_key": "shiny-3-0-25", "url": x_count}, {"id": "g35", "dedup_key": "shiny-8-5th-anniversary-0-24", "url": x_85},
+        {"id": "g40", "dedup_key": "shiny-solo-a", "url": x_solo}, {"id": "g41", "dedup_key": "shiny-solo-b", "url": "https://x.com/a/status/2113000000000000010"}]),
+        encoding="utf-8")
+    cands = {"t85": {"id": "t85", "dedup_key": "shiny-8-5-anniversary-login-2026", "url": x_85, "found_at": f"{d}T03:49"},
+             "tcount": {"id": "tcount", "dedup_key": "shiny-countdown-today", "url": x_count, "found_at": f"{d}T03:49"},
+             "tsolo": {"id": "tsolo", "dedup_key": "shiny-solo-today", "url": "https://x.com/a/status/2113000000000000010", "found_at": f"{d}T03:49"}}
+    sl.link(cands, d, tmp)
+    check(cands["t85"]["dedup_key"] != "shiny-3-0-25", "まとめ記事の別の話題の素材の url で、今日の候補をまとめ記事の話題へ結んだ")
+    check(cands["t85"]["dedup_key"] == "shiny-8-5th-anniversary-0-24", f"素材自身の話題へ結んでいない: {cands['t85']['dedup_key']}")
+    check(cands["tcount"]["dedup_key"] == "shiny-3-0-25", f"まとめ記事が書いた話題の素材の url で結ばない: {cands['tcount']['dedup_key']}")
+    check(cands["tsolo"]["dedup_key"] == "shiny-solo-topic", f"まとめ記事でない記事の素材の url を記事の話題へ結ばない: {cands['tsolo']['dedup_key']}")
+
+
+def test_assemble_roundup_reservation(tmp: Path):
+    """まとめ記事の各項目の締切が続報予約になる(2026-10-24: シャニマスのまとめ記事の「8.5周年プレゼント 10/26 23:59 まで」の
+    締切予約を、モデルが日付を持たない素材(セレチケ)に付け、検算が捨てて終えた。10/26 号の素材に公式 X の原本が戻らなかった)。
+    台帳の入力に素材ごとの見出し・締切と事実の出所を載せ、検算で採らなかった予約はその記事だけ差し戻して答え直させる。"""
+    import assemble
+    d = "2026-10-24"
+    mats = {"g22": cand_row("g22", "https://x.com/imassc_official/status/2113000000000000022", brand="shiny", title="セレチケパッケージ",
+                            facts=["セレチケパッケージを販売中"]),
+            "g34": cand_row("g34", "https://x.com/imassc_official/status/2113000000000000034", brand="shiny", title="8.5周年ログインプレゼント",
+                            facts=["受け取り可能期間は10/26 23:59まで"], deadline="2026-10-26")}
+    posts = [{"slug": "shiny-ops-roundup", "brand": "shiny", "candidate_ids": ["g22", "g34"], "title": "シャニマス運営まとめ",
+              "lede": "l", "rank": "roundup", "_name": f"{d}-shiny-ops-roundup.md"}]
+    saved = (assemble.ROOT, assemble.run_session, assemble.anomaly)
+    asked, anomalies = [], []
+    try:
+        (tmp / "metrics").mkdir(parents=True, exist_ok=True)
+        shutil.copytree(saved[0] / "schema", tmp / "schema")
+        assemble.ROOT = tmp
+        inp = assemble.build_input(d, posts, mats, [], [])
+        text = assemble.prompt_ledger(d, inp, inp["articles"])
+        check("candidate g34: 8.5周年ログインプレゼント / deadline: 2026-10-26" in text and "[g34]: 受け取り可能期間は10/26 23:59まで" in text,
+              f"台帳の入力に、素材ごとの締切と事実の出所が無い:\n{text[-800:]}")
+        wrong = {"slug": "shiny-ops-roundup", "candidate_id": "g22", "date": "2026-10-26", "occurs_on": "2026-10-26", "kind": "締切",
+                 "subject": "8.5周年プレゼント受け取り締切", "note": "受け取りの最終日"}
+        right = dict(wrong, candidate_id="g34")
+        out = {"digest": [], "stories": [], "pending_add": [], "pending_remove": [], "reservations": [wrong]}
+
+        def fake_session(text, date, name, schema, budget=None, answer=right):
+            asked.append((name, text))
+            return {"stories": [], "reservations": [answer], "pending_add": [], "pending_remove": []}
+        assemble.run_session = fake_session
+        assemble.anomaly = lambda job, text: anomalies.append(text)
+        rejected: list = []
+        clean, notes = assemble.validate(d, out, posts, mats, inp, rejected=rejected)
+        check(not clean["reservations"] and len(rejected) == 1, f"日付を持たない素材を指した予約を検算が捨てない: {clean['reservations']}")
+        clean, notes = assemble.return_reservations(d, inp, out, posts, mats, rejected, notes)
+        check([r["candidate_id"] for r in clean["reservations"]] == ["g34"] and asked and "差し戻し" in asked[-1][1]
+              and "g22" in asked[-1][1], f"採らなかった予約を差し戻して答え直させない: {clean['reservations']} {[n for n, _ in asked]}")
+        check(not anomalies, f"答え直しで採れたのに異常にした: {anomalies}")
+        # 答え直しても日付を持たない素材を指すなら、名指しして異常にする(捨てて終えない)
+        assemble.run_session = lambda text, date, name, schema, budget=None: fake_session(text, date, name, schema, answer=wrong)
+        rejected = []
+        clean, notes = assemble.validate(d, out, posts, mats, inp, rejected=rejected)
+        clean, notes = assemble.return_reservations(d, inp, out, posts, mats, rejected, notes)
+        check(not clean["reservations"] and anomalies and "shiny-ops-roundup" in anomalies[-1], f"差し戻しても採れない予約を名指ししない: {anomalies}")
+        # 答え直しが予約を省いた(正しい形の空の答え)ときも、黙って消さずに名指しする(Sol 監査 r1)
+        anomalies.clear()
+        assemble.run_session = lambda text, date, name, schema, budget=None: {"stories": [], "reservations": [],
+                                                                              "pending_add": [], "pending_remove": []}
+        rejected = []
+        clean, notes = assemble.validate(d, out, posts, mats, inp, rejected=rejected)
+        clean, notes = assemble.return_reservations(d, inp, out, posts, mats, rejected, notes)
+        check(not clean["reservations"] and anomalies and "8.5周年プレゼント受け取り締切" in anomalies[-1],
+              f"答え直しが予約を省いたら、黙って消した: {anomalies}")
+        # 同じ日・同じ種別の予約が2つ(まとめ記事の別の項目)差し戻され、片方だけ戻ったら、戻らない分を名指しする(Sol 監査 r2)
+        anomalies.clear()
+        other = dict(wrong, subject="別の項目の受け取り締切")
+        out2 = dict(out, reservations=[wrong, other])
+        assemble.run_session = lambda text, date, name, schema, budget=None: fake_session(text, date, name, schema, answer=right)
+        rejected = []
+        clean, notes = assemble.validate(d, out2, posts, mats, inp, rejected=rejected)
+        clean, notes = assemble.return_reservations(d, inp, out2, posts, mats, rejected, notes)
+        check(len(clean["reservations"]) == 1 and anomalies and "2件のうち 1件が戻らない" in anomalies[-1],
+              f"同じ日・種別の予約の片方が戻らないのを名指ししない: {clean['reservations']} {anomalies}")
+        # 初めから採れていた予約 A と、差し戻した B(同じ日・種別)。答え直しが A を繰り返しただけなら、B は戻っていない(Sol 監査 r3)
+        anomalies.clear()
+        out3 = dict(out, reservations=[right, other])
+        assemble.run_session = lambda text, date, name, schema, budget=None: fake_session(text, date, name, schema, answer=right)
+        rejected = []
+        clean, notes = assemble.validate(d, out3, posts, mats, inp, rejected=rejected)
+        clean, notes = assemble.return_reservations(d, inp, out3, posts, mats, rejected, notes)
+        check(len({assemble.reservation_id(r, mats) for r in clean["reservations"]}) == 1 and anomalies
+              and "別の項目の受け取り締切" in anomalies[-1],
+              f"採れていた予約の繰り返しを、差し戻した予約が戻ったと数えた: {clean['reservations']} {anomalies}")
+    finally:
+        assemble.ROOT, assemble.run_session, assemble.anomaly = saved
+
+
+def test_assemble_run_returns_reservations(tmp: Path):
+    """組版本体(assemble.run)が、検算で採らなかった予約を差し戻し、答え直しの予約を続報予約のファイルまで反映する
+    (return_reservations を直接呼ぶテストだけでは、本体からの呼び出しを消しても通る。Sol 監査 r5 の later)。"""
+    import contextlib
+    import io as _io
+    D = "2026-10-24"
+    mats = [cand_row("g22", "https://x.com/imassc_official/status/2113000000000000022", brand="shiny", title="セレチケパッケージ",
+                     facts=["セレチケパッケージを販売中"], dedup_key="shiny-celechike"),
+            cand_row("g34", "https://x.com/imassc_official/status/2113000000000000034", brand="shiny", title="8.5周年ログインプレゼント",
+                     facts=["受け取り可能期間は10/26 23:59まで"], deadline="2026-10-26", dedup_key="shiny-85-login")]
+    wrong = {"slug": "shiny-ops-roundup", "candidate_id": "g22", "date": "2026-10-26", "occurs_on": "2026-10-26", "kind": "締切",
+             "subject": "8.5周年プレゼント受け取り締切", "note": "受け取りの最終日"}
+    answer = {"digest": [{"label": l, "rows": []} for l in DIGEST_LABELS], "stories": [], "reservations": [wrong],
+              "pending_add": [], "pending_remove": []}
+    asked = []
+    with assemble_at(tmp):
+        (assemble.POSTS / f"{D}-shiny-ops-roundup.md").write_text(
+            "---\n" + article_fm("shiny-ops-roundup", D, brand="shiny", rank="roundup", title="シャニマス運営まとめ",
+                                 candidate_ids=["g22", "g34"]) + "---\n本文。\n", encoding="utf-8")
+        (tmp / "candidates" / f"{D}.json").write_text(json.dumps(mats, ensure_ascii=False), encoding="utf-8")
+        assemble.dump_yaml(assemble.STORIES, [])
+        assemble.dump_yaml(assemble.PENDING, [])
+        (tmp / "scripts").mkdir(exist_ok=True)
+        for name in ("derive", "lint"):
+            (tmp / "scripts" / f"{name}.py").write_text("print('lint: 0 errors')\n", encoding="utf-8")
+        shutil.copytree(pipelib.ROOT / "schema", tmp / "schema", dirs_exist_ok=True)
+        saved = (assemble.judge, assemble.notify, assemble.run_session, assemble.classify_source)
+        assemble.judge = lambda date, inp, budget=None: json.loads(json.dumps(answer))
+        assemble.notify = lambda job, msg, ok=True, **k: None
+        assemble.classify_source = lambda u: "公式"
+
+        def fake_session(text, date, name, schema, budget=None):
+            asked.append(name)
+            return {"stories": [], "reservations": [dict(wrong, candidate_id="g34")], "pending_add": [], "pending_remove": []}
+        assemble.run_session = fake_session
+        try:
+            with contextlib.redirect_stdout(_io.StringIO()):
+                code = assemble.run(D, 1)
+        finally:
+            assemble.judge, assemble.notify, assemble.run_session, assemble.classify_source = saved
+        p = tmp / "stock" / "scheduled" / "2026-10-26.json"
+        rows = json.loads(p.read_text(encoding="utf-8")) if p.exists() else []
+    check(code == 0 and asked == ["assemble-ledger-returned"]
+          and any(r.get("src_candidate_id") == "g34" and r.get("kind") == "締切" and r.get("reserved_on") == D for r in rows),
+          f"組版本体が、採らなかった予約を差し戻して反映しない: exit {code} {asked} {rows}")
+
+
 def main() -> int:
     tmp = Path(tempfile.mkdtemp(prefix="imas-test-"))
+    test_assemble_run_returns_reservations(tmp / "arrr")
+    test_assemble_roundup_reservation(tmp / "arr")
+    test_storylink_roundup_topic(tmp / "srt")
+    test_source_rescue_entry(tmp / "sre")
+    test_oncall_recover_rescues_sources(tmp / "ors")
     test_stray_governed_write_is_caught(tmp / "sgw")
     test_write_checked_contract(tmp / "wcc")
     test_release_push_retry(tmp / "rpr")

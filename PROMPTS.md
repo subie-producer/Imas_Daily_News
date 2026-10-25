@@ -24,12 +24,14 @@
 | revise-article | 校閲の指摘を受けた書き直し(`compose.revise_prompt`) | Codex luna | 記事(同上) |
 | review-article / review-paper | 校閲(`compose.claude_review`) | Claude haiku | 判定(prompts/review-schema.json) |
 | assemble-digest / assemble-ledger | 組版の判断(`assemble.prompt_digest` / `prompt_ledger`) | Claude sonnet | digest / 既報・予約・pending |
+| assemble-ledger.returned | 検算で採らなかった続報予約を、その記事だけ理由を添えて答え直させる追記(`assemble.return_reservations`。1回) | Claude sonnet | assemble-ledger と同じ |
 | collect-rules / collect-item | 収集の共通部品(何を書いてよいか / 候補1件の形) | — | — |
 | grok-collect | X の検索だけ・面ごと(`collect.write_grok_prompt`) | Grok | 見つけた投稿の全文(ファイル) |
 | grok-verify | 投稿を読みリンク先を開いて確かめ、候補と「X の原本でしか分からない問い」にする(`collect.verify_grok_faces`) | Codex luna | items.json / posts.json(投稿ごとの結果)/ deep.json |
 | grok-deep | X の原本の深掘り。予算の範囲の問いだけ(`collect.deep_dive_grok`) | Grok | 見つけた原本の投稿(ファイル) |
 | explore | Web の探索・面ごと(`collect.run_explores`) | Codex luna | 候補 JSON |
 | watch-facts | 定点観測の新着の facts 化(`collect.run_watch`) | Claude haiku | 新着ページごとの結果(extracted / none / unreadable)と候補 JSON |
+| source-rescue | 出典が足りずに見送った記事1本の、出典の当たり(読むページと X の原本の問い)。事実は後段の facts 化・Grok の深掘り・確かめ・verify が起こす(`source_rescue.plan_tasks`。当番の組み直しの前に `oncall.rescue_sources` が呼ぶ) | Claude haiku | 当たりの JSON 配列(page / x) |
 | classify-rules / classify-site / classify-x / classify-debate | 出典種別の合議(`classify_sources`) | Claude haiku + Codex luna | 種別 JSON |
 | classify-link(+ classify-debate) | リンク先がリンク元の告知と関係しているかの合議(`classify_sources.inherit_from_links`) | Claude haiku + Codex luna | 関係する / 関係しない JSON |
 | oncall-fix(+ .objections)/ oncall-review | 当番の修正と監査(`oncall`) | Claude opus / Codex sol | 報告・判定(schema) |
@@ -247,6 +249,11 @@
   ミッションパスの終了の予約(9/30)が 9/30 の出来事になった(監査指摘)。どちらの日かを知っているのは予約を決めたモデルだけで、
   あとからコードは日付の字面からは決められない(10/1 が素材にあっても、別の事柄の日のことがある)
 - stories は記事ごとに1件(契約): コードがこれで組の答えの欠けを見分け、欠けた記事だけやり直させる(予約・追跡の「無し」と「答えが無い」を分けるため。2026-10-06)
+- 予約の candidate_id は日付が書かれている素材(2026-10-24): シャニマスのまとめ記事の「8.5周年プレゼント 10/26 23:59 まで」の締切予約を、
+  モデルが日付を持たない素材(セレチケ)に付け、検算が「素材に無い日付」で捨てて終えた。入力は事実を記事単位に平らに並べ、どの素材の
+  事実かも素材ごとの締切も渡していなかった(まとめ記事は別々の話題の素材を束ねるので、当て推量になる)。入力に素材ごとの見出し・締切と
+  事実の出所([ ])を載せ、採らなかった予約はその記事だけ差し戻して答え直させる(assemble-ledger.returned。捨てて終えない)。
+  10/26 号ではこの予約が無かったので素材に公式 X の原本が戻らず、出典不足で見送られた
 
 ### 収集(collect-rules ほか)
 - Grok には日本語のまとめを書かせ、JSON 化は後段: 候補を1件ずつ JSON にさせたら、本文 8,219 字のページから facts 359 字、25 回検索して 0 件。整形に能力を食われる
@@ -357,3 +364,13 @@
   誰が言った? 復帰保証までが Opus/Sol の仕事だ」「直すのと、記事にするための準備ができるべきなのにできてないのを直す、の両方」。
   承認済みでも落とした記事があれば、組版は当番をやり直しありで呼び(`--recover`)、当番は直したあと `--reuse-plan` で戻す。
   「戻さない」は発行済みの号だけ。素材が足りない見送り(NO_PRIMARY_SOURCE)も、素材を揃える仕組みの欠陥として扱う
+- 出典不足の見送りと出典を揃える入口(2026-10-26): 10/26 号で5本が NO_PRIMARY_SOURCE・SOURCE_MISMATCH で見送られ、当番は取得の欠陥
+  (400KB 切り)を直して2本を戻したが、残る3本(当日 23:59 締切のシャニマス8.5周年プレゼントを含む)を「外部」「27・28日号に戻るかも
+  しれない」で終え、監査も事実として正しいとして承認した。公式 X・当事者のページは実在し、手での救済(Grok の深掘り → Luna の確かめ →
+  verify → 素材への merge → 計画の素材への追加 → `--reuse-plan --carry-review`)で3本とも当日号に戻った。編集長「執筆中だから妥協する、
+  なんて話は許しませんよ?」。原因は、なぜなぜの「データや外部なら診断して終える」の逃げ道、当番に号の素材を足す正規の入口が無いこと、
+  監査が当日号に戻さないことを咎めなかったこと。入口(`scripts/source_rescue.py`)を作り、組み直しの前にコードが必ず通す
+  (`oncall.rescue_sources`)。依頼文は入口で届くかを確かめさせ、届かない原因を直させ、届かなかった記事には試した出典を書かせる。
+  当たりの調べは出典の場所を挙げるだけで事実を書かない(事実は収集と同じ facts 化・確かめ・verify が出典から起こす)。page に
+  取得できなかったページも挙げさせるのは、相手の 429・メンテナンスは時間を置けば読めることがあり(Anime Store.JP)、取り直しと
+  報告の「試した出典」に要るため

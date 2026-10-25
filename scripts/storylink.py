@@ -118,6 +118,11 @@ def past_articles(date: str, root: Path = ROOT, days: int = LINK_DAYS) -> list[d
         # 翌日に同じ配信 URL を facts に持つ公式ニュースの候補が既報につながらず、同じ放送を 10/15 号にもう一度載せた)
         links = {url_key(u) for u in text_urls(re.sub(r"<!--.*?-->", "", re.sub(r"\A---\n.*?\n---\n", "", raw, flags=re.S), flags=re.S))}
         keys = {dk} if dk else set()
+        # まとめ記事(roundup)は別々の話題の素材を1本に束ねる。素材の url は記事の話題キーではなく素材自身の話題キーに結ぶ
+        # (2026-10-26: 10/25 のシャニマスのまとめ記事が素材に持っていた8.5周年の投稿の url で、今日の8.5周年プレゼントの候補が
+        # まとめ記事の話題 shiny-3-0-25(シャニソン3周年ログボ)へ結ばれ、選定で別の話題と1つに束ねられた)
+        topic_of: dict[str, str] = {}
+        roundup = fm.get("rank") == "roundup"
         if ids:
             if ed not in cand_keys:
                 cand_keys[ed] = {}
@@ -134,6 +139,8 @@ def past_articles(date: str, root: Path = ROOT, days: int = LINK_DAYS) -> list[d
                 urls.add(u)
                 if k:
                     keys.add(k)
+                    if roundup and u:
+                        topic_of.setdefault(u, k)
                 dk = dk or k
         links -= urls                       # 本文のリンクだけに出る url(出典・素材の url でない)
         urls |= links
@@ -142,8 +149,14 @@ def past_articles(date: str, root: Path = ROOT, days: int = LINK_DAYS) -> list[d
         # keys = 計画の話題キーと、記事の候補が持っていた話題キー(別名)。既報はどのキーからも引ける(監査指摘 r108:
         # 計画が別の主題に統合した記事は、候補側のキーで再収集されると計画のキーだけでは既報が見えない)
         out.append({"slug": slug, "edition": ed, "title": str(fm.get("title") or ""), "brand": fm.get("brand"),
-                    "dedup_key": dk, "keys": keys, "urls": urls, "links": links, "text": published_text(raw, fm)})
+                    "dedup_key": dk, "keys": keys, "urls": urls, "links": links, "text": published_text(raw, fm),
+                    "topic_of": topic_of})
     return out
+
+
+def topic(a: dict, u: str) -> str | None:
+    """過去の記事 a の url u が属する話題キー(まとめ記事の素材の url はその素材の話題、ほかは記事の話題)。"""
+    return (a.get("topic_of") or {}).get(u) or a["dedup_key"]
 
 
 def hub_urls(past: list[dict]) -> set[str]:
@@ -155,7 +168,7 @@ def hub_urls(past: list[dict]) -> set[str]:
     keys_of = collections.defaultdict(set)
     for a in past:
         for u in a["urls"]:
-            keys_of[u].add(a["dedup_key"])
+            keys_of[u].add(topic(a, u))
     # 本文のリンクとしてだけ出る url は、**2つ**の話題に出れば見分けない(記事が関連として示したページ。例: 9/4 のインタビュー
     # 記事が本文で示した催しのページに、別の催しの記事の話題がつながりかけた)
     links = set().union(*(a.get("links") or set() for a in past))
@@ -172,13 +185,14 @@ def link(cands: dict, date: str, root: Path = ROOT) -> list[tuple[str, str, str,
     for a in sorted(past, key=lambda a: a["edition"]):
         if a["dedup_key"]:
             for u in a["urls"] - hub:
-                latest[u] = a                       # 同じ URL なら、いちばん新しい記事の話題へ
+                # 同じ URL なら、いちばん新しい記事の話題へ(まとめ記事の素材の url は、その素材の話題へ)
+                latest[u] = {**a, "dedup_key": topic(a, u)}
     topics_of: dict[str, set[str]] = collections.defaultdict(set)
     for a in past:
         for u in a["urls"]:
-            topics_of[u] |= {a["dedup_key"]} - {None}
+            topics_of[u] |= {topic(a, u)} - {None}
     changed = []
-    past_keys = {a["dedup_key"] for a in past if a["dedup_key"]}
+    past_keys = {k for a in past for k in [a["dedup_key"], *(a.get("topic_of") or {}).values()] if k}
     live = [c for c in cands.values() if c.get("dedup_key") and c.get("origin") != "scheduled"
             and not str(c.get("id") or "").startswith("sched-")]
     # 1. 過去の記事と同じ一次情報。**話題ごと**つなぎ直す(候補1件だけ寄せると、同じ話題の別の URL の候補が元の話題に

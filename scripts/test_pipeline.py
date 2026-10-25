@@ -16786,6 +16786,32 @@ def test_source_rescue_entry(tmp: Path):
     check(not any(cands5.get(i) in RESCUE_X.values() for i in song["candidate_ids"])
           and rep["articles"]["shiny-song-for-prism-third-anniversary-event-2026"]["outcome"] == "揃わない",
           f"前の実行の Grok の書き出しを今回の問いの答えにした: {song['candidate_ids']} {rep['articles']}")
+    # 2記事の問いの文が同じでも、問いごとの答えをそれぞれの記事へ渡す。同じ投稿が両方の問いに答えたら両方へ(Sol 監査 r4)
+    two = ["shiny-85th-anniversary-gifts-2026", "shiny-song-for-prism-third-anniversary-event-2026"]
+    for same_post in (False, True):
+        tmp6 = tmp / f"samequestion-{same_post}"
+        rescue_fixture(tmp6)
+        fakes = RescueFakes(tmp6)
+        fakes.planner = lambda prompt: [{"kind": "x", "question": "@imassc_official の公式の告知", "why": "公式の原本が要る"}]
+
+        def deep_by_order(queries, outdir, chosen, errs, suffix="-deep", retry=False, same_post=same_post):
+            for k, asks in chosen.items():
+                urls = [RESCUE_X["8.5周年"]] * 2 if same_post else [RESCUE_X["8.5周年"], RESCUE_X["3周年記念ライブ"]]
+                (outdir / f"{k}{suffix}.md").write_text("\n\n".join(
+                    f"### {i + 1}\n- url: {u}\n- 問い: {i + 1}\n- 本文:\n告知\n- リンク: なし" for i, u in enumerate(urls[:len(asks)])),
+                    encoding="utf-8")
+            return set()
+        fakes.deep = deep_by_order
+        with fakes:
+            rep = source_rescue.rescue(RESCUE_DATE, two)
+        c6 = {c["id"]: c["url"] for c in json.loads((tmp6 / "candidates" / f"{RESCUE_DATE}.json").read_text(encoding="utf-8"))}
+        p6 = {a["slug"]: [c6.get(i) for i in a["candidate_ids"]]
+              for a in json.loads((tmp6 / "metrics" / f"plan-{RESCUE_DATE}.json").read_text(encoding="utf-8"))["articles"]}
+        want_song = RESCUE_X["8.5周年"] if same_post else RESCUE_X["3周年記念ライブ"]
+        check(RESCUE_X["8.5周年"] in p6[two[0]] and want_song in p6[two[1]]
+              and all(rep["articles"][s]["outcome"] == "揃えた" for s in two)
+              and all(any("x" in t for t in rep["articles"][s]["tried"]) for s in two),
+              f"同じ文の問いの答えを、片方の記事へ寄せた(同じ投稿 {same_post}): {p6[two[0]]} / {p6[two[1]]} {rep['articles']}")
     # 始めた裏取りが締切を越えて長引いても(描画・本文の受信)、締切で待つのをやめ、裏取りしていない候補にする(Sol 監査 r2)
     import collect
     saved = (collect.verify, source_rescue.VERIFY_ONE_MAX)

@@ -126,17 +126,18 @@ def face_of(brand: str, queries: list[dict]) -> dict | None:
     return by_brand.get(brand) or by_brand.get("general")
 
 
-def answered_asks(text: str, asks: list[dict]) -> dict[str, int]:
-    """深掘りの書き出しの投稿 → 答えた問いの番号(1始まり)。番号の無い投稿は、問いが1つならその問い。"""
-    out = {}
+def answered_posts(text: str, asks: list[dict]) -> list[tuple[str, str, int]]:
+    """深掘りの書き出しの投稿ごとの (投稿の鍵, url, 答えた問いの番号 1始まり)。番号の無い投稿は、問いが1つならその問い。
+    範囲外の番号・番号の無い投稿(問いが複数)は入れない。同じ投稿が別の問いの答えとして2回出れば2行(どちらの記事にも渡す)。"""
+    out = []
     for b in collect.post_blocks(text):
         u = collect.post_url(b)
         if not u:
             continue
         m = collect.DEEP_ASK_NO.search(b)
         n = int(m.group(1)) if m else (1 if len(asks) == 1 else 0)
-        if n:
-            out[collect.post_key(u)] = n
+        if 0 < n <= len(asks):
+            out.append((collect.post_key(u), u, n))
     return out
 
 
@@ -144,14 +145,17 @@ def grok_phase(asks_by_slug: dict[str, list[dict]], arts: dict[str, dict], outdi
     """X の原本の深掘り。戻りは [(slug, Luna が確かめた候補)]。問いごとの結果(見つかった投稿)は log に書く。"""
     queries = collect.build_prompts()
     deep: dict[str, list[dict]] = {}
-    owner: dict[tuple[str, int], str] = {}     # (面, 問いの位置) → slug
+    # 問い → slug は、問いの**オブジェクト**で引く(id)。問いの文が同じ2記事を、値の等しさ(.index)で先の記事に寄せない(Sol 監査 r4)。
+    # 選定(plan_deep_dive)・投げ直し(unanswered_asks)は同じオブジェクトを渡すので、対応は途中で失われない
+    owner: dict[int, str] = {}
     for slug, asks in asks_by_slug.items():
         q = face_of(arts[slug].get("brand") or "", queries)
         if not q:
             continue
         for a in asks:
-            owner[(q["key"], len(deep.get(q["key"], [])))] = slug
-            deep.setdefault(q["key"], []).append({"question": a["question"], "why": a.get("why") or ""})
+            ask = {"question": a["question"], "why": a.get("why") or ""}
+            owner[id(ask)] = slug
+            deep.setdefault(q["key"], []).append(ask)
     if not deep:
         return []
     used = collect.grok_week_usage()
@@ -165,31 +169,27 @@ def grok_phase(asks_by_slug: dict[str, list[dict]], arts: dict[str, dict], outdi
     def one_round(chosen: dict[str, list[dict]], suffix: str, retry: bool) -> None:
         failed = collect.deep_dive_grok(queries, outdir, chosen, errs, suffix=suffix, retry=retry)
         items, _ = collect.verify_grok_faces([by_key[k] for k in chosen], outdir, suffix=suffix, ledger=ledger)
-        posts: dict[str, str] = {}
+        posts: dict[str, set[str]] = {}       # 投稿 → 答えた問いの記事(同じ投稿が複数の記事の問いに答えることがある)
         for k, asks in chosen.items():
             text = collect.read_written(outdir / f"{k}{suffix}.md")
-            for pk, n in answered_asks(text, asks).items():
-                idx = deep[k].index(asks[n - 1]) if 0 < n <= len(asks) else -1
-                if (k, idx) in owner:
-                    posts[pk] = owner[(k, idx)]
-                    log.setdefault("asks", {}).setdefault(owner[(k, idx)], {}).setdefault(asks[n - 1]["question"], []).append(
-                        next((collect.post_url(b) for b in collect.post_blocks(text) if collect.post_key(collect.post_url(b)) == pk), pk))
-            for i, a in enumerate(asks):
-                slug = owner.get((k, deep[k].index(a)))
-                if slug:
-                    st = log.setdefault("asks", {}).setdefault(slug, {}).setdefault(a["question"], [])
-                    if k in failed:
-                        st.append(f"(深掘りが正常に終わらなかった: {errs.get(k, '')[:160]})")
+            for a in asks:
+                st = log.setdefault("asks", {}).setdefault(owner[id(a)], {}).setdefault(a["question"], [])
+                if k in failed:
+                    st.append(f"(深掘りが正常に終わらなかった: {errs.get(k, '')[:160]})")
+            for pk, url, n in answered_posts(text, asks):
+                slug = owner[id(asks[n - 1])]
+                posts.setdefault(pk, set()).add(slug)
+                log["asks"][slug][asks[n - 1]["question"]].append(url)
         for it in items:
             it["_via"] = "grok"
-            slug = posts.get(collect.post_key(it["url"])) or posts.get(collect.post_key(it.get("link_from") or ""))
-            if not slug:
+            slugs = posts.get(collect.post_key(it["url"])) or posts.get(collect.post_key(it.get("link_from") or ""))
+            if not slugs:
                 # 投稿に結び付かない候補(リンク先)は、その面の問いが1記事だけならその記事の素材
-                slugs = {owner[(k, i)] for k in chosen for i in range(len(deep[k])) if (k, i) in owner}
-                slug = next(iter(slugs)) if len(slugs) == 1 else None
-            if slug:
-                out.append((slug, it))
-            else:
+                every = {owner[id(a)] for k in chosen for a in deep[k]}
+                slugs = every if len(every) == 1 else set()
+            for slug in sorted(slugs):
+                out.append((slug, dict(it)))
+            if not slugs:
                 log.setdefault("unattributed", []).append(it.get("url"))
 
     chosen = collect.plan_deep_dive(deep, budget)
@@ -204,8 +204,8 @@ def grok_phase(asks_by_slug: dict[str, list[dict]], arts: dict[str, dict], outdi
         chosen2 = collect.plan_deep_dive(retry, budget2)
         if chosen2:
             one_round(chosen2, "-deep2", True)
-    skipped = {owner[(k, i)] for k, asks in deep.items() for i, a in enumerate(asks)
-               if (k, i) in owner and a not in (chosen.get(k) or [])}
+    picked = {id(a) for v in chosen.values() for a in v}
+    skipped = {owner[id(a)] for asks in deep.values() for a in asks if id(a) not in picked}
     for slug in skipped:
         log.setdefault("asks", {}).setdefault(slug, {})["(予算)"] = [f"週の予算の外で調べなかった(予算 {budget}回・直近7日 {used}回)"]
     collect.report_lost_posts(ledger)

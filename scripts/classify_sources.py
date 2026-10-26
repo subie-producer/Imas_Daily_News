@@ -95,6 +95,13 @@ def path_key(url: str) -> str | None:
     if host == "youtube.com" and seg == ["playlist"]:
         # 再生リストは list= の ID までが1つの単位(種別は持ち主のチャンネルを写す。resolve_playlists)。ID が無ければ None
         return query_doc_key(url)
+    if host == "youtube.com" and seg:
+        # チャンネルのページ(`/@<ハンドル>/streams`・`/channel/<ID>/videos` など)は、チャンネルまでが1つの単位。
+        # 枝(streams・videos・community…)は同じ持ち主(2026-10-28: `@KamizuruCosmo/streams` にパーサが無かった)
+        if seg[0].startswith("@") and len(seg[0]) > 1:
+            return f"{host}/{seg[0]}"
+        if seg[0] in ("channel", "c", "user") and len(seg) >= 2:
+            return f"{host}/{seg[0]}/{seg[1]}"
     if host == "ch.nicovideo.jp" and seg and seg[0] == "channel":
         # `/channel/<ch ID>` は ID までが1つのチャンネル。先頭1区切りで切ると、別のチャンネルが同じ `ch.nicovideo.jp/channel` になり、
         # 1つを公式にすると他のチャンネル(とその番組)まで公式になった(監査指摘 2026-10-14)。別名の形(`/sidem`)は先頭1区切り
@@ -176,6 +183,8 @@ def platform_unit(url: str) -> tuple[str, str]:
         return "skip", f"{host} の文書 ID の無い URL(文書でなければ持ち主は無い)"
     if host.removeprefix("m.") == "youtube.com" and u.path.rstrip("/") == "/playlist":
         return "skip", "YouTube の再生リスト ID(list=)の無い URL"
+    if host.removeprefix("m.") == "youtube.com" and (u.path.strip("/") == "" or u.path.strip("/").split("/")[0] in ("results", "feed", "hashtag")):
+        return "skip", "YouTube のチャンネルにも動画にも紐づかない URL(トップ・検索・トレンド・ハッシュタグ)。出典にするならチャンネルか動画の URL が要る"
     for q in SUBDOMAIN_PLATFORMS:
         if host.endswith("." + q):
             return "domain", host

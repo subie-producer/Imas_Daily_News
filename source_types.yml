@@ -623,6 +623,8 @@ x_accounts:
     - imasnews765
     - zutapoke
   ファン:
+    - yakoP373            # 合議で追加: 個人のトレーニング体験投稿と読める
+    - hir4441             # 合議で追加: 個人の誕生日祝いの投稿
     - ykdrmsm_2303        # 合議で追加: 個人によるコスプレ撮影の参加報告
     - tanakafuyuko        # 合議で追加: 個人による高森藍子のファンイラスト投稿
     - mygasen2            # 合議で追加: 個人が手毬の語録やGT7用デカールを公開
@@ -926,6 +928,9 @@ x_accounts:
     - procinen1
     - yutaleP
   当事者:
+    - chikusei_city       # 合議で追加: 筑西市(自治体)。シャニマスとのコラボを実施
+    - anicloset           # 合議で追加: グッズ販売元。SideM商品の販売特設サイトを公開
+    - 8ban_tamashima      # 合議で追加: 8番らーめん玉島店。シャニマスとのコラボ先(店舗)
     - deramasu2025        # 合議で追加: でらますコラボの主催・名鉄観光サービスが参加者アンケートを一次発信
     - uneru55             # 合議で追加: 湯～ねるのコラボライブロウリュ予告、会場側の一次発信
     - renaissance_IP      # 合議で追加: コラボ版チケット販売を行うルネサンス側の一次発信
@@ -1100,6 +1105,7 @@ x_posts:
 
 # --- リンク元から引き継いだ種別(リンク先1つずつ。キーは pipelib.link_key)。合議がリンク元の告知と関係していると確かめたものだけ(classify_sources.inherit_from_links)。リンク先そのものの種別より強いときだけ効く ---
 link_types:
+  asobiticket2.asobistore.jp/receptions/36ac2a17-d201-44fd-ab28-049fc28c560d: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://idolmaster-official.jp/news/01_19816(公式)。公演詳細・チケット販売開始の告知で、リンク先は同じ765×961公演の受付ページ
   youtube.com/watch?v=Iu3hlREXqQo: 準公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/SideM_lantis/status/2113223847012896838(準公式)。リンク先は告知されたFRAME「ULTIMATE FLAME」2DMVの動画ペー
   asobiticket2.asobistore.jp/news/022a9df8-fb50-48fe-b21d-aea1b06953a7: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://x.com/SideM_official/status/2113561200357482713(公式)。SideMプロミ2027先行の入金期限延長の告知そのもの。リンク元と同じ内容
   recommend.jr-central.co.jp/oshi-tabi/idolmaster_sidem/: 当事者 # リンク元から引き継ぎ(合議で関係を確認): https://x.com/oshitabi_update/status/2113828027998281898(当事者)。リンク先は告知と同じJR東海×SideM旅マス企画の案内ページ

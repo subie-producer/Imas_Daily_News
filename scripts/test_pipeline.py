@@ -17970,7 +17970,7 @@ def test_page_archive_versions_and_reads(tmp: Path):
             def geturl(self): return r_url2
         c2 = {"url": r_url2, "title": "告知", "facts": ["価格は3000円"], "quotes": [long_quote], "via": "explore", "source_type": "公式"}
 
-        def fake_render(u, limit=None, ret=render_ret, to=final_to):
+        def fake_render(u, limit=None, ret=render_ret, to=final_to, wait_deadline=None):
             if to:
                 pipelib.RENDER_FINAL[u] = to
             return ret
@@ -18258,7 +18258,7 @@ def test_page_archive_versions_and_reads(tmp: Path):
             def geturl(self, u=b_url): return u
             def read(self, n=None): return nav
 
-        def fake_render(u, limit=None, r=ret, s=st):
+        def fake_render(u, limit=None, r=ret, s=st, wait_deadline=None):
             if s:
                 pipelib.RENDER_STATUS[u] = s
             return r, ""

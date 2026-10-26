@@ -244,6 +244,7 @@ def unknown_targets(date: str) -> tuple[dict[str, str], dict[str, tuple[str, lis
     SHORT_LINKS.clear()
     ALL_SHORTS.clear()
     BOOTH_ITEMS.clear()
+    YT_CHANNELS.clear()
     rows = target_rows(date)
     # 判定済みの短縮も、展開先が上位になっていないかを見る(resolve_short_links)。組版前はその号の記事の出典の全部から集める
     # (target_rows は未確認の出典だけ。監査指摘 2026-10-21)
@@ -283,6 +284,11 @@ def unknown_targets(date: str) -> tuple[dict[str, str], dict[str, tuple[str, lis
                 cur[1].append(c["title"][:70])
             continue
         unit, key = platform_unit(url)
+        if unit == "path" and key.startswith("youtube.com/@"):
+            # チャンネルのページ(`/@<ハンドル>/streams` など)はチャンネルで決まる。動画の持ち主と同じ表(video_channels)で
+            # 決めるので、パスの表ではなくチャンネルの合議に掛ける(main)
+            YT_CHANNELS.setdefault(urllib.parse.unquote(key.split("@", 1)[1]), (url, str(c.get("title") or "")))
+            continue
         if unit == "skip":
             SKIPPED.setdefault(url, key)   # 黙って飛ばさない。main が理由ごと報告する
             continue
@@ -433,6 +439,7 @@ NEED_PARSER: dict[str, str] = {}      # 持ち主を取るパーサが無い URL
 USED_IN: dict[str, list[str]] = {}    # 判定のキー → 紙面・候補での使われ方(題名と出典の label)
 X_POSTS: dict[str, str] = {}          # 投稿者の無い X の投稿 ID → 投稿者(unknown_targets が埋める。resolve_x_posts が表へ)
 _X_AUTHOR: dict[str, str] = {}        # 投稿 ID → 投稿者(引けなければ "")。同じ実行で何度も問い合わせない
+YT_CHANNELS: dict[str, tuple[str, str]] = {}   # 表に無い YouTube チャンネルのページのハンドル → (URL, 題名)(unknown_targets が埋める。main がチャンネルの合議へ)
 BOOTH_ITEMS: dict[str, tuple[str, str]] = {}   # BOOTH の商品のキー → (ショップのホスト, URL)(unknown_targets が埋める。resolve_booth_items が表へ)
 SHORT_LINKS: dict[str, str] = {}      # 判定表に無い短縮 URL のキー(`t.co/<ID>`)→ URL(unknown_targets が埋める。resolve_short_links が表へ)
 ALL_SHORTS: dict[str, str] = {}       # 判定の対象の短縮 URL の全部(判定済みも)。キー → URL(unknown_targets が埋める)
@@ -1687,7 +1694,7 @@ def main() -> int:
         for s in rows:
             print(f"  パーサが無い\t{s}", flush=True)
         split_all += rows
-    if (not doms and not accts and not paths and not X_POSTS and not SHORT_LINKS and not ALL_SHORTS and not BOOTH_ITEMS
+    if (not doms and not accts and not paths and not X_POSTS and not SHORT_LINKS and not ALL_SHORTS and not BOOTH_ITEMS and not YT_CHANNELS
             and not unknown_videos(date) and not unknown_nico(date) and not unknown_playlists(date)):
         if not split_all:
             print(f"{date}: 判定表に無い出典はありません")
@@ -1772,7 +1779,7 @@ def main() -> int:
     # 再生リストも持ち主のチャンネルで決まる。チャンネルが表に無ければ、動画のチャンネルと一緒に合議に掛ける
     pl_left, pl_chans = resolve_playlists(date, args.apply)
     left += pl_left
-    for h, v in pl_chans.items():
+    for h, v in list(pl_chans.items()) + list(YT_CHANNELS.items()):
         unknown_chans.setdefault(h, v)
     if unknown_chans:
         print(f"\n{date}: 判定表に無い YouTube チャンネル {len(unknown_chans)}件 → "
@@ -1793,6 +1800,8 @@ def main() -> int:
             print(f"  → チャンネル {len(chans)}件を表に追加")
             left, _ = resolve_videos(date, True)
             left += resolve_playlists(date, True)[0]
+            # チャンネルのページは動画・再生リストの引き直しに出てこない。決まらなかったものは合議の不一致のまま残す
+            left += [x for x in split if any(x.startswith(f"youtube.com/@{h}:") for h in YT_CHANNELS)]
         else:
             left = [x for x in left if not any(f"(@{h})" in x for h in chans)] + split
     split_all += left

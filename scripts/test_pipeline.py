@@ -12976,7 +12976,9 @@ def test_booth_item_owner(tmp: Path):
 
 def test_youtube_channel_page_unit(tmp: Path):
     """YouTube のチャンネルのページ(2026-10-28: `youtube.com/@KamizuruCosmo/streams` が出典に載り、持ち主を取るパーサが無かった)。
-    単位はチャンネル `youtube.com/@<ハンドル>`(枝の streams・videos は同じ持ち主)。ページは取らない。トップ・検索は持ち主が無いので skip。"""
+    単位はチャンネル `youtube.com/@<ハンドル>`(枝の streams・videos は同じ持ち主)。ページは取らない。トップ・検索は持ち主が無いので skip。
+    種別は動画の持ち主と同じ表(video_channels)で決まる: 表にあれば合議なしで当たり、無ければチャンネルの合議に掛けて表に足す
+    (パスの表に別の単位で足すと、表で公式のチャンネルのページが合議に回り、別の種別で二重に載りうる。監査 2026-10-28)。"""
     import classify_sources as cs
     url = "https://www.youtube.com/@KamizuruCosmo/streams"
     key = "youtube.com/@KamizuruCosmo"
@@ -12991,27 +12993,45 @@ def test_youtube_channel_page_unit(tmp: Path):
     tmp.mkdir(parents=True, exist_ok=True)
     (tmp / "candidates").mkdir(exist_ok=True)
     (tmp / "docs" / "_posts").mkdir(parents=True, exist_ok=True)
-    (tmp / "source_types.yml").write_text("official_domains:\n  - a.example\n", encoding="utf-8")
-    saved = (cs.ROOT, pipelib.ROOT, pipelib._ST_TABLE, pipelib._ST_KEY, cs.POSTS_ONLY)
+    table = tmp / "source_types.yml"
+    saved = (cs.ROOT, pipelib.ROOT, pipelib._ST_TABLE, pipelib._ST_KEY, cs.POSTS_ONLY, cs.ask, cs.site_profile, cs.UNRESOLVED, sys.argv)
     try:
         cs.ROOT = pipelib.ROOT = tmp
-        pipelib._ST_TABLE = pipelib._ST_KEY = None
-        cs.POSTS_ONLY = None
+        cs.POSTS_ONLY, cs.UNRESOLVED = None, tmp / "metrics" / "classify-unresolved.json"
         (tmp / "candidates" / "2026-10-28.json").write_text(json.dumps([{"url": url, "title": "上水流宇宙、今夜21時から配信"}]),
                                                             encoding="utf-8")
+        # 表で公式のチャンネル: ページ(枝・大小文字違い)も公式。合議に回らない
+        table.write_text("official_domains:\n  - a.example\nvideo_channels:\n  公式:\n    - KamizuruCosmo\n", encoding="utf-8")
+        pipelib._ST_TABLE = pipelib._ST_KEY = None
+        got = [pipelib.classify_source(u) for u in (url, "https://m.youtube.com/@kamizurucosmo", "https://www.youtube.com/@KamizuruCosmoX/streams")]
+        check(got == ["公式", "公式", "未確認"], f"表のチャンネルの種別がページに当たらない: {got}")
         d, a, paths = cs.unknown_targets("2026-10-28")
-        check(not cs.NEED_PARSER and not cs.SKIPPED and not d and paths == {key: url},
-              f"チャンネルのページがパーサ待ち・チャンネル以外の単位で合議に回った: {cs.NEED_PARSER} {cs.SKIPPED} {d} {paths}")
-        cs.add_paths({key: ("演者", "本人のチャンネル")})
+        check(not d and not paths and not cs.YT_CHANNELS and not cs.NEED_PARSER, f"表で決まったチャンネルが合議に回る: {paths} {cs.YT_CHANNELS}")
+        # 表に無いチャンネル: パーサ待ちにもパスの合議にもせず、チャンネルの合議に掛けて video_channels に足す
+        table.write_text("official_domains:\n  - a.example\nvideo_channels:\n  公式:\n    - imas-official\n", encoding="utf-8")
+        pipelib._ST_TABLE = pipelib._ST_KEY = None
+        d, a, paths = cs.unknown_targets("2026-10-28")
+        check(not cs.NEED_PARSER and not cs.SKIPPED and not d and not paths and cs.YT_CHANNELS == {"KamizuruCosmo": (url, "上水流宇宙、今夜21時から配信")},
+              f"チャンネルのページがチャンネルの合議に回らない: {cs.NEED_PARSER} {cs.SKIPPED} {d} {paths} {cs.YT_CHANNELS}")
+        asked: list = []
+
+        def fake_ask(cmd, prompt, timeout=900):
+            asked.append(prompt)
+            return [{"host": key, "operator": "上水流宇宙", "type": "公式", "why": "ヴイアラの公式チャンネル"}]
+        cs.ask, cs.site_profile = fake_ask, (lambda *a, **k: "材料")
+        sys.argv = ["classify_sources.py", "--date", "2026-10-28", "--apply"]
+        cs.main()
         pipelib._ST_TABLE = None
-        check(pipelib.classify_source(url) == "演者" and pipelib.classify_source("https://www.youtube.com/@KamizuruCosmo/videos") == "演者"
-              and pipelib.classify_source("https://www.youtube.com/@KamizuruCosmoX") == "未確認", "決まったチャンネルの種別がページに当たらない")
+        t = pipelib.parse_source_table(table.read_text(encoding="utf-8"), table)
+        check(asked and all(key in p for p in asked) and t.get("video_channels", {}).get("公式") == ["KamizuruCosmo", "imas-official"]
+              and not t.get("path_types") and pipelib.classify_source(url) == "公式",
+              f"合議の答えがチャンネルの表に載らない: {t.get('video_channels')} {t.get('path_types')} {len(asked)}")
         d, a, paths = cs.unknown_targets("2026-10-28")
-        check(not paths and not cs.NEED_PARSER, f"決まった後も合議に回る: {paths} {cs.NEED_PARSER}")
+        check(not paths and not cs.YT_CHANNELS and not cs.NEED_PARSER, f"決まった後も合議に回る: {paths} {cs.YT_CHANNELS}")
     except (Exception, SystemExit) as e:      # noqa: BLE001
         check(False, f"YouTube のチャンネルのページのテストが例外: {type(e).__name__}: {e}")
     finally:
-        cs.ROOT, pipelib.ROOT, pipelib._ST_TABLE, pipelib._ST_KEY, cs.POSTS_ONLY = saved
+        cs.ROOT, pipelib.ROOT, pipelib._ST_TABLE, pipelib._ST_KEY, cs.POSTS_ONLY, cs.ask, cs.site_profile, cs.UNRESOLVED, sys.argv = saved
         pipelib._ST_TABLE = pipelib._ST_KEY = None
 
 

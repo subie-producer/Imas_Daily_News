@@ -51,7 +51,7 @@ from pipelib import (ENV, ROOT, COLLECT_MODEL, CODEX_WRITE_MODEL, EXPLORE_MODEL,
                      extract_json_array, git, notify, notify_crash, now_jst, prompt_part, render_prompt,
                      X_ANON_POST, x_post_author, x_status_time, align_x_published_date,
                      CLI_BLOCKED, CLI_BLOCKED_EXIT, CLI_STOPPED, CliBlocked, cli_blocked_reason, cli_check, grok_session_reasons,
-                     scratch_dir, link_key)
+                     scratch_dir, link_key, polite_urlopen)
 from storylink import url_key
 import page_archive
 # モデル・道具のセッションの起動と回収(自前のプロセスグループ。時間切れ・中断では子孫まで止める)
@@ -197,7 +197,8 @@ def watch_get(url: str, timeout: float) -> tuple[bytes, str | None]:
     本文の受信は watch_read が受信ごとに締切で切る。締切が無ければ今までどおりこのスレッドで取る。"""
     def get() -> tuple[bytes, str | None]:
         req = urllib.request.Request(url, headers={"User-Agent": UA})
-        with urllib.request.urlopen(req, timeout=timeout) as res:
+        # 同じホストへは間隔をあけ、429 は Retry-After を守って取り直す(待ち・取得・取り直しのどれも収集の締切を越えない)
+        with polite_urlopen(req, timeout=timeout, deadline=DEADLINE) as res:
             WATCH_FINAL[url] = res.geturl() if hasattr(res, "geturl") else url     # 転送先(メンテナンス画面への転送を原本として残さない: page_html_or_note)
             WATCH_STATUS[url] = int(getattr(res, "status", None) or 200)          # 原本に残す状態コード
             return watch_read(res), res.headers.get_content_charset()
@@ -262,10 +263,11 @@ def watch_read(res) -> bytes:
         chunks.append(b)
 
 
-def fetch_rendered(url: str, timeout: int = 30, limit: float | None = None) -> str:
+def fetch_rendered(url: str, timeout: int = 30, limit: float | None = None, wait_deadline: float | None = None) -> str:
     """描画したページの HTML。失敗は RenderFailed(終了コードと stderr の要点つき)で上げる(空で返さない)。
-    limit は待ってよい秒数の上限(定点観測は収集の締切の残り: watch_limit)。"""
-    return render_page(url, timeout, limit=limit) if limit is not None else render_page(url, timeout)
+    limit は待ってよい秒数の上限(定点観測は収集の締切の残り: watch_limit)。wait_deadline(時刻)は 429 の待ちだけを切る(裏取り)"""
+    kw = {k: v for k, v in (("limit", limit), ("wait_deadline", wait_deadline)) if v is not None}
+    return render_page(url, timeout, **kw)
 
 
 def watch_limit(cap: float) -> float | None:
@@ -290,15 +292,24 @@ def watch_fetch(s: dict):
     return get
 
 
-def rendered_or_note(url: str, limit: float | None = None) -> tuple[str, str]:
+# 描画が HTTP の状態コードつきで失敗したページ(URL → コード。429 で読めなかった 等)。裏取りが、429 で照合できなかった候補を
+# URL の取り違え(failed)にしないのに使う(Sol 監査 R429 r4)
+RENDER_HTTP: dict[str, int] = {}
+
+
+def rendered_or_note(url: str, limit: float | None = None, wait_deadline: float | None = None) -> tuple[str, str]:
     """描画を補いとして使う呼び出し側(facts 化の本文・裏取りの読み直し)向け: (HTML, 失敗の要点)。
-    失敗しても素の HTML やセッション側の fetch_page.py で続けられるので止めないが、原因はログと呼び出し側の記録に残す"""
+    失敗しても素の HTML やセッション側の fetch_page.py で続けられるので止めないが、原因はログと呼び出し側の記録に残す。
+    状態コードつきの失敗(429)は RENDER_HTTP に残す"""
+    kw = {k: v for k, v in (("limit", limit), ("wait_deadline", wait_deadline)) if v is not None}
     RENDER_FINAL.pop(url, None)       # 描画し終えたときの URL・状態コードは、この回の描画のものだけ
     RENDER_STATUS.pop(url, None)
     try:
-        return (fetch_rendered(url) if limit is None else fetch_rendered(url, limit=limit)) or "", ""
+        return fetch_rendered(url, **kw) or "", ""
     except RenderFailed as e:
         print(f"  描画取得の失敗: {e}", flush=True)
+        if getattr(e, "status", None) is not None:
+            RENDER_HTTP[url] = e.status
         return "", str(e)
 
 
@@ -2281,9 +2292,11 @@ def verify(cands: list[dict]) -> dict:
             else:
                 # 素の取得に 429 を返すサイト(browser_only)は urllib で叩かず、描画した本文で照合する(2026-10-26 編集長
                 # 「429を出すようなアクセスはするな。Chromeを使え。」)。描画できなければ、今は確かめられないだけ(メンテナンスと同じ扱い)
+                RENDER_HTTP.pop(c["url"], None)
                 pre = browser_only(c["url"])
                 if pre:
-                    html, why = rendered_or_note(c["url"])
+                    # 描画の 429 の待ちは収集の締切を越えない(Sol 監査 R429 r4)
+                    html, why = rendered_or_note(c["url"], wait_deadline=DEADLINE)
                     st = RENDER_STATUS.get(c["url"]) or 0
                     if st in (404, 410):
                         # 描画した文書が無い: 素の取得の 404・410 と同じく取得できない(原本でも照らさない)
@@ -2306,8 +2319,15 @@ def verify(cands: list[dict]) -> dict:
                 else:
                     req = urllib.request.Request(c["url"], headers={"User-Agent": UA})
                     try:
-                        opened = urllib.request.urlopen(req, timeout=15)
+                        # 間隔をあけ、429 は Retry-After を守って取り直す。429 の待ちは収集の締切を越えない(裏取り自体は締切で切らない)
+                        opened = polite_urlopen(req, timeout=15, wait_deadline=DEADLINE)
                     except urllib.error.HTTPError as e:
+                        # 取り直しの上限を超えても 429 なら、今は確かめられないだけ(URL の取り違えではない。failed にしない)
+                        if e.code == 429:
+                            c["verify"] = "unconfirmed"
+                            c["verify_note"] = f"出典が 429 で読めなかった({e})ため、facts を本文で確かめられない"[:300]
+                            counts["unconfirmed"] += 1
+                            continue
                         # 転送せずに 5xx でメンテナンスの画面を返すサイト(2026-10-23: ランティスの 503)も、今は確かめられないだけ。
                         # 404・メンテナンスの表示の無い 5xx は従来どおり取得できない(failed)
                         if not maintenance_http_error(e):
@@ -2347,10 +2367,11 @@ def verify(cands: list[dict]) -> dict:
 
                     def render() -> str | None:
                         # 描画して読み直した本文(描画できない・メンテナンス画面へ転送されたら None。案内を本文として照らさない)。
-                        # 描画で読んだページ(pre)は描画済みなので、ブラウザをもう一度起動しない
-                        if pre:
+                        # 描画で読んだページ(pre)は描画済みなので、ブラウザをもう一度起動しない。この候補の描画が 429 で読めなかったら
+                        # 描画し直さない(待ちを重ねない)。429 の待ちは収集の締切を越えない(Sol 監査 R429 r4)
+                        if pre or RENDER_HTTP.get(c["url"]) == 429:
                             return None
-                        rendered, why = rendered_or_note(c["url"])
+                        rendered, why = rendered_or_note(c["url"], wait_deadline=DEADLINE)
                         if rendered and maintenance_redirect(c["url"], RENDER_FINAL.get(c["url"])):
                             mainte.append(RENDER_FINAL[c["url"]])
                             return None
@@ -2406,6 +2427,13 @@ def verify(cands: list[dict]) -> dict:
                             c["verify"] = "unconfirmed"
                             c["verify_note"] = f"出典が{why}で、facts を本文で確かめられない"[:300]
                         counts[c["verify"]] += 1
+                        continue
+                    # 描画が 429 で読めず写しを照合できなかったのは、今は確かめられないだけ(URL の取り違えにしない。Sol 監査 R429 r4)
+                    if missing and RENDER_HTTP.get(c["url"]) == 429:
+                        c["verify"] = "unconfirmed"
+                        c["verify_note"] = (f"描画が 429 で読めず、写しを出典の本文で確かめられない"
+                                            f"({(render_errs[-1] if render_errs else '')[:200]})")[:300]
+                        counts["unconfirmed"] += 1
                         continue
                     # 収集時点の原本として残す(執筆・校閲が読み直せないときに使う。page_archive)。描画できたら描画の本文を残す。
                     # 前の原本があって描画できなかったときは上で抜けている(素の本文で前の原本を置き換えない)。

@@ -58,6 +58,7 @@ from pipelib import (ENV, ROOT, CLAUDE_MODEL, CODEX_WRITE_MODEL, COMPOSE_WAVE, E
                      collect_oncall_handover_pending, candidate_misplaced, merge_candidate_facts, write_checked,
                      FETCH_RECORD_ENV, fetched_urls, failed_urls, maintenance_urls, maintenance_notice, maintenance_rules, site_host,
                      MAINTENANCE_LEGACY_NOTICES, MAINTENANCE_NOTICE_FROM, ARCHIVE_NOTICE_FROM, archived_reads, live_fetched_urls,
+                     HOST_GAP_DIR_ENV, host_gap_dir,
                      align_x_published_date, CLI_BLOCKED, CLI_BLOCKED_EXIT, CLI_STOPPED, CliBlocked, cli_check)
 # モデルのセッションの起動と回収(自前のプロセスグループ。時間切れ・中断では子孫まで止める)
 from pipelib import LaunchFailed, finish_group, run_group, start_group, stop_groups
@@ -2370,7 +2371,8 @@ def fetch_env(date: str, slug: str) -> dict:
             FETCH_RECORD_BROKEN.add(str(rec.parent))
             anomaly("compose", f"fetch_page.py の記録の置き場 {rec.parent} を作れない({type(e).__name__}: {str(e)[:120]})。"
                                "執筆・書き直しは素材の外のページを根拠にできず、差し戻し・元の稿のままになる")
-    return {**os.environ, FETCH_RECORD_ENV: str(rec)}
+    # 並列の執筆・書き直しの fetch_page.py が、同じホストへの取得の間隔(と 429 の待ち)を同じ置き場で共有する
+    return {**os.environ, FETCH_RECORD_ENV: str(rec), HOST_GAP_DIR_ENV: str(host_gap_dir())}
 
 
 def maintenance_unread_hosts(date: str, slug: str, urls) -> set[str]:

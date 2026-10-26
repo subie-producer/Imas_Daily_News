@@ -30,6 +30,8 @@
 ## 5. 報告
 - status: scripts/test_pipeline.py 以外のファイルを1つでも変えたら `fixed`。何も変えていない、または回帰テスト(scripts/test_pipeline.py)だけを足したなら `no_fix_needed`
   (原因がデータや環境で、コードを直しても意味が無い。diagnosis に根拠、recovery に「同じ入力でもう一度走らせて今度は通る根拠」を書く)。
+  相手のサイトを原因(外部)としてよいのは、相手の停止(メンテナンスの画面・5xx・名前解決の失敗・接続できない)だけ。
+  4xx の応答(429・403 など)は、こちらのアクセスの仕方(間隔・回数・取り直し・名乗り)への応答として扱い、取得の仕方を直す(`no_fix_needed` にしない)。
   直せない・人の判断が要るなら `cannot_fix`(理由を書く)
 - rerun_mode: 計画・執筆・組版の層(compose.py / planlib / renderlib / assemble / prompts / 出力 schema)を直したなら `rebuild`(号を作り直す)。
   それ以外で続きから走れるなら `resume`。再実行しても同じ結果になるなら `none`

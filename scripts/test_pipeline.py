@@ -17602,6 +17602,10 @@ def test_page_archive_read_back(tmp: Path):
     spec_p = tmp / "spec" / "spec.json"
     log = tmp / "spec" / "fetch-log.jsonl"
     cands = {f"c{k}": cand_row(f"c{k}", u, facts=["販売開始", "価格は3000円"], dedup_key=k) for k, u in urls.items()}
+    # changed の素材は「出典の更新」(source_change): 本番の執筆の経路(write_articles)が、書いた記事に元の記事(follows)を付ける
+    (posts / "2026-10-20-orig.md").write_text("---\n" + article_fm("orig", "2026-10-20") + "---\n本文。\n", encoding="utf-8")
+    cands["cchanged"]["source_change"] = {"from_at": "2026-10-20T09:00:00+09:00", "to_at": "2026-10-27T01:00:00+09:00",
+                                          "articles": ["2026-10-20-orig", "2026-01-01-gone"]}
     para = "販売を開始する。価格は3000円。" * 6
     ans = lambda u: {"status": "ok", "decline_code": "", "decline_detail": "", "title": "シンデレラガールズ販売開始", "title_fact_ids": ["F1"],
                      "lede": "販売を開始する。", "lede_fact_ids": ["F1"], "tags": ["シンデレラガールズ", "販売"], "event_date": None,
@@ -17660,6 +17664,8 @@ def test_page_archive_read_back(tmp: Path):
           and other in pipelib.fetched_urls(rec("busy")) and urls["gone"] not in pipelib.fetched_urls(rec("gone"))
           and urls["fresh"] not in pipelib.fetched_urls(rec("fresh")),
           "原本で読んだページを読めたページに数えない・404 を数えた")
+    fol = yaml_fm((posts / f"{date}-changed.md").read_text(encoding="utf-8")).get("follows") if (posts / f"{date}-changed.md").exists() else None
+    check(fol == ["2026-10-20-orig"], f"本番の執筆の経路が、出典の更新の素材から書いた記事に元の記事(follows)を付けない: {fol}")
     check(sorted(a["slug"] for a in written) == sorted(urls) and not aborted,
           f"原本で読めた記事を書けなかった(素材の外の原本のページを検算が落とした など): {[a['slug'] for a in written]} {aborted}")
     notice = lambda s: next((l for l in ((posts / f"{date}-{s}.md").read_text(encoding="utf-8").splitlines()
@@ -18421,8 +18427,8 @@ def test_source_watch(tmp: Path):
         for _ in range(sw.MAX_TRIES + 1):
             sw.process_changes(today, sw.published(today, tmp), tmp, stopped, approve)
         st = sw.load_state()
-        check(not any(v.get("result") == "判定できなかった" for k, v in st["rows"].items() if k.startswith("src.example/news/4|"))
-              and "src.example/news/4" not in st["tries"],
+        check(not any(v.get("result") == "判定できなかった" for k, v in st["marks"].items() if k.endswith("|src.example/news/4"))
+              and not any(k.endswith("|src.example/news/4") for k in st["tries"]),
               f"CLI の停止をやり直しの回数に数えた: {st['tries']}")
         # (3) 判定が読めないうちにページがまた変わった(A→B 失敗、A→C): いまの版 C への違いを1回だけ判定し、古い版 B へ戻る違いを告知しない
         pa.save(u4, "応募締切は10月30日。価格は3000円。C版。", via="read", at=later_at(3))
@@ -18437,6 +18443,66 @@ def test_source_watch(tmp: Path):
         _, app4 = sw.process_changes(today, sw.published(today, tmp), tmp, judge4, approve)
         check(len(app4) == 1 and len(seen4) == 2 and "-応募締切は10月30日。価格は3000円。C版。" in seen4[1],
               f"元の内容に戻った変化を失った: {seen4[1:]}")
+        # (7) 判定のあいだに締切を過ぎたら、校閲を始めない(やり直しの回数にも数えない。Sol 監査 b2)
+        clock = {"left": 100}
+        sessions = []
+
+        def judge_slow(art, row, diff, date, prev=None, issue="", root=None, timeout=None, **k):
+            sessions.append(("judge", timeout))
+            clock["left"] = 0
+            return {"kind": "変更", "text": "変わりました。", "reason": "-"}
+
+        def review_rec(*a, timeout=None, **k):
+            sessions.append(("review", timeout))
+            return {"verdict": "approve", "issue": ""}
+        pa.save(u4, "応募締切は10月30日。価格は3000円。D版。", via="read", at=later_at(5))
+        _, app7 = sw.process_changes(today, sw.published(today, tmp), tmp, judge_slow, review_rec, left=lambda: clock["left"])
+        st7 = sw.load_state()
+        check(sessions == [("judge", 100)] and app7 == [] and not any(k.endswith("|src.example/news/4") for k in st7["tries"]),
+              f"締切を過ぎてから校閲を起動した・時間切れを失敗に数えた: {sessions} {st7['tries']}")
+        # (8) 記事を書く直前に止まっても素材は控えてあり、やり直しで同じ素材のまま記事に足す。書いたあと止まった回は判定し直さない
+        saved_wc = sw.write_checked
+        before8 = set(sw.load_state()["pending"])
+        try:
+            sw.write_checked = lambda p, t: (_ for _ in ()).throw(RuntimeError("書く直前に止まった"))
+            pend8, app8 = sw.process_changes(today, sw.published(today, tmp), tmp, judge4, approve)
+        finally:
+            sw.write_checked = saved_wc
+        ids8 = [c["id"] for c in pend8 if c["url"] == u4 and c["id"] not in before8]
+        pend8b, app8b = sw.process_changes(today, sw.published(today, tmp), tmp, judge4, approve)
+        n_judge = len(seen4)
+        pend8c, app8c = sw.process_changes(today, sw.published(today, tmp), tmp, judge4, approve)
+        check(app8 == [] and len(ids8) == 1 and len(app8b) == 1
+              and [c["id"] for c in pend8b if c["url"] == u4 and c["id"] not in before8] == ids8
+              and app8c == [] and len(seen4) == n_judge,
+              f"書く直前に止まった変化の素材を失った・重ねた: {ids8} {app8b} {app8c}")
+        # (8d) 記事に書いたあと(反映した版を残す前)に止まった: 記事に同じ変化の更新があれば判定し直さずに版を進める
+        pa.save(u4, "応募締切は10月30日。価格は3000円。E版。", via="read", at=later_at(5.5))
+        ne = pa.latest(u4)
+        dpath = posts / f"{ed}-d.md"
+        dpath.write_text(sw.with_update(dpath.read_text(encoding="utf-8"), {"at": ne["at"], "kind": "変更", "text": "E版になりました。",
+                                                                              "source": u4, "from_at": "x", "to_at": ne["at"]}), encoding="utf-8")
+        n_judge = len(seen4)
+        sw.process_changes(today, sw.published(today, tmp), tmp, judge4, approve)
+        m8 = sw.load_state()["marks"].get(f"{ed}-d|src.example/news/4") or {}
+        check(len(seen4) == n_judge and m8.get("sha") == ne["sha"], f"書いたあと止まった変化を判定し直した: {len(seen4) - n_judge} {m8}")
+        # (9) 同じ出典の記事の一部だけ足せた(d は足し、もう1本は答えなし)あとに元へ戻った: それぞれの記事が反映した版から判定する
+        (posts / f"{ed}-e.md").write_text("---\n" + article_fm("e", ed, candidate_ids=["cd"], sources=src(u4)) + "---\n" + body,
+                                          encoding="utf-8")
+        judged9 = []
+
+        def judge9(art, row, diff, date, prev=None, issue="", root=None, **k):
+            judged9.append((art["slug"], diff))
+            if art["slug"] == "e" and len([j for j in judged9 if j[0] == "e"]) == 1:
+                return None
+            return {"kind": "変更", "text": f"{art['slug']} の告知が変わりました。", "reason": "-"}
+        pa.save(u4, "応募締切は10月30日。価格は3500円。", via="read", at=later_at(6))
+        sw.process_changes(today, sw.published(today, tmp), tmp, judge9, approve)
+        pa.save(u4, "応募締切は10月30日。価格は3000円。D版。", via="read", at=later_at(7))
+        judged9.clear()
+        sw.process_changes(today, sw.published(today, tmp), tmp, judge9, approve)
+        d_diffs = [x for s, x in judged9 if s == "d"]
+        check(d_diffs and "3500円" in d_diffs[0], f"一部の記事だけ足したあと元へ戻った変化を、その記事について失った: {judged9}")
     finally:
         sw.notify = saved_n
     # (5) 読めなかった見回りを読み直せたと数えない(一巡の日数に入れず、申告する)

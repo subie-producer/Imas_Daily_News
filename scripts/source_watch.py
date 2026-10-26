@@ -43,6 +43,7 @@ RECHECK_PARALLEL = int(ENV.get("RECHECK_PARALLEL", "4"))  # 並列に読み直�
 RECHECK_PER_SLOT = 15               # 並列1本が1回の見回りで読み直す件数の目安(これを超えたら並列を上げる)
 RECHECK_CYCLE_DAYS = 2              # 対象を全部一巡する日数の上限(編集長: 回をまたいで全部回すことを数で保証する)
 RECHECK_BUDGET_SEC = int(ENV.get("RECHECK_BUDGET_SEC", "1200"))   # 1回の見回りの時間の上限
+RECHECK_FETCH_SEC = 180             # 見回りの読み直し1件の待ちの上限(描画を含む)
 UPDATE_KINDS = ("変更", "出典元の訂正", "追加")            # 記事に時系列の更新として足す種類
 MAX_TRIES = 3                       # 判定・校閲の答えが読めない変化をやり直す回数
 SESSION_TIMEOUT_SEC = 600           # 判定・校閲のセッション1本の待ちの上限(収集の締切の残りでも切る)
@@ -158,7 +159,8 @@ def recheck_plan(arts: list[dict], now: datetime.datetime, runs: int) -> dict:
             "cycle_days": round(len(targets) / max(1, cap * runs), 2), "oldest_age_h": round(age_h, 1)}
 
 
-def recheck(today: str, arts: list[dict], deadline_passed=lambda: False, root: Path = ROOT, fetch=None) -> dict:
+def recheck(today: str, arts: list[dict], deadline_passed=lambda: False, root: Path = ROOT, fetch=None,
+            left=lambda: RECHECK_FETCH_SEC) -> dict:
     """見回る: 計画の分を fetch_page.py で読み直す(変われば原本の置き場の台帳に残る)。時間の上限・収集の締切を過ぎたら新しく始めない。
     一巡の日数を記録し(metrics の recheck)、上限を超えたら(読み残しで一巡が延びる・最後に確かめたのが一巡の日数より前)異常として申告する。
     戻りは記録した数字。fetch(url, record) を渡せば読み直しを差し替える(テスト)"""
@@ -170,13 +172,15 @@ def recheck(today: str, arts: list[dict], deadline_passed=lambda: False, root: P
     lock = threading.Lock()
 
     def one(url: str) -> None:
-        if deadline_passed() or time.time() - t0 > RECHECK_BUDGET_SEC:
+        # 取得の待ちは、見回りの時間の残りと収集の締切の残り(left)の小さいほうで切る(Sol 監査 b5)
+        wait = min(RECHECK_FETCH_SEC, RECHECK_BUDGET_SEC - (time.time() - t0), left())
+        if deadline_passed() or wait < 1:
             return
         if fetch:
             fetch(url, rec)
         else:
             try:
-                run_group([sys.executable, str(root / "scripts" / "fetch_page.py"), url, "--chars", "100"], timeout=180, cwd=root,
+                run_group([sys.executable, str(root / "scripts" / "fetch_page.py"), url, "--chars", "100"], timeout=wait, cwd=root,
                           env={**os.environ, FETCH_RECORD_ENV: str(rec)})
             except subprocess.TimeoutExpired:
                 pass
@@ -332,7 +336,9 @@ def update_candidate(row: dict, arts: list[dict], old: dict, new: dict, today: s
     lines = page_archive.diff(old["text"], new["text"], limit=CANDIDATE_DIFF_CHARS).splitlines()
     plus = [ln[1:].strip() for ln in lines if ln.startswith("+") and ln[1:].strip()]
     minus = [ln[1:].strip() for ln in lines if ln.startswith("-") and ln[1:].strip()]
-    h = hashlib.sha256(f"{page_archive.page_key(row['url'])}|{row.get('to_sha')}".encode()).hexdigest()[:12]
+    # id はページと比べた元・いまの版で決まる(比べた元が違う記事の素材は別に持つ。候補には同じ url として混ざり、facts と元の記事は
+    # 和集合になる。Sol 監査 b5: いまの版だけで決めると、別の元から比べた記事の変更前の値が素材から落ちた)
+    h = hashlib.sha256(f"{page_archive.page_key(row['url'])}|{row.get('from_sha')}|{row.get('to_sha')}".encode()).hexdigest()[:12]
     a = arts[0]
     return {"id": f"update-{h}", "title": f"出典の更新: {a['title']}"[:200], "brand": a["brand"] or "general",
             "source_type": classify_source(row["url"]), "url": row["url"], "found_at": now_jst().isoformat(timespec="seconds"),
@@ -377,10 +383,28 @@ def process_changes(today: str, arts: list[dict], root: Path = ROOT, judge_fn=ju
     for k in [k for k in st["marks"] if k.split("|", 1)[0] not in ids]:
         st["marks"].pop(k, None)
         st["tries"].pop(k, None)
+    # 先に、初めて見る記事×出典の比べる元(記事を出した時点の版の本文)を全部控える。セッションを始めない回(締切後)でも控え、
+    # あとで原本の置き場の版が上限で消えても比べられるようにする(Sol 監査 b5)
+    for art in arts:
+        published_at = f"{art['edition']}T06:00:00+09:00"
+        for url in art["urls"]:
+            k = f"{art['id']}|{page_archive.page_key(url)}"
+            if k in st["marks"]:
+                continue
+            try:
+                v0 = page_archive.version_before(url, published_at)
+                now_v = None if v0 else page_archive.latest(url)
+            except Exception:       # noqa: BLE001
+                continue
+            if v0:
+                st["marks"][k] = _mark(v0, "発行時点")
+            elif now_v:
+                # 発行の前に読んだ版が無い(原本の置き場ができる前の記事・収集が読まなかった出典): いまの版から見張り始める
+                st["marks"][k] = _mark(now_v, "見張り始め")
+    save_state(st)
     for art in arts:
         if stopped or late():
             break
-        published_at = f"{art['edition']}T06:00:00+09:00"
         for url in art["urls"]:
             if stopped or late():
                 break
@@ -392,13 +416,10 @@ def process_changes(today: str, arts: list[dict], root: Path = ROOT, judge_fn=ju
                 new = None
             if not new:
                 continue
+            # 比べる元は上で控えた(記事を出した時点に読まれていた原本。変化の台帳の行に頼らない。Sol 監査 b4)
             m = st["marks"].get(k)
             if not m:
-                # 初めて見る記事×出典: 記事を出した時点に読まれていた原本(発行の 06:00 までに読んだいちばん新しい版)から比べる。
-                # 変化の台帳の行に頼らない(Sol 監査 b4: 裏取りが先に新しい版を残すと、台帳に行が出ず変化を黙って失った)
-                v0 = page_archive.version_before(url, published_at)
-                m = _mark(v0, "発行時点") if v0 else _mark(new, "見張り始め")
-                st["marks"][k] = m
+                continue
             cur = m.get("sha")
             if cur == new["sha"]:
                 continue
@@ -415,7 +436,13 @@ def process_changes(today: str, arts: list[dict], root: Path = ROOT, judge_fn=ju
             if any(u.get("source") == url and u.get("to_at") == row["to_at"] for u in art["updates"] if isinstance(u, dict)):
                 st["marks"][k] = _mark(new, "足し済み")     # 書いたあと止まった回の続き
                 continue
-            diff = page_archive.diff(old["text"], new["text"])
+            # 判定には違いの全部を渡す(既定の 8000字で切ると、後ろの方の変化を見ずに「表示の揺れ」で扱い済みにした。Sol 監査 b5)。
+            # それでも収まらない大きな違いは、省いたまま扱い済みにせず申告する
+            diff = page_archive.diff(old["text"], new["text"], limit=CANDIDATE_DIFF_CHARS)
+            if diff.endswith("字を略した)"):      # page_archive.diff が上限で切った印
+                st["marks"][k] = _mark(new, "違いが大きすぎて判定できない")
+                anomaly("collect", f"出典の違いが {CANDIDATE_DIFF_CHARS}字を超え、記事 {art['id']} に反映するか判定できない: {url}")
+                continue
             outcome = None
             try:
                 outcome = decide(art, row, diff, today, root, judge_fn, review_fn, has_time, left)

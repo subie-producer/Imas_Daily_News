@@ -239,7 +239,8 @@ def update_change_errors(old: dict, new: dict, old_body: str, new_body: str) -> 
     for k in sorted((set(old) | set(new)) - {"updates"}):
         if old.get(k) != new.get(k):
             errs.append(f"append-only 違反: その後の動きの追記で {k} を変えた")
-    if (old_body or "").strip() != (new_body or "").strip():
+    # 本文はそのまま比べる(前後の空白の違いも Markdown の字下げを変えうる。末尾の改行の有無だけはならす。Sol 監査 b5)
+    if (old_body or "").rstrip("\n") != (new_body or "").rstrip("\n"):
         errs.append("append-only 違反: その後の動きの追記で本文を変えた")
     return errs
 

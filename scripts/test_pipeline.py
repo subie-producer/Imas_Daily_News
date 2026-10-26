@@ -18554,6 +18554,59 @@ def test_source_watch(tmp: Path):
           f"裏取りが先に残した新しい版で、変化を黙って失った: {seen13[:1]} {app13}")
     check(c13 and any("3500円" in f for f in c13[0]["facts"]) and any("3000円" in f for f in c13[0]["facts"]),
           f"出典の更新の素材に、記事の変化(後ろの方の行)が入らない: {c13[:1]}")
+    # (15) 締切後で判定しない回にも比べる元を控える: そのあと版が上限で消えても、記事を出した時点の版から判定する(Sol 監査 b5)
+    # (16) 比べる元が記事ごとに違う(h は 200円まで反映、i は 100円のまま): それぞれの変更前の値が素材に残る
+    # (17) 違いが 8000字を超えても、後ろの方の変化まで判定に渡す
+    u6, u7, u8 = "https://src.example/news/6", "https://src.example/news/7", "https://src.example/news/8"
+    for slug, u in (("g", u6), ("h", u7), ("i", u7), ("j", u8)):
+        (posts / f"{ed}-{slug}.md").write_text("---\n" + article_fm(slug, ed, event_date=far, sources=src(u)) + "---\n" + body, encoding="utf-8")
+    menu = "".join(f"メニュー{i}。\n" for i in range(1500))
+    pa.save(u6, "対象公演の価格は100円。", via="collect", at=f"{ed}T01:00:00+09:00")
+    pa.save(u7, "対象公演の価格は100円。", via="collect", at=f"{ed}T01:00:00+09:00")
+    pa.save(u8, menu + "対象公演の価格は100円。", via="collect", at=f"{ed}T01:00:00+09:00")
+    got15: dict[str, list] = {}
+
+    def judge15(art, row, diff, date, prev=None, issue="", root=None, **k):
+        got15.setdefault(art["slug"], []).append(diff)
+        if art["slug"] not in ("g", "h", "i", "j"):
+            return {"kind": "記事に関係なし", "text": "", "reason": "-"}
+        if art["slug"] == "i" and len(got15["i"]) == 1:
+            return None
+        return {"kind": "変更", "text": f"{art['slug']} の価格が変わりました。", "reason": "+価格"}
+    ok_review = lambda *a, **k: {"verdict": "approve", "issue": ""}
+    try:
+        sw.notify = lambda job, msg, ok=True, **k: notes.append(msg)
+        sw.process_changes(today, sw.published(today, tmp), tmp, judge15, ok_review, late=lambda: True)      # 締切後: 判定しない
+        for i in range(pa.MAX_VERSIONS + 1):
+            pa.save(u6, f"対象公演の価格は300円。閲覧{i}", via="read", at=later_at(20 + i / 100))
+        pa.save(u7, "対象公演の価格は200円。", via="read", at=later_at(20))
+        pa.save(u8, menu.replace("。", "!") + "対象公演の価格は300円。", via="read", at=later_at(20))
+        sw.process_changes(today, sw.published(today, tmp), tmp, judge15, ok_review)
+        pa.save(u7, "対象公演の価格は300円。", via="read", at=later_at(21))
+        pend16, _ = sw.process_changes(today, sw.published(today, tmp), tmp, judge15, ok_review)
+    finally:
+        sw.notify = saved_n
+    check(got15.get("g") and "-対象公演の価格は100円。" in got15["g"][0],
+          f"締切後の回のあと版が消えた記事×出典の変化を判定しなかった: {got15.get('g')}")
+    facts16 = [f for c in pend16 if c["url"] == u7 for f in c["facts"]]
+    check(any("変更前" in f and "100円" in f for f in facts16) and any("変更前" in f and "200円" in f for f in facts16),
+          f"比べる元が違う記事の変更前の値が素材から落ちた: {facts16}")
+    check(got15.get("j") and "+対象公演の価格は300円。" in got15["j"][0] and len(got15["j"][0]) > 8000,
+          f"8000字を超える違いの後ろの方の変化を判定に渡さなかった: {len((got15.get('j') or [''])[0])}")
+    # 見回りの読み直しの待ちは、収集の締切の残りで切る(Sol 監査 b5 の later)
+    waits = []
+    saved_rg = sw.run_group
+    try:
+        sw.run_group = lambda cmd, timeout=None, **k: waits.append(timeout) or subprocess.CompletedProcess(cmd, 0, "", "")
+        pipelib.ROOT = tmp
+        with contextlib.redirect_stdout(io.StringIO()):
+            sw.recheck(today, arts, root=tmp, left=lambda: 5)
+            n_before = len(waits)
+            sw.recheck(today, arts, root=tmp, left=lambda: 0.5)
+    finally:
+        sw.run_group = saved_rg
+        pipelib.ROOT = saved_root
+    check(waits and all(w <= 5 for w in waits) and len(waits) == n_before, f"見回りの読み直しの待ちを締切の残りで切らない: {waits}")
     # (11) 同じ変化を別の回に別の記事で扱った素材は、候補に混ぜると元の記事の和集合になる(続報が全部の記事を指す)
     t11 = cand_row("u", u4, source_change={"from_at": "a", "to_at": "b", "articles": [f"{ed}-d"]})
     changed11 = pipelib.merge_candidate_facts(t11, cand_row("u", u4, source_change={"from_at": "a", "to_at": "b", "articles": [f"{ed}-e"]}))
@@ -18595,7 +18648,8 @@ def test_source_watch(tmp: Path):
     ob, nb = before.split("\n---\n", 1)[1], after.split("\n---\n", 1)[1]
     check(_lint.update_change_errors(fm_b, fm_a, ob, nb) == [], "updates の追記を append-only 違反にした")
     check(_lint.update_change_errors(fm_b, fm_a, ob, nb + "書き換え") and _lint.update_change_errors(fm_a, dict(fm_a, updates=[]), nb, nb)
-          and _lint.update_change_errors(fm_b, dict(fm_a, title="別"), ob, nb), "本文・既存の更新・ほかの欄の書き換えを通した")
+          and _lint.update_change_errors(fm_b, dict(fm_a, title="別"), ob, nb)
+          and _lint.update_change_errors(fm_b, fm_a, ob, "    " + nb), "本文(字下げを含む)・既存の更新・ほかの欄の書き換えを通した")
 
 
 def test_article_updates_render(tmp: Path):
@@ -18717,6 +18771,11 @@ def test_source_update_sessions(tmp: Path):
             got[name] = sw.run_session("write", "依頼", "source-update.schema.json", "2026-10-27", f"t-{name}", tmp)
         os.environ.update(FAKE_ANSWER=json.dumps({"verdict": "approve", "issue": ""}), FAKE_EXIT="0")
         got["review"] = sw.run_session("review", "依頼", "source-update-review.schema.json", "2026-10-27", "t-review", tmp)
+        # 校閲も、schema に合わない答え・異常終了の答えは採らない(Sol 監査 b5 の later)
+        os.environ.update(FAKE_ANSWER=json.dumps({"verdict": "INVALID", "issue": ""}), FAKE_EXIT="0")
+        got["review-bad"] = sw.run_session("review", "依頼", "source-update-review.schema.json", "2026-10-27", "t-review-bad", tmp)
+        os.environ.update(FAKE_ANSWER=json.dumps({"verdict": "approve", "issue": ""}), FAKE_EXIT="1", FAKE_ERR="something failed")
+        got["review-exit"] = sw.run_session("review", "依頼", "source-update-review.schema.json", "2026-10-27", "t-review-exit", tmp)
         os.environ.update(FAKE_ANSWER="", FAKE_EXIT="1", FAKE_ERR="Error: You've hit your usage limit. Try again later.")
         try:
             sw.run_session("review", "依頼", "source-update-review.schema.json", "2026-10-27", "t-blocked", tmp)
@@ -18732,7 +18791,8 @@ def test_source_update_sessions(tmp: Path):
                 os.environ.pop(k, None)
             else:
                 os.environ[k] = v
-    check(got["ok"] == json.loads(good) and got["bad"] is None and got["exit"] is None and got["review"] == {"verdict": "approve", "issue": ""},
+    check(got["ok"] == json.loads(good) and got["bad"] is None and got["exit"] is None and got["review"] == {"verdict": "approve", "issue": ""}
+          and got["review-bad"] is None and got["review-exit"] is None,
           f"判定・校閲の答えを schema・終了状態で検めない: {got}")
     check(got["blocked"] == "止まった", f"CLI の利用上限を答えの読めない回と取り違えた: {got['blocked']}")
 

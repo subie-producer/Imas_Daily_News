@@ -2451,7 +2451,7 @@ def watch_sources(late=lambda: False) -> list[dict]:
     today = now_jst().date().isoformat()
     try:
         arts = source_watch.published(today, ROOT)
-        source_watch.recheck(today, arts, late, root=ROOT)
+        source_watch.recheck(today, arts, late, root=ROOT, left=lambda: session_left(source_watch.RECHECK_FETCH_SEC))
         found, applied = source_watch.process_changes(today, arts, ROOT, late=late,
                                                       left=lambda: session_left(source_watch.SESSION_TIMEOUT_SEC))
         if found or applied:

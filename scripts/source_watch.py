@@ -46,6 +46,7 @@ RECHECK_BUDGET_SEC = int(ENV.get("RECHECK_BUDGET_SEC", "1200"))   # 1回の見�
 UPDATE_KINDS = ("変更", "出典元の訂正", "追加")            # 記事に時系列の更新として足す種類
 MAX_TRIES = 3                       # 判定・校閲の答えが読めない変化をやり直す回数
 SESSION_TIMEOUT_SEC = 600           # 判定・校閲のセッション1本の待ちの上限(収集の締切の残りでも切る)
+CANDIDATE_DIFF_CHARS = 60000        # 出典の更新の素材に入れる違いの上限の字数(判定に渡す違いと同じ範囲を含む大きさ)
 X_HOSTS = ("x.com", "twitter.com", "mobile.x.com", "mobile.twitter.com")
 FM_RE = re.compile(r"\A---\n(.*?)\n---\n", re.S)
 
@@ -215,11 +216,11 @@ def change_key(row: dict) -> str:
 
 
 def load_state() -> dict:
-    """変化の扱いの状態: rows(取り込んだ台帳の行)・base(見張るページと、収集時点の版)・marks(記事×ページごとに、記事に反映した版)・
-    tries(記事×ページごとのやり直しの回数)・pending(まだ素材の保存を確かめていない「出典の更新」の素材)。"""
+    """変化の扱いの状態: marks(記事×ページごとに、記事に反映した版と本文)・tries(記事×ページごとのやり直しの回数)・
+    pending(まだ素材の保存を確かめていない「出典の更新」の素材)。"""
     got = _load_json(handled_path())
     got = got if isinstance(got, dict) else {}
-    return {k: got.get(k) if isinstance(got.get(k), dict) else {} for k in ("rows", "base", "marks", "tries", "pending")}
+    return {k: got.get(k) if isinstance(got.get(k), dict) else {} for k in ("marks", "tries", "pending")}
 
 
 def save_state(done: dict) -> None:
@@ -327,16 +328,18 @@ def with_update(text: str, entry: dict) -> str:
 def update_candidate(row: dict, arts: list[dict], old: dict, new: dict, today: str) -> dict:
     """読者に関わる出典の変化を、その号の「出典の更新」の素材にする(続報の記事の材料。既報は選定・執筆が storylink で照らす)。
     id はページといまの版で決まる(同じ変化をやり直しても同じ素材になる)"""
-    plus = [ln[1:].strip() for ln in page_archive.diff(old["text"], new["text"], limit=6000).splitlines() if ln.startswith("+") and ln[1:].strip()]
-    minus = [ln[1:].strip() for ln in page_archive.diff(old["text"], new["text"], limit=6000).splitlines() if ln.startswith("-") and ln[1:].strip()]
+    # 変わった行は全部(行数で切らない。Sol 監査 b4: 複数の告知が並ぶページで、記事の変化が先頭の20行より後ろにあると素材から落ちた)
+    lines = page_archive.diff(old["text"], new["text"], limit=CANDIDATE_DIFF_CHARS).splitlines()
+    plus = [ln[1:].strip() for ln in lines if ln.startswith("+") and ln[1:].strip()]
+    minus = [ln[1:].strip() for ln in lines if ln.startswith("-") and ln[1:].strip()]
     h = hashlib.sha256(f"{page_archive.page_key(row['url'])}|{row.get('to_sha')}".encode()).hexdigest()[:12]
     a = arts[0]
     return {"id": f"update-{h}", "title": f"出典の更新: {a['title']}"[:200], "brand": a["brand"] or "general",
             "source_type": classify_source(row["url"]), "url": row["url"], "found_at": now_jst().isoformat(timespec="seconds"),
             "dedup_key": a["dedup_key"] or f"update-{h}", "verify": "confirmed", "via": "watch", "origin": "watch",
             "published_date": today,
-            "facts": [f"変更後({_day(row.get('to_at'))}に読んだ版): {x}" for x in plus[:20]]
-                     + [f"変更前({_day(row.get('from_at'))}に読んだ版): {x}" for x in minus[:20]],
+            "facts": [f"変更後({_day(row.get('to_at'))}に読んだ版): {x}" for x in plus]
+                     + [f"変更前({_day(row.get('from_at'))}に読んだ版): {x}" for x in minus],
             "source_change": {"from_at": str(row.get("from_at") or ""), "to_at": str(row.get("to_at") or ""),
                               "articles": [x["id"] for x in arts]},
             "archived_at": page_archive.fetched_at(new)}
@@ -358,60 +361,56 @@ def _mark(new: dict, result: str) -> dict:
 def process_changes(today: str, arts: list[dict], root: Path = ROOT, judge_fn=judge, review_fn=review,
                     late=lambda: False, left=lambda: SESSION_TIMEOUT_SEC) -> tuple[list[dict], list[dict]]:
     """出典の変化を扱う。戻りは (この号に足す「出典の更新」の素材(まだ素材の保存を確かめていないものを全部), 足した更新)。
-    台帳に変化の出たページを見張り(base: 収集時点の版)、記事×ページごとに「その記事に反映した版(marks。無ければ収集時点の版)」から
-    「いまの版(いちばん新しく読んだ版)」への違いを1回だけ判定する(Sol 監査 b1・b2: 行ごと・ページごとに扱うと、やり直しで新しい版から
-    古い版への違いを告知した・元の内容に戻った変化を、一部の記事だけ失った)。
+    見回りの範囲の発行済み記事の出典(X 以外)の全部について、記事×ページごとに「その記事に反映した版(marks。無ければ記事を出した時点に
+    読まれていた版)」から「いまの版(いちばん新しく読んだ版)」への違いを1回だけ判定する(Sol 監査 b1・b2・b4: 台帳の行ごと・ページごとに
+    扱うと、やり直しで新しい版から古い版への違いを告知した・元の内容に戻った変化を一部の記事だけ失った・裏取りが先に新しい版を残すと
+    変化を黙って失った)。
     判定・校閲が答えなかった記事は進めない(次の回にやり直す。MAX_TRIES 回で諦めて申告)。CLI の停止・時間切れは数えず、この回は止める。
     収集の締切(late)を過ぎた・残り時間(left)が足りなければ、どのセッションも始めない。セッションの待ちは残り時間で切る。
     素材は記事を書く前に控え(pending)、記事を書いたら反映した版を進める(途中で止まっても、素材を失わず、同じ更新を重ねない)"""
     st = load_state()
     applied = []
-    for row in page_archive.changes():
-        key = change_key(row)
-        if key in st["rows"]:
-            continue
-        page = page_archive.page_key(row["url"])
-        if page not in st["base"] or str(row.get("from_at") or "") < str(st["base"][page].get("at") or ""):
-            # 比べる元の本文も控える(原本の置き場の版は上限で消えることがある。Sol 監査 b3)
-            v0 = page_archive.version(row["url"], row.get("from_sha"))
-            st["base"][page] = {"url": row["url"], "sha": row.get("from_sha"), "at": row.get("from_at"), "final": row.get("final"),
-                                "text": (v0 or {}).get("text")}
-        st["rows"][key] = {"at": now_jst().isoformat(timespec="seconds")}
     has_time = lambda: not late() and left() >= SESSION_MIN_SEC
     stopped = False
-    for page, b in list(st["base"].items()):
+    # 見回りの範囲(発行60日)の外の記事の控えは捨てる
+    ids = {a["id"] for a in arts}
+    for k in [k for k in st["marks"] if k.split("|", 1)[0] not in ids]:
+        st["marks"].pop(k, None)
+        st["tries"].pop(k, None)
+    for art in arts:
         if stopped or late():
             break
-        url = b["url"]
-        hit = affected({"url": url, "final": b.get("final")}, arts)
-        if not hit:
-            # 出典にしている記事が見回りの範囲(発行60日)の外: 見張りをやめる
-            st["base"].pop(page, None)
-            for k in [k for k in st["marks"] if k.endswith("|" + page)]:
-                st["marks"].pop(k, None)
-            continue
-        try:
-            new = page_archive.latest(url)
-        except Exception:       # noqa: BLE001
-            new = None
-        if not new:
-            continue
-        for art in hit:
+        published_at = f"{art['edition']}T06:00:00+09:00"
+        for url in art["urls"]:
+            if stopped or late():
+                break
+            page = page_archive.page_key(url)
             k = f"{art['id']}|{page}"
-            cur = (st["marks"].get(k) or {}).get("sha") or b.get("sha")
+            try:
+                new = page_archive.latest(url)
+            except Exception:       # noqa: BLE001
+                new = None
+            if not new:
+                continue
+            m = st["marks"].get(k)
+            if not m:
+                # 初めて見る記事×出典: 記事を出した時点に読まれていた原本(発行の 06:00 までに読んだいちばん新しい版)から比べる。
+                # 変化の台帳の行に頼らない(Sol 監査 b4: 裏取りが先に新しい版を残すと、台帳に行が出ず変化を黙って失った)
+                v0 = page_archive.version_before(url, published_at)
+                m = _mark(v0, "発行時点") if v0 else _mark(new, "見張り始め")
+                st["marks"][k] = m
+            cur = m.get("sha")
             if cur == new["sha"]:
                 continue
-            m = st["marks"].get(k) or {}
             old = page_archive.version(url, cur)
             if not old:
                 # 原本の置き場の版が上限で消えていても、控えた本文で比べる(黙って扱い済みにしない。Sol 監査 b3)
-                kept_text = m.get("text") if m.get("sha") == cur else b.get("text") if b.get("sha") == cur else None
-                if kept_text is None:
+                if m.get("text") is None:
                     st["marks"][k] = _mark(new, "比べる元の版が無い")
                     anomaly("collect", f"出典の変化を比べる元の版が無く、記事 {art['id']} に反映できない: {url}(いまの版まで扱い済みにした)")
                     continue
-                old = {"sha": cur, "text": kept_text, "at": m.get("at") if m.get("sha") == cur else b.get("at")}
-            row = {"url": url, "final": b.get("final"), "from_sha": old["sha"], "to_sha": new["sha"],
+                old = {"sha": cur, "text": m["text"], "at": m.get("at")}
+            row = {"url": url, "final": None, "from_sha": old["sha"], "to_sha": new["sha"],
                    "from_at": page_archive.fetched_at(old), "to_at": str(new.get("at") or "")}
             if any(u.get("source") == url and u.get("to_at") == row["to_at"] for u in art["updates"] if isinstance(u, dict)):
                 st["marks"][k] = _mark(new, "足し済み")     # 書いたあと止まった回の続き

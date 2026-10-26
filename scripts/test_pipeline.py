@@ -18267,7 +18267,7 @@ def test_source_watch(tmp: Path):
                                                                cand_row("cd", u4, dedup_key="dkey")]), encoding="utf-8")
     (tmp / "stock" / "scheduled" / f"{far}.json").write_text(json.dumps([sched_row("s1", far, dedup_key="dkey")]), encoding="utf-8")
     for u in (u1, u2, u3, u4):
-        pa.save(u, "応募締切は10月30日。価格は3000円。", via="collect", at="2026-10-25T21:00:00+09:00")
+        pa.save(u, "応募締切は10月30日。価格は3000円。", via="collect", at=f"{ed}T01:00:00+09:00")    # 記事を出す前に収集が読んだ版
     arts = sw.published(today, tmp)
     act = {a["slug"] for a in sw.active(arts, today, tmp)}
     check(act == {"a", "c", "d"}, f"読者にまだ効く記事の見分け: {act}")
@@ -18528,6 +18528,32 @@ def test_source_watch(tmp: Path):
               f"反映した版が消えたあとの変化を判定しなかった: {len(seen4) - n12} {seen4[-1:]}")
     finally:
         sw.notify = saved_n
+    # (13) 裏取りが先に新しい版を収集の原本として残し、台帳に行が出なくても、記事を出した時点の版から変化を判定する(Sol 監査 b4)
+    # (14) 複数の告知が並ぶページで、記事の変化が後ろの方にあっても、出典の更新の素材に変更前後の行が入る
+    u5 = "https://src.example/news/5"
+    (posts / f"{ed}-f.md").write_text("---\n" + article_fm("f", ed, event_date=far, sources=src(u5)) + "---\n" + body, encoding="utf-8")
+    others = "".join(f"別の告知{i}は受付中。\n" for i in range(25))
+    pa.save(u5, others + "対象公演の価格は3000円。", via="collect", at=f"{ed}T01:00:00+09:00")
+    n_rows = len(pa.changes())
+    collect_keep = __import__("collect").keep_page
+    collect_keep(u5, others.replace("受付中", "受付終了") + "対象公演の価格は3500円。", "<p>x</p>")
+    seen13 = []
+
+    def judge13(art, row, diff, date, prev=None, issue="", root=None, **k):
+        if art["slug"] != "f":
+            return {"kind": "記事に関係なし", "text": "", "reason": "-"}
+        seen13.append(diff)
+        return {"kind": "変更", "text": "対象公演の価格が3000円から3500円に変わりました。", "reason": "+価格"}
+    try:
+        sw.notify = lambda job, msg, ok=True, **k: notes.append(msg)
+        pend13, app13 = sw.process_changes(today, sw.published(today, tmp), tmp, judge13, lambda *a, **k: {"verdict": "approve", "issue": ""})
+    finally:
+        sw.notify = saved_n
+    c13 = [c for c in pend13 if c["url"] == u5]
+    check(len(pa.changes()) == n_rows and seen13 and "+対象公演の価格は3500円。" in seen13[0] and any(a["article"] == f"{ed}-f" for a in app13),
+          f"裏取りが先に残した新しい版で、変化を黙って失った: {seen13[:1]} {app13}")
+    check(c13 and any("3500円" in f for f in c13[0]["facts"]) and any("3000円" in f for f in c13[0]["facts"]),
+          f"出典の更新の素材に、記事の変化(後ろの方の行)が入らない: {c13[:1]}")
     # (11) 同じ変化を別の回に別の記事で扱った素材は、候補に混ぜると元の記事の和集合になる(続報が全部の記事を指す)
     t11 = cand_row("u", u4, source_change={"from_at": "a", "to_at": "b", "articles": [f"{ed}-d"]})
     changed11 = pipelib.merge_candidate_facts(t11, cand_row("u", u4, source_change={"from_at": "a", "to_at": "b", "articles": [f"{ed}-e"]}))

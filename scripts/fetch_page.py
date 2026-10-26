@@ -37,8 +37,8 @@ import urllib.request
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from pipelib import (PAGE_READ_BYTES, RENDER_FINAL, RENDER_STATUS, RenderFailed, browser_only, extract_periods, html_to_text,
-                     maintenance_http_error, maintenance_redirect, maintenance_screen, needs_render, note_fetched, render_page)
+from pipelib import (PAGE_READ_BYTES, RENDER_FINAL, RENDER_STATUS, RenderFailed, browser_only, extract_periods, html_to_text, http_status,
+                     maintenance_http_error, maintenance_redirect, maintenance_screen, needs_render, note_fetched, polite_urlopen, render_page)
 import page_archive
 
 UA = "Mozilla/5.0 (compatible; ImasNewsCollect/1.0)"
@@ -61,7 +61,8 @@ def fetch(url: str) -> str:
         return ""
     req = urllib.request.Request(url, headers={"User-Agent": UA})
     try:
-        res = urllib.request.urlopen(req, timeout=25)
+        # 同じホストへは間隔をあけ、429 は Retry-After を守って取り直す(上限を超えたら「429 で読めなかった」の HTTPError)
+        res = polite_urlopen(req, timeout=25)
     except urllib.error.HTTPError as e:
         if maintenance_http_error(e):
             raise Maintenance(e.geturl() or url, e.code) from None
@@ -119,7 +120,7 @@ def main() -> int:
     if live["kind"] == "maintenance":
         note_fetched(args.url, live.get("final"), maintenance=True)
     elif live["kind"] != "ok":
-        note_fetched(args.url, live.get("final"), failed=True)
+        note_fetched(args.url, live.get("final"), failed=True, http=live.get("http"))
     if live["kind"] != "ok":
         if base and live["kind"] != "gone":
             # 読み直せない(メンテナンス・5xx・429・時間切れ)。保存の原本で書ける(読めたページに数え、組版は断り書きを付ける)
@@ -172,8 +173,9 @@ def read_live(url: str, fixed: str = "") -> dict:
                 "msg": f"FETCH_FAILED: メンテナンス中({e})。このページの本文は今は読めない"}
     except Exception as e:
         http = isinstance(e, urllib.error.HTTPError)
+        # 状態コードも記録に残す(429 は取り直しの上限を超えても読めなかった印。相手の停止ではない)
         return {"kind": "gone" if http and e.code in GONE_CODES else "failed", "final": e.geturl() if http else None,
-                "why": f"{type(e).__name__}: {e}"[:300], "msg": f"FETCH_FAILED: {type(e).__name__}: {e}"}
+                "why": f"{type(e).__name__}: {e}"[:300], "msg": f"FETCH_FAILED: {type(e).__name__}: {e}", "http": http_status(e)}
     final = FINAL_URL.get(url)
     # メンテナンス画面へ転送されたら、その案内はこのページの本文ではない。読めたことにしない
     if maintenance_redirect(url, final):
@@ -188,7 +190,7 @@ def read_live(url: str, fixed: str = "") -> dict:
         live = rendered_live(url, live)
     if live["kind"] == "ok" and not live["text"].strip():
         why = "本文を取得できませんでした" + (f"({live['render_error']})" if live.get("render_error") else "")
-        return {"kind": "failed", "final": final, "why": why, "msg": f"FETCH_FAILED: {why}"}
+        return {"kind": "failed", "final": final, "why": why, "msg": f"FETCH_FAILED: {why}", "http": live.get("render_status")}
     return live
 
 
@@ -200,7 +202,7 @@ def rendered_live(url: str, live: dict) -> dict:
     except RenderFailed as e:
         # 素の本文で続けるが、描画できなかった原因(終了コードと stderr の要点)は読み手に見せる
         print(f"RENDER_FAILED: {e}", file=sys.stderr)
-        return {**live, "render_error": str(e)}
+        return {**live, "render_error": str(e), "render_status": e.status}
     final = RENDER_FINAL.get(url)
     if maintenance_redirect(url, final):
         return {"kind": "maintenance", "final": final, "why": f"メンテナンス中({final} へ転送された)",

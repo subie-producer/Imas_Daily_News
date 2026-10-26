@@ -6203,6 +6203,9 @@ def _collect_repo(tmp: Path) -> Path:
     (root / "source_types.yml").write_text((repo / "source_types.yml").read_text(encoding="utf-8"), encoding="utf-8")
     (root / "candidates" / "2026-10-14.json").write_text("[]\n", encoding="utf-8")
     (root / "stock" / "watch-state.json").write_text("{}\n", encoding="utf-8")
+    # 本番の作業ツリーには発行済みの記事がある(収集の成果の範囲 COLLECT_OUTPUTS に docs/_posts。収集が「その後の動き」を足す)
+    (root / "docs" / "_posts").mkdir(parents=True)
+    (root / "docs" / "_posts" / "2026-10-13-k.md").write_text("---\n" + article_fm("k", "2026-10-13") + "---\n本文。\n", encoding="utf-8")
     G("add", "-A")
     G("commit", "-qm", "base")
     G("remote", "add", "origin", str(remote))
@@ -17179,7 +17182,9 @@ def test_page_archive_versions_and_reads(tmp: Path):
     saved_c = {k: getattr(collect, k) for k in names}
     saved_open = collect.urllib.request.urlopen
     try:
-        collect.watch_sources = lambda *a, **k: []     # 本体の記事の出典を見回らない(通信しない。test_source_watch で検める)
+        watched: list = []
+        # 本体の記事の出典を見回らない(通信しない。中身は test_source_watch で検める)。呼ばれたかだけ控える
+        collect.watch_sources = lambda *a, **k: (watched.append(1), [])[1]
         collect.run_explores = fake_explores
         collect.page_spool_root = lambda: tmp / "spool-root2"
         collect.merge_into_day_file = lambda cs, day: (merged.extend(cs), len(cs))[1]
@@ -17190,6 +17195,12 @@ def test_page_archive_versions_and_reads(tmp: Path):
         args = types.SimpleNamespace(skip_watch=True, skip_explore=False, skip_grok=True, force_grok=False, no_git=True, oncall_rerun=False)
         with contextlib.redirect_stdout(io.StringIO()):
             collect.run_collect(args, "2026-10-27", "unused", _time.time())
+        # 当番の取り直しでは、出典の見回り・変化の判定をしない(取り直しは次の定時工程の前に終える。Sol 監査 b1)
+        n_watch = len(watched)
+        rerun_args = types.SimpleNamespace(**{**vars(args), "oncall_rerun": True})
+        with contextlib.redirect_stdout(io.StringIO()):
+            collect.run_collect(rerun_args, "2026-10-27", "unused", _time.time())
+        check(n_watch == 1 and len(watched) == 1, f"当番の取り直しで出典の見回り・判定を回した(定時 {n_watch}回 / 合計 {len(watched)}回)")
     finally:
         for k, v in saved_c.items():
             setattr(collect, k, v)
@@ -18315,14 +18326,14 @@ def test_source_watch(tmp: Path):
     # 変化の扱い: 判定(変更)→校閲(1回目 block → 直した案を approve)→記事の updates に追記・通知・出典の更新の素材
     calls, notes = [], []
 
-    def judge_fn(art, row, diff, date, prev=None, issue="", root=None):
+    def judge_fn(art, row, diff, date, prev=None, issue="", root=None, **k):
         calls.append(("judge", art["slug"], issue))
         if art["slug"] != "a":
             return {"kind": "記事に関係なし", "text": "", "reason": "-"}
         text = "応募締切が10月30日から11月3日に延長されました。" if prev else "締切が変わりました。"
         return {"kind": "変更", "text": text, "reason": "+応募締切は11月3日まで延長"}
 
-    def review_fn(art, row, diff, ans, date, root=None):
+    def review_fn(art, row, diff, ans, date, root=None, **k):
         calls.append(("review", ans["text"]))
         return {"verdict": "approve", "issue": ""} if "11月3日" in ans["text"] else {"verdict": "block", "issue": "変わる前と後の値が無い"}
     before = (posts / f"{ed}-a.md").read_text(encoding="utf-8")
@@ -18340,8 +18351,12 @@ def test_source_watch(tmp: Path):
           and after.split("\n---\n", 1)[1] == before.split("\n---\n", 1)[1]
           and {k: v for k, v in fm_a.items() if k != "updates"} == fm_b and not fm_a.get("corrections") and fm_a.get("corrected") is False,
           f"記事の時系列の更新: {ups} / 本文・ほかの欄が変わった")
-    check(len(applied) == 1 and again == ([], []) and ("judge", "a", "変わる前と後の値が無い") in calls and notes and "11月3日" in notes[0]
-          and u1 in notes[0], f"校閲の block を直させる・冪等・通知: {calls} {notes[:1]}")
+    check(len(applied) == 1 and again[1] == [] and [c["id"] for c in again[0]] == [c["id"] for c in cands]
+          and ("judge", "a", "変わる前と後の値が無い") in calls and notes and "11月3日" in notes[0]
+          and u1 in notes[0], f"校閲の block を直させる・冪等・通知・保存を確かめるまで素材を返し続ける: {calls} {notes[:1]} {again}")
+    sw.clear_pending([c["id"] for c in cands])
+    check(sw.process_changes(today, sw.published(today, tmp), tmp, judge_fn, review_fn) == ([], []),
+          "候補の保存を確かめたあとも出典の更新の素材を返した")
     cand_schema = json.loads((tmp / "schema" / "candidates.schema.json").read_text(encoding="utf-8"))["items"]
     check(len(cands) == 1 and cands[0]["source_change"]["articles"] == [f"{ed}-a"] and cands[0]["url"] == u1
           and any(f.startswith("変更後") and "11月3日" in f for f in cands[0]["facts"])
@@ -18354,7 +18369,7 @@ def test_source_watch(tmp: Path):
     pa.note_change(u1, None, pa.baseline(u1), pa.latest(u1))
     seen_diffs = []
 
-    def judge2(art, row, diff, date, prev=None, issue="", root=None):
+    def judge2(art, row, diff, date, prev=None, issue="", root=None, **k):
         seen_diffs.append(diff)
         return {"kind": "追加", "text": "出演者に〇〇が加わりました。", "reason": "+出演者"} if art["slug"] == "a" else \
             {"kind": "記事に関係なし", "text": "", "reason": "-"}
@@ -18384,6 +18399,78 @@ def test_source_watch(tmp: Path):
         sw.process_changes(today, sw.published(today, tmp), tmp, lambda *a, **k: None, review_fn)
     check(any("扱えなかった" in str(a) for a in pipelib.ANOMALIES), "答えが読めない変化を申告しない")
     pipelib.ANOMALIES.clear()
+    # Sol 監査 b1 の再現: d の出典 u4 で
+    approve = lambda *a, **k: {"verdict": "approve", "issue": ""}
+    later_at = lambda h: (pipelib.now_jst() + datetime.timedelta(hours=h)).isoformat(timespec="seconds")
+    seen4: list[str] = []
+
+    def judge4(art, row, diff, date, prev=None, issue="", root=None, **k):
+        seen4.append(diff)
+        return {"kind": "変更", "text": "告知が変わりました(" + str(len(seen4)) + ")。", "reason": "-"}
+    sw.notify = lambda job, msg, ok=True, **k: notes.append(msg)
+    try:
+        # (1) 締切を過ぎていれば判定のセッションを始めない。残り時間が足りなくても始めない(次の回へ)
+        pa.save(u4, "応募締切は10月30日。価格は3000円。B版。", via="read", at=later_at(2))
+        pa.note_change(u4, None, pa.baseline(u4), pa.latest(u4))
+        r_late = sw.process_changes(today, sw.published(today, tmp), tmp, judge4, approve, late=lambda: True)
+        r_left = sw.process_changes(today, sw.published(today, tmp), tmp, judge4, approve, left=lambda: 5)
+        check(not seen4 and r_late[1] == [] and r_left[1] == [], f"締切を過ぎても・残り時間が無くても判定を始めた: {len(seen4)}")
+        # (2) CLI の停止はやり直しの回数に数えない(何度止まっても諦めない)。戻ったら扱う
+        def stopped(*a, **k):
+            raise sw.CliStopped("codex")
+        for _ in range(sw.MAX_TRIES + 1):
+            sw.process_changes(today, sw.published(today, tmp), tmp, stopped, approve)
+        st = sw.load_state()
+        check(not any(v.get("result") == "判定できなかった" for k, v in st["rows"].items() if k.startswith("src.example/news/4|"))
+              and "src.example/news/4" not in st["tries"],
+              f"CLI の停止をやり直しの回数に数えた: {st['tries']}")
+        # (3) 判定が読めないうちにページがまた変わった(A→B 失敗、A→C): いまの版 C への違いを1回だけ判定し、古い版 B へ戻る違いを告知しない
+        pa.save(u4, "応募締切は10月30日。価格は3000円。C版。", via="read", at=later_at(3))
+        pa.note_change(u4, None, pa.baseline(u4), pa.latest(u4))
+        sw.process_changes(today, sw.published(today, tmp), tmp, lambda *a, **k: None, approve)
+        _, app3 = sw.process_changes(today, sw.published(today, tmp), tmp, judge4, approve)
+        _, app3b = sw.process_changes(today, sw.published(today, tmp), tmp, judge4, approve)
+        check(len(app3) == 1 and app3b == [] and len(seen4) == 1 and "+応募締切は10月30日。価格は3000円。C版。" in seen4[0]
+              and "B版" not in seen4[0].split("\n")[-1], f"版の取り違え・逆向きの違い: {seen4}")
+        # (4) 元の内容(収集時点 A)に戻った: 台帳に行が増えなくても、前に扱った版(C)から戻ったことを判定する
+        pa.save(u4, "応募締切は10月30日。価格は3000円。", via="read", at=later_at(4))
+        _, app4 = sw.process_changes(today, sw.published(today, tmp), tmp, judge4, approve)
+        check(len(app4) == 1 and len(seen4) == 2 and "-応募締切は10月30日。価格は3000円。C版。" in seen4[1],
+              f"元の内容に戻った変化を失った: {seen4[1:]}")
+    finally:
+        sw.notify = saved_n
+    # (5) 読めなかった見回りを読み直せたと数えない(一巡の日数に入れず、申告する)
+    def fail_fetch(url, rec):
+        pipelib._append_line(pipelib.failed_record(rec), json.dumps({"url": url, "final": None}) + "\n")
+    pipelib.ANOMALIES.clear()
+    try:
+        pipelib.ROOT = tmp
+        with contextlib.redirect_stdout(io.StringIO()):
+            st5 = sw.recheck(today, arts, root=tmp, fetch=fail_fetch)
+    finally:
+        pipelib.ROOT = saved_root
+    check(st5["tried"] == 3 and st5["checked"] == 0 and any("一巡しない" in str(a) for a in pipelib.ANOMALIES),
+          f"読めなかった見回りを読み直せたと数えた: {st5}")
+    pipelib.ANOMALIES.clear()
+    # (6) 途中で終わった収集の確定に、その後の動きを足した記事も入る(作業ツリーに残さない)
+    # (一時の Git で: 収集の成果の範囲(COLLECT_OUTPUTS)に、その後の動きを足した記事が入り、書式どおりなら戻されずに残る)
+    groot = tmp / "settle"
+    (groot / "docs" / "_posts").mkdir(parents=True)
+    shutil.copytree(tmp / "schema", groot / "schema")
+    gp = groot / "docs" / "_posts" / f"{ed}-a.md"
+    gp.write_text(before, encoding="utf-8")
+    for a in (["init", "-q", "-b", "main"], ["config", "user.email", "t@example.com"], ["config", "user.name", "t"],
+              ["add", "-A"], ["commit", "-qm", "base"]):
+        subprocess.run(["git", *a], cwd=groot, capture_output=True, check=True)
+    gp.write_text(sw.with_update(before, ups[0]), encoding="utf-8")
+    saved_root = pipelib.ROOT
+    try:
+        pipelib.ROOT = groot
+        dropped = pipelib.settle_collect_outputs(groot)
+    finally:
+        pipelib.ROOT = saved_root
+    st6 = subprocess.run(["git", "status", "--porcelain", "--", *pipelib.COLLECT_OUTPUTS], cwd=groot, capture_output=True, text=True).stdout
+    check(not dropped and f"docs/_posts/{ed}-a.md" in st6, f"途中で終わった収集の確定に、その後の動きを足した記事が入らない: {dropped} {st6!r}")
     # append-only: updates の追記だけを通す
     ob, nb = before.split("\n---\n", 1)[1], after.split("\n---\n", 1)[1]
     check(_lint.update_change_errors(fm_b, fm_a, ob, nb) == [], "updates の追記を append-only 違反にした")
@@ -18412,8 +18499,24 @@ def test_article_updates_render(tmp: Path):
     old_text = "---\n" + article_fm("orig", "2026-10-20", layout="article", title="元の記事") + "---\n" + body
     new_post = sw.with_update(old_text, entry)
     (site / "_posts" / f"{old_id}.md").write_text(new_post, encoding="utf-8")
-    (site / "_posts" / f"{new_id}.md").write_text("---\n" + article_fm("followup", "2026-10-27", layout="article", title="続報の記事",
-                                                                        follows=[old_id]) + "---\n本文。\n", encoding="utf-8")
+    # 続報の記事は本物の組版の経路で作る: 素材の source_change → compose.follows_of → renderlib.render_article(Sol 監査 b1 の later)
+    croot = tmp / "croot"
+    (croot / "docs" / "_posts").mkdir(parents=True)
+    (croot / "docs" / "_posts" / f"{old_id}.md").write_text(new_post, encoding="utf-8")
+    upd = cand_row("u1", entry["source"], source_change={"from_at": entry["from_at"], "to_at": entry["to_at"], "articles": [old_id]})
+    out_ans = {"status": "ok", "title": "続報の記事", "title_fact_ids": ["F1"], "lede": "締切が延長された。", "lede_fact_ids": ["F1"],
+               "tags": ["シンデレラガールズ", "締切"], "blocks": [{"markdown": "本文。", "fact_ids": ["F1"]}],
+               "sources": [{"url": entry["source"], "label": "告知"}]}
+    saved_croot = compose.ROOT
+    try:
+        compose.ROOT = croot
+        renderlib.render_article(site / "_posts" / f"{new_id}.md", "2026-10-27",
+                                 {"slug": "followup", "brand": "cg", "rank": "small", "candidate_ids": ["u1"]}, out_ans,
+                                 lambda u: "公式", compose.weakest_src, compose.yaml_dump_keeping_strings, follows=compose.follows_of([upd]))
+    finally:
+        compose.ROOT = saved_croot
+    check(yaml_fm((site / "_posts" / f"{new_id}.md").read_text(encoding="utf-8")).get("follows") == [old_id],
+          "組版が続報の記事に元の記事(follows)を付けない")
     if not shutil.which("jekyll"):
         print("  (jekyll が無いので紙面の描画は確かめない)")
     else:

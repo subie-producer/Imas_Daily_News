@@ -45,6 +45,7 @@ RECHECK_CYCLE_DAYS = 2              # 対象を全部一巡する日数の上限
 RECHECK_BUDGET_SEC = int(ENV.get("RECHECK_BUDGET_SEC", "1200"))   # 1回の見回りの時間の上限
 UPDATE_KINDS = ("変更", "出典元の訂正", "追加")            # 記事に時系列の更新として足す種類
 MAX_TRIES = 3                       # 判定・校閲の答えが読めない変化をやり直す回数
+SESSION_TIMEOUT_SEC = 600           # 判定・校閲のセッション1本の待ちの上限(収集の締切の残りでも切る)
 X_HOSTS = ("x.com", "twitter.com", "mobile.x.com", "mobile.twitter.com")
 FM_RE = re.compile(r"\A---\n(.*?)\n---\n", re.S)
 
@@ -161,7 +162,7 @@ def recheck(today: str, arts: list[dict], deadline_passed=lambda: False, root: P
     一巡の日数を記録し(metrics の recheck)、上限を超えたら(読み残しで一巡が延びる・最後に確かめたのが一巡の日数より前)異常として申告する。
     戻りは記録した数字。fetch(url, record) を渡せば読み直しを差し替える(テスト)"""
     plan = recheck_plan(active(arts, today, root), now_jst(), collect_runs_per_day(root))
-    rec = root / "metrics" / "work" / today / "recheck" / f"{int(time.time())}.jsonl"
+    rec = root / "metrics" / "work" / today / "recheck" / f"{time.time_ns()}-{os.getpid()}.jsonl"     # 回ごとに別の記録
     rec.parent.mkdir(parents=True, exist_ok=True)
     t0 = time.time()
     done: list[str] = []
@@ -183,11 +184,14 @@ def recheck(today: str, arts: list[dict], deadline_passed=lambda: False, root: P
     with ThreadPoolExecutor(max_workers=plan["parallel"]) as ex:
         list(ex.map(one, plan["chosen"]))
     changed = [r["url"] for r in record_rows(changed_record(rec))]
+    # 読み直せた(相手のサイトから本文を読めた)件数は、試みた件数ではなく読み取りの記録で数える(原本を返した・読めなかったものは
+    # 数えない。Sol 監査 b1: 取得に失敗しても読み直せたと数え、一巡の日数が実際より短く出た)
+    read_ok = {r["url"] for r in record_rows(rec) if not r.get("archived")} & set(done)
     stats = {k: plan[k] for k in ("cap", "parallel", "runs_per_day", "cycle_days", "oldest_age_h")}
-    stats.update(targets=len(plan["targets"]), chosen=len(plan["chosen"]), checked=len(done), changed=len(changed),
+    stats.update(targets=len(plan["targets"]), chosen=len(plan["chosen"]), tried=len(done), checked=len(read_ok), changed=len(changed),
                  elapsed_s=int(time.time() - t0))
-    # 実際に読めた件数で一巡の日数を見積もり直す(時間切れで読み残すと延びる)
-    stats["cycle_days_actual"] = round(len(plan["targets"]) / max(1, len(done) * plan["runs_per_day"]), 2) if plan["targets"] else 0.0
+    # 実際に読めた件数で一巡の日数を見積もり直す(時間切れ・取得の失敗で読み残すと延びる)
+    stats["cycle_days_actual"] = round(len(plan["targets"]) / max(1, len(read_ok) * plan["runs_per_day"]), 2) if plan["targets"] else 0.0
     append_metric("recheck", stats)
     print(f"出典の見回り: 対象 {stats['targets']}件のうち {stats['checked']}件を読み直した(上限 {stats['cap']}・並列 {stats['parallel']}・"
           f"一巡 {stats['cycle_days_actual']}日・最も古い確認 {stats['oldest_age_h']}時間前)、変化 {stats['changed']}件", flush=True)
@@ -207,12 +211,15 @@ def change_key(row: dict) -> str:
     return f"{page_archive.page_key(row.get('url'))}|{row.get('from_sha')}|{row.get('to_sha')}"
 
 
-def load_handled() -> dict:
+def load_state() -> dict:
+    """変化の扱いの状態: rows(扱った台帳の行)・pages(ページごとに、記事に反映した版)・tries(やり直しの回数)・pending(まだ素材の保存を
+    確かめていない「出典の更新」の素材)。"""
     got = _load_json(handled_path())
-    return got if isinstance(got, dict) else {}
+    got = got if isinstance(got, dict) else {}
+    return {k: got.get(k) if isinstance(got.get(k), dict) else {} for k in ("rows", "pages", "tries", "pending")}
 
 
-def save_handled(done: dict) -> None:
+def save_state(done: dict) -> None:
     p = handled_path()
     p.parent.mkdir(parents=True, exist_ok=True)
     tmp = p.with_name(f".{p.name}.{os.getpid()}.tmp")
@@ -234,7 +241,7 @@ def _day(at: str) -> str:
         return str(at)[:10]
 
 
-def run_session(kind: str, prompt: str, schema_name: str, date: str, name: str, root: Path = ROOT):
+def run_session(kind: str, prompt: str, schema_name: str, date: str, name: str, root: Path = ROOT, timeout: float = SESSION_TIMEOUT_SEC):
     """判定・校閲の構造化セッション1本: 書き手は codex(CODEX_WRITE_MODEL)、校閲は claude(REVIEW_MODEL)。正常に終わり、渡した schema に
     合う答えだけを返す(それ以外は None)。CLI の停止は CliStopped で上げる(この変化は次の回にやり直す)"""
     schema = (root / "schema" / schema_name).read_text(encoding="utf-8")
@@ -250,7 +257,7 @@ def run_session(kind: str, prompt: str, schema_name: str, date: str, name: str, 
                "--disallowedTools", "WebFetch"]
         tool = "claude"
     try:
-        r = run_group(cmd, timeout=600, cwd=root)
+        r = run_group(cmd, timeout=max(1, timeout), cwd=root)
         so, se, code = r.stdout, r.stderr, r.returncode
     except subprocess.TimeoutExpired as e:
         (so, se), code = partial_output(e), None
@@ -269,22 +276,25 @@ class CliStopped(RuntimeError):
     """モデル CLI が認証切れ・利用上限で答えなかった(投稿は済み。変化は次の回にやり直す)。"""
 
 
-def judge(art: dict, row: dict, diff: str, date: str, prev: dict | None = None, issue: str = "", root: Path = ROOT):
+def judge(art: dict, row: dict, diff: str, date: str, prev: dict | None = None, issue: str = "", root: Path = ROOT,
+          timeout: float = SESSION_TIMEOUT_SEC):
     """書き手のモデルが変化の種類と更新の文を出す(prompts/source-update.md)。"""
     prompt = render_prompt("source-update", ARTICLE=f"docs/_posts/{art['id']}.md", URL=row["url"], OLD_AT=_day(row.get("from_at")),
                            NEW_AT=_day(row.get("to_at")), DIFF=diff)
     if prev is not None:
         prompt += render_prompt("source-update.retry", KIND=prev.get("kind", ""), TEXT=prev.get("text", ""), ISSUE=issue)
     h = hashlib.sha256(change_key(row).encode()).hexdigest()[:8]
-    return run_session("write", prompt, "source-update.schema.json", date, f"source-update-{art['slug'][:40]}-{h}{'-2' if prev else ''}", root)
+    return run_session("write", prompt, "source-update.schema.json", date, f"source-update-{art['slug'][:40]}-{h}{'-2' if prev else ''}", root,
+                       timeout)
 
 
-def review(art: dict, row: dict, diff: str, ans: dict, date: str, root: Path = ROOT):
+def review(art: dict, row: dict, diff: str, ans: dict, date: str, root: Path = ROOT, timeout: float = SESSION_TIMEOUT_SEC):
     """校閲のモデルが更新の案を検める(prompts/source-update-review.md)。"""
     prompt = render_prompt("source-update-review", ARTICLE=f"docs/_posts/{art['id']}.md", URL=row["url"], OLD_AT=_day(row.get("from_at")),
                            NEW_AT=_day(row.get("to_at")), KIND=ans["kind"], TEXT=ans["text"], DIFF=diff)
     h = hashlib.sha256((change_key(row) + ans["text"]).encode()).hexdigest()[:8]
-    return run_session("review", prompt, "source-update-review.schema.json", date, f"source-update-review-{art['slug'][:40]}-{h}", root)
+    return run_session("review", prompt, "source-update-review.schema.json", date, f"source-update-review-{art['slug'][:40]}-{h}", root,
+                       timeout)
 
 
 def with_update(text: str, entry: dict) -> str:
@@ -333,65 +343,96 @@ def article_url(art_id: str) -> str:
     return f"{base}/articles/{art_id}/" if base else f"docs/_posts/{art_id}.md"
 
 
-def process_changes(today: str, arts: list[dict], root: Path = ROOT, judge_fn=judge, review_fn=review) -> tuple[list[dict], list[dict]]:
-    """変化の台帳の未処理の行を扱う。戻りは (この号に足す「出典の更新」の素材, 足した更新 {article, entry, row})。
-    判定・校閲が答えなかった変化は処理済みにしない(次の回にやり直す)。表示の揺れ・記事に関係なしは処理済みにする"""
-    handled = load_handled()
-    cands, applied = [], []
+SESSION_MIN_SEC = 60        # 判定・校閲のセッションを始めるのに要る残り時間(これより短ければ次の回へ回す)
+
+
+def process_changes(today: str, arts: list[dict], root: Path = ROOT, judge_fn=judge, review_fn=review,
+                    late=lambda: False, left=lambda: SESSION_TIMEOUT_SEC) -> tuple[list[dict], list[dict]]:
+    """出典の変化を扱う。戻りは (この号に足す「出典の更新」の素材(まだ素材の保存を確かめていないものを全部), 足した更新)。
+    ページごとに「前に扱った版(無ければ台帳の変わる前の版=収集時点)」から「いまの版(いちばん新しく読んだ版)」への違いを1回だけ判定する
+    (Sol 監査 b1: 行ごとに扱うと、やり直しで新しい版から古い版への違いを告知した・元の内容に戻った変化を失った)。
+    判定・校閲が答えなかったページは扱い済みにしない(次の回にやり直す。MAX_TRIES 回で諦めて申告)。CLI の停止は数えず、この回は止める。
+    収集の締切(late)を過ぎたら新しいセッションを始めず、セッションの待ちは残り時間(left)で切る"""
+    st = load_state()
+    applied = []
+    by_page: dict[str, list[dict]] = {}
     for row in page_archive.changes():
-        key = change_key(row)
-        if key in handled and handled[key].get("result"):
-            continue
-        hit = affected(row, arts)
-        # 変わる前の版は、このページで前に扱った変化の後の版(なければ台帳の変わる前の版)。台帳は収集時点の版との違いなので、
-        # 2度目の変化で1度目の変化を記事に重ねて書かない
-        page = page_archive.page_key(row["url"])
-        prev = [h for h in handled.values() if h.get("page") == page and h.get("to_sha") and h.get("result")]
-        from_sha = max(prev, key=lambda h: str(h.get("to_at") or ""))["to_sha"] if prev else row.get("from_sha")
-        if from_sha == row.get("to_sha"):
-            handled[key] = {"at": now_jst().isoformat(timespec="seconds"), "result": "扱い済みの版", "page": page,
-                            "to_sha": row.get("to_sha"), "to_at": row.get("to_at")}
-            continue
-        old, new = page_archive.version(row["url"], from_sha), page_archive.version(row["url"], row.get("to_sha"))
-        if old and prev:
-            row = {**row, "from_sha": from_sha, "from_at": page_archive.fetched_at(old)}
-        if not hit or not old or not new:
-            handled[key] = {"at": now_jst().isoformat(timespec="seconds"), "result": "記事なし" if not hit else "版が無い"}
-            continue
-        diff = page_archive.diff(old["text"], new["text"])
-        settled, reader = True, []
-        for art in hit:
-            if any(u.get("source") == row["url"] and u.get("to_at") == row.get("to_at") for u in art["updates"] if isinstance(u, dict)):
-                continue        # この変化は足し済み(冪等)
+        if change_key(row) not in st["rows"]:
+            by_page.setdefault(page_archive.page_key(row["url"]), []).append(row)
+    # 前に扱ったページで、いまの版がその後に変わった(元の内容に戻った など。台帳は収集時点の版との違いしか残さない)もの
+    for page, ps in st["pages"].items():
+        if page not in by_page:
             try:
-                ans = judge_fn(art, row, diff, today, root=root)
+                lt = page_archive.latest(ps["url"])
+            except Exception:       # noqa: BLE001
+                lt = None
+            if lt and lt.get("sha") != ps.get("sha"):
+                by_page[page] = []
+    stopped = False
+    for page, rows in by_page.items():
+        if stopped or late():
+            break
+        url = rows[0]["url"] if rows else st["pages"][page]["url"]
+        state = st["pages"].get(page)
+        first = min(rows, key=lambda r: str(r.get("from_at") or "")) if rows else None
+        old = page_archive.version(url, state["sha"]) if state else page_archive.version(url, first.get("from_sha"))
+        new = page_archive.latest(url)
+        hit = affected({"url": url, "final": (first or {}).get("final")}, arts)
+
+        def settle(result: str, to: dict | None) -> None:
+            for r in rows:
+                st["rows"][change_key(r)] = {"at": now_jst().isoformat(timespec="seconds"), "result": result}
+            if to:
+                st["pages"][page] = {"url": url, "sha": to["sha"], "at": to.get("at")}
+            st["tries"].pop(page, None)
+        if not hit or not old or not new:
+            settle("記事なし" if not hit else "版が無い", new if hit else None)
+            continue
+        if old["sha"] == new["sha"]:
+            settle("扱い済みの版", new)
+            continue
+        row = {"url": url, "final": (first or {}).get("final"), "from_sha": old["sha"], "to_sha": new["sha"],
+               "from_at": page_archive.fetched_at(old), "to_at": str(new.get("at") or "")}
+        diff = page_archive.diff(old["text"], new["text"])
+        settled, reader, deferred = True, [], False
+        for art in hit:
+            if any(u.get("source") == url and u.get("to_at") == row["to_at"] for u in art["updates"] if isinstance(u, dict)):
+                continue        # この変化は足し済み(冪等)
+            if late() or left() < SESSION_MIN_SEC:
+                settled, deferred = False, True     # 時間が無い: 次の回へ(やり直しの回数に数えない)
+                break
+            try:
+                timeout = min(SESSION_TIMEOUT_SEC, left())
+                ans = judge_fn(art, row, diff, today, root=root, timeout=timeout)
                 if ans is None:
                     settled = False
                     continue
                 if ans["kind"] not in UPDATE_KINDS:
                     continue
-                verdict = review_fn(art, row, diff, ans, today, root=root)
+                verdict = review_fn(art, row, diff, ans, today, root=root, timeout=min(SESSION_TIMEOUT_SEC, max(1, left())))
                 if verdict and verdict["verdict"] == "block":
-                    again = judge_fn(art, row, diff, today, prev=ans, issue=verdict["issue"], root=root)
+                    again = judge_fn(art, row, diff, today, prev=ans, issue=verdict["issue"], root=root,
+                                     timeout=min(SESSION_TIMEOUT_SEC, max(1, left())))
                     if again is None:
                         settled = False
                         continue
                     if again["kind"] not in UPDATE_KINDS:
                         continue
-                    ans, verdict = again, review_fn(art, row, diff, again, today, root=root)
+                    ans, verdict = again, review_fn(art, row, diff, again, today, root=root, timeout=min(SESSION_TIMEOUT_SEC, max(1, left())))
                 if verdict is None:
                     settled = False
                     continue
                 if verdict["verdict"] != "approve" or not ans["text"].strip():
                     # 判断の結果(校閲が通さなかった)で、工程の異常ではない。人には知らせる
-                    notify("collect", f"出典の変更による更新を校閲が通さず、記事に足さなかった: {article_url(art['id'])} / 出典 {row['url']} / "
+                    notify("collect", f"出典の変更による更新を校閲が通さず、記事に足さなかった: {article_url(art['id'])} / 出典 {url} / "
                                       f"案「{ans['text'][:120]}」/ 指摘 {verdict.get('issue', '')[:200]}")
                     continue
             except CliStopped:
-                settled = False
+                # 認証切れ・利用上限(投稿は済み): やり直しの回数に数えず、この回はこれ以上セッションを起動しない
+                settled, stopped = False, True
                 break
             entry = {"at": now_jst().isoformat(timespec="seconds"), "kind": ans["kind"], "text": ans["text"].strip(),
-                     "source": row["url"], "from_at": str(row.get("from_at") or ""), "to_at": str(row.get("to_at") or "")}
+                     "source": url, "from_at": row["from_at"], "to_at": row["to_at"]}
             try:
                 write_checked(art["path"], with_update(art["path"].read_text(encoding="utf-8"), entry))
             except Exception as e:      # noqa: BLE001  1本の失敗でほかの記事・収集を止めない(申告する)
@@ -402,19 +443,28 @@ def process_changes(today: str, arts: list[dict], root: Path = ROOT, judge_fn=ju
             reader.append(ans["kind"])
             applied.append({"article": art["id"], "entry": entry, "row": row})
             notify("collect", f"出典の変更を記事に足した({ans['kind']}): {article_url(art['id'])}\n「{entry['text']}」\n"
-                              f"出典 {row['url']}({_day(row.get('from_at'))} → {_day(row.get('to_at'))})\n変わったところ:\n{diff[:600]}")
+                              f"出典 {url}({_day(row['from_at'])} → {_day(row['to_at'])})\n変わったところ:\n{diff[:600]}")
         if reader:
-            cands.append(update_candidate(row, hit, old, new, today))
+            # 素材は収集が候補の保存を確かめてから消す(clear_pending)。それまでは毎回返す(保存に失敗しても失わない)
+            cand = update_candidate(row, hit, old, new, today)
+            st["pending"][cand["id"]] = cand
         if settled:
-            handled[key] = {"at": now_jst().isoformat(timespec="seconds"), "result": ",".join(reader) or "更新なし", "page": page,
-                            "to_sha": row.get("to_sha"), "to_at": row.get("to_at")}
-        else:
-            # 答えが読めない・足せない変化はやり直す。MAX_TRIES 回で諦めて申告する(毎回同じ変化で判定を回し続けない)
-            tries = int((handled.get(key) or {}).get("tries") or 0) + 1
-            handled[key] = {"at": now_jst().isoformat(timespec="seconds"), "tries": tries}
+            settle(",".join(reader) or "更新なし", new)
+        elif not stopped and not deferred:
+            # 答えが読めない・足せないページはやり直す。MAX_TRIES 回で諦めて申告する(毎回同じ変化で判定を回し続けない)
+            tries = int(st["tries"].get(page) or 0) + 1
+            st["tries"][page] = tries
             if tries >= MAX_TRIES:
-                handled[key]["result"] = "判定できなかった"
-                anomaly("collect", f"出典の変更を {tries}回扱えなかった(判定・校閲の答えが読めない・記事に足せない): {row['url']} "
+                settle("判定できなかった", new)
+                anomaly("collect", f"出典の変更を {tries}回扱えなかった(判定・校閲の答えが読めない・記事に足せない): {url} "
                                    f"記事 {', '.join(a['id'] for a in hit)}")
-    save_handled(handled)
-    return cands, applied
+    save_state(st)
+    return list(st["pending"].values()), applied
+
+
+def clear_pending(ids) -> None:
+    """収集が候補の保存を確かめた「出典の更新」の素材を、返す列から外す。"""
+    st = load_state()
+    for i in ids:
+        st["pending"].pop(i, None)
+    save_state(st)

@@ -2429,7 +2429,9 @@ def write_atomic(path, text: str) -> None:
 
 # 収集が書く成果(素材・既読状態・工程の記録)。途中で終わった収集の後始末(collect の例外・SIGTERM、当番の取り直しの時間切れ)が
 # 確定する範囲
-COLLECT_OUTPUTS = ("candidates", "stock/watch-state.json", "metrics")
+# docs/_posts: 収集は発行済み記事の「その後の動き」(updates)を足す(source_watch)。途中で終わった収集の確定にも含める
+# (Sol 監査 b1: 足した記事が作業ツリーに残り、次の工程を汚れで止めた)。書式で検め、壊れていれば HEAD に戻す(settle_collect_outputs)
+COLLECT_OUTPUTS = ("candidates", "stock/watch-state.json", "metrics", "docs/_posts")
 
 
 def output_problem(path) -> str:

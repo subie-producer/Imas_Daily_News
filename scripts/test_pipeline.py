@@ -18617,6 +18617,12 @@ def test_source_watch(tmp: Path):
                                                 source_change={"from_at": "b", "to_at": "c", "articles": [f"{ed}-f"]}))
     check(t11["source_change"]["to_at"] == "c" and t11["source_change"]["articles"] == [f"{ed}-d", f"{ed}-e", f"{ed}-f"],
           f"新しい変化を混ぜるときに前の変化の元の記事を落とした: {t11['source_change']}")
+    # 逆の順(新しい変化の候補へ、古い変化の素材をあとから混ぜる)でも元の記事を落とさない(Sol 監査 b7 の later)
+    t11b = cand_row("u", u4, source_change={"from_at": "b", "to_at": "c", "articles": [f"{ed}-f"]})
+    pipelib.merge_candidate_facts(t11b, cand_row("u", u4, facts=["古い変化"],
+                                                 source_change={"from_at": "a", "to_at": "b", "articles": [f"{ed}-d"]}))
+    check(t11b["source_change"]["to_at"] == "c" and t11b["source_change"]["articles"] == [f"{ed}-f", f"{ed}-d"],
+          f"古い変化をあとから混ぜるときに元の記事を落とした: {t11b['source_change']}")
     # (5) 読めなかった見回りを読み直せたと数えない(一巡の日数に入れず、申告する)
     def fail_fetch(url, rec):
         pipelib._append_line(pipelib.failed_record(rec), json.dumps({"url": url, "final": None}) + "\n")
@@ -18704,7 +18710,11 @@ def test_article_updates_render(tmp: Path):
         pages = {p.parent.name: p.read_text(encoding="utf-8") for p in (site / "_out").rglob("index.html") if "articles" in p.parts}
         o, n = pages.get(old_id, ""), pages.get(new_id, "")
         check(r.returncode == 0 and "その後の動き" in o and entry["text"] in o and "2026.10.27" in o and "・ 変更" in o
-              and entry["source"] in o and "続報の記事" in o and "元の記事" in n and "の続報です" in n,
+              and entry["source"] in o and "続報の記事" in o and "元の記事" in n and "の続報です" in n
+              # 相互リンクの行き先(Sol 監査 b7 の later: 文言だけを見ていて、リンクを壊しても通った)
+              and re.search(r'href="[^"]*/articles/' + re.escape(new_id) + r'/"', o)
+              and re.search(r'href="[^"]*/articles/' + re.escape(old_id) + r'/"', n)
+              and f'href="{entry["source"]}"' in o,
               f"その後の動き・続報のリンクが紙面に出ない: rc {r.returncode} {r.stderr[-300:]} {list(pages)}")
     # append-only の本物の lint(一時の Git): updates の追記は通し、本文の書き換えは止める
     root = tmp / "lintroot"

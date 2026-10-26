@@ -77,15 +77,14 @@ def merge_candidate_facts(tgt: dict, c: dict) -> bool:
         tgt["archived_at"], dl_changed = c["archived_at"], True     # 変わったら保存させる(Sol 監査 r2)
     # 出典の更新(source_change)は、同じページの候補に混ぜても失わない(続報の記事が元の記事を指すのに使う)。新しい変化を採る
     sc, tsc = c.get("source_change"), tgt.get("source_change") or {}
-    if isinstance(sc, dict) and str(sc.get("to_at") or "") > str(tsc.get("to_at") or ""):
-        # 新しい変化を採るが、混ぜた facts に対応する前の変化の元の記事も残す(Sol 監査 b6)
+    if isinstance(sc, dict):
+        # 元の記事は、混ぜる順・変化の新旧にかかわらず和集合(facts は両方の和集合になるので、続報が全部の元の記事を指す。
+        # Sol 監査 b3・b6・b7)。版の情報(from_at・to_at)は新しい変化のほう
         both = list(dict.fromkeys([*(tsc.get("articles") or []), *(sc.get("articles") or [])]))
-        tgt["source_change"], dl_changed = {**sc, "articles": both}, True
-    elif isinstance(sc, dict) and sc.get("to_at") == tsc.get("to_at"):
-        # 同じ変化を別の回に別の記事で扱った: 元の記事は和集合(続報が全部の記事を指す。Sol 監査 b3)
-        both = list(dict.fromkeys([*(tsc.get("articles") or []), *(sc.get("articles") or [])]))
-        if both != list(tsc.get("articles") or []):
-            tgt["source_change"], dl_changed = {**tsc, "articles": both}, True
+        newer = sc if str(sc.get("to_at") or "") > str(tsc.get("to_at") or "") else (tsc or sc)
+        merged_sc = {**newer, "articles": both}
+        if merged_sc != tsc:
+            tgt["source_change"], dl_changed = merged_sc, True
     merged =list(dict.fromkeys((tgt.get("facts") or []) + (c.get("facts") or [])))
     if len(merged) <= len(tgt.get("facts") or []):
         return dl_changed

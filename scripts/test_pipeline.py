@@ -18383,7 +18383,7 @@ def test_page_archive_read_back(tmp: Path):
     try:
         compose.ROOT = pipelib.ROOT = tmp
         compose.classify_source = pipelib.classify_source
-        compose.storylink.prior_lookup = lambda *a: (lambda *b: [])
+        compose.storylink.prior_lookup = lambda *a, **k: (lambda *b, **kk: [])
         compose.DEADLINE = None
         os.environ["PATH"] = f"{bindir}{os.pathsep}{os.environ.get('PATH', '')}"
         os.environ.pop("IMAS_FETCH_PAGES", None)
@@ -18393,6 +18393,14 @@ def test_page_archive_read_back(tmp: Path):
         with contextlib.redirect_stdout(io.StringIO()):
             written, aborted = compose.write_articles(date, plan, cands, [], {}, wave=4)
         wp = (tmp / "metrics" / "work" / date / "write-mainte-0.md").read_text(encoding="utf-8")
+        # 出典の更新の素材(source_change)が、選定の索引(印)と執筆の依頼文(変化の時刻・元の記事)に渡る(Sol 監査 b8 の later)
+        wch = (tmp / "metrics" / "work" / date / "write-changed-0.md").read_text(encoding="utf-8")
+        stub_prior, compose.storylink.prior_lookup = compose.storylink.prior_lookup, saved[3]     # 選定の索引は本物の既報の引き方で
+        try:
+            by_brand_idx, _, _ = compose.write_plan_index(date, cands, {})
+        finally:
+            compose.storylink.prior_lookup = stub_prior
+        subj_ch = next((s for rows_ in by_brand_idx.values() for s in rows_ if s["dedup_key"] == "changed"), {})
     finally:
         compose.ROOT, pipelib.ROOT, compose.classify_source, compose.storylink.prior_lookup, compose.DEADLINE, env = saved
         for k, v in env.items():
@@ -18424,6 +18432,9 @@ def test_page_archive_read_back(tmp: Path):
           "原本で読んだページを読めたページに数えない・404 を数えた")
     fol = yaml_fm((posts / f"{date}-changed.md").read_text(encoding="utf-8")).get("follows") if (posts / f"{date}-changed.md").exists() else None
     check(fol == ["2026-10-20-orig"], f"本番の執筆の経路が、出典の更新の素材から書いた記事に元の記事(follows)を付けない: {fol}")
+    check("2026-10-20-orig" in str(subj_ch.get("source_change") or ""), f"選定の索引に出典の更新の印が無い: {subj_ch}")
+    check("source_change" in wch and "2026-10-20-orig" in wch and "2026-10-27T01:00:00+09:00" in wch,
+          "執筆の依頼文の素材に出典の更新(変化の時刻・元の記事)が無い")
     check(sorted(a["slug"] for a in written) == sorted(urls) and not aborted,
           f"原本で読めた記事を書けなかった(素材の外の原本のページを検算が落とした など): {[a['slug'] for a in written]} {aborted}")
     notice = lambda s: next((l for l in ((posts / f"{date}-{s}.md").read_text(encoding="utf-8").splitlines()

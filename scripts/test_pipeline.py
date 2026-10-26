@@ -17348,13 +17348,23 @@ def test_http429_retry(tmp: Path):
             # 順番を待つあいだに受けた 429 は、その接続を差し止める
             px3, c3 = run([b"CONNECT during.example:443 HTTP/1.1\r\n\r\n", b"x"],
                           turn=lambda h: live_holds.__setitem__("during.example", _time.time() + 60))
+
+            # 最初に読んだあとで受けた 429 のために順番を取れなかったなら、504 ではなく 429 の差し止めに数える(Sol 監査 R429 r8 later)
+            def raced(h):
+                live_holds["raced.example"] = _time.time() + 60
+                raise OSError("429 で控えている")
+            px4, c4 = run([b"CONNECT raced.example:443 HTTP/1.1\r\n\r\n", b"x"], turn=raced)
         except Exception as e:      # noqa: BLE001
             tunnel_sent, turns, px, c, px2, c2, px3, c3, n_up = [repr(e)], [], None, None, None, None, None, None, -1
+            px4 = c4 = None
         check(tunnel_sent == [b"tls-1"] and turns == ["tunnel.example"] and px is not None and "tunnel.example" in px.blocked,
               f"中継が使い回しのトンネルで描画中に受けた 429 を素通りした・接続の前に順番を取らない: 送った {tunnel_sent} 順番 {turns}")
         check(c2 is not None and len(ups) == n_up + 0 and any(b"504" in s for s in c2.sent) and c3 is not None
               and any(b"X-Imas-Held" in s for s in c3.sent) and "during.example" in px3.blocked,
               f"中継が締切を越える順番の待ちで接続した・順番を待つあいだに受けた 429 を素通りした: {c2 and c2.sent} {c3 and c3.sent}")
+        check(c4 is not None and any(b"X-Imas-Held" in s for s in c4.sent) and "raced.example" in px4.blocked
+              and not any(b"504" in s for s in c4.sent),
+              f"中継が、読んだあとで受けた 429 のために取れなかった順番を 504 にした(429 として回収しない): {c4 and c4.sent}")
         calls: list[float] = []
 
         def fake_rg(argv, timeout=None, cwd=None, **k):

@@ -189,7 +189,14 @@ class HoldProxy:
                 try:
                     self.turn(host)         # 同じホストへの接続の間隔(共有の予約)。締切を越えるなら接続しない
                 except OSError:
-                    c.sendall(b"HTTP/1.1 504 Gateway Timeout\r\nContent-Length: 0\r\nConnection: close\r\n\r\n")
+                    # 最初に読んだあとで同じホストが 429 で控えた(順番が取れなかったのはそのため)なら、429 の差し止めに数える
+                    # (Sol 監査 R429 r8 later)
+                    until = self.held(host) or 0.0
+                    if until > time.time():
+                        self.blocked[host] = until
+                        c.sendall(b"HTTP/1.1 403 Forbidden\r\n" + HELD_HEADER + b"\r\nContent-Length: 0\r\nConnection: close\r\n\r\n")
+                    else:
+                        c.sendall(b"HTTP/1.1 504 Gateway Timeout\r\nContent-Length: 0\r\nConnection: close\r\n\r\n")
                     return
                 until = self.held(host) or 0.0      # 順番を待つあいだに受けた 429
                 if until > time.time():

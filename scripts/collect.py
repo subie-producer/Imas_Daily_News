@@ -2471,6 +2471,25 @@ def verify(cands: list[dict]) -> dict:
     return counts
 
 
+def watch_sources(late=lambda: False) -> list[dict]:
+    """発行済み記事の出典の見回りと、出典の変更の扱い(source_watch)。戻りはこの号に足す「出典の更新」の素材(まだ候補の保存を
+    確かめていないもの。保存できたら run_collect が clear_pending で外す)。収集の締切(late)を過ぎたら新しく始めず、判定・校閲の待ちも
+    締切の残りで切る。失敗しても収集(素材の保存)は止めない(異常として申告する)"""
+    import source_watch
+    today = now_jst().date().isoformat()
+    try:
+        arts = source_watch.published(today, ROOT)
+        source_watch.recheck(today, arts, late, root=ROOT, left=lambda: session_left(source_watch.RECHECK_FETCH_SEC))
+        found, applied = source_watch.process_changes(today, arts, ROOT, late=late,
+                                                      left=lambda: session_left(source_watch.SESSION_TIMEOUT_SEC))
+        if found or applied:
+            print(f"出典の変更: 記事に足した更新 {len(applied)}件、出典の更新の素材 {len(found)}件", flush=True)
+        return found
+    except Exception as e:      # noqa: BLE001
+        anomaly("collect", f"出典の見回り・変更の扱いが止まった({type(e).__name__}: {str(e)[:200]})。素材の保存は続ける")
+        return []
+
+
 def note_archived(c: dict, b: dict | None) -> None:
     """メンテナンスで読み直せない素材に、裏取りの最初に控えた原本(b)があればその時刻を付ける(執筆は fetch_page.py でその原本を
     読める)。控えを引き直さない(同じ URL の先の候補がこの回に残した版を指さない。Sol 監査 r8)"""
@@ -2626,6 +2645,10 @@ def run_collect(args, date: str, branch: str, t0: float) -> int:
     # この原本で照らす(Sol 監査 r2)。版は取得時刻で並べるので、裏取りが読んだ新しい版が基準になる
     kept = ingest_spools(cands)
     vcounts = verify(cands)
+    # 発行済み記事の出典の見回り(読み直して変わっていれば、記事の「その後の動き」と、この号の「出典の更新」の素材にする)
+    # 当番の取り直しでは見回らない・判定しない(取り直しは次の定時工程の前に終える。次の定時収集が扱う)
+    updates = [] if args.oncall_rerun else watch_sources(deadline_passed)
+    cands += updates
     # 置き場の古いものを片付ける
     try:
         pruned = page_archive.prune()
@@ -2633,6 +2656,13 @@ def run_collect(args, date: str, branch: str, t0: float) -> int:
     except Exception as e:      # noqa: BLE001  片付けの失敗で収集を止めない
         print(f"原本の置き場を片付けられない({type(e).__name__}: {e})", flush=True)
     added = merge_into_day_file(cands, date)
+    if updates:
+        # 「出典の更新」の素材は、候補の保存を確かめてから返す列から外す(保存に失敗・中断したら次の回にまた返る。Sol 監査 b1)
+        try:
+            import source_watch
+            source_watch.clear_pending([c["id"] for c in updates])
+        except Exception as e:      # noqa: BLE001  外せなくても次の回に同じ URL の候補へ混ぜるだけ(重複しない)
+            print(f"出典の更新の素材の控えを外せない({type(e).__name__}: {e})", flush=True)
     # candidates が保存できてから、定点観測の既読を確定する(同じ成功境界。監査指摘)
     watch_state = (watch_info.get("stats") or {}).pop("_state", None) if isinstance(watch_info, dict) else None
     if watch_state is not None:

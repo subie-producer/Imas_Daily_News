@@ -787,6 +787,10 @@ def write_plan_index(date: str, cands: dict, blocklist: dict,
             nn = carried_not_news(cr)
             if nn:
                 s["carried"] += f"。既報と同じ内容で、新しい事実も当日のトリガーも無いとして外れた: {nn}"
+        sc = c.get("source_change") or {}
+        if sc.get("articles") and not s.get("source_change"):
+            # 発行済みの記事の出典が変わった素材(source_watch)。変わった点は facts の「変更後」「変更前」の行
+            s["source_change"] = "発行済みの記事 " + "・".join(map(str, sc["articles"][:3])) + " の出典が変わった"
         for f in c.get("facts", []):
             k = fact_key(f)
             pool.setdefault(dk, []).append((f if k in late else f[:PLAN_FACT_CHARS], k))
@@ -2396,6 +2400,12 @@ def maintenance_unread_hosts(date: str, slug: str, urls) -> set[str]:
     return {h for h in hosts if h}
 
 
+def follows_of(materials) -> list[str]:
+    """素材の「出典の更新」(source_change)が指す発行済み記事のうち、いまある記事(この記事はその続報。紙面で互いにリンクする)。"""
+    ids = [str(a) for c in materials or [] if isinstance(c, dict) for a in (c.get("source_change") or {}).get("articles") or []]
+    return [i for i in dict.fromkeys(ids) if (ROOT / "docs" / "_posts" / f"{i}.md").exists()]
+
+
 def archive_read_hosts(date: str, slug: str, urls) -> list[tuple[str, str, str, str]]:
     """この記事のセッションが読み直せず保存の原本(page_archive)で読んだ出典・素材のページの (ホスト, why, 原本の取得時刻, via)。
     同じページをこの記事のセッションがあとで相手のサイトから読めていれば含めない(読み直して確かめられた。編集長 2026-10-26)"""
@@ -2674,7 +2684,8 @@ def write_articles(date: str, plan: dict, cands: dict, triggers: list[dict],
                         # 差し戻しても同じ契約を通せない = 契約(schema・依頼文・検算)の欠陥の疑い。当番が診断する
                         note_stuck(date, "機械検算", f"docs/_posts/{date}-{art['slug']}.md", "", " / ".join(problems[:4]), 2)
                     continue
-                renderlib.render_article(target, date, art, ans, classify_source, weakest_src, yaml_dump_keeping_strings)
+                renderlib.render_article(target, date, art, ans, classify_source, weakest_src, yaml_dump_keeping_strings,
+                                         follows=follows_of(materials))
                 attach_maintenance_notice(date, art["slug"], target, materials)
                 remember_fact_map(date, art["slug"], target, fact_by_id)
                 if tries:
@@ -3099,7 +3110,8 @@ def revise_apply(date: str, art: dict, path: Path, ans: dict, fact_by_id: dict, 
     hard = [x for x in problems if not x.startswith("指摘に無い")]
     if hard:
         return "kept", "検算不合格 " + " / ".join(hard[:3]) + "(元の稿のまま)"
-    renderlib.render_article(path, date, art, ans, classify_source, weakest_src, yaml_dump_keeping_strings)
+    renderlib.render_article(path, date, art, ans, classify_source, weakest_src, yaml_dump_keeping_strings,
+                             follows=follows_of(materials))
     attach_maintenance_notice(date, art["slug"], path, materials)
     remember_fact_map(date, art["slug"], path, fact_by_id)
     if scope:

@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "source-update.schema.json",
+  "title": "出典の変更の判定と、発行済み記事に足す時系列の更新(scripts/source_watch.py の判定セッションの答え)",
+  "type": "object",
+  "required": ["kind", "text", "reason"],
+  "additionalProperties": false,
+  "properties": {
+    "kind": {
+      "enum": ["変更", "出典元の訂正", "追加", "表示の揺れ", "記事に関係なし"],
+      "description": "変更=日程・締切・条件などが変わった(注意喚起) / 出典元の訂正=出典元が誤記載を直した / 追加=出演者・品目・特典などが増えた / 表示の揺れ=読者に関わらない変化 / 記事に関係なし=記事が書いた話題に関わらない変化"
+    },
+    "text": {
+      "type": "string",
+      "description": "記事に足す更新の文(kind が 変更・出典元の訂正・追加 のとき。ほかは空文字)"
+    },
+    "reason": {
+      "type": "string",
+      "description": "判定の根拠(変わったところのどの行か)"
+    }
+  }
+}

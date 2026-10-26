@@ -226,6 +226,25 @@ def correction_change_errors(old: dict, new: dict) -> list[str]:
     return errs
 
 
+def update_change_errors(old: dict, new: dict, old_body: str, new_body: str) -> list[str]:
+    """その後の動き(updates)を足した過去の記事の検査: updates の末尾への追記だけ・本文とほかの欄は1字も変えない。
+    出典元が告知を変えたことを記事の中で時系列に積む(編集長 2026-10-26「訂正欄ではない。記事の中で時系列を扱え」)。
+    訂正欄(corrections)はこちらの誤りだけに使うので、ここでは触らせない"""
+    errs = []
+    o, n = old.get("updates") or [], new.get("updates") or []
+    if n[:len(o)] != o:
+        errs.append("append-only 違反: 既にあるその後の動き(updates)を変えた・消した・並べ替えた(末尾への追記だけ)")
+    if len(n) <= len(o):
+        errs.append("append-only 違反: その後の動き(updates)が増えていない")
+    for k in sorted((set(old) | set(new)) - {"updates"}):
+        if old.get(k) != new.get(k):
+            errs.append(f"append-only 違反: その後の動きの追記で {k} を変えた")
+    # 本文はそのまま比べる(前後の空白の違いも Markdown の字下げを変えうる。末尾の改行の有無だけはならす。Sol 監査 b5)
+    if (old_body or "").rstrip("\n") != (new_body or "").rstrip("\n"):
+        errs.append("append-only 違反: その後の動きの追記で本文を変えた")
+    return errs
+
+
 def load_withdrawn(text: str | None = None) -> tuple[list[dict], list[str]]:
     """取り下げた記事の記録(編集長の判断で紙面から外した記事)。戻りは (記録の並び, 形式の誤り)。
     append-only の例外はこれだけ: 記録のある記事の削除と、**同じ差分で**その号の機械算出値(記事数・面数)の更新を通す。
@@ -942,6 +961,14 @@ def main() -> int:
                                 and {k: v for k, v in a.items() if k != "type"} == {k: v for k, v in b.items() if k != "type"}
                                 for a, b in zip(o_s, n_s)):
                             continue
+                    # 例外: その後の動き(updates)の追記だけ(出典元の変更を時系列で積む。訂正欄・corrected_count は使わない)
+                    if p.startswith("docs/_posts/") and diff_keys == {"updates"}:
+                        # 本文は区切りの行だけを外して比べる(frontmatter の読み方は本文の先頭の空白まで外し、字下げの変化が届かない。
+                        # Sol 監査 b6)
+                        raw_body = lambda t: (lambda mm: t[mm.end():] if mm else t)(re.match(r"\A---\n.*?\n---\n", t, re.S))
+                        for e in update_change_errors(old, new_fm, raw_body(r.stdout), raw_body((ROOT / p).read_text(encoding="utf-8"))):
+                            rep.error(ROOT / p, e)
+                        continue
                     for e in correction_change_errors(old, new_fm):
                         rep.error(ROOT / p, e)
 

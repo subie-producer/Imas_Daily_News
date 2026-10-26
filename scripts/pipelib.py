@@ -75,6 +75,16 @@ def merge_candidate_facts(tgt: dict, c: dict) -> bool:
     # 収集時点の原本(page_archive)は、新しく読んだほうの取得時刻を指す
     if c.get("archived_at") and str(c["archived_at"]) > str(tgt.get("archived_at") or ""):
         tgt["archived_at"], dl_changed = c["archived_at"], True     # 変わったら保存させる(Sol 監査 r2)
+    # 出典の更新(source_change)は、同じページの候補に混ぜても失わない(続報の記事が元の記事を指すのに使う)。新しい変化を採る
+    sc, tsc = c.get("source_change"), tgt.get("source_change") or {}
+    if isinstance(sc, dict):
+        # 元の記事は、混ぜる順・変化の新旧にかかわらず和集合(facts は両方の和集合になるので、続報が全部の元の記事を指す。
+        # Sol 監査 b3・b6・b7)。版の情報(from_at・to_at)は新しい変化のほう
+        both = list(dict.fromkeys([*(tsc.get("articles") or []), *(sc.get("articles") or [])]))
+        newer = sc if str(sc.get("to_at") or "") > str(tsc.get("to_at") or "") else (tsc or sc)
+        merged_sc = {**newer, "articles": both}
+        if merged_sc != tsc:
+            tgt["source_change"], dl_changed = merged_sc, True
     merged =list(dict.fromkeys((tgt.get("facts") or []) + (c.get("facts") or [])))
     if len(merged) <= len(tgt.get("facts") or []):
         return dl_changed
@@ -2694,7 +2704,9 @@ def write_atomic(path, text: str) -> None:
 
 # 収集が書く成果(素材・既読状態・工程の記録)。途中で終わった収集の後始末(collect の例外・SIGTERM、当番の取り直しの時間切れ)が
 # 確定する範囲
-COLLECT_OUTPUTS = ("candidates", "stock/watch-state.json", "metrics")
+# docs/_posts: 収集は発行済み記事の「その後の動き」(updates)を足す(source_watch)。途中で終わった収集の確定にも含める
+# (Sol 監査 b1: 足した記事が作業ツリーに残り、次の工程を汚れで止めた)。書式で検め、壊れていれば HEAD に戻す(settle_collect_outputs)
+COLLECT_OUTPUTS = ("candidates", "stock/watch-state.json", "metrics", "docs/_posts")
 
 
 def output_problem(path) -> str:

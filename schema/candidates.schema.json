@@ -134,6 +134,17 @@
         "type": "string",
         "description": "verify が出典をヘッドレスブラウザで描画し直そうとして失敗した原因(終了コードと stderr の要点)。素の HTML の本文で照合を続けたことを示す。診断用"
       },
+      "source_change": {
+        "type": "object",
+        "required": ["from_at", "to_at", "articles"],
+        "additionalProperties": false,
+        "description": "発行済み記事の出典のページが変わったことから作った「出典の更新」の素材(scripts/source_watch.py)。facts に変更後・変更前の行。続報の記事の材料",
+        "properties": {
+          "from_at": {"type": "string", "description": "変わる前の版を読んだ時刻"},
+          "to_at": {"type": "string", "description": "変わった後の版を読んだ時刻"},
+          "articles": {"type": "array", "minItems": 1, "items": {"type": "string"}, "description": "このページを出典にした発行済み記事(docs/_posts のファイル名。拡張子なし)"}
+        }
+      },
       "archived_at": {
         "type": "string",
         "description": "収集が出典ページを読んだ時点の原本(scripts/page_archive.py の置き場。url で引く)の取得時刻(ISO 8601, JST)。fetch_page.py は読み直せないときにこの原本を返す"

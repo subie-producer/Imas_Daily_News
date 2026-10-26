@@ -247,6 +247,28 @@ def baseline(url: str, base: Path | None = None) -> dict | None:
     return None
 
 
+def version(url: str, sha: str | None, base: Path | None = None) -> dict | None:
+    """本文の指紋(sha)が sha の版のうち、取得時刻のいちばん新しい版(本文つき)。無ければ None(版の上限で消えた など)。"""
+    d = page_dir(url, base)
+    for v in reversed(_by_time(_index(d)["versions"])):
+        if sha and v.get("sha") == sha:
+            got = _load(d, v)
+            if got:
+                return got
+    return None
+
+
+def version_before(url: str, until: str, base: Path | None = None) -> dict | None:
+    """取得時刻が until 以前の版のうち、いちばん新しい版(本文つき)。無ければ None(記事を出した時点に読まれていた原本を引く)。"""
+    d = page_dir(url, base)
+    for v in reversed(_by_time(_index(d)["versions"])):
+        if str(v.get("at") or "") <= until:
+            got = _load(d, v)
+            if got:
+                return got
+    return None
+
+
 def html_of(url: str, v: dict, base: Path | None = None) -> bytes | None:
     """版の HTML(圧縮を解いたもの)。無ければ None。"""
     if not v.get("html"):

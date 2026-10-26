@@ -12974,6 +12974,47 @@ def test_booth_item_owner(tmp: Path):
             cs._BOOTH_SHOP.update(cache)
 
 
+def test_youtube_channel_page_unit(tmp: Path):
+    """YouTube のチャンネルのページ(2026-10-28: `youtube.com/@KamizuruCosmo/streams` が出典に載り、持ち主を取るパーサが無かった)。
+    単位はチャンネル `youtube.com/@<ハンドル>`(枝の streams・videos は同じ持ち主)。ページは取らない。トップ・検索は持ち主が無いので skip。"""
+    import classify_sources as cs
+    url = "https://www.youtube.com/@KamizuruCosmo/streams"
+    key = "youtube.com/@KamizuruCosmo"
+    check(cs.platform_unit(url) == ("path", key), f"チャンネルのページの単位: {cs.platform_unit(url)}")
+    check(cs.platform_unit("https://m.youtube.com/@KamizuruCosmo") == ("path", key), "チャンネルのトップの単位")
+    check(cs.platform_unit("https://www.youtube.com/channel/UCabcdefghijklmnopqrstuv/videos")
+          == ("path", "youtube.com/channel/UCabcdefghijklmnopqrstuv"), "チャンネル ID のページの単位")
+    for u in ("https://www.youtube.com/", "https://www.youtube.com/results?search_query=imas", "https://www.youtube.com/feed/trending"):
+        check(cs.platform_unit(u)[0] == "skip", f"持ち主の無い YouTube の URL: {u} {cs.platform_unit(u)}")
+    check(cs.display_base(url) == "https://youtube.com/@KamizuruCosmo" and cs.display_base(key) == "https://youtube.com/@KamizuruCosmo",
+          f"表示の単位: {cs.display_base(url)} {cs.display_base(key)}")
+    tmp.mkdir(parents=True, exist_ok=True)
+    (tmp / "candidates").mkdir(exist_ok=True)
+    (tmp / "docs" / "_posts").mkdir(parents=True, exist_ok=True)
+    (tmp / "source_types.yml").write_text("official_domains:\n  - a.example\n", encoding="utf-8")
+    saved = (cs.ROOT, pipelib.ROOT, pipelib._ST_TABLE, pipelib._ST_KEY, cs.POSTS_ONLY)
+    try:
+        cs.ROOT = pipelib.ROOT = tmp
+        pipelib._ST_TABLE = pipelib._ST_KEY = None
+        cs.POSTS_ONLY = None
+        (tmp / "candidates" / "2026-10-28.json").write_text(json.dumps([{"url": url, "title": "上水流宇宙、今夜21時から配信"}]),
+                                                            encoding="utf-8")
+        d, a, paths = cs.unknown_targets("2026-10-28")
+        check(not cs.NEED_PARSER and not cs.SKIPPED and not d and paths == {key: url},
+              f"チャンネルのページがパーサ待ち・チャンネル以外の単位で合議に回った: {cs.NEED_PARSER} {cs.SKIPPED} {d} {paths}")
+        cs.add_paths({key: ("演者", "本人のチャンネル")})
+        pipelib._ST_TABLE = None
+        check(pipelib.classify_source(url) == "演者" and pipelib.classify_source("https://www.youtube.com/@KamizuruCosmo/videos") == "演者"
+              and pipelib.classify_source("https://www.youtube.com/@KamizuruCosmoX") == "未確認", "決まったチャンネルの種別がページに当たらない")
+        d, a, paths = cs.unknown_targets("2026-10-28")
+        check(not paths and not cs.NEED_PARSER, f"決まった後も合議に回る: {paths} {cs.NEED_PARSER}")
+    except (Exception, SystemExit) as e:      # noqa: BLE001
+        check(False, f"YouTube のチャンネルのページのテストが例外: {type(e).__name__}: {e}")
+    finally:
+        cs.ROOT, pipelib.ROOT, pipelib._ST_TABLE, pipelib._ST_KEY, cs.POSTS_ONLY = saved
+        pipelib._ST_TABLE = pipelib._ST_KEY = None
+
+
 def test_classify_txn_escaped_model(tmp: Path):
     """出典の判定の取引の中断・親の死で、合議の子が start_group で別のセッションに起動したモデルも止めてから戻す
     (2026-10-21 取り込みの監査: 子のセッションだけを見て、残ったモデルが戻したあとの判定表を書き直した)。
@@ -19697,6 +19738,7 @@ def main() -> int:
     test_platform_owner_units(tmp / "pou")
     test_youtube_playlist_owner(tmp / "ytpl")
     test_booth_item_owner(tmp / "booth")
+    test_youtube_channel_page_unit(tmp / "ytchan")
     test_classify_txn_interrupt(tmp / "cti")
     test_classify_txn_escaped_model(tmp / "cte2")
     test_tags_and_idols(tmp / "ti")

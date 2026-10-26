@@ -17847,7 +17847,7 @@ def test_page_archive_versions_and_reads(tmp: Path):
     try:
         collect.urllib.request.urlopen = lambda req, timeout=15: Res()
         collect.needs_render = lambda u, t: False
-        collect.rendered_or_note = lambda u, limit=None: ("<html><body>" + quote + "</body></html>", "")
+        collect.rendered_or_note = lambda u, limit=None, wait_deadline=None: ("<html><body>" + quote + "</body></html>", "")
         collect.verify([c])
     finally:
         collect.urllib.request.urlopen, collect.needs_render, collect.rendered_or_note = saved_c
@@ -18009,7 +18009,7 @@ def test_page_archive_versions_and_reads(tmp: Path):
     try:
         collect.watch_get = lambda u, t: (nav, "utf-8")
         collect.needs_render = lambda u, t: True
-        collect.rendered_or_note = lambda u, limit=None: ("", "描画の時間切れ")
+        collect.rendered_or_note = lambda u, limit=None, wait_deadline=None: ("", "描画の時間切れ")
         collect.page_html_or_note(w_url, False)
         n_after_watch = len(pa.versions(w_url))
         cw = {"url": w_url, "title": "告知", "facts": ["価格は3000円"], "quotes": [w_quote], "via": "watch", "source_type": "公式"}
@@ -18041,7 +18041,7 @@ def test_page_archive_versions_and_reads(tmp: Path):
     saved_w = (collect.needs_render, collect.rendered_or_note, collect.urllib.request.urlopen)
     try:
         collect.needs_render = lambda u, t: False
-        collect.rendered_or_note = lambda u, limit=None: ("", "描画の時間切れ")
+        collect.rendered_or_note = lambda u, limit=None, wait_deadline=None: ("", "描画の時間切れ")
         collect.urllib.request.urlopen = first_nav_then_503
         with contextlib.redirect_stdout(io.StringIO()):
             collect.verify([c_first, c_second])
@@ -18109,7 +18109,7 @@ def test_page_archive_versions_and_reads(tmp: Path):
     saved_w = (collect.needs_render, collect.rendered_or_note, collect.urllib.request.urlopen)
     try:
         collect.needs_render = lambda u, t: False
-        collect.rendered_or_note = lambda u, limit=None: ("", "描画しない")
+        collect.rendered_or_note = lambda u, limit=None, wait_deadline=None: ("", "描画しない")
         collect.urllib.request.urlopen = ok_then_503
         with contextlib.redirect_stdout(io.StringIO()):
             collect.verify([t_first, t_second])
@@ -18151,7 +18151,9 @@ def test_page_archive_versions_and_reads(tmp: Path):
             sys.modules.update(fake_mods)
             sys.modules.pop("fetch_rendered", None)
             fr = importlib.import_module("fetch_rendered")
-            fr.make_driver = lambda: Driver()
+            fr.make_driver = lambda *a, **k: Driver()
+            real_proxy = fr.HoldProxy       # 中継はソケットを開かない形で(監査・当番の sandbox はソケットを開けない)
+            fr.HoldProxy = lambda held, turn=None: real_proxy(held, turn, listen=False)
             fr.time.sleep = lambda s: None
             sys.argv = ["fetch_rendered.py", url, "--timeout", "1"]
             with contextlib.redirect_stdout(out), contextlib.redirect_stderr(err):
@@ -18227,7 +18229,7 @@ def test_page_archive_versions_and_reads(tmp: Path):
     saved_w = (collect.needs_render, collect.rendered_or_note, collect.urllib.request.urlopen)
     try:
         collect.needs_render = lambda u, t: False
-        collect.rendered_or_note = lambda u, limit=None: ("", "描画しない")
+        collect.rendered_or_note = lambda u, limit=None, wait_deadline=None: ("", "描画しない")
         collect.urllib.request.urlopen = ok_then_mainte
         with contextlib.redirect_stdout(io.StringIO()):
             collect.verify([m_first, m_second])
@@ -18562,7 +18564,7 @@ class RescueFakes:
         collect.grok_search_counts = lambda since: {}
         collect.report_lost_posts = lambda ledger: None
         collect.check_stale = lambda c: None
-        collect.rendered_or_note = lambda url, limit=None: ("", "テストでは描画しない")
+        collect.rendered_or_note = lambda url, limit=None, wait_deadline=None: ("", "テストでは描画しない")
         collect.notify = lambda *a, **k: True
         collect.build_prompts = lambda: yaml.safe_load((pipelib.PROMPTS / "queries.yml").read_text(encoding="utf-8"))
         collect.urllib.request.urlopen = self.urlopen

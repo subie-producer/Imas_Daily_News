@@ -122,5 +122,45 @@
    },
    "duration_s": 1340
   }
+ ],
+ "compose": [
+  {
+   "at": "2026-10-27T03:27:33+09:00",
+   "edition": "2026-10-27",
+   "rounds": 4,
+   "approved": true,
+   "lint_green": true,
+   "planned": 42,
+   "written": 35,
+   "roundups": 0,
+   "dropped": 0,
+   "coverage": {
+    "subjects": 88,
+    "covered": 88,
+    "missing": 0,
+    "missing_keys": []
+   },
+   "dropped_by_review": [],
+   "stages_min": {
+    "選定": 1.542849632104238,
+    "執筆": 5.070291185379029,
+    "出典の判定": 4.702509033679962,
+    "組版": 0.7436180313428243,
+    "校閲": 0.5040802240371705,
+    "校閲1波": 0.5040802240371705
+   },
+   "target_min": 60,
+   "over_target": false,
+   "aborted": [
+    "shiny-song-for-prism-3rd-anniversary-login-bonus-2026",
+    "sidem-cho-retroseparty-goods-2026",
+    "dsva-valiv-cosmo-ace-combat-8-stream-report-2026-10-21",
+    "cg-cinderella-fes-blanc-2026-10",
+    "general-im-s-radio-2026-10-27",
+    "joint-tours-s2-communication-video-2026",
+    "sidem-legenders-refrain-atrium-ensemble-2026"
+   ],
+   "duration_s": 1607
+  }
  ]
 }

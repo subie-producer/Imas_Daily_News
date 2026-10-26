@@ -321,6 +321,7 @@
   subject: アイマスポータル メンテナンスと各発表の詳細
   watch: メンテ終了とNEWS閲覧再開、「改めて知らせる」とされた各発表内容の詳細(判明次第 triggers へ)
   added_on: '2026-10-24'
+  removed_on: '2026-10-27'
 - dedup_key: sidem-story-release-delay-2026-10
   brand: sidem
   subject: SideM「アイドルたちの1コマ」High×Joker編・神速一魂編の公開日
@@ -345,11 +346,11 @@
   added_on: '2026-10-25'
 - dedup_key: gakumasu-hanami-sisters-angel-devil-figure-2027
   brand: gaku
-  subject: 学マス花海姉妹 ESPRESTO プライズフィギュア(2027年4月)
-  watch: 記事で「詳細は続報予定」とされた登場日・展開詳細(判明次第 triggers へ)
+  subject: 学マス花海咲季・佑芽 天使と悪魔のプライズフィギュア(BANDAI SPIRITS)
+  watch: 2027年4月の正式な展開日・「詳細は続報予定」とされた内容(判明次第 triggers へ)
   added_on: '2026-10-27'
-- dedup_key: tours-rhythm-live-recording-pstage-2026
-  brand: joint
-  subject: ツアマス リズムライブ記録会 in Pステ
-  watch: 開催日程・各店舗の詳細(各店舗の公式Xで告知予定。判明次第 triggers へ)
+- dedup_key: million-theater-talk-party-vol68-2026
+  brand: million
+  subject: ミリシタ THEATER TALK PARTY☆ ユニットオフショットVol.68の詳細
+  watch: 詳細はイベント開催後に案内とされた。内容・参加ユニット等の案内(判明次第 triggers へ)
   added_on: '2026-10-27'

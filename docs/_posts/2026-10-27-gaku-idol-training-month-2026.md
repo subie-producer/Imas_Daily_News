@@ -1,0 +1,37 @@
+---
+slug: gaku-idol-training-month-2026
+edition: "2026-10-27"
+brand: gaku
+src: 公式
+rank: small
+corrected: false
+corrections: []
+candidate_ids:
+- sched-2026-10-27-idol-training-month-2026-終了
+- sched-2026-10-27-idol-training-month-2026-終了-src1
+- sched-2026-10-27-idol-training-month-2026-終了-src2
+- sched-2026-10-27-idol-training-month-2026-終了-src3
+- sched-2026-10-27-idol-training-month-2026-終了-src4
+- sched-2026-10-27-idol-training-month-2026-終了-src5
+- sched-2026-10-27-idol-training-month-2026-終了-src6
+- sched-2026-10-27-idol-training-month-2026-終了-src7
+title: 学マス強化月間、明朝4時59分終了
+lede: 学園アイドルマスターの「十王邦夫のアイドル強化月間 〜星々のきらめき〜」は、十王星南と月村手毬を対象に開催中で、10月28日（水）4時59分に終了する予定です。
+tags:
+- 学マス
+- キャンペーン
+- 締切
+sources:
+- label: 学園アイドルマスター／学マス【公式】「十王邦夫のアイドル強化月間」(2026-10-20)
+  url: https://x.com/gkmas_official/status/2112381289542369636
+  type: 公式
+event_date: "2026-10-28"
+title_fact_ids:
+- F1
+- F3
+lede_fact_ids:
+- F1
+- F2
+- F3
+---
+終了までに、対象アイドルの企画をプレイできます。開催期間は10月28日（水）4時59分までの予定です。 <!-- F2 F3 -->

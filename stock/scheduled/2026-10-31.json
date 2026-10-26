@@ -1246,5 +1246,28 @@
   "event_date": "2026-10-31",
   "deadline": "2026-10-31",
   "src_candidate_id": "202610260219-grok-37"
+ },
+ {
+  "id": "sched-2026-10-31-sidem-one-panel-highjoker-shinsoku-2026-開始",
+  "dedup_key": "sidem-one-panel-highjoker-shinsoku-2026",
+  "brand": "sidem",
+  "subject": "「アイドルたちの1コマ」High×Joker回・神速一魂回 公開",
+  "kind": "開始",
+  "note": "High×Joker回と神速一魂回が公開され、読める",
+  "reserved_on": "2026-10-27",
+  "occurs_on": "2026-10-31",
+  "title": "High×Joker・神速一魂の1コマ公開日決定",
+  "url": "https://x.com/SideM_official/status/2114664769663987798",
+  "source_type": "公式",
+  "facts": [
+   "公開調整中だった『アイドルたちの1コマ』High×Joker回は2026年10月31日に公開予定。",
+   "公開調整中だった『アイドルたちの1コマ』神速一魂回は2026年10月31日に公開予定。",
+   "エンゲージメント: 中",
+   "言及アイドル: High×Joker、神速一魂"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "event_date": "2026-10-31",
+  "src_candidate_id": "202610270222-grok-29"
  }
 ]

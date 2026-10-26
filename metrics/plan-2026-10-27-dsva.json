@@ -1,0 +1,175 @@
+{
+ "decisions": {
+  "manaka-biohazard-re2-stream-2026-10-25": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "未確認の終了済み配信。概要欄の延期公演リンクは既報の内容"
+  },
+  "valiv-3rd-live-meeting-2027": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "valiv-3rd-live-qonnect-as-one-2027",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ公演・同じ先行。申込期限と特典はQONNECT AS ONEの記事に統合"
+  },
+  "letora-birthday-online-live-2026-lv": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "valiv-letora-birthday-live-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ二次抽選(10/30締切)。続報予約の主題へ統合"
+  },
+  "manaka-birthday-online-live-2026-postponed-stream": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/24にZ-aN配信先変更を記事化済み。新事実も当日のトリガーも無い"
+  },
+  "cosmo-shigure-ui-uikosen-dance-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/26に同じ動画を記事化済み。新事実なし"
+  },
+  "cosmo-cfirst-sunny-day-perfect-day-dance-2026": {
+   "action": "article",
+   "angle": "上水流宇宙がしぐれういと、315プロC.FIRSTの「Sunny day, Perfect day」を踊るショート動画をYouTubeで公開した",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ういこうせんとは別の動画"
+  },
+  "valiv-3rd-live-qonnect-as-one-2027": {
+   "action": "article",
+   "angle": "ヴイアラ3rdLIVE＆MEETING『QONNECT AS ONE』の名古屋(1/30-31)・東京(3/21-22)二都市開催と、11月15日23時59分締切のチケット先行、料金・当落・入金日程、グッズ付き特典のおすわりぬいぐるみ",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "素材は2主題(計約16件の事実)。締切は19日先だが料金・結果発表日・入金期間は直近記事に無い新情報"
+  },
+  "valiv-letora-birthday-live-2026": {
+   "action": "article",
+   "angle": "レトラBD現地ライブビューイング先行抽選二次受付は10月30日23時59分締切まであと3日。当落は31日",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(締切3日前)。letora-birthday-online-live-2026-lvを統合"
+  },
+  "valiv-cosmo-ace-combat-8-stream-report-2026-10-21": {
+   "action": "article",
+   "angle": "上水流宇宙のACE COMBAT 8配信が今夜21時からYouTubeで始まる",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(開始)。10/22に告知済みの日時を当日伝え直す"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "dsva-cosmo-cfirst-sunny-day-perfect-day-dance-2026",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "上水流宇宙がしぐれういと、315プロC.FIRSTの「Sunny day, Perfect day」を踊るショート動画をYouTubeで公開した",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "cosmo-cfirst-sunny-day-perfect-day-dance-2026",
+    "candidate_ids": [
+     "202610270222-grok-47"
+    ]
+   },
+   {
+    "slug": "dsva-valiv-3rd-live-qonnect-as-one-2027",
+    "brand": "dsva",
+    "rank": "medium",
+    "angle": "ヴイアラ3rdLIVE＆MEETING『QONNECT AS ONE』の名古屋(1/30-31)・東京(3/21-22)二都市開催と、11月15日23時59分締切のチケット先行、料金・当落・入金日程、グッズ付き特典のおすわりぬいぐるみ",
+    "purpose": "期日の知らせ",
+    "lead_score": 60,
+    "dedup_key": "valiv-3rd-live-qonnect-as-one-2027",
+    "candidate_ids": [
+     "202610270222-grok-57",
+     "202610270222-grok-43"
+    ]
+   },
+   {
+    "slug": "dsva-valiv-letora-birthday-live-2026",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "レトラBD現地ライブビューイング先行抽選二次受付は10月30日23時59分締切まであと3日。当落は31日",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "valiv-letora-birthday-live-2026",
+    "candidate_ids": [
+     "sched-2026-10-27-valiv-letora-birthday-live-2026-締切前",
+     "202610270222-grok-44"
+    ]
+   },
+   {
+    "slug": "dsva-valiv-cosmo-ace-combat-8-stream-report-2026-10-21",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "上水流宇宙のACE COMBAT 8配信が今夜21時からYouTubeで始まる",
+    "purpose": "期日の知らせ",
+    "lead_score": 10,
+    "dedup_key": "valiv-cosmo-ace-combat-8-stream-report-2026-10-21",
+    "candidate_ids": [
+     "sched-2026-10-27-valiv-cosmo-ace-combat-8-stream-report-2026-10-21-開始"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "manaka-biohazard-re2-stream-2026-10-25",
+    "reason": "出典不足",
+    "note": "未確認の終了済み配信。概要欄の延期公演リンクは既報の内容"
+   },
+   {
+    "dedup_key": "manaka-birthday-online-live-2026-postponed-stream",
+    "reason": "既報",
+    "note": "10/24にZ-aN配信先変更を記事化済み。新事実も当日のトリガーも無い"
+   },
+   {
+    "dedup_key": "cosmo-shigure-ui-uikosen-dance-2026",
+    "reason": "既報",
+    "note": "10/26に同じ動画を記事化済み。新事実なし"
+   }
+  ],
+  "cross_brand": []
+ }
+}

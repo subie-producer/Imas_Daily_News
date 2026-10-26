@@ -1,0 +1,126 @@
+{
+ "decisions": {
+  "cinderella-fes-blanc-2026-10": {
+   "action": "article",
+   "angle": "シンデレラフェス ブラン・ノワールが10月31日23時59分まで開催中。セレクトピックアップ形式でSSレアを選べ、プラチナオーディションのSSレア提供割合が2倍になる",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ノワールと同じ施策のため1記事に統合。二次情報(gamerch)のため出典は校閲で確認"
+  },
+  "cinderella-fes-noir-2026-10": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cinderella-fes-blanc-2026-10",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ブランと同一期間・同一施策(ノワール側の限定アイドル非登場の事実を統合)"
+  },
+  "cg-cinderella-party-10th-cd-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/24号が放送日時・出演・CD価格・収録曲・アソビストア予約期限まで報じ済み。放送は明日で、当日・3日以内の締切の定義に当たらない"
+  },
+  "cinderella-astromeda-popup-akihabara-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/26号が期間・会場・商品・価格を報じ済み。終了11月1日は5日先でトリガー外"
+  },
+  "mayu-bound-to-you-necklace-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/22号「佐久間まゆのネックレス、予約は11月30日まで」と同じ商品。新事実・当日トリガーなし"
+  },
+  "fumika-birthday-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿1件のみ。単体では記事にしない(cg面にculture枠はない)"
+  },
+  "cinderella-girls-sapporo-tv-tower-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/25号がチケット・特典・販売時間・配送受注まで報じ済み。終了11月3日は7日先でトリガー外"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "cg-cinderella-fes-blanc-2026-10",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "シンデレラフェス ブラン・ノワールが10月31日23時59分まで開催中。セレクトピックアップ形式でSSレアを選べ、プラチナオーディションのSSレア提供割合が2倍になる",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "cinderella-fes-blanc-2026-10",
+    "candidate_ids": [
+     "202610260732-explore-0",
+     "202610260732-explore-1"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "cg-cinderella-party-10th-cd-2026",
+    "reason": "既報",
+    "note": "10/24号が放送日時・出演・CD価格・収録曲・アソビストア予約期限まで報じ済み。放送は明日で、当日・3日以内の締切の定義に当たらない"
+   },
+   {
+    "dedup_key": "cinderella-astromeda-popup-akihabara-2026",
+    "reason": "既報",
+    "note": "10/26号が期間・会場・商品・価格を報じ済み。終了11月1日は5日先でトリガー外"
+   },
+   {
+    "dedup_key": "mayu-bound-to-you-necklace-2026",
+    "reason": "既報",
+    "note": "10/22号「佐久間まゆのネックレス、予約は11月30日まで」と同じ商品。新事実・当日トリガーなし"
+   },
+   {
+    "dedup_key": "fumika-birthday-2026",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿1件のみ。単体では記事にしない(cg面にculture枠はない)"
+   },
+   {
+    "dedup_key": "cinderella-girls-sapporo-tv-tower-2026",
+    "reason": "既報",
+    "note": "10/25号がチケット・特典・販売時間・配送受注まで報じ済み。終了11月3日は7日先でトリガー外"
+   }
+  ],
+  "cross_brand": []
+ }
+}

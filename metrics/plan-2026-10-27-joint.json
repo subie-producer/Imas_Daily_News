@@ -1,0 +1,133 @@
+{
+ "decisions": {
+  "765-961-idol-ultimate-2027-ticket": {
+   "action": "article",
+   "angle": "アソビストアプレミアム12か月会員先行の申込が明日10月28日23時59分に締め切られる",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "既報あり。新事実は無いが締切が翌日のトリガー"
+  },
+  "tours-s2-cardlist-2026": {
+   "action": "article",
+   "angle": "S2弾のカードリストが公開され、Nのサポートカードの比率を見直して衣装・アクセサリー中心になった",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "SPパラレル(紫雲清夏)の素材も統合。稼働開始は10月29日"
+  },
+  "tours-s2-sp-parallel-shiina-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "tours-s2-cardlist-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じS2弾のカード公開。カードリスト記事に統合"
+  },
+  "tours-rhythm-live-recording-pstage-2026": {
+   "action": "article",
+   "angle": "RHYTHM LIVE FESTIVAL 2027予選にあわせ、課題曲のハイスコアを競う記録会を各店舗で開催(参加費300円、抽選整理券制)",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "詳細は各店舗の公式X"
+  },
+  "tours-s2-extra-commu-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/26「ツアマスS2、編成でエクストラコミュ」と同内容で新事実・トリガー無し"
+  },
+  "tours-s2-communication-video-2026": {
+   "action": "article",
+   "angle": "S2弾の動画で舞田類とのハイタッチと山下次郎へのプレゼント渡しが紹介された",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "短い記事。ツアマス動画紹介は直近に同内容の記事なし"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "joint-765-961-idol-ultimate-2027-ticket",
+    "brand": "joint",
+    "rank": "medium",
+    "angle": "アソビストアプレミアム12か月会員先行の申込が明日10月28日23時59分に締め切られる",
+    "purpose": "期日の知らせ",
+    "lead_score": 60,
+    "dedup_key": "765-961-idol-ultimate-2027-ticket",
+    "candidate_ids": [
+     "202610270222-grok-3",
+     "202610270222-grok-51",
+     "202610270222-grok-58"
+    ]
+   },
+   {
+    "slug": "joint-tours-s2-cardlist-2026",
+    "brand": "joint",
+    "rank": "medium",
+    "angle": "S2弾のカードリストが公開され、Nのサポートカードの比率を見直して衣装・アクセサリー中心になった",
+    "purpose": "新情報",
+    "lead_score": 30,
+    "dedup_key": "tours-s2-cardlist-2026",
+    "candidate_ids": [
+     "202610270222-grok-48",
+     "202610270222-grok-49"
+    ]
+   },
+   {
+    "slug": "joint-tours-rhythm-live-recording-pstage-2026",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "RHYTHM LIVE FESTIVAL 2027予選にあわせ、課題曲のハイスコアを競う記録会を各店舗で開催(参加費300円、抽選整理券制)",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "tours-rhythm-live-recording-pstage-2026",
+    "candidate_ids": [
+     "202610270222-grok-50"
+    ]
+   },
+   {
+    "slug": "joint-tours-s2-communication-video-2026",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "S2弾の動画で舞田類とのハイタッチと山下次郎へのプレゼント渡しが紹介された",
+    "purpose": "新情報",
+    "lead_score": 5,
+    "dedup_key": "tours-s2-communication-video-2026",
+    "candidate_ids": [
+     "202610270222-grok-53"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "tours-s2-extra-commu-2026",
+    "reason": "既報",
+    "note": "10/26「ツアマスS2、編成でエクストラコミュ」と同内容で新事実・トリガー無し"
+   }
+  ],
+  "cross_brand": []
+ }
+}

@@ -1,0 +1,364 @@
+{
+ "decisions": {
+  "shiny-song-for-prism-3rd-anniversary-login-bonus-2026": {
+   "action": "roundup",
+   "angle": "開催中のシャニソン施策(3周年カウントダウンログボ・3周年ストーリー第4話「歯形のあと」)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-hachiban-box-ramen-set-2026": {
+   "action": "article",
+   "angle": "8番らーめんがシャニマスコラボの「8番箱らーめん」3個セットを2,000円で受注販売し、受注は11月8日23時59分まで",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "hachiban-shiny-ramen-set-2026 を統合(箱イラストの情報を含める)"
+  },
+  "shiny-madoka-birthday-2026": {
+   "action": "article",
+   "angle": "10月27日は樋口円香の誕生日で、シャニマスで誕生日ミニコミュ、スタンプガシャ、2日間限定のフェザージュエルセールなどを開催",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "gacha・jewel-sale を統合"
+  },
+  "shiny-madoka-birthday-gacha-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-madoka-birthday-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ誕生日施策"
+  },
+  "shiny-madoka-jewel-sale-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-madoka-birthday-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ誕生日施策"
+  },
+  "shiny-song-madoka-birthday-gacha-2026": {
+   "action": "article",
+   "angle": "シャニソンで円香の誕生日記念ガシャ(11月2日23時59分まで)、記念パック、2025年誕生日Pアイドル復刻、誕生日ストーリーが登場",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "products・revival・story を統合。この面の一面候補"
+  },
+  "shiny-song-madoka-birthday-products-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-song-madoka-birthday-gacha-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ誕生日施策"
+  },
+  "shiny-song-madoka-birthday-revival-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-song-madoka-birthday-gacha-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ誕生日施策"
+  },
+  "shiny-song-madoka-birthday-story-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-song-madoka-birthday-gacha-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ誕生日施策"
+  },
+  "shiny-song-3rd-anniversary-story-episode-4-2026": {
+   "action": "roundup",
+   "angle": "開催中のシャニソン施策(3周年ストーリーは毎日1話公開、第4話「歯形のあと」)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shinyson-pickup-poison-madoka-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/26号で記事化済み、新しい事実もトリガーも無い"
+  },
+  "shinyson-shiny-competition-2026": {
+   "action": "article",
+   "angle": "シャイニーコンペティションは10月29日20時59分の終了まであと2日",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "終了が3日以内"
+  },
+  "shiny-chikusei-collab-conclusion-2026": {
+   "action": "article",
+   "angle": "筑西市がシャニマスコラボの終了(10月25日)を受け、来訪者へ謝意を示しアンケート協力を呼びかけた",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "shiny-chikusei-collab-2026 を統合。出典は未確認"
+  },
+  "shiny-8ban-ramen-collab-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11月8日終了まで12日で、新しい事実も無い"
+  },
+  "shiny-yunel-live-rolyu-act2-act3-2026": {
+   "action": "article",
+   "angle": "「彼岸流」×天然温泉 湯〜ねるのコラボで、ライブロウリュのAct-2とAct-3が発表された",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "出典は未確認"
+  },
+  "hachiban-shiny-ramen-set-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-hachiban-box-ramen-set-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ商品"
+  },
+  "shiny-8-5-anniversary-login-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "受取期限は10/26で終了済み、10/26号で記事化済み"
+  },
+  "shiny-song-for-prism-third-anniversary-event-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/24・10/26号の本文と同じ内容で、開始の10/31は3日以内でない"
+  },
+  "shiny-chikusei-collab-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-chikusei-collab-conclusion-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じコラボの終了。新しい事実は無い"
+  },
+  "shiny-coherent-light-28-scattering-part1": {
+   "action": "article",
+   "angle": "『コヒーレントライト』の次回更新が本日10月27日",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約。第28話前編の次回更新日が今日"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "shiny-hachiban-box-ramen-set-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "8番らーめんがシャニマスコラボの「8番箱らーめん」3個セットを2,000円で受注販売し、受注は11月8日23時59分まで",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "shiny-hachiban-box-ramen-set-2026",
+    "candidate_ids": [
+     "202610270222-explore-2",
+     "202610270222-grok-66"
+    ]
+   },
+   {
+    "slug": "shiny-madoka-birthday-2026",
+    "brand": "shiny",
+    "rank": "medium",
+    "angle": "10月27日は樋口円香の誕生日で、シャニマスで誕生日ミニコミュ、スタンプガシャ、2日間限定のフェザージュエルセールなどを開催",
+    "purpose": "新情報",
+    "lead_score": 30,
+    "dedup_key": "shiny-madoka-birthday-2026",
+    "candidate_ids": [
+     "202610270222-grok-17",
+     "202610270222-grok-18",
+     "202610270222-grok-19"
+    ]
+   },
+   {
+    "slug": "shiny-song-madoka-birthday-gacha-2026",
+    "brand": "shiny",
+    "rank": "medium",
+    "angle": "シャニソンで円香の誕生日記念ガシャ(11月2日23時59分まで)、記念パック、2025年誕生日Pアイドル復刻、誕生日ストーリーが登場",
+    "purpose": "新情報",
+    "lead_score": 60,
+    "dedup_key": "shiny-song-madoka-birthday-gacha-2026",
+    "candidate_ids": [
+     "202610270222-grok-20",
+     "202610270222-grok-21",
+     "202610270222-grok-22",
+     "202610270222-grok-23"
+    ]
+   },
+   {
+    "slug": "shiny-shinyson-shiny-competition-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "シャイニーコンペティションは10月29日20時59分の終了まであと2日",
+    "purpose": "期日の知らせ",
+    "lead_score": 10,
+    "dedup_key": "shinyson-shiny-competition-2026",
+    "candidate_ids": [
+     "202610270222-grok-26"
+    ]
+   },
+   {
+    "slug": "shiny-chikusei-collab-conclusion-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "筑西市がシャニマスコラボの終了(10月25日)を受け、来訪者へ謝意を示しアンケート協力を呼びかけた",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "shiny-chikusei-collab-conclusion-2026",
+    "candidate_ids": [
+     "202610270222-grok-27",
+     "sched-2026-10-25-shiny-chikusei-collab-2026-終了"
+    ]
+   },
+   {
+    "slug": "shiny-yunel-live-rolyu-act2-act3-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "「彼岸流」×天然温泉 湯〜ねるのコラボで、ライブロウリュのAct-2とAct-3が発表された",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "shiny-yunel-live-rolyu-act2-act3-2026",
+    "candidate_ids": [
+     "202610270222-grok-64"
+    ]
+   },
+   {
+    "slug": "shiny-coherent-light-28-scattering-part1",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "『コヒーレントライト』の次回更新が本日10月27日",
+    "purpose": "期日の知らせ",
+    "lead_score": 10,
+    "dedup_key": "shiny-coherent-light-28-scattering-part1",
+    "candidate_ids": [
+     "sched-2026-10-27-shiny-coherent-light-28-scattering-part1-その他"
+    ]
+   },
+   {
+    "slug": "shiny-song-for-prism-3rd-anniversary-login-bonus-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "開催中のシャニソン施策(3周年カウントダウンログボ・3周年ストーリー第4話「歯形のあと」)",
+    "lead_score": 0,
+    "dedup_key": "shiny-song-for-prism-3rd-anniversary-login-bonus-2026",
+    "candidate_ids": [
+     "202610260732-explore-2"
+    ]
+   },
+   {
+    "slug": "shiny-song-3rd-anniversary-story-episode-4-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "開催中のシャニソン施策(3周年ストーリーは毎日1話公開、第4話「歯形のあと」)",
+    "lead_score": 0,
+    "dedup_key": "shiny-song-3rd-anniversary-story-episode-4-2026",
+    "candidate_ids": [
+     "202610270222-grok-24"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "shinyson-pickup-poison-madoka-2026",
+    "reason": "既報",
+    "note": "10/26号で記事化済み、新しい事実もトリガーも無い"
+   },
+   {
+    "dedup_key": "shiny-8ban-ramen-collab-2026",
+    "reason": "既報",
+    "note": "11月8日終了まで12日で、新しい事実も無い"
+   },
+   {
+    "dedup_key": "shiny-8-5-anniversary-login-2026",
+    "reason": "既報",
+    "note": "受取期限は10/26で終了済み、10/26号で記事化済み"
+   },
+   {
+    "dedup_key": "shiny-song-for-prism-third-anniversary-event-2026",
+    "reason": "既報",
+    "note": "10/24・10/26号の本文と同じ内容で、開始の10/31は3日以内でない"
+   }
+  ],
+  "cross_brand": []
+ }
+}

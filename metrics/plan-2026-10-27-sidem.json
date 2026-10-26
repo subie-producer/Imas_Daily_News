@@ -1,0 +1,358 @@
+{
+ "decisions": {
+  "sidem-ultimate-flame-2dmv-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/23・10/24号で公開を記事化済み。新事実なし"
+  },
+  "sidem-one-panel-highjoker-shinsoku-2026": {
+   "action": "article",
+   "angle": "公開延期となっていた『アイドルたちの1コマ』High×Joker回・神速一魂回が10月31日に公開される",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "10/24号の延期の続報として公開日が決定"
+  },
+  "sidem-content-services-maintenance-ended-2026": {
+   "action": "article",
+   "angle": "10月21日から続いた『315 PASSION CONTENTS』とASOBI STORYのメンテナンスが終了し、利用を再開できる",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "sidem-producer-meeting-ajewelholic-payment-extension-2026": {
+   "action": "article",
+   "angle": "SideMプロミ2027プレミアム会員先行の延長入金期限が明日10月28日23時59分に迫る",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "締切3日以内のトリガー"
+  },
+  "sidem-fan-fes-movie-ticket-and-stage-greeting-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/21・10/25号で舞台挨拶・先行抽選を記事化済み。ムビチケ販売中のみで新事実なし"
+  },
+  "sidem-315-night-mofumofuen-2026-11": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/25号で11月はもふもふえんを記事化済み"
+  },
+  "sidem-sems-lifes-side-menu-mv-200k-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/26号で20万回再生を記事化済み"
+  },
+  "sidem-cfirst-lailai-bishoku-mv-100k-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/26号で10万回再生を記事化済み"
+  },
+  "sidem-legenders-refrain-atrium-ensemble-2026": {
+   "action": "article",
+   "angle": "LegendersのCDデビュー10周年を記念した弦楽器による「リフレインアトリウム」アンサンブル動画が公開された",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "出典は未確認、校閲で確認"
+  },
+  "sidem-2dmv-comments-goods-ds-altessimo-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/23号で2DMV制作コメントとグッズ紹介を記事化済み。受付11/1までは新事実でも当日トリガーでもない"
+  },
+  "sidem-renaissance-fitness-fan-visit-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿の体験談"
+  },
+  "sidem-cho-retroseparty-goods-2026": {
+   "action": "article",
+   "angle": "「超!!レトローズパーティ」のレトローズリングライト全5種(税込1,100円)が加わった",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ミニスカーフは10/26号で既報。新事実はリングライト"
+  },
+  "sidem-monthly-theme-song-vol-3-goods-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/24号で同グッズ第3弾と発売2027年1月を記事化済み"
+  },
+  "sidem-knick-knacks-vol2-2026": {
+   "action": "article",
+   "angle": "『SideM knick-knacks Vol.2』の販売グッズラインナップと特設サイトが公開され、動物マスコットモチーフのグッズが登場する",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "sidem-howanuivol7-2026": {
+   "action": "article",
+   "angle": "SideMほわぬいvol.6・vol.7が11月28日に登場、vol.7は天ヶ瀬冬馬ら6種、vol.6は都築圭ら5種",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ商品シリーズ・同日登場のためvol.6を統合"
+  },
+  "sidem-howanuivol6-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-howanuivol7-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "sidem-joypolis3-second-half-2026": {
+   "action": "article",
+   "angle": "SideM in JOYPOLIS 3で後半メニューの販売が始まり、12月6日までに誕生日を迎える6名のバースデー企画も開始",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "sidem-fantastic-battle-fes-2026": {
+   "action": "article",
+   "angle": "F@NTASTIC BATTLE FES長野・幕張のプレミアム会員2次先行、当選者の入金は本日23時59分が締切",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約。本日が入金最終日"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "sidem-one-panel-highjoker-shinsoku-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "公開延期となっていた『アイドルたちの1コマ』High×Joker回・神速一魂回が10月31日に公開される",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "sidem-one-panel-highjoker-shinsoku-2026",
+    "candidate_ids": [
+     "202610270222-grok-29"
+    ]
+   },
+   {
+    "slug": "sidem-content-services-maintenance-ended-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "10月21日から続いた『315 PASSION CONTENTS』とASOBI STORYのメンテナンスが終了し、利用を再開できる",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "sidem-content-services-maintenance-ended-2026",
+    "candidate_ids": [
+     "202610270222-grok-30"
+    ]
+   },
+   {
+    "slug": "sidem-producer-meeting-ajewelholic-payment-extension-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "SideMプロミ2027プレミアム会員先行の延長入金期限が明日10月28日23時59分に迫る",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "sidem-producer-meeting-ajewelholic-payment-extension-2026",
+    "candidate_ids": [
+     "202610270222-grok-31"
+    ]
+   },
+   {
+    "slug": "sidem-legenders-refrain-atrium-ensemble-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "LegendersのCDデビュー10周年を記念した弦楽器による「リフレインアトリウム」アンサンブル動画が公開された",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "sidem-legenders-refrain-atrium-ensemble-2026",
+    "candidate_ids": [
+     "202610270222-grok-36"
+    ]
+   },
+   {
+    "slug": "sidem-cho-retroseparty-goods-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "「超!!レトローズパーティ」のレトローズリングライト全5種(税込1,100円)が加わった",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "sidem-cho-retroseparty-goods-2026",
+    "candidate_ids": [
+     "202610270222-grok-39"
+    ]
+   },
+   {
+    "slug": "sidem-knick-knacks-vol2-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "『SideM knick-knacks Vol.2』の販売グッズラインナップと特設サイトが公開され、動物マスコットモチーフのグッズが登場する",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "sidem-knick-knacks-vol2-2026",
+    "candidate_ids": [
+     "202610270222-grok-41"
+    ]
+   },
+   {
+    "slug": "sidem-howanuivol7-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "SideMほわぬいvol.6・vol.7が11月28日に登場、vol.7は天ヶ瀬冬馬ら6種、vol.6は都築圭ら5種",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "sidem-howanuivol7-2026",
+    "candidate_ids": [
+     "202610270222-grok-60",
+     "202610270222-grok-61"
+    ]
+   },
+   {
+    "slug": "sidem-joypolis3-second-half-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "SideM in JOYPOLIS 3で後半メニューの販売が始まり、12月6日までに誕生日を迎える6名のバースデー企画も開始",
+    "purpose": "新情報",
+    "lead_score": 25,
+    "dedup_key": "sidem-joypolis3-second-half-2026",
+    "candidate_ids": [
+     "202610270222-grok-65"
+    ]
+   },
+   {
+    "slug": "sidem-fantastic-battle-fes-2026",
+    "brand": "sidem",
+    "rank": "medium",
+    "angle": "F@NTASTIC BATTLE FES長野・幕張のプレミアム会員2次先行、当選者の入金は本日23時59分が締切",
+    "purpose": "期日の知らせ",
+    "lead_score": 60,
+    "dedup_key": "sidem-fantastic-battle-fes-2026",
+    "candidate_ids": [
+     "sched-2026-10-27-sidem-fantastic-battle-fes-2026-締切"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "sidem-ultimate-flame-2dmv-2026",
+    "reason": "既報",
+    "note": "10/23・10/24号で公開を記事化済み。新事実なし"
+   },
+   {
+    "dedup_key": "sidem-fan-fes-movie-ticket-and-stage-greeting-2026",
+    "reason": "既報",
+    "note": "10/21・10/25号で舞台挨拶・先行抽選を記事化済み。ムビチケ販売中のみで新事実なし"
+   },
+   {
+    "dedup_key": "sidem-315-night-mofumofuen-2026-11",
+    "reason": "既報",
+    "note": "10/25号で11月はもふもふえんを記事化済み"
+   },
+   {
+    "dedup_key": "sidem-sems-lifes-side-menu-mv-200k-2026",
+    "reason": "既報",
+    "note": "10/26号で20万回再生を記事化済み"
+   },
+   {
+    "dedup_key": "sidem-cfirst-lailai-bishoku-mv-100k-2026",
+    "reason": "既報",
+    "note": "10/26号で10万回再生を記事化済み"
+   },
+   {
+    "dedup_key": "sidem-2dmv-comments-goods-ds-altessimo-2026",
+    "reason": "既報",
+    "note": "10/23号で2DMV制作コメントとグッズ紹介を記事化済み。受付11/1までは新事実でも当日トリガーでもない"
+   },
+   {
+    "dedup_key": "sidem-renaissance-fitness-fan-visit-2026",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿の体験談"
+   },
+   {
+    "dedup_key": "sidem-monthly-theme-song-vol-3-goods-2026",
+    "reason": "既報",
+    "note": "10/24号で同グッズ第3弾と発売2027年1月を記事化済み"
+   }
+  ],
+  "cross_brand": []
+ }
+}

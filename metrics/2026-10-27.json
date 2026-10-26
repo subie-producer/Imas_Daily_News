@@ -1,0 +1,199 @@
+{
+ "recheck": [
+  {
+   "at": "2026-10-27T02:23:05+09:00",
+   "cap": 60,
+   "parallel": 4,
+   "runs_per_day": 5,
+   "cycle_days": 0.02,
+   "oldest_age_h": 2.8,
+   "targets": 6,
+   "chosen": 6,
+   "tried": 6,
+   "checked": 6,
+   "changed": 2,
+   "elapsed_s": 14,
+   "cycle_days_actual": 0.2
+  }
+ ],
+ "collect": [
+  {
+   "at": "2026-10-27T02:23:06+09:00",
+   "edition": "2026-10-27",
+   "started_at": "2026-10-27T02:00:45+09:00",
+   "trigger": "timer",
+   "watch": {
+    "stats": {
+     "imas-portal": {
+      "found": 12,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-sidem": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-shiny": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-million": {
+      "found": 9,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "lantis-shiny": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "lantis-sidem": {
+      "error": "HTTP Error 503: Service Temporarily Unavailable",
+      "http": 503
+     },
+     "columbia-imas": {
+      "found": 351,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "bnam-tours": {
+      "found": 69,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "imasnews765": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     }
+    },
+    "new": 0,
+    "facted": 0,
+    "deferred": 0,
+    "blocked": 0,
+    "unavailable": 0
+   },
+   "per_query": {
+    "explore:765as": 0,
+    "explore:cinderella": 1,
+    "explore:million": 1,
+    "explore:shiny": 0,
+    "explore:sidem": 0,
+    "explore:gakuen": 0,
+    "explore:dsva": 0,
+    "explore:joint-other": 0,
+    "explore:trend": 1,
+    "grok_week_searches": 494,
+    "grok:765as": 0,
+    "grok:cinderella": 2,
+    "grok:million": 18,
+    "grok:shiny": 16,
+    "grok:sidem": 11,
+    "grok:gakuen": 2,
+    "grok:dsva": 6,
+    "grok:joint-other": 13,
+    "grok:trend": 10,
+    "grok_searches:gaku": 12,
+    "grok_searches:dsva": 6,
+    "grok_searches:sidem": 5,
+    "grok_searches:cg": 6,
+    "grok_searches:general": 14,
+    "grok_searches:shiny": 6,
+    "grok_searches:765": 6,
+    "grok_searches:joint": 6,
+    "grok_searches:million": 7
+   },
+   "normalized": 84,
+   "added": 73,
+   "verify": {
+    "confirmed": 57,
+    "unconfirmed": 27,
+    "failed": 0
+   },
+   "duration_s": 1340
+  }
+ ],
+ "compose": [
+  {
+   "at": "2026-10-27T03:27:33+09:00",
+   "edition": "2026-10-27",
+   "rounds": 4,
+   "approved": true,
+   "lint_green": true,
+   "planned": 42,
+   "written": 35,
+   "roundups": 0,
+   "dropped": 0,
+   "coverage": {
+    "subjects": 88,
+    "covered": 88,
+    "missing": 0,
+    "missing_keys": []
+   },
+   "dropped_by_review": [],
+   "stages_min": {
+    "選定": 1.542849632104238,
+    "執筆": 5.070291185379029,
+    "出典の判定": 4.702509033679962,
+    "組版": 0.7436180313428243,
+    "校閲": 0.5040802240371705,
+    "校閲1波": 0.5040802240371705
+   },
+   "target_min": 60,
+   "over_target": false,
+   "aborted": [
+    "shiny-song-for-prism-3rd-anniversary-login-bonus-2026",
+    "sidem-cho-retroseparty-goods-2026",
+    "dsva-valiv-cosmo-ace-combat-8-stream-report-2026-10-21",
+    "cg-cinderella-fes-blanc-2026-10",
+    "general-im-s-radio-2026-10-27",
+    "joint-tours-s2-communication-video-2026",
+    "sidem-legenders-refrain-atrium-ensemble-2026"
+   ],
+   "duration_s": 1607
+  },
+  {
+   "at": "2026-10-27T04:16:38+09:00",
+   "edition": "2026-10-27",
+   "rounds": 4,
+   "approved": true,
+   "lint_green": true,
+   "planned": 42,
+   "written": 38,
+   "roundups": 0,
+   "dropped": 0,
+   "coverage": {
+    "subjects": 92,
+    "covered": 92,
+    "missing": 0,
+    "missing_keys": []
+   },
+   "dropped_by_review": [],
+   "stages_min": {
+    "執筆": 1.167722717920939,
+    "出典の判定": 2.497665297985077,
+    "組版": 1.0066770792007447,
+    "校閲": 1.0649008909861246,
+    "校閲1波": 1.0649008909861246
+   },
+   "target_min": 60,
+   "over_target": false,
+   "aborted": [
+    "shiny-song-for-prism-3rd-anniversary-login-bonus-2026",
+    "cg-cinderella-fes-blanc-2026-10",
+    "sidem-legenders-refrain-atrium-ensemble-2026"
+   ],
+   "duration_s": 672
+  }
+ ]
+}

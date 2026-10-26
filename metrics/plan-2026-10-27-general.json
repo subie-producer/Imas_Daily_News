@@ -1,0 +1,108 @@
+{
+ "decisions": {
+  "fan-handmade-outfit-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "imas-birthdays-2026-10-27",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ファン創作の細切れ話題として、culture の1本にまとめる"
+  },
+  "im-s-radio-2026-10-27": {
+   "action": "article",
+   "angle": "IM＠S RADIO 長谷川明子ゲスト回が本日20時からYouTubeで配信され、本編は誰でも視聴できる",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 50,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約。当日の開始がトリガー"
+  },
+  "imas-birthdays-2026-10-27": {
+   "action": "article",
+   "angle": "10月27日生まれの鷺沢文香・樋口円香へのお祝いムービーと、ファンの手作り衣装など界隈の話題をまとめる",
+   "purpose": "",
+   "rank": "culture",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "円香の誕生日施策そのものはシャニ面が記事化済み。ここでは記念日の盛り上がりとして扱う"
+  },
+  "portal-emergency-maintenance-ended-2026": {
+   "action": "article",
+   "angle": "10月21日からのアイドルマスター ポータル緊急メンテナンスが終了し、NEWS閲覧など基本機能が復旧、シリアルコード関連機能やアイドル名鑑などは未復旧",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "復旧範囲と未復旧機能が新しい事実"
+  },
+  "valiv-manaka-birthday-live-2026-postponed": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "ヴイアラ(dsva)の公演で、他ブランドのゲスト出演だけでは general の話題にならない。出典も二次情報で未確認"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "general-imas-birthdays-2026-10-27",
+    "brand": "general",
+    "rank": "culture",
+    "angle": "10月27日生まれの鷺沢文香・樋口円香へのお祝いムービーと、ファンの手作り衣装など界隈の話題をまとめる",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "imas-birthdays-2026-10-27",
+    "candidate_ids": [
+     "202610270222-grok-54",
+     "202610262333-explore-0"
+    ]
+   },
+   {
+    "slug": "general-portal-emergency-maintenance-ended-2026",
+    "brand": "general",
+    "rank": "small",
+    "angle": "10月21日からのアイドルマスター ポータル緊急メンテナンスが終了し、NEWS閲覧など基本機能が復旧、シリアルコード関連機能やアイドル名鑑などは未復旧",
+    "purpose": "新情報",
+    "lead_score": 30,
+    "dedup_key": "portal-emergency-maintenance-ended-2026",
+    "candidate_ids": [
+     "202610270222-grok-55"
+    ]
+   },
+   {
+    "slug": "general-im-s-radio-2026-10-27",
+    "brand": "general",
+    "rank": "small",
+    "angle": "IM＠S RADIO 長谷川明子ゲスト回が本日20時からYouTubeで配信され、本編は誰でも視聴できる",
+    "purpose": "期日の知らせ",
+    "lead_score": 50,
+    "dedup_key": "im-s-radio-2026-10-27",
+    "candidate_ids": [
+     "sched-2026-10-27-im-s-radio-2026-10-27-開始"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "valiv-manaka-birthday-live-2026-postponed",
+    "reason": "面違い",
+    "note": "ヴイアラ(dsva)の公演で、他ブランドのゲスト出演だけでは general の話題にならない。出典も二次情報で未確認"
+   }
+  ],
+  "cross_brand": []
+ }
+}

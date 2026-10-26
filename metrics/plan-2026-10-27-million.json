@@ -1,0 +1,319 @@
+{
+ "decisions": {
+  "million-scratch-second-2026": {
+   "action": "article",
+   "angle": "ミリオンライブ！スクラッチ第二弾が11月2日18:00から販売、1枚770円でハズレなし、A賞はマルチマット",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 45,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "million-rio-song-add-bug-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-idol-grand-prix-rio-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "莉緒の楽曲が本編に追加されない不具合を同じ記事で伝える"
+  },
+  "million-voice-portal-playback-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-off-time-voice-vol4-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ商品。ポータル再生の予定を同記事に統合"
+  },
+  "million-off-time-voice-vol4-2026": {
+   "action": "article",
+   "angle": "Off Time Voice Series vol.4は約19分のダミーヘッド収録ボイスドラマ付きで、後日アイマスポータルでも再生できる予定",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "既報(10/23・10/26)に無い収録内容とポータル再生予定が新事実"
+  },
+  "million-theater-talk-party-vol68-2026": {
+   "action": "article",
+   "angle": "THEATER TALK PARTY☆ユニットオフショット Vol.68が本日10月27日から開催、詳細は開催後に案内",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "million-princess-a-la-mode-purchase-2026": {
+   "action": "article",
+   "angle": "楽曲「プリンセス・アラモード」が有償ジュエル60個で楽曲購入に追加、あわせてアナザー設定ver.映像も公開",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "another-2026 を統合"
+  },
+  "million-idol-grand-prix-rio-2026": {
+   "action": "article",
+   "angle": "アイドルグランプリで百瀬莉緒をプロデュース可能に。楽曲が本編に追加されない不具合も確認",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "rio-song-add-bug を統合"
+  },
+  "million-event-limited-shop-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-platinum-star-tiara-happy-pease-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ドアデコ/いろどりパネルセットの最終日(14:59)。終了予約と同じ話題"
+  },
+  "million-event-item-exchange-additions-2026": {
+   "action": "article",
+   "angle": "イベントアイテム交換所に過去PSTロゴ付SRカードとユニットメンバー衣装が追加、プラチナスターピースで交換",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "elena-birthday-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/26号の記事とgrokの facts が同内容で、新事実もトリガーも無い"
+  },
+  "million-special-solo-records-event-setlist-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "個人投稿のみ・未確認。終了済み(10/25)"
+  },
+  "hinata-sobetsu-local-connection-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "二次情報の紹介のみで、新しい発表・日程が無い"
+  },
+  "million-princess-a-la-mode-another-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-princess-a-la-mode-purchase-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ楽曲の施策として統合"
+  },
+  "million-weekend-harlequin-video-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/23・10/26号で『週末だけのハーレクイン』PV公開を記事化済み"
+  },
+  "million-special-solo-records-guinness-event-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "個人投稿のみ・未確認。終了済み(10/25)で、ギネス認定は10/26号で記事化済み"
+  },
+  "million-special-solo-records-guinness-certificate-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "ギネス認定は10/26号で記事化済み。認定書受領は演者の投稿のみ"
+  },
+  "million-platinum-star-tiara-happy-pease-2026": {
+   "action": "article",
+   "angle": "「ハピピス♡」イベントショップの美奈子・エレナ ドアデコ/いろどりパネルセットは本日14:59まで",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "event-limited-shop を統合。イベント自体は10/25に終了済みで、セットの利用期限のみ"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "million-scratch-second-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "ミリオンライブ！スクラッチ第二弾が11月2日18:00から販売、1枚770円でハズレなし、A賞はマルチマット",
+    "purpose": "新情報",
+    "lead_score": 45,
+    "dedup_key": "million-scratch-second-2026",
+    "candidate_ids": [
+     "202610270222-explore-1"
+    ]
+   },
+   {
+    "slug": "million-off-time-voice-vol4-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "Off Time Voice Series vol.4は約19分のダミーヘッド収録ボイスドラマ付きで、後日アイマスポータルでも再生できる予定",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "million-off-time-voice-vol4-2026",
+    "candidate_ids": [
+     "202610270222-grok-7",
+     "202610270222-grok-6"
+    ]
+   },
+   {
+    "slug": "million-theater-talk-party-vol68-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "THEATER TALK PARTY☆ユニットオフショット Vol.68が本日10月27日から開催、詳細は開催後に案内",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "million-theater-talk-party-vol68-2026",
+    "candidate_ids": [
+     "202610270222-grok-8"
+    ]
+   },
+   {
+    "slug": "million-princess-a-la-mode-purchase-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "楽曲「プリンセス・アラモード」が有償ジュエル60個で楽曲購入に追加、あわせてアナザー設定ver.映像も公開",
+    "purpose": "新情報",
+    "lead_score": 25,
+    "dedup_key": "million-princess-a-la-mode-purchase-2026",
+    "candidate_ids": [
+     "202610270222-grok-9",
+     "202610270222-grok-71"
+    ]
+   },
+   {
+    "slug": "million-idol-grand-prix-rio-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "アイドルグランプリで百瀬莉緒をプロデュース可能に。楽曲が本編に追加されない不具合も確認",
+    "purpose": "新情報",
+    "lead_score": 25,
+    "dedup_key": "million-idol-grand-prix-rio-2026",
+    "candidate_ids": [
+     "202610270222-grok-10",
+     "202610270222-grok-5"
+    ]
+   },
+   {
+    "slug": "million-event-item-exchange-additions-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "イベントアイテム交換所に過去PSTロゴ付SRカードとユニットメンバー衣装が追加、プラチナスターピースで交換",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "million-event-item-exchange-additions-2026",
+    "candidate_ids": [
+     "202610270222-grok-12"
+    ]
+   },
+   {
+    "slug": "million-platinum-star-tiara-happy-pease-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "「ハピピス♡」イベントショップの美奈子・エレナ ドアデコ/いろどりパネルセットは本日14:59まで",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "million-platinum-star-tiara-happy-pease-2026",
+    "candidate_ids": [
+     "sched-2026-10-27-million-platinum-star-tiara-happy-pease-2026-終了",
+     "sched-2026-10-27-million-platinum-star-tiara-happy-pease-2026-終了-src1",
+     "sched-2026-10-27-million-platinum-star-tiara-happy-pease-2026-終了-src2",
+     "sched-2026-10-27-million-platinum-star-tiara-happy-pease-2026-終了-src3",
+     "202610270222-grok-11"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "elena-birthday-2026",
+    "reason": "既報",
+    "note": "10/26号の記事とgrokの facts が同内容で、新事実もトリガーも無い"
+   },
+   {
+    "dedup_key": "million-special-solo-records-event-setlist-2026",
+    "reason": "出典不足",
+    "note": "個人投稿のみ・未確認。終了済み(10/25)"
+   },
+   {
+    "dedup_key": "hinata-sobetsu-local-connection-2026",
+    "reason": "出典不足",
+    "note": "二次情報の紹介のみで、新しい発表・日程が無い"
+   },
+   {
+    "dedup_key": "million-weekend-harlequin-video-2026",
+    "reason": "既報",
+    "note": "10/23・10/26号で『週末だけのハーレクイン』PV公開を記事化済み"
+   },
+   {
+    "dedup_key": "million-special-solo-records-guinness-event-2026",
+    "reason": "出典不足",
+    "note": "個人投稿のみ・未確認。終了済み(10/25)で、ギネス認定は10/26号で記事化済み"
+   },
+   {
+    "dedup_key": "million-special-solo-records-guinness-certificate-2026",
+    "reason": "既報",
+    "note": "ギネス認定は10/26号で記事化済み。認定書受領は演者の投稿のみ"
+   }
+  ],
+  "cross_brand": []
+ }
+}

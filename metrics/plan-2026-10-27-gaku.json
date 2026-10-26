@@ -1,0 +1,131 @@
+{
+ "decisions": {
+  "gaku-rinami-another-idol-free-gacha-2026": {
+   "action": "article",
+   "angle": "姫崎莉波のアナザーアイドル確定無料1連ガシャが本日10時59分で終了する",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gakumasu-hanami-sisters-angel-devil-figure-2027": {
+   "action": "article",
+   "angle": "「天使と悪魔」をテーマにした花海咲季・花海佑芽のフィギュアが2027年4月からクレーンゲームに登場予定",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "出典は当事者(バンプレスト)のX。verifyはunconfirmedなので出典の足りるかは校閲で確認"
+  },
+  "curtain-damashii-new-goods-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/26号のカーテン魂4種予約記事(タペストリー4,400円等)と同じ内容。新しい事実も当日のトリガーも無い"
+  },
+  "idol-training-month-2026": {
+   "action": "article",
+   "angle": "「十王邦夫のアイドル強化月間 〜星々のきらめき〜」(十王星南・月村手毬)が明朝10月28日4時59分に終了する最終日",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-another-miracle-nanau-2026": {
+   "action": "article",
+   "angle": "ミラクルナナウ復刻ガシャ・雨夜燕アナザーガシャと麻央・広の衣装「最強のスマイルスカート」販売が10月30日10時59分まで、終了3日前",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "gaku-rinami-another-idol-free-gacha-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "姫崎莉波のアナザーアイドル確定無料1連ガシャが本日10時59分で終了する",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "gaku-rinami-another-idol-free-gacha-2026",
+    "candidate_ids": [
+     "202610270222-grok-42",
+     "sched-2026-10-27-gaku-rinami-another-idol-free-gacha-2026-終了"
+    ]
+   },
+   {
+    "slug": "gaku-gakumasu-hanami-sisters-angel-devil-figure-2027",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "「天使と悪魔」をテーマにした花海咲季・花海佑芽のフィギュアが2027年4月からクレーンゲームに登場予定",
+    "purpose": "新情報",
+    "lead_score": 25,
+    "dedup_key": "gakumasu-hanami-sisters-angel-devil-figure-2027",
+    "candidate_ids": [
+     "202610270222-grok-70"
+    ]
+   },
+   {
+    "slug": "gaku-idol-training-month-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "「十王邦夫のアイドル強化月間 〜星々のきらめき〜」(十王星南・月村手毬)が明朝10月28日4時59分に終了する最終日",
+    "purpose": "期日の知らせ",
+    "lead_score": 15,
+    "dedup_key": "idol-training-month-2026",
+    "candidate_ids": [
+     "sched-2026-10-27-idol-training-month-2026-終了",
+     "sched-2026-10-27-idol-training-month-2026-終了-src1",
+     "sched-2026-10-27-idol-training-month-2026-終了-src2",
+     "sched-2026-10-27-idol-training-month-2026-終了-src3",
+     "sched-2026-10-27-idol-training-month-2026-終了-src4",
+     "sched-2026-10-27-idol-training-month-2026-終了-src5",
+     "sched-2026-10-27-idol-training-month-2026-終了-src6",
+     "sched-2026-10-27-idol-training-month-2026-終了-src7"
+    ]
+   },
+   {
+    "slug": "gaku-another-miracle-nanau-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "ミラクルナナウ復刻ガシャ・雨夜燕アナザーガシャと麻央・広の衣装「最強のスマイルスカート」販売が10月30日10時59分まで、終了3日前",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "gaku-another-miracle-nanau-2026",
+    "candidate_ids": [
+     "sched-2026-10-27-gaku-another-miracle-nanau-2026-締切前",
+     "sched-2026-10-27-gaku-another-miracle-nanau-2026-締切前-src1",
+     "sched-2026-10-27-gaku-another-miracle-nanau-2026-締切前-src2",
+     "sched-2026-10-27-gaku-another-miracle-nanau-2026-締切前-src3",
+     "sched-2026-10-27-gaku-another-miracle-nanau-2026-締切前-src4"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "curtain-damashii-new-goods-2026",
+    "reason": "既報",
+    "note": "10/26号のカーテン魂4種予約記事(タペストリー4,400円等)と同じ内容。新しい事実も当日のトリガーも無い"
+   }
+  ],
+  "cross_brand": []
+ }
+}

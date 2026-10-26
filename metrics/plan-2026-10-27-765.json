@@ -1,0 +1,33 @@
+{
+ "decisions": {
+  "imas-radio-2026-10-27": {
+   "action": "article",
+   "angle": "IM@S RADIO長谷川明子ゲスト回が本日20時から生放送され、YouTubeで視聴できる",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "放送当日のトリガー。新事実は無く既報の日時・配信先を伝え直す"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "765-imas-radio-2026-10-27",
+    "brand": "765",
+    "rank": "small",
+    "angle": "IM@S RADIO長谷川明子ゲスト回が本日20時から生放送され、YouTubeで視聴できる",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "imas-radio-2026-10-27",
+    "candidate_ids": [
+     "sched-2026-10-27-imas-radio-2026-10-27-開始"
+    ]
+   }
+  ],
+  "dropped": [],
+  "cross_brand": []
+ }
+}

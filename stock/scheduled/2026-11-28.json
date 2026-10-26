@@ -84,5 +84,59 @@
   "src_candidate_id": "202610150225-grok-6",
   "event_date": "2026-11-28",
   "deadline": "2026-10-19"
+ },
+ {
+  "id": "sched-2026-11-28-sidem-howanuivol7-2026-発売",
+  "dedup_key": "sidem-howanuivol7-2026",
+  "brand": "sidem",
+  "subject": "SideM ほわぬいvol.6・vol.7 登場",
+  "kind": "発売",
+  "note": "ほわぬいvol.6・vol.7が登場。店舗により時期が前後することがある",
+  "reserved_on": "2026-10-27",
+  "occurs_on": "2026-11-28",
+  "title": "SideM ほわぬいvol.7が11月登場",
+  "url": "https://bsp-prize.jp/item/2815497/",
+  "source_type": "当事者",
+  "facts": [
+   "2026年11月28日（土）登場予定。",
+   "全6種、約8cm。",
+   "ラインナップ: 天ヶ瀬冬馬、御手洗翔太、伊集院北斗、握野英雄、木村龍、信玄誠司。",
+   "店舗により登場時期が前後する場合があり、取扱店舗は随時更新。",
+   "エンゲージメント: 低",
+   "言及アイドル: 天ヶ瀬冬馬、御手洗翔太、伊集院北斗、握野英雄、木村龍、信玄誠司"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "event_date": "2026-11-28",
+  "link_from": "https://x.com/sidem_goods/status/2114547489928090064",
+  "src_candidate_id": "202610270222-grok-60"
+ },
+ {
+  "id": "sched-2026-11-28-sidem-howanuivol7-2026-発売-src1",
+  "dedup_key": "sidem-howanuivol7-2026",
+  "brand": "sidem",
+  "subject": "SideM ほわぬいvol.6・vol.7 登場",
+  "kind": "発売",
+  "note": "ほわぬいvol.6・vol.7が登場。店舗により時期が前後することがある",
+  "reserved_on": "2026-10-27",
+  "occurs_on": "2026-11-28",
+  "title": "SideM ほわぬいvol.6が11月登場",
+  "url": "https://bsp-prize.jp/item/2815496/",
+  "source_type": "当事者",
+  "facts": [
+   "2026年11月28日（土）登場予定。",
+   "全5種、約8cm。",
+   "ラインナップ: 都築圭、神楽麗、天峰秀、花園百々人、眉見鋭心。",
+   "店舗により登場時期が前後する場合があり、取扱店舗は随時更新。",
+   "エンゲージメント: 低",
+   "言及アイドル: 都築圭、神楽麗、天峰秀、花園百々人、眉見鋭心"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "event_date": "2026-11-28",
+  "link_from": "https://x.com/sidem_goods/status/2114547546110718278",
+  "src_candidate_id": "202610270222-grok-61",
+  "companion_of": "sched-2026-11-28-sidem-howanuivol7-2026-発売",
+  "src_dedup_key": "sidem-howanuivol6-2026"
  }
 ]

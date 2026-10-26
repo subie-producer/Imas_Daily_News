@@ -453,6 +453,7 @@ video_ids:
     - sm18526341          # 機械で追加: nicovideo.jp/user/17835786「iM@S 6th Anniversary Live - キラ」
     - LSkzNm3AzHk         # 機械で追加: @TogawaNonoha「〖 世界のアソビ大全51 〗遊び…？いいえ、ののは vs ま」
   公式:
+    - _JOkvtePIm4         # 機械で追加: @TomoriManaka「#4【BIOHAZARD RE:2】クレア編スタート！初見で」
     - _nj8uSouS6c         # 機械で追加: @KamizuruCosmo「Wake up my music 踊ってみた #Shorts」
     - bbvPICVDOk4         # 機械で追加: @imas-official「10/21 二階堂千鶴さん Happy Birthday‼」
     - Mdyk3h5-TQE         # 機械で追加: @hatsuboshi_gakuen「初星学園 「Roar」Official Music Vide」
@@ -1099,6 +1100,7 @@ x_posts:
 
 # --- リンク元から引き継いだ種別(リンク先1つずつ。キーは pipelib.link_key)。合議がリンク元の告知と関係していると確かめたものだけ(classify_sources.inherit_from_links)。リンク先そのものの種別より強いときだけ効く ---
 link_types:
+  youtube.com/watch?v=Iu3hlREXqQo: 準公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/SideM_lantis/status/2113223847012896838(準公式)。リンク先は告知されたFRAME「ULTIMATE FLAME」2DMVの動画ペー
   asobiticket2.asobistore.jp/news/022a9df8-fb50-48fe-b21d-aea1b06953a7: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://x.com/SideM_official/status/2113561200357482713(公式)。SideMプロミ2027先行の入金期限延長の告知そのもの。リンク元と同じ内容
   recommend.jr-central.co.jp/oshi-tabi/idolmaster_sidem/: 当事者 # リンク元から引き継ぎ(合議で関係を確認): https://x.com/oshitabi_update/status/2113828027998281898(当事者)。リンク先は告知と同じJR東海×SideM旅マス企画の案内ページ
   lnk.to/S.E.M_2DMV: 準公式                       # リンク元から引き継ぎ(合議で関係を確認): https://x.com/SideM_lantis/status/2110339838813573374(準公式)。リンク先は告知と同じ楽曲Life's Side Menu!の2DMVページ

@@ -122,5 +122,94 @@
       "受付期間: 2026年10月7日(水)22:30～2026年11月18日(水)23:59"
     ],
     "verify_note": "出典ページからの写しが無い・短すぎて、URL の取り違えを確かめられない"
+  },
+  {
+    "id": "202610261232-explore-0",
+    "title": "灯里愛夏の『BIOHAZARD RE:2』配信",
+    "brand": "dsva",
+    "source_type": "未確認",
+    "url": "https://www.youtube.com/watch?v=_JOkvtePIm4",
+    "found_at": "2026-10-26T12:32:18+09:00",
+    "dedup_key": "manaka-biohazard-re2-stream-2026-10-25",
+    "facts": [
+      "2026年10月25日20:00に、灯里愛夏が『BIOHAZARD RE:2』の配信を行った。",
+      "配信タイトルは「#4【BIOHAZARD RE:2】クレア編スタート！初見でがんばります！」。",
+      "配信の概要欄に、灯里愛夏 BIRTHDAY ONLINE LIVE 2026 延期公演の公式ページへのリンクが掲載された。",
+      "配信の概要欄に、限定グッズ付き現地ライブビューイングチケットの申込リンクが掲載された。",
+      "配信の概要欄に、延期公演の配信チケット購入リンクが掲載された。",
+      "エンゲージメント: 低",
+      "言及アイドル: 灯里愛夏"
+    ],
+    "origin": "explore",
+    "via": "explore",
+    "verify": "unconfirmed",
+    "event_date": "2026-10-25",
+    "published_date": "2026-10-25",
+    "quotes": [
+      "▼現地ライブビューイング一般先着 ▷限定グッズ付き現地ライブビューイングチケット申込はこちらから！"
+    ],
+    "unbacked_facts": [
+      "2026-10-25",
+      "10月25日"
+    ],
+    "archived_at": "2026-10-26T12:32:36+09:00"
+  },
+  {
+    "id": "202610261232-explore-1",
+    "title": "FRAME「ULTIMATE FLAME」2DMV公開",
+    "brand": "sidem",
+    "source_type": "未確認",
+    "url": "https://www.youtube.com/watch?v=Iu3hlREXqQo",
+    "found_at": "2026-10-26T12:32:18+09:00",
+    "dedup_key": "sidem-ultimate-flame-2dmv-2026",
+    "facts": [
+      "FRAMEの「ULTIMATE FLAME」2DMVが公開された。",
+      "「ULTIMATE FLAME」はFRAME（握野英雄、木村 龍、信玄誠司）が歌唱する。",
+      "作詞は真崎エリカ、作曲・編曲はヒゲドライバー。",
+      "エンゲージメント: 高",
+      "言及アイドル: 握野英雄、木村 龍、信玄誠司"
+    ],
+    "origin": "explore",
+    "via": "explore",
+    "verify": "unconfirmed",
+    "event_date": "2026-10-23",
+    "published_date": "2026-10-23",
+    "quotes": [
+      "超人気スポーツ番組『SASUGA』のテーマソングを任されたFRAME。優勝経験のあるアイドルとして選手としても招待を受けることに。"
+    ],
+    "archived_at": "2026-10-26T12:32:44+09:00"
+  },
+  {
+    "id": "202610261232-explore-2",
+    "title": "シンデレラガールズ×Astromeda POPUPストア",
+    "brand": "cg",
+    "source_type": "二次情報",
+    "url": "https://akiba.reload.co.jp/articles/imascg-astromeda-store-animate-akihabara-2026/",
+    "found_at": "2026-10-26T12:32:18+09:00",
+    "dedup_key": "cg-astromeda-popup-akihabara-2026",
+    "facts": [
+      "ゲーミングPCブランド「Astromeda」と「アイドルマスター シンデレラガールズ」のコラボグッズを販売する。",
+      "期間: 2026年10月24日（土）〜11月1日（日）",
+      "会場: アニメイト秋葉原2号館 6F",
+      "住所: 東京都千代田区外神田4-3-2",
+      "入場無料（商品購入は別途）。",
+      "予約不要。会場で直接購入できる。",
+      "安部菜々、渋谷凛、島村卯月、本田未央らアイドル15名をデザインしたアイテムを販売する。",
+      "モバイルバッテリー（容量10000mAh、Type-C to Cケーブル付き）: 各7,580円（税込）",
+      "ラバーマウスパッド: 各3,980円（税込）",
+      "同じ会場・会期に「お茶犬 × Astromeda ストア」も開催される。",
+      "エンゲージメント: 中",
+      "言及アイドル: 安部菜々、渋谷凛、島村卯月、本田未央"
+    ],
+    "origin": "explore",
+    "via": "explore",
+    "verify": "unconfirmed",
+    "event_date": "2026-10-24",
+    "deadline": "2026-11-01",
+    "published_date": "2026-10-23",
+    "quotes": [
+      "ゲーミングPCブランド「Astromeda」と「アイドルマスター シンデレラガールズ」のコラボグッズが、2026年10月24日（土）から11月1日（日）までアニメイト秋葉原2号館6階の「Astromeda POPUPストア」で販売される。"
+    ],
+    "archived_at": "2026-10-26T12:32:44+09:00"
   }
 ]

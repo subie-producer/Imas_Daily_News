@@ -18612,6 +18612,11 @@ def test_source_watch(tmp: Path):
     changed11 = pipelib.merge_candidate_facts(t11, cand_row("u", u4, source_change={"from_at": "a", "to_at": "b", "articles": [f"{ed}-e"]}))
     check(changed11 and t11["source_change"]["articles"] == [f"{ed}-d", f"{ed}-e"],
           f"同じ変化の別の記事を、候補に混ぜるときに落とした: {t11['source_change']}")
+    # 新しい変化を混ぜても、前の変化の元の記事を残す(facts は両方の変化の和集合になるので。Sol 監査 b6)
+    pipelib.merge_candidate_facts(t11, cand_row("u", u4, facts=["新しい変化"],
+                                                source_change={"from_at": "b", "to_at": "c", "articles": [f"{ed}-f"]}))
+    check(t11["source_change"]["to_at"] == "c" and t11["source_change"]["articles"] == [f"{ed}-d", f"{ed}-e", f"{ed}-f"],
+          f"新しい変化を混ぜるときに前の変化の元の記事を落とした: {t11['source_change']}")
     # (5) 読めなかった見回りを読み直せたと数えない(一巡の日数に入れず、申告する)
     def fail_fetch(url, rec):
         pipelib._append_line(pipelib.failed_record(rec), json.dumps({"url": url, "final": None}) + "\n")
@@ -18731,12 +18736,16 @@ def test_article_updates_render(tmp: Path):
         ok_lines = run_lint()
         p.write_text(sw.with_update(base_text, entry).replace("本文。", "書き換えた本文。"), encoding="utf-8")
         bad_lines = run_lint()
+        # 本文の先頭の字下げ(Markdown ではコードの塊になる)を紛れ込ませても止める(Sol 監査 b6)
+        p.write_text(sw.with_update(base_text, entry).replace("\n---\n本文。", "\n---\n    本文。"), encoding="utf-8")
+        indent_lines = run_lint()
     finally:
         for k, v in saved.items():
             setattr(lint, k, v)
         sys.argv = saved_argv
     check(ok_lines == [], f"本物の lint がその後の動きの追記を止めた: {ok_lines}")
     check(bad_lines != [], "本物の lint がその後の動きの追記に紛れた本文の書き換えを通した")
+    check(indent_lines != [], "本物の lint がその後の動きの追記に紛れた本文の先頭の字下げを通した")
 
 
 def test_source_update_sessions(tmp: Path):

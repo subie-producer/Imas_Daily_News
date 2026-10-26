@@ -963,7 +963,10 @@ def main() -> int:
                             continue
                     # 例外: その後の動き(updates)の追記だけ(出典元の変更を時系列で積む。訂正欄・corrected_count は使わない)
                     if p.startswith("docs/_posts/") and diff_keys == {"updates"}:
-                        for e in update_change_errors(old, new_fm, m.group(2) if m else "", parse_frontmatter(ROOT / p)[1] or ""):
+                        # 本文は区切りの行だけを外して比べる(frontmatter の読み方は本文の先頭の空白まで外し、字下げの変化が届かない。
+                        # Sol 監査 b6)
+                        raw_body = lambda t: (lambda mm: t[mm.end():] if mm else t)(re.match(r"\A---\n.*?\n---\n", t, re.S))
+                        for e in update_change_errors(old, new_fm, raw_body(r.stdout), raw_body((ROOT / p).read_text(encoding="utf-8"))):
                             rep.error(ROOT / p, e)
                         continue
                     for e in correction_change_errors(old, new_fm):

@@ -78,7 +78,9 @@ def merge_candidate_facts(tgt: dict, c: dict) -> bool:
     # 出典の更新(source_change)は、同じページの候補に混ぜても失わない(続報の記事が元の記事を指すのに使う)。新しい変化を採る
     sc, tsc = c.get("source_change"), tgt.get("source_change") or {}
     if isinstance(sc, dict) and str(sc.get("to_at") or "") > str(tsc.get("to_at") or ""):
-        tgt["source_change"], dl_changed = sc, True
+        # 新しい変化を採るが、混ぜた facts に対応する前の変化の元の記事も残す(Sol 監査 b6)
+        both = list(dict.fromkeys([*(tsc.get("articles") or []), *(sc.get("articles") or [])]))
+        tgt["source_change"], dl_changed = {**sc, "articles": both}, True
     elif isinstance(sc, dict) and sc.get("to_at") == tsc.get("to_at"):
         # 同じ変化を別の回に別の記事で扱った: 元の記事は和集合(続報が全部の記事を指す。Sol 監査 b3)
         both = list(dict.fromkeys([*(tsc.get("articles") or []), *(sc.get("articles") or [])]))

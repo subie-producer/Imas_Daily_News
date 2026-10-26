@@ -4117,6 +4117,14 @@ def own_source_type(url: str, t: dict | None = None) -> str:
             if vid in set(ids):
                 return label
         return "未確認"
+    # チャンネルのページ(`/@<ハンドル>` とその枝 `/streams`・`/videos` …)は、そのチャンネル(video_channels)で決まる
+    # (2026-10-28: 表で公式の @KamizuruCosmo の `/streams` が未確認になった)。ハンドルは大文字小文字を区別しない
+    if is_host("youtube.com") and seg and seg[0].startswith("@") and len(seg[0]) > 1:
+        handle = urllib.parse.unquote(seg[0][1:]).lower()
+        for label, hs in (t.get("video_channels") or {}).items():
+            if handle in {str(h).lower() for h in hs or []}:
+                return label
+        return "未確認"
 
     # 3. X も**アカウント**で決まる。ただしパスの形も見る。
     #    先頭セグメントを無条件にアカウント名として読むと、

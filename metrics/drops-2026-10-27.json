@@ -31,5 +31,35 @@
    "202610260732-explore-0",
    "202610260732-explore-1"
   ]
+ },
+ "general-im-s-radio-2026-10-27": {
+  "title": "IM＠S RADIO、長谷川明子ゲスト回を本日配信",
+  "stage": "書き直しで見送り",
+  "why": "OTHER IM@S RADIOの長谷川明子ゲスト回の告知は、同じ番組・日時・視聴先を扱う記事と重複するため、本記事を紙面から外します。",
+  "candidate_ids": [
+   "sched-2026-10-27-im-s-radio-2026-10-27-開始"
+  ],
+  "settled": {
+   "rule": "P1",
+   "dup_of": [
+    "765-imas-radio-2026-10-27"
+   ]
+  }
+ },
+ "joint-tours-s2-communication-video-2026": {
+  "title": "ツアマスS2動画、舞田類と山下次郎を紹介",
+  "stage": "書き直しで見送り",
+  "why": "NOT_NEWS 記事の中核は2026年10月25日号・26日号で報じられた内容と重複し、今回の素材にも新事実や当日のトリガーがありません。",
+  "candidate_ids": [
+   "202610270222-grok-53"
+  ]
+ },
+ "sidem-legenders-refrain-atrium-ensemble-2026": {
+  "title": "SideM Legenders記念の弦楽アンサンブル動画",
+  "stage": "書き直しで見送り",
+  "why": "OTHER ファン主催の演奏企画による非公式動画を記事の中核としているため、紙面には掲載しない。",
+  "candidate_ids": [
+   "202610270222-grok-36"
+  ]
  }
 }

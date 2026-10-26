@@ -9,7 +9,7 @@ corrections: []
 candidate_ids:
 - 202610270222-grok-47
 title: C.FIRST「Sunny day, Perfect day」を宇宙としぐれういが踊る
-lede: 上水流宇宙が10月26日、しぐれういと315プロ・C.FIRSTの楽曲「Sunny day, Perfect day」を踊る動画をYouTubeで公開した。
+lede: 上水流宇宙が10月26日、しぐれういと「Sunny day, Perfect day」を踊ったとXに投稿し、動画を紹介した。
 tags:
 - SideM
 - vα-liv
@@ -28,9 +28,7 @@ title_fact_ids:
 - N1
 lede_fact_ids:
 - F1
-- F2
 - F3
-- N1
 verified_facts:
 - id: N1
   text: YouTube動画のタイトルは「『Sunny day, Perfect day / C.FIRST』踊ってみた！with 宇宙ちゃん」。動画ページに楽曲「Sunny day, Perfect day」とアーティスト「C.FIRST」が表示されている。

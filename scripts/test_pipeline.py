@@ -18503,8 +18503,36 @@ def test_source_watch(tmp: Path):
         sw.process_changes(today, sw.published(today, tmp), tmp, judge9, approve)
         d_diffs = [x for s, x in judged9 if s == "d"]
         check(d_diffs and "3500円" in d_diffs[0], f"一部の記事だけ足したあと元へ戻った変化を、その記事について失った: {judged9}")
+        # (10) セッションが締切の残りで切られて答えが無いのは時間切れ(やり直しの回数に数えない。Sol 監査 b3)
+        clock10 = {"left": 100}
+
+        def judge_cut(*a, **k):
+            clock10["left"] = 0      # 締切の残りで切られた
+            return None
+        pa.save(u4, "応募締切は10月30日。価格は3000円。F版。", via="read", at=later_at(8))
+        for _ in range(sw.MAX_TRIES + 1):
+            clock10["left"] = 100
+            sw.process_changes(today, sw.published(today, tmp), tmp, judge_cut, approve, left=lambda: clock10["left"])
+        st10 = sw.load_state()
+        check(f"{ed}-d|src.example/news/4" not in st10["tries"]
+              and (st10["marks"].get(f"{ed}-d|src.example/news/4") or {}).get("result") != "判定できなかった",
+              f"締切の残りで切られたセッションを失敗に数えた: {st10['tries']}")
+        # (12) 反映した版が原本の置き場の版の上限で消えても、控えた本文で次の変化と比べる(黙って扱い済みにしない)
+        sw.process_changes(today, sw.published(today, tmp), tmp, judge4, approve)
+        for i in range(pa.MAX_VERSIONS + 1):
+            pa.save(u4, f"応募締切は10月30日。価格は3000円。F版。閲覧{i}", via="read", at=later_at(8 + (i + 1) / 100))
+        d_mark = sw.load_state()["marks"].get(f"{ed}-d|src.example/news/4") or {}
+        n12 = len(seen4)
+        sw.process_changes(today, sw.published(today, tmp), tmp, judge4, approve)
+        check(not pa.version(u4, d_mark.get("sha")) and len(seen4) > n12 and all("F版。閲覧10" in x for x in seen4[n12:]),
+              f"反映した版が消えたあとの変化を判定しなかった: {len(seen4) - n12} {seen4[-1:]}")
     finally:
         sw.notify = saved_n
+    # (11) 同じ変化を別の回に別の記事で扱った素材は、候補に混ぜると元の記事の和集合になる(続報が全部の記事を指す)
+    t11 = cand_row("u", u4, source_change={"from_at": "a", "to_at": "b", "articles": [f"{ed}-d"]})
+    changed11 = pipelib.merge_candidate_facts(t11, cand_row("u", u4, source_change={"from_at": "a", "to_at": "b", "articles": [f"{ed}-e"]}))
+    check(changed11 and t11["source_change"]["articles"] == [f"{ed}-d", f"{ed}-e"],
+          f"同じ変化の別の記事を、候補に混ぜるときに落とした: {t11['source_change']}")
     # (5) 読めなかった見回りを読み直せたと数えない(一巡の日数に入れず、申告する)
     def fail_fetch(url, rec):
         pipelib._append_line(pipelib.failed_record(rec), json.dumps({"url": url, "final": None}) + "\n")
@@ -18515,7 +18543,7 @@ def test_source_watch(tmp: Path):
             st5 = sw.recheck(today, arts, root=tmp, fetch=fail_fetch)
     finally:
         pipelib.ROOT = saved_root
-    check(st5["tried"] == 3 and st5["checked"] == 0 and any("一巡しない" in str(a) for a in pipelib.ANOMALIES),
+    check(st5["tried"] == 3 and st5["checked"] == 0 and st5["cycle_days_actual"] is None and any("一巡しない" in str(a) for a in pipelib.ANOMALIES),
           f"読めなかった見回りを読み直せたと数えた: {st5}")
     pipelib.ANOMALIES.clear()
     # (6) 途中で終わった収集の確定に、その後の動きを足した記事も入る(作業ツリーに残さない)

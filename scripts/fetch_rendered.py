@@ -264,6 +264,11 @@ def make_driver(proxy_port: int | None = None):
     return webdriver.Chrome(options=opts)
 
 
+FINAL: dict[str, str] = {}      # 頼んだ URL → 描画し終えたときの URL(JS の転送(メンテナンス画面へ)を呼び出し側が見分ける)
+STATUS: dict[str, int] = {}     # 頼んだ URL → 描画した文書の HTTP の状態コード(404・503 などの画面を本文として扱わない。取れなければ無し)
+NAV_STATUS_JS = "const e = performance.getEntriesByType('navigation')[0]; return (e && e.responseStatus) || 0;"
+
+
 def check_documents(entries, holds: dict[str, float]) -> None:
     """ここまでの性能ログで、主フレームの文書が 429 か、控えているホストとして差し止められたなら RateLimited を上げる。"""
     import urllib.parse
@@ -337,6 +342,13 @@ def fetch(url: str, wait_css: str | None, timeout: int, holds: dict[str, float] 
         # 描画を待つあいだに JS で別の文書へ移って 429 になった・差し止めたなら、その画面を本文にしない
         drain()
         check()
+        FINAL[url] = driver.current_url
+        try:
+            st = int(driver.execute_script(NAV_STATUS_JS) or 0)
+        except Exception:       # noqa: BLE001  状態コードを取れないブラウザでも本文は返す
+            st = 0
+        if st:
+            STATUS[url] = st
         return driver.page_source
     finally:
         driver.quit()
@@ -370,6 +382,11 @@ def main() -> int:
         msg = (str(e).strip().splitlines() or [""])[0].removeprefix("Message:").strip()
         print(f"RENDER_FAILED: {type(e).__name__}: {msg}"[:300], file=sys.stderr)
         return 1
+    # 描画し終えたときの URL(呼び出し側の pipelib.render_page が RENDER_FINAL に残す。メンテナンス画面への転送の見分けに使う)
+    if FINAL.get(args.url):
+        print(f"RENDERED_URL: {FINAL[args.url]}", file=sys.stderr)
+    if STATUS.get(args.url):
+        print(f"RENDERED_STATUS: {STATUS[args.url]}", file=sys.stderr)
     if args.out:
         with open(args.out, "w", encoding="utf-8") as f:
             f.write(html)

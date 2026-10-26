@@ -27,6 +27,8 @@ TEST_TMP = Path(tempfile.mkdtemp(prefix="imas-test-"))
 tempfile.tempdir = str(TEST_TMP)
 os.environ["TMPDIR"] = str(TEST_TMP)
 os.environ["IMAS_SCRATCH"] = str(TEST_TMP / "scratch")
+# 出典ページの原本の置き場(page_archive)も一時ディレクトリへ(本体の置き場に書かない・本物の原本を読まない)
+os.environ["IMAS_PAGE_ARCHIVE"] = str(TEST_TMP / "pages")
 pipelib.CLI_BLOCK_STATE = TEST_TMP / "cli-blocked.json"
 atexit.register(shutil.rmtree, TEST_TMP, True)
 import assemble
@@ -3060,6 +3062,8 @@ def _browser_only_host_case(tmp: Path, url: str):
           f"fetch_page.py が描画でしか読まないサイトを素の取得で叩いた・描画の本文を返さない: {rc} {raw_calls} {render_calls} {got[:160]!r}")
     check(url in pipelib.fetched_urls(rec), "描画で読めたページを本文を取れたページとして記録しない")
     # 描画に失敗: 素の取得に逃げず、読めなかった(FETCH_FAILED)として返し、読めなかったページの記録に残す
+    # (上で読めた本文は原本として残り、原本があれば原本を返す: test_page_archive_*。ここは原本の無いページとして読む)
+    os.environ["IMAS_PAGE_ARCHIVE"] = str(tmp / f"no-pages-{len(list(tmp.glob('no-pages-*')))}")
     raw_calls.clear(), render_calls.clear()
     rec = tmp / "ng.jsonl"
     rc, got = run_fetch_page(render_ng, rec)
@@ -5736,6 +5740,8 @@ def test_render_failure_reaches_classify_and_verify(tmp: Path):
         cs.page_meta = lambda url: ("t", "d", "")
         profile = cs.site_profile("idolmaster-official.jp", "https://idolmaster-official.jp/news/01_1")
         plain["body"] = ""
+        # 保存の原本が無いページとして読む(あれば読み直せないときに原本を返す: test_page_archive_*)
+        os.environ["IMAS_PAGE_ARCHIVE"] = str(tmp / "no-pages")
         body2, status2 = cs.rendered_excerpt("https://idolmaster-official.jp/")
     finally:
         cs.run_group, fetch_page.fetch, fetch_page.render_page, cs.page_meta = saved
@@ -10482,7 +10488,10 @@ for rel, text in (step.get("touch") or {}).items():
     else:
         pathlib.Path(rel).write_text(text, encoding="utf-8")
 for u in step.get("fetch") or []:
-    subprocess.run([sys.executable, os.environ["FAKE_FETCH_PAGE"], u], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    r = subprocess.run([sys.executable, os.environ["FAKE_FETCH_PAGE"], u], capture_output=True, text=True)
+    if os.environ.get("FAKE_FETCH_LOG"):        # 書き手が読んだ出力(fetch_page.py の stdout)を残す
+        with open(os.environ["FAKE_FETCH_LOG"], "a", encoding="utf-8") as f:
+            f.write(json.dumps({"key": key, "url": u, "rc": r.returncode, "out": r.stdout}, ensure_ascii=False) + "\n")
 if step.get("say"):
     print(step["say"], file=sys.stderr)
 if step.get("answer") is not None:
@@ -17600,6 +17609,828 @@ def test_oncall_recover_keeps_handed_exit(tmp: Path):
               f"exit {c1}/{c2} 期待 {HANDED} {[m[:40] for m in n1]}")
 
 
+FAKE_FETCH_ARCHIVE = r'''#!/usr/bin/env python3
+# テスト用: 本物の fetch_page.py を、通信だけ差し替えて走らせる(fake_urlopen)。FAKE_PHASE=collect は全部読める(収集時点)。
+# down は相手ごとに読めない形: lantis.jp は 503 のメンテナンスの画面、down.example・fresh.example はただの 503、busy.example は 429、
+# slow.example は時間切れ、gone.example は 404、changed.example は内容が変わった(締切の延長)
+import email.message, io, os, socket, sys, urllib.error, urllib.parse
+class U:
+    status = 200
+    def __init__(self, final, body):
+        self.final, self.body = final, body
+        self.headers = type("H", (), {"get_content_charset": lambda s: "utf-8"})()
+    def geturl(self): return self.final
+    def read(self, n=None): return self.body.encode("utf-8")
+    def __enter__(self): return self
+    def __exit__(self, *a): return False
+def page(title, text):
+    return f"<html><head><title>{title}</title></head><body><p>" + text + "</p></body></html>"
+OLD = "告知の本文。販売を開始する。価格は3000円。\n応募締切は10月30日。\n" * 3
+NEW = OLD.replace("応募締切は10月30日。", "応募締切は11月3日まで延長しました。")
+def err(url, code, body):
+    h = email.message.Message()
+    h["Content-Type"] = "text/html; charset=utf-8"
+    return urllib.error.HTTPError(url, code, "x", h, io.BytesIO(body.encode("utf-8")))
+def fake_urlopen(url, phase):
+    host = urllib.parse.urlsplit(url).hostname or ""
+    if phase == "down":
+        if host == "lantis.jp":
+            raise err(url, 503, page("現在メンテナンス中です - 503 Service Temporarily Unavailable", "ご迷惑をおかけします。"))
+        if host in ("down.example", "fresh.example"):
+            raise err(url, 503, page("503 Service Unavailable", "混み合っています。"))
+        if host in ("busy.example", "facts-only.example"):
+            raise err(url, 429, page("429 Too Many Requests", "しばらくお待ちください。"))
+        if host == "slow.example":
+            raise urllib.error.URLError(socket.timeout("timed out"))
+        if host == "gone.example":
+            raise err(url, 404, page("404 Not Found", "ページが見つかりません。"))
+        if host == "changed.example":
+            return U(url, page("告知", NEW))
+    return U(url, page("告知", OLD))
+if __name__ == "__main__":
+    sys.path.insert(0, os.environ["FAKE_SCRIPTS"])
+    import fetch_page
+    phase = os.environ.get("FAKE_PHASE", "collect")
+    fetch_page.urllib.request.urlopen = lambda req, timeout=25: fake_urlopen(req.full_url, phase)
+    fetch_page.needs_render = lambda u, t: False
+    sys.exit(fetch_page.main())
+'''
+
+
+def test_page_archive_store(tmp: Path):
+    """出典ページの原本の置き場(page_archive)の形: 同じ本文は版を増やさない(確かめた時刻だけ更新)・版の数の上限(収集時点の版は残す)・
+    古いもの・大きさの上限で消す・預かりから素材に関わるページだけを写す・当番の作業ツリー(git worktree)からも本体の置き場を引く"""
+    import collect
+    import page_archive as pa
+    base = tmp / "pages"
+    u = "https://example.com/news/1"
+    v1 = pa.save(u, "本文A\n\n\n価格3000円", html=b"<p>A</p>", via="collect", at="2026-10-25T21:03:00+09:00", base=base)
+    v1b = pa.save(u + "/", "本文A\n価格3000円  ", via="read", at="2026-10-26T04:30:00+09:00", base=base)
+    vs = pa.versions(u, base)
+    check(len(vs) == 1 and v1b["n"] == v1["n"] and vs[0]["seen"] == "2026-10-26T04:30:00+09:00" and vs[0]["via"] == "collect",
+          f"同じ本文(空白・末尾の / の違いだけ)で版を増やした・確かめた時刻を残さない: {vs}")
+    check(pa.html_of(u, vs[0], base) == b"<p>A</p>" and pa.latest(u, base)["text"] == "本文A\n\n価格3000円",
+          "版の HTML・本文を読み戻せない")
+    for i in range(12):
+        pa.save(u, f"本文B{i}", via="read", at=f"2026-10-26T05:{i:02d}:00+09:00", base=base)
+    vs = pa.versions(u, base)
+    check(len(vs) == pa.MAX_VERSIONS and vs[0]["n"] == v1["n"] and pa.baseline(u, base)["text"].startswith("本文A")
+          and pa.latest(u, base)["text"] == "本文B11", f"版の上限で収集時点の版を消した・上限を守らない: {[v['n'] for v in vs]}")
+    d = "\n".join(pa.diff("締切は10月30日\n価格3000円", "締切は11月3日\n価格3000円").splitlines())
+    check("-締切は10月30日" in d and "+締切は11月3日" in d, f"新旧の違い: {d!r}")
+    # 古いもの・大きさの上限
+    old = "https://example.com/old"
+    pa.save(old, "古いページ", via="collect", at="2026-05-01T00:00:00+09:00", base=base)
+    now = __import__("datetime").datetime.fromisoformat("2026-10-26T06:00:00+09:00").timestamp()
+    r = pa.prune(now=now, base=base)
+    check(r["removed"] == 1 and not pa.versions(old, base) and pa.versions(u, base), f"120日より古い URL を消さない: {r}")
+    pa.save(old, "古いページ" * 100, via="collect", at="2026-10-01T00:00:00+09:00", base=base)
+    r = pa.prune(now=now, base=base, max_bytes=r["bytes"] + 10)
+    check(not pa.versions(old, base) and pa.versions(u, base), f"大きさの上限で、最後に読んだのが古い URL から消さない: {r}")
+    # 預かり(探索・X の確かめのセッション)から、素材に関わるページだけを収集時点の原本として写す
+    spool_root = tmp / "spool-root"
+    saved = collect.page_spool_root
+    try:
+        collect.page_spool_root = lambda: spool_root
+        wd = tmp / "explore-x"
+        (wd / collect.PAGE_SPOOL_NAME).mkdir(parents=True)
+        pa.save("https://link.example/a", "リンク先の告知", via="read", base=wd / collect.PAGE_SPOOL_NAME)
+        pa.save("https://other.example/z", "関係のないページ", via="read", base=wd / collect.PAGE_SPOOL_NAME)
+        collect.stash_pages(wd)
+        cands = [cand_row("x1", "https://x.com/a/status/1", facts=["リンク: https://link.example/a"])]
+        env_saved = os.environ.get("IMAS_PAGE_ARCHIVE")
+        os.environ["IMAS_PAGE_ARCHIVE"] = str(base)
+        try:
+            n = collect.ingest_spools(cands)
+        finally:
+            os.environ["IMAS_PAGE_ARCHIVE"] = env_saved
+    finally:
+        collect.page_spool_root = saved
+    check(n == 1 and pa.baseline("https://link.example/a", base)["via"] == "collect" and not pa.versions("https://other.example/z", base)
+          and not any(spool_root.iterdir()), f"預かりから素材に関わるページだけを写す、になっていない: {n}")
+    stub = collect.explore_workdir("t")
+    try:
+        check(f"os.environ[{pa.ARCHIVE_ENV!r}] = {str(stub / collect.PAGE_SPOOL_NAME)!r}" in (stub / "fetch_page.py").read_text(encoding="utf-8"),
+              "探索の入口が、読んだページの原本を作業ディレクトリの中に残させない")
+    finally:
+        shutil.rmtree(stub, ignore_errors=True)
+    # 当番の作業ツリー(git worktree)から走っても、本体の置き場を読む(.env も環境変数も無い)。本物の fetch_page.py を作業ツリーで走らせ、
+    # 相手が読めない(127.0.0.1 の閉じたポート)ときに本体に残した原本を返す
+    repo = Path(__file__).resolve().parent.parent
+    main_wt, wt = tmp / "ops", tmp / "oncall-wt"
+    (main_wt / "scripts").mkdir(parents=True)
+    for f in (repo / "scripts").glob("*.py"):
+        shutil.copy(f, main_wt / "scripts" / f.name)
+    shutil.copytree(repo / "prompts", main_wt / "prompts")
+    shutil.copytree(repo / "schema", main_wt / "schema")
+    g = lambda *a, cwd=main_wt: subprocess.run(["git", *a], cwd=cwd, capture_output=True, text=True, stdin=subprocess.DEVNULL)
+    g("init", "-q")
+    g("add", "-A")
+    g("-c", "user.name=t", "-c", "user.email=t@example.com", "commit", "-qm", "x")
+    r = g("worktree", "add", "-q", "--detach", str(wt), "HEAD")
+    check(r.returncode == 0, f"作業ツリーを作れない: {r.stderr}")
+    check(pa.main_worktree(wt).resolve() == main_wt.resolve() and pa.main_worktree(main_wt) == main_wt,
+          f"作業ツリーから本体を辿れない: {pa.main_worktree(wt)}")
+    dead = "http://127.0.0.1:9/news/1"
+    pa.save(dead, "本体に残した原本。価格は3000円。", via="collect", at="2026-10-25T21:03:00+09:00", base=main_wt / "metrics" / "work" / "pages")
+    env = {k: v for k, v in os.environ.items() if k not in ("IMAS_PAGE_ARCHIVE", pipelib.FETCH_RECORD_ENV, "IMAS_FETCH_PAGES")}
+    r = subprocess.run([sys.executable, str(wt / "scripts" / "fetch_page.py"), dead], cwd=wt, env=env, capture_output=True, text=True,
+                       timeout=120, stdin=subprocess.DEVNULL)
+    check(r.returncode == 0 and "本体に残した原本" in r.stdout and "いまは読み直せない" in r.stdout and "収集時点(2026-10-25 21:03)" in r.stdout,
+          f"当番の作業ツリーから本体の置き場の原本を読めない: {r.returncode} {r.stdout[:300]!r} {r.stderr[-300:]!r}")
+    # 本体の .env の PAGE_ARCHIVE が相対なら、本体の作業ツリーから解く(当番の作業ツリーからも同じ置き場。Sol 監査 r4 の later)
+    saved_root, saved_env = pa.ROOT, os.environ.pop("IMAS_PAGE_ARCHIVE", None)
+    try:
+        (main_wt / ".env").write_text("PAGE_ARCHIVE=metrics/rel-pages\n", encoding="utf-8")
+        pa.ROOT = wt
+        from_wt = pa.archive_dir()
+        pa.ROOT = main_wt
+        from_main = pa.archive_dir()
+    finally:
+        pa.ROOT = saved_root
+        if saved_env is not None:
+            os.environ["IMAS_PAGE_ARCHIVE"] = saved_env
+        (main_wt / ".env").unlink(missing_ok=True)
+    check(from_wt.resolve() == from_main.resolve() == (main_wt / "metrics" / "rel-pages").resolve(),
+          f"相対の PAGE_ARCHIVE を作業ツリーごとに別の場所へ解いた: {from_wt} / {from_main}")
+    g("worktree", "remove", "--force", str(wt))
+
+
+def test_page_archive_versions_and_reads(tmp: Path):
+    """原本の版の選び方と読み直しの細部(Sol 監査 r1):
+    - 「メンテナンス終了・締切延長」の普通の告知を、言葉と字数でメンテナンスの画面と取り違えない(転送先の URL で見分ける。描画の JS の転送も)
+    - 版は取得時刻で並べる: 裏取りのあとに探索の預かりの古い版を写しても、収集時点の原本は新しい版のまま。版の上限でも消さない
+    - 描画して確かめ直した本文も原本に残り、素材の archived_at はその版を指す
+    - 読み直しの版を、収集が同じ本文を読んだら収集の版に格上げする(収集が読んだ時刻で表示する)
+    - 預かりの置き場を読めなくても収集は止まらない
+    - 410 も 404 と同じく取り下げ・移動の可能性(読めたページに数えない)
+    - 原本が描画した本文で、いま素の本文だけ読めたときは、描画して照らし直す(描画の有無を「変わった」と見せない)"""
+    import contextlib, io, urllib.error, email.message
+    import collect
+    import fetch_page
+    import page_archive as pa
+    rec = tmp / "fetched" / "r.jsonl"
+    rec.parent.mkdir(parents=True)
+
+    def run(url, fetch=None, render=None, needs=False):
+        saved = (fetch_page.fetch, fetch_page.render_page, fetch_page.needs_render, sys.argv, os.environ.get(pipelib.FETCH_RECORD_ENV))
+        out = io.StringIO()
+        try:
+            fetch_page.FINAL_URL.clear()
+            fetch_page.fetch = fetch
+            fetch_page.render_page = render or (lambda u, t=30: (_ for _ in ()).throw(pipelib.RenderFailed("描画しない")))
+            fetch_page.needs_render = lambda u, t: needs
+            sys.argv = ["fetch_page.py", url]
+            os.environ[pipelib.FETCH_RECORD_ENV] = str(rec)
+            with contextlib.redirect_stdout(out), contextlib.redirect_stderr(io.StringIO()):
+                rc = fetch_page.main()
+        finally:
+            fetch_page.fetch, fetch_page.render_page, fetch_page.needs_render, sys.argv, env = saved
+            os.environ[pipelib.FETCH_RECORD_ENV] = env if env is not None else ""
+            if env is None:
+                os.environ.pop(pipelib.FETCH_RECORD_ENV, None)
+        return rc, out.getvalue()
+
+    def ok(text):
+        def f(u):
+            fetch_page.FINAL_URL[u] = u
+            return text
+        return f
+    # 1. 「メンテナンス」を含む短い普通の告知は、読めた本文(変わったところとして見せ、原本にも残す)
+    u = "https://audit.example/maintenance-news"
+    pa.save(u, "応募締切は10月30日。", via="collect", at="2026-10-25T21:00:00+09:00")
+    new = "定期メンテナンス終了のお知らせ。応募締切を11月3日まで延長しました。通常どおり利用できます。"
+    rc, out = run(u, ok(new))
+    check(rc == 0 and "内容が変わっている" in out and "11月3日" in out.split("--- 本文(要約なし) ---")[1]
+          and pa.latest(u)["text"] == new, f"メンテナンスの言葉を含む普通の告知を捨てた: {out[:300]!r}")
+    check(collect.keep_page("https://audit.example/new-maintenance-news", new, "<p>x</p>") is not None,
+          "収集がメンテナンスの言葉を含む普通の告知を原本に残さない")
+    # 1b. 描画で JS がメンテナンス画面へ転送したら、読めなかった(原本を返す)
+    v = "https://idolmaster-official.jp/news/01_1"
+    pa.save(v, "公式の告知。価格は3000円。", via="collect", at="2026-10-25T21:00:00+09:00")
+
+    def render_to_mainte(url, timeout=30):
+        pipelib.RENDER_FINAL[url] = "https://idolmaster-official.jp/mainte/index.html"
+        return "<html><body>メンテナンス中です</body></html>"
+    rc, out = run(v, ok("メニュー"), render_to_mainte, needs=True)
+    check(rc == 0 and "いまは読み直せない" in out and "価格は3000円" in out and "メンテナンス中です" not in out
+          and v in pipelib.maintenance_urls(rec), f"描画の転送でメンテナンス画面になったのに、案内を本文として返した: {out[:300]!r}")
+    # 2. 取得時刻で版を選ぶ(裏取り 21時 → 探索の預かり 20時を写す)
+    w = "https://audit.example/spool-news"
+    spool_root, spool = tmp / "spools", tmp / "explore-wd"
+    pa.save(w, "応募締切は10月30日。", via="read", at="2026-10-25T20:00:00+09:00", base=spool / collect.PAGE_SPOOL_NAME)
+    pa.save(w, "応募締切は11月3日。", via="collect", at="2026-10-25T21:00:00+09:00")
+    saved = collect.page_spool_root
+    try:
+        collect.page_spool_root = lambda: spool_root
+        collect.stash_pages(spool)
+        n = collect.ingest_spools([cand_row("s", w)])
+    finally:
+        collect.page_spool_root = saved
+    for i in range(12):
+        pa.save(w, f"読み直し版{i}", via="read")
+    check(n == 1 and pa.fetched_at(pa.baseline(w)) == "2026-10-25T21:00:00+09:00" and "11月3日" in pa.baseline(w)["text"],
+          f"探索の古い版を写したら、収集時点の原本が古い版へ戻った・版の上限で消えた: {pa.versions(w)}")
+    # 3. 描画して確かめ直した本文も原本に残る(素材の archived_at はその版)
+    r_url = "https://audit.example/render-news"
+    quote = "新商品を販売します。価格は3000円。応募締切は10月30日です。"
+
+    class Res:
+        status = 200
+        headers = type("H", (), {"get_content_charset": lambda s: "utf-8"})()
+        def geturl(self): return r_url
+        def read(self, n=None): return ("<html><body>" + "ニュース一覧、会社概要、お問い合わせ。" * 40 + "</body></html>").encode()
+        def __enter__(self): return self
+        def __exit__(self, *a): return False
+    c = {"url": r_url, "title": "新商品", "facts": ["価格は3000円"], "quotes": [quote], "via": "explore", "source_type": "公式"}
+    saved_c = (collect.urllib.request.urlopen, collect.needs_render, collect.rendered_or_note)
+    try:
+        collect.urllib.request.urlopen = lambda req, timeout=15: Res()
+        collect.needs_render = lambda u, t: False
+        collect.rendered_or_note = lambda u, limit=None: ("<html><body>" + quote + "</body></html>", "")
+        collect.verify([c])
+    finally:
+        collect.urllib.request.urlopen, collect.needs_render, collect.rendered_or_note = saved_c
+    b = pa.baseline(r_url) or {}
+    check(c.get("verify") == "confirmed" and "3000円" in b.get("text", "") and c.get("archived_at") == pa.fetched_at(b),
+          f"描画して確かめた本文が原本に無い・archived_at が別の版: {c.get('verify')} {c.get('archived_at')} {b.get('at')}")
+    # 4. 読み直しの版を収集の版に格上げする
+    p = "https://audit.example/promote"
+    pa.save(p, "同じ本文", via="read", at="2026-10-24T20:00:00+09:00")
+    pa.save(p, "同じ本文", via="collect", at="2026-10-25T21:00:00+09:00")
+    b = pa.baseline(p)
+    check(b["via"] == "collect" and pa.fetched_at(b) == "2026-10-25T21:00:00+09:00" and fetch_page.when(b) == "収集時点(2026-10-25 21:00)",
+          f"収集の版への格上げが読み戻しで失われた: {b}")
+    # 5. 預かりの置き場を読めなくても止まらない
+    bad = tmp / "unreadable"
+    (bad / "x").mkdir(parents=True)
+    os.chmod(bad, 0)
+    try:
+        collect.page_spool_root = lambda: bad
+        try:
+            n = collect.ingest_spools([cand_row("s", w)])
+            stopped = None
+        except Exception as e:      # noqa: BLE001
+            stopped = e
+    finally:
+        collect.page_spool_root = saved
+        os.chmod(bad, 0o755)
+    check(stopped is None and n == 0, f"預かりの置き場を読めないと収集が止まる: {stopped!r}")
+    # 6. 410 も取り下げ・移動の可能性
+    g = "https://audit.example/gone410"
+    pa.save(g, "前はあった告知。", via="collect", at="2026-10-25T21:00:00+09:00")
+    h = email.message.Message()
+
+    def gone(u):
+        raise urllib.error.HTTPError(u, 410, "Gone", h, io.BytesIO(b""))
+    rc, out = run(g, gone)
+    check(rc == 1 and out.startswith("FETCH_FAILED: HTTPError") and "取り下げ・移動の可能性" in out and "前はあった告知" in out
+          and g not in pipelib.fetched_urls(rec), f"410 を取り下げ・移動の可能性として渡さない: {out[:200]!r}")
+    # 7. 原本が描画した本文なら、素の本文だけの読み直しは描画して照らし直す(同じなら確認済み)
+    q = "https://audit.example/csr"
+    pa.save(q, "描画した本文。価格は3000円。", via="collect", at="2026-10-25T21:00:00+09:00", rendered=True)
+    rc, out = run(q, ok("メニューだけ"), lambda u, t=30: "<html><body>描画した本文。価格は3000円。</body></html>")
+    check(rc == 0 and "同じ内容を" in out and "変わったところ" not in out, f"描画の有無を内容の変化と見せた: {out[:300]!r}")
+    # 8. 描画できなければ(時間切れ)、素の本文を「変わった本文」にせず、読み直せなかったとして原本を返す(Sol 監査 r2)
+    q2 = "https://audit.example/csr-timeout"
+    pa.save(q2, "描画した本文。価格は3000円。締切は10月30日。", via="collect", at="2026-10-25T21:00:00+09:00", rendered=True)
+    rc, out = run(q2, ok("メニューだけ"))
+    check(rc == 0 and "いまは読み直せない" in out and "価格は3000円" in out and "変わったところ" not in out
+          and any(r["url"] == q2 for r in pipelib.archived_reads(rec)) and "メニューだけ" not in pa.latest(q2)["text"],
+          f"描画の時間切れを本文の変化として見せた: {out[:300]!r}")
+    # 9. 本物の render_page が描画し終えた URL(RENDERED_URL)を受け取り、JS のメンテナンス画面への転送を見分ける
+    v2 = "https://idolmaster-official.jp/news/01_2"
+    pa.save(v2, "公式の告知その2。価格は5000円。", via="collect", at="2026-10-25T21:00:00+09:00")
+    saved_rg = pipelib.run_group
+    try:
+        pipelib.run_group = lambda cmd, timeout=None, **k: subprocess.CompletedProcess(
+            cmd, 0, "<html><body>メンテナンス中です</body></html>", "RENDERED_URL: https://idolmaster-official.jp/mainte/index.html\n")
+        rc, out = run(v2, ok("メニュー"), pipelib.render_page, needs=True)
+    finally:
+        pipelib.run_group = saved_rg
+    check(rc == 0 and "いまは読み直せない" in out and "価格は5000円" in out and v2 in pipelib.maintenance_urls(rec),
+          f"描画し終えた URL を受け取らず、JS の転送を見分けない: {out[:300]!r}")
+    # 10. 収集: 探索で読めた素材は、裏取りで 503 でも探索の原本で照らし、選定から消さない(Sol 監査 r2)
+    import time as _time, types
+    e_url = "https://audit.example/explore-503"
+    e_wd = tmp / "explore-wd2"
+    quote = "探索が読んだ告知。価格は3000円。"
+    e_url2 = "https://audit.example/explore-503-other"
+    pa.save(e_url, quote, via="read", at="2026-10-26T10:00:00+09:00", base=e_wd / collect.PAGE_SPOOL_NAME)
+    pa.save(e_url2, "別の告知。価格は900円。", via="read", at="2026-10-26T10:00:00+09:00", base=e_wd / collect.PAGE_SPOOL_NAME)
+    merged: list = []
+    h503 = email.message.Message()
+
+    def fake_explores(skip_e, skip_g):
+        collect.stash_pages(e_wd)
+        # 探索の答えの写しは単数の quote(normalize が quotes にする。Sol 監査 r3 の later: quotes で渡すと写しが照合に届かなかった)
+        return [{"url": e_url, "title": "探索の告知", "facts": ["価格は3000円"], "quote": quote, "_via": "explore", "brand": "cg"},
+                {"url": e_url2, "title": "探索の告知2", "facts": ["価格は900円"], "quote": "原本に無い写しの文です。価格は900円。",
+                 "_via": "explore", "brand": "cg"}], {}
+
+    def down(req, timeout=15):
+        raise urllib.error.HTTPError(getattr(req, "full_url", req), 503, "Service Unavailable", h503, io.BytesIO(b"busy"))
+    names = ("run_explores", "page_spool_root", "merge_into_day_file", "append_metric", "needs_classify", "classify_source")
+    saved_c = {k: getattr(collect, k) for k in names}
+    saved_open = collect.urllib.request.urlopen
+    try:
+        collect.run_explores = fake_explores
+        collect.page_spool_root = lambda: tmp / "spool-root2"
+        collect.merge_into_day_file = lambda cs, day: (merged.extend(cs), len(cs))[1]
+        collect.append_metric = lambda *a, **k: None
+        collect.needs_classify = lambda cs: False
+        collect.classify_source = lambda u: "公式"
+        collect.urllib.request.urlopen = down
+        args = types.SimpleNamespace(skip_watch=True, skip_explore=False, skip_grok=True, force_grok=False, no_git=True, oncall_rerun=False)
+        with contextlib.redirect_stdout(io.StringIO()):
+            collect.run_collect(args, "2026-10-27", "unused", _time.time())
+    finally:
+        for k, v in saved_c.items():
+            setattr(collect, k, v)
+        collect.urllib.request.urlopen = saved_open
+    # 11. 原本の時刻だけが新しくなった素材の引き継ぎも、変わったとして保存させる(Sol 監査 r2 の later)
+    tgt = cand_row("m1", e_url, facts=["価格は3000円"], archived_at="2026-10-25T20:00:00+09:00")
+    check(pipelib.merge_candidate_facts(tgt, dict(tgt, archived_at="2026-10-25T21:00:00+09:00"))
+          and tgt["archived_at"] == "2026-10-25T21:00:00+09:00", "原本の時刻だけの更新を、引き継ぎが変わっていないとした")
+    got = [c for c in merged if c.get("url") == e_url]
+    got2 = [c for c in merged if c.get("url") == e_url2]
+    check(got and got[0]["verify"] == "unconfirmed" and got[0].get("archived_at") == "2026-10-26T10:00:00+09:00"
+          and "収集時点" in got[0].get("verify_note", "") and got[0].get("quotes") == [quote],
+          f"探索で読めた素材が、裏取りの 503 で failed になった: {[(c.get('verify'), c.get('verify_note'), c.get('quotes')) for c in got]}")
+    check(got2 and got2[0]["verify"] == "failed" and "収集時点" in got2[0].get("verify_note", "") and pipelib.candidate_misplaced(got2[0]),
+          f"写しが原本に無い素材を、原本で照らして通した: {[(c.get('verify'), c.get('verify_note')) for c in got2]}")
+    # 12・13. 裏取り: 描画が要るのに描画できない / 描画で JS がメンテナンス画面へ転送された → 前の原本で照らし、原本を置き換えない(Sol 監査 r3)
+    for k, (render_ret, final_to) in {"timeout": (("", "描画の時間切れ"), None),
+                                      "mainte": (("<html><body>メンテナンス中です</body></html>", ""), "https://audit.example/mainte/index.html")}.items():
+        r_url2 = f"https://audit.example/verify-{k}"
+        long_quote = "新しいアクリルスタンドを11月3日から公式ショップで受注販売します。価格は3000円です。"
+        pa.save(r_url2, "公式の本文。" + long_quote, via="collect", at="2026-10-25T20:00:00+09:00", rendered=True)
+
+        class Nav(Res):
+            def geturl(self): return r_url2
+        c2 = {"url": r_url2, "title": "告知", "facts": ["価格は3000円"], "quotes": [long_quote], "via": "explore", "source_type": "公式"}
+
+        def fake_render(u, limit=None, ret=render_ret, to=final_to):
+            if to:
+                pipelib.RENDER_FINAL[u] = to
+            return ret
+        saved_c = (collect.urllib.request.urlopen, collect.needs_render, collect.rendered_or_note)
+        try:
+            collect.urllib.request.urlopen = lambda req, timeout=15: Nav()
+            collect.needs_render = lambda u, t: True
+            collect.rendered_or_note = fake_render
+            with contextlib.redirect_stdout(io.StringIO()):
+                collect.verify([c2])
+        finally:
+            collect.urllib.request.urlopen, collect.needs_render, collect.rendered_or_note = saved_c
+        b2 = pa.baseline(r_url2) or {}
+        check(c2.get("verify") == "unconfirmed" and c2.get("archived_at") == "2026-10-25T20:00:00+09:00" and "3000円" in b2.get("text", "")
+              and len(pa.versions(r_url2)) == 1, f"{k}: 裏取りが素の本文・案内で照らして落とした・原本を置き換えた: "
+                                                 f"{c2.get('verify')} {c2.get('verify_note')} {[v['at'] for v in pa.versions(r_url2)]}")
+    # 14. 描画で JS が別のページへ移ったら、行き先を転送先として出し、原本もそこで引ける(Sol 監査 r3 の later)
+    j_old, j_new = "https://audit.example/old", "https://audit.example/new"
+
+    def render_moved(url, timeout=30):
+        pipelib.RENDER_FINAL[url] = j_new
+        return "<html><body>移った先の告知。価格は3000円。</body></html>"
+    rc, out = run(j_old, ok("メニュー"), render_moved, needs=True)
+    check(rc == 0 and f"転送先 URL: {j_new}" in out and (pa.latest(j_new) or {}).get("text", "").startswith("移った先の告知")
+          and j_new in pipelib.fetched_urls(rec), f"描画の行き先を出さない・残さない: {out[:200]!r}")
+    # 15. 定点観測: 描画が要るのに描画できなかった素の本文(ナビ)で、前の原本を置き換えない。続く裏取りも前の原本で照らす(Sol 監査 r4)
+    w_url = "https://audit.example/watch-csr"
+    w_quote = "新しいアクリルスタンドを11月3日から公式ショップで受注販売します。価格は3000円です。"
+    pa.save(w_url, "公式の本文。" + w_quote, via="collect", at="2026-10-25T20:00:00+09:00", rendered=True)
+    nav = ("<html><body>" + "ニュース一覧、会社概要、お問い合わせ。" * 3 + "</body></html>").encode()
+    saved_w = (collect.watch_get, collect.needs_render, collect.rendered_or_note, collect.urllib.request.urlopen)
+
+    class NavRes(Res):
+        def geturl(self): return w_url
+        def read(self, n=None): return nav
+    try:
+        collect.watch_get = lambda u, t: (nav, "utf-8")
+        collect.needs_render = lambda u, t: True
+        collect.rendered_or_note = lambda u, limit=None: ("", "描画の時間切れ")
+        collect.page_html_or_note(w_url, False)
+        n_after_watch = len(pa.versions(w_url))
+        cw = {"url": w_url, "title": "告知", "facts": ["価格は3000円"], "quotes": [w_quote], "via": "watch", "source_type": "公式"}
+        collect.urllib.request.urlopen = lambda req, timeout=15: NavRes()
+        with contextlib.redirect_stdout(io.StringIO()):
+            collect.verify([cw])
+    finally:
+        collect.watch_get, collect.needs_render, collect.rendered_or_note, collect.urllib.request.urlopen = saved_w
+    check(n_after_watch == 1 and len(pa.versions(w_url)) == 1 and cw.get("verify") == "unconfirmed"
+          and w_quote in (pa.baseline(w_url) or {}).get("text", ""),
+          f"定点観測が描画できなかったナビで原本を置き換えた・裏取りが落とした: {n_after_watch} {cw.get('verify')} {cw.get('verify_note')}")
+    # 16. 同じ URL の2候補: 先の候補(写しなし)はナビで粒が欠けて描画も失敗、後の候補は 503。後の候補はこの回の最初の原本で照らす
+    s_url = "https://audit.example/same-url"
+    pa.save(s_url, "公式の本文。" + w_quote, via="collect", at="2026-10-25T20:00:00+09:00", rendered=True)
+    long_nav = ("<html><body>" + "ニュース一覧、会社概要、お問い合わせ、サイトマップ。" * 40 + "</body></html>").encode()
+    calls = {"n": 0}
+
+    class LongNav(Res):
+        def geturl(self): return s_url
+        def read(self, n=None): return long_nav
+
+    def first_nav_then_503(req, timeout=15):
+        calls["n"] += 1
+        if calls["n"] == 1:
+            return LongNav()
+        raise urllib.error.HTTPError(s_url, 503, "Service Unavailable", h503, io.BytesIO(b"busy"))
+    c_first = {"url": s_url, "title": "告知", "facts": ["価格は3000円"], "via": "explore", "source_type": "公式"}
+    c_second = {"url": s_url, "title": "告知", "facts": ["価格は3000円"], "quotes": [w_quote], "via": "explore", "source_type": "公式"}
+    saved_w = (collect.needs_render, collect.rendered_or_note, collect.urllib.request.urlopen)
+    try:
+        collect.needs_render = lambda u, t: False
+        collect.rendered_or_note = lambda u, limit=None: ("", "描画の時間切れ")
+        collect.urllib.request.urlopen = first_nav_then_503
+        with contextlib.redirect_stdout(io.StringIO()):
+            collect.verify([c_first, c_second])
+    finally:
+        collect.needs_render, collect.rendered_or_note, collect.urllib.request.urlopen = saved_w
+    # 17. 括弧を含む URL の探索の原本も、預かりから写す(候補の url はそのまま鍵。facts の中の url は閉じ括弧の食い込みだけ外す。Sol 監査 r5)
+    p_url, p_link = "https://audit.example/news/item(1)", "https://audit.example/goods(2)"
+    p_wd = tmp / "explore-paren"
+    pa.save(p_url, "括弧の告知。価格は3000円。", via="read", base=p_wd / collect.PAGE_SPOOL_NAME)
+    pa.save(p_link, "リンク先の告知。", via="read", base=p_wd / collect.PAGE_SPOOL_NAME)
+    saved_sp = collect.page_spool_root
+    try:
+        collect.page_spool_root = lambda: tmp / "spool-paren"
+        collect.stash_pages(p_wd)
+        n17 = collect.ingest_spools([cand_row("p", p_url, facts=[f"リンク: {p_link})を参照"])])
+    finally:
+        collect.page_spool_root = saved_sp
+    check(n17 == 2 and pa.baseline(p_url) and pa.baseline(p_link), f"括弧を含む URL の探索の原本を写さなかった: {n17}")
+    # 17b. アポストロフィを含む URL(facts の中)も写す(Sol 監査 r7 の later)
+    a_link = "https://audit.example/news/producer's"
+    a_wd = tmp / "explore-apos"
+    pa.save(a_link, "プロデューサーの告知。", via="read", base=a_wd / collect.PAGE_SPOOL_NAME)
+    try:
+        collect.page_spool_root = lambda: tmp / "spool-apos"
+        collect.stash_pages(a_wd)
+        n17b = collect.ingest_spools([cand_row("x", "https://x.com/a/status/9", facts=[f"リンク: {a_link} を参照"])])
+    finally:
+        collect.page_spool_root = saved_sp
+    check(n17b == 1 and pa.baseline(a_link), f"アポストロフィを含む URL の探索の原本を写さなかった: {n17b}")
+    # 20. 描画の要らなかった原本でも、いまの読み直しが描画を要して描画できなければ、素の本文(ナビ)を本文の変化にせず原本を返す(Sol 監査 r7)
+    st_url = "https://audit.example/static-then-menu"
+    pa.save(st_url, "静的な本文で読めた告知。価格は3000円。締切は10月30日。" * 20, via="collect", at="2026-10-25T21:00:00+09:00")
+    n_before = len(pa.versions(st_url))
+    rc, out = run(st_url, ok("MENU"), needs=True)
+    check(rc == 0 and "いまは読み直せない" in out and "価格は3000円" in out and "変わったところ" not in out
+          and len(pa.versions(st_url)) == n_before and any(r["url"] == st_url for r in pipelib.archived_reads(rec)),
+          f"描画が要るのに描画できなかった素の本文を、本文の変化として見せた: {out[:300]!r}")
+    # 19. 読み直しの版と本文が同じでも、収集が読んだ HTML・最終 URL・状態コード・描画したかに揃える(Sol 監査 r6)
+    h_url = "https://audit.example/same-text"
+    pa.save(h_url, "申し込みはこちら。価格は3000円。", html=b"<a href='/old-apply'>x</a>", via="read", at="2026-10-24T20:00:00+09:00")
+    collect.keep_page(h_url, "申し込みはこちら。価格は3000円。", "<a href='/new-apply'>x</a>", "https://audit.example/same-text/new",
+                      203, rendered=True)
+    hb = pa.baseline(h_url)
+    check(len(pa.versions(h_url)) == 1 and hb["via"] == "collect" and hb["final"] == "https://audit.example/same-text/new"
+          and hb["status"] == 203
+          and hb["rendered"] is True and b"/new-apply" in (pa.html_of(h_url, hb) or b""),
+          f"本文が同じ収集の版に、収集が読んだ HTML・転送先を残さない: {hb.get('final')} {pa.html_of(h_url, hb)}")
+    # 18. 同じ URL の先の候補がこの回に別の本文を正常に残しても、後の候補(503)は最初の原本で照らす(控えを使う)
+    t_url = "https://audit.example/same-url-2"
+    pa.save(t_url, "公式の本文。" + w_quote, via="collect", at="2026-10-25T20:00:00+09:00")
+    other_body = ("<html><body>" + "別の本文に差し替わった告知です。受注は終了しました。" * 20 + "</body></html>").encode()
+    calls["n"] = 0
+
+    class Other(Res):
+        def geturl(self): return t_url
+        def read(self, n=None): return other_body
+
+    def ok_then_503(req, timeout=15):
+        calls["n"] += 1
+        if calls["n"] == 1:
+            return Other()
+        raise urllib.error.HTTPError(t_url, 503, "Service Unavailable", h503, io.BytesIO(b"busy"))
+    t_first = {"url": t_url, "title": "告知", "facts": ["受注は終了"], "via": "explore", "source_type": "公式"}
+    t_second = {"url": t_url, "title": "告知", "facts": ["価格は3000円"], "quotes": [w_quote], "via": "explore", "source_type": "公式"}
+    saved_w = (collect.needs_render, collect.rendered_or_note, collect.urllib.request.urlopen)
+    try:
+        collect.needs_render = lambda u, t: False
+        collect.rendered_or_note = lambda u, limit=None: ("", "描画しない")
+        collect.urllib.request.urlopen = ok_then_503
+        with contextlib.redirect_stdout(io.StringIO()):
+            collect.verify([t_first, t_second])
+    finally:
+        collect.needs_render, collect.rendered_or_note, collect.urllib.request.urlopen = saved_w
+    check(len(pa.versions(t_url)) == 2 and t_second.get("verify") == "unconfirmed"
+          and t_second.get("archived_at") == "2026-10-25T20:00:00+09:00",
+          f"後の候補を、先の候補がこの回に残した本文で照らした: {t_second.get('verify')} {t_second.get('archived_at')} {t_second.get('verify_note')}")
+    # 21. 描画の経路の HTTP の状態: 本物の fetch_rendered.py(ブラウザだけ偽物)が RENDERED_URL・RENDERED_STATUS を出し、本物の
+    # render_page が受け取り、fetch_page が 404・410 は取り下げの可能性、503・429 は読み直せないとして原本を返す。エラーの画面は残さない(Sol 監査 r8)
+    import importlib, types as _types
+    fake_mods = {n: _types.ModuleType(n) for n in ("selenium", "selenium.webdriver", "selenium.webdriver.chrome",
+                                                   "selenium.webdriver.chrome.options", "selenium.webdriver.common",
+                                                   "selenium.webdriver.common.by", "selenium.webdriver.support",
+                                                   "selenium.webdriver.support.ui", "selenium.webdriver.support.expected_conditions")}
+    fake_mods["selenium"].webdriver = fake_mods["selenium.webdriver"]
+    fake_mods["selenium.webdriver.chrome.options"].Options = object
+    fake_mods["selenium.webdriver.common.by"].By = object
+
+    class Wait:
+        def __init__(self, d, t): self.d = d
+        def until(self, fn): return fn(self.d)
+    fake_mods["selenium.webdriver.support.ui"].WebDriverWait = Wait
+    fake_mods["selenium.webdriver.support"].expected_conditions = fake_mods["selenium.webdriver.support.expected_conditions"]
+    saved_m = {n: sys.modules.get(n) for n in list(fake_mods) + ["fetch_rendered"]}
+
+    def render_child(url, status, body, moved=None):
+        """本物の fetch_rendered.main をブラウザだけ偽物で走らせ、(終了コード, 標準出力, 標準エラー)を返す"""
+        class Driver:
+            current_url = moved or url
+            page_source = body
+            def set_page_load_timeout(self, t): pass
+            def get(self, u): pass
+            def execute_script(self, js): return status if "responseStatus" in js else "complete"
+            def quit(self): pass
+        saved_argv = sys.argv
+        out, err = io.StringIO(), io.StringIO()
+        try:
+            sys.modules.update(fake_mods)
+            sys.modules.pop("fetch_rendered", None)
+            fr = importlib.import_module("fetch_rendered")
+            fr.make_driver = lambda: Driver()
+            fr.time.sleep = lambda s: None
+            sys.argv = ["fetch_rendered.py", url, "--timeout", "1"]
+            with contextlib.redirect_stdout(out), contextlib.redirect_stderr(err):
+                code = fr.main()
+        finally:
+            sys.argv = saved_argv
+            for n, m in saved_m.items():
+                if m is None:
+                    sys.modules.pop(n, None)
+                else:
+                    sys.modules[n] = m
+        return code, out.getvalue(), err.getvalue()
+    results = {}
+    for code_, body_ in ((404, "<html><body>ページが見つかりません</body></html>"), (410, "<html><body>削除されました</body></html>"),
+                         (503, "<html><body>混み合っています</body></html>"), (429, "<html><body>Too Many Requests</body></html>"),
+                         (200, "<html><body>描画した告知。価格は3000円。</body></html>")):
+        r_u = f"https://audit.example/render-status-{code_}"
+        pa.save(r_u, "収集時点の告知。価格は3000円。締切は10月30日。", via="collect", at="2026-10-25T21:00:00+09:00", rendered=True)
+        child = render_child(r_u, code_, body_, moved=f"{r_u}/moved" if code_ == 200 else None)
+        saved_rg = pipelib.run_group
+        try:
+            pipelib.run_group = lambda cmd, timeout=None, ch=child, **k: subprocess.CompletedProcess(cmd, ch[0], ch[1], ch[2])
+            rc, out = run(r_u, ok("メニュー"), pipelib.render_page, needs=True)
+        finally:
+            pipelib.run_group = saved_rg
+        results[code_] = (rc, out, child[2], len(pa.versions(r_u)), r_u in pipelib.fetched_urls(rec))
+    check(all(f"RENDERED_STATUS: {k}" in v[2] for k, v in results.items()) and f"RENDERED_URL: https://audit.example/render-status-200/moved" in results[200][2],
+          f"描画の子が描画した URL・状態コードを出さない: {[v[2][:120] for v in results.values()]}")
+    check(all(results[k][0] == 1 and "取り下げ・移動の可能性" in results[k][1] and not results[k][4] for k in (404, 410))
+          and all(results[k][0] == 0 and "いまは読み直せない" in results[k][1] and "収集時点の告知" in results[k][1] and results[k][3] == 1
+                  for k in (503, 429))
+          and results[200][0] == 0 and "描画した告知" in results[200][1] and "転送先 URL: https://audit.example/render-status-200/moved" in results[200][1],
+          f"描画したエラーの画面を本文として扱った: {({k: (v[0], v[1][:100], v[3]) for k, v in results.items()})}")
+    # 22. 素の取得の状態コードも原本に残す(fetch_page・定点観測。Sol 監査 r8 の later)
+    s203 = "https://audit.example/status-203"
+
+    class R203:
+        status = 203
+        headers = type("H", (), {"get_content_charset": lambda s: "utf-8"})()
+        def __init__(self, u): self.u = u
+        def geturl(self): return self.u
+        def read(self, n=None): return ("<html><body>" + "状態コードの告知。価格は3000円。" * 30 + "</body></html>").encode()
+        def __enter__(self): return self
+        def __exit__(self, *a): return False
+    saved_o = (fetch_page.urllib.request.urlopen, collect.urllib.request.urlopen)
+    try:
+        fetch_page.urllib.request.urlopen = lambda req, timeout=25: R203(req.full_url)
+        rc, out = run(s203, fetch_page.fetch)
+        collect.urllib.request.urlopen = lambda req, timeout=20: R203(req.full_url)
+        collect.page_html_or_note(s203 + "/watch", False)
+    finally:
+        fetch_page.urllib.request.urlopen, collect.urllib.request.urlopen = saved_o
+    check((pa.latest(s203) or {}).get("status") == 203 and (pa.latest(s203 + "/watch") or {}).get("status") == 203,
+          f"素の取得の状態コードを原本に残さない: {(pa.latest(s203) or {}).get('status')} {(pa.latest(s203 + '/watch') or {}).get('status')}")
+    # 23. メンテナンスの分岐も、裏取りの最初に控えた原本の時刻を付ける(同じ URL の先の候補がこの回に残した版を指さない。Sol 監査 r8 の later)
+    m_url = "https://audit.example/same-url-mainte"
+    pa.save(m_url, "公式の本文。" + w_quote, via="collect", at="2026-10-25T20:00:00+09:00")
+    calls["n"] = 0
+    hm = email.message.Message()
+    hm["Content-Type"] = "text/html; charset=utf-8"
+
+    class OtherM(Res):
+        def geturl(self): return m_url
+        def read(self, n=None): return other_body
+
+    def ok_then_mainte(req, timeout=15):
+        calls["n"] += 1
+        if calls["n"] == 1:
+            return OtherM()
+        raise urllib.error.HTTPError(m_url, 503, "x", hm, io.BytesIO("<title>現在メンテナンス中です</title>".encode()))
+    m_first = {"url": m_url, "title": "告知", "facts": ["受注は終了"], "via": "explore", "source_type": "公式"}
+    m_second = {"url": m_url, "title": "告知", "facts": ["価格は3000円"], "quotes": [w_quote], "via": "explore", "source_type": "公式"}
+    saved_w = (collect.needs_render, collect.rendered_or_note, collect.urllib.request.urlopen)
+    try:
+        collect.needs_render = lambda u, t: False
+        collect.rendered_or_note = lambda u, limit=None: ("", "描画しない")
+        collect.urllib.request.urlopen = ok_then_mainte
+        with contextlib.redirect_stdout(io.StringIO()):
+            collect.verify([m_first, m_second])
+    finally:
+        collect.needs_render, collect.rendered_or_note, collect.urllib.request.urlopen = saved_w
+    check(m_second.get("verify") == "unconfirmed" and "メンテナンス" in (m_second.get("verify_note") or "")
+          and m_second.get("archived_at") == "2026-10-25T20:00:00+09:00",
+          f"メンテナンスの分岐が、先の候補がこの回に残した版を指した: {m_second.get('archived_at')} {m_second.get('verify_note')}")
+    # 24. 枠だけで本文の無い描画は描画できなかったのと同じ: fetch_page は原本を返す(Sol 監査 r9)
+    e_url = "https://audit.example/empty-render"
+    pa.save(e_url, "収集時点の告知。" + w_quote, via="collect", at="2026-10-25T21:00:00+09:00", rendered=True)
+    # 素の本文は長いナビで描画は要らない見かけ → 原本が描画した本文なので描画して照らす → 描画は枠だけ
+    rc, out = run(e_url, ok("ニュース一覧、会社概要、お問い合わせ。" * 40), lambda u, t=30: "<html><head><script>x()</script></head><body> </body></html>")
+    check(rc == 0 and "いまは読み直せない" in out and w_quote in out and "変わったところ" not in out and len(pa.versions(e_url)) == 1,
+          f"本文の無い描画を本文の変化として見せた: {out[:300]!r}")
+    # 25・26. 裏取り・定点観測: 本文の無い描画・描画したエラーの画面(503)は原本にせず、裏取りは前の原本で照らす(通常の経路と browser_only)
+    empty_html = "<html><body>  </body></html>"
+    err_html = "<html><body>" + "混み合っています。しばらくしてからお試しください。" * 30 + "</body></html>"
+    for k, (b_url, ret, st) in {"empty": ("https://audit.example/verify-empty", empty_html, None),
+                                "503": ("https://audit.example/verify-503", err_html, 503),
+                                "bo-empty": ("https://www.anime-store.jp/products/verify-empty", empty_html, None),
+                                "bo-503": ("https://www.anime-store.jp/products/verify-503", err_html, 503)}.items():
+        pa.save(b_url, "公式の本文。" + w_quote, via="collect", at="2026-10-25T20:00:00+09:00", rendered=True)
+
+        class NavB(Res):
+            def geturl(self, u=b_url): return u
+            def read(self, n=None): return nav
+
+        def fake_render(u, limit=None, r=ret, s=st):
+            if s:
+                pipelib.RENDER_STATUS[u] = s
+            return r, ""
+        cb = {"url": b_url, "title": "告知", "facts": ["価格は3000円"], "quotes": [w_quote], "via": "explore", "source_type": "公式"}
+        saved_w = (collect.needs_render, collect.rendered_or_note, collect.urllib.request.urlopen)
+        try:
+            collect.needs_render = lambda u, t: True
+            collect.rendered_or_note = fake_render
+            collect.urllib.request.urlopen = lambda req, timeout=15: NavB()
+            with contextlib.redirect_stdout(io.StringIO()):
+                collect.verify([cb])
+                collect.page_html_or_note(b_url, True)       # 定点観測(描画必須の観測先)
+        finally:
+            collect.needs_render, collect.rendered_or_note, collect.urllib.request.urlopen = saved_w
+            pipelib.RENDER_STATUS.pop(b_url, None)
+        check(cb.get("verify") == "unconfirmed" and cb.get("archived_at") == "2026-10-25T20:00:00+09:00" and len(pa.versions(b_url)) == 1
+              and w_quote in (pa.baseline(b_url) or {}).get("text", ""),
+              f"{k}: 本文の無い描画・描画したエラーの画面を原本にした・裏取りで落とした: {cb.get('verify')} {cb.get('verify_note')} "
+              f"{len(pa.versions(b_url))}")
+    check(c_second.get("verify") == "unconfirmed" and not pipelib.candidate_misplaced(c_second) and len(pa.versions(s_url)) == 1,
+          f"同じ URL の先の候補がこの回に残した本文で、後の候補を照らした: {c_second.get('verify')} {c_second.get('verify_note')} "
+          f"{len(pa.versions(s_url))}")
+
+
+def test_page_archive_read_back(tmp: Path):
+    """収集で読んだ原本を残し、執筆が読み直せないときはそれで書く(編集長 2026-10-26「収集するタイミングでこういう記事だった(HTMLぺたー)
+    すりゃいいんだよ。読み直す度にアクセスするから失敗するんだよ」)。10/22・10/26 号は公式ポータルのメンテナンス・ランティスの 503・
+    Anime Store.JP の 429 で読めず、収集時に本文で確かめた素材まで見送った。
+    - 収集(裏取り・定点観測の本文)が原本を残し、素材から引ける(archived_at)
+    - 相手がメンテナンス・503・429・時間切れ → fetch_page.py は原本を取得時刻つきで返し、読めたページに数える。記事は書かれ、
+      組版が「収集時点(…)に読んだ原本に基づきます」の断り書きを付ける
+    - 内容が変わった → いまの版と新旧の違いが書き手に渡り、変化の台帳・記事の記録に残る(断り書きは付けない)
+    - 404 → 取り下げ・移動の可能性として渡し、読めたページに数えない
+    - 原本の無い URL は従来どおり(FETCH_FAILED)"""
+    import contextlib, importlib.util, io
+    import collect
+    import page_archive as pa
+    repo = Path(__file__).resolve().parent.parent
+    date = "2026-10-27"
+    urls = {"mainte": "https://lantis.jp/sidem/extra/index.html", "down": "https://down.example/news/1",
+            "busy": "https://busy.example/news/1", "slow": "https://slow.example/news/1", "changed": "https://changed.example/news/1",
+            "gone": "https://gone.example/news/1", "fresh": "https://fresh.example/news/1"}
+    fake_fetch = tmp / "spec" / "fake_fetch.py"
+    fake_fetch.parent.mkdir(parents=True)
+    fake_fetch.write_text(FAKE_FETCH_ARCHIVE, encoding="utf-8")
+    ff_spec = importlib.util.spec_from_file_location("fake_fetch_archive", fake_fetch)
+    ff = importlib.util.module_from_spec(ff_spec)
+    ff_spec.loader.exec_module(ff)
+    # 収集: 裏取り(verify)が出典を読み、原本を残す(原本の無い fresh は収集が読まなかったページ)
+    saved_c = (collect.urllib.request.urlopen, collect.fetch_rendered, collect.classify_source)
+    try:
+        collect.urllib.request.urlopen = lambda req, timeout=15: ff.fake_urlopen(req.full_url, "collect")
+        collect.fetch_rendered = lambda url, **k: ""
+        collect.classify_source = lambda u: "公式"
+        cv = collect.normalize([{"url": u, "title": f"t{k}", "facts": ["価格は3000円"], "_via": "explore"}
+                                for k, u in urls.items() if k != "fresh"])
+        collect.verify(cv)
+    finally:
+        collect.urllib.request.urlopen, collect.fetch_rendered, collect.classify_source = saved_c
+    check(all(c.get("archived_at") for c in cv) and all((pa.baseline(c["url"]) or {}).get("via") == "collect" for c in cv),
+          f"収集の裏取りが原本を残さない・素材から引けない: {[(c['url'], c.get('archived_at')) for c in cv]}")
+    (tmp / "candidates").mkdir(parents=True)
+    pipelib.write_checked(tmp / "candidates" / f"{date}.json", json.dumps(cv, ensure_ascii=False))     # archived_at は書式に合う
+    if not pa.baseline(urls["mainte"]):
+        return
+    collected_at = pa.baseline(urls["mainte"])["at"]
+    cday = __import__("datetime").datetime.fromisoformat(collected_at)
+    # 定点観測の本文(facts 化に渡すページ)も原本を残す
+    saved_w = collect.watch_get
+    try:
+        collect.watch_get = lambda u, t: (b"<html><body><p>" + ("定点観測の新着。" * 80).encode() + b"</p></body></html>", "utf-8")
+        collect.page_html_or_note("https://watch.example/news/9", False)
+    finally:
+        collect.watch_get = saved_w
+    check((pa.baseline("https://watch.example/news/9") or {}).get("via") == "collect", "定点観測の新着ページの原本を残さない")
+    # 執筆: 相手が読めない・変わった・無くなった
+    posts = tmp / "docs" / "_posts"
+    posts.mkdir(parents=True)
+    (tmp / "metrics").mkdir()
+    shutil.copytree(repo / "schema", tmp / "schema")
+    shutil.copy(repo / "source_types.yml", tmp / "source_types.yml")
+    bindir = tmp / "bin"
+    bindir.mkdir()
+    (bindir / "codex").write_text(FAKE_CODEX, encoding="utf-8")
+    os.chmod(bindir / "codex", 0o755)
+    spec_p = tmp / "spec" / "spec.json"
+    log = tmp / "spec" / "fetch-log.jsonl"
+    cands = {f"c{k}": cand_row(f"c{k}", u, facts=["販売開始", "価格は3000円"], dedup_key=k) for k, u in urls.items()}
+    para = "販売を開始する。価格は3000円。" * 6
+    ans = lambda u: {"status": "ok", "decline_code": "", "decline_detail": "", "title": "シンデレラガールズ販売開始", "title_fact_ids": ["F1"],
+                     "lede": "販売を開始する。", "lede_fact_ids": ["F1"], "tags": ["シンデレラガールズ", "販売"], "event_date": None,
+                     "new_facts": [{"id": "N1", "text": "価格は3000円", "url": u}], "addressed_issue_ids": [],
+                     "blocks": [{"markdown": para, "fact_ids": ["F1", "F2", "N1"]}], "sources": [{"url": u, "label": "告知"}]}
+    # 素材の外のページ(other)も、原本で読めたなら根拠にできる(検算が読めたページに数える)
+    # 別のホスト(facts-only.example)は verified_facts の url だけに出る: その原本の断り書きも付く(Sol 監査 r10 の later)
+    other = "https://facts-only.example/news/other"
+    pa.save(other, "別の告知。価格は3000円。", via="collect", at=collected_at)
+    spec = {f"write-{k}": [{"fetch": [u], "answer": ans(u)}] for k, u in urls.items()}
+    spec["write-busy"] = [{"fetch": [urls["busy"], other], "answer": dict(ans(urls["busy"]), new_facts=[{"id": "N1", "text": "価格は3000円", "url": other}])}]
+    spec_p.write_text(json.dumps(spec, ensure_ascii=False), encoding="utf-8")
+    plan = {"articles": [{"slug": k, "brand": "cg", "rank": "small", "angle": "知らせ", "candidate_ids": [f"c{k}"], "dedup_key": k} for k in urls]}
+    env_keys = ("FAKE_CODEX_SPEC", "FAKE_FETCH_PAGE", "FAKE_SCRIPTS", "FAKE_PHASE", "FAKE_FETCH_LOG", "IMAS_FETCH_PAGES", "PATH")
+    saved = (compose.ROOT, pipelib.ROOT, compose.classify_source, compose.storylink.prior_lookup, compose.DEADLINE,
+             {k: os.environ.get(k) for k in env_keys})
+    try:
+        compose.ROOT = pipelib.ROOT = tmp
+        compose.classify_source = pipelib.classify_source
+        compose.storylink.prior_lookup = lambda *a: (lambda *b: [])
+        compose.DEADLINE = None
+        os.environ["PATH"] = f"{bindir}{os.pathsep}{os.environ.get('PATH', '')}"
+        os.environ.pop("IMAS_FETCH_PAGES", None)
+        os.environ.update(FAKE_CODEX_SPEC=str(spec_p), FAKE_FETCH_PAGE=str(fake_fetch), FAKE_SCRIPTS=str(repo / "scripts"),
+                          FAKE_PHASE="down", FAKE_FETCH_LOG=str(log))
+        compose.FACT_MAP.clear()
+        with contextlib.redirect_stdout(io.StringIO()):
+            written, aborted = compose.write_articles(date, plan, cands, [], {}, wave=4)
+        wp = (tmp / "metrics" / "work" / date / "write-mainte-0.md").read_text(encoding="utf-8")
+    finally:
+        compose.ROOT, pipelib.ROOT, compose.classify_source, compose.storylink.prior_lookup, compose.DEADLINE, env = saved
+        for k, v in env.items():
+            if v is None:
+                os.environ.pop(k, None)
+            else:
+                os.environ[k] = v
+    seen = {}
+    for ln in log.read_text(encoding="utf-8").splitlines():
+        row = json.loads(ln)
+        seen[row["url"]] = row
+    got = {k: (seen[u]["rc"], seen[u]["out"]) for k, u in urls.items()}
+    for k in ("mainte", "down", "busy", "slow"):
+        check(got[k][0] == 0 and "いまは読み直せない" in got[k][1] and f"収集時点({collected_at[:16].replace('T', ' ')})" in got[k][1]
+              and "応募締切は10月30日" in got[k][1] and "FETCH_FAILED" not in got[k][1],
+              f"{k}: 読み直せないときに収集時点の原本を返さない: {got[k][1][:300]!r}")
+    ch = got["changed"][1]
+    check(got["changed"][0] == 0 and "内容が変わっている" in ch and "-応募締切は10月30日。" in ch and "+応募締切は11月3日まで延長しました。" in ch
+          and ch.index("--- 変わったところ ---") < ch.index("--- 本文(要約なし) ---") and "11月3日" in ch.split("--- 本文(要約なし) ---")[1],
+          f"内容が変わったページの新旧が書き手に渡らない: {ch[:400]!r}")
+    check(got["gone"][0] == 1 and got["gone"][1].startswith("FETCH_FAILED: HTTPError") and "取り下げ・移動の可能性" in got["gone"][1]
+          and "出典にしない" in got["gone"][1], f"404 を取り下げ・移動の可能性として渡さない: {got['gone'][1][:300]!r}")
+    check(got["fresh"][0] == 1 and got["fresh"][1].startswith("FETCH_FAILED: HTTPError") and "原本" not in got["fresh"][1],
+          f"原本の無いページが従来どおりでない: {got['fresh'][1][:200]!r}")
+    rec = lambda s: tmp / "metrics" / "work" / date / "fetched" / f"{s}.jsonl"     # compose.fetch_record の置き場(ROOT は tmp)
+    check(all(urls[k] in pipelib.fetched_urls(rec(k)) for k in ("mainte", "down", "busy", "slow", "changed"))
+          and other in pipelib.fetched_urls(rec("busy")) and urls["gone"] not in pipelib.fetched_urls(rec("gone"))
+          and urls["fresh"] not in pipelib.fetched_urls(rec("fresh")),
+          "原本で読んだページを読めたページに数えない・404 を数えた")
+    check(sorted(a["slug"] for a in written) == sorted(urls) and not aborted,
+          f"原本で読めた記事を書けなかった(素材の外の原本のページを検算が落とした など): {[a['slug'] for a in written]} {aborted}")
+    notice = lambda s: next((l for l in ((posts / f"{date}-{s}.md").read_text(encoding="utf-8").splitlines()
+                                          if (posts / f"{date}-{s}.md").exists() else ["(記事が無い)"]) if renderlib.NOTICE_MARK in l), "")
+    read = f"収集時点({cday.month}月{cday.day}日)"
+    want = {"mainte": f"※ランティスがメンテナンス中のため、原本は現在確認できていません(2026年10月27日時点)。内容は{read}に読んだ原本に基づきます。",
+            "down": f"※down.exampleの原本を読み直せず、現在の内容は確認できていません(2026年10月27日時点)。内容は{read}に読んだ原本に基づきます。",
+            "busy": f"※busy.example・facts-only.exampleの原本を読み直せず、現在の内容は確認できていません(2026年10月27日時点)。内容は{read}に読んだ原本に基づきます。",
+            "slow": f"※slow.exampleの原本を読み直せず、現在の内容は確認できていません(2026年10月27日時点)。内容は{read}に読んだ原本に基づきます。"}
+    have = {s: notice(s) for s in urls}
+    check(all(have[s] == f"{want[s]} {renderlib.NOTICE_MARK}" for s in want) and not any(have[s] for s in ("changed", "gone", "fresh")),
+          f"原本で書いた記事の断り書き: {have}")
+    p = posts / f"{date}-down.md"
+    check(p.exists() and renderlib.with_notice(p.read_text(encoding="utf-8"), want["down"]) == p.read_text(encoding="utf-8")
+          and renderlib.NOTICE_MARK not in renderlib.with_notice(p.read_text(encoding="utf-8"), None)
+          and compose.body_length(p) == len(para), "原本の断り書きの付け外しが冪等でない・字数に数えた")
+    # 変わった事実は続報・訂正の材料として残る(置き場の台帳と記事の記録)
+    chg = [r for r in pa.changes() if r["url"] == urls["changed"]]
+    rows = pipelib.record_rows(pipelib.changed_record(rec("changed")))
+    check(len(chg) == 1 and chg[0]["from_at"] == collected_at and rows and rows[0]["url"] == urls["changed"],
+          f"内容の変化を台帳・記事の記録に残さない: {chg} {rows}")
+    check("原本の照合" in wp and "いまは読み直せない" in wp and "取り下げ・移動の可能性" in wp, "執筆の依頼文に原本の照合の扱いが無い")
+    for role in ("revise", "review"):
+        r_ = pipelib.maintenance_rules(role)
+        check("いまは読み直せない" in r_ and "内容が変わっている" in r_ and "取り下げ・移動の可能性" in r_,
+              f"{role} の依頼文に原本の照合の扱いが無い")
+
+
 RESCUE_DATE = "2026-10-26"
 RESCUE_X = {"8.5周年": "https://x.com/imassc_official/status/2113646879494066539",
             "3周年記念ライブ": "https://x.com/imassc_prism/status/2113594635725807862"}
@@ -18344,12 +19175,36 @@ def main() -> int:
     test_bench_tools_check_read_pages(tmp / "btr")
     test_fetch_page_shows_redirect_target(tmp / "fpr")
     test_draft_key_ignores_portal_notice(tmp / "dkn")
+    test_page_archive_store(tmp / "pas")
+    test_page_archive_read_back(tmp / "parb")
+    test_page_archive_versions_and_reads(tmp / "pavr")
     check(not STRAY_WRITES, "書式で決めたファイルを write_checked を通さずに書いた本番のコード(書く前に書式で検めること): "
           + "; ".join(sorted(set(STRAY_WRITES))[:10]))
     for f in FAILS:
         print(f"  [FAIL] {f}")
     print(f"test_pipeline: {len(FAILS)} failures")
     return 1 if FAILS else 0
+
+
+def _own_archive(fn):
+    """テストごとに原本の置き場(page_archive)を空の別の置き場にする(前のテストが読んだページの原本を、次のテストの fetch_page.py が
+    「読み直せないときの原本」として返さない)"""
+    import functools
+
+    @functools.wraps(fn)
+    def run(*a, **k):
+        saved = os.environ.get("IMAS_PAGE_ARCHIVE")
+        os.environ["IMAS_PAGE_ARCHIVE"] = tempfile.mkdtemp(prefix=f"pages-{fn.__name__[:40]}-")
+        try:
+            return fn(*a, **k)
+        finally:
+            os.environ["IMAS_PAGE_ARCHIVE"] = saved
+    return run
+
+
+for _name, _fn in list(globals().items()):
+    if _name.startswith("test_") and callable(_fn):
+        globals()[_name] = _own_archive(_fn)
 
 
 if __name__ == "__main__":

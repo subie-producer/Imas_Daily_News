@@ -1,5 +1,4 @@
 {
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "source-update-review.schema.json",
   "title": "発行済み記事に足す時系列の更新の校閲(scripts/source_watch.py の校閲セッションの答え)",
   "type": "object",

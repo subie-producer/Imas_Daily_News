@@ -2,7 +2,7 @@
 slug: sidem-m-fes-2026-theme-cd
 edition: "2026-09-14"
 brand: sidem
-src: 当事者
+src: 準公式
 rank: medium
 corrected: false
 corrections: []
@@ -22,7 +22,7 @@ sources:
   type: 公式
 - label: アイドルマスター SideM MフェステーマソングCD発売記念 315プロNight! 出張版 公開録音イベント (2026-09-12)
   url: https://www.animate-onlineshop.jp/contents/fair_event/detail.php?id=116271
-  type: 当事者
+  type: 準公式
 event_date: "2026-12-02"
 title_fact_ids:
 - F1

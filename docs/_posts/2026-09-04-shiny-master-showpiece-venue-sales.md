@@ -2,7 +2,7 @@
 slug: shiny-master-showpiece-venue-sales
 edition: 2026-09-04
 brand: shiny
-src: 準公式
+src: 公式
 rank: large
 corrected: false
 corrections: []
@@ -21,7 +21,7 @@ sources:
   type: 公式
   label: アイドルマスター公式ポータル
 - url: https://shinycolors.lantis.jp/extra/260903_1/
-  type: 準公式
+  type: 公式
   label: シャニマスLantis特設サイト
 event_date: 2026-09-26
 ---

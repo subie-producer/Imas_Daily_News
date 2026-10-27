@@ -2,7 +2,7 @@
 slug: cg-toybox-ops-roundup-0906
 edition: 2026-09-06
 brand: cg
-src: 当事者
+src: 準公式
 rank: roundup
 corrected: false
 corrections: []
@@ -22,7 +22,7 @@ sources:
     type: 準公式
   - url: "https://mequrimequru.jp/kp/regulars/details/idolmaster-cinderellagirls_toybox/"
     label: メクリメクル
-    type: 当事者
+    type: 公式
 event_date: 2026-08-13
 ---
 

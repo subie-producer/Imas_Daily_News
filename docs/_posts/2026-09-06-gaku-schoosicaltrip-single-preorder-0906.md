@@ -2,7 +2,7 @@
 slug: gaku-schoosicaltrip-single-preorder-0906
 edition: 2026-09-06
 brand: gaku
-src: 準公式
+src: 公式
 rank: small
 corrected: false
 corrections: []
@@ -13,7 +13,7 @@ tags: [学マス, CD, 配信, 予約]
 sources:
   - url: https://gakuen-label.idolmaster-official.jp/news/schoosicaltrip
     label: "学マスレーベル公式サイト"
-    type: 準公式
+    type: 公式
   - url: https://idolmaster-official.jp/news/01_19743
     label: "学園アイドルマスター公式サイトの告知"
     type: 公式

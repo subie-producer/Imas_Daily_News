@@ -2,7 +2,7 @@
 slug: dsva-shinkaifes-2026-valiv-lineup-0909
 edition: 2026-09-09
 brand: dsva
-src: 当事者
+src: 公式
 rank: small
 corrected: false
 corrections: []
@@ -19,7 +19,7 @@ sources:
 - type: 公式
   label: 深海フェス2026 ヴイアラ出演
   url: https://x.com/valiv_official/status/2097295371613724939
-- type: 当事者
+- type: 公式
   label: 深海フェス2026 超・深海
   url: https://pjblue.zaiko.io/ja/item/383839
 event_date: 2026-10-17

@@ -2,7 +2,7 @@
 slug: sidem-joypolis3-phase-schedule
 edition: 2026-09-10
 brand: sidem
-src: 当事者
+src: 公式
 rank: large
 corrected: false
 corrections: []
@@ -17,7 +17,7 @@ tags:
 - コラボカフェ
 sources:
 - url: https://tokyo-joypolis.com/event/sidem_jp2026/index.html
-  type: 当事者
+  type: 公式
   label: アイドルマスター SideM in JOYPOLIS 3
 event_date: 2026-09-12
 ---

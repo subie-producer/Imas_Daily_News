@@ -1,0 +1,353 @@
+{
+ "decisions": {
+  "manaka-ramen-simulator-2026-10-26": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "終了済みの配信の二次情報(vstats)のみで、読者が取る行動も無い"
+  },
+  "va-liv-manaka-birthday-live-2026": {
+   "action": "article",
+   "angle": "灯里愛夏の延期公演が今夜19時開演。Z-aN配信とお台場のLVで視聴でき、現地LV券の受付は18時で締まる",
+   "purpose": "期日の知らせ",
+   "rank": "large",
+   "lead_score": 90,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公演当日と現地LV締切(18時)を1本に。配信先変更・アフタートーク・スペシャルゲスト関裕美は既報だが当日の視聴案内として再掲"
+  },
+  "valiv-3rd-live-meeting-special-2026": {
+   "action": "article",
+   "angle": "ヴイアラ3rdLIVE&MEETING開催記念特番を11月3日20時から公式チャンネルで配信。MCは土佐兄弟で、ヴイアライベのいいところ募集は11月2日23時59分まで",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "kamizuru-soranbushi-short-2026": {
+   "action": "article",
+   "angle": "上水流宇宙がしぐれういと『ソーラン節 自由形』を踊るショート動画をYouTubeとTikTokで公開",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "dsva-3rd-live-meeting-qonnect-as-one": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "週間配信スケジュールの告知のみで具体的な事実が無い。prior(QONNECT AS ONE)とも別の話題"
+  },
+  "kamizuru-ace-combat-8-report-2026-10-27": {
+   "action": "article",
+   "angle": "上水流宇宙がACE COMBAT 8の配信を終えライトニングを入手、初めてベテランとエリートの難易度に挑戦。次回配信は11月4日20時",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "manaka-birthday-live-fanart-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿。単体では記事にしない"
+  },
+  "manaka-birthday-live-fan-goods-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿。単体では記事にしない"
+  },
+  "manaka-birthday-live-onsite-fan-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿。単体では記事にしない"
+  },
+  "manaka-biohazard-re2-stream-2026-10-25": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "終了済みの配信。概要欄のリンクは公演の既報の内容"
+  },
+  "valiv-letora-birthday-live-2026": {
+   "action": "article",
+   "angle": "レトラ BIRTHDAY ONLINE LIVE 2026の現地LV先行抽選二次受付は10月30日23時59分まで、締切まであと2日",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "締切が3日以内に迫る当日のトリガー。prior(10/27)の事実の再掲"
+  },
+  "manaka-birthday-online-live-2026-postponed-stream": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "va-liv-manaka-birthday-live-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ延期公演の配信チケット(Z-aN、11/29まで販売)"
+  },
+  "cosmo-shigure-ui-uikosen-dance-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/26号で記事化済み、新しい事実なし"
+  },
+  "cosmo-cfirst-sunny-day-perfect-day-dance-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/27号で記事化済み、新しい事実なし"
+  },
+  "valiv-3rd-live-qonnect-as-one-2027": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/27号に同内容。先行締切は11月15日でトリガー無し"
+  },
+  "kamizuru-free-chat-2027-09-12": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "2027年9月の予定枠という未確認情報。ACE8配信は10/27号で既報"
+  },
+  "valiv-cosmo-ace-combat-8-stream-report-2026-10-21": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "facts は3rdLIVE詳細と愛夏LV一般販売で、10/27号などで既報。宇宙の配信は別主題で扱う"
+  },
+  "topic-ghfbbbcede": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "va-liv-manaka-birthday-live-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "延期公演の開幕予約"
+  },
+  "x-com-20": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "va-liv-manaka-birthday-live-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "延期公演の開始予約。先行抽選は10/4で終了済み"
+  },
+  "dsva-manaka-birthday-online-live-2026-platform-change": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "va-liv-manaka-birthday-live-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "19時開演・Z-aN生配信の開始予約"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "dsva-va-liv-manaka-birthday-live-2026",
+    "brand": "dsva",
+    "rank": "large",
+    "angle": "灯里愛夏の延期公演が今夜19時開演。Z-aN配信とお台場のLVで視聴でき、現地LV券の受付は18時で締まる",
+    "purpose": "期日の知らせ",
+    "lead_score": 90,
+    "dedup_key": "va-liv-manaka-birthday-live-2026",
+    "candidate_ids": [
+     "202610272334-explore-6",
+     "sched-2026-10-28-va-liv-manaka-birthday-live-2026-開幕",
+     "sched-2026-10-28-va-liv-manaka-birthday-live-2026-締切",
+     "sched-2026-10-28-va-liv-manaka-birthday-live-2026-締切-src1",
+     "202610270222-grok-45",
+     "sched-2026-10-28-topic-ghfbbbcede-開幕",
+     "sched-2026-10-28-x-com-20-開始",
+     "sched-2026-10-28-dsva-manaka-birthday-online-live-2026-platform-change-開始"
+    ]
+   },
+   {
+    "slug": "dsva-valiv-3rd-live-meeting-special-2026",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "ヴイアラ3rdLIVE&MEETING開催記念特番を11月3日20時から公式チャンネルで配信。MCは土佐兄弟で、ヴイアライベのいいところ募集は11月2日23時59分まで",
+    "purpose": "新情報",
+    "lead_score": 25,
+    "dedup_key": "valiv-3rd-live-meeting-special-2026",
+    "candidate_ids": [
+     "202610280221-grok-45"
+    ]
+   },
+   {
+    "slug": "dsva-kamizuru-soranbushi-short-2026",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "上水流宇宙がしぐれういと『ソーラン節 自由形』を踊るショート動画をYouTubeとTikTokで公開",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "kamizuru-soranbushi-short-2026",
+    "candidate_ids": [
+     "202610280221-grok-46"
+    ]
+   },
+   {
+    "slug": "dsva-kamizuru-ace-combat-8-report-2026-10-27",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "上水流宇宙がACE COMBAT 8の配信を終えライトニングを入手、初めてベテランとエリートの難易度に挑戦。次回配信は11月4日20時",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "kamizuru-ace-combat-8-report-2026-10-27",
+    "candidate_ids": [
+     "202610280221-grok-49"
+    ]
+   },
+   {
+    "slug": "dsva-valiv-letora-birthday-live-2026",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "レトラ BIRTHDAY ONLINE LIVE 2026の現地LV先行抽選二次受付は10月30日23時59分まで、締切まであと2日",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "valiv-letora-birthday-live-2026",
+    "candidate_ids": [
+     "202610270222-grok-44"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "manaka-ramen-simulator-2026-10-26",
+    "reason": "出典不足",
+    "note": "終了済みの配信の二次情報(vstats)のみで、読者が取る行動も無い"
+   },
+   {
+    "dedup_key": "dsva-3rd-live-meeting-qonnect-as-one",
+    "reason": "その他",
+    "note": "週間配信スケジュールの告知のみで具体的な事実が無い。prior(QONNECT AS ONE)とも別の話題"
+   },
+   {
+    "dedup_key": "manaka-birthday-live-fanart-2026",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿。単体では記事にしない"
+   },
+   {
+    "dedup_key": "manaka-birthday-live-fan-goods-2026",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿。単体では記事にしない"
+   },
+   {
+    "dedup_key": "manaka-birthday-live-onsite-fan-2026",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿。単体では記事にしない"
+   },
+   {
+    "dedup_key": "manaka-biohazard-re2-stream-2026-10-25",
+    "reason": "既報",
+    "note": "終了済みの配信。概要欄のリンクは公演の既報の内容"
+   },
+   {
+    "dedup_key": "cosmo-shigure-ui-uikosen-dance-2026",
+    "reason": "既報",
+    "note": "10/26号で記事化済み、新しい事実なし"
+   },
+   {
+    "dedup_key": "cosmo-cfirst-sunny-day-perfect-day-dance-2026",
+    "reason": "既報",
+    "note": "10/27号で記事化済み、新しい事実なし"
+   },
+   {
+    "dedup_key": "valiv-3rd-live-qonnect-as-one-2027",
+    "reason": "既報",
+    "note": "10/27号に同内容。先行締切は11月15日でトリガー無し"
+   },
+   {
+    "dedup_key": "kamizuru-free-chat-2027-09-12",
+    "reason": "出典不足",
+    "note": "2027年9月の予定枠という未確認情報。ACE8配信は10/27号で既報"
+   },
+   {
+    "dedup_key": "valiv-cosmo-ace-combat-8-stream-report-2026-10-21",
+    "reason": "既報",
+    "note": "facts は3rdLIVE詳細と愛夏LV一般販売で、10/27号などで既報。宇宙の配信は別主題で扱う"
+   }
+  ],
+  "cross_brand": []
+ }
+}

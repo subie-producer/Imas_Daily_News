@@ -1,0 +1,250 @@
+{
+ "decisions": {
+  "cinderella-last-order-hub-2026": {
+   "action": "article",
+   "angle": "シンデレラ×HUBコラボ「-The Last Order-」が11月20日から12月13日まで全国6店舗で開催される",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "cg-mayu-necklace-bound-to-you-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/22号『佐久間まゆのネックレス、予約は11月30日まで』と同内容。新事実・当日トリガー無し"
+  },
+  "cg-sega-lucky-kuji-vol-1-cute-2026": {
+   "action": "article",
+   "angle": "セガ ラッキーくじ「シンデレラガールズ Vol.1キュート」のオンライン販売が始まった",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "事実が少ないため短い記事"
+  },
+  "cg-hourglass-first-play-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-hourglass-radio-premiere-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ初公開放送"
+  },
+  "cinderella-fes-blanc-2026-10": {
+   "action": "article",
+   "angle": "シンデレラフェス ブランは10月31日23:59まで。セレクトピックアップ形式でSSレア提供割合2倍(ノワールと同時開催)",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "終了3日前。二次情報のため校閲で出典確認"
+  },
+  "cinderella-fes-noir-2026-10": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cinderella-fes-blanc-2026-10",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同時開催の同一施策"
+  },
+  "cg-cinderella-party-10th-cd-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-hourglass-radio-premiere-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "CD情報は10/24号に既報。放送記事に統合"
+  },
+  "cinderella-astromeda-popup-akihabara-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/26号に同内容。終了11/1まで4日で当日トリガー無し"
+  },
+  "mayu-bound-to-you-necklace-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/22号の佐久間まゆネックレス記事と同商品"
+  },
+  "fumika-birthday-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿1件のみ"
+  },
+  "cinderella-girls-sapporo-tv-tower-2026": {
+   "action": "article",
+   "angle": "さっぽろテレビ塔コラボでグッズ売切れ時は店頭で配送受取を受付(送料全国一律900円、発送は1〜2か月後)",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "10/25号に無い配送受注の条件が新事実。11/3まで開催"
+  },
+  "cg-rose-tea-parlor-2026-shinsaibashi": {
+   "action": "article",
+   "angle": "Rose Tea Parlorコラボカフェ心斎橋店が今日10月28日に開幕、11月4日まで(テーマ「Crescent Princess」)",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約・開幕当日。既報なし"
+  },
+  "cg-hourglass-radio-premiere-2026": {
+   "action": "article",
+   "angle": "15周年記念曲「HOURGLASS」が今夜22時のCINDERELLA PARTY!#623で初公開される",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 70,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "当日トリガー。first-playとCD主題を統合"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "cg-cinderella-last-order-hub-2026",
+    "brand": "cg",
+    "rank": "medium",
+    "angle": "シンデレラ×HUBコラボ「-The Last Order-」が11月20日から12月13日まで全国6店舗で開催される",
+    "purpose": "新情報",
+    "lead_score": 30,
+    "dedup_key": "cinderella-last-order-hub-2026",
+    "candidate_ids": [
+     "202610271834-watch-0"
+    ]
+   },
+   {
+    "slug": "cg-sega-lucky-kuji-vol-1-cute-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "セガ ラッキーくじ「シンデレラガールズ Vol.1キュート」のオンライン販売が始まった",
+    "purpose": "新情報",
+    "lead_score": 0,
+    "dedup_key": "cg-sega-lucky-kuji-vol-1-cute-2026",
+    "candidate_ids": [
+     "202610271834-explore-6"
+    ]
+   },
+   {
+    "slug": "cg-cinderella-fes-blanc-2026-10",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "シンデレラフェス ブランは10月31日23:59まで。セレクトピックアップ形式でSSレア提供割合2倍(ノワールと同時開催)",
+    "purpose": "期日の知らせ",
+    "lead_score": 0,
+    "dedup_key": "cinderella-fes-blanc-2026-10",
+    "candidate_ids": [
+     "202610260732-explore-0",
+     "202610260732-explore-1"
+    ]
+   },
+   {
+    "slug": "cg-cinderella-girls-sapporo-tv-tower-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "さっぽろテレビ塔コラボでグッズ売切れ時は店頭で配送受取を受付(送料全国一律900円、発送は1〜2か月後)",
+    "purpose": "新情報",
+    "lead_score": 0,
+    "dedup_key": "cinderella-girls-sapporo-tv-tower-2026",
+    "candidate_ids": [
+     "202610270222-grok-59"
+    ]
+   },
+   {
+    "slug": "cg-rose-tea-parlor-2026-shinsaibashi",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "Rose Tea Parlorコラボカフェ心斎橋店が今日10月28日に開幕、11月4日まで(テーマ「Crescent Princess」)",
+    "purpose": "新情報",
+    "lead_score": 0,
+    "dedup_key": "cg-rose-tea-parlor-2026-shinsaibashi",
+    "candidate_ids": [
+     "sched-2026-10-28-cg-rose-tea-parlor-2026-shinsaibashi-開幕"
+    ]
+   },
+   {
+    "slug": "cg-hourglass-radio-premiere-2026",
+    "brand": "cg",
+    "rank": "medium",
+    "angle": "15周年記念曲「HOURGLASS」が今夜22時のCINDERELLA PARTY!#623で初公開される",
+    "purpose": "期日の知らせ",
+    "lead_score": 70,
+    "dedup_key": "cg-hourglass-radio-premiere-2026",
+    "candidate_ids": [
+     "sched-2026-10-28-cg-hourglass-radio-premiere-2026-開始",
+     "202610271834-explore-7",
+     "202610260732-explore-4",
+     "202610270222-grok-56"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "cg-mayu-necklace-bound-to-you-2026",
+    "reason": "既報",
+    "note": "10/22号『佐久間まゆのネックレス、予約は11月30日まで』と同内容。新事実・当日トリガー無し"
+   },
+   {
+    "dedup_key": "cinderella-astromeda-popup-akihabara-2026",
+    "reason": "既報",
+    "note": "10/26号に同内容。終了11/1まで4日で当日トリガー無し"
+   },
+   {
+    "dedup_key": "mayu-bound-to-you-necklace-2026",
+    "reason": "既報",
+    "note": "10/22号の佐久間まゆネックレス記事と同商品"
+   },
+   {
+    "dedup_key": "fumika-birthday-2026",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿1件のみ"
+   }
+  ],
+  "cross_brand": []
+ }
+}

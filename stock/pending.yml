@@ -343,3 +343,23 @@
   subject: ミリシタ まつりのTrue Ending報酬のシルエット解除
   watch: 「近日中」とされた称号・BG GrafiXのシルエット解除とデザイン変更の実施日(判明次第 triggers へ)
   added_on: '2026-10-25'
+- dedup_key: shiny-shinyradio-password-outage-2026
+  brand: shiny
+  subject: シャニラジ「あいことば」入力停止
+  watch: 復旧の目処が立った際の公式X告知と、あいことば入力の再開(判明次第 triggers へ)
+  added_on: '2026-10-28'
+- dedup_key: gaku-achievement-loading-issue-2026
+  brand: gaku
+  subject: 学マス アチーブメント画面のロード不具合の修正
+  watch: 修正アップデートの時期・配信日(判明次第 triggers へ)
+  added_on: '2026-10-28'
+- dedup_key: gakumas-espresto-sugary-prize-2027
+  brand: gaku
+  subject: 学マス「天使と悪魔」花海咲季・花海佑芽プライズフィギュア
+  watch: 2027年4月からの正式な登場日(判明次第 triggers へ)
+  added_on: '2026-10-28'
+- dedup_key: gaku-hatsuboshi-fes-garakuta-road-2026
+  brand: gaku
+  subject: 初星フェス vol.6 開催終了日
+  watch: 10月28日11時開始(予定)の初星フェス vol.6の終了日時(判明次第 triggers へ)
+  added_on: '2026-10-28'

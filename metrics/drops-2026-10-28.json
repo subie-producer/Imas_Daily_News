@@ -1,0 +1,54 @@
+{
+ "cg-sega-lucky-kuji-vol-1-cute-2026": {
+  "title": "セガ ラッキーくじ「シンデレラガールズ Vol.1キュート」のオンライン販売が始まった",
+  "stage": "執筆で見送り",
+  "why": "NOT_NEWS 公式ポータルの掲載は2026年10月19日付で、10月28日06:00時点で新たに起きたことや今後の期日は確認できませんでした。素材と公式ニュース一覧には販売開始の告知タイトルしかなく、購入条件や販売期間も確認できません。",
+  "candidate_ids": [
+   "202610271834-explore-6"
+  ]
+ },
+ "cg-cinderella-fes-blanc-2026-10": {
+  "title": "シンデレラフェス ブランは10月31日23:59まで。セレクトピックアップ形式でSSレア提供割合2倍(ノワールと同時開催)",
+  "stage": "執筆で見送り",
+  "why": "NO_PRIMARY_SOURCE 素材の2ページはいずれも二次情報の攻略Wikiです。記事の根拠となる開催期間やガシャ内容を告知した公式・準公式ページ、またはその告知を報じた報道の本文を確認できませんでした。",
+  "candidate_ids": [
+   "202610260732-explore-0",
+   "202610260732-explore-1"
+  ]
+ },
+ "765-imas-radio-amane-yukari-2026-11": {
+  "title": "IM＠S RADIO、11月10日に天音ゆかりさん出演",
+  "stage": "書き直しで見送り",
+  "why": "OTHER 同じ次回放送告知を扱う記事が重複しているため、本記事を取り下げます。残す記事は gaku-imas-radio-next-2026-11-10 です。",
+  "candidate_ids": [
+   "202610280221-grok-10"
+  ],
+  "settled": {
+   "rule": "P1",
+   "dup_of": [
+    "gaku-imas-radio-next-2026-11-10"
+   ]
+  }
+ },
+ "joint-765-961-idol-ultimate-ticket-2027": {
+  "title": "765×961ライブ先行、受付を11月8日まで延長",
+  "stage": "校閲ブロック",
+  "why": "R16 リード(frontmatter の lede)が途中で切れている。「11月8日（日」で終わり、日付の後の時刻と「延長された」という結びが無い。機械的に壊れたテキストで、読者には意味が通らない。直前の版(c97103b より前)は「…11月8",
+  "candidate_ids": [
+   "sched-2026-10-28-765-961-idol-ultimate-ticket-2027-締切",
+   "sched-2026-10-28-765-961-idol-ultimate-ticket-2027-締切-src1",
+   "sched-2026-10-28-765-961-idol-ultimate-ticket-2027-締切-src2",
+   "202610280221-grok-62",
+   "sched-2026-10-28-765-961-xr-live-2027-締切",
+   "sched-2026-10-28-765-961-xr-live-2027-締切-src1",
+   "sched-2026-10-28-765-961-idol-ultimate-once-and-for-all-2027-締切",
+   "sched-2026-10-28-765-961-idol-ultimate-once-and-for-all-2027-締切-src1",
+   "sched-2026-10-28-765-961-idol-ultimate-2027-締切",
+   "sched-2026-10-28-765-961-idol-ultimate-2027-締切-src1",
+   "202610272334-watch-0",
+   "202610280221-explore-0",
+   "202610270222-grok-58",
+   "sched-2026-10-28-765-961-idol-ultimate-2027-ticket-締切"
+  ]
+ }
+}

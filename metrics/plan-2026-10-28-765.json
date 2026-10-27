@@ -1,0 +1,89 @@
+{
+ "decisions": {
+  "imas-radio-4-hasegawa-2026": {
+   "action": "article",
+   "angle": "IM＠S RADIO長谷川明子出演回の本編アーカイブとメンバー限定アフタートークの視聴先が公開された",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "10/27の記事は放送当日の告知。アーカイブ公開は新しい事実"
+  },
+  "imas-radio-amane-yukari-2026-11": {
+   "action": "article",
+   "angle": "IM＠S RADIO次回は11月10日(火)20時から、ゲストは天音ゆかりさん",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "次回放送とゲストの新発表"
+  },
+  "765-961-idol-ultimate-once-and-for-all-2027": {
+   "action": "cross_brand",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "joint-765-961-idol-ultimate-ticket-2027",
+   "reason": "",
+   "note": "765×961の共同主催ライブ。アソビストアプレミアム会員先行の本日締切は合同面が記事化済み"
+  },
+  "765-961-idol-ultimate-2027": {
+   "action": "cross_brand",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "joint-765-961-idol-ultimate-ticket-2027",
+   "reason": "",
+   "note": "同じ受付ページ・同じ本日23:59締切で、合同面の記事と同じ施策"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "765-imas-radio-4-hasegawa-2026",
+    "brand": "765",
+    "rank": "small",
+    "angle": "IM＠S RADIO長谷川明子出演回の本編アーカイブとメンバー限定アフタートークの視聴先が公開された",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "imas-radio-4-hasegawa-2026",
+    "candidate_ids": [
+     "202610280221-grok-9"
+    ]
+   },
+   {
+    "slug": "765-imas-radio-amane-yukari-2026-11",
+    "brand": "765",
+    "rank": "small",
+    "angle": "IM＠S RADIO次回は11月10日(火)20時から、ゲストは天音ゆかりさん",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "imas-radio-amane-yukari-2026-11",
+    "candidate_ids": [
+     "202610280221-grok-10"
+    ]
+   }
+  ],
+  "dropped": [],
+  "cross_brand": [
+   {
+    "slug": "joint-765-961-idol-ultimate-ticket-2027",
+    "dedup_key": "765-961-idol-ultimate-once-and-for-all-2027",
+    "note": "765×961の共同主催ライブ。アソビストアプレミアム会員先行の本日締切は合同面が記事化済み"
+   },
+   {
+    "slug": "joint-765-961-idol-ultimate-ticket-2027",
+    "dedup_key": "765-961-idol-ultimate-2027",
+    "note": "同じ受付ページ・同じ本日23:59締切で、合同面の記事と同じ施策"
+   }
+  ]
+ }
+}

@@ -1,0 +1,200 @@
+{
+ "recheck": [
+  {
+   "at": "2026-10-28T02:23:28+09:00",
+   "cap": 60,
+   "parallel": 4,
+   "runs_per_day": 5,
+   "cycle_days": 0.12,
+   "oldest_age_h": 2.8,
+   "targets": 37,
+   "chosen": 37,
+   "tried": 37,
+   "checked": 34,
+   "changed": 15,
+   "elapsed_s": 42,
+   "cycle_days_actual": 0.22
+  }
+ ],
+ "collect": [
+  {
+   "at": "2026-10-28T02:29:27+09:00",
+   "edition": "2026-10-28",
+   "started_at": "2026-10-28T02:00:45+09:00",
+   "trigger": "timer",
+   "watch": {
+    "stats": {
+     "imas-portal": {
+      "found": 12,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-sidem": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-shiny": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-million": {
+      "found": 9,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "lantis-shiny": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "lantis-sidem": {
+      "error": "HTTP Error 503: Service Temporarily Unavailable",
+      "http": 503
+     },
+     "columbia-imas": {
+      "found": 351,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "bnam-tours": {
+      "found": 69,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "imasnews765": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     }
+    },
+    "new": 0,
+    "facted": 0,
+    "deferred": 0,
+    "blocked": 0,
+    "unavailable": 0
+   },
+   "per_query": {
+    "explore:765as": 1,
+    "explore:cinderella": 0,
+    "explore:million": 2,
+    "explore:shiny": 1,
+    "explore:sidem": 0,
+    "explore:gakuen": 3,
+    "explore:dsva": 0,
+    "explore:joint-other": 0,
+    "explore:trend": 1,
+    "grok:765as": 3,
+    "grok:cinderella": 0,
+    "grok:million": 13,
+    "grok:shiny": 6,
+    "grok:sidem": 4,
+    "grok:gakuen": 10,
+    "grok:dsva": 5,
+    "grok:joint-other": 9,
+    "grok:trend": 6,
+    "grok_searches:general": 7,
+    "grok_searches:765": 6,
+    "grok_searches:dsva": 13,
+    "grok_searches:gaku": 6,
+    "grok_searches:cg": 3,
+    "grok_searches:shiny": 7,
+    "grok_searches:joint": 7,
+    "grok_searches:million": 10,
+    "grok_searches:sidem": 5
+   },
+   "normalized": 64,
+   "added": 60,
+   "verify": {
+    "confirmed": 43,
+    "unconfirmed": 18,
+    "failed": 3
+   },
+   "duration_s": 1722
+  }
+ ],
+ "compose": [
+  {
+   "at": "2026-10-28T03:47:02+09:00",
+   "edition": "2026-10-28",
+   "rounds": 5,
+   "approved": true,
+   "lint_green": true,
+   "planned": 50,
+   "written": 43,
+   "roundups": 0,
+   "dropped": 0,
+   "coverage": {
+    "subjects": 150,
+    "covered": 150,
+    "missing": 0,
+    "missing_keys": []
+   },
+   "dropped_by_review": [
+    "dsva-va-liv-manaka-birthday-live-2026",
+    "joint-765-961-idol-ultimate-ticket-2027"
+   ],
+   "stages_min": {
+    "選定": 2.217009707291921,
+    "執筆": 7.243740340073903,
+    "出典の判定": 1.3648193875948589,
+    "組版": 1.2218201160430908,
+    "校閲": 1.2983232339223225,
+    "校閲1波": 1.2983232339223225
+   },
+   "target_min": 60,
+   "over_target": false,
+   "aborted": [
+    "cg-sega-lucky-kuji-vol-1-cute-2026",
+    "cg-cinderella-fes-blanc-2026-10",
+    "cg-cinderella-girls-sapporo-tv-tower-2026",
+    "sidem-315-pro-night-public-recording-goods-2026",
+    "765-imas-radio-amane-yukari-2026-11"
+   ],
+   "duration_s": 2820
+  },
+  {
+   "at": "2026-10-28T04:21:10+09:00",
+   "edition": "2026-10-28",
+   "rounds": 5,
+   "approved": true,
+   "lint_green": true,
+   "planned": 50,
+   "written": 46,
+   "roundups": 0,
+   "dropped": 0,
+   "coverage": {
+    "subjects": 150,
+    "covered": 150,
+    "missing": 0,
+    "missing_keys": []
+   },
+   "dropped_by_review": [
+    "joint-765-961-idol-ultimate-ticket-2027"
+   ],
+   "stages_min": {
+    "執筆": 1.2421403606732686,
+    "出典の判定": 0.14231370290120443,
+    "組版": 1.1093350251515706,
+    "校閲": 1.1542662262916565,
+    "校閲1波": 1.1542662262916565
+   },
+   "target_min": 60,
+   "over_target": false,
+   "aborted": [
+    "cg-sega-lucky-kuji-vol-1-cute-2026",
+    "cg-cinderella-fes-blanc-2026-10"
+   ],
+   "duration_s": 921
+  }
+ ]
+}

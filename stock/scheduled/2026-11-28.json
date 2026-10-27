@@ -138,5 +138,29 @@
   "src_candidate_id": "202610270222-grok-61",
   "companion_of": "sched-2026-11-28-sidem-howanuivol7-2026-発売",
   "src_dedup_key": "sidem-howanuivol6-2026"
+ },
+ {
+  "id": "sched-2026-11-28-jewel-sale-2026-締切前",
+  "dedup_key": "jewel-sale-2026",
+  "brand": "gaku",
+  "subject": "学マス ジュエルセール 終了まであと3日",
+  "kind": "締切前",
+  "note": "12月1日10:59の終了前に、ジュエル12,300個を9,800円で購入できる",
+  "reserved_on": "2026-10-28",
+  "occurs_on": "2026-12-01",
+  "title": "お得なジュエルセール",
+  "url": "https://x.com/gkmas_official/status/2112509076924244385",
+  "source_type": "公式",
+  "facts": [
+   "ジュエル12,300個を9,800円で販売。",
+   "購入は1人1回まで。",
+   "開催期間: 10/28(水) 11:00～12/1(火) 10:59(予定)",
+   "詳細はゲーム内お知らせで確認するよう案内。",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "deadline": "2026-12-01",
+  "src_candidate_id": "sched-2026-10-28-jewel-sale-2026-開始"
  }
 ]

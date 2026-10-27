@@ -8036,6 +8036,339 @@ def test_update_clis(tmp: Path):
             os.environ["HOME"] = saved_home
 
 
+def test_update_cloudflared(tmp: Path):
+    """cloudflared の月1回の更新(編集長 2026-10-28「毎月1日に定期としましょう」): release の sha256 と照らしてから入れ替え、
+    トンネルがつながらなければ旧版に戻して異常にする。同じ版なら何もしない。"""
+    import datetime
+    import hashlib
+    import update_cloudflared as ucf
+    from pipelib import JST
+    tmp.mkdir(parents=True, exist_ok=True)
+    name = ucf.asset_name()
+    new_bytes = b"VER:2026.10.5"
+    sha = hashlib.sha256(new_bytes).hexdigest()
+    body = (f"cloudflared-fips-{name[len('cloudflared-'):]}: {'0' * 64}\n"
+            f"{name}: {sha}\n{name}.deb: {'1' * 64}\n")
+    check(ucf.release_sha256(body, name) == sha, f"別名(fips・.deb)の sha256 を取り違えた: {ucf.release_sha256(body, name)}")
+    check(ucf.release_sha256("no hashes", name) == "", "本文に無い sha256 を返した")
+    notes, verify = [], []
+    payload = {"bytes": new_bytes}
+    rel = {"tag_name": "2026.10.5", "body": body, "assets": [{"name": name, "browser_download_url": "https://example.invalid/x"}]}
+    saved = (ucf.BIN, ucf.installed_version, ucf.latest_release, ucf.download, ucf.restart_and_verify, ucf.notify,
+             ucf.diagnose_anomalies, ucf.now_jst)
+    def fake_version(path=None):
+        p = Path(path or ucf.BIN)
+        t = p.read_bytes().decode(errors="replace") if p.exists() else ""
+        return t[4:] if t.startswith("VER:") else ""
+    def run_main():
+        saved_argv, sys.argv = sys.argv, ["update_cloudflared.py"]
+        try:
+            return ucf.main()
+        finally:
+            sys.argv = saved_argv
+    try:
+        ucf.BIN = tmp / "bin" / "cloudflared"
+        ucf.BIN.parent.mkdir()
+        # 実時刻が発行の時間帯でもテストが待たないよう、定時の 01:00 に固定する
+        ucf.now_jst = lambda: datetime.datetime(2026, 11, 1, 1, 0, tzinfo=JST)
+        ucf.installed_version = fake_version
+        ucf.latest_release = lambda: rel
+        ucf.download = lambda url, dest: dest.write_bytes(payload["bytes"])
+        ucf.restart_and_verify = lambda: verify.pop(0)
+        ucf.notify = lambda job, msg, ok=True, require=False, ledger=True: notes.append((msg, ok)) or True
+        ucf.diagnose_anomalies = lambda *a, **k: False
+        # 同じ版: 取らない・再起動しない
+        ucf.BIN.write_bytes(b"VER:2026.10.5")
+        check(run_main() == 0 and not notes, f"同じ版で何かした: {notes}")
+        # sha256 が違う: 入れ替えない
+        ucf.BIN.write_bytes(b"VER:2026.10.4")
+        payload["bytes"] = b"VER:2026.10.5-tampered"
+        check(run_main() == 1 and ucf.BIN.read_bytes() == b"VER:2026.10.4" and any(not ok and "sha256" in m for m, ok in notes),
+              f"sha256 の違う実行ファイルを入れた: {ucf.BIN.read_bytes()} {notes}")
+        # つながった: 入れ替え、旧版を残す
+        notes.clear()
+        payload["bytes"] = new_bytes
+        verify[:] = [(True, "接続 4 本")]
+        check(run_main() == 0 and ucf.BIN.read_bytes() == new_bytes and (ucf.BIN.parent / "cloudflared.2026.10.4.bak").exists()
+              and any(ok and "2026.10.4 → 2026.10.5" in m for m, ok in notes), f"更新できない: {notes}")
+        # つながらない: 旧版に戻して異常にする
+        notes.clear()
+        ucf.BIN.write_bytes(b"VER:2026.10.4")
+        verify[:] = [(False, "接続 0/4"), (True, "接続 4 本")]
+        check(run_main() == 1 and ucf.BIN.read_bytes() == b"VER:2026.10.4" and not verify
+              and any(not ok and "旧版 2026.10.4 に戻した" in m for m, ok in notes), f"つながらない版を残した: {ucf.BIN.read_bytes()} {notes}")
+        check(not list(ucf.BIN.parent.glob("*.new")), f"入れ替えの途中のファイルが残った: {list(ucf.BIN.parent.iterdir())}")
+    finally:
+        (ucf.BIN, ucf.installed_version, ucf.latest_release, ucf.download, ucf.restart_and_verify, ucf.notify,
+         ucf.diagnose_anomalies, ucf.now_jst) = saved
+
+
+def test_update_cloudflared_failures(tmp: Path):
+    """cloudflared の更新の失敗の経路(Sol 監査 r1): 確認の途中の例外(journalctl の時間切れ)で新しい版のまま通知もせず終わる・
+    旧版に戻すコピーの失敗で半端な .new を残して通知しない・BIN が無いと例外で落ちる・接続の数え方(同じ connIndex の張り直しを
+    別の接続と数える、--since が秒に丸められて再起動の前の行を数える)・--check が当番を起こす・Persistent の追いつきが発行の時間帯に
+    そのまま再起動する。r2: InvocationID の取得の失敗で旧版に戻した後の再起動まで飛ばす・切れた接続も数える(今の本数は /ready)・
+    差し替えた後の後片付けの失敗を「旧版のまま」と通知する・待ちの後や取った後に時刻を見直さない。
+    本物の systemctl・journalctl・/ready は差し替えの関数で置き換える。"""
+    import datetime
+    import hashlib
+    import signal
+    import tempfile
+    import time
+    import types
+    import update_cloudflared as ucf
+    from pipelib import JST
+    tmp.mkdir(parents=True, exist_ok=True)
+    name = ucf.asset_name()
+    new_bytes, old_bytes = b"VER:2026.10.5", b"VER:2026.10.4"
+    rel = {"tag_name": "2026.10.5", "body": f"{name}: {hashlib.sha256(new_bytes).hexdigest()}\n",
+           "assets": [{"name": name, "browser_download_url": "https://example.invalid/x"}]}
+    notes, diag, sleeps = [], [], []
+    clock = {"now": datetime.datetime(2026, 11, 1, 1, 0, tzinfo=JST)}
+    conns = lambda idx: "".join(f"INF Registered tunnel connection connIndex={i} connection=c{n} event=0\n" for n, i in enumerate(idx))
+    started = "INF Starting metrics server on 127.0.0.1:20241/metrics\n"
+    st = {}
+    def reset(**kw):
+        st.clear()
+        st.update(inv=1, new_inv=True, journal=started + conns([0, 1, 2, 3]), raise_on="", on_restart=None, ready=4,
+                  restarts=0, show_fail_from=None, sleep_to=[], dl_secs=0)
+        st.update(kw)
+        clock["now"] = st.pop("at", datetime.datetime(2026, 11, 1, 1, 0, tzinfo=JST))
+        notes.clear(); diag.clear(); sleeps.clear()
+        for p in ucf.BIN.parent.iterdir():
+            p.unlink()
+        ucf.BIN.write_bytes(old_bytes)
+    def fake_run(cmd, **kw):
+        if st["raise_on"] and cmd[0] == st["raise_on"]:
+            raise subprocess.TimeoutExpired(cmd, kw.get("timeout") or 60)
+        if cmd[:3] == ["systemctl", "--user", "show"]:
+            if st["show_fail_from"] is not None and st["restarts"] >= st["show_fail_from"]:
+                raise subprocess.TimeoutExpired(cmd, 60)
+            return subprocess.CompletedProcess(cmd, 0, f"inv{st['inv']}\n", "")
+        if cmd[:3] == ["systemctl", "--user", "restart"]:
+            st["restarts"] += 1
+            st["inv"] += 1 if st["new_inv"] else 0
+            rc = (st["on_restart"]() if st["on_restart"] else 0) or 0
+            return subprocess.CompletedProcess(cmd, rc, "", "boom" if rc else "")
+        if cmd[0] == "journalctl":
+            # 今回の起動で絞ったときだけ今回の行。絞らなければ再起動の前の起動の行(metrics の番地・4本)も混ざる
+            mine = f"_SYSTEMD_INVOCATION_ID=inv{st['inv']}" in cmd
+            old = "INF Starting metrics server on 127.0.0.1:20240/metrics\n" + conns([0, 1, 2, 3])
+            return subprocess.CompletedProcess(cmd, 0, st["journal"] if mine else old + st["journal"], "")
+        raise AssertionError(f"想定外のコマンド: {cmd}")
+    def fake_sleep(s):
+        sleeps.append(s)
+        clock["now"] = st["sleep_to"].pop(0) if st["sleep_to"] else clock["now"] + datetime.timedelta(seconds=s)
+    def fake_download(url, dest):
+        dest.write_bytes(new_bytes)
+        clock["now"] += datetime.timedelta(seconds=st["dl_secs"])
+    def fake_ready(addr):
+        # 今回の起動の番地だけが今の本数を返す(前の起動の番地はもう無い)
+        return st["ready"] if addr == "127.0.0.1:20241" else 0
+    def fake_version(path=None):
+        p = Path(path or ucf.BIN)
+        t = p.read_bytes().decode(errors="replace") if p.exists() else ""
+        return t[4:] if t.startswith("VER:") else ""
+    def run_main(*args):
+        saved_argv, sys.argv = sys.argv, ["update_cloudflared.py", *args]
+        try:
+            return ucf.main()
+        except Exception as e:
+            return f"例外 {type(e).__name__}: {e}"
+        finally:
+            sys.argv = saved_argv
+    def alarmed(word=""):
+        return bool(diag) and any(not ok and word in m for m, ok in notes)
+    names = ("BIN", "installed_version", "latest_release", "download", "notify", "diagnose_anomalies", "now_jst",
+             "subprocess", "time", "ENV", "CONNECT_WAIT")
+    saved = {k: getattr(ucf, k) for k in names}
+    saved_ready = getattr(ucf, "ready_connections", None)
+    saved_tempfile = getattr(ucf, "tempfile", None)
+    saved_unlink = Path.unlink
+    try:
+        ucf.BIN = tmp / "bin" / "cloudflared"
+        ucf.BIN.parent.mkdir()
+        ucf.installed_version = fake_version
+        ucf.latest_release = lambda: rel
+        ucf.download = fake_download
+        ucf.notify = lambda job, msg, ok=True, require=False, ledger=True: notes.append((msg, ok)) or True
+        ucf.diagnose_anomalies = lambda *a, **k: diag.append(a) or False
+        ucf.now_jst = lambda: clock["now"]
+        ucf.subprocess = types.SimpleNamespace(run=fake_run, TimeoutExpired=subprocess.TimeoutExpired)
+        ucf.time = types.SimpleNamespace(time=time.time, sleep=fake_sleep)
+        ucf.ready_connections = fake_ready
+        ucf.ENV = {}
+        ucf.CONNECT_WAIT = 0.05
+        # 今回の起動の cloudflared が今4本張れている: 上げる
+        reset()
+        r = run_main()
+        check(r == 0 and ucf.BIN.read_bytes() == new_bytes and not diag, f"4本つながったのに上がらない: {r} {notes}")
+        # 4本登録したが3本切れて今は1本(/ready が 1): 旧版に戻して異常
+        reset(ready=1)
+        r = run_main()
+        check(r == 1 and ucf.BIN.read_bytes() == old_bytes and alarmed("1/4"), f"切れた接続も数えた: {r} {notes}")
+        # 同じ connIndex の張り直し4回(今は1本)
+        reset(journal=started + conns([0, 0, 0, 0]), ready=1)
+        r = run_main()
+        check(r == 1 and ucf.BIN.read_bytes() == old_bytes and alarmed("1/4"), f"同じ接続の張り直しを4本と数えた: {r} {notes}")
+        # 今回の起動の行が無い(再起動の前の起動の行だけ): つながったと数えない
+        reset(journal="")
+        r = run_main()
+        check(r == 1 and ucf.BIN.read_bytes() == old_bytes and alarmed(), f"再起動の前の接続を数えた: {r} {notes}")
+        # 新しい版で再起動した後、InvocationID が取れなくなった: 旧版に戻した後の再起動も試みる
+        reset(show_fail_from=1)
+        r = run_main()
+        check(r == 1 and ucf.BIN.read_bytes() == old_bytes and st["restarts"] == 2 and alarmed(),
+              f"InvocationID が取れないせいで旧版に戻した後の再起動を飛ばした: {r} 再起動 {st['restarts']} 回 {notes}")
+        # 差し替えた後の後片付け(一時ディレクトリ・取った実行ファイルの消去)が失敗: 確認を飛ばして「旧版のまま」としない
+        class BrokenTempDir:
+            def __init__(self, *a, **k):
+                self.d = tempfile.mkdtemp(dir=tmp)
+            def __enter__(self):
+                return self.d
+            def __exit__(self, *a):
+                raise OSError("後片付けの I/O エラー")
+        def broken_unlink(self, *a, **k):
+            if self.name.endswith(".new"):
+                raise OSError("後片付けの I/O エラー")
+            return saved_unlink(self, *a, **k)
+        reset()
+        if saved_tempfile is not None:
+            ucf.tempfile = types.SimpleNamespace(TemporaryDirectory=BrokenTempDir)
+        Path.unlink = broken_unlink
+        try:
+            r = run_main()
+        finally:
+            Path.unlink = saved_unlink
+            if saved_tempfile is not None:
+                ucf.tempfile = saved_tempfile
+        check(r == 0 and ucf.BIN.read_bytes() == new_bytes and st["restarts"] == 1 and not diag,
+              f"差し替えた後の後片付けの失敗で、確認を飛ばした・旧版のままと通知した: {r} 再起動 {st['restarts']} 回 {notes}")
+        # r3: 新しい版がつながらず旧版に戻すとき、.new の消去が失敗: 戻せたのだから再起動まで進む
+        reset(ready=1)
+        Path.unlink = broken_unlink
+        try:
+            r = run_main()
+        finally:
+            Path.unlink = saved_unlink
+        check(r == 1 and ucf.BIN.read_bytes() == old_bytes and st["restarts"] == 2 and alarmed("旧版 2026.10.4 に戻した"),
+              f"旧版に戻した後の .new の消去の失敗で、再起動を飛ばした: {r} 再起動 {st['restarts']} 回 {notes}")
+        # r4: 表示も失敗する(標準出力が閉じている)うえに .new の消去も失敗: 差し替えた後の確認・戻しの再起動を飛ばさない
+        def broken_print(*a, **k):
+            raise BrokenPipeError("標準出力が閉じている")
+        for ready, want_rc, want_bin, want_restarts in ((4, 0, new_bytes, 1), (1, 1, old_bytes, 2)):
+            reset(ready=ready)
+            Path.unlink = broken_unlink
+            ucf.print = broken_print
+            try:
+                r = run_main()
+            finally:
+                Path.unlink = saved_unlink
+                del ucf.print
+            check(r == want_rc and ucf.BIN.read_bytes() == want_bin and st["restarts"] == want_restarts
+                  and (alarmed("旧版 2026.10.4 に戻した") if want_rc else not diag),
+                  f"表示の失敗で差し替えた後の確認・戻しの再起動を飛ばした(/ready {ready}): {r} 再起動 {st['restarts']} 回 {notes}")
+        # r3・r4: 取得は全体で DOWNLOAD_LIMIT 秒まで。1回の read が少しずつ届いて何時間も戻らないときも、read の途中で切る
+        class SlowBody:
+            def __enter__(self):
+                return self
+            def __exit__(self, *a):
+                return False
+            def read(self, *a):
+                time.sleep(3)       # 1回の read が上限より長く戻らない
+                return b""
+        saved_urllib, saved_time, saved_limit = ucf.urllib, ucf.time, ucf.DOWNLOAD_LIMIT
+        ucf.urllib = types.SimpleNamespace(request=types.SimpleNamespace(Request=lambda *a, **k: None,
+                                                                         urlopen=lambda *a, **k: SlowBody()))
+        ucf.time, ucf.DOWNLOAD_LIMIT = time, 0.3
+        t0 = time.monotonic()
+        try:
+            saved["download"]("https://example.invalid/x", tmp / "slow.bin")
+            dl = "取り終えた"
+        except TimeoutError as e:
+            dl = f"TimeoutError: {e}"
+        except Exception as e:
+            dl = f"{type(e).__name__}: {e}"
+        finally:
+            ucf.urllib, ucf.time, ucf.DOWNLOAD_LIMIT = saved_urllib, saved_time, saved_limit
+        took = time.monotonic() - t0
+        check(dl.startswith("TimeoutError") and took < 2, f"取得が全体の上限で read の途中で止まらない: {dl}({took:.1f}秒)")
+        # r5: 前から張られていたタイマー(30 秒)とハンドラは、取り終えたら元に戻る
+        class FastBody(SlowBody):
+            def read(self, *a):
+                return b""
+        mine = lambda signum, frame: None
+        prev_handler = signal.signal(signal.SIGALRM, mine)
+        signal.setitimer(signal.ITIMER_REAL, 30)
+        ucf.urllib = types.SimpleNamespace(request=types.SimpleNamespace(Request=lambda *a, **k: None,
+                                                                         urlopen=lambda *a, **k: FastBody()))
+        ucf.time = time
+        try:
+            saved["download"]("https://example.invalid/x", tmp / "fast.bin")
+            left, handler = signal.getitimer(signal.ITIMER_REAL)[0], signal.getsignal(signal.SIGALRM)
+        finally:
+            signal.setitimer(signal.ITIMER_REAL, 0)
+            signal.signal(signal.SIGALRM, prev_handler)
+            ucf.urllib, ucf.time = saved_urllib, saved_time
+        check(25 < left <= 30 and handler is mine, f"前から張られていたタイマー・ハンドラが戻らない: 残り {left:.1f} 秒 {handler}")
+        # 再起動しても起動が変わらない: つながったと数えない
+        reset(new_inv=False)
+        r = run_main()
+        check(r == 1 and ucf.BIN.read_bytes() == old_bytes and alarmed("新しい起動"), f"古い起動の接続で済ませた: {r} {notes}")
+        # journalctl の時間切れ: 例外で抜けず、旧版に戻して異常
+        reset(raise_on="journalctl")
+        r = run_main()
+        check(r == 1 and ucf.BIN.read_bytes() == old_bytes and alarmed("TimeoutExpired"),
+              f"確認の途中の例外で新しい版のまま・通知なしで終わった: {r} {ucf.BIN.read_bytes()} {notes}")
+        # 新しい版で再起動に失敗し、旧版に戻すコピーも失敗: 半端な .new を残さず、手で戻すよう異常にする
+        def lose_backup():
+            if ucf.BIN.read_bytes() == new_bytes:
+                for p in ucf.BIN.parent.glob("*.bak"):
+                    p.unlink()
+                return 1
+        reset(on_restart=lose_backup)
+        r = run_main()
+        check(r == 1 and alarmed("戻せない") and not list(ucf.BIN.parent.glob("*.new")),
+              f"戻せないのに通知しない・.new が残った: {r} {notes} {list(ucf.BIN.parent.iterdir())}")
+        # BIN が無い: 例外で落ちず、入れ替えずに異常
+        reset()
+        ucf.BIN.unlink()
+        r = run_main()
+        check(r == 1 and not ucf.BIN.exists() and alarmed(), f"BIN が無いときに落ちた・置いた: {r} {notes}")
+        # --check は表示だけ: 最新の版が取れなくても当番を起こさない
+        reset()
+        ucf.latest_release = lambda: (_ for _ in ()).throw(OSError("dns"))
+        r = run_main("--check")
+        check(r == 1 and not notes and not diag, f"--check が通知・当番を起こした: {r} {notes} {diag}")
+        ucf.latest_release = lambda: rel
+        # 追いつきが発行の時間帯(04:00)に当たった: 07:00 まで待ってから上げる
+        at = lambda h, m, s=0: datetime.datetime(2026, 11, 1, h, m, s, tzinfo=JST)
+        reset(at=at(4, 0))
+        r = run_main()
+        check(r == 0 and sleeps[:1] == [3 * 3600] and ucf.BIN.read_bytes() == new_bytes, f"発行の時間帯に待たずに再起動した: {r} {sleeps}")
+        # 待っている間に時計が戻った(04:00 から待って起きたら 06:00): もう一度待つ
+        reset(at=at(4, 0), sleep_to=[at(6, 0)])
+        r = run_main()
+        check(r == 0 and sleeps[:2] == [3 * 3600, 3600] and clock["now"] >= at(7, 0),
+              f"待ちから戻った後に時刻を見直さず、発行の時間帯に再起動した: {r} {sleeps} {clock['now']}")
+        # 02:29:59 に始めて、取るのに2秒かかって 02:30:01 に入った: 差し替えの前に 07:00 まで待つ
+        reset(at=at(2, 29, 59), dl_secs=2)
+        r = run_main()
+        check(r == 0 and sleeps[:1] == [4.5 * 3600 - 1] and ucf.BIN.read_bytes() == new_bytes,
+              f"取っている間に発行の時間帯に入ったのに待たずに再起動した: {r} {sleeps}")
+        for hm, want in (((1, 0), 0), ((2, 29), 0), ((2, 30), 4.5 * 3600), ((6, 59), 60), ((7, 0), 0)):
+            got = ucf.publishing_wait(datetime.datetime(2026, 11, 1, *hm, tzinfo=JST))
+            check(got == want, f"{hm} の待ち時間が {got}(期待 {want})")
+    finally:
+        Path.unlink = saved_unlink
+        for k, v in saved.items():
+            setattr(ucf, k, v)
+        if saved_ready is not None:
+            ucf.ready_connections = saved_ready
+        if saved_tempfile is not None:
+            ucf.tempfile = saved_tempfile
+
+
 def test_update_clis_smoke_answer(tmp: Path):
     """道具の動作確認は、正常終了して、答え(標準出力の最後の行)が求めたとおりの「2」のときだけ動作 OK(監査指摘 2026-10-14 ar9:
     実の CLI が `2` を出して exit 1、`1+1=3 (attempt 2)` を出して exit 0、のどちらも動作 OK になっていた)。
@@ -20104,6 +20437,8 @@ def main() -> int:
     test_extract_json_array_strict()
     test_update_clis(tmp / "uc")
     test_update_clis_smoke_answer(tmp / "ucs")
+    test_update_cloudflared(tmp / "ucf")
+    test_update_cloudflared_failures(tmp / "ucff")
     test_git_commit_push_checkout(tmp / "gcp")
     test_grok_face_retry(tmp / "gr")
     test_grok_format_matches_parser()

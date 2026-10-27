@@ -20265,7 +20265,14 @@ def test_source_update_sessions(tmp: Path):
                                   "out = sys.argv[sys.argv.index('--output-last-message') + 1]\n"
                                   "pathlib.Path(out).write_text(os.environ['FAKE_ANSWER'])\nsys.exit(int(os.environ.get('FAKE_EXIT', '0')))\n",
                                   encoding="utf-8")
-    (bindir / "claude").write_text("#!/usr/bin/env python3\nimport os, sys\nprint(os.environ['FAKE_ANSWER'])\n"
+    # 偽の claude も本物と同じく、--json-schema が draft-07 以外の $schema を名乗れば起動しない(本物 2.1.311 の実測: draft 2020-12 を
+    # 名乗る校閲の schema で全部の校閲が起動せず、出典の変更が「答えが読めない」で3回目に扱い済みになった。2026-10-28)
+    (bindir / "claude").write_text("#!/usr/bin/env python3\nimport os, sys, json\n"
+                                   "s = json.loads(sys.argv[sys.argv.index('--json-schema') + 1])\n"
+                                   "if s.get('$schema', 'http://json-schema.org/draft-07/schema#').rstrip('#') != 'http://json-schema.org/draft-07/schema':\n"
+                                   "    sys.stderr.write('Error: --json-schema is not a valid JSON Schema: no schema with key or ref ' + s['$schema'])\n"
+                                   "    sys.exit(1)\n"
+                                   "print(os.environ['FAKE_ANSWER'])\n"
                                    "sys.stderr.write(os.environ.get('FAKE_ERR', ''))\nsys.exit(int(os.environ.get('FAKE_EXIT', '0')))\n",
                                    encoding="utf-8")
     for b in ("codex", "claude"):
@@ -20308,6 +20315,11 @@ def test_source_update_sessions(tmp: Path):
           and got["review-bad"] is None and got["review-exit"] is None,
           f"判定・校閲の答えを schema・終了状態で検めない: {got}")
     check(got["blocked"] == "止まった", f"CLI の利用上限を答えの読めない回と取り違えた: {got['blocked']}")
+    # claude の --json-schema に渡す schema のファイルは、どれも draft-07 以外の $schema を名乗らない(名乗ると CLI が起動しない)
+    for f in ("schema/source-update-review.schema.json", "schema/assemble.schema.json", "schema/oncall-fix.schema.json",
+              "schema/oncall-accept.schema.json", "schema/oncall-integrate.schema.json", "prompts/review-schema.json"):
+        d = json.loads((repo / f).read_text(encoding="utf-8")).get("$schema", "http://json-schema.org/draft-07/schema#")
+        check(d.rstrip("#") == "http://json-schema.org/draft-07/schema", f"claude の CLI が読めない $schema を名乗る: {f} {d}")
 
 
 def test_page_reads_are_bounded(tmp: Path):

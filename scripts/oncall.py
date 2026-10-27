@@ -114,7 +114,7 @@ CO_AUTHOR = "\n\nCo-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>"
 # 決める(2026-10-27: 回帰テストが組の取り込みで約 9〜17 分に伸び、固定の 300 秒の selfcheck が3回とも時間切れで当番が止まった。
 # 監査のセッション 1800 秒も、テストと selfcheck(テストを含む)を走らせる分に足りなかった)。テストが伸びても実測が追う。打ち切りは締切(left)
 SESSION_WORK_SEC = 1800     # セッションのモデルの仕事(読む・直す・書く)の分。検査の分はこれに足す
-CHECK_MARGIN = 2.0          # 検査の上限は実測の何倍か(重い時間帯で遅くなる分。これを超えるのは止まっているもの)
+CHECK_MARGIN = 3.0          # 検査の上限は実測の何倍か(重い時間帯で遅くなる分。2026-10-27 は軽いとき 330 秒・重いとき約2倍。これを超えるのは止まっているもの)
 CHECK_FLOOR_SEC = 300       # 検査の上限の下限(実測の短い lint など)
 FIX_CHECKS = ("selfcheck",)                             # 当番のセッションの中で走らせる検査(prompts/oncall-fix.md)
 AUDIT_CHECKS = ("test_pipeline", "selfcheck", "lint")   # 監査のセッションの中で走らせる検査(AUDIT_REQUIRED_RUNS と同じ)

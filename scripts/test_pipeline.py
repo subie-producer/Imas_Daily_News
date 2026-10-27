@@ -9596,8 +9596,11 @@ def test_oncall_check_limits_follow_measure(tmp: Path):
             pipelib.note_check_seconds("selfcheck", s)
         check(pipelib.check_seconds("selfcheck") == 700 and len(json.loads((tmp / "scratch" / pipelib.CHECK_SECONDS_FILE).read_text())["selfcheck"])
               == pipelib.CHECK_SECONDS_KEEP, f"直近の実測の最大になっていない: {pipelib.check_seconds('selfcheck')}")
-        check(oncall.check_limit("selfcheck") == 1400 and oncall.check_limit("lint") == oncall.CHECK_FLOOR_SEC
-              and oncall.session_limit(oncall.AUDIT_CHECKS) == oncall.SESSION_WORK_SEC + 1400 + 2400 + 300,
+        M = oncall.CHECK_MARGIN
+        sc_lim, tp_lim = int(M * 700), int(M * pipelib.CHECK_SECONDS_DEFAULT["test_pipeline"])
+        lint_lim = int(max(oncall.CHECK_FLOOR_SEC, M * pipelib.CHECK_SECONDS_DEFAULT["lint"]))
+        check(M >= 2 and oncall.check_limit("selfcheck") == sc_lim and oncall.check_limit("lint") == lint_lim
+              and oncall.session_limit(oncall.AUDIT_CHECKS) == oncall.SESSION_WORK_SEC + sc_lim + tp_lim + lint_lim,
               f"上限が実測から決まらない: {oncall.check_limit('selfcheck')} {oncall.session_limit(oncall.AUDIT_CHECKS)}")
         # 往復: selfcheck の上限が実測から決まり、監査のセッションにも検査の分が足される
         oncall.root_clean = lambda: True
@@ -9621,8 +9624,8 @@ def test_oncall_check_limits_follow_measure(tmp: Path):
         oncall.run_codex = lambda prompt, schema, cwd, timeout=1800: (audits.append(timeout)
                                                                       or {"verdict": "approve", "must_fix": [], "verification": AUDIT_RAN, "notes": ""})
         r = oncall.run_rounds("classify", "2026-10-28", "ctx", tmp, "B" * 40, None, "env", [])
-        check(r["approved"] and limits.get("selfcheck") and limits["selfcheck"][0] >= 1400 - 5 and limits.get("lint")
-              and audits and audits[0] >= oncall.SESSION_WORK_SEC + 1400 + 2400 - 5 and fixes and fixes[0] >= oncall.SESSION_WORK_SEC + 1400 - 5,
+        check(r["approved"] and limits.get("selfcheck") and limits["selfcheck"][0] >= sc_lim - 5 and limits.get("lint")
+              and audits and audits[0] >= oncall.SESSION_WORK_SEC + sc_lim + tp_lim - 5 and fixes and fixes[0] >= oncall.SESSION_WORK_SEC + sc_lim - 5,
               f"検査・セッションの上限が実測に追従しない: selfcheck {limits.get('selfcheck')} 監査 {audits} 当番 {fixes}")
         # selfcheck が上限で終わらない: 試行を止めず(例外にしない)、selfcheck の赤として当番に返し、かかった秒を実測に足す
         n = {"sc": 0}

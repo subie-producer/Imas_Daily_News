@@ -14,6 +14,21 @@
    "changed": 15,
    "elapsed_s": 42,
    "cycle_days_actual": 0.22
+  },
+  {
+   "at": "2026-10-28T07:35:12+09:00",
+   "cap": 60,
+   "parallel": 4,
+   "runs_per_day": 5,
+   "cycle_days": 0.27,
+   "oldest_age_h": 8.0,
+   "targets": 80,
+   "chosen": 60,
+   "tried": 60,
+   "checked": 60,
+   "changed": 22,
+   "elapsed_s": 157,
+   "cycle_days_actual": 0.27
   }
  ],
  "collect": [
@@ -120,6 +135,92 @@
     "failed": 3
    },
    "duration_s": 1722
+  },
+  {
+   "at": "2026-10-28T07:40:50+09:00",
+   "edition": "2026-10-29",
+   "started_at": "2026-10-28T07:30:45+09:00",
+   "trigger": "timer",
+   "watch": {
+    "stats": {
+     "imas-portal": {
+      "found": 12,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-sidem": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-shiny": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-million": {
+      "found": 9,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "lantis-shiny": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "lantis-sidem": {
+      "error": "HTTP Error 503: Service Temporarily Unavailable",
+      "http": 503
+     },
+     "columbia-imas": {
+      "found": 351,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "bnam-tours": {
+      "found": 69,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "imasnews765": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     }
+    },
+    "new": 0,
+    "facted": 0,
+    "deferred": 0,
+    "blocked": 0,
+    "unavailable": 0
+   },
+   "per_query": {
+    "explore:765as": 1,
+    "explore:cinderella": 0,
+    "explore:million": 1,
+    "explore:shiny": 1,
+    "explore:sidem": 0,
+    "explore:gakuen": 6,
+    "explore:dsva": 1,
+    "explore:joint-other": 0,
+    "explore:trend": 1
+   },
+   "normalized": 11,
+   "added": 6,
+   "verify": {
+    "confirmed": 3,
+    "unconfirmed": 8,
+    "failed": 0
+   },
+   "duration_s": 604
   }
  ],
  "compose": [

@@ -287,7 +287,11 @@ def unknown_targets(date: str) -> tuple[dict[str, str], dict[str, tuple[str, lis
         if unit == "path" and key.startswith("youtube.com/@"):
             # チャンネルのページ(`/@<ハンドル>/streams` など)はチャンネルで決まる。動画の持ち主と同じ表(video_channels)で
             # 決めるので、パスの表ではなくチャンネルの合議に掛ける(main)
-            YT_CHANNELS.setdefault(urllib.parse.unquote(key.split("@", 1)[1]), (url, str(c.get("title") or "")))
+            h = urllib.parse.unquote(key.split("@", 1)[1])
+            # ハンドルは大文字小文字を区別しない(同じチャンネルを2つの対象として合議に掛けると、答えの対応付けで1つに重なり無回答になる。
+            # Sol 監査 2026-10-27)。最初に見た表記で1つにする
+            if not any(x.lower() == h.lower() for x in YT_CHANNELS):
+                YT_CHANNELS[h] = (url, str(c.get("title") or ""))
             continue
         if unit == "skip":
             SKIPPED.setdefault(url, key)   # 黙って飛ばさない。main が理由ごと報告する
@@ -1779,8 +1783,12 @@ def main() -> int:
     # 再生リストも持ち主のチャンネルで決まる。チャンネルが表に無ければ、動画のチャンネルと一緒に合議に掛ける
     pl_left, pl_chans = resolve_playlists(date, args.apply)
     left += pl_left
-    for h, v in list(pl_chans.items()) + list(YT_CHANNELS.items()):
-        unknown_chans.setdefault(h, v)
+    # 同じチャンネルは大文字小文字の違いを1つにしてから合議に掛ける(2つの対象にすると、答えの対応付けで重なって無回答になる。Sol 監査 2026-10-27)
+    merged: dict = {}
+    for h, v in list(unknown_chans.items()) + list(pl_chans.items()) + list(YT_CHANNELS.items()):
+        if not any(x.lower() == h.lower() for x in merged):
+            merged[h] = v
+    unknown_chans = merged
     if unknown_chans:
         print(f"\n{date}: 判定表に無い YouTube チャンネル {len(unknown_chans)}件 → "
               + ", ".join(f"@{h}" for h in sorted(unknown_chans)), flush=True)
@@ -1801,7 +1809,7 @@ def main() -> int:
             left, _ = resolve_videos(date, True)
             left += resolve_playlists(date, True)[0]
             # チャンネルのページは動画・再生リストの引き直しに出てこない。決まらなかったものは合議の不一致のまま残す
-            left += [x for x in split if any(x.startswith(f"youtube.com/@{h}:") for h in YT_CHANNELS)]
+            left += [x for x in split if any(x.lower().startswith(f"youtube.com/@{h.lower()}:") for h in YT_CHANNELS)]
         else:
             left = [x for x in left if not any(f"(@{h})" in x for h in chans)] + split
     split_all += left

@@ -4045,6 +4045,16 @@ def classify_post_sources(date: str, branch: str) -> bool:
             commit_and_push(branch, f"compose {date}: 出典の判定に失敗(当番へ)", "compose")
             escalate("compose", date, f"紙面の出典の判定で判定表と記事を戻せなかった: {why_cls[:300]}")
             return False
+        # 合議が失敗して戻すと、いまの判定表・判定のコードで決まる付け直しまで戻る(既知のチャンネルが公式になった過去の記事が未確認のまま
+        # lint が赤く残る。2026-10-27 Sol 監査)。合議を飛ばして、付け直しだけをもう一度1つの取引で行う
+        with stage("出典の付け直し(合議なし)"):
+            ok_rt, why_rt = classify_retag_lint(date, posts_only=True, timeout=remaining_seconds(cap=600), lint=False, judge=False)
+        if not ok_rt and "戻せない" in why_rt:
+            commit_and_push(branch, f"compose {date}: 出典の付け直しに失敗(当番へ)", "compose")
+            escalate("compose", date, f"紙面の出典の付け直しで記事を戻せなかった: {why_rt[:300]}")
+            return False
+        if not ok_rt:
+            notify("compose", f"{date}: 合議なしの出典の付け直しも失敗({why_rt[:300]})。記事は戻した", ok=False)
         if why_cls.startswith(CLI_STOPPED) and CLI_BLOCKED:
             # 判定のモデル(執筆・校閲と同じ CLI)が認証切れ・利用上限で答えない。判定の失敗ではない。投稿は判定が済ませた
             raise CliBlocked(next(iter(CLI_BLOCKED.values())))

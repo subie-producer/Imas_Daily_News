@@ -83,7 +83,7 @@ from pipelib import (COLLECT_ONCALL_MARK, COLLECT_OUTPUTS, ENV, ROOT, classify_t
                      tool_path, CLI_BLOCKED_EXIT, CliBlocked, cli_check, oncall_clis_blocked, scratch_dir,
                      ONCALL_HANDED_EXIT, settled_keys_of)
 from pipelib import exit_on_term, run_group   # モデルのセッションは自前のグループで起動し、時間切れ・中断では道具ごと止める
-from pipelib import check_seconds, note_check_seconds
+from pipelib import CHECK_FLOOR_SEC, CHECK_MARGIN, check_limit, check_seconds, note_check_seconds
 
 ONCALL_MODEL = ENV.get("ONCALL_MODEL", "opus")
 AUDIT_MODEL = ENV.get("AUDIT_MODEL", "gpt-6.1-sol")
@@ -114,15 +114,8 @@ CO_AUTHOR = "\n\nCo-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>"
 # 決める(2026-10-27: 回帰テストが組の取り込みで約 9〜17 分に伸び、固定の 300 秒の selfcheck が3回とも時間切れで当番が止まった。
 # 監査のセッション 1800 秒も、テストと selfcheck(テストを含む)を走らせる分に足りなかった)。テストが伸びても実測が追う。打ち切りは締切(left)
 SESSION_WORK_SEC = 1800     # セッションのモデルの仕事(読む・直す・書く)の分。検査の分はこれに足す
-CHECK_MARGIN = 3.0          # 検査の上限は実測の何倍か(重い時間帯で遅くなる分。2026-10-27 は軽いとき 330 秒・重いとき約2倍。これを超えるのは止まっているもの)
-CHECK_FLOOR_SEC = 300       # 検査の上限の下限(実測の短い lint など)
 FIX_CHECKS = ("selfcheck",)                             # 当番のセッションの中で走らせる検査(prompts/oncall-fix.md)
 AUDIT_CHECKS = ("test_pipeline", "selfcheck", "lint")   # 監査のセッションの中で走らせる検査(AUDIT_REQUIRED_RUNS と同じ)
-
-
-def check_limit(name: str) -> int:
-    """当番のコードが走らせる検査 name の時間の上限(秒)"""
-    return int(max(CHECK_FLOOR_SEC, CHECK_MARGIN * check_seconds(name)))
 
 
 def session_limit(checks: tuple) -> int:

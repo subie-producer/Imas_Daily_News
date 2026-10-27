@@ -121,5 +121,46 @@
    },
    "duration_s": 1722
   }
+ ],
+ "compose": [
+  {
+   "at": "2026-10-28T03:47:02+09:00",
+   "edition": "2026-10-28",
+   "rounds": 5,
+   "approved": true,
+   "lint_green": true,
+   "planned": 50,
+   "written": 43,
+   "roundups": 0,
+   "dropped": 0,
+   "coverage": {
+    "subjects": 150,
+    "covered": 150,
+    "missing": 0,
+    "missing_keys": []
+   },
+   "dropped_by_review": [
+    "dsva-va-liv-manaka-birthday-live-2026",
+    "joint-765-961-idol-ultimate-ticket-2027"
+   ],
+   "stages_min": {
+    "選定": 2.217009707291921,
+    "執筆": 7.243740340073903,
+    "出典の判定": 1.3648193875948589,
+    "組版": 1.2218201160430908,
+    "校閲": 1.2983232339223225,
+    "校閲1波": 1.2983232339223225
+   },
+   "target_min": 60,
+   "over_target": false,
+   "aborted": [
+    "cg-sega-lucky-kuji-vol-1-cute-2026",
+    "cg-cinderella-fes-blanc-2026-10",
+    "cg-cinderella-girls-sapporo-tv-tower-2026",
+    "sidem-315-pro-night-public-recording-goods-2026",
+    "765-imas-radio-amane-yukari-2026-11"
+   ],
+   "duration_s": 2820
+  }
  ]
 }

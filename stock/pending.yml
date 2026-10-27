@@ -343,13 +343,13 @@
   subject: ミリシタ まつりのTrue Ending報酬のシルエット解除
   watch: 「近日中」とされた称号・BG GrafiXのシルエット解除とデザイン変更の実施日(判明次第 triggers へ)
   added_on: '2026-10-25'
-- dedup_key: gakumas-espresto-sugary-prize-2027
-  brand: gaku
-  subject: 学マス ESPRESTO-Sugary 花海咲季・佑芽プライズ
-  watch: 2027年4月からの正式な登場日(判明次第 triggers へ)
-  added_on: '2026-10-28'
 - dedup_key: shiny-shinyradio-password-outage-2026
   brand: shiny
   subject: シャニラジ「あいことば」入力停止の復旧
-  watch: 復旧の目処が立った際の公式Xでの告知と、あいことば入力の再開日(判明次第 triggers へ)
+  watch: 復旧の目処が立った際の公式X告知と、あいことば入力の再開日(判明次第 triggers へ)
+  added_on: '2026-10-28'
+- dedup_key: gaku-achievement-loading-issue-2026
+  brand: gaku
+  subject: 学マス アチーブメント画面ロード不具合の修正
+  watch: 修正に時間を要するとされ、今後のアップデートで修正予定。修正版の配信時期(判明次第 triggers へ)
   added_on: '2026-10-28'

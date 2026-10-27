@@ -650,12 +650,12 @@
   "src_dedup_key": "gakumas-shirube-final-day1-bak--ute-2026"
  },
  {
-  "id": "sched-2026-11-20-cinderella-last-order-hub-2026-開始",
+  "id": "sched-2026-11-20-cinderella-last-order-hub-2026-開幕",
   "dedup_key": "cinderella-last-order-hub-2026",
   "brand": "cg",
-  "subject": "シンデレラ×HUB「-The Last Order-」開催開始",
-  "kind": "開始",
-  "note": "HUB6店舗でコラボ開催が始まり、来店できる",
+  "subject": "シンデレラ×HUB「-The Last Order-」コラボ開幕",
+  "kind": "開幕",
+  "note": "HUB6店舗でコラボ開催が始まり、店舗を訪れられる",
   "reserved_on": "2026-10-28",
   "occurs_on": "2026-11-20",
   "title": "シンデレラ×HUB「-The Last Order-」コラボ開催決定",

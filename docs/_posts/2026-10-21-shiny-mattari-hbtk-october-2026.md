@@ -4,8 +4,13 @@ edition: "2026-10-21"
 brand: shiny
 src: 準公式
 rank: small
-corrected: false
-corrections: []
+corrected: true
+corrections:
+- at: "2026-10-27T22:15:00+09:00"
+  by: 編集部(出典の日付の欠陥の修正)
+  initial: "出典「アイドルマスター シャイニーカラーズ公式X「まったりHBTK 10月度放送」」の日付 2026年10月20日"
+  corrected_to: "同じ出典の日付 2026年10月21日"
+  note: Xの投稿日時を日本時間に直さずに日付にしていたため、日本時間10月21日0時台の投稿を前日の10月20日としていた。本文は変えていない
 candidate_ids:
 - 202610210224-grok-25
 title: シャニマス「まったりHBTK」便りは22日頃まで
@@ -14,7 +19,7 @@ tags:
 - シャニマス
 - ラジオ
 sources:
-- label: アイドルマスター シャイニーカラーズ公式X「まったりHBTK 10月度放送」(2026年10月20日)
+- label: アイドルマスター シャイニーカラーズ公式X「まったりHBTK 10月度放送」(2026年10月21日)
   url: https://x.com/shinyc_official/status/2112559715754639519
   type: 公式
 - label: アイドルマスター ポータル「アイドルマスター シャイニーカラーズ 「まったり」はばたきラジオステーション」

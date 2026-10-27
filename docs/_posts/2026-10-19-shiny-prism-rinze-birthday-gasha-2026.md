@@ -4,8 +4,13 @@ edition: "2026-10-19"
 brand: shiny
 src: 公式
 rank: small
-corrected: false
-corrections: []
+corrected: true
+corrections:
+- at: "2026-10-27T22:15:00+09:00"
+  by: 編集部(出典の日付の欠陥の修正)
+  initial: "シャニソン公式のXの出典4件の日付 2026年10月18日"
+  corrected_to: "同じ出典4件の日付 2026年10月19日"
+  note: Xの投稿日時を日本時間に直さずに日付にしていたため、日本時間10月19日0時台の投稿を前日の10月18日としていた。本文は変えていない
 candidate_ids:
 - 202610190222-grok-25
 - 202610190222-grok-26
@@ -19,16 +24,16 @@ tags:
 - 誕生日
 - ガシャ
 sources:
-- label: 出典元表記「凛世 誕生日記念ガシャ開催中！」(2026年10月18日)
+- label: 出典元表記「凛世 誕生日記念ガシャ開催中！」(2026年10月19日)
   url: https://x.com/imassc_prism/status/2111834940543250530
   type: 公式
-- label: 出典元表記「HAPPY BIRTHDAY」(2026年10月18日)
+- label: 出典元表記「HAPPY BIRTHDAY」(2026年10月19日)
   url: https://x.com/imassc_prism/status/2111834697177465269
   type: 公式
-- label: 出典元表記「誕生日記念商品 販売中！」(2026年10月18日)
+- label: 出典元表記「誕生日記念商品 販売中！」(2026年10月19日)
   url: https://x.com/imassc_prism/status/2111835191534813538
   type: 公式
-- label: 出典元表記「2025年の誕生日Pアイドル 復刻登場中！」(2026年10月18日)
+- label: 出典元表記「2025年の誕生日Pアイドル 復刻登場中！」(2026年10月19日)
   url: https://x.com/imassc_prism/status/2111835443419578660
   type: 公式
 event_date: "2026-10-19"

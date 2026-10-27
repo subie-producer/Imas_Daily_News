@@ -4,8 +4,13 @@ edition: "2026-09-19"
 brand: shiny
 src: 公式
 rank: small
-corrected: false
-corrections: []
+corrected: true
+corrections:
+- at: "2026-10-27T22:15:00+09:00"
+  by: 編集部(出典の日付の欠陥の修正)
+  initial: "シャニマス公式Xの出典3件の日付 2026年9月18日"
+  corrected_to: "同じ出典3件の日付 2026年9月19日"
+  note: Xの投稿日時を日本時間に直さずに日付にしていたため、日本時間9月19日0時台の投稿を前日の9月18日としていた。本文は変えていない
 candidate_ids:
 - 202609190226-grok-71
 - 202609190226-grok-72
@@ -18,13 +23,13 @@ tags:
 - キャンペーン
 - 周年
 sources:
-- label: 公式X「8.5th Anniversary前夜祭 1日1回10連無料スタンプガシャ」(2026年9月18日)
+- label: 公式X「8.5th Anniversary前夜祭 1日1回10連無料スタンプガシャ」(2026年9月19日)
   url: https://x.com/imassc_official/status/2100963303921217871
   type: 公式
-- label: 公式X「【秋の七草パッケージ】販売中」(2026年9月18日)
+- label: 公式X「【秋の七草パッケージ】販売中」(2026年9月19日)
   url: https://x.com/imassc_official/status/2100963556124754036
   type: 公式
-- label: 公式X「有償限定 72時間限定 シルバーウィーク記念 キャスコレ確定ステップアップガシャ」(2026年9月18日)
+- label: 公式X「有償限定 72時間限定 シルバーウィーク記念 キャスコレ確定ステップアップガシャ」(2026年9月19日)
   url: https://x.com/imassc_official/status/2100963807325774329
   type: 公式
 title_fact_ids:

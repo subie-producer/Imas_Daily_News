@@ -19539,6 +19539,33 @@ def test_source_watch(tmp: Path):
         sw.process_changes(today, sw.published(today, tmp), tmp, lambda *a, **k: None, review_fn)
     check(any("扱えなかった" in str(a) for a in pipelib.ANOMALIES), "答えが読めない変化を申告しない")
     pipelib.ANOMALIES.clear()
+    # 諦めても比べる元は進めない(2026-10-28: 校閲の CLI が schema を受け付けず、コヒーレントライトの次回更新日の変更を3回で諦めて失った)。
+    # 同じ版ではやり直さず、出典がまた変われば、扱えなかった変化も含めて元から比べ直す
+    k3 = f"{ed}-c|{pa.page_key(u3)}"
+    base3 = pa.version_before(u3, f"{ed}T06:00:00+09:00")["sha"]
+    m3 = sw.load_state()["marks"][k3]
+    check(m3["sha"] == base3 and m3.get("given_up") == pa.latest(u3)["sha"], f"諦めた変化で比べる元を進めた: {m3.get('result')}")
+    seen3: list[str] = []
+
+    def judge3(art, row, diff, date, prev=None, issue="", root=None, **k):
+        if art["slug"] == "c":
+            seen3.append(diff)
+        return {"kind": "記事に関係なし", "text": "", "reason": "-"}
+    sw.process_changes(today, sw.published(today, tmp), tmp, judge3, review_fn)
+    check(not seen3, "諦めた版を毎回やり直した")
+    pa.save(u3, "応募締切は11月1日。価格は3500円。", via="read", at=(pipelib.now_jst() + datetime.timedelta(minutes=30)).isoformat(timespec="seconds"))
+    sw.process_changes(today, sw.published(today, tmp), tmp, judge3, review_fn)
+    check(len(seen3) == 1 and "3000円" in seen3[0] and "3500円" in seen3[0], f"出典がまた変わっても、諦めた変化を元から比べ直さない: {seen3}")
+    # 以前の形の「判定できなかった」(比べる元をいまの版まで進めた)は、発行の時点の版から比べ直す
+    st3 = sw.load_state()
+    st3["marks"][k3] = sw._mark(pa.latest(u3), "判定できなかった")
+    sw.save_state(st3)
+    seen3.clear()
+    sw.process_changes(today, sw.published(today, tmp), tmp, judge3, review_fn)
+    check(len(seen3) == 1 and "10月30日" in seen3[0] and "11月1日" in seen3[0], f"以前の形で失った変化を比べ直さない: {seen3}")
+    seen3.clear()
+    sw.process_changes(today, sw.published(today, tmp), tmp, judge3, review_fn)
+    check(not seen3, f"比べ直したあとも同じ変化を判定し直した: {seen3}")
     # Sol 監査 b1 の再現: d の出典 u4 で
     approve = lambda *a, **k: {"verdict": "approve", "issue": ""}
     later_at = lambda h: (pipelib.now_jst() + datetime.timedelta(hours=h)).isoformat(timespec="seconds")
@@ -19905,7 +19932,11 @@ def test_source_update_sessions(tmp: Path):
                                   "out = sys.argv[sys.argv.index('--output-last-message') + 1]\n"
                                   "pathlib.Path(out).write_text(os.environ['FAKE_ANSWER'])\nsys.exit(int(os.environ.get('FAKE_EXIT', '0')))\n",
                                   encoding="utf-8")
-    (bindir / "claude").write_text("#!/usr/bin/env python3\nimport os, sys\nprint(os.environ['FAKE_ANSWER'])\n"
+    # 本物の claude は --json-schema の "$schema"(draft 2020-12)を受け付けず、何も答えずに終わる(2026-10-28: 校閲が全部読めなかった)
+    (bindir / "claude").write_text("#!/usr/bin/env python3\nimport json, os, sys\n"
+                                   "if '$schema' in json.loads(sys.argv[sys.argv.index('--json-schema') + 1]):\n"
+                                   "    sys.exit('Error: --json-schema is not a valid JSON Schema: no schema with key or ref')\n"
+                                   "print(os.environ['FAKE_ANSWER'])\n"
                                    "sys.stderr.write(os.environ.get('FAKE_ERR', ''))\nsys.exit(int(os.environ.get('FAKE_EXIT', '0')))\n",
                                    encoding="utf-8")
     for b in ("codex", "claude"):

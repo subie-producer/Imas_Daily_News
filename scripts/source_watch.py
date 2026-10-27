@@ -371,7 +371,7 @@ def process_changes(today: str, arts: list[dict], root: Path = ROOT, judge_fn=ju
     読まれていた版)」から「いまの版(いちばん新しく読んだ版)」への違いを1回だけ判定する(Sol 監査 b1・b2・b4: 台帳の行ごと・ページごとに
     扱うと、やり直しで新しい版から古い版への違いを告知した・元の内容に戻った変化を一部の記事だけ失った・裏取りが先に新しい版を残すと
     変化を黙って失った)。
-    判定・校閲が答えなかった記事は進めない(次の回にやり直す。MAX_TRIES 回で諦めて申告)。CLI の停止・時間切れは数えず、この回は止める。
+    判定・校閲が答えなかった記事は進めない(次の回にやり直す。MAX_TRIES 回で諦めて申告し、比べる元は残して出典がまた変われば比べ直す)。CLI の停止・時間切れは数えず、この回は止める。
     収集の締切(late)を過ぎた・残り時間(left)が足りなければ、どのセッションも始めない。セッションの待ちは残り時間で切る。
     素材は記事を書く前に控え(pending)、記事を書いたら反映した版を進める(途中で止まっても、素材を失わず、同じ更新を重ねない)"""
     st = load_state()
@@ -389,14 +389,24 @@ def process_changes(today: str, arts: list[dict], root: Path = ROOT, judge_fn=ju
         published_at = f"{art['edition']}T06:00:00+09:00"
         for url in art["urls"]:
             k = f"{art['id']}|{page_archive.page_key(url)}"
-            if k in st["marks"]:
+            m = st["marks"].get(k)
+            # 以前の形の「判定できなかった」(比べる元をいまの版まで進めて、扱えなかった変化を失った)は、記事に反映した最後の版から
+            # 比べ直す(2026-10-28: 校閲の CLI が schema を受け付けず、出典の変化を3回で諦めて失った)
+            if m and not (m.get("result") == "判定できなかった" and "given_up" not in m):
                 continue
+            last = [u.get("to_at") for u in art["updates"] if isinstance(u, dict) and u.get("source") == url and u.get("to_at")]
             try:
-                v0 = page_archive.version_before(url, published_at)
+                v0 = page_archive.version_before(url, str(last[-1]) if m and last else published_at)
+                if m and not v0:
+                    # 発行の前に読んだ版が無い記事は、見張り始めた版(残っているいちばん古い版)から比べ直す
+                    vs = page_archive.versions(url)
+                    v0 = page_archive.version(url, vs[0].get("sha")) if vs else None
                 now_v = None if v0 else page_archive.latest(url)
             except Exception:       # noqa: BLE001
                 continue
-            if v0:
+            if m:
+                st["marks"][k] = _mark(v0, "比べ直し") if v0 else {**m, "given_up": m.get("sha")}
+            elif v0:
                 st["marks"][k] = _mark(v0, "発行時点")
             elif now_v:
                 # 発行の前に読んだ版が無い(原本の置き場ができる前の記事・収集が読まなかった出典): いまの版から見張り始める
@@ -421,7 +431,7 @@ def process_changes(today: str, arts: list[dict], root: Path = ROOT, judge_fn=ju
             if not m:
                 continue
             cur = m.get("sha")
-            if cur == new["sha"]:
+            if new["sha"] in (cur, m.get("given_up")):
                 continue
             old = page_archive.version(url, cur)
             if not old:
@@ -457,7 +467,8 @@ def process_changes(today: str, arts: list[dict], root: Path = ROOT, judge_fn=ju
                 tries = int(st["tries"].get(k) or 0) + 1
                 st["tries"][k] = tries
                 if tries >= MAX_TRIES:
-                    st["marks"][k] = _mark(new, "判定できなかった")
+                    # 比べる元は進めない(扱えなかった変化を失わない)。この版ではもうやり直さず、出典がまた変われば元から比べ直す
+                    st["marks"][k] = {**m, "result": "判定できなかった", "given_up": new["sha"]}
                     st["tries"].pop(k, None)
                     anomaly("collect", f"出典の変更を {tries}回扱えなかった(判定・校閲の答えが読めない): {url} 記事 {art['id']}")
                 continue

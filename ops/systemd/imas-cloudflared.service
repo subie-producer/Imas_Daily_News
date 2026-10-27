@@ -8,5 +8,6 @@ Type=oneshot
 WorkingDirectory=%h/git/imas-ops
 Environment=PATH=%h/.local/bin:/usr/local/bin:/usr/bin:/bin
 ExecStart=/usr/bin/python3 %h/git/imas-ops/scripts/update_cloudflared.py
-# 追いつきの起動が発行の時間帯(02:30〜07:00)に当たると、07:00 まで待ってから上げる(最長 4.5 時間+更新 20 分)
-TimeoutStartSec=5h
+# 追いつきの起動が発行の時間帯(02:30〜07:00)に当たると、07:00 まで待ってから上げる。最長は、待ちの前の取得(上限 10 分)+
+# 待ち 4.5 時間+再起動・確認と旧版への戻し(約 20 分)で 5 時間余り。余裕を見て 6 時間
+TimeoutStartSec=6h

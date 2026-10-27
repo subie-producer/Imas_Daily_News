@@ -38,6 +38,7 @@ UNIT = "imas-tunnel.service"
 RELEASE_API = "https://api.github.com/repos/cloudflare/cloudflared/releases/latest"
 CONNECTIONS = 4          # cloudflared が張る接続の本数(既定の HA 接続数)
 CONNECT_WAIT = 120       # 再起動から接続が揃うまで待つ秒
+DOWNLOAD_LIMIT = 600     # 実行ファイル(約 40MB)を取る全体の上限の秒
 BACKUP_KEEP = 2
 UA = {"User-Agent": "ImasNewsBot/1.0"}
 # 再起動しない時間帯(組版 03:00〜発行 06:00 とその前後)。timer の Persistent の追いつきがここに当たったら終わりまで待つ
@@ -73,8 +74,14 @@ def release_sha256(body: str, name: str) -> str:
 
 
 def download(url: str, dest: Path) -> None:
-    with urllib.request.urlopen(urllib.request.Request(url, headers=UA), timeout=300) as r, dest.open("wb") as f:
-        shutil.copyfileobj(r, f)
+    """url を dest に取る。全体で DOWNLOAD_LIMIT 秒を越えたら TimeoutError(urlopen の timeout は1回の読みの上限で、
+    遅い読みが続くと unit の TimeoutStartSec を越えていた。Sol 監査 r3)。"""
+    end = time.time() + DOWNLOAD_LIMIT
+    with urllib.request.urlopen(urllib.request.Request(url, headers=UA), timeout=60) as r, dest.open("wb") as f:
+        while chunk := r.read(1 << 20):
+            f.write(chunk)
+            if time.time() > end:
+                raise TimeoutError(f"{DOWNLOAD_LIMIT}秒で取り終わらない")
 
 
 def tunnel_invocation() -> str:
@@ -182,13 +189,17 @@ def fail(msg: str) -> int:
 
 def replace_bin(src: Path) -> None:
     """BIN を src の中身に差し替える。同じディレクトリの .new から os.replace(途中で止まっても半端な実行ファイルを残さない)。
-    失敗しても .new は残さない(Sol 監査 r1)。"""
+    失敗しても .new は残さない(Sol 監査 r1)。差し替えた後の .new の消去の失敗は表示だけ(例外にすると、旧版に戻せたのに
+    「戻せない」として再起動を飛ばし、つながらない新しい版が動き続けた。Sol 監査 r3)。"""
     staged = BIN.with_name(BIN.name + ".new")
     try:
         shutil.copy2(src, staged)
         os.replace(staged, BIN)
     finally:
-        staged.unlink(missing_ok=True)
+        try:
+            staged.unlink(missing_ok=True)
+        except OSError as e:
+            print(f"(差し替えに使った {staged} を消せない: {e})", flush=True)
 
 
 def main() -> int:

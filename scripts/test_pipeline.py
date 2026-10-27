@@ -8243,6 +8243,44 @@ def test_update_cloudflared_failures(tmp: Path):
                 ucf.tempfile = saved_tempfile
         check(r == 0 and ucf.BIN.read_bytes() == new_bytes and st["restarts"] == 1 and not diag,
               f"差し替えた後の後片付けの失敗で、確認を飛ばした・旧版のままと通知した: {r} 再起動 {st['restarts']} 回 {notes}")
+        # r3: 新しい版がつながらず旧版に戻すとき、.new の消去が失敗: 戻せたのだから再起動まで進む
+        reset(ready=1)
+        Path.unlink = broken_unlink
+        try:
+            r = run_main()
+        finally:
+            Path.unlink = saved_unlink
+        check(r == 1 and ucf.BIN.read_bytes() == old_bytes and st["restarts"] == 2 and alarmed("旧版 2026.10.4 に戻した"),
+              f"旧版に戻した後の .new の消去の失敗で、再起動を飛ばした: {r} 再起動 {st['restarts']} 回 {notes}")
+        # r3: 取得は全体で DOWNLOAD_LIMIT 秒まで(1回の読みは遅くても上限の内、が続くと unit の上限を越える)
+        class SlowBody:
+            def __init__(self):
+                self.n = 0
+            def __enter__(self):
+                return self
+            def __exit__(self, *a):
+                return False
+            def read(self, *a):
+                self.n += 1
+                return b"x" * 10 if self.n <= 60 else b""
+        fake_t = {"t": 0.0}
+        def slow_time():
+            fake_t["t"] += 299      # 読みのたびに 299 秒(1回の読みの上限には掛からない)
+            return fake_t["t"]
+        saved_urllib, saved_time = ucf.urllib, ucf.time
+        ucf.urllib = types.SimpleNamespace(request=types.SimpleNamespace(Request=lambda *a, **k: None,
+                                                                         urlopen=lambda *a, **k: SlowBody()))
+        ucf.time = types.SimpleNamespace(time=slow_time, sleep=fake_sleep)
+        try:
+            saved["download"]("https://example.invalid/x", tmp / "slow.bin")
+            dl = "取り終えた"
+        except TimeoutError as e:
+            dl = f"TimeoutError: {e}"
+        except Exception as e:
+            dl = f"{type(e).__name__}: {e}"
+        finally:
+            ucf.urllib, ucf.time = saved_urllib, saved_time
+        check(dl.startswith("TimeoutError"), f"取得が全体の上限を越えても止まらない: {dl}")
         # 再起動しても起動が変わらない: つながったと数えない
         reset(new_inv=False)
         r = run_main()

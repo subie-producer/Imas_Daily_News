@@ -2,10 +2,15 @@
 slug: gaku-conceptual-single-collection-2026
 edition: "2026-10-21"
 brand: gaku
-src: 準公式
+src: 公式
 rank: large
-corrected: false
-corrections: []
+corrected: true
+corrections:
+- at: "2026-10-27T22:30:00+09:00"
+  by: 編集部(出典の種別の判定の欠陥の修正)
+  initial: "出典「ASOBI STORE「初星学園 Conceptual Single Collection コンプリートスペシャルセット Vol.1～Vol.3」(2026年10月20日)」の種別: 準公式(記事の出典の表示: 準公式)"
+  corrected_to: "同じ出典の種別: 公式(記事の出典の表示: 公式)"
+  note: 編集長の規則(2026-10-21)により、公式の投稿・ページからリンクされ、告知と関係すると確かめた出典を公式に改めた。本文は変えていない
 candidate_ids:
 - 202610210224-grok-33
 title: 学マスCD、予約は11月15日まで
@@ -17,7 +22,7 @@ tags:
 sources:
 - label: ASOBI STORE「初星学園 Conceptual Single Collection コンプリートスペシャルセット Vol.1～Vol.3」(2026年10月20日)
   url: https://t.co/MdlrfC0LCI
-  type: 準公式
+  type: 公式
 event_date: "2026-11-15"
 title_fact_ids:
 - F1

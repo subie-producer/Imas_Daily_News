@@ -4,8 +4,13 @@ edition: "2026-10-06"
 brand: shiny
 src: 報道
 rank: large
-corrected: false
-corrections: []
+corrected: true
+corrections:
+- at: "2026-10-27T22:30:00+09:00"
+  by: 編集部(出典の種別の判定の欠陥の修正)
+  initial: "出典「株式会社ハチバン「８番らーめん×『アイドルマスター シャイニーカラーズ』10月7日よりコラボキャンペーン開催！」(2026年9月28日)」の種別: 当事者"
+  corrected_to: "同じ出典の種別: 公式"
+  note: 編集長の規則(2026-10-21)により、公式の投稿・ページからリンクされ、告知と関係すると確かめた出典を公式に改めた。本文は変えていない
 candidate_ids:
 - 202610050733-explore-0
 - 202610051233-explore-5
@@ -20,7 +25,7 @@ tags:
 sources:
 - label: 株式会社ハチバン「８番らーめん×『アイドルマスター シャイニーカラーズ』10月7日よりコラボキャンペーン開催！」(2026年9月28日)
   url: https://www.hachiban.co.jp/news/2026/20260925_01/
-  type: 当事者
+  type: 公式
 - label: 富山みっけ「8番らーめん×シャニマスのコラボは10月7日から｜富山県内31店、等身大パネルとグッズ販売の店を一覧に【富山】」(2026年10月4日)
   url: https://toyamamikke.com/hachiban-shinymas-collab-2026/
   type: 報道

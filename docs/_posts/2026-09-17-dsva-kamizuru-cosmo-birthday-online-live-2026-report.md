@@ -4,8 +4,13 @@ edition: "2026-09-17"
 brand: dsva
 src: 報道
 rank: medium
-corrected: false
-corrections: []
+corrected: true
+corrections:
+- at: "2026-10-27T22:30:00+09:00"
+  by: 編集部(出典の種別の判定の欠陥の修正)
+  initial: "出典「上水流宇宙 BIRTHDAY ONLINE LIVE 2026 (2026年9月12日)」の種別: 準公式"
+  corrected_to: "同じ出典の種別: 公式"
+  note: 編集長の規則(2026-10-21)により、公式の投稿・ページからリンクされ、告知と関係すると確かめた出典を公式に改めた。本文は変えていない
 candidate_ids:
 - 202609160734-explore-14
 title: 上水流宇宙誕生日ライブ、DJとドローイングを同時披露
@@ -21,7 +26,7 @@ sources:
   type: 報道
 - label: 上水流宇宙 BIRTHDAY ONLINE LIVE 2026 (2026年9月12日)
   url: https://asobistage.asobistore.jp/event/valiv_bd2026_cosmo/information
-  type: 準公式
+  type: 公式
 event_date: "2026-09-12"
 title_fact_ids:
 - F1

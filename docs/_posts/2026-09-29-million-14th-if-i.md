@@ -2,10 +2,15 @@
 slug: million-14th-if-i
 edition: "2026-09-29"
 brand: million
-src: 二次情報
+src: 公式
 rank: small
-corrected: false
-corrections: []
+corrected: true
+corrections:
+- at: "2026-10-27T22:30:00+09:00"
+  by: 編集部(出典の種別の判定の欠陥の修正)
+  initial: "出典「Lnk.to「THE IDOLM@STER MILLION LIVE! If I...」(日付不明)」「Lnk.to「THE IDOLM@STER MILLION LIVE! ひととせ結び」(日付不明)」「Lnk.to「THE IDOLM@STER MILLION LIVE! ネバーエンド・ワンダーランド」(日付不明)」の種別: 二次情報・二次情報・二次情報(記事の出典の表示: 二次情報)"
+  corrected_to: "同じ出典の種別: 公式・公式・公式(記事の出典の表示: 公式)"
+  note: 編集長の規則(2026-10-21)により、公式の投稿・ページからリンクされ、告知と関係すると確かめた出典を公式に改めた。本文は変えていない
 candidate_ids:
 - 202609290228-grok-53
 - 202609290228-grok-55
@@ -28,13 +33,13 @@ sources:
   type: 公式
 - label: Lnk.to「THE IDOLM@STER MILLION LIVE! If I...」(日付不明)
   url: https://lnk.to/LACZ-10382
-  type: 二次情報
+  type: 公式
 - label: Lnk.to「THE IDOLM@STER MILLION LIVE! ひととせ結び」(日付不明)
   url: https://lnk.to/LACZ-10379
-  type: 二次情報
+  type: 公式
 - label: Lnk.to「THE IDOLM@STER MILLION LIVE! ネバーエンド・ワンダーランド」(日付不明)
   url: https://lnk.to/LACZ-10380
-  type: 二次情報
+  type: 公式
 event_date: "2026-09-28"
 title_fact_ids:
 - F2

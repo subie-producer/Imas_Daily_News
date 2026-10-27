@@ -4,8 +4,13 @@ edition: "2026-10-27"
 brand: sidem
 src: 当事者
 rank: small
-corrected: false
-corrections: []
+corrected: true
+corrections:
+- at: "2026-10-27T22:30:00+09:00"
+  by: 編集部(出典の種別の判定の欠陥の修正)
+  initial: "出典「東京ジョイポリス「アイドルマスター SideM in JOYPOLIS 3」」の種別: 当事者"
+  corrected_to: "同じ出典の種別: 公式"
+  note: 編集長の規則(2026-10-21)により、公式の投稿・ページからリンクされ、告知と関係すると確かめた出典を公式に改めた。本文は変えていない
 candidate_ids:
 - 202610270222-grok-65
 title: SideM in JOYPOLIS 3、後半メニューと誕生日企画
@@ -21,7 +26,7 @@ sources:
   type: 当事者
 - label: 東京ジョイポリス「アイドルマスター SideM in JOYPOLIS 3」
   url: https://tokyo-joypolis.com/event/sidem_jp2026/index.html
-  type: 当事者
+  type: 公式
 event_date: "2026-10-25"
 title_fact_ids:
 - F1

@@ -4,8 +4,13 @@ edition: "2026-09-16"
 brand: sidem
 src: 当事者
 rank: medium
-corrected: false
-corrections: []
+corrected: true
+corrections:
+- at: "2026-10-27T22:30:00+09:00"
+  by: 編集部(出典の種別の判定の欠陥の修正)
+  initial: "出典「アイドルマスター SideM MフェステーマソングCD発売記念 315プロNight! 出張版 公開録音イベント（2026年9月12日）」の種別: 当事者"
+  corrected_to: "同じ出典の種別: 準公式"
+  note: 編集長の規則(2026-10-21)により、準公式の投稿・ページからリンクされ、告知と関係すると確かめた出典を準公式に改めた。本文は変えていない
 candidate_ids:
 - 202609151258-explore-6
 title: SideM「315プロNight!」公開録音、12月12日開催
@@ -21,7 +26,7 @@ sources:
   type: 当事者
 - label: アイドルマスター SideM MフェステーマソングCD発売記念 315プロNight! 出張版 公開録音イベント（2026年9月12日）
   url: https://www.animate-onlineshop.jp/contents/fair_event/detail.php?id=116271
-  type: 当事者
+  type: 準公式
 event_date: "2026-12-12"
 title_fact_ids:
 - F1

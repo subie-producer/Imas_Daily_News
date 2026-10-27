@@ -2,10 +2,15 @@
 slug: dsva-va-liv-letora-birthday-2026
 edition: "2026-10-11"
 brand: dsva
-src: 当事者
+src: 公式
 rank: medium
-corrected: false
-corrections: []
+corrected: true
+corrections:
+- at: "2026-10-27T22:30:00+09:00"
+  by: 編集部(出典の種別の判定の欠陥の修正)
+  initial: "出典「LivePocket「レトラ BIRTHDAY ONLINE LIVE 2026」(2026年10月1日)」の種別: 当事者(記事の出典の表示: 当事者)"
+  corrected_to: "同じ出典の種別: 公式(記事の出典の表示: 公式)"
+  note: 編集長の規則(2026-10-21)により、公式の投稿・ページからリンクされ、告知と関係すると確かめた出典を公式に改めた。本文は変えていない
 candidate_ids:
 - sched-2026-10-11-va-liv-letora-birthday-2026-締切
 - 202610110238-grok-60
@@ -26,7 +31,7 @@ sources:
   type: 公式
 - label: LivePocket「レトラ BIRTHDAY ONLINE LIVE 2026」(2026年10月1日)
   url: https://livepocket.jp/e/va-liv_letora_bd2026
-  type: 当事者
+  type: 公式
 event_date: "2026-10-11"
 title_fact_ids:
 - F2

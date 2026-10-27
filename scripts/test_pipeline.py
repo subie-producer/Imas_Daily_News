@@ -8252,25 +8252,35 @@ def test_update_cloudflared_failures(tmp: Path):
             Path.unlink = saved_unlink
         check(r == 1 and ucf.BIN.read_bytes() == old_bytes and st["restarts"] == 2 and alarmed("旧版 2026.10.4 に戻した"),
               f"旧版に戻した後の .new の消去の失敗で、再起動を飛ばした: {r} 再起動 {st['restarts']} 回 {notes}")
-        # r3: 取得は全体で DOWNLOAD_LIMIT 秒まで(1回の読みは遅くても上限の内、が続くと unit の上限を越える)
+        # r4: 表示も失敗する(標準出力が閉じている)うえに .new の消去も失敗: 差し替えた後の確認・戻しの再起動を飛ばさない
+        def broken_print(*a, **k):
+            raise BrokenPipeError("標準出力が閉じている")
+        for ready, want_rc, want_bin, want_restarts in ((4, 0, new_bytes, 1), (1, 1, old_bytes, 2)):
+            reset(ready=ready)
+            Path.unlink = broken_unlink
+            ucf.print = broken_print
+            try:
+                r = run_main()
+            finally:
+                Path.unlink = saved_unlink
+                del ucf.print
+            check(r == want_rc and ucf.BIN.read_bytes() == want_bin and st["restarts"] == want_restarts
+                  and (alarmed("旧版 2026.10.4 に戻した") if want_rc else not diag),
+                  f"表示の失敗で差し替えた後の確認・戻しの再起動を飛ばした(/ready {ready}): {r} 再起動 {st['restarts']} 回 {notes}")
+        # r3・r4: 取得は全体で DOWNLOAD_LIMIT 秒まで。1回の read が少しずつ届いて何時間も戻らないときも、read の途中で切る
         class SlowBody:
-            def __init__(self):
-                self.n = 0
             def __enter__(self):
                 return self
             def __exit__(self, *a):
                 return False
             def read(self, *a):
-                self.n += 1
-                return b"x" * 10 if self.n <= 60 else b""
-        fake_t = {"t": 0.0}
-        def slow_time():
-            fake_t["t"] += 299      # 読みのたびに 299 秒(1回の読みの上限には掛からない)
-            return fake_t["t"]
-        saved_urllib, saved_time = ucf.urllib, ucf.time
+                time.sleep(3)       # 1回の read が上限より長く戻らない
+                return b""
+        saved_urllib, saved_time, saved_limit = ucf.urllib, ucf.time, ucf.DOWNLOAD_LIMIT
         ucf.urllib = types.SimpleNamespace(request=types.SimpleNamespace(Request=lambda *a, **k: None,
                                                                          urlopen=lambda *a, **k: SlowBody()))
-        ucf.time = types.SimpleNamespace(time=slow_time, sleep=fake_sleep)
+        ucf.time, ucf.DOWNLOAD_LIMIT = time, 0.3
+        t0 = time.monotonic()
         try:
             saved["download"]("https://example.invalid/x", tmp / "slow.bin")
             dl = "取り終えた"
@@ -8279,8 +8289,9 @@ def test_update_cloudflared_failures(tmp: Path):
         except Exception as e:
             dl = f"{type(e).__name__}: {e}"
         finally:
-            ucf.urllib, ucf.time = saved_urllib, saved_time
-        check(dl.startswith("TimeoutError"), f"取得が全体の上限を越えても止まらない: {dl}")
+            ucf.urllib, ucf.time, ucf.DOWNLOAD_LIMIT = saved_urllib, saved_time, saved_limit
+        took = time.monotonic() - t0
+        check(dl.startswith("TimeoutError") and took < 2, f"取得が全体の上限で read の途中で止まらない: {dl}({took:.1f}秒)")
         # 再起動しても起動が変わらない: つながったと数えない
         reset(new_inv=False)
         r = run_main()

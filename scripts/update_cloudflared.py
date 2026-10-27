@@ -24,6 +24,7 @@ import os
 import platform
 import re
 import shutil
+import signal
 import subprocess
 import sys
 import time
@@ -73,15 +74,36 @@ def release_sha256(body: str, name: str) -> str:
     return m.group(1) if m else ""
 
 
+def say(msg: str) -> None:
+    """表示する。表示の失敗(標準出力が閉じている等)は無視する(差し替えの後の表示の例外で、再起動・戻しを飛ばしていた。Sol 監査 r4)。"""
+    try:
+        print(msg, flush=True)
+    except Exception:
+        pass
+
+
+def quiet_unlink(p: Path) -> None:
+    """後片付けで消す。失敗は表示だけ(Sol 監査 r2〜r4: 消去の失敗で、差し替えた後の確認・戻しの再起動を飛ばしていた)。"""
+    try:
+        p.unlink(missing_ok=True)
+    except Exception as e:
+        say(f"({p} を消せない: {e})")
+
+
 def download(url: str, dest: Path) -> None:
-    """url を dest に取る。全体で DOWNLOAD_LIMIT 秒を越えたら TimeoutError(urlopen の timeout は1回の読みの上限で、
-    遅い読みが続くと unit の TimeoutStartSec を越えていた。Sol 監査 r3)。"""
-    end = time.time() + DOWNLOAD_LIMIT
-    with urllib.request.urlopen(urllib.request.Request(url, headers=UA), timeout=60) as r, dest.open("wb") as f:
-        while chunk := r.read(1 << 20):
-            f.write(chunk)
-            if time.time() > end:
-                raise TimeoutError(f"{DOWNLOAD_LIMIT}秒で取り終わらない")
+    """url を dest に取る。全体で DOWNLOAD_LIMIT 秒を越えたら TimeoutError。urlopen の timeout は1回の読みの上限で、
+    少しずつ届く読みは1回の read の中で何時間も戻らず unit の TimeoutStartSec を越えたので(Sol 監査 r3・r4)、
+    読みの途中でも割り込むタイマー(SIGALRM)で切る。主スレッドから呼ぶ。"""
+    def expired(signum, frame):
+        raise TimeoutError(f"{DOWNLOAD_LIMIT}秒で取り終わらない")
+    old = signal.signal(signal.SIGALRM, expired)
+    signal.setitimer(signal.ITIMER_REAL, DOWNLOAD_LIMIT)
+    try:
+        with urllib.request.urlopen(urllib.request.Request(url, headers=UA), timeout=60) as r, dest.open("wb") as f:
+            shutil.copyfileobj(r, f)
+    finally:
+        signal.setitimer(signal.ITIMER_REAL, 0)
+        signal.signal(signal.SIGALRM, old)
 
 
 def tunnel_invocation() -> str:
@@ -176,14 +198,20 @@ def wait_out_quiet() -> None:
     """再起動しない時間帯なら、外に出るまで待つ。待ちから戻るたびに時刻を見直す(時計が戻る・待ちが短く終わることがある。
     Sol 監査 r2)。起動のときと、差し替えの直前(取るのに時間がかかって時間帯に入ることがある)に呼ぶ。"""
     while (wait := publishing_wait(now_jst())) > 0:
-        print(f"発行の時間帯なので {QUIET_UNTIL:%H:%M} まで待ってから上げる({int(wait)}秒)", flush=True)
+        say(f"発行の時間帯なので {QUIET_UNTIL:%H:%M} まで待ってから上げる({int(wait)}秒)")
         time.sleep(wait)
 
 
 def fail(msg: str) -> int:
-    """更新できなかった・つながらない: 異常として通知し(台帳に入る)、当番に渡す。"""
-    notify("update", msg, ok=False)
-    diagnose_anomalies("update", now_jst().strftime("%Y-%m-%d"), edition=edition_date())
+    """更新できなかった・つながらない: 異常として通知し(台帳に入る)、当番に渡す。通知が例外を投げても当番には渡す。"""
+    try:
+        notify("update", msg, ok=False)
+    except Exception as e:
+        say(f"(通知に失敗: {type(e).__name__}: {e}) {msg}")
+    try:
+        diagnose_anomalies("update", now_jst().strftime("%Y-%m-%d"), edition=edition_date())
+    except Exception as e:
+        say(f"(当番に渡せない: {type(e).__name__}: {e})")
     return 1
 
 
@@ -196,10 +224,7 @@ def replace_bin(src: Path) -> None:
         shutil.copy2(src, staged)
         os.replace(staged, BIN)
     finally:
-        try:
-            staged.unlink(missing_ok=True)
-        except OSError as e:
-            print(f"(差し替えに使った {staged} を消せない: {e})", flush=True)
+        quiet_unlink(staged)
 
 
 def main() -> int:
@@ -214,11 +239,11 @@ def main() -> int:
     except Exception as e:
         msg = f"cloudflared の最新の版を GitHub から取れない({type(e).__name__}: {e})。{cur or '今の版'} のまま"
         if args.check:      # 表示だけ: 当番を起こさない(Sol 監査 r1)
-            print(msg, flush=True)
+            say(msg)
             return 1
         return fail(msg)
     latest = (rel.get("tag_name") or "").lstrip("v")
-    print(f"cloudflared: 今 {cur or '(不明)'} / 最新 {latest}", flush=True)
+    say(f"cloudflared: 今 {cur or '(不明)'} / 最新 {latest}")
     if args.check or (cur and cur == latest):
         return 0
     if not BIN.is_file():
@@ -261,26 +286,36 @@ def update(cur: str, latest: str, rel: dict) -> int:
         wait_out_quiet()      # 取るのに時間がかかって発行の時間帯に入っていたら、ここで待つ
         os.replace(staged, BIN)
     finally:
-        try:
-            staged.unlink(missing_ok=True)
-        except OSError as e:
-            print(f"(取った実行ファイル {staged} を消せない: {e})", flush=True)
-    # ここから先は例外を投げない(差し替えた後に抜けると、新しい版のまま通知もせずに終わる。Sol 監査 r1)
+        quiet_unlink(staged)  # 例外を投げない(差し替えた後にここで抜けると、確認・戻しを飛ばす)
+    return after_swap(cur, latest, bak)
+
+
+def after_swap(cur: str, latest: str, bak: Path) -> int:
+    """差し替えた後: 再起動して確かめ、だめなら旧版に戻して必ず再起動し、異常にする。ここで使う関数(restart_and_verify・
+    replace_bin・quiet_unlink・say・fail)は例外を投げないか、ここで捕まえる(差し替えた後に例外で抜けると、
+    つながらない版のまま・通知なしで終わる。Sol 監査 r1〜r4)。"""
     ok, state = restart_and_verify()
     if ok:
         try:
             prune_backups()
-        except OSError as e:
-            print(f"(古い旧版の片付けに失敗: {e})", flush=True)
-        notify("update", f"cloudflared を更新した: {cur or '(不明)'} → {latest}({state})")
+        except Exception as e:
+            say(f"(古い旧版の片付けに失敗: {e})")
+        try:
+            notify("update", f"cloudflared を更新した: {cur or '(不明)'} → {latest}({state})")
+        except Exception as e:
+            say(f"(通知に失敗: {type(e).__name__}: {e})")
         return 0
-    # つながらない: 旧版に戻して再起動し、戻った状態も添えて異常にする
+    # つながらない: 旧版に戻す。戻せても戻せなくても再起動は必ず試み、戻った状態も添えて異常にする
+    restore_err = ""
     try:
         replace_bin(bak)
     except Exception as e:
-        return fail(f"cloudflared {latest} でトンネルがつながらない({state})。旧版 {cur or '(不明)'} に戻せない"
-                    f"({type(e).__name__}: {e})。{bak} を手で {BIN} に戻して imas-tunnel を再起動する")
+        restore_err = f"{type(e).__name__}: {e}"
     ok2, state2 = restart_and_verify()
+    if restore_err:
+        return fail(f"cloudflared {latest} でトンネルがつながらない({state})。旧版 {cur or '(不明)'} に戻せない"
+                    f"({restore_err})。{bak} を手で {BIN} に戻して imas-tunnel を再起動する"
+                    f"(再起動の後: {'つながった' if ok2 else 'つながらない'}({state2}))")
     return fail(f"cloudflared {latest} でトンネルがつながらない({state})。旧版 {cur or '(不明)'} に戻した: "
                 f"{'つながった' if ok2 else 'まだつながらない'}({state2})")
 

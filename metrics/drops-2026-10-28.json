@@ -45,5 +45,41 @@
     "gaku-imas-radio-next-2026-11-10"
    ]
   }
+ },
+ "dsva-va-liv-manaka-birthday-live-2026": {
+  "title": "灯里愛夏延期公演、現地LV券は本日18時締切",
+  "stage": "校閲ブロック",
+  "why": "R4 現地LV券の支払い方法の段落で、コンビニ決済を今も選べるように書いている。出典(01_20111)には「コンビニ決済受付は2026年10月26日(月)23:59まで」とあり、号の発行時点(10/28 06:00)では受付は終わっている。「販",
+  "candidate_ids": [
+   "202610272334-explore-6",
+   "sched-2026-10-28-va-liv-manaka-birthday-live-2026-開幕",
+   "sched-2026-10-28-va-liv-manaka-birthday-live-2026-締切",
+   "sched-2026-10-28-va-liv-manaka-birthday-live-2026-締切-src1",
+   "202610270222-grok-45",
+   "sched-2026-10-28-topic-ghfbbbcede-開幕",
+   "sched-2026-10-28-x-com-20-開始",
+   "sched-2026-10-28-dsva-manaka-birthday-online-live-2026-platform-change-開始"
+  ]
+ },
+ "joint-765-961-idol-ultimate-ticket-2027": {
+  "title": "765×961ライブ先行、締切を11月8日に延長",
+  "stage": "校閲ブロック",
+  "why": "R16 リード(frontmatter の lede)の文が「当選者の入金期間は11」で途切れている。機械的に壊れたテキストで、入金期間の終わりの日付が欠けている。",
+  "candidate_ids": [
+   "sched-2026-10-28-765-961-idol-ultimate-ticket-2027-締切",
+   "sched-2026-10-28-765-961-idol-ultimate-ticket-2027-締切-src1",
+   "sched-2026-10-28-765-961-idol-ultimate-ticket-2027-締切-src2",
+   "202610280221-grok-62",
+   "sched-2026-10-28-765-961-xr-live-2027-締切",
+   "sched-2026-10-28-765-961-xr-live-2027-締切-src1",
+   "sched-2026-10-28-765-961-idol-ultimate-once-and-for-all-2027-締切",
+   "sched-2026-10-28-765-961-idol-ultimate-once-and-for-all-2027-締切-src1",
+   "sched-2026-10-28-765-961-idol-ultimate-2027-締切",
+   "sched-2026-10-28-765-961-idol-ultimate-2027-締切-src1",
+   "202610272334-watch-0",
+   "202610280221-explore-0",
+   "202610270222-grok-58",
+   "sched-2026-10-28-765-961-idol-ultimate-2027-ticket-締切"
+  ]
  }
 }

@@ -4,7 +4,8 @@ set -e
 cd "$(dirname "$0")"
 UNIT_DIR="$HOME/.config/systemd/user"
 mkdir -p "$UNIT_DIR"
-cp imas-*.service imas-*.timer "$UNIT_DIR/"
+# imas.slice は工程と当番のメモリの上限、imas-failure@.service は工程の失敗の通知(OnFailure)
+cp imas-*.service imas-*.timer imas.slice "$UNIT_DIR/"
 systemctl --user daemon-reload
 for t in imas-update imas-collect imas-compose imas-release imas-watch; do
   systemctl --user enable --now "$t.timer"

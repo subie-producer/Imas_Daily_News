@@ -223,10 +223,12 @@ def watch_get(url: str, timeout: float) -> tuple[bytes, str | None]:
 
 
 def watch_read(res) -> bytes:
-    """定点観測の応答を読み切る。収集の締切があるときは、受信のたびに締切を確かめて打ち切る(socket の待ち時間は1回の受信
-    ごとにしか効かず、少しずつ届く応答は締切を越えて読み続けた。監査指摘 2026-10-14)。締切が無ければ今までどおり読む。"""
+    """定点観測の応答を読み切る。読むのは PAGE_READ_BYTES まで(本文を取るほかの経路と同じ上限)。終わらない応答を締切まで
+    溜め込まない(2026-10-27: 終わりを返さない応答を締切まで読み続け、09:00 の watch が 6.4G を使って OOM で殺された)。
+    収集の締切があるときは、受信のたびに締切を確かめて打ち切る(socket の待ち時間は1回の受信
+    ごとにしか効かず、少しずつ届く応答は締切を越えて読み続けた。監査指摘 2026-10-14)。"""
     if not DEADLINE:
-        return res.read()
+        return res.read(PAGE_READ_BYTES)
     # 下の受信(socket から読む1回ごと)の待ち時間を、その時点の残り時間に合わせる。応答の読み方(chunked の長さの行を
     # 1字ずつ読む等)によって1回の read1 の中で何度も受信するので、受信の入口(raw.readinto)で合わせる(監査指摘 2026-10-14)。
     # 待ち時間は urlopen が決めた1回の受信の上限(20 秒)より延ばさない。受信の socket を取れない応答では、urlopen に渡した
@@ -252,15 +254,17 @@ def watch_read(res) -> bytes:
             raw.readinto = readinto
         except AttributeError:
             pass
-    chunks = []
+    chunks, got = [], 0
     read1 = getattr(res, "read1", None) or (lambda n: res.read(n))
-    while True:
+    while got < PAGE_READ_BYTES:
         if deadline_passed():
             raise TimeoutError("収集の締切を過ぎたので受信を打ち切った")
-        b = read1(65536)
+        b = read1(min(65536, PAGE_READ_BYTES - got))
         if not b:
-            return b"".join(chunks)
-        chunks.append(b)
+            break
+        chunks.append(b[:PAGE_READ_BYTES - got])
+        got += len(chunks[-1])
+    return b"".join(chunks)
 
 
 def fetch_rendered(url: str, timeout: int = 30, limit: float | None = None, wait_deadline: float | None = None) -> str:

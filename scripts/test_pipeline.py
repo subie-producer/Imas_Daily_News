@@ -141,6 +141,10 @@ pipelib.urllib.request.urlopen = _no_network
 pipelib.HOST_GAP = 0.0
 os.environ[pipelib.HOST_GAP_DIR_ENV] = tempfile.mkdtemp(prefix="imas-test-hostgap-")
 atexit.register(shutil.rmtree, os.environ[pipelib.HOST_GAP_DIR_ENV], True)
+# テストは systemd の下(watch・当番の selfcheck)でも手で回したときと同じに動かす。INVOCATION_ID があると収集の締切が決まり
+# (collect.collect_deadline)、当番が systemd-run で起動する。systemd の起動を検めるテストは自分で入れる
+# (2026-10-27: watch の selfcheck の下でだけ締切が残り、終わりを返さない偽の応答を読み続けて 6.4G で OOM になった)
+os.environ.pop("INVOCATION_ID", None)
 
 
 def check(cond, msg):
@@ -18206,9 +18210,13 @@ def test_page_archive_versions_and_reads(tmp: Path):
     class R203:
         status = 203
         headers = type("H", (), {"get_content_charset": lambda s: "utf-8"})()
-        def __init__(self, u): self.u = u
+        def __init__(self, u):
+            self.u, self.left = u, ("<html><body>" + "状態コードの告知。価格は3000円。" * 30 + "</body></html>").encode()
         def geturl(self): return self.u
-        def read(self, n=None): return ("<html><body>" + "状態コードの告知。価格は3000円。" * 30 + "</body></html>").encode()
+
+        def read(self, n=None):     # 本物の応答と同じく、読み切ったら空を返す(毎回同じ本文を返すと、読み切るまで溜め込み続けた。2026-10-27)
+            b, self.left = (self.left, b"") if n is None or n < 0 else (self.left[:n], self.left[n:])
+            return b
         def __enter__(self): return self
         def __exit__(self, *a): return False
     saved_o = (fetch_page.urllib.request.urlopen, collect.urllib.request.urlopen)
@@ -19585,6 +19593,242 @@ def test_source_update_sessions(tmp: Path):
     check(got["blocked"] == "止まった", f"CLI の利用上限を答えの読めない回と取り違えた: {got['blocked']}")
 
 
+def test_page_reads_are_bounded(tmp: Path):
+    """応答の読み取りは PAGE_READ_BYTES まで(2026-10-27: 終わりを返さない応答を、定点観測の受信が締切まで読み続けて溜め込み、
+    09:00 の watch が 6.4G で OOM になった)。締切のある読み方・無い読み方・出典の判定の読み取りのどれも有界"""
+    import contextlib
+    import io
+    import time as _t
+    import collect
+    import classify_sources as cs
+    cap = pipelib.PAGE_READ_BYTES
+
+    class Endless:
+        """終わりを返さない応答。上限の3倍を渡したら、溜め込み続けたとして止める(テストを止めない)"""
+        status = 200
+        headers = type("H", (), {"get_content_charset": lambda s: "utf-8"})()
+
+        def __init__(self):
+            self.served, self.unbounded = 0, False
+
+        def _give(self, n):
+            if n is None or n < 0:
+                self.unbounded = True
+                raise AssertionError("上限なしで読んだ")
+            if self.served > 3 * cap:
+                raise AssertionError("終わらない応答を上限を越えて読み続けた")
+            self.served += n
+            return b"x" * n
+        read = read1 = lambda self, n=None: self._give(n)
+        def geturl(self): return "https://endless.example/"
+        def __enter__(self): return self
+        def __exit__(self, *a): return False
+    got = {}
+    saved_dl = collect.DEADLINE
+    for k, dl in (("締切あり", _t.time() + 3600), ("締切なし", None)):
+        res = Endless()
+        try:
+            collect.DEADLINE = dl
+            body = collect.watch_read(res)
+            got[k] = (len(body), None)
+        except Exception as e:      # noqa: BLE001
+            got[k] = (res.served, f"{type(e).__name__}: {e}")
+        finally:
+            collect.DEADLINE = saved_dl
+    check(all(err is None and n <= cap for n, err in got.values()), f"定点観測の受信が終わらない応答を上限なしで読んだ: {got}")
+    # 出典の判定(BOOTH の商品・YouTube の oEmbed と視聴ページ・再生リスト)と X の投稿者も上限まで
+    seen = []
+    saved = (cs.polite_urlopen, pipelib.polite_urlopen)
+
+    def opener(req, timeout=20, **k):
+        r = Endless()
+        seen.append(r)
+        return r
+    try:
+        cs.polite_urlopen = pipelib.polite_urlopen = opener
+        with contextlib.redirect_stdout(io.StringIO()):
+            cs.booth_item_shop("1")
+            cs.video_author("abc")
+            cs.playlist_author("PLx")
+            pipelib.x_post_author("123")
+    finally:
+        cs.polite_urlopen, pipelib.polite_urlopen = saved
+    check(len(seen) >= 4 and not any(r.unbounded for r in seen),
+          f"出典の判定・X の投稿者の取得が応答を上限なしで読んだ: {[(r.served, r.unbounded) for r in seen]}")
+
+
+def test_suite_same_under_systemd(tmp: Path):
+    """回帰テストは systemd の下(watch・当番の selfcheck。INVOCATION_ID がある)でも手で回したときと同じに動く。前のテストが決めた
+    収集の締切は次のテストに残らない(2026-10-27: systemd の下でだけ収集の締切が残り、原本の保存のテストが終わらない偽の応答を
+    読み続け、watch が 6.4G・7 時間半で OOM になった。手で回すと通るので、監査も当番も気づかなかった)"""
+    import time as _t
+    import collect
+    code = ("import os, sys; sys.path.insert(0, sys.argv[1]); os.environ['INVOCATION_ID'] = 'from-systemd'\n"
+            "import test_pipeline, collect\n"
+            "print(repr(os.environ.get('INVOCATION_ID')), repr(collect.collect_deadline(False)))\n")
+    r = subprocess.run([sys.executable, "-c", code, str(Path(__file__).resolve().parent)], capture_output=True, text=True,
+                       timeout=300, stdin=subprocess.DEVNULL)
+    check(r.returncode == 0 and r.stdout.strip() == "None None",
+          f"systemd の下で回帰テストを読み込むと、INVOCATION_ID と収集の締切が残る: {r.stdout.strip()!r} {r.stderr[-300:]!r}")
+    saved = collect.DEADLINE
+
+    def sets_deadline(_tmp):
+        collect.DEADLINE = _t.time() + 3600
+    try:
+        collect.DEADLINE = None
+        _own_archive(sets_deadline)(tmp)
+        left = collect.DEADLINE
+    finally:
+        collect.DEADLINE = saved
+    check(left is None, f"前のテストが決めた収集の締切が、次のテストに残る: {left}")
+
+
+def test_selfcheck_stops_stuck_tests(tmp: Path):
+    """selfcheck は回帰テストを時間の上限で止め(子孫ごと)、赤にする。止まったテストを待ち続けない
+    (2026-10-27: watch の selfcheck の下でテストが終わらず、7 時間半走って OOM で殺された)"""
+    root = tmp / "repo"
+    (root / "scripts").mkdir(parents=True)
+    pidfile = tmp / "grandchild.pid"
+    (root / "scripts" / "test_pipeline.py").write_text(
+        "import subprocess, sys, time\n"
+        f"p = subprocess.Popen(['sleep', '600'])\nopen({str(pidfile)!r}, 'w').write(str(p.pid))\n"
+        "print('止まったテスト', flush=True)\ntime.sleep(600)\n", encoding="utf-8")
+    code = ("import sys; sys.path.insert(0, sys.argv[1]); import selfcheck\n"
+            "from pathlib import Path\n"
+            "selfcheck.ROOT, selfcheck.TARGETS, selfcheck.TEST_TIMEOUT_SEC = Path(sys.argv[2]), [], 3\n"
+            "sys.argv = ['selfcheck.py']\nsys.exit(selfcheck.main())\n")
+    try:
+        r = subprocess.run([sys.executable, "-c", code, str(Path(__file__).resolve().parent), str(root)], capture_output=True,
+                           text=True, timeout=90, stdin=subprocess.DEVNULL)
+        out = (r.returncode, r.stdout + r.stderr)
+    except subprocess.TimeoutExpired:
+        out = (None, "selfcheck が止まったテストを待ち続けた")
+    alive = False
+    try:
+        pid = int(pidfile.read_text())
+        os.kill(pid, 0)
+        alive = Path(f"/proc/{pid}/stat").read_text().split(")")[-1].split()[0] != "Z"
+        if alive:
+            os.kill(pid, 9)
+    except (OSError, ValueError):
+        pass
+    check(out[0] == 1 and "終わらない" in out[1] and not alive,
+          f"selfcheck が止まったテストを時間の上限で止めない・子孫を残した: exit {out[0]} 子孫 {'残った' if alive else 'なし'} {out[1][-300:]!r}")
+
+
+def test_unit_failed_reaches_human(tmp: Path):
+    """定時の工程・当番の unit が、自分で知らせずに止まったら(OOM・シグナル・時間切れ・通知せずに非0)、人に知らせて当番に渡す
+    (2026-10-27: 09:00 の watch が OOM で殺されたが、人には何も届かなかった)。自分で通知して非0で終えた走行は二重にしない"""
+    import unit_failed as uf
+    calls = []
+    saved = (uf.unit_props, uf.reported_itself, uf.notify, uf.diagnose_anomalies, uf.now_jst, uf.edition_date)
+    cases = {
+        "watch-oom": ("imas-watch.service", {"Result": "oom-kill", "ExecMainStatus": "15", "MemoryPeak": str(6_900_000_000)}, False),
+        "watch-通知済み": ("imas-watch.service", {"Result": "exit-code", "ExecMainStatus": "1"}, True),
+        "collect-黙って非0": ("imas-collect.service", {"Result": "exit-code", "ExecMainStatus": "1"}, False),
+        "compose-時間切れ": ("imas-compose.service", {"Result": "timeout", "ExecMainStatus": "15"}, True),
+        "release-シグナル": ("imas-release.service", {"Result": "signal", "ExecMainStatus": "9"}, False),
+        "当番-oom": ("imas-oncall-2026-10-28-compose-1", {"Result": "oom-kill", "ExecMainStatus": "9"}, False),
+    }
+    got = {}
+    try:
+        uf.now_jst = lambda: __import__("datetime").datetime(2026, 10, 27, 16, 38, tzinfo=pipelib.JST)
+        uf.edition_date = lambda: "2026-10-28"
+        for name, (unit, props, reported) in cases.items():
+            calls.clear()
+            uf.unit_props = lambda u, p=props: dict(p)
+            uf.reported_itself = lambda inv, r=reported: r
+            uf.notify = lambda job, msg, ok=True, **k: (calls.append(("notify", job, msg, ok, k.get("ledger", True))), True)[1]
+            uf.diagnose_anomalies = lambda *a, **k: calls.append(("当番", a, k)) or True
+            code = uf.main([unit])
+            got[name] = (code, list(calls))
+        # 走行が自分で通知したかは、その走行の journal の行で見る
+        saved_run, asked = uf.subprocess.run, []
+        try:
+            uf.subprocess.run = lambda cmd, **k: (asked.append(cmd), subprocess.CompletedProcess(
+                cmd, 0, "途中経過\n🚨 アイマスNEWS watch: 異常検知\n", ""))[1]
+            yes = saved[1]("abc")
+            uf.subprocess.run = lambda cmd, **k: subprocess.CompletedProcess(cmd, 0, "watch OK\n", "")
+            no = saved[1]("abc")
+        finally:
+            uf.subprocess.run = saved_run
+    finally:
+        (uf.unit_props, uf.reported_itself, uf.notify, uf.diagnose_anomalies, uf.now_jst, uf.edition_date) = saved
+    n = lambda k: [c for c in got[k][1] if c[0] == "notify"]
+    h = lambda k: [c for c in got[k][1] if c[0] == "当番"]
+    check(len(n("watch-oom")) == 1 and n("watch-oom")[0][1] == "watch" and n("watch-oom")[0][3] is False
+          and "OOM" in n("watch-oom")[0][2] and "6.4G" in n("watch-oom")[0][2]
+          and h("watch-oom") == [("当番", ("watch", "2026-10-27"), {"rerun": False, "reason": n("watch-oom")[0][2], "edition": "2026-10-28"})],
+          f"OOM で殺された watch を人に知らせて当番に渡さない: {got['watch-oom']}")
+    check(got["watch-通知済み"][1] == [], f"自分で通知して非0で終えた走行を二重に知らせた: {got['watch-通知済み']}")
+    check(len(n("collect-黙って非0")) == 1 and h("collect-黙って非0") and h("collect-黙って非0")[0][2]["rerun"] is False,
+          f"通知せずに非0で終えた収集を知らせない: {got['collect-黙って非0']}")
+    check(len(n("compose-時間切れ")) == 1 and h("compose-時間切れ") and h("compose-時間切れ")[0][1] == ("compose", "2026-10-28")
+          and h("compose-時間切れ")[0][2]["rerun"] is True,
+          f"時間切れで止められた組版を、取り直す当番に渡さない(自分の通知があっても止められたことは届ける): {got['compose-時間切れ']}")
+    check(h("release-シグナル") and h("release-シグナル")[0][1] == ("release", "2026-10-27") and h("release-シグナル")[0][2]["rerun"] is True,
+          f"シグナルで止まった発行を、今日の号を取り直す当番に渡さない: {got['release-シグナル']}")
+    check(len(n("当番-oom")) == 1 and n("当番-oom")[0][4] is False and not h("当番-oom"),
+          f"当番の unit の失敗を知らせない・当番に当番を重ねた: {got['当番-oom']}")
+    check(yes is True and no is False and asked and "_SYSTEMD_INVOCATION_ID=abc" in asked[0],
+          f"走行が自分で通知したかを、その走行の journal の行で見分けない: {yes} {no} {asked}")
+
+
+def test_units_bound_memory_and_report_failure(tmp: Path):
+    """定時の工程の unit は工程の slice(メモリの上限)の中で動き、失敗したら通知の unit を起動する。当番の unit も同じ。
+    通知の unit は導入の手順で入る(2026-10-27: 09:00 の watch が 6.4G を使って機械を止め、OOM で殺されても誰にも届かなかった)"""
+    import configparser
+    units = Path(__file__).resolve().parent.parent / "ops" / "systemd"
+
+    def read(name):
+        cp = configparser.ConfigParser(strict=False, interpolation=None, comment_prefixes=("#",))
+        cp.optionxform = str
+        cp.read(units / name, encoding="utf-8")
+        return cp
+    bad = []
+    for st in ("collect", "compose", "release", "update", "watch"):
+        u = read(f"imas-{st}.service")
+        if u.get("Unit", "OnFailure", fallback="") != "imas-failure@%n.service" or u.get("Service", "Slice", fallback="") != "imas.slice":
+            bad.append(st)
+    w = read("imas-watch.service")
+    sl = read("imas.slice")
+    fl = read("imas-failure@.service")
+    install = (units / "install.sh").read_text(encoding="utf-8")
+    check(not bad and w.get("Service", "MemoryMax", fallback="") and w.get("Service", "TimeoutStartSec", fallback="")
+          and sl.get("Slice", "MemoryMax", fallback="") and "unit_failed.py %i" in fl.get("Service", "ExecStart", fallback="")
+          and "imas.slice" in install,
+          f"工程の unit がメモリの上限・失敗の通知を持たない: {bad} / watch {dict(w['Service']) if w.has_section('Service') else {}}")
+    # 当番の unit も工程の slice の中で起動し、失敗したら通知の unit を起動する
+    rec = []
+    saved = (pipelib.subprocess.run, pipelib.shutil.which, os.environ.get("INVOCATION_ID"), pipelib._ESCALATED, pipelib.oncall_clis_blocked,
+             list(pipelib.ANOMALIES), pipelib.ENV.get("ONCALL"))
+
+    def fake_run(cmd, **k):
+        rec.append(list(cmd))
+        return subprocess.CompletedProcess(cmd, 0, "active\n" if cmd[:3] == ["systemctl", "--user", "is-active"] else "", "")
+    try:
+        pipelib.subprocess.run, pipelib.shutil.which = fake_run, lambda n: f"/usr/bin/{n}"
+        os.environ["INVOCATION_ID"] = "test"
+        pipelib._ESCALATED, pipelib.oncall_clis_blocked = False, lambda: []
+        pipelib.ENV["ONCALL"] = "on"
+        pipelib.ANOMALIES[:] = ["[watch] 異常"]
+        pipelib.escalate("watch", "2026-10-27", "テスト", rerun=False)
+    finally:
+        (pipelib.subprocess.run, pipelib.shutil.which, inv, pipelib._ESCALATED, pipelib.oncall_clis_blocked, an, onc) = saved
+        pipelib.ANOMALIES[:] = an
+        os.environ.pop("INVOCATION_ID", None)
+        if inv is not None:
+            os.environ["INVOCATION_ID"] = inv
+        if onc is None:
+            pipelib.ENV.pop("ONCALL", None)
+        else:
+            pipelib.ENV["ONCALL"] = onc
+    sd = next((c for c in rec if c[:1] == ["systemd-run"]), [])
+    unit = sd[sd.index("--unit") + 1] if "--unit" in sd else ""
+    check(unit and "--slice=imas.slice" in sd and f"--property=OnFailure=imas-failure@{unit}.service" in sd,
+          f"当番の unit を工程の slice の外で起動した・失敗の通知を付けない: {sd}")
+
+
 def main() -> int:
     tmp = Path(tempfile.mkdtemp(prefix="imas-test-"))
     test_assemble_run_returns_reservations(tmp / "arrr")
@@ -19806,6 +20050,11 @@ def main() -> int:
     test_source_watch(tmp / "sw")
     test_article_updates_render(tmp / "aur")
     test_source_update_sessions(tmp / "sus")
+    test_page_reads_are_bounded(tmp / "prb")
+    test_suite_same_under_systemd(tmp / "ssu2")
+    test_selfcheck_stops_stuck_tests(tmp / "sst")
+    test_unit_failed_reaches_human(tmp / "ufh")
+    test_units_bound_memory_and_report_failure(tmp / "ubm")
     check(not STRAY_WRITES, "書式で決めたファイルを write_checked を通さずに書いた本番のコード(書く前に書式で検めること): "
           + "; ".join(sorted(set(STRAY_WRITES))[:10]))
     for f in FAILS:
@@ -19816,17 +20065,24 @@ def main() -> int:
 
 def _own_archive(fn):
     """テストごとに原本の置き場(page_archive)を空の別の置き場にする(前のテストが読んだページの原本を、次のテストの fetch_page.py が
-    「読み直せないときの原本」として返さない)"""
+    「読み直せないときの原本」として返さない)。収集の締切(collect.DEADLINE。collect.main が決める)もテストの前の値に戻す
+    (前のテストの締切が次のテストに残ると、締切の有無で読み方が変わる。2026-10-27 の watch の OOM)"""
     import functools
 
     @functools.wraps(fn)
     def run(*a, **k):
         saved = os.environ.get("IMAS_PAGE_ARCHIVE")
         os.environ["IMAS_PAGE_ARCHIVE"] = tempfile.mkdtemp(prefix=f"pages-{fn.__name__[:40]}-")
+        col = sys.modules.get("collect")
+        saved_dl = getattr(col, "DEADLINE", None)
         try:
             return fn(*a, **k)
         finally:
             os.environ["IMAS_PAGE_ARCHIVE"] = saved
+            if col is None:
+                col = sys.modules.get("collect")
+            if col is not None:
+                col.DEADLINE = saved_dl
     return run
 
 

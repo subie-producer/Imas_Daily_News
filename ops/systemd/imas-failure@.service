@@ -1,0 +1,13 @@
+[Unit]
+Description=アイマスNEWS 工程の失敗を人に知らせて当番に渡す(%i)
+# 工程の unit の OnFailure から起動する。工程が自分で知らせる前に止まった(OOM・シグナル・時間切れ)ことを届ける
+# (2026-10-27: 09:00 の watch が OOM で殺されたが、人には何も届かなかった)
+
+[Service]
+Type=oneshot
+WorkingDirectory=%h/git/imas-ops
+Environment=PATH=%h/.local/bin:%h/.grok/bin:/usr/local/bin:/usr/bin:/bin
+ExecStart=/usr/bin/python3 %h/git/imas-ops/scripts/unit_failed.py %i
+TimeoutStartSec=5min
+# 通知は工程の slice の外で動かす(工程の slice がメモリの上限に詰まっていても知らせられる)
+MemoryMax=512M

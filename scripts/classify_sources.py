@@ -733,7 +733,7 @@ def booth_item_shop(item_id: str, fetch=None) -> tuple[str, str]:
             import urllib.request
             req = urllib.request.Request(url, headers={"User-Agent": UA, "Accept": "application/json"})
             with polite_urlopen(req, timeout=20) as r:
-                body = r.read().decode("utf-8")
+                body = r.read(PAGE_READ_BYTES).decode("utf-8")      # 読み取りは上限まで(終わらない応答を溜め込まない。2026-10-27)
         else:
             body = fetch(url)
         shop = json.loads(body).get("shop") or {}
@@ -1492,7 +1492,7 @@ def video_author(vid: str) -> tuple[str, str]:
         q = urllib.parse.urlencode({"url": f"https://www.youtube.com/watch?v={vid}", "format": "json"})
         req = urllib.request.Request(f"https://www.youtube.com/oembed?{q}", headers={"User-Agent": UA})
         with polite_urlopen(req, timeout=20) as r:
-            d = json.loads(r.read().decode("utf-8"))
+            d = json.loads(r.read(PAGE_READ_BYTES).decode("utf-8"))
         handle = urllib.parse.unquote((d.get("author_url") or "").rstrip("/").rsplit("/", 1)[-1]).removeprefix("@")
         return handle, str(d.get("title") or "")
     except Exception as e:
@@ -1504,7 +1504,7 @@ def video_author(vid: str) -> tuple[str, str]:
         req = urllib.request.Request(f"https://www.youtube.com/watch?v={vid}",
                                      headers={"User-Agent": "Mozilla/5.0", "Accept-Language": "ja"})
         with polite_urlopen(req, timeout=20) as r:
-            html = r.read().decode("utf-8", "replace")
+            html = r.read(PAGE_READ_BYTES).decode("utf-8", "replace")
         m = re.search(r'"ownerProfileUrl":"[^"]*?/@([^"/]+)"', html) or re.search(r'"canonicalBaseUrl":"/@([^"/]+)"', html)
         t = re.search(r'<meta name="title" content="([^"]*)"', html) or re.search(r'<title>([^<]*)</title>', html)
         if m:
@@ -1532,7 +1532,7 @@ def playlist_author(list_id: str, fetch=None) -> tuple[str, str]:
         if fetch is None:
             req = urllib.request.Request(f"https://www.youtube.com/oembed?{q}", headers={"User-Agent": UA})
             with polite_urlopen(req, timeout=20) as r:
-                body = r.read().decode("utf-8")
+                body = r.read(PAGE_READ_BYTES).decode("utf-8")
         else:
             body = fetch(f"https://www.youtube.com/oembed?{q}")
         d = json.loads(body)

@@ -589,6 +589,9 @@ def escalate(stage: str, date: str, reason: str, rerun: bool = True, edition: st
     if shutil.which("systemd-run") and os.environ.get("INVOCATION_ID"):
         unit = f"imas-oncall-{date}-{stage}-{int(time.time())}"
         r = subprocess.run(["systemd-run", "--user", "--collect", "--unit", unit,
+                            # 工程と同じメモリの上限(ops/systemd/imas.slice)の中で動かし、自分で知らせずに止まったら人に届ける
+                            # (2026-10-27: watch の selfcheck の回帰テストが膨らんで機械を止めた。当番も同じテストを走らせる)
+                            "--slice=imas.slice", f"--property=OnFailure=imas-failure@{unit}.service",
                             f"--working-directory={ROOT}", f"--setenv=PATH={tool_path()}",
                             f"--setenv=HOME={os.environ.get('HOME', '')}",
                             f"--property=StandardOutput=append:{log}", "--property=StandardError=inherit",
@@ -3991,7 +3994,7 @@ def x_post_author(post_id: str, fetch=None) -> str:
     def get(url: str) -> str:
         req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0 (compatible; ImasNews/1.0)"})
         with polite_urlopen(req, timeout=20) as r:
-            return r.read().decode("utf-8", errors="replace")
+            return r.read(PAGE_READ_BYTES).decode("utf-8", errors="replace")    # 上限まで(終わらない応答を溜め込まない。2026-10-27)
     meta = {}
     try:
         q = urllib.parse.urlencode({"url": f"https://x.com/i/status/{post_id}", "omit_script": "1"})

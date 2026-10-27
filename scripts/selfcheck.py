@@ -31,7 +31,7 @@ TARGETS = ["collect.py", "compose.py", "pipelib.py", "release.py", "lint.py",
            "derive.py", "watch.py", "deploy.py", "indexer.py", "tags.py",
            "fetch_page.py", "cost.py", "source_type.py", "classify_sources.py",
            "retag_sources.py", "withdraw.py", "storylink.py", "update_clis.py", "child_guard.py", "source_rescue.py",
-           "page_archive.py", "source_watch.py"]
+           "page_archive.py", "source_watch.py", "unit_failed.py"]
 # import 漏れを検出する対象。ローカル変数と区別が付くものだけを挙げる
 # (AST だけではスコープを追えないため、モジュール名の allowlist で線を引く)
 KNOWN_MODULES = {"os", "sys", "re", "json", "time", "shutil", "signal", "subprocess",
@@ -103,6 +103,33 @@ def check(path: Path) -> list[str]:
     return errs
 
 
+# 回帰テストの時間の上限(秒)。手元の実測は 9〜17 分。止まったテストを待ち続けない(2026-10-27: watch の selfcheck の下でテストが
+# 終わらず 7 時間半走り、6.4G を使って OOM で殺された。そのあいだ機械が止まり 12:30 の収集も起動しなかった)
+TEST_TIMEOUT_SEC = 45 * 60
+
+
+def run_tests() -> tuple[int, str]:
+    """回帰テストを走らせる。戻りは(終了コード, 出力)。時間切れはテストの子孫ごと止めて終了コード -1。"""
+    import os
+    import signal
+    p = subprocess.Popen([sys.executable, str(ROOT / "scripts" / "test_pipeline.py")], cwd=ROOT, stdin=subprocess.DEVNULL,
+                         stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, start_new_session=True)
+    try:
+        out, _ = p.communicate(timeout=TEST_TIMEOUT_SEC)
+        return p.returncode, out
+    except subprocess.TimeoutExpired:
+        try:
+            os.killpg(p.pid, signal.SIGKILL)
+        except OSError:
+            pass
+        try:        # グループの外へ逃げた子孫が出力を握っていても待ち続けない
+            out, _ = p.communicate(timeout=30)
+        except subprocess.TimeoutExpired:
+            p.kill()
+            out = ""
+        return -1, out or ""
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--quiet", action="store_true")
@@ -118,12 +145,12 @@ def main() -> int:
             print(f"::error file=scripts/{name}::{e}")
             print(f"  [ERROR] scripts/{name}: {e}", file=sys.stderr)
     # 静的検査だけでは実行時の欠陥(未定義変数・保存漏れ)を見逃す(監査指摘)。回帰テストも走らせる
-    r = subprocess.run([sys.executable, str(ROOT / "scripts" / "test_pipeline.py")],
-                       capture_output=True, text=True, cwd=ROOT, stdin=subprocess.DEVNULL)
-    if r.returncode != 0:
+    code, out = run_tests()
+    if code != 0:
         total += 1
-        print("::error file=scripts/test_pipeline.py::回帰テストが赤")
-        print((r.stdout + r.stderr)[-2000:], file=sys.stderr)
+        print("::error file=scripts/test_pipeline.py::" + ("回帰テストが赤" if code > 0 else
+                                                          f"回帰テストが {TEST_TIMEOUT_SEC // 60} 分で終わらない(止めた)"))
+        print(out[-2000:], file=sys.stderr)
     if not args.quiet:
         print(f"selfcheck: {total} errors ({len(TARGETS)} scripts + 回帰テスト)")
     return 1 if total else 0

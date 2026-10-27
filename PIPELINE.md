@@ -264,6 +264,8 @@ scripts/collect.py                   collect.py        scripts/publish.py
 
 スケジューラは **systemd user timer** を採用する(この WSL2 で systemd 稼働を確認済み)。`Persistent=yes` により PC がスリープしていた場合も復帰後に追い付き実行される。ユニット定義は実装時に `ops/systemd/` に置き、`systemctl --user enable --now` で有効化する(手順は README に記載予定)。Windows 側のスリープ設定によっては深夜帯に PC が起きていない点に注意(その場合 04:00 の発行は復帰後に遅延実行される)。
 
+**メモリの上限と失敗の通知(2026-10-27)**: 定時の工程と当番の unit は `imas.slice`(工程の合計の上限 MemoryHigh 5500M・MemoryMax 6G・スワップ 1G。機械は 7.6G)の中で動き、watch(2G・1時間)・発行(1.5G)・道具の更新(3G)は個別の上限も持つ(値は journal の memory peak の実測から)。上限を越えたら OOM killer はその工程の中だけを殺す。どの工程・当番の unit も、自分で知らせずに失敗したら(OOM・シグナル・時間切れ・通知せずに非0)`OnFailure=imas-failure@%n.service` が `scripts/unit_failed.py` を起動し、人に通知して当番に渡す(組版・発行は当番が直して取り直す)。自分で通知(🚨)して非0で終えた走行は二重にしない。selfcheck は回帰テストを 45 分で子孫ごと止める。回帰テストは systemd の下でも手で回したときと同じに動く(INVOCATION_ID を外す・収集の締切をテストごとに戻す)。応答の読み取りは `PAGE_READ_BYTES` まで。きっかけ: 10/26・10/27 の 09:00 の watch の selfcheck の下でだけ収集の締切が残り、原本の保存のテストの偽の応答(終わりを返さない)を定点観測の受信が読み続けて 6.4G・スワップ 1.3G まで膨らみ、機械が止まった(10/27 は 16:38 に OOM で殺されるまで 12:30 の収集も起動せず、誰にも届かなかった)。導入は `ops/systemd/install.sh`(slice と通知の unit も写す)。
+
 ## 9.5 命名規則と成長設計(ファイルは毎日増える前提)
 
 | 対象 | 規則 | 衝突・成長への配慮 |

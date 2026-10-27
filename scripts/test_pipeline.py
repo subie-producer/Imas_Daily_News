@@ -8036,6 +8036,69 @@ def test_update_clis(tmp: Path):
             os.environ["HOME"] = saved_home
 
 
+def test_update_cloudflared(tmp: Path):
+    """cloudflared の月1回の更新(編集長 2026-10-28「毎月1日に定期としましょう」): release の sha256 と照らしてから入れ替え、
+    トンネルがつながらなければ旧版に戻して異常にする。同じ版なら何もしない。"""
+    import hashlib
+    import update_cloudflared as ucf
+    tmp.mkdir(parents=True, exist_ok=True)
+    name = ucf.asset_name()
+    new_bytes = b"VER:2026.10.5"
+    sha = hashlib.sha256(new_bytes).hexdigest()
+    body = (f"cloudflared-fips-{name[len('cloudflared-'):]}: {'0' * 64}\n"
+            f"{name}: {sha}\n{name}.deb: {'1' * 64}\n")
+    check(ucf.release_sha256(body, name) == sha, f"別名(fips・.deb)の sha256 を取り違えた: {ucf.release_sha256(body, name)}")
+    check(ucf.release_sha256("no hashes", name) == "", "本文に無い sha256 を返した")
+    notes, verify = [], []
+    payload = {"bytes": new_bytes}
+    rel = {"tag_name": "2026.10.5", "body": body, "assets": [{"name": name, "browser_download_url": "https://example.invalid/x"}]}
+    saved = (ucf.BIN, ucf.installed_version, ucf.latest_release, ucf.download, ucf.restart_and_verify, ucf.notify,
+             ucf.diagnose_anomalies)
+    def fake_version(path=None):
+        p = Path(path or ucf.BIN)
+        t = p.read_bytes().decode(errors="replace") if p.exists() else ""
+        return t[4:] if t.startswith("VER:") else ""
+    def run_main():
+        saved_argv, sys.argv = sys.argv, ["update_cloudflared.py"]
+        try:
+            return ucf.main()
+        finally:
+            sys.argv = saved_argv
+    try:
+        ucf.BIN = tmp / "bin" / "cloudflared"
+        ucf.BIN.parent.mkdir()
+        ucf.installed_version = fake_version
+        ucf.latest_release = lambda: rel
+        ucf.download = lambda url, dest: dest.write_bytes(payload["bytes"])
+        ucf.restart_and_verify = lambda: verify.pop(0)
+        ucf.notify = lambda job, msg, ok=True, require=False, ledger=True: notes.append((msg, ok)) or True
+        ucf.diagnose_anomalies = lambda *a, **k: False
+        # 同じ版: 取らない・再起動しない
+        ucf.BIN.write_bytes(b"VER:2026.10.5")
+        check(run_main() == 0 and not notes, f"同じ版で何かした: {notes}")
+        # sha256 が違う: 入れ替えない
+        ucf.BIN.write_bytes(b"VER:2026.10.4")
+        payload["bytes"] = b"VER:2026.10.5-tampered"
+        check(run_main() == 1 and ucf.BIN.read_bytes() == b"VER:2026.10.4" and any(not ok and "sha256" in m for m, ok in notes),
+              f"sha256 の違う実行ファイルを入れた: {ucf.BIN.read_bytes()} {notes}")
+        # つながった: 入れ替え、旧版を残す
+        notes.clear()
+        payload["bytes"] = new_bytes
+        verify[:] = [(True, "接続 4 本")]
+        check(run_main() == 0 and ucf.BIN.read_bytes() == new_bytes and (ucf.BIN.parent / "cloudflared.2026.10.4.bak").exists()
+              and any(ok and "2026.10.4 → 2026.10.5" in m for m, ok in notes), f"更新できない: {notes}")
+        # つながらない: 旧版に戻して異常にする
+        notes.clear()
+        ucf.BIN.write_bytes(b"VER:2026.10.4")
+        verify[:] = [(False, "接続 0/4"), (True, "接続 4 本")]
+        check(run_main() == 1 and ucf.BIN.read_bytes() == b"VER:2026.10.4" and not verify
+              and any(not ok and "旧版 2026.10.4 に戻した" in m for m, ok in notes), f"つながらない版を残した: {ucf.BIN.read_bytes()} {notes}")
+        check(not list(ucf.BIN.parent.glob("*.new")), f"入れ替えの途中のファイルが残った: {list(ucf.BIN.parent.iterdir())}")
+    finally:
+        (ucf.BIN, ucf.installed_version, ucf.latest_release, ucf.download, ucf.restart_and_verify, ucf.notify,
+         ucf.diagnose_anomalies) = saved
+
+
 def test_update_clis_smoke_answer(tmp: Path):
     """道具の動作確認は、正常終了して、答え(標準出力の最後の行)が求めたとおりの「2」のときだけ動作 OK(監査指摘 2026-10-14 ar9:
     実の CLI が `2` を出して exit 1、`1+1=3 (attempt 2)` を出して exit 0、のどちらも動作 OK になっていた)。
@@ -20104,6 +20167,7 @@ def main() -> int:
     test_extract_json_array_strict()
     test_update_clis(tmp / "uc")
     test_update_clis_smoke_answer(tmp / "ucs")
+    test_update_cloudflared(tmp / "ucf")
     test_git_commit_push_checkout(tmp / "gcp")
     test_grok_face_retry(tmp / "gr")
     test_grok_format_matches_parser()

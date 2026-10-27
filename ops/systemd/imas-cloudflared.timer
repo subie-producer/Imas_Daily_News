@@ -1,0 +1,9 @@
+[Unit]
+Description=毎月1日 01:00 JST に cloudflared を更新(再起動で数秒落ちるため、組版 03:00・発行 06:00 と重ならない時刻)
+
+[Timer]
+OnCalendar=*-*-01 01:00:00 Asia/Tokyo
+Persistent=true
+
+[Install]
+WantedBy=timers.target

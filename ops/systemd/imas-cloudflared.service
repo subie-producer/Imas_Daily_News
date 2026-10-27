@@ -1,0 +1,11 @@
+[Unit]
+Description=アイマスNEWS 配信のトンネル(cloudflared)を最新の版に上げ、つながることを確かめる(だめなら旧版に戻す)
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=%h/git/imas-ops
+Environment=PATH=%h/.local/bin:/usr/local/bin:/usr/bin:/bin
+ExecStart=/usr/bin/python3 %h/git/imas-ops/scripts/update_cloudflared.py
+TimeoutStartSec=20min

@@ -328,6 +328,8 @@ Cloudflare エッジ(TLS 終端・キャッシュ・CDN) → 読者
 systemd user unit は `imas-web`(Caddy)・`imas-app`(動的ページ)・`imas-tunnel`(Cloudflare)の3つ。
 トンネル構築は `scripts/tunnel_setup.sh imas-news.ofa.tokyo`(事前に `cloudflared tunnel login` をブラウザで実施)。
 
+**cloudflared の更新(2026-10-28)**: `~/.local/bin/cloudflared` は手で置いた実行ファイルで、自動更新は切ってある(`--no-autoupdate`)。毎月1日 01:00 に `imas-cloudflared.timer` が `scripts/update_cloudflared.py` を回し、GitHub の最新の release を、本文に載った sha256 と照らし、新しい実行ファイルが自分の版を名乗るのを確かめてから入れ替える。旧版は `cloudflared.<版>.bak` に直近2個残す。トンネルを再起動し、接続4本と外からの 200 を確かめ、だめなら旧版に戻して異常として通知する(当番がなぜなぜ)。再起動で数秒落ちるので、組版・発行と重ならない時刻に置く。2026-10-27 に Cloudflare から「中間証明書の侵害で 2026.10.2 未満は使えなくなる」と告知が来るまで 2026.8.2 のままだった。告知から期限まで2か月あったので月1回とした(編集長)。
+
 ## 10. 実装ステップ(REQUIREMENTS 7章 Step 3〜4 の分解)
 
 | # | 作業 | 成果物 |

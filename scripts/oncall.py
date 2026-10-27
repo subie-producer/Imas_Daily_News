@@ -111,7 +111,14 @@ CLAUDE_SESSION_ENV = {"CLAUDE_CODE_DISABLE_BACKGROUND_TASKS": "1",
 CO_AUTHOR = "\n\nCo-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>"
 
 
+CHECK_SCRIPTS = ("selfcheck.py", "lint.py")     # 自前のグループで起動する検査(回帰テストを起動する)
+
+
 def sh(args, cwd, timeout=600) -> subprocess.CompletedProcess:
+    # 検査は自前のグループで起動し、時間切れ・当番の中断(SIGTERM)では、検査が起動した回帰テストまで子孫ごと止める
+    # (subprocess.run は検査だけを殺し、別のグループのテストが残った。Sol 監査 WT r2 の later)。git 等はこれまでどおり
+    if len(args) > 1 and Path(str(args[1])).name in CHECK_SCRIPTS:
+        return run_group([str(a) for a in args], timeout=timeout, cwd=cwd)
     return subprocess.run(args, cwd=cwd, capture_output=True, text=True, timeout=timeout, stdin=subprocess.DEVNULL)
 
 

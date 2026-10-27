@@ -19809,6 +19809,29 @@ def test_selfcheck_stops_stuck_tests(tmp: Path):
     check(rc.returncode == 124 and "終わらない" in rc.stdout and rl.returncode == 124 and tt is not None and tt < asked[0][1]
           and len(asked) == 2 and "--test-timeout" not in asked[1][0],
           f"当番が selfcheck に自分の待ちより短いテストの上限を渡さない・時間切れを赤にしない: {asked} {rc.returncode} {rl.returncode}")
+    # 当番だけが SIGTERM で止められても、検査(本物の selfcheck)が起動した回帰テストを残さない(Sol 監査 WT r2 の later)
+    root, pidfile = fake_repo("term", "import os, time\nopen(PIDFILE, 'w').write(str(os.getpid()))\ntime.sleep(120)\n")
+    (root / "scripts" / "selfcheck.py").write_text(
+        f"import sys; sys.path.insert(0, {scripts!r}); import selfcheck; from pathlib import Path\n"
+        f"selfcheck.ROOT, selfcheck.TARGETS = Path({str(root)!r}), []\nsys.argv = ['selfcheck.py']\nsys.exit(selfcheck.main())\n",
+        encoding="utf-8")
+    boot = ("import sys; sys.path.insert(0, sys.argv[1]); import oncall; from pipelib import exit_on_term; exit_on_term()\n"
+            "oncall.run_check([sys.executable, 'scripts/selfcheck.py'], sys.argv[2], 90)\n")
+    p = subprocess.Popen([sys.executable, "-c", boot, scripts, str(root)], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+                         stdin=subprocess.DEVNULL)
+    try:
+        end = __import__("time").monotonic() + 30
+        while not pidfile.exists() and __import__("time").monotonic() < end:
+            __import__("time").sleep(0.05)
+        started = pidfile.exists()
+        p.terminate()
+        p.wait(timeout=30)
+        __import__("time").sleep(0.5)
+    finally:
+        if p.poll() is None:
+            p.kill()
+            p.wait()
+    check(started and not alive(pidfile), f"当番が止められたとき、検査が起動した回帰テストが残った(起動 {started})")
 
 
 def test_unit_failed_reaches_human(tmp: Path):
@@ -19903,6 +19926,30 @@ def test_unit_failed_reaches_human(tmp: Path):
         pipelib.ANOMALIES[:] = saved_env[4]
     check(r1 is False and r2 is True and [(x.get("notice"), x.get("delivered")) for x in rows] == [("watch", False), ("watch", True)],
           f"走行の記録に、異常の通知が届いたかを残さない: {r1} {r2} {rows}")
+    # 古い走行の記録は、走行ごとのファイルで古さを見て片付ける(新しい走行が足されても残り続けない。Sol 監査 WT r2 の later)
+    runs = tmp / "scratch2" / pipelib.UNIT_RUNS_DIR
+    runs.mkdir(parents=True)
+    old, old2 = runs / ("a" * 32 + ".jsonl"), runs / ("b" * 32 + ".jsonl")
+    for f in (old, old2):
+        f.write_text("{}\n", encoding="utf-8")
+        os.utime(f, (__import__("time").time() - 3 * 86400,) * 2)
+    saved_env2 = (os.environ.get("INVOCATION_ID"), os.environ.get("IMAS_SCRATCH"))
+    try:
+        os.environ["INVOCATION_ID"], os.environ["IMAS_SCRATCH"] = "c" * 32, str(tmp / "scratch2")
+        pipelib.note_unit_run({"escalated": "watch"})
+        after_note = old.exists()
+        old.write_text("{}\n", encoding="utf-8")
+        os.utime(old, (__import__("time").time() - 3 * 86400,) * 2)
+        pipelib.sweep_scratch()
+        after_sweep = old.exists()
+    finally:
+        for k, v in zip(("INVOCATION_ID", "IMAS_SCRATCH"), saved_env2):
+            if v is None:
+                os.environ.pop(k, None)
+            else:
+                os.environ[k] = v
+    check(not after_note and not old2.exists() and not after_sweep and (runs / ("c" * 32 + ".jsonl")).exists(),
+          f"古い走行の記録が片付かない: 記録のあと {after_note} / 片付けのあと {after_sweep}")
 
 
 def test_units_bound_memory_and_report_failure(tmp: Path):

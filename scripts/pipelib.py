@@ -174,13 +174,15 @@ def sweep_scratch(max_age: float = SCRATCH_MAX_AGE_SEC) -> list[str]:
     """置き場(と TMPDIR の置き場)に残った、max_age より古いものを消す。戻りは消したもの。消せないものは飛ばす(次の回にまた試す)。"""
     gone = []
     root = scratch_root()
-    for base in (root, root / "tmp"):
+    # 走行の記録(unit-runs)は走行ごとのファイルで古さを見る(置き場ごとだと、新しい走行が足されるたびに置き場が新しくなり、
+    # 古い記録が残り続けた。Sol 監査 WT r2 の later)
+    for base in (root, root / "tmp", root / UNIT_RUNS_DIR):
         try:
             entries = list(base.iterdir())
         except OSError:
             continue
         for e in entries:
-            if e.name == "tmp" and base == root:
+            if e.name in ("tmp", UNIT_RUNS_DIR) and base == root:
                 continue
             try:
                 if time.time() - e.lstat().st_mtime < max_age:
@@ -797,8 +799,15 @@ def note_unit_run(event: dict) -> None:
     try:
         d = scratch_root() / UNIT_RUNS_DIR
         d.mkdir(parents=True, exist_ok=True)
-        with open(d / f"{inv}.jsonl", "a", encoding="utf-8") as f:
+        p = d / f"{inv}.jsonl"
+        first = not p.exists()
+        with open(p, "a", encoding="utf-8") as f:
             f.write(json.dumps({**event, "at": time.time()}, ensure_ascii=False) + "\n")
+        if first:       # 走行の始めの1回、古い記録を片付ける(走行ごとのファイルで古さを見る。ほかの置き場は sweep_scratch)
+            for old in d.glob("*.jsonl"):
+                with contextlib.suppress(OSError):
+                    if time.time() - old.stat().st_mtime >= SCRATCH_MAX_AGE_SEC:
+                        old.unlink()
     except OSError:
         pass
 

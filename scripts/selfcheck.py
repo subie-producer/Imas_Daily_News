@@ -122,7 +122,7 @@ def main() -> int:
     # 静的検査だけでは実行時の欠陥(未定義変数・保存漏れ)を見逃す(監査指摘)。回帰テストも走らせる
     t1 = time.monotonic()
     r = subprocess.run([sys.executable, str(ROOT / "scripts" / "test_pipeline.py")],
-                       capture_output=True, text=True, cwd=ROOT, stdin=subprocess.DEVNULL)
+                       capture_output=True, text=True, cwd=ROOT, stdin=subprocess.DEVNULL, preexec_fn=die_with_parent)
     if r.returncode != 0:
         total += 1
         print("::error file=scripts/test_pipeline.py::回帰テストが赤")
@@ -133,6 +133,16 @@ def main() -> int:
     if not args.quiet:
         print(f"selfcheck: {total} errors ({len(TARGETS)} scripts + 回帰テスト)")
     return 1 if total else 0
+
+
+def die_with_parent() -> None:
+    """回帰テストは selfcheck と一緒に終わる(当番が上限で selfcheck を止めたとき、テストが残って走り続けない。2026-10-27)"""
+    try:
+        import ctypes
+        import signal
+        ctypes.CDLL(None).prctl(1, signal.SIGKILL, 0, 0, 0)     # PR_SET_PDEATHSIG
+    except (OSError, AttributeError):
+        pass
 
 
 def note_seconds(rows: dict) -> None:

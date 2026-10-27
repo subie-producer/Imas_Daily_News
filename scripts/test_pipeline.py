@@ -9690,6 +9690,25 @@ def test_oncall_check_limits_follow_measure(tmp: Path):
         rec = {}
     check(rs.returncode == 0 and (rec.get("test_pipeline") or [0])[-1] >= 0.2 and (rec.get("selfcheck") or [0])[-1] >= 0.2,
           f"selfcheck.py が検査の所要を記録しない: rc={rs.returncode} {rec} {rs.stderr[-300:]!r}")
+    # 当番が上限で selfcheck を止めたら(subprocess.run の timeout は selfcheck だけを止める)、回帰テストも一緒に終わる
+    pidf = box / "tp.pid"
+    (box / "scripts" / "test_pipeline.py").write_text(
+        f"import os, time\nopen({str(pidf)!r}, 'w').write(str(os.getpid()))\ntime.sleep(60)\n", encoding="utf-8")
+    try:
+        subprocess.run([sys.executable, str(box / "scripts" / "selfcheck.py"), "--quiet"], cwd=box, env=env, capture_output=True, text=True,
+                       timeout=3, stdin=subprocess.DEVNULL)
+    except subprocess.TimeoutExpired:
+        pass
+    tp_pid = int(pidf.read_text()) if pidf.exists() else 0
+    gone = False
+    for _ in range(100):
+        if tp_pid and not _pid_alive(tp_pid):
+            gone = True
+            break
+        __import__("time").sleep(0.05)
+    if tp_pid and not gone:
+        os.kill(tp_pid, __import__("signal").SIGKILL)
+    check(tp_pid and gone, f"selfcheck を止めても回帰テストが残って走り続ける(pid {tp_pid})")
 
 
 def test_oncall_fix_until_clean(tmp: Path):

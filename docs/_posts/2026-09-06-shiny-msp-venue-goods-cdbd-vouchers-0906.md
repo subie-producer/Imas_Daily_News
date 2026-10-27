@@ -19,7 +19,7 @@ sources:
     type: 準公式
   - url: https://shinycolors.lantis.jp/extra/260903_1/
     label: "ランティス特設ページ(物販詳細)"
-    type: 準公式
+    type: 公式
 event_date: 2026-09-26
 ---
 

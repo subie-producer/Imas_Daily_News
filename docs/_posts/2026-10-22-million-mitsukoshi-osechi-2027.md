@@ -4,8 +4,13 @@ edition: "2026-10-22"
 brand: million
 src: 報道
 rank: medium
-corrected: false
-corrections: []
+corrected: true
+corrections:
+- at: "2026-10-27T22:30:00+09:00"
+  by: 編集部(出典の種別の判定の欠陥の修正)
+  initial: "出典「三越伊勢丹オンラインストア「『アイドルマスター ミリオンライブ！』×三越のおせち 2027」(2026年10月14日)」の種別: 当事者"
+  corrected_to: "同じ出典の種別: 公式"
+  note: 編集長の規則(2026-10-21)により、公式の投稿・ページからリンクされ、告知と関係すると確かめた出典を公式に改めた。本文は変えていない
 candidate_ids:
 - 202610211231-explore-1
 - 202610211840-watch-1
@@ -20,7 +25,7 @@ tags:
 sources:
 - label: 三越伊勢丹オンラインストア「『アイドルマスター ミリオンライブ！』×三越のおせち 2027」(2026年10月14日)
   url: https://www.mistore.jp/shopping/feature/foods_f2/idolmaster_osechi_f.html
-  type: 当事者
+  type: 公式
 - label: gamebiz「ミリオンライブ！×三越のおせち2027の販売開始」(2026年10月21日)
   url: https://gamebiz.jp/news/434437
   type: 報道

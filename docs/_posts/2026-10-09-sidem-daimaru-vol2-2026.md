@@ -4,8 +4,13 @@ edition: "2026-10-09"
 brand: sidem
 src: 二次情報
 rank: medium
-corrected: false
-corrections: []
+corrected: true
+corrections:
+- at: "2026-10-27T22:30:00+09:00"
+  by: 編集部(出典の種別の判定の欠陥の修正)
+  initial: "出典「CALTLA「THE IDOLM@STER SideM × DAIMARU MATSUZAKAYA VOL.2」」の種別: 当事者"
+  corrected_to: "同じ出典の種別: 公式"
+  note: 編集長の規則(2026-10-21)により、公式の投稿・ページからリンクされ、告知と関係すると確かめた出典を公式に改めた。本文は変えていない
 candidate_ids:
 - 202610090223-grok-46
 - 202610081233-explore-5
@@ -20,7 +25,7 @@ tags:
 sources:
 - label: CALTLA「THE IDOLM@STER SideM × DAIMARU MATSUZAKAYA VOL.2」
   url: https://caltla.com/pages/the-idolmaster-sidem2
-  type: 当事者
+  type: 公式
 - label: アイドルマスター SideM【ブランド公式】「THE IDOLM@STER SideM×DAIMARU TOKYO 開催」(2026年10月7日)
   url: https://x.com/SideM_official/status/2107742725109858360
   type: 公式

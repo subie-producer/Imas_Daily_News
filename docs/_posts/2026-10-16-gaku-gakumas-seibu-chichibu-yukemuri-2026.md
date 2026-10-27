@@ -2,10 +2,15 @@
 slug: gaku-gakumas-seibu-chichibu-yukemuri-2026
 edition: "2026-10-16"
 brand: gaku
-src: 当事者
+src: 公式
 rank: large
-corrected: false
-corrections: []
+corrected: true
+corrections:
+- at: "2026-10-27T22:30:00+09:00"
+  by: 編集部(出典の種別の判定の欠陥の修正)
+  initial: "出典「西武秩父駅前温泉 祭の湯「学園アイドルマスター×西武秩父駅前温泉 祭の湯『西武鉄道で行く！山粧う湯けむり旅』開催」(日付記載なし)」の種別: 当事者(記事の出典の表示: 当事者)"
+  corrected_to: "同じ出典の種別: 公式(記事の出典の表示: 公式)"
+  note: 編集長の規則(2026-10-21)により、公式の投稿・ページからリンクされ、告知と関係すると確かめた出典を公式に改めた。本文は変えていない
 candidate_ids:
 - sched-2026-10-16-gakumas-seibu-chichibu-yukemuri-2026-開幕
 - 202610160229-explore-1
@@ -23,7 +28,7 @@ sources:
   type: 公式
 - label: 西武秩父駅前温泉 祭の湯「学園アイドルマスター×西武秩父駅前温泉 祭の湯『西武鉄道で行く！山粧う湯けむり旅』開催」(日付記載なし)
   url: https://www.seibu-leisure.co.jp/matsuri/gakuenidolmaster/index.html
-  type: 当事者
+  type: 公式
 event_date: "2026-10-16"
 title_fact_ids:
 - F1

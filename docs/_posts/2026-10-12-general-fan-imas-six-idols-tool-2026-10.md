@@ -4,8 +4,13 @@ edition: "2026-10-12"
 brand: general
 src: ファン
 rank: culture
-corrected: false
-corrections: []
+corrected: true
+corrections:
+- at: "2026-10-27T22:15:00+09:00"
+  by: 編集部(出典の日付の欠陥の修正)
+  initial: "出典「X投稿「『私が選ぶアイマスアイドル6人』投稿」」「X投稿「仮装狂騒曲組の野外ライブ動画を公開」」の日付 2026年10月11日"
+  corrected_to: "同じ出典2件の日付 2026年10月12日"
+  note: Xの投稿日時を日本時間に直さずに日付にしていたため、日本時間10月12日未明の投稿を前日の10月11日としていた。本文は変えていない
 candidate_ids:
 - 202610120224-grok-11
 - 202610120224-grok-43
@@ -20,7 +25,7 @@ tags:
 - ミリオンライブ
 - グッズ
 sources:
-- label: X投稿「『私が選ぶアイマスアイドル6人』投稿」(2026年10月11日)
+- label: X投稿「『私が選ぶアイマスアイドル6人』投稿」(2026年10月12日)
   url: https://x.com/tarte376/status/2109327433300386292
   type: ファン
 - label: X投稿「ファン制作『概念ポケトレメーカー』」(2026年10月12日)
@@ -35,7 +40,7 @@ sources:
 - label: YouTube「【#エムシャニ対バンライブ】カフェパレ&放クラPが愛を叫ぶ！オススメ楽曲布教配信！【#和音とらいぶ】」(日付記載なし)
   url: https://www.youtube.com/live/0pJbRoGru8E?si=qLnoDsgZP_tYBCog
   type: ファン
-- label: X投稿「仮装狂騒曲組の野外ライブ動画を公開」(2026年10月11日)
+- label: X投稿「仮装狂騒曲組の野外ライブ動画を公開」(2026年10月12日)
   url: https://x.com/kon_kitunebana/status/2109328690983379018
   type: ファン
 - label: YouTube「仮装狂騒曲組の野外ライブ動画」(日付記載なし)

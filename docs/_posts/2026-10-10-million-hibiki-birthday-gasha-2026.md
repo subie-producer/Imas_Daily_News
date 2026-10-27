@@ -4,8 +4,13 @@ edition: "2026-10-10"
 brand: million
 src: 公式
 rank: small
-corrected: false
-corrections: []
+corrected: true
+corrections:
+- at: "2026-10-27T22:15:00+09:00"
+  by: 編集部(出典の日付の欠陥の修正)
+  initial: "ミリシタ公式のXの出典4件の日付 2026年10月9日"
+  corrected_to: "同じ出典4件の日付 2026年10月10日"
+  note: Xの投稿日時を日本時間に直さずに日付にしていたため、日本時間10月10日0時台の投稿を前日の10月9日としていた。本文は変えていない
 candidate_ids:
 - 202610100218-grok-18
 - 202610100218-grok-17
@@ -19,16 +24,16 @@ tags:
 - ガシャ
 - 誕生日
 sources:
-- label: ミリオンライブ！ シアターデイズ【公式】「『我那覇響Birthdayガシャ』開催！」(2026年10月9日)
+- label: ミリオンライブ！ シアターデイズ【公式】「『我那覇響Birthdayガシャ』開催！」(2026年10月10日)
   url: https://x.com/imasml_theater/status/2108573700991898051
   type: 公式
-- label: ミリオンライブ！ シアターデイズ【公式】「我那覇響Birthdayセット2026」(2026年10月9日)
+- label: ミリオンライブ！ シアターデイズ【公式】「我那覇響Birthdayセット2026」(2026年10月10日)
   url: https://x.com/imasml_theater/status/2108573449870356865
   type: 公式
-- label: ミリオンライブ！ シアターデイズ【公式】「誕生日に劇場外観を響仕様に装飾」(2026年10月9日)
+- label: ミリオンライブ！ シアターデイズ【公式】「誕生日に劇場外観を響仕様に装飾」(2026年10月10日)
   url: https://x.com/imasml_theater/status/2108573214595064119
   type: 公式
-- label: ミリオンライブ！ シアターデイズ【公式】「我那覇響の誕生日をミリシタでお祝い」(2026年10月9日)
+- label: ミリオンライブ！ シアターデイズ【公式】「我那覇響の誕生日をミリシタでお祝い」(2026年10月10日)
   url: https://x.com/imasml_theater/status/2108573952964481111
   type: 公式
 event_date: "2026-10-10"

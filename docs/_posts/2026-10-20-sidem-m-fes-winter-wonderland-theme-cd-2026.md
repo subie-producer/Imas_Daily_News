@@ -2,10 +2,15 @@
 slug: sidem-m-fes-winter-wonderland-theme-cd-2026
 edition: "2026-10-20"
 brand: sidem
-src: 二次情報
+src: 準公式
 rank: small
-corrected: false
-corrections: []
+corrected: true
+corrections:
+- at: "2026-10-27T22:30:00+09:00"
+  by: 編集部(出典の種別の判定の欠陥の修正)
+  initial: "出典「Lantis「THE IDOLM@STER SideM Mフェス 2026 in Winter Wonderland テーマソング「Season's Greetings Party！」」(2026年12月2日発売)」の種別: 二次情報(記事の出典の表示: 二次情報)"
+  corrected_to: "同じ出典の種別: 準公式(記事の出典の表示: 準公式)"
+  note: 編集長の規則(2026-10-21)により、準公式の投稿・ページからリンクされ、告知と関係すると確かめた出典を準公式に改めた。本文は変えていない
 candidate_ids:
 - 202610200229-grok-30
 title: SideM「Season's Greetings Party!」12月2日発売
@@ -23,7 +28,7 @@ sources:
   type: 準公式
 - label: Lantis「THE IDOLM@STER SideM Mフェス 2026 in Winter Wonderland テーマソング「Season's Greetings Party！」」(2026年12月2日発売)
   url: https://lnk.to/LACM-25317
-  type: 二次情報
+  type: 準公式
 event_date: "2026-12-02"
 title_fact_ids:
 - F1

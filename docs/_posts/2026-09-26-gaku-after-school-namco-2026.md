@@ -2,10 +2,15 @@
 slug: gaku-after-school-namco-2026
 edition: "2026-09-26"
 brand: gaku
-src: 当事者
+src: 公式
 rank: small
-corrected: false
-corrections: []
+corrected: true
+corrections:
+- at: "2026-10-27T22:30:00+09:00"
+  by: 編集部(出典の種別の判定の欠陥の修正)
+  initial: "出典「バンダイナムコ アミューズメントユニット公式サイト「学園アイドルマスター After School キャンペーン in namco開催」(2026年9月15日)」の種別: 当事者(記事の出典の表示: 当事者)"
+  corrected_to: "同じ出典の種別: 公式(記事の出典の表示: 公式)"
+  note: 編集長の規則(2026-10-21)により、公式の投稿・ページからリンクされ、告知と関係すると確かめた出典を公式に改めた。本文は変えていない
 candidate_ids:
 - 202609251235-explore-19
 - 202609251835-watch-6
@@ -18,7 +23,7 @@ tags:
 sources:
 - label: バンダイナムコ アミューズメントユニット公式サイト「学園アイドルマスター After School キャンペーン in namco開催」(2026年9月15日)
   url: https://bandainamco-am.co.jp/event/game_center/gkmas2026/
-  type: 当事者
+  type: 公式
 - label: アイドルマスター ポータル「【学マス】Re;IRISとBegraziaのユニット衣装を着た"ちびぐるみ"が9月25日より全国のクレーンゲームに順次登場中！」(
   url: https://idolmaster-official.jp/news/01_20005
   type: 公式

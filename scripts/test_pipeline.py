@@ -8107,9 +8107,12 @@ def test_update_cloudflared_failures(tmp: Path):
     """cloudflared の更新の失敗の経路(Sol 監査 r1): 確認の途中の例外(journalctl の時間切れ)で新しい版のまま通知もせず終わる・
     旧版に戻すコピーの失敗で半端な .new を残して通知しない・BIN が無いと例外で落ちる・接続の数え方(同じ connIndex の張り直しを
     別の接続と数える、--since が秒に丸められて再起動の前の行を数える)・--check が当番を起こす・Persistent の追いつきが発行の時間帯に
-    そのまま再起動する。本物の systemctl・journalctl は差し替えの関数で置き換える。"""
+    そのまま再起動する。r2: InvocationID の取得の失敗で旧版に戻した後の再起動まで飛ばす・切れた接続も数える(今の本数は /ready)・
+    差し替えた後の後片付けの失敗を「旧版のまま」と通知する・待ちの後や取った後に時刻を見直さない。
+    本物の systemctl・journalctl・/ready は差し替えの関数で置き換える。"""
     import datetime
     import hashlib
+    import tempfile
     import time
     import types
     import update_cloudflared as ucf
@@ -8122,11 +8125,14 @@ def test_update_cloudflared_failures(tmp: Path):
     notes, diag, sleeps = [], [], []
     clock = {"now": datetime.datetime(2026, 11, 1, 1, 0, tzinfo=JST)}
     conns = lambda idx: "".join(f"INF Registered tunnel connection connIndex={i} connection=c{n} event=0\n" for n, i in enumerate(idx))
+    started = "INF Starting metrics server on 127.0.0.1:20241/metrics\n"
     st = {}
     def reset(**kw):
         st.clear()
-        st.update(inv=1, new_inv=True, journal=conns([0, 1, 2, 3]), raise_on="", on_restart=None)
+        st.update(inv=1, new_inv=True, journal=started + conns([0, 1, 2, 3]), raise_on="", on_restart=None, ready=4,
+                  restarts=0, show_fail_from=None, sleep_to=[], dl_secs=0)
         st.update(kw)
+        clock["now"] = st.pop("at", datetime.datetime(2026, 11, 1, 1, 0, tzinfo=JST))
         notes.clear(); diag.clear(); sleeps.clear()
         for p in ucf.BIN.parent.iterdir():
             p.unlink()
@@ -8135,16 +8141,29 @@ def test_update_cloudflared_failures(tmp: Path):
         if st["raise_on"] and cmd[0] == st["raise_on"]:
             raise subprocess.TimeoutExpired(cmd, kw.get("timeout") or 60)
         if cmd[:3] == ["systemctl", "--user", "show"]:
+            if st["show_fail_from"] is not None and st["restarts"] >= st["show_fail_from"]:
+                raise subprocess.TimeoutExpired(cmd, 60)
             return subprocess.CompletedProcess(cmd, 0, f"inv{st['inv']}\n", "")
         if cmd[:3] == ["systemctl", "--user", "restart"]:
+            st["restarts"] += 1
             st["inv"] += 1 if st["new_inv"] else 0
             rc = (st["on_restart"]() if st["on_restart"] else 0) or 0
             return subprocess.CompletedProcess(cmd, rc, "", "boom" if rc else "")
         if cmd[0] == "journalctl":
-            # 今回の起動で絞ったときだけ今回の行。絞らなければ再起動の前の起動の4本も混ざる
+            # 今回の起動で絞ったときだけ今回の行。絞らなければ再起動の前の起動の行(metrics の番地・4本)も混ざる
             mine = f"_SYSTEMD_INVOCATION_ID=inv{st['inv']}" in cmd
-            return subprocess.CompletedProcess(cmd, 0, st["journal"] if mine else conns([0, 1, 2, 3]) + st["journal"], "")
+            old = "INF Starting metrics server on 127.0.0.1:20240/metrics\n" + conns([0, 1, 2, 3])
+            return subprocess.CompletedProcess(cmd, 0, st["journal"] if mine else old + st["journal"], "")
         raise AssertionError(f"想定外のコマンド: {cmd}")
+    def fake_sleep(s):
+        sleeps.append(s)
+        clock["now"] = st["sleep_to"].pop(0) if st["sleep_to"] else clock["now"] + datetime.timedelta(seconds=s)
+    def fake_download(url, dest):
+        dest.write_bytes(new_bytes)
+        clock["now"] += datetime.timedelta(seconds=st["dl_secs"])
+    def fake_ready(addr):
+        # 今回の起動の番地だけが今の本数を返す(前の起動の番地はもう無い)
+        return st["ready"] if addr == "127.0.0.1:20241" else 0
     def fake_version(path=None):
         p = Path(path or ucf.BIN)
         t = p.read_bytes().decode(errors="replace") if p.exists() else ""
@@ -8162,31 +8181,68 @@ def test_update_cloudflared_failures(tmp: Path):
     names = ("BIN", "installed_version", "latest_release", "download", "notify", "diagnose_anomalies", "now_jst",
              "subprocess", "time", "ENV", "CONNECT_WAIT")
     saved = {k: getattr(ucf, k) for k in names}
+    saved_ready = getattr(ucf, "ready_connections", None)
+    saved_tempfile = getattr(ucf, "tempfile", None)
+    saved_unlink = Path.unlink
     try:
         ucf.BIN = tmp / "bin" / "cloudflared"
         ucf.BIN.parent.mkdir()
         ucf.installed_version = fake_version
         ucf.latest_release = lambda: rel
-        ucf.download = lambda url, dest: dest.write_bytes(new_bytes)
+        ucf.download = fake_download
         ucf.notify = lambda job, msg, ok=True, require=False, ledger=True: notes.append((msg, ok)) or True
         ucf.diagnose_anomalies = lambda *a, **k: diag.append(a) or False
         ucf.now_jst = lambda: clock["now"]
         ucf.subprocess = types.SimpleNamespace(run=fake_run, TimeoutExpired=subprocess.TimeoutExpired)
-        ucf.time = types.SimpleNamespace(time=time.time, sleep=sleeps.append)
+        ucf.time = types.SimpleNamespace(time=time.time, sleep=fake_sleep)
+        ucf.ready_connections = fake_ready
         ucf.ENV = {}
         ucf.CONNECT_WAIT = 0.05
-        # 今回の起動で異なる接続が4本: 上げる
+        # 今回の起動の cloudflared が今4本張れている: 上げる
         reset()
         r = run_main()
         check(r == 0 and ucf.BIN.read_bytes() == new_bytes and not diag, f"4本つながったのに上がらない: {r} {notes}")
-        # 同じ connIndex の張り直し4回は1本: 旧版に戻して異常
-        reset(journal=conns([0, 0, 0, 0]))
+        # 4本登録したが3本切れて今は1本(/ready が 1): 旧版に戻して異常
+        reset(ready=1)
+        r = run_main()
+        check(r == 1 and ucf.BIN.read_bytes() == old_bytes and alarmed("1/4"), f"切れた接続も数えた: {r} {notes}")
+        # 同じ connIndex の張り直し4回(今は1本)
+        reset(journal=started + conns([0, 0, 0, 0]), ready=1)
         r = run_main()
         check(r == 1 and ucf.BIN.read_bytes() == old_bytes and alarmed("1/4"), f"同じ接続の張り直しを4本と数えた: {r} {notes}")
-        # 今回の起動の行が無い(再起動の前の起動の4本だけ): つながったと数えない
+        # 今回の起動の行が無い(再起動の前の起動の行だけ): つながったと数えない
         reset(journal="")
         r = run_main()
         check(r == 1 and ucf.BIN.read_bytes() == old_bytes and alarmed(), f"再起動の前の接続を数えた: {r} {notes}")
+        # 新しい版で再起動した後、InvocationID が取れなくなった: 旧版に戻した後の再起動も試みる
+        reset(show_fail_from=1)
+        r = run_main()
+        check(r == 1 and ucf.BIN.read_bytes() == old_bytes and st["restarts"] == 2 and alarmed(),
+              f"InvocationID が取れないせいで旧版に戻した後の再起動を飛ばした: {r} 再起動 {st['restarts']} 回 {notes}")
+        # 差し替えた後の後片付け(一時ディレクトリ・取った実行ファイルの消去)が失敗: 確認を飛ばして「旧版のまま」としない
+        class BrokenTempDir:
+            def __init__(self, *a, **k):
+                self.d = tempfile.mkdtemp(dir=tmp)
+            def __enter__(self):
+                return self.d
+            def __exit__(self, *a):
+                raise OSError("後片付けの I/O エラー")
+        def broken_unlink(self, *a, **k):
+            if self.name.endswith(".new"):
+                raise OSError("後片付けの I/O エラー")
+            return saved_unlink(self, *a, **k)
+        reset()
+        if saved_tempfile is not None:
+            ucf.tempfile = types.SimpleNamespace(TemporaryDirectory=BrokenTempDir)
+        Path.unlink = broken_unlink
+        try:
+            r = run_main()
+        finally:
+            Path.unlink = saved_unlink
+            if saved_tempfile is not None:
+                ucf.tempfile = saved_tempfile
+        check(r == 0 and ucf.BIN.read_bytes() == new_bytes and st["restarts"] == 1 and not diag,
+              f"差し替えた後の後片付けの失敗で、確認を飛ばした・旧版のままと通知した: {r} 再起動 {st['restarts']} 回 {notes}")
         # 再起動しても起動が変わらない: つながったと数えない
         reset(new_inv=False)
         r = run_main()
@@ -8218,16 +8274,31 @@ def test_update_cloudflared_failures(tmp: Path):
         check(r == 1 and not notes and not diag, f"--check が通知・当番を起こした: {r} {notes} {diag}")
         ucf.latest_release = lambda: rel
         # 追いつきが発行の時間帯(04:00)に当たった: 07:00 まで待ってから上げる
-        reset()
-        clock["now"] = datetime.datetime(2026, 11, 1, 4, 0, tzinfo=JST)
+        at = lambda h, m, s=0: datetime.datetime(2026, 11, 1, h, m, s, tzinfo=JST)
+        reset(at=at(4, 0))
         r = run_main()
         check(r == 0 and sleeps[:1] == [3 * 3600] and ucf.BIN.read_bytes() == new_bytes, f"発行の時間帯に待たずに再起動した: {r} {sleeps}")
+        # 待っている間に時計が戻った(04:00 から待って起きたら 06:00): もう一度待つ
+        reset(at=at(4, 0), sleep_to=[at(6, 0)])
+        r = run_main()
+        check(r == 0 and sleeps[:2] == [3 * 3600, 3600] and clock["now"] >= at(7, 0),
+              f"待ちから戻った後に時刻を見直さず、発行の時間帯に再起動した: {r} {sleeps} {clock['now']}")
+        # 02:29:59 に始めて、取るのに2秒かかって 02:30:01 に入った: 差し替えの前に 07:00 まで待つ
+        reset(at=at(2, 29, 59), dl_secs=2)
+        r = run_main()
+        check(r == 0 and sleeps[:1] == [4.5 * 3600 - 1] and ucf.BIN.read_bytes() == new_bytes,
+              f"取っている間に発行の時間帯に入ったのに待たずに再起動した: {r} {sleeps}")
         for hm, want in (((1, 0), 0), ((2, 29), 0), ((2, 30), 4.5 * 3600), ((6, 59), 60), ((7, 0), 0)):
             got = ucf.publishing_wait(datetime.datetime(2026, 11, 1, *hm, tzinfo=JST))
             check(got == want, f"{hm} の待ち時間が {got}(期待 {want})")
     finally:
+        Path.unlink = saved_unlink
         for k, v in saved.items():
             setattr(ucf, k, v)
+        if saved_ready is not None:
+            ucf.ready_connections = saved_ready
+        if saved_tempfile is not None:
+            ucf.tempfile = saved_tempfile
 
 
 def test_update_clis_smoke_answer(tmp: Path):

@@ -10,7 +10,7 @@ cloudflared は ~/.local/bin に手で置いた実行ファイルで、自動更
 - 最新の版は GitHub の release から取る。配布元が release の本文に載せている sha256 と照らしてから入れ替える
 - 入れ替えの前に、新しい実行ファイルが自分の版を名乗れること(--version)を確かめる
 - 旧版は cloudflared.<版>.bak に残す(直近 BACKUP_KEEP 個)
-- トンネルを再起動し、今回の起動で異なる接続が CONNECTIONS 本張れて、外から公開ページが 200 で返るかを確かめる。だめなら旧版に戻して
+- トンネルを再起動し、今回の起動(InvocationID)の cloudflared が /ready で今 CONNECTIONS 本張れていると言い、外から公開ページが 200 で返るかを確かめる。だめなら旧版に戻して
   再起動し、異常として通知する(当番がなぜなぜする)。途中の例外でも、戻しに失敗しても、必ず通知する
 - 再起動で数秒、配信が落ちる(1台構成)。発行(06:00)・組版(03:00〜)と重ならない時刻に回す。止まっていて追いつきで
   発行の時間帯(QUIET_FROM〜QUIET_UNTIL)に起動したときは、その終わりまで待ってから上げる
@@ -26,7 +26,6 @@ import re
 import shutil
 import subprocess
 import sys
-import tempfile
 import time
 import urllib.request
 from pathlib import Path
@@ -79,16 +78,31 @@ def download(url: str, dest: Path) -> None:
 
 
 def tunnel_invocation() -> str:
-    """トンネルの今の起動の InvocationID(起動ごとに変わる。journal の _SYSTEMD_INVOCATION_ID と同じ)。"""
-    r = subprocess.run(["systemctl", "--user", "show", "-p", "InvocationID", "--value", UNIT],
-                       capture_output=True, text=True, timeout=60)
+    """トンネルの今の起動の InvocationID(起動ごとに変わる。journal の _SYSTEMD_INVOCATION_ID と同じ)。取れなければ空。
+    例外は投げない(取れないせいで旧版に戻した後の再起動まで飛ばしていた。Sol 監査 r2)。"""
+    try:
+        r = subprocess.run(["systemctl", "--user", "show", "-p", "InvocationID", "--value", UNIT],
+                           capture_output=True, text=True, timeout=60)
+    except (OSError, subprocess.TimeoutExpired):
+        return ""
     return (r.stdout or "").strip() if r.returncode == 0 else ""
 
 
-def registered_connections(log: str) -> set[str]:
-    """journal の「Registered tunnel connection connIndex=N …」から、張れた接続の番号の集まり。
-    同じ番号の張り直しは1本と数える(Sol 監査 r1: connIndex=0 の再登録4回を4本と数えていた)。"""
-    return set(re.findall(r"Registered tunnel connection connIndex=(\d+)", log or ""))
+def metrics_addr(log: str) -> str:
+    """今回の起動の journal の「Starting metrics server on 127.0.0.1:20241/metrics」から、metrics の番地。無ければ空。"""
+    found = re.findall(r"Starting metrics server on (\S+?)/metrics", log or "")
+    return found[-1] if found else ""
+
+
+def ready_connections(addr: str) -> int:
+    """cloudflared の /ready が返す、今張れている接続の本数(readyConnections)。読めなければ 0。
+    journal の登録の行を数えると、切れた接続も数えてしまう(Sol 監査 r2: 4本登録・3本切断でも4本と数えた)。"""
+    try:
+        with urllib.request.urlopen(f"http://{addr}/ready", timeout=10) as r:
+            return int(json.load(r).get("readyConnections") or 0)
+    except Exception:
+        # 接続が無いと /ready は 503 を返す(本文は同じ形)
+        return 0
 
 
 def restart_and_verify() -> tuple[bool, str]:
@@ -109,15 +123,20 @@ def _restart_and_verify() -> tuple[bool, str]:
     inv = tunnel_invocation()
     if not inv or inv == before:
         return False, f"再起動しても新しい起動が見えない(InvocationID {before or '空'} → {inv or '空'})"
-    n = 0
+    # 今回の起動の metrics の番地を journal から取り、/ready の今の本数を見る
+    n, addr = 0, ""
     end = time.time() + CONNECT_WAIT
     while time.time() < end:
-        j = subprocess.run(["journalctl", "--user", f"_SYSTEMD_INVOCATION_ID={inv}", "-o", "cat", "--no-pager"],
-                           capture_output=True, text=True, timeout=60)
-        n = len(registered_connections(j.stdout))
+        if not addr:
+            j = subprocess.run(["journalctl", "--user", f"_SYSTEMD_INVOCATION_ID={inv}", "-o", "cat", "--no-pager"],
+                               capture_output=True, text=True, timeout=60)
+            addr = metrics_addr(j.stdout)
+        n = ready_connections(addr) if addr else 0
         if n >= CONNECTIONS:
             break
         time.sleep(5)
+    if not addr:
+        return False, f"{CONNECT_WAIT}秒で今回の起動の metrics の番地が journal に出ない(接続の本数を確かめられない)"
     if n < CONNECTIONS:
         return False, f"{CONNECT_WAIT}秒で接続が {n}/{CONNECTIONS} 本しか張れない"
     site = ENV.get("SITE_URL", "").rstrip("/")
@@ -146,6 +165,14 @@ def publishing_wait(now: datetime.datetime) -> float:
     return (datetime.datetime.combine(now.date(), QUIET_UNTIL, tzinfo=now.tzinfo) - now).total_seconds()
 
 
+def wait_out_quiet() -> None:
+    """再起動しない時間帯なら、外に出るまで待つ。待ちから戻るたびに時刻を見直す(時計が戻る・待ちが短く終わることがある。
+    Sol 監査 r2)。起動のときと、差し替えの直前(取るのに時間がかかって時間帯に入ることがある)に呼ぶ。"""
+    while (wait := publishing_wait(now_jst())) > 0:
+        print(f"発行の時間帯なので {QUIET_UNTIL:%H:%M} まで待ってから上げる({int(wait)}秒)", flush=True)
+        time.sleep(wait)
+
+
 def fail(msg: str) -> int:
     """更新できなかった・つながらない: 異常として通知し(台帳に入る)、当番に渡す。"""
     notify("update", msg, ok=False)
@@ -169,10 +196,7 @@ def main() -> int:
     ap.add_argument("--check", action="store_true", help="入れ替えず、今の版と最新の版を表示するだけ(通知しない)")
     args = ap.parse_args()
     if not args.check:
-        wait = publishing_wait(now_jst())
-        if wait:
-            print(f"発行の時間帯なので {QUIET_UNTIL:%H:%M} まで待ってから上げる({int(wait)}秒)", flush=True)
-            time.sleep(wait)
+        wait_out_quiet()
     cur = installed_version()
     try:
         rel = latest_release()
@@ -200,28 +224,36 @@ def update(cur: str, latest: str, rel: dict) -> int:
     name = asset_name()
     want = release_sha256(rel.get("body") or "", name)
     asset = next((a for a in rel.get("assets") or [] if a.get("name") == name), None)
-    failed = ""
-    with tempfile.TemporaryDirectory(prefix="imas-cloudflared-") as wd:
-        new = Path(wd) / name
-        if not want or not asset:
-            failed = f"release {latest} に {name} の{'実行ファイル' if not asset else ' sha256'}が見当たらない"
-        else:
-            try:
-                download(asset["browser_download_url"], new)
-            except Exception as e:
-                failed = f"{name} を取れない({type(e).__name__}: {e})"
+    if not want or not asset:
+        return fail(f"cloudflared を {latest} に上げられなかった: release {latest} に {name} の"
+                    f"{'実行ファイル' if not asset else ' sha256'}が見当たらない。{cur or '今の版'} のまま")
+    # BIN と同じディレクトリの .new に直に取り、照らしてから os.replace で差し替える。差し替えが最後の段で、その後に
+    # 後片付けの例外が起きる段を置かない(一時ディレクトリの片付けの失敗で、差し替えた後なのに「旧版のまま」と通知していた。Sol 監査 r2)
+    staged = BIN.with_name(BIN.name + ".new")
+    bak = BIN.with_name(f"{BIN.name}.{cur or 'unknown'}.bak")
+    try:
+        failed = ""
+        try:
+            download(asset["browser_download_url"], staged)
+        except Exception as e:
+            failed = f"{name} を取れない({type(e).__name__}: {e})"
         if not failed:
-            got = hashlib.sha256(new.read_bytes()).hexdigest()
-            new.chmod(0o755)
+            got = hashlib.sha256(staged.read_bytes()).hexdigest()
+            staged.chmod(0o755)
             if got != want:
                 failed = f"{name} の sha256 が release の記載と違う(記載 {want} / 取得 {got})。入れ替えない"
-            elif installed_version(new) != latest:
-                failed = f"取った {name} が版 {latest} を名乗らない({installed_version(new) or '起動できない'})。入れ替えない"
+            elif installed_version(staged) != latest:
+                failed = f"取った {name} が版 {latest} を名乗らない({installed_version(staged) or '起動できない'})。入れ替えない"
         if failed:
             return fail(f"cloudflared を {latest} に上げられなかった: {failed}。{cur or '今の版'} のまま")
-        bak = BIN.with_name(f"{BIN.name}.{cur or 'unknown'}.bak")
         shutil.copy2(BIN, bak)
-        replace_bin(new)
+        wait_out_quiet()      # 取るのに時間がかかって発行の時間帯に入っていたら、ここで待つ
+        os.replace(staged, BIN)
+    finally:
+        try:
+            staged.unlink(missing_ok=True)
+        except OSError as e:
+            print(f"(取った実行ファイル {staged} を消せない: {e})", flush=True)
     # ここから先は例外を投げない(差し替えた後に抜けると、新しい版のまま通知もせずに終わる。Sol 監査 r1)
     ok, state = restart_and_verify()
     if ok:

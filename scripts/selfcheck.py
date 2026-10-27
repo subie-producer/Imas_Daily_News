@@ -24,6 +24,7 @@ import ast
 import builtins
 import subprocess
 import sys
+import time
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -107,6 +108,7 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--quiet", action="store_true")
     args = ap.parse_args()
+    t0 = time.monotonic()
     total = 0
     for name in TARGETS:
         p = ROOT / "scripts" / name
@@ -118,15 +120,30 @@ def main() -> int:
             print(f"::error file=scripts/{name}::{e}")
             print(f"  [ERROR] scripts/{name}: {e}", file=sys.stderr)
     # 静的検査だけでは実行時の欠陥(未定義変数・保存漏れ)を見逃す(監査指摘)。回帰テストも走らせる
+    t1 = time.monotonic()
     r = subprocess.run([sys.executable, str(ROOT / "scripts" / "test_pipeline.py")],
                        capture_output=True, text=True, cwd=ROOT, stdin=subprocess.DEVNULL)
     if r.returncode != 0:
         total += 1
         print("::error file=scripts/test_pipeline.py::回帰テストが赤")
         print((r.stdout + r.stderr)[-2000:], file=sys.stderr)
+    else:
+        # 最後まで走った回の所要を残す(当番・監査の検査の時間の上限は、この実測から決める。pipelib.check_seconds)
+        note_seconds({"test_pipeline": time.monotonic() - t1, "selfcheck": time.monotonic() - t0})
     if not args.quiet:
         print(f"selfcheck: {total} errors ({len(TARGETS)} scripts + 回帰テスト)")
     return 1 if total else 0
+
+
+def note_seconds(rows: dict) -> None:
+    """検査の所要を pipelib の記録へ。pipelib を読めなくても selfcheck の結果は変えない(静的検査は pipelib の壊れも見る側)"""
+    try:
+        sys.path.insert(0, str(ROOT / "scripts"))
+        from pipelib import note_check_seconds
+        for k, v in rows.items():
+            note_check_seconds(k, v)
+    except Exception:       # noqa: BLE001
+        pass
 
 
 if __name__ == "__main__":

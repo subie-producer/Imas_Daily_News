@@ -152,6 +152,43 @@ def scratch_root() -> Path:
     return p
 
 
+# 当番・監査がコードで走らせる検査(selfcheck・test_pipeline・lint)の所要の実測。検査の時間の上限はこの実測から決める
+# (2026-10-27: 回帰テストが組の取り込みで伸び、当番の selfcheck の固定の上限 300 秒で3回とも時間切れになり「当番の作業が途中で止まった」)。
+# 走らせた側(selfcheck.py・当番)が終わるたびに秒を足す。置き場は使い捨ての置き場の直下(毎日の selfcheck で更新され、片付けで消えたら既定)
+CHECK_SECONDS_FILE = "check-seconds.json"
+CHECK_SECONDS_KEEP = 5          # 直近この回数の最大を見積もりにする(重い時間帯の実測も入る。古いものは送り出される)
+CHECK_SECONDS_DEFAULT = {"selfcheck": 1200.0, "test_pipeline": 1200.0, "lint": 120.0}     # 実測が無いとき(2026-10-27 の実測は 9〜17 分・8 秒)
+
+
+def note_check_seconds(name: str, sec: float) -> None:
+    """検査 name の所要(秒)を記録する。書けなければ何もしない(検査の結果には関わらない。監査の sandbox など)"""
+    p = scratch_root() / CHECK_SECONDS_FILE
+    try:
+        try:
+            d = json.loads(p.read_text(encoding="utf-8"))
+        except (OSError, ValueError):
+            d = {}
+        d = d if isinstance(d, dict) else {}
+        rows = [float(x) for x in d.get(name) or [] if isinstance(x, (int, float)) and not isinstance(x, bool)]
+        d[name] = (rows + [round(float(sec), 1)])[-CHECK_SECONDS_KEEP:]
+        tmp = p.with_name(f"{p.name}.{os.getpid()}.tmp")
+        tmp.write_text(json.dumps(d), encoding="utf-8")
+        tmp.replace(p)
+    except OSError:
+        pass
+
+
+def check_seconds(name: str) -> float:
+    """検査 name の所要の見積もり(直近の実測の最大。実測が無ければ CHECK_SECONDS_DEFAULT)"""
+    try:
+        d = json.loads((scratch_root() / CHECK_SECONDS_FILE).read_text(encoding="utf-8"))
+        rows = [float(x) for x in (d.get(name) if isinstance(d, dict) else None) or []
+                if isinstance(x, (int, float)) and not isinstance(x, bool) and x > 0]
+    except (OSError, ValueError):
+        rows = []
+    return max(rows) if rows else CHECK_SECONDS_DEFAULT.get(name, 1200.0)
+
+
 def _under_tmp(p: str) -> bool:
     try:
         return not p or Path(p).resolve().is_relative_to("/tmp")

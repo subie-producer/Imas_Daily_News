@@ -83,6 +83,7 @@ from pipelib import (COLLECT_ONCALL_MARK, COLLECT_OUTPUTS, ENV, ROOT, classify_t
                      tool_path, CLI_BLOCKED_EXIT, CliBlocked, cli_check, oncall_clis_blocked, scratch_dir,
                      ONCALL_HANDED_EXIT, settled_keys_of)
 from pipelib import exit_on_term, run_group   # モデルのセッションは自前のグループで起動し、時間切れ・中断では道具ごと止める
+from pipelib import check_seconds, note_check_seconds
 
 ONCALL_MODEL = ENV.get("ONCALL_MODEL", "opus")
 AUDIT_MODEL = ENV.get("AUDIT_MODEL", "gpt-6.1-sol")
@@ -109,6 +110,40 @@ SHIM_DIR = Path(__file__).resolve().parent / "shim"
 CLAUDE_SESSION_ENV = {"CLAUDE_CODE_DISABLE_BACKGROUND_TASKS": "1",
                       "BASH_DEFAULT_TIMEOUT_MS": "1800000", "BASH_MAX_TIMEOUT_MS": "1800000"}
 CO_AUTHOR = "\n\nCo-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>"
+# 検査(selfcheck・test_pipeline・lint)の時間の上限と、検査を走らせるセッションの時間は、検査の所要の実測(pipelib.check_seconds)から
+# 決める(2026-10-27: 回帰テストが組の取り込みで約 9〜17 分に伸び、固定の 300 秒の selfcheck が3回とも時間切れで当番が止まった。
+# 監査のセッション 1800 秒も、テストと selfcheck(テストを含む)を走らせる分に足りなかった)。テストが伸びても実測が追う。打ち切りは締切(left)
+SESSION_WORK_SEC = 1800     # セッションのモデルの仕事(読む・直す・書く)の分。検査の分はこれに足す
+CHECK_MARGIN = 2.0          # 検査の上限は実測の何倍か(重い時間帯で遅くなる分。これを超えるのは止まっているもの)
+CHECK_FLOOR_SEC = 300       # 検査の上限の下限(実測の短い lint など)
+FIX_CHECKS = ("selfcheck",)                             # 当番のセッションの中で走らせる検査(prompts/oncall-fix.md)
+AUDIT_CHECKS = ("test_pipeline", "selfcheck", "lint")   # 監査のセッションの中で走らせる検査(AUDIT_REQUIRED_RUNS と同じ)
+
+
+def check_limit(name: str) -> int:
+    """当番のコードが走らせる検査 name の時間の上限(秒)"""
+    return int(max(CHECK_FLOOR_SEC, CHECK_MARGIN * check_seconds(name)))
+
+
+def session_limit(checks: tuple) -> int:
+    """検査 checks を中で走らせるセッションの時間の上限(秒。締切の残りでさらに切る)"""
+    return SESSION_WORK_SEC + sum(check_limit(c) for c in checks)
+
+
+def run_check(name: str, args: list[str], cwd: Path, left, record: bool = False) -> tuple[subprocess.CompletedProcess | None, int]:
+    """当番のコードが検査 name を走らせる。上限は check_limit(締切の残り left() でさらに切る)。戻りは (結果, 上限)。上限を超えたら結果は None で、
+    かかった秒を実測に足す(次の見積もり・上限が伸び、同じ上限で切り続けない)。record なら終わった回の所要も足す
+    (selfcheck は自分で足す: selfcheck.py)"""
+    limit = max(1, min(check_limit(name), left()))
+    t0 = time.monotonic()
+    try:
+        r = sh([sys.executable, *args], cwd=cwd, timeout=limit)
+    except subprocess.TimeoutExpired:
+        note_check_seconds(name, time.monotonic() - t0)
+        return None, limit
+    if record:
+        note_check_seconds(name, time.monotonic() - t0)
+    return r, limit
 
 
 def sh(args, cwd, timeout=600) -> subprocess.CompletedProcess:
@@ -530,7 +565,10 @@ def _claude(args: list[str], name: str, cwd: Path, timeout: float, schema: str) 
     try:
         # 自前のグループで起動し、時間切れ・中断(SIGTERM)では道具ごと止める。親だけを止めると、失敗を返したあとも道具が
         # 作業ツリーへ書き続けた(監査指摘 2026-10-14)
-        r = run_group(["claude", "-p", *args], timeout=timeout, cwd=cwd, env={**session_env(tmp), **CLAUDE_SESSION_ENV},
+        # 1つのコマンドの上限も、検査(selfcheck)が前景で最後まで走る長さに(固定の 30 分は検査が伸びると足りなくなる)
+        bash_ms = str(max(int(CLAUDE_SESSION_ENV["BASH_MAX_TIMEOUT_MS"]), check_limit("selfcheck") * 1000))
+        r = run_group(["claude", "-p", *args], timeout=timeout, cwd=cwd,
+                      env={**session_env(tmp), **CLAUDE_SESSION_ENV, "BASH_DEFAULT_TIMEOUT_MS": bash_ms, "BASH_MAX_TIMEOUT_MS": bash_ms},
                       answered=answer_ready(schema))
     except subprocess.TimeoutExpired as e:
         save_raw("oncall", name, *partial_output(e))      # 時間切れの回も、それまでの出力を残す
@@ -1107,11 +1145,11 @@ def run_rounds(stage: str, date: str, context: str, wt: Path, base: str, wip: di
                 objected = False    # 当番の答えは前の往復の異議(integ に入っている)。そのまま監査へ
             elif not fix:
                 fix = run_claude(fix_prompt(stage, date, context, None), schemas / "oncall-fix.schema.json", wt,
-                                 timeout=min(1800, left()))
+                                 timeout=min(session_limit(FIX_CHECKS), left()))
                 transcript.append({"round": rnd, "fix": fix})
             else:
                 integ = run_claude(fix_prompt(stage, date, context, objections),
-                                   schemas / "oncall-integrate.schema.json", wt, timeout=min(1800, left()))
+                                   schemas / "oncall-integrate.schema.json", wt, timeout=min(session_limit(FIX_CHECKS), left()))
                 transcript.append({"round": rnd, "integrate": integ})
                 # 監査の指摘で status(誤診の訂正)や再実行の仕方を改めたなら、それを最終判断にする(監査指摘)
                 apply_integrate(fix, integ)
@@ -1142,10 +1180,19 @@ def run_rounds(stage: str, date: str, context: str, wt: Path, base: str, wip: di
             kept = {"head": head, "fix": json.loads(json.dumps(fix)), "open": objections + [pending_review]}
             if carry_objection:
                 kept["objection"] = carry_objection
-            if left() < 30:
-                transcript.append({"round": rnd, "time_up": ONCALL_LIMIT_MIN})
+            # selfcheck を最後まで走らせられない残りなら始めない(締切で切れるだけ。続きは kept の「監査が終わっていない」から)
+            if left() < check_seconds("selfcheck"):
+                transcript.append({"round": rnd, "time_up": ONCALL_LIMIT_MIN, "before": "selfcheck"})
                 break
-            sc = sh([sys.executable, "scripts/selfcheck.py"], cwd=wt, timeout=min(300, left()))
+            sc, lim = run_check("selfcheck", ["scripts/selfcheck.py"], wt, left)
+            if sc is None and left() < MIN_STEP_SEC:
+                transcript.append({"round": rnd, "time_up": ONCALL_LIMIT_MIN, "in": "selfcheck"})
+                break
+            if sc is None:
+                # 実測の CHECK_MARGIN 倍を超えて終わらない: 修正で検査が止まった(待ち続ける・終わらないテスト)ものとして当番へ返す
+                # (時間切れの例外で試行ごと止めない。2026-10-27 は固定の 300 秒で3回とも「当番の作業が途中で止まった」)
+                sc = subprocess.CompletedProcess([], 1, f"selfcheck が上限の {lim} 秒(それまでの実測の最大の {CHECK_MARGIN:g} 倍)で"
+                                                 "終わらない。修正でテストが待ち続けていないか・終わらないテストを足していないかを確かめる", "")
             if sc.returncode != 0:
                 transcript.append({"round": rnd, "selfcheck": sc.stdout[-500:]})
                 # 前の指摘は**まだ監査で確かめられていない**ので捨てない。selfcheck の赤を足す(置き換えない。監査指摘)
@@ -1160,16 +1207,21 @@ def run_rounds(stage: str, date: str, context: str, wt: Path, base: str, wip: di
             # 3つの検査は当番のコードが自分で走らせ、その結果を監査に渡す(承認の門はここ: selfcheck が赤なら上で監査に進まない。
             # selfcheck は回帰テスト test_pipeline を含む)。監査の自己申告(verification)だけを門にすると、走らせない記録で通る道が
             # 何度でも見つかった(監査指摘: py_compile・--help・`true ||`)。lint は組み直す前の号の中身でも赤になるので、修正によるかは監査が判断する
-            lc = sh([sys.executable, "scripts/lint.py", "--base", "origin/main"], cwd=wt, timeout=min(300, left()))
+            lc, lim = run_check("lint", ["scripts/lint.py", "--base", "origin/main"], wt, left, record=True)
+            lint_line = (f"終了 {lc.returncode}: {((lc.stdout or '').strip().splitlines() or [''])[-1][:300]}" if lc is not None
+                         else f"上限の {lim} 秒で終わらない")
             code_checks = ("\n\n## 当番のコードが走らせた検査(この commit)\n"
                            "- python3 scripts/selfcheck.py(回帰テスト test_pipeline を含む): 終了 0\n"
-                           f"- python3 scripts/lint.py --base origin/main: 終了 {lc.returncode}: "
-                           f"{((lc.stdout or '').strip().splitlines() or [''])[-1][:300]}\n")
-            transcript.append({"round": rnd, "code_checks": {"selfcheck": 0, "lint": lc.returncode}})
+                           f"- python3 scripts/lint.py --base origin/main: {lint_line}\n")
+            transcript.append({"round": rnd, "code_checks": {"selfcheck": 0, "lint": lc.returncode if lc is not None else None}})
+            # 監査は中でテスト・selfcheck・lint を走らせる。その実測の分が残っていなければ始めない(走らせ切れない監査は承認にならない)
+            if left() < SESSION_WORK_SEC // 6 + sum(check_seconds(c) for c in AUDIT_CHECKS):
+                transcript.append({"round": rnd, "time_up": ONCALL_LIMIT_MIN, "before": "audit"})
+                break
             print(f"監査 {rnd}回目", flush=True)
             # 差分が無くても(no_fix_needed)監査は通す: 誤診を検める機会を残す(監査指摘)
             rev = run_codex(review_prompt(stage, date, fix, diff, integ) + code_checks, schemas / "oncall-review.schema.json", wt,
-                            timeout=min(1800, left()))
+                            timeout=min(session_limit(AUDIT_CHECKS), left()))
             transcript.append({"round": rnd, "review": rev})
             round_later = []
             for item in rev.get("later") or []:

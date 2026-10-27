@@ -9575,6 +9575,120 @@ def test_oncall_merge_push_settles(tmp: Path):
         sys.argv = saved_argv
 
 
+def test_oncall_check_limits_follow_measure(tmp: Path):
+    """当番のコードが走らせる検査(selfcheck・lint)の上限と、検査を中で走らせるセッション(当番・監査)の上限は、検査の所要の実測から決まる
+    (2026-10-27: 回帰テストが 9〜17 分に伸び、固定の 300 秒の selfcheck が3回とも時間切れで「当番の作業が途中で止まった」)。
+    - 実測は直近 CHECK_SECONDS_KEEP 回の最大。無ければ既定。壊れた記録は既定
+    - selfcheck の上限は実測の CHECK_MARGIN 倍(締切の残りで切る)。上限を超えたら試行を止めず、selfcheck の赤として当番へ返し、
+      かかった秒を実測に足す(次の上限が伸びる)
+    - 監査のセッションは、中で走らせるテスト・selfcheck・lint の実測の分を足した上限。走らせ切れない残りなら始めない
+    - selfcheck.py は最後まで走った回の所要を記録する"""
+    import oncall
+    tmp.mkdir(parents=True, exist_ok=True)
+    saved_scratch = os.environ.get("IMAS_SCRATCH")
+    os.environ["IMAS_SCRATCH"] = str(tmp / "scratch")
+    names = ("run_claude", "run_codex", "freeze", "root_clean", "remote_main", "env_fingerprint", "sh", "ONCALL_LIMIT_MIN", "MAX_ROUNDS",
+             "DEADLINE_AT")
+    saved_fns = {n: getattr(oncall, n) for n in names}
+    try:
+        check(pipelib.check_seconds("selfcheck") == pipelib.CHECK_SECONDS_DEFAULT["selfcheck"], "実測の無いときの既定")
+        for s in (1000, 500, 700, 600, 650, 640):     # 古い 1000 は送り出される
+            pipelib.note_check_seconds("selfcheck", s)
+        check(pipelib.check_seconds("selfcheck") == 700 and len(json.loads((tmp / "scratch" / pipelib.CHECK_SECONDS_FILE).read_text())["selfcheck"])
+              == pipelib.CHECK_SECONDS_KEEP, f"直近の実測の最大になっていない: {pipelib.check_seconds('selfcheck')}")
+        check(oncall.check_limit("selfcheck") == 1400 and oncall.check_limit("lint") == oncall.CHECK_FLOOR_SEC
+              and oncall.session_limit(oncall.AUDIT_CHECKS) == oncall.SESSION_WORK_SEC + 1400 + 2400 + 300,
+              f"上限が実測から決まらない: {oncall.check_limit('selfcheck')} {oncall.session_limit(oncall.AUDIT_CHECKS)}")
+        # 往復: selfcheck の上限が実測から決まり、監査のセッションにも検査の分が足される
+        oncall.root_clean = lambda: True
+        oncall.remote_main = lambda: "B" * 40
+        oncall.env_fingerprint = lambda: "env"
+        oncall.freeze = lambda wt, base, rnd: ("H%039d" % rnd, "diff --git a/scripts/x.py b/scripts/x.py", ["scripts/x.py"])
+        oncall.DEADLINE_AT = None
+        limits, audits, fixes = {}, [], []
+
+        def sh_ok(args, cwd, timeout=600):
+            k = next((n for n in ("selfcheck", "lint") if any(str(a).endswith(f"{n}.py") for a in args)), None)
+            if k:
+                limits.setdefault(k, []).append(timeout)
+            return subprocess.CompletedProcess(args, 0, "", "")
+        oncall.sh = sh_ok
+
+        def claude(prompt, schema, cwd, timeout=1800):
+            fixes.append(timeout)
+            return {"status": "fixed", "diagnosis": "d"} if "oncall-fix" in str(schema) else {"accepted": [], "refuted": [], "status": "fixed"}
+        oncall.run_claude = claude
+        oncall.run_codex = lambda prompt, schema, cwd, timeout=1800: (audits.append(timeout)
+                                                                      or {"verdict": "approve", "must_fix": [], "verification": AUDIT_RAN, "notes": ""})
+        r = oncall.run_rounds("classify", "2026-10-28", "ctx", tmp, "B" * 40, None, "env", [])
+        check(r["approved"] and limits.get("selfcheck") and limits["selfcheck"][0] >= 1400 - 5 and limits.get("lint")
+              and audits and audits[0] >= oncall.SESSION_WORK_SEC + 1400 + 2400 - 5 and fixes and fixes[0] >= oncall.SESSION_WORK_SEC + 1400 - 5,
+              f"検査・セッションの上限が実測に追従しない: selfcheck {limits.get('selfcheck')} 監査 {audits} 当番 {fixes}")
+        # selfcheck が上限で終わらない: 試行を止めず(例外にしない)、selfcheck の赤として当番に返し、かかった秒を実測に足す
+        n = {"sc": 0}
+
+        def sh_slow(args, cwd, timeout=600):
+            if any(str(a).endswith("selfcheck.py") for a in args):
+                n["sc"] += 1
+                if n["sc"] == 1:
+                    raise subprocess.TimeoutExpired(args, timeout)
+            return subprocess.CompletedProcess(args, 0, "", "")
+        oncall.sh = sh_slow
+        tr = []
+        r = oncall.run_rounds("classify", "2026-10-28", "ctx", tmp, "B" * 40, None, "env", tr)
+        sc_red = [t for t in tr if "selfcheck" in t]
+        check(r["approved"] and not r["error"] and sc_red and "終わらない" in sc_red[0]["selfcheck"] and n["sc"] == 2
+              and sum(1 for t in tr if "integrate" in t) == 1,
+              f"selfcheck の時間切れで試行が止まった・当番に返さない: {r.get('error')} {sc_red} {[list(t) for t in tr]}")
+        # 監査がテスト・selfcheck・lint を走らせ切れない残りなら、監査を始めない(続きは「監査が終わっていない」から)
+        audits.clear()
+        oncall.sh = sh_ok
+        oncall.ONCALL_LIMIT_MIN = 60        # 60 分: selfcheck(700 秒)は走れるが、監査の検査の分(700 + 1200 + 120 + 300)には足りない
+        oncall.run_claude = lambda prompt, schema, cwd, timeout=1800: {"status": "fixed", "diagnosis": "d"}
+        saved_time = oncall.time.time
+        t_start = saved_time()
+        clock = {"t": t_start}
+        oncall.time.time = lambda: clock["t"]
+
+        def sh_clock(args, cwd, timeout=600):
+            if any(str(a).endswith("selfcheck.py") for a in args):
+                clock["t"] += 1500      # selfcheck に 25 分かかった
+            return subprocess.CompletedProcess(args, 0, "", "")
+        oncall.sh = sh_clock
+        try:
+            tr = []
+            r = oncall.run_rounds("classify", "2026-10-28", "ctx", tmp, "B" * 40, None, "env", tr)
+        finally:
+            oncall.time.time = saved_time
+        check(not r["approved"] and not audits and any(t.get("before") == "audit" for t in tr)
+              and [o["id"] for o in r["kept"]["open"]] == ["review-incomplete"],
+              f"走らせ切れない残りで監査を始めた: 監査 {audits} {[t for t in tr if 'time_up' in t]} {r.get('error')} {r['kept'].get('open')}")
+    finally:
+        for k, v in saved_fns.items():
+            setattr(oncall, k, v)
+        if saved_scratch is None:
+            os.environ.pop("IMAS_SCRATCH", None)
+        else:
+            os.environ["IMAS_SCRATCH"] = saved_scratch
+    # selfcheck.py は最後まで走った回の所要を記録する(本物の selfcheck を、回帰テストだけ偽物にした作業場所で走らせる)
+    box = tmp / "sc"
+    (box / "scripts").mkdir(parents=True)
+    repo = Path(__file__).resolve().parent.parent
+    for f in ("selfcheck.py", "pipelib.py", "page_archive.py"):
+        if (repo / "scripts" / f).exists():
+            shutil.copy(repo / "scripts" / f, box / "scripts" / f)
+    (box / "scripts" / "test_pipeline.py").write_text("import time\ntime.sleep(0.2)\nprint('test_pipeline: 0 failures')\n", encoding="utf-8")
+    env = dict(os.environ, IMAS_SCRATCH=str(box / "scratch"))
+    rs = subprocess.run([sys.executable, str(box / "scripts" / "selfcheck.py"), "--quiet"], cwd=box, env=env, capture_output=True, text=True,
+                        timeout=120, stdin=subprocess.DEVNULL)
+    try:
+        rec = json.loads((box / "scratch" / pipelib.CHECK_SECONDS_FILE).read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        rec = {}
+    check(rs.returncode == 0 and (rec.get("test_pipeline") or [0])[-1] >= 0.2 and (rec.get("selfcheck") or [0])[-1] >= 0.2,
+          f"selfcheck.py が検査の所要を記録しない: rc={rs.returncode} {rec} {rs.stderr[-300:]!r}")
+
+
 def test_oncall_fix_until_clean(tmp: Path):
     """当番と監査の範囲は「発行に必要な最小限で、今後もちゃんと動く正しい修正」(編集長の整理 2026-09-18)。
     その範囲の指摘(must_fix)は合意するまで直す。発行後でよい指摘(later)は別に保管して、発行してから直す。
@@ -15756,6 +15870,7 @@ def test_cli_blocked_r8(tmp: Path):
     notes, restores = [], []
     values = dict(ROOT=rec, RECOVER=True, RECOVER_TARGET=("2026-10-21", "edition/2026-10-21"), RECOVER_TRIED=False,
                   STAGE_END_AT=time.time() + 3600, release_held_job_locks=lambda: None,
+                  DEADLINE_AT=oncall.DEADLINE_AT,       # main() が決める締切を後のテストへ持ち越さない(往復の残りが短くなる)
                   job_lock=lambda *a, **k: os.open(os.devnull, os.O_RDONLY), root_clean=lambda: True, ensure_edition=lambda *a: "",
                   sh=lambda *a, **k: subprocess.CompletedProcess([], 0, "", ""), commit_paths=lambda *a, **k: None,
                   untracked_files=lambda: set(), backup_edition=lambda *a: "backup/test",
@@ -17713,6 +17828,8 @@ NEW = OLD.replace("応募締切は10月30日。", "応募締切は11月3日ま�
 def err(url, code, body):
     h = email.message.Message()
     h["Content-Type"] = "text/html; charset=utf-8"
+    if code == 429:     # 取り直しの待ちは test_http429_retry が検める。ここで本番の既定(30 秒 × 3 回)を実時間で待たない
+        h["Retry-After"] = "0"
     return urllib.error.HTTPError(url, code, "x", h, io.BytesIO(body.encode("utf-8")))
 def fake_urlopen(url, phase):
     host = urllib.parse.urlsplit(url).hostname or ""
@@ -17817,7 +17934,13 @@ def test_page_archive_store(tmp: Path):
     dead = "http://127.0.0.1:9/news/1"
     pa.save(dead, "本体に残した原本。価格は3000円。", via="collect", at="2026-10-25T21:03:00+09:00", base=main_wt / "metrics" / "work" / "pages")
     env = {k: v for k, v in os.environ.items() if k not in ("IMAS_PAGE_ARCHIVE", pipelib.FETCH_RECORD_ENV, "IMAS_FETCH_PAGES")}
-    r = subprocess.run([sys.executable, str(wt / "scripts" / "fetch_page.py"), dead], cwd=wt, env=env, capture_output=True, text=True,
+    # 閉じたポートへの接続は、環境によっては拒否されずに 25 秒の時間切れまで待つ(2026-10-27 実測)。通信だけを接続の拒否に差し替えて、
+    # 作業ツリーの fetch_page.py をそのまま走らせる
+    refuse = (f"import runpy, sys, urllib.request\nsys.argv = [{str(wt / 'scripts' / 'fetch_page.py')!r}, {dead!r}]\n"
+              f"sys.path.insert(0, {str(wt / 'scripts')!r})\n"
+              "def refused(*a, **k):\n    raise urllib.request.URLError(ConnectionRefusedError(111, 'Connection refused'))\n"
+              "urllib.request.urlopen = refused\nrunpy.run_path(sys.argv[0], run_name='__main__')\n")
+    r = subprocess.run([sys.executable, "-c", refuse], cwd=wt, env=env, capture_output=True, text=True,
                        timeout=120, stdin=subprocess.DEVNULL)
     check(r.returncode == 0 and "本体に残した原本" in r.stdout and "いまは読み直せない" in r.stdout and "収集時点(2026-10-25 21:03)" in r.stdout,
           f"当番の作業ツリーから本体の置き場の原本を読めない: {r.returncode} {r.stdout[:300]!r} {r.stderr[-300:]!r}")
@@ -19862,6 +19985,7 @@ def main() -> int:
     test_oncall_restore_to_backup(tmp / "rtb")
     test_oncall_merge_push_settles(tmp / "mps")
     test_oncall_fix_until_clean(tmp / "of")
+    test_oncall_check_limits_follow_measure(tmp / "oclm")
     test_oncall_report_concurrence(tmp / "orc")
     test_settled_drops_not_rewritten(tmp / "sd")
     test_rule_bench_cases()

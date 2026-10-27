@@ -108,31 +108,28 @@ def check(path: Path) -> list[str]:
 TEST_TIMEOUT_SEC = 45 * 60
 
 
-def run_tests() -> tuple[int, str]:
-    """回帰テストを走らせる。戻りは(終了コード, 出力)。時間切れはテストの子孫ごと止めて終了コード -1。"""
-    import os
-    import signal
-    p = subprocess.Popen([sys.executable, str(ROOT / "scripts" / "test_pipeline.py")], cwd=ROOT, stdin=subprocess.DEVNULL,
-                         stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, start_new_session=True)
+def run_tests(limit: float | None = None) -> tuple[str, str]:
+    """回帰テストを走らせる。戻りは(結果の文, 出力)。結果の文は通れば空。待つのは limit 秒(TEST_TIMEOUT_SEC を越えない。当番は
+    自分の待ちより短く渡す)。テストは自前のグループで起動し(pipelib.run_group)、時間切れ・中断(SIGTERM で止められたときも)では、
+    別のセッションへ逃げた子孫まで印で見つけて止める。"""
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    from pipelib import exit_on_term, partial_output, run_group
+    exit_on_term()      # SIGTERM で止められても、テストの子孫を止めてから終える
+    limit = TEST_TIMEOUT_SEC if limit is None else max(1, min(limit, TEST_TIMEOUT_SEC))
     try:
-        out, _ = p.communicate(timeout=TEST_TIMEOUT_SEC)
-        return p.returncode, out
-    except subprocess.TimeoutExpired:
-        try:
-            os.killpg(p.pid, signal.SIGKILL)
-        except OSError:
-            pass
-        try:        # グループの外へ逃げた子孫が出力を握っていても待ち続けない
-            out, _ = p.communicate(timeout=30)
-        except subprocess.TimeoutExpired:
-            p.kill()
-            out = ""
-        return -1, out or ""
+        r = run_group([sys.executable, str(ROOT / "scripts" / "test_pipeline.py")], limit, cwd=ROOT)
+    except subprocess.TimeoutExpired as e:
+        return f"回帰テストが {int(limit)} 秒で終わらない(子孫ごと止めた)", "\n".join(partial_output(e))
+    out = (r.stdout or "") + (r.stderr or "")
+    if r.returncode == 0:
+        return "", out
+    return ("回帰テストが赤" if r.returncode > 0 else f"回帰テストがシグナル {-r.returncode} で止まった"), out
 
 
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--quiet", action="store_true")
+    ap.add_argument("--test-timeout", type=float, default=None, help="回帰テストを待つ秒数(TEST_TIMEOUT_SEC を越えない)")
     args = ap.parse_args()
     total = 0
     for name in TARGETS:
@@ -145,11 +142,10 @@ def main() -> int:
             print(f"::error file=scripts/{name}::{e}")
             print(f"  [ERROR] scripts/{name}: {e}", file=sys.stderr)
     # 静的検査だけでは実行時の欠陥(未定義変数・保存漏れ)を見逃す(監査指摘)。回帰テストも走らせる
-    code, out = run_tests()
-    if code != 0:
+    why, out = run_tests(args.test_timeout)
+    if why:
         total += 1
-        print("::error file=scripts/test_pipeline.py::" + ("回帰テストが赤" if code > 0 else
-                                                          f"回帰テストが {TEST_TIMEOUT_SEC // 60} 分で終わらない(止めた)"))
+        print(f"::error file=scripts/test_pipeline.py::{why}")
         print(out[-2000:], file=sys.stderr)
     if not args.quiet:
         print(f"selfcheck: {total} errors ({len(TARGETS)} scripts + 回帰テスト)")

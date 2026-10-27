@@ -152,6 +152,15 @@ def check(cond, msg):
         FAILS.append(msg)
 
 
+def read_once(res, body: bytes, n=None) -> bytes:
+    """偽の応答の read: 本物と同じく、読んだ分だけ進み、読み切ったら空を返す(毎回同じ本文を返す偽物は、読み切るまで読む受信を
+    止まらなくする。2026-10-27: 原本の保存のテストの偽物で、watch の selfcheck が 6.4G で OOM になった)"""
+    pos = res.__dict__.get("_read_pos", 0)
+    end = len(body) if n is None or n < 0 else min(len(body), pos + n)
+    res.__dict__["_read_pos"] = end
+    return body[pos:end]
+
+
 MATS = [{"id": "c1", "url": "https://a.example/1", "title": "告知 2026-10-01", "published_date": "2026-09-01",
          "facts": ["9月13日開催", "価格3000円"], "unbacked_facts": ["9月20日"]},
         {"id": "c2", "url": "https://b.example/2", "facts": ["出演A"], "deadline": "2026-09-30"},
@@ -2953,7 +2962,7 @@ def test_page_body_past_inline_css(tmp: Path):
         status = 200
         headers = type("H", (), {"get_content_charset": lambda self: "utf-8"})()
         def geturl(self): return url
-        def read(self, n=None): return page if n is None else page[:n]
+        def read(self, n=None): return read_once(self, page, n)
         def __enter__(self): return self
         def __exit__(self, *a): return False
     url = "https://asobiticket2.asobistore.jp/news/x"
@@ -3181,7 +3190,7 @@ def test_maintenance_page_is_not_read(tmp: Path):
         status = 200
         headers = type("H", (), {"get_content_charset": lambda self: "utf-8"})()
         def geturl(self): return mainte
-        def read(self, n=None): return page.encode("utf-8")
+        def read(self, n=None): return read_once(self, page.encode("utf-8"), n)
         def __enter__(self): return self
         def __exit__(self, *a): return False
     rec = tmp / "rec.jsonl"
@@ -3267,7 +3276,12 @@ class U:
         self.final, self.body = final, body
         self.headers = type("H", (), {"get_content_charset": lambda s: "utf-8"})()
     def geturl(self): return self.final
-    def read(self, n=None): return self.body.encode("utf-8")
+    def read(self, n=None):     # 本物と同じく、読んだ分だけ進み、読み切ったら空を返す
+        data = self.body.encode("utf-8")
+        pos = self.__dict__.get("_pos", 0)
+        end = len(data) if n is None or n < 0 else min(len(data), pos + n)
+        self._pos = end
+        return data[pos:end]
     def __enter__(self): return self
     def __exit__(self, *a): return False
 def page(title, text):
@@ -5474,7 +5488,7 @@ def test_fetch_page_renders_whitespace_only_page():
         status = 200
         def geturl(self): return ""
         headers = type("H", (), {"get_content_charset": lambda self: "utf-8"})()
-        def read(self, n=None): return ("<p>" + nav + "</p>").encode("utf-8")
+        def read(self, n=None): return read_once(self, ("<p>" + nav + "</p>").encode("utf-8"), n)
         def __enter__(self): return self
         def __exit__(self, *a): return False
     rcalls = []
@@ -5507,7 +5521,7 @@ def test_fetch_page_records_read_pages(tmp: Path):
         status = 200
         headers = type("H", (), {"get_content_charset": lambda self: "utf-8"})()
         def geturl(self): return "https://www.lantis.jp/release_1.html"
-        def read(self, n=None): return page.encode("utf-8")
+        def read(self, n=None): return read_once(self, page.encode("utf-8"), n)
         def __enter__(self): return self
         def __exit__(self, *a): return False
 
@@ -5770,7 +5784,7 @@ def test_render_failure_reaches_classify_and_verify(tmp: Path):
         def geturl(self): return ""
         headers = type("H", (), {"get_content_charset": staticmethod(lambda: "utf-8")})()
         def read(self, n=-1):
-            return menu.encode()
+            return read_once(self, menu.encode(), n)
         def __enter__(self):
             return self
         def __exit__(self, *a):
@@ -6098,7 +6112,7 @@ def test_watch_body_cp932(tmp: Path):
 
     class Res:
         headers = type("H", (), {"get_content_charset": lambda self: None})()
-        def read(self, *a): return raw
+        def read(self, n=None): return read_once(self, raw, n)
         def __enter__(self): return self
         def __exit__(self, *a): return False
     prompts = []
@@ -6128,7 +6142,7 @@ def test_watch_static_page_body(tmp: Path):
     class Res:
         headers = type("H", (), {"get_content_charset": lambda self: None})()
         def __init__(self, body): self.body = body
-        def read(self, *a): return self.body
+        def read(self, n=None): return read_once(self, self.body, n)
         def __enter__(self): return self
         def __exit__(self, *a): return False
     prompts = []
@@ -7317,7 +7331,7 @@ def test_empty_answer_is_not_done(tmp: Path):
         status = 200
         def geturl(self): return ""
         headers = type("H", (), {"get_content_charset": lambda self: "utf-8"})()
-        def read(self, n=None): return ("<p>" + page + "</p>" + "あ" * 500).encode("utf-8")
+        def read(self, n=None): return read_once(self, ("<p>" + page + "</p>" + "あ" * 500).encode("utf-8"), n)
         def __enter__(self): return self
         def __exit__(self, *a): return False
     try:
@@ -7369,7 +7383,7 @@ def test_accept_only_normal_and_schema(tmp: Path):
         status = 200
         def geturl(self): return ""
         headers = type("H", (), {"get_content_charset": lambda self: "utf-8"})()
-        def read(self, n=None): return page.encode("utf-8")
+        def read(self, n=None): return read_once(self, page.encode("utf-8"), n)
         def __enter__(self): return self
         def __exit__(self, *a): return False
     saved = (collect.urllib.request.urlopen, collect.fetch_rendered, collect.classify_source)
@@ -17627,7 +17641,12 @@ class U:
         self.final, self.body = final, body
         self.headers = type("H", (), {"get_content_charset": lambda s: "utf-8"})()
     def geturl(self): return self.final
-    def read(self, n=None): return self.body.encode("utf-8")
+    def read(self, n=None):     # 本物と同じく、読んだ分だけ進み、読み切ったら空を返す
+        data = self.body.encode("utf-8")
+        pos = self.__dict__.get("_pos", 0)
+        end = len(data) if n is None or n < 0 else min(len(data), pos + n)
+        self._pos = end
+        return data[pos:end]
     def __enter__(self): return self
     def __exit__(self, *a): return False
 def page(title, text):
@@ -17846,7 +17865,7 @@ def test_page_archive_versions_and_reads(tmp: Path):
         status = 200
         headers = type("H", (), {"get_content_charset": lambda s: "utf-8"})()
         def geturl(self): return r_url
-        def read(self, n=None): return ("<html><body>" + "ニュース一覧、会社概要、お問い合わせ。" * 40 + "</body></html>").encode()
+        def read(self, n=None): return read_once(self, ("<html><body>" + "ニュース一覧、会社概要、お問い合わせ。" * 40 + "</body></html>").encode(), n)
         def __enter__(self): return self
         def __exit__(self, *a): return False
     c = {"url": r_url, "title": "新商品", "facts": ["価格は3000円"], "quotes": [quote], "via": "explore", "source_type": "公式"}
@@ -18022,7 +18041,7 @@ def test_page_archive_versions_and_reads(tmp: Path):
 
     class NavRes(Res):
         def geturl(self): return w_url
-        def read(self, n=None): return nav
+        def read(self, n=None): return read_once(self, nav, n)
     try:
         collect.watch_get = lambda u, t: (nav, "utf-8")
         collect.needs_render = lambda u, t: True
@@ -18046,7 +18065,7 @@ def test_page_archive_versions_and_reads(tmp: Path):
 
     class LongNav(Res):
         def geturl(self): return s_url
-        def read(self, n=None): return long_nav
+        def read(self, n=None): return read_once(self, long_nav, n)
 
     def first_nav_then_503(req, timeout=15):
         calls["n"] += 1
@@ -18114,7 +18133,7 @@ def test_page_archive_versions_and_reads(tmp: Path):
 
     class Other(Res):
         def geturl(self): return t_url
-        def read(self, n=None): return other_body
+        def read(self, n=None): return read_once(self, other_body, n)
 
     def ok_then_503(req, timeout=15):
         calls["n"] += 1
@@ -18238,7 +18257,7 @@ def test_page_archive_versions_and_reads(tmp: Path):
 
     class OtherM(Res):
         def geturl(self): return m_url
-        def read(self, n=None): return other_body
+        def read(self, n=None): return read_once(self, other_body, n)
 
     def ok_then_mainte(req, timeout=15):
         calls["n"] += 1
@@ -18277,7 +18296,7 @@ def test_page_archive_versions_and_reads(tmp: Path):
 
         class NavB(Res):
             def geturl(self, u=b_url): return u
-            def read(self, n=None): return nav
+            def read(self, n=None): return read_once(self, nav, n)
 
         def fake_render(u, limit=None, r=ret, s=st, wait_deadline=None):
             if s:
@@ -18574,7 +18593,7 @@ class RescueFakes:
             headers = type("H", (), {"get_content_charset": staticmethod(lambda: "utf-8")})()
 
             def read(self, n=-1):
-                return body
+                return read_once(self, body, n)
 
             def geturl(self):
                 return req.full_url
@@ -19623,19 +19642,43 @@ def test_page_reads_are_bounded(tmp: Path):
         def geturl(self): return "https://endless.example/"
         def __enter__(self): return self
         def __exit__(self, *a): return False
+    class Sized(Endless):
+        """上限ちょうどの本文で終わる応答"""
+        def _give(self, n):
+            if n is None or n < 0:
+                self.unbounded = True
+                raise AssertionError("上限なしで読んだ")
+            k = max(0, min(n, cap - self.served))
+            self.served += k
+            return b"y" * k
+        read = read1 = lambda self, n=None: self._give(n)
     got = {}
     saved_dl = collect.DEADLINE
-    for k, dl in (("締切あり", _t.time() + 3600), ("締切なし", None)):
-        res = Endless()
+    for k, dl, cls in (("締切あり", _t.time() + 3600, Endless), ("締切なし", None, Endless),
+                       ("締切あり・上限ちょうど", _t.time() + 3600, Sized), ("締切なし・上限ちょうど", None, Sized)):
+        res = cls()
         try:
             collect.DEADLINE = dl
             body = collect.watch_read(res)
-            got[k] = (len(body), None)
+            got[k] = (len(body), None, res.served)
         except Exception as e:      # noqa: BLE001
-            got[k] = (res.served, f"{type(e).__name__}: {e}")
+            got[k] = (None, type(e).__name__, res.served)
         finally:
             collect.DEADLINE = saved_dl
-    check(all(err is None and n <= cap for n, err in got.values()), f"定点観測の受信が終わらない応答を上限なしで読んだ: {got}")
+    # 上限を越える応答は切った本文を正常として返さない(読めなかった回にする)。溜め込むのは上限と1回の受信の分まで
+    check(all(got[k][1] == "PageTooLarge" and got[k][2] <= cap + 65536 for k in ("締切あり", "締切なし"))
+          and all(got[k][:2] == (cap, None) for k in ("締切あり・上限ちょうど", "締切なし・上限ちょうど")),
+          f"定点観測の受信が終わらない応答を上限なしで読んだ・上限を越えた本文を切って正常に返した: {got}")
+    # 上限を越えた新着の本文は原本に残さず、読めなかったとして返す(セッションの fetch_page.py に任せる)
+    import page_archive as pa
+    saved_w = collect.watch_get
+    try:
+        collect.watch_get = lambda u, t: (_ for _ in ()).throw(collect.PageTooLarge("大きすぎる"))
+        html, why = collect.page_html_or_note("https://huge.example/news/1", False)
+    finally:
+        collect.watch_get = saved_w
+    check(html == "" and "PageTooLarge" in why and not pa.versions("https://huge.example/news/1"),
+          f"上限を越えた本文を原本にした・読めたとした: {html[:50]!r} {why!r}")
     # 出典の判定(BOOTH の商品・YouTube の oEmbed と視聴ページ・再生リスト)と X の投稿者も上限まで
     seen = []
     saved = (cs.polite_urlopen, pipelib.polite_urlopen)
@@ -19653,8 +19696,23 @@ def test_page_reads_are_bounded(tmp: Path):
             pipelib.x_post_author("123")
     finally:
         cs.polite_urlopen, pipelib.polite_urlopen = saved
-    check(len(seen) >= 4 and not any(r.unbounded for r in seen),
-          f"出典の判定・X の投稿者の取得が応答を上限なしで読んだ: {[(r.served, r.unbounded) for r in seen]}")
+    # 配信の Cloudflare の答えも上限まで
+    import deploy
+    saved_d = (deploy.urllib.request.urlopen, dict(deploy.ENV))
+    try:
+        deploy.ENV.update(CF_API_TOKEN="t", CF_ZONE_ID="z")
+        deploy.urllib.request.urlopen = lambda req, timeout=30: opener(req)
+        with contextlib.redirect_stdout(io.StringIO()):
+            try:
+                deploy.purge_cache()
+            except Exception:       # noqa: BLE001  答えの形は問わない(読み方だけ見る)
+                pass
+    finally:
+        deploy.urllib.request.urlopen = saved_d[0]
+        deploy.ENV.clear()
+        deploy.ENV.update(saved_d[1])
+    check(len(seen) >= 6 and not any(r.unbounded for r in seen),
+          f"出典の判定・X の投稿者・配信の取得が応答を上限なしで読んだ: {[(r.served, r.unbounded) for r in seen]}")
 
 
 def test_suite_same_under_systemd(tmp: Path):
@@ -19685,84 +19743,130 @@ def test_suite_same_under_systemd(tmp: Path):
 
 def test_selfcheck_stops_stuck_tests(tmp: Path):
     """selfcheck は回帰テストを時間の上限で止め(子孫ごと)、赤にする。止まったテストを待ち続けない
-    (2026-10-27: watch の selfcheck の下でテストが終わらず、7 時間半走って OOM で殺された)"""
-    root = tmp / "repo"
-    (root / "scripts").mkdir(parents=True)
-    pidfile = tmp / "grandchild.pid"
-    (root / "scripts" / "test_pipeline.py").write_text(
-        "import subprocess, sys, time\n"
-        f"p = subprocess.Popen(['sleep', '600'])\nopen({str(pidfile)!r}, 'w').write(str(p.pid))\n"
-        "print('止まったテスト', flush=True)\ntime.sleep(600)\n", encoding="utf-8")
-    code = ("import sys; sys.path.insert(0, sys.argv[1]); import selfcheck\n"
-            "from pathlib import Path\n"
-            "selfcheck.ROOT, selfcheck.TARGETS, selfcheck.TEST_TIMEOUT_SEC = Path(sys.argv[2]), [], 3\n"
-            "sys.argv = ['selfcheck.py']\nsys.exit(selfcheck.main())\n")
-    try:
-        r = subprocess.run([sys.executable, "-c", code, str(Path(__file__).resolve().parent), str(root)], capture_output=True,
-                           text=True, timeout=90, stdin=subprocess.DEVNULL)
-        out = (r.returncode, r.stdout + r.stderr)
-    except subprocess.TimeoutExpired:
-        out = (None, "selfcheck が止まったテストを待ち続けた")
-    alive = False
-    try:
-        pid = int(pidfile.read_text())
-        os.kill(pid, 0)
-        alive = Path(f"/proc/{pid}/stat").read_text().split(")")[-1].split()[0] != "Z"
-        if alive:
+    (2026-10-27: watch の selfcheck の下でテストが終わらず、7 時間半走って OOM で殺された)。別のセッションへ逃げて出力を握る子孫も
+    止める。テストがシグナルで止まったのを時間切れと言わない。当番が selfcheck を時間切れで止めるときも、selfcheck が起動したテストまで
+    止めさせ、時間切れを赤として返す(Sol 監査 WT r1)"""
+    import oncall
+    scripts = str(Path(__file__).resolve().parent)
+
+    def alive(pidfile: Path) -> bool:
+        try:
+            pid = int(pidfile.read_text())
+            st = Path(f"/proc/{pid}/stat").read_text().split(")")[-1].split()[0]
+        except (OSError, ValueError):
+            return False
+        if st != "Z":
             os.kill(pid, 9)
-    except (OSError, ValueError):
-        pass
-    check(out[0] == 1 and "終わらない" in out[1] and not alive,
-          f"selfcheck が止まったテストを時間の上限で止めない・子孫を残した: exit {out[0]} 子孫 {'残った' if alive else 'なし'} {out[1][-300:]!r}")
+            return True
+        return False
+
+    def fake_repo(name: str, body: str) -> tuple[Path, Path]:
+        root, pidfile = tmp / name, tmp / f"{name}.pid"
+        (root / "scripts").mkdir(parents=True)
+        (root / "scripts" / "test_pipeline.py").write_text(body.replace("PIDFILE", repr(str(pidfile))), encoding="utf-8")
+        return root, pidfile
+    # 別のセッションへ逃げ、標準出力を握ったままの子孫
+    escaping = ("import subprocess, sys, time\n"
+                "p = subprocess.Popen(['sleep', '600'], start_new_session=True)\nopen(PIDFILE, 'w').write(str(p.pid))\n"
+                "print('止まったテスト', flush=True)\ntime.sleep(600)\n")
+    # 上限は TEST_TIMEOUT_SEC(ここでは 3 秒)か、当番が渡す --test-timeout(短いほう)
+    sc = ("import sys; sys.path.insert(0, sys.argv[1]); import selfcheck\n"
+          "from pathlib import Path\n"
+          "selfcheck.ROOT, selfcheck.TARGETS, selfcheck.TEST_TIMEOUT_SEC = Path(sys.argv[2]), [], float(sys.argv[3])\n"
+          "sys.argv = ['selfcheck.py', *sys.argv[4:]]\nsys.exit(selfcheck.main())\n")
+    got = {}
+    for name, body, cap, extra in (("stuck", escaping, "3", []), ("killed", "import os, signal\nos.kill(os.getpid(), signal.SIGKILL)\n", "3", []),
+                                   ("当番の上限", escaping, "600", ["--test-timeout", "3"])):
+        root, pidfile = fake_repo(name, body)
+        t0 = __import__("time").time()
+        try:
+            r = subprocess.run([sys.executable, "-c", sc, scripts, str(root), cap, *extra], capture_output=True, text=True, timeout=90,
+                               stdin=subprocess.DEVNULL)
+            got[name] = (r.returncode, r.stdout + r.stderr, alive(pidfile), round(__import__("time").time() - t0, 1))
+        except subprocess.TimeoutExpired:
+            got[name] = (None, "selfcheck が止まったテストを待ち続けた", alive(pidfile), 90)
+    for k in ("stuck", "当番の上限"):
+        check(got[k][0] == 1 and "で終わらない" in got[k][1] and not got[k][2] and got[k][3] < 60,
+              f"{k}: selfcheck が止まったテストを時間の上限で止めない・逃げた子孫を残した: {got[k][0]} 子孫 {got[k][2]} "
+              f"{got[k][3]}秒 {got[k][1][-300:]!r}")
+    check(got["killed"][0] == 1 and "シグナル 9" in got["killed"][1] and "終わらない" not in got["killed"][1],
+          f"シグナルで止まったテストを時間切れと言った: {got['killed'][1][-300:]!r}")
+    # 当番は selfcheck に自分の待ちより短い --test-timeout を渡し(テストは selfcheck が子孫ごと止める)、待ちの時間切れは赤(124)にする
+    asked = []
+
+    def slow_sh(args, cwd, timeout=600):
+        asked.append((list(args), timeout))
+        raise subprocess.TimeoutExpired(args, timeout, output="途中まで")
+    saved_sh = oncall.sh
+    try:
+        oncall.sh = slow_sh
+        rc = oncall.run_check([sys.executable, "scripts/selfcheck.py"], tmp, 900)
+        rl = oncall.run_check([sys.executable, "scripts/lint.py", "--base", "origin/main"], tmp, 300)
+    finally:
+        oncall.sh = saved_sh
+    a0 = asked[0][0] if asked else []
+    tt = float(a0[a0.index("--test-timeout") + 1]) if "--test-timeout" in a0 else None
+    check(rc.returncode == 124 and "終わらない" in rc.stdout and rl.returncode == 124 and tt is not None and tt < asked[0][1]
+          and len(asked) == 2 and "--test-timeout" not in asked[1][0],
+          f"当番が selfcheck に自分の待ちより短いテストの上限を渡さない・時間切れを赤にしない: {asked} {rc.returncode} {rl.returncode}")
 
 
 def test_unit_failed_reaches_human(tmp: Path):
     """定時の工程・当番の unit が、自分で知らせずに止まったら(OOM・シグナル・時間切れ・通知せずに非0)、人に知らせて当番に渡す
-    (2026-10-27: 09:00 の watch が OOM で殺されたが、人には何も届かなかった)。自分で通知して非0で終えた走行は二重にしない"""
+    (2026-10-27: 09:00 の watch が OOM で殺されたが、人には何も届かなかった)。走行が自分で知らせ終えたかは、表示した行ではなく
+    通知が届いたかの記録で見る(Sol 監査 WT r1: 送る前に出る 🚨 の行で、届かなかった通知も知らせ終えたと見ていた)"""
+    import contextlib
+    import io
     import unit_failed as uf
+    inv = "0123456789abcdef0123456789abcdef"
+    sent = {"notice": "watch", "delivered": True}
+    unsent = {"notice": "collect", "delivered": False}
     calls = []
-    saved = (uf.unit_props, uf.reported_itself, uf.notify, uf.diagnose_anomalies, uf.now_jst, uf.edition_date)
-    cases = {
-        "watch-oom": ("imas-watch.service", {"Result": "oom-kill", "ExecMainStatus": "15", "MemoryPeak": str(6_900_000_000)}, False),
-        "watch-通知済み": ("imas-watch.service", {"Result": "exit-code", "ExecMainStatus": "1"}, True),
-        "collect-黙って非0": ("imas-collect.service", {"Result": "exit-code", "ExecMainStatus": "1"}, False),
-        "compose-時間切れ": ("imas-compose.service", {"Result": "timeout", "ExecMainStatus": "15"}, True),
-        "release-シグナル": ("imas-release.service", {"Result": "signal", "ExecMainStatus": "9"}, False),
-        "当番-oom": ("imas-oncall-2026-10-28-compose-1", {"Result": "oom-kill", "ExecMainStatus": "9"}, False),
+    saved = (uf.unit_props, uf.unit_run_notes, uf.notify, uf.diagnose_anomalies, uf.now_jst, uf.edition_date)
+    cases = {   # 名前: (unit, 状態, その走行の記録)
+        "watch-oom": ("imas-watch.service", {"Result": "oom-kill", "ExecMainStatus": "15", "MemoryPeak": str(6_900_000_000)}, []),
+        "watch-届けて渡した": ("imas-watch.service", {"Result": "exit-code", "ExecMainStatus": "1"}, [sent, {"escalated": "watch"}]),
+        "collect-届かなかった": ("imas-collect.service", {"Result": "exit-code", "ExecMainStatus": "1"}, [unsent]),
+        "collect-届かず渡した": ("imas-collect.service", {"Result": "exit-code", "ExecMainStatus": "1"}, [unsent, {"escalated": "collect"}]),
+        "collect-黙って非0": ("imas-collect.service", {"Result": "exit-code", "ExecMainStatus": "1"}, []),
+        "compose-時間切れ": ("imas-compose.service", {"Result": "timeout", "ExecMainStatus": "15"}, [sent, {"escalated": "compose"}]),
+        "release-シグナル": ("imas-release.service", {"Result": "signal", "ExecMainStatus": "9"}, []),
+        "当番-oom": ("imas-oncall-2026-10-28-compose-1", {"Result": "oom-kill", "ExecMainStatus": "9"}, []),
+        "当番-渡し終えた": ("imas-oncall-2026-10-28-compose-1", {"Result": "exit-code", "ExecMainStatus": str(pipelib.ONCALL_HANDED_EXIT)},
+                       [{"notice": "oncall", "delivered": True}]),
+        "当番-届かず渡し終えた": ("imas-oncall-2026-10-28-compose-1",
+                           {"Result": "exit-code", "ExecMainStatus": str(pipelib.ONCALL_HANDED_EXIT)},
+                           [{"notice": "oncall", "delivered": False}]),
     }
     got = {}
     try:
         uf.now_jst = lambda: __import__("datetime").datetime(2026, 10, 27, 16, 38, tzinfo=pipelib.JST)
         uf.edition_date = lambda: "2026-10-28"
-        for name, (unit, props, reported) in cases.items():
+        for name, (unit, props, notes) in cases.items():
             calls.clear()
-            uf.unit_props = lambda u, p=props: dict(p)
-            uf.reported_itself = lambda inv, r=reported: r
+            uf.unit_props = lambda u, p=props: dict(p, InvocationID=inv)
+            uf.unit_run_notes = lambda i, n=notes: list(n) if i == inv else []
             uf.notify = lambda job, msg, ok=True, **k: (calls.append(("notify", job, msg, ok, k.get("ledger", True))), True)[1]
             uf.diagnose_anomalies = lambda *a, **k: calls.append(("当番", a, k)) or True
             code = uf.main([unit])
             got[name] = (code, list(calls))
-        # 走行が自分で通知したかは、その走行の journal の行で見る
-        saved_run, asked = uf.subprocess.run, []
-        try:
-            uf.subprocess.run = lambda cmd, **k: (asked.append(cmd), subprocess.CompletedProcess(
-                cmd, 0, "途中経過\n🚨 アイマスNEWS watch: 異常検知\n", ""))[1]
-            yes = saved[1]("abc")
-            uf.subprocess.run = lambda cmd, **k: subprocess.CompletedProcess(cmd, 0, "watch OK\n", "")
-            no = saved[1]("abc")
-        finally:
-            uf.subprocess.run = saved_run
     finally:
-        (uf.unit_props, uf.reported_itself, uf.notify, uf.diagnose_anomalies, uf.now_jst, uf.edition_date) = saved
+        (uf.unit_props, uf.unit_run_notes, uf.notify, uf.diagnose_anomalies, uf.now_jst, uf.edition_date) = saved
     n = lambda k: [c for c in got[k][1] if c[0] == "notify"]
     h = lambda k: [c for c in got[k][1] if c[0] == "当番"]
     check(len(n("watch-oom")) == 1 and n("watch-oom")[0][1] == "watch" and n("watch-oom")[0][3] is False
           and "OOM" in n("watch-oom")[0][2] and "6.4G" in n("watch-oom")[0][2]
           and h("watch-oom") == [("当番", ("watch", "2026-10-27"), {"rerun": False, "reason": n("watch-oom")[0][2], "edition": "2026-10-28"})],
           f"OOM で殺された watch を人に知らせて当番に渡さない: {got['watch-oom']}")
-    check(got["watch-通知済み"][1] == [], f"自分で通知して非0で終えた走行を二重に知らせた: {got['watch-通知済み']}")
-    check(len(n("collect-黙って非0")) == 1 and h("collect-黙って非0") and h("collect-黙って非0")[0][2]["rerun"] is False,
-          f"通知せずに非0で終えた収集を知らせない: {got['collect-黙って非0']}")
+    check(len(n("watch-届けて渡した")) == 1 and "非0で終わった" in n("watch-届けて渡した")[0][2] and n("watch-届けて渡した")[0][4] is False
+          and not h("watch-届けて渡した"),
+          f"知らせ終えて当番に渡した走行の非0を、短く知らせない・当番を重ねた: {got['watch-届けて渡した']}")
+    for k in ("collect-届かなかった", "collect-黙って非0"):
+        check(len(n(k)) == 1 and h(k) and h(k)[0][2]["rerun"] is False, f"{k}: 通知が届いていない・通知せずに非0で終えた収集を、知らせて当番に渡さない: {got[k]}")
+    check("届いていない" in n("collect-届かなかった")[0][2] and "1つも届けていない" in n("collect-黙って非0")[0][2],
+          f"知らせる理由(届いていない・届けていない)を書かない: {got['collect-届かなかった']} {got['collect-黙って非0']}")
+    check(len(n("collect-届かず渡した")) == 1 and not h("collect-届かず渡した"),
+          f"当番に渡し済みの走行で、届かなかった通知を知らせ直さない・当番を重ねた: {got['collect-届かず渡した']}")
     check(len(n("compose-時間切れ")) == 1 and h("compose-時間切れ") and h("compose-時間切れ")[0][1] == ("compose", "2026-10-28")
           and h("compose-時間切れ")[0][2]["rerun"] is True,
           f"時間切れで止められた組版を、取り直す当番に渡さない(自分の通知があっても止められたことは届ける): {got['compose-時間切れ']}")
@@ -19770,8 +19874,35 @@ def test_unit_failed_reaches_human(tmp: Path):
           f"シグナルで止まった発行を、今日の号を取り直す当番に渡さない: {got['release-シグナル']}")
     check(len(n("当番-oom")) == 1 and n("当番-oom")[0][4] is False and not h("当番-oom"),
           f"当番の unit の失敗を知らせない・当番に当番を重ねた: {got['当番-oom']}")
-    check(yes is True and no is False and asked and "_SYSTEMD_INVOCATION_ID=abc" in asked[0],
-          f"走行が自分で通知したかを、その走行の journal の行で見分けない: {yes} {no} {asked}")
+    check(got["当番-渡し終えた"][1] == [] and len(n("当番-届かず渡し終えた")) == 1 and not h("当番-届かず渡し終えた"),
+          f"当番が人に渡し終えた終わり方を二重に知らせた・届かなかったのに黙った: {got['当番-渡し終えた']} {got['当番-届かず渡し終えた']}")
+    # 通知が届いたか・当番に渡したかは、走行(INVOCATION_ID)ごとの記録に残る(届かなかった通知は届かなかったとして)
+    saved_env = (os.environ.get("INVOCATION_ID"), os.environ.get("IMAS_SCRATCH"), pipelib.ENV.get("DISCORD_WEBHOOK_URL"),
+                 pipelib.urllib.request.urlopen, list(pipelib.ANOMALIES))
+    try:
+        os.environ["INVOCATION_ID"], os.environ["IMAS_SCRATCH"] = inv, str(tmp / "scratch")
+        pipelib.ENV["DISCORD_WEBHOOK_URL"] = "https://discord.invalid/webhook"
+        pipelib.urllib.request.urlopen = lambda req, timeout=15: (_ for _ in ()).throw(OSError("届かない"))
+        with contextlib.redirect_stdout(io.StringIO()):
+            r1 = pipelib.notify("watch", "異常", ok=False)
+            pipelib.urllib.request.urlopen = lambda req, timeout=15: None
+            r2 = pipelib.notify("watch", "異常2", ok=False)
+            pipelib.notify("watch", "正常", ok=True)
+        rows = pipelib.unit_run_notes(inv)
+    finally:
+        for k, v in (("INVOCATION_ID", saved_env[0]), ("IMAS_SCRATCH", saved_env[1])):
+            if v is None:
+                os.environ.pop(k, None)
+            else:
+                os.environ[k] = v
+        if saved_env[2] is None:
+            pipelib.ENV.pop("DISCORD_WEBHOOK_URL", None)
+        else:
+            pipelib.ENV["DISCORD_WEBHOOK_URL"] = saved_env[2]
+        pipelib.urllib.request.urlopen = saved_env[3]
+        pipelib.ANOMALIES[:] = saved_env[4]
+    check(r1 is False and r2 is True and [(x.get("notice"), x.get("delivered")) for x in rows] == [("watch", False), ("watch", True)],
+          f"走行の記録に、異常の通知が届いたかを残さない: {r1} {r2} {rows}")
 
 
 def test_units_bound_memory_and_report_failure(tmp: Path):
@@ -19800,21 +19931,27 @@ def test_units_bound_memory_and_report_failure(tmp: Path):
           f"工程の unit がメモリの上限・失敗の通知を持たない: {bad} / watch {dict(w['Service']) if w.has_section('Service') else {}}")
     # 当番の unit も工程の slice の中で起動し、失敗したら通知の unit を起動する
     rec = []
+    run_id = "fedcba9876543210fedcba9876543210"
     saved = (pipelib.subprocess.run, pipelib.shutil.which, os.environ.get("INVOCATION_ID"), pipelib._ESCALATED, pipelib.oncall_clis_blocked,
-             list(pipelib.ANOMALIES), pipelib.ENV.get("ONCALL"))
+             list(pipelib.ANOMALIES), pipelib.ENV.get("ONCALL"), os.environ.get("IMAS_SCRATCH"))
 
     def fake_run(cmd, **k):
         rec.append(list(cmd))
         return subprocess.CompletedProcess(cmd, 0, "active\n" if cmd[:3] == ["systemctl", "--user", "is-active"] else "", "")
     try:
         pipelib.subprocess.run, pipelib.shutil.which = fake_run, lambda n: f"/usr/bin/{n}"
-        os.environ["INVOCATION_ID"] = "test"
+        os.environ["INVOCATION_ID"], os.environ["IMAS_SCRATCH"] = run_id, str(tmp / "scratch")
         pipelib._ESCALATED, pipelib.oncall_clis_blocked = False, lambda: []
         pipelib.ENV["ONCALL"] = "on"
         pipelib.ANOMALIES[:] = ["[watch] 異常"]
         pipelib.escalate("watch", "2026-10-27", "テスト", rerun=False)
+        handed = [r.get("escalated") for r in pipelib.unit_run_notes(run_id)]
     finally:
-        (pipelib.subprocess.run, pipelib.shutil.which, inv, pipelib._ESCALATED, pipelib.oncall_clis_blocked, an, onc) = saved
+        (pipelib.subprocess.run, pipelib.shutil.which, inv, pipelib._ESCALATED, pipelib.oncall_clis_blocked, an, onc, scr) = saved
+        if scr is None:
+            os.environ.pop("IMAS_SCRATCH", None)
+        else:
+            os.environ["IMAS_SCRATCH"] = scr
         pipelib.ANOMALIES[:] = an
         os.environ.pop("INVOCATION_ID", None)
         if inv is not None:
@@ -19827,6 +19964,7 @@ def test_units_bound_memory_and_report_failure(tmp: Path):
     unit = sd[sd.index("--unit") + 1] if "--unit" in sd else ""
     check(unit and "--slice=imas.slice" in sd and f"--property=OnFailure=imas-failure@{unit}.service" in sd,
           f"当番の unit を工程の slice の外で起動した・失敗の通知を付けない: {sd}")
+    check(handed == ["watch"], f"当番に渡したことを走行の記録に残さない(通知の unit が当番を重ねる): {handed}")
 
 
 def main() -> int:

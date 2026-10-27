@@ -293,7 +293,7 @@ def purge_cache() -> str:
     )
     try:
         with urllib.request.urlopen(req, timeout=30) as resp:
-            body = json.loads(resp.read().decode())
+            body = json.loads(resp.read(1_000_000).decode())     # API の短い答え。上限まで(終わらない応答を溜め込まない。2026-10-27)
         return "キャッシュパージ完了" if body.get("success") else f"パージ失敗: {body.get('errors')}"
     except (urllib.error.URLError, TimeoutError, json.JSONDecodeError) as e:
         return f"パージ失敗: {e}"

@@ -115,6 +115,22 @@ def sh(args, cwd, timeout=600) -> subprocess.CompletedProcess:
     return subprocess.run(args, cwd=cwd, capture_output=True, text=True, timeout=timeout, stdin=subprocess.DEVNULL)
 
 
+SELFCHECK_MARGIN_SEC = 60      # selfcheck が回帰テストを自分で止めてから、当番の待ちが切れるまでの余裕
+
+
+def run_check(args, cwd, timeout: float) -> subprocess.CompletedProcess:
+    """当番の作業ツリーで検査(selfcheck・lint)を走らせる。時間切れは赤(終了 124)として返す(試行を例外で止めない)。
+    selfcheck には、この待ちより SELFCHECK_MARGIN_SEC 短い --test-timeout を渡し、回帰テストは selfcheck が自分で子孫ごと止める
+    (2026-10-27: 当番の待ちの時間切れは selfcheck だけを殺し、別のグループの回帰テストが残った。Sol 監査 WT r1)"""
+    if Path(str(args[1])).name == "selfcheck.py" and "--test-timeout" not in args:
+        args = [*args, "--test-timeout", str(int(max(1, timeout - SELFCHECK_MARGIN_SEC)))]
+    try:
+        return sh(args, cwd=cwd, timeout=max(1, timeout))
+    except subprocess.TimeoutExpired as e:
+        out, err = partial_output(e)
+        return subprocess.CompletedProcess(args, 124, out + f"\n{Path(str(args[1])).name} が {int(timeout)} 秒で終わらない", err)
+
+
 def must(r: subprocess.CompletedProcess, what: str) -> subprocess.CompletedProcess:
     """Git 操作は fail-closed。失敗を無視して先へ進むと、監査していない差分が main に入る(監査指摘)。"""
     if r.returncode != 0:
@@ -1145,7 +1161,8 @@ def run_rounds(stage: str, date: str, context: str, wt: Path, base: str, wip: di
             if left() < 30:
                 transcript.append({"round": rnd, "time_up": ONCALL_LIMIT_MIN})
                 break
-            sc = sh([sys.executable, "scripts/selfcheck.py"], cwd=wt, timeout=min(300, left()))
+            # selfcheck は回帰テスト(9〜17 分)を含むので、試行の残りまで待つ(テストは selfcheck がその手前で子孫ごと止める)
+            sc = run_check([sys.executable, "scripts/selfcheck.py"], wt, left())
             if sc.returncode != 0:
                 transcript.append({"round": rnd, "selfcheck": sc.stdout[-500:]})
                 # 前の指摘は**まだ監査で確かめられていない**ので捨てない。selfcheck の赤を足す(置き換えない。監査指摘)
@@ -1160,7 +1177,7 @@ def run_rounds(stage: str, date: str, context: str, wt: Path, base: str, wip: di
             # 3つの検査は当番のコードが自分で走らせ、その結果を監査に渡す(承認の門はここ: selfcheck が赤なら上で監査に進まない。
             # selfcheck は回帰テスト test_pipeline を含む)。監査の自己申告(verification)だけを門にすると、走らせない記録で通る道が
             # 何度でも見つかった(監査指摘: py_compile・--help・`true ||`)。lint は組み直す前の号の中身でも赤になるので、修正によるかは監査が判断する
-            lc = sh([sys.executable, "scripts/lint.py", "--base", "origin/main"], cwd=wt, timeout=min(300, left()))
+            lc = run_check([sys.executable, "scripts/lint.py", "--base", "origin/main"], wt, min(300, left()))
             code_checks = ("\n\n## 当番のコードが走らせた検査(この commit)\n"
                            "- python3 scripts/selfcheck.py(回帰テスト test_pipeline を含む): 終了 0\n"
                            f"- python3 scripts/lint.py --base origin/main: 終了 {lc.returncode}: "

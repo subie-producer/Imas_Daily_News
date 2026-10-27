@@ -222,13 +222,22 @@ def watch_get(url: str, timeout: float) -> tuple[bytes, str | None]:
     return box["v"]
 
 
+class PageTooLarge(ValueError):
+    """応答が読み取りの上限(PAGE_READ_BYTES)を越えた。切った本文を正常に読めたものとして扱わない(一覧なら読めなかった回として
+    既読を進めず次回やり直し、本文なら原本にせずセッションの fetch_page.py に任せる。Sol 監査 WT r1 の later)"""
+
+
 def watch_read(res) -> bytes:
-    """定点観測の応答を読み切る。読むのは PAGE_READ_BYTES まで(本文を取るほかの経路と同じ上限)。終わらない応答を締切まで
-    溜め込まない(2026-10-27: 終わりを返さない応答を締切まで読み続け、09:00 の watch が 6.4G を使って OOM で殺された)。
-    収集の締切があるときは、受信のたびに締切を確かめて打ち切る(socket の待ち時間は1回の受信
+    """定点観測の応答を読み切る。読むのは PAGE_READ_BYTES まで(本文を取るほかの経路と同じ上限)。越えたら PageTooLarge。
+    終わらない応答を締切まで溜め込まない(2026-10-27: 終わりを返さない応答を締切まで読み続け、09:00 の watch が 6.4G を使って
+    OOM で殺された)。収集の締切があるときは、受信のたびに締切を確かめて打ち切る(socket の待ち時間は1回の受信
     ごとにしか効かず、少しずつ届く応答は締切を越えて読み続けた。監査指摘 2026-10-14)。"""
+    too_large = lambda: PageTooLarge(f"応答が読み取りの上限 {PAGE_READ_BYTES // 1_000_000}MB を越えた(切った本文は使わない)")
     if not DEADLINE:
-        return res.read(PAGE_READ_BYTES)
+        body = res.read(PAGE_READ_BYTES + 1)
+        if len(body) > PAGE_READ_BYTES:
+            raise too_large()
+        return body
     # 下の受信(socket から読む1回ごと)の待ち時間を、その時点の残り時間に合わせる。応答の読み方(chunked の長さの行を
     # 1字ずつ読む等)によって1回の read1 の中で何度も受信するので、受信の入口(raw.readinto)で合わせる(監査指摘 2026-10-14)。
     # 待ち時間は urlopen が決めた1回の受信の上限(20 秒)より延ばさない。受信の socket を取れない応答では、urlopen に渡した
@@ -256,15 +265,16 @@ def watch_read(res) -> bytes:
             pass
     chunks, got = [], 0
     read1 = getattr(res, "read1", None) or (lambda n: res.read(n))
-    while got < PAGE_READ_BYTES:
+    while True:
         if deadline_passed():
             raise TimeoutError("収集の締切を過ぎたので受信を打ち切った")
-        b = read1(min(65536, PAGE_READ_BYTES - got))
+        b = read1(min(65536, PAGE_READ_BYTES + 1 - got))
         if not b:
-            break
-        chunks.append(b[:PAGE_READ_BYTES - got])
-        got += len(chunks[-1])
-    return b"".join(chunks)
+            return b"".join(chunks)
+        chunks.append(b)
+        got += len(b)
+        if got > PAGE_READ_BYTES:
+            raise too_large()
 
 
 def fetch_rendered(url: str, timeout: int = 30, limit: float | None = None, wait_deadline: float | None = None) -> str:

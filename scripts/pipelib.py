@@ -609,6 +609,8 @@ def escalate(stage: str, date: str, reason: str, rerun: bool = True, edition: st
                 # 台帳を渡した起動だけを「この process の異常は当番に渡した」とする(保管していた指摘の依頼で、
                 # 同じ process のあとの異常のなぜなぜを止めない)
                 _ESCALATED = _ESCALATED or ledger
+                if ledger:
+                    note_unit_run({"escalated": stage, "unit": unit})
                 return True
             notify("oncall", f"{date} {stage}: 当番の unit {unit} が動いていない({st.stdout.strip()})。人の判断が要る", ok=False)
             return False
@@ -622,6 +624,8 @@ def escalate(stage: str, date: str, reason: str, rerun: bool = True, edition: st
                              start_new_session=True, env={**os.environ, "PATH": tool_path()})
         print(f"当番(oncall)を起動した: {stage} {date}", flush=True)
         _ESCALATED = _ESCALATED or ledger
+        if ledger:
+            note_unit_run({"escalated": stage})
         return True
     except Exception as e:
         print(f"当番の起動に失敗: {e}", flush=True)
@@ -758,6 +762,8 @@ def notify(job: str, msg: str, ok: bool = True, require: bool = False, ledger: b
     print(text, flush=True)
     url = ENV.get("DISCORD_WEBHOOK_URL")
     if not url:
+        if not ok:
+            note_unit_run({"notice": job, "delivered": False})
         return not require
     # Discord は1件 2000 字まで。長い通知は分割して**全部**送る(超えると webhook が落ちて通知ごと届かない。監査指摘)
     chunks = split_chunks(text, DISCORD_LIMIT)
@@ -772,7 +778,48 @@ def notify(job: str, msg: str, ok: bool = True, require: bool = False, ledger: b
         except Exception as e:
             print(f"(Discord 通知失敗: {e})", flush=True)
             delivered = False
+    if not ok:
+        note_unit_run({"notice": job, "delivered": delivered})
     return delivered
+
+
+# systemd の走行(INVOCATION_ID)ごとの、人への異常の通知を届けたか・当番に渡したかの記録。工程の unit が失敗したとき、
+# 通知の unit(unit_failed.py)が「その走行が自分で知らせ終えたか」を、表示した行ではなく届いたかで見る(Sol 監査 WT r1:
+# 🚨 の行は送る前に出るので、届かなかった通知でも知らせ終えたと見ていた)
+UNIT_RUNS_DIR = "unit-runs"
+
+
+def note_unit_run(event: dict) -> None:
+    """この走行の記録に1行足す(systemd の外・試験実行では何もしない。書けなくても工程を止めない: 通知の unit は知らせる側に倒す)。"""
+    inv = os.environ.get("INVOCATION_ID", "")
+    if not re.fullmatch(r"[0-9a-f]{32}", inv) or _QUIET:
+        return
+    try:
+        d = scratch_root() / UNIT_RUNS_DIR
+        d.mkdir(parents=True, exist_ok=True)
+        with open(d / f"{inv}.jsonl", "a", encoding="utf-8") as f:
+            f.write(json.dumps({**event, "at": time.time()}, ensure_ascii=False) + "\n")
+    except OSError:
+        pass
+
+
+def unit_run_notes(invocation: str) -> list[dict]:
+    """走行の記録(note_unit_run)。無い・読めない行は飛ばす(無ければ空 = 何も知らせていない)。"""
+    if not re.fullmatch(r"[0-9a-f]{32}", invocation or ""):
+        return []
+    try:
+        lines = (scratch_root() / UNIT_RUNS_DIR / f"{invocation}.jsonl").read_text(encoding="utf-8").splitlines()
+    except OSError:
+        return []
+    out = []
+    for line in lines:
+        try:
+            row = json.loads(line)
+        except ValueError:
+            continue
+        if isinstance(row, dict):
+            out.append(row)
+    return out
 
 
 DISCORD_LIMIT = 1800

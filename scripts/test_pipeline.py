@@ -8112,6 +8112,7 @@ def test_update_cloudflared_failures(tmp: Path):
     本物の systemctl・journalctl・/ready は差し替えの関数で置き換える。"""
     import datetime
     import hashlib
+    import signal
     import tempfile
     import time
     import types
@@ -8292,6 +8293,24 @@ def test_update_cloudflared_failures(tmp: Path):
             ucf.urllib, ucf.time, ucf.DOWNLOAD_LIMIT = saved_urllib, saved_time, saved_limit
         took = time.monotonic() - t0
         check(dl.startswith("TimeoutError") and took < 2, f"取得が全体の上限で read の途中で止まらない: {dl}({took:.1f}秒)")
+        # r5: 前から張られていたタイマー(30 秒)とハンドラは、取り終えたら元に戻る
+        class FastBody(SlowBody):
+            def read(self, *a):
+                return b""
+        mine = lambda signum, frame: None
+        prev_handler = signal.signal(signal.SIGALRM, mine)
+        signal.setitimer(signal.ITIMER_REAL, 30)
+        ucf.urllib = types.SimpleNamespace(request=types.SimpleNamespace(Request=lambda *a, **k: None,
+                                                                         urlopen=lambda *a, **k: FastBody()))
+        ucf.time = time
+        try:
+            saved["download"]("https://example.invalid/x", tmp / "fast.bin")
+            left, handler = signal.getitimer(signal.ITIMER_REAL)[0], signal.getsignal(signal.SIGALRM)
+        finally:
+            signal.setitimer(signal.ITIMER_REAL, 0)
+            signal.signal(signal.SIGALRM, prev_handler)
+            ucf.urllib, ucf.time = saved_urllib, saved_time
+        check(25 < left <= 30 and handler is mine, f"前から張られていたタイマー・ハンドラが戻らない: 残り {left:.1f} 秒 {handler}")
         # 再起動しても起動が変わらない: つながったと数えない
         reset(new_inv=False)
         r = run_main()

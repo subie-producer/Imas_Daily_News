@@ -93,17 +93,22 @@ def quiet_unlink(p: Path) -> None:
 def download(url: str, dest: Path) -> None:
     """url を dest に取る。全体で DOWNLOAD_LIMIT 秒を越えたら TimeoutError。urlopen の timeout は1回の読みの上限で、
     少しずつ届く読みは1回の read の中で何時間も戻らず unit の TimeoutStartSec を越えたので(Sol 監査 r3・r4)、
-    読みの途中でも割り込むタイマー(SIGALRM)で切る。主スレッドから呼ぶ。"""
+    読みの途中でも割り込むタイマー(SIGALRM)で切る。主スレッドから呼ぶ。前から張られていたタイマーとハンドラは、
+    経った時間を引いて元に戻す(Sol 監査 r5 の later: 前のタイマーを消していた)。"""
     def expired(signum, frame):
         raise TimeoutError(f"{DOWNLOAD_LIMIT}秒で取り終わらない")
     old = signal.signal(signal.SIGALRM, expired)
-    signal.setitimer(signal.ITIMER_REAL, DOWNLOAD_LIMIT)
+    t0 = time.monotonic()
+    prev_delay, prev_interval = signal.setitimer(signal.ITIMER_REAL, DOWNLOAD_LIMIT)
     try:
         with urllib.request.urlopen(urllib.request.Request(url, headers=UA), timeout=60) as r, dest.open("wb") as f:
             shutil.copyfileobj(r, f)
     finally:
         signal.setitimer(signal.ITIMER_REAL, 0)
         signal.signal(signal.SIGALRM, old)
+        if prev_delay > 0:
+            # 取っている間に期限が過ぎていたら、すぐ鳴るように最小の時間で張り直す
+            signal.setitimer(signal.ITIMER_REAL, max(prev_delay - (time.monotonic() - t0), 0.001), prev_interval)
 
 
 def tunnel_invocation() -> str:

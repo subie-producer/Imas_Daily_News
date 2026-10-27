@@ -9575,6 +9575,264 @@ def test_oncall_merge_push_settles(tmp: Path):
         sys.argv = saved_argv
 
 
+def test_oncall_check_limits_follow_measure(tmp: Path):
+    """当番のコードが走らせる検査(selfcheck・lint)の上限と、検査を中で走らせるセッション(当番・監査)の上限は、検査の所要の実測から決まる
+    (2026-10-27: 回帰テストが 9〜17 分に伸び、固定の 300 秒の selfcheck が3回とも時間切れで「当番の作業が途中で止まった」)。
+    - 実測は直近 CHECK_SECONDS_KEEP 回の最大。無ければ既定。壊れた記録は既定
+    - selfcheck の上限は実測の CHECK_MARGIN 倍(締切の残りで切る)。上限を超えたら試行を止めず、selfcheck の赤として当番へ返し、
+      かかった秒を実測に足す(次の上限が伸びる)
+    - 監査のセッションは、中で走らせるテスト・selfcheck・lint の実測の分を足した上限。走らせ切れない残りなら始めない
+    - selfcheck.py は最後まで走った回の所要を記録する"""
+    import oncall
+    tmp.mkdir(parents=True, exist_ok=True)
+    saved_scratch = os.environ.get("IMAS_SCRATCH")
+    os.environ["IMAS_SCRATCH"] = str(tmp / "scratch")
+    names = ("run_claude", "run_codex", "freeze", "root_clean", "remote_main", "env_fingerprint", "sh", "ONCALL_LIMIT_MIN", "MAX_ROUNDS",
+             "DEADLINE_AT")
+    saved_fns = {n: getattr(oncall, n) for n in names}
+    try:
+        check(pipelib.check_seconds("selfcheck") == pipelib.CHECK_SECONDS_DEFAULT["selfcheck"], "実測の無いときの既定")
+        for s in (1000, 500, 700, 600, 650, 640):     # 古い 1000 は送り出される
+            pipelib.note_check_seconds("selfcheck", s)
+        check(pipelib.check_seconds("selfcheck") == 700 and len(json.loads((tmp / "scratch" / pipelib.CHECK_SECONDS_FILE).read_text())["selfcheck"])
+              == pipelib.CHECK_SECONDS_KEEP, f"直近の実測の最大になっていない: {pipelib.check_seconds('selfcheck')}")
+        # 壊れた記録・書けない置き場で当番を止めない(読めない値は既定、記録できなくても例外にしない。Sol 監査 r1 M2)
+        recf = tmp / "scratch" / pipelib.CHECK_SECONDS_FILE
+        good = recf.read_text(encoding="utf-8")
+        for broken in ('{"selfcheck": 42}', '{"selfcheck": [Infinity, NaN, -3, true, "9"]}', "[1, 2]", "{",
+                       '{"selfcheck": [1' + "0" * 400 + "]}"):
+            recf.write_text(broken, encoding="utf-8")
+            try:
+                got = (pipelib.check_seconds("selfcheck"), oncall.check_limit("selfcheck"))
+                pipelib.note_check_seconds("selfcheck", 10)
+                after = pipelib.check_seconds("selfcheck")
+            except Exception as e:      # noqa: BLE001
+                got, after = (type(e).__name__, str(e)[:80]), None
+            check(got == (pipelib.CHECK_SECONDS_DEFAULT["selfcheck"], int(oncall.CHECK_MARGIN * pipelib.CHECK_SECONDS_DEFAULT["selfcheck"]))
+                  and after == 10, f"壊れた記録 {broken!r} で見積もり・記録が壊れた: {got} {after}")
+        os.environ["IMAS_SCRATCH"] = str(recf)      # 置き場がファイル(作れない)
+        try:
+            pipelib.note_check_seconds("selfcheck", 10)
+            ok_unwritable = pipelib.check_seconds("selfcheck") == pipelib.CHECK_SECONDS_DEFAULT["selfcheck"]
+        except Exception as e:      # noqa: BLE001
+            ok_unwritable = f"{type(e).__name__}: {e}"
+        os.environ["IMAS_SCRATCH"] = str(tmp / "scratch")
+        check(ok_unwritable is True, f"置き場を作れないときに例外: {ok_unwritable}")
+        # 並行に記録しても、ほかの検査の記録を消さない(読んでから置き換えるまでを排他に。Sol 監査 r1 later)
+        recf.write_text(good, encoding="utf-8")
+        scripts_dir = str(Path(__file__).resolve().parent)
+        writers = [subprocess.Popen([sys.executable, "-c", f"import sys; sys.path.insert(0, {scripts_dir!r}); import pipelib\n"
+                                     f"for i in range(40): pipelib.note_check_seconds({k!r}, 1 + i)"],
+                                    env=dict(os.environ, IMAS_SCRATCH=str(tmp / "scratch")), stdin=subprocess.DEVNULL)
+                   for k in ("par_a", "par_b", "par_c")]
+        for w_ in writers:
+            w_.wait(timeout=120)
+        d_ = json.loads(recf.read_text(encoding="utf-8"))
+        check(all(d_.get(k) == [36.0, 37.0, 38.0, 39.0, 40.0] for k in ("par_a", "par_b", "par_c")) and pipelib.check_seconds("selfcheck") == 700,
+              f"並行の記録で更新が消えた: {d_}")
+        M = oncall.CHECK_MARGIN
+        sc_lim, tp_lim = int(M * 700), int(M * pipelib.CHECK_SECONDS_DEFAULT["test_pipeline"])
+        lint_lim = int(max(oncall.CHECK_FLOOR_SEC, M * pipelib.CHECK_SECONDS_DEFAULT["lint"]))
+        check(M >= 2 and oncall.check_limit("selfcheck") == sc_lim and oncall.check_limit("lint") == lint_lim
+              and oncall.session_limit(oncall.AUDIT_CHECKS) == oncall.SESSION_WORK_SEC + sc_lim + tp_lim + lint_lim,
+              f"上限が実測から決まらない: {oncall.check_limit('selfcheck')} {oncall.session_limit(oncall.AUDIT_CHECKS)}")
+        # 往復: selfcheck の上限が実測から決まり、監査のセッションにも検査の分が足される
+        oncall.root_clean = lambda: True
+        oncall.remote_main = lambda: "B" * 40
+        oncall.env_fingerprint = lambda: "env"
+        oncall.freeze = lambda wt, base, rnd: ("H%039d" % rnd, "diff --git a/scripts/x.py b/scripts/x.py", ["scripts/x.py"])
+        oncall.DEADLINE_AT = None
+        limits, audits, fixes = {}, [], []
+
+        def sh_ok(args, cwd, timeout=600):
+            k = next((n for n in ("selfcheck", "lint") if any(str(a).endswith(f"{n}.py") for a in args)), None)
+            if k:
+                limits.setdefault(k, []).append(timeout)
+            return subprocess.CompletedProcess(args, 0, "", "")
+        oncall.sh = sh_ok
+
+        def claude(prompt, schema, cwd, timeout=1800):
+            fixes.append(timeout)
+            return {"status": "fixed", "diagnosis": "d"} if "oncall-fix" in str(schema) else {"accepted": [], "refuted": [], "status": "fixed"}
+        oncall.run_claude = claude
+        oncall.run_codex = lambda prompt, schema, cwd, timeout=1800: (audits.append(timeout)
+                                                                      or {"verdict": "approve", "must_fix": [], "verification": AUDIT_RAN, "notes": ""})
+        r = oncall.run_rounds("classify", "2026-10-28", "ctx", tmp, "B" * 40, None, "env", [])
+        check(r["approved"] and limits.get("selfcheck") and limits["selfcheck"][0] >= sc_lim - 5 and limits.get("lint")
+              and audits and audits[0] >= oncall.SESSION_WORK_SEC + sc_lim + tp_lim - 5 and fixes and fixes[0] >= oncall.SESSION_WORK_SEC + sc_lim - 5,
+              f"検査・セッションの上限が実測に追従しない: selfcheck {limits.get('selfcheck')} 監査 {audits} 当番 {fixes}")
+        # selfcheck が上限で終わらない: 試行を止めず(例外にしない)、selfcheck の赤として当番に返し、かかった秒を実測に足す
+        n = {"sc": 0}
+
+        def sh_slow(args, cwd, timeout=600):
+            if any(str(a).endswith("selfcheck.py") for a in args):
+                n["sc"] += 1
+                if n["sc"] == 1:
+                    raise subprocess.TimeoutExpired(args, timeout)
+            return subprocess.CompletedProcess(args, 0, "", "")
+        oncall.sh = sh_slow
+        tr = []
+        r = oncall.run_rounds("classify", "2026-10-28", "ctx", tmp, "B" * 40, None, "env", tr)
+        sc_red = [t for t in tr if "selfcheck" in t]
+        check(r["approved"] and not r["error"] and sc_red and "終わらない" in sc_red[0]["selfcheck"] and n["sc"] == 2
+              and sum(1 for t in tr if "integrate" in t) == 1,
+              f"selfcheck の時間切れで試行が止まった・当番に返さない: {r.get('error')} {sc_red} {[list(t) for t in tr]}")
+        # 監査がテスト・selfcheck・lint を走らせ切れない残りなら、監査を始めない(続きは「監査が終わっていない」から)
+        audits.clear()
+        oncall.sh = sh_ok
+        oncall.ONCALL_LIMIT_MIN = 60        # 60 分: selfcheck(700 秒)は走れるが、監査の検査の分(700 + 1200 + 120 + 300)には足りない
+        oncall.run_claude = lambda prompt, schema, cwd, timeout=1800: {"status": "fixed", "diagnosis": "d"}
+        saved_time = oncall.time.time
+        t_start = saved_time()
+        clock = {"t": t_start}
+        oncall.time.time = lambda: clock["t"]
+
+        def sh_clock(args, cwd, timeout=600):
+            if any(str(a).endswith("selfcheck.py") for a in args):
+                clock["t"] += 1500      # selfcheck に 25 分かかった
+            return subprocess.CompletedProcess(args, 0, "", "")
+        oncall.sh = sh_clock
+        try:
+            tr = []
+            r = oncall.run_rounds("classify", "2026-10-28", "ctx", tmp, "B" * 40, None, "env", tr)
+        finally:
+            oncall.time.time = saved_time
+        check(not r["approved"] and not audits and any(t.get("before") == "audit" for t in tr)
+              and [o["id"] for o in r["kept"]["open"]] == ["review-incomplete"],
+              f"走らせ切れない残りで監査を始めた: 監査 {audits} {[t for t in tr if 'time_up' in t]} {r.get('error')} {r['kept'].get('open')}")
+    finally:
+        for k, v in saved_fns.items():
+            setattr(oncall, k, v)
+        if saved_scratch is None:
+            os.environ.pop("IMAS_SCRATCH", None)
+        else:
+            os.environ["IMAS_SCRATCH"] = saved_scratch
+    # selfcheck.py は最後まで走った回の所要を記録する(本物の selfcheck を、回帰テストだけ偽物にした作業場所で走らせる)
+    box = tmp / "sc"
+    (box / "scripts").mkdir(parents=True)
+    repo = Path(__file__).resolve().parent.parent
+    for f in ("selfcheck.py", "pipelib.py", "page_archive.py"):
+        if (repo / "scripts" / f).exists():
+            shutil.copy(repo / "scripts" / f, box / "scripts" / f)
+    (box / "scripts" / "test_pipeline.py").write_text("import time\ntime.sleep(0.2)\nprint('test_pipeline: 0 failures')\n", encoding="utf-8")
+    env = dict(os.environ, IMAS_SCRATCH=str(box / "scratch"))
+    rs = subprocess.run([sys.executable, str(box / "scripts" / "selfcheck.py"), "--quiet"], cwd=box, env=env, capture_output=True, text=True,
+                        timeout=120, stdin=subprocess.DEVNULL)
+    try:
+        rec = json.loads((box / "scratch" / pipelib.CHECK_SECONDS_FILE).read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        rec = {}
+    check(rs.returncode == 0 and (rec.get("test_pipeline") or [0])[-1] >= 0.2 and (rec.get("selfcheck") or [0])[-1] >= 0.2,
+          f"selfcheck.py が検査の所要を記録しない: rc={rs.returncode} {rec} {rs.stderr[-300:]!r}")
+    # 当番が上限で selfcheck を止めたら(subprocess.run の timeout は selfcheck だけを止める)、回帰テストも一緒に終わる
+    pidf = box / "tp.pid"
+    (box / "scripts" / "test_pipeline.py").write_text(
+        f"import os, time\nopen({str(pidf)!r}, 'w').write(str(os.getpid()))\ntime.sleep(60)\n", encoding="utf-8")
+    try:
+        subprocess.run([sys.executable, str(box / "scripts" / "selfcheck.py"), "--quiet"], cwd=box, env=env, capture_output=True, text=True,
+                       timeout=3, stdin=subprocess.DEVNULL)
+    except subprocess.TimeoutExpired:
+        pass
+    tp_pid = int(pidf.read_text()) if pidf.exists() else 0
+    gone = False
+    for _ in range(100):
+        if tp_pid and not _pid_alive(tp_pid):
+            gone = True
+            break
+        __import__("time").sleep(0.05)
+    if tp_pid and not gone:
+        os.kill(tp_pid, __import__("signal").SIGKILL)
+    check(tp_pid and gone, f"selfcheck を止めても回帰テストが残って走り続ける(pid {tp_pid})")
+
+
+def test_classify_retag_without_judge(tmp: Path):
+    """合議が失敗して取引を戻したあとも、いまの判定表・判定のコードで決まる付け直しは行う(2026-10-27 Sol 監査: 判定のコードの修正で
+    既知のチャンネル(video_channels の公式)の配信一覧のページが公式になった 10/27 号の記事が、合議の失敗で付け直しごと戻り、
+    lint が赤のまま組版へ進んだ)。
+    - classify_retag_lint(judge=False) は合議の段を走らせず、付け直し(と lint)だけを1つの取引で行う
+    - 組版の出典の判定・収集の判定は、合議の失敗のあと judge=False で掛け直す"""
+    import collect
+    tmp.mkdir(parents=True, exist_ok=True)
+    (tmp / "docs" / "_posts").mkdir(parents=True, exist_ok=True)
+    (tmp / "source_types.yml").write_text("official_domains:\n  - a.example\n", encoding="utf-8")
+    ran = []
+    saved = (pipelib._txn_run, pipelib.ROOT)
+    try:
+        pipelib.ROOT = tmp
+        pipelib._txn_run = lambda step, limit: (ran.append([str(s) for s in step]) or subprocess.CompletedProcess(step, 0, "", ""))
+        ok, why = pipelib.classify_retag_lint("2026-10-27", posts_only=True, lint=False, judge=False)
+        check(ok and len(ran) == 1 and ran[0][1].endswith("retag_sources.py"), f"合議なしの取引が付け直しだけでない: {ok} {why} {ran}")
+        ran.clear()
+        ok, why = pipelib.classify_retag_lint("2026-10-27", posts_only=True, lint=False)
+        check(ok and [r[1].rsplit("/", 1)[-1] for r in ran] == ["classify_sources.py", "retag_sources.py"], f"既定の取引の段: {ran}")
+        # 取引の lint の上限も実測に追従する(固定の 600 秒だった。Sol 監査 r1 later)
+        limits = []
+        pipelib._txn_run = lambda step, limit: (limits.append((str(step[1]), limit)) or subprocess.CompletedProcess(step, 0, "", ""))
+        saved_scr = os.environ.get("IMAS_SCRATCH")
+        os.environ["IMAS_SCRATCH"] = str(tmp / "scratch")
+        try:
+            pipelib.note_check_seconds("lint", 900)
+            pipelib.classify_retag_lint("2026-10-27", judge=False)
+        finally:
+            os.environ["IMAS_SCRATCH"] = saved_scr
+        lint_lim = [lim for s, lim in limits if s.endswith("lint.py")]
+        check(lint_lim == [int(pipelib.CHECK_MARGIN * 900)], f"取引の lint の上限が実測に追従しない: {limits}")
+    finally:
+        pipelib._txn_run, pipelib.ROOT = saved
+    # 組版・収集: 合議の失敗のあと、合議なしの付け直しを掛け直す
+    calls = []
+
+    def fake(date, posts_only=False, lint_base="origin/main", timeout=1800, lint=True, require_parsers=False, judge=True):
+        calls.append(judge)
+        return (False, "合議 exit 1: 割れた") if judge else (True, "")
+    saved_c = (compose.classify_retag_lint, compose.notify, compose.run_lint, compose.escalate, compose.commit_and_push)
+    notes, escalated, lints = [], [], []
+    try:
+        compose.classify_retag_lint = fake
+        compose.notify = lambda job, msg, ok=True, **k: notes.append(msg) or True
+        compose.escalate = lambda *a, **k: escalated.append(a)
+        compose.commit_and_push = lambda *a, **k: True
+        compose.run_lint = lambda d: (lints.append(d), (1, "::error file=docs/_posts/2026-10-27-old.md::出典 type が不一致\n"))[1]
+        check(compose.classify_post_sources("2026-10-28", "edition/2026-10-28") is True and calls == [True, False]
+              and len(notes) == 1 and "付け直しは済ませた" in notes[0] and not lints,
+              f"組版が合議の失敗のあと付け直しを掛け直さない・通知が結果と食い違う: {calls} {notes}")
+        # 付け直しも失敗し、過去の号の記事の lint が赤: 後段へ進めず当番へ(この号の書き直しでは直らない。Sol 監査 r2)
+        calls.clear(), notes.clear()
+        compose.classify_retag_lint = lambda date, **k: (calls.append(k.get("judge", True)) or (False, "合議 exit 1" if k.get("judge", True) else "付け直し exit 1"))
+        check(compose.classify_post_sources("2026-10-28", "edition/2026-10-28") is False and escalated and lints == ["2026-10-28"],
+              f"付け直しも失敗して過去の号の記事が赤のまま後段へ進んだ: {escalated} {notes}")
+        # 付け直しが失敗しても、過去の号の記事に赤が無ければ先へ進む(この号の未確認が残るだけ)。通知は1回
+        escalated.clear(), notes.clear()
+        compose.run_lint = lambda d: (1, "::error file=docs/_posts/2026-10-28-new.md::本文\n")
+        check(compose.classify_post_sources("2026-10-28", "edition/2026-10-28") is True and not escalated
+              and len(notes) == 1 and "付け直しも失敗" in notes[0], f"過去の号に赤が無いのに止めた・通知: {escalated} {notes}")
+    finally:
+        compose.classify_retag_lint, compose.notify, compose.run_lint, compose.escalate, compose.commit_and_push = saved_c
+    # 組版の lint 赤の書き直し・落とす対象は、この号の記事だけ(過去の号の発行済みの記事を書き直し・削除に回さない)
+    out = ("::error file=docs/_posts/2026-10-27-dsva-valiv-cosmo.md::出典 type が URL の判定と不一致(過小表示)\n"
+           "::error file=docs/_posts/2026-10-28-cg-new.md::本文の時制\n::warning file=docs/_posts/2026-10-28-cg-new.md::x\n")
+    got = compose.lint_post_errors(out, "2026-10-28")
+    check(list(got) == ["docs/_posts/2026-10-28-cg-new.md"] and got["docs/_posts/2026-10-28-cg-new.md"][0]["issue"] == "lint: 本文の時制",
+          f"過去の号の記事の lint の赤を、この号の書き直し・落とす対象にした: {got}")
+    calls.clear()
+    saved_k = collect.classify_retag_lint
+    try:
+        collect.classify_retag_lint = fake
+        ok, why = collect.classify_then_retag("2026-10-28")
+        check(not ok and "割れた" in why and "付け直し・lint は済ませた" in why and calls == [True, False],
+              f"収集が合議の失敗のあと付け直しを掛け直さない・理由が結果と食い違う: {calls} {why}")
+        # 合議の失敗の理由が長くても、通知(理由を 500 字で切る)に付け直しの結果が残る(Sol 監査 r3 later)
+        collect.classify_retag_lint = lambda date, **k: (False, "合議 exit 1: " + "長い出力" * 400) if k.get("judge", True) else (True, "")
+        ok, why = collect.classify_then_retag("2026-10-28")
+        check("付け直し・lint は済ませた" in why[:500], f"長い理由で付け直しの結果が通知から切れる: {why[-120:]}")
+        calls.clear()
+        collect.classify_retag_lint = lambda date, **k: (calls.append(k.get("judge", True)) or (False, "表を戻せない"))
+        ok, why = collect.classify_then_retag("2026-10-28")
+        check(calls == [True] and "戻せない" in why, f"戻せなかった取引のあとに掛け直した: {calls}")
+    finally:
+        collect.classify_retag_lint = saved_k
+
+
 def test_oncall_fix_until_clean(tmp: Path):
     """当番と監査の範囲は「発行に必要な最小限で、今後もちゃんと動く正しい修正」(編集長の整理 2026-09-18)。
     その範囲の指摘(must_fix)は合意するまで直す。発行後でよい指摘(later)は別に保管して、発行してから直す。
@@ -12974,6 +13232,104 @@ def test_booth_item_owner(tmp: Path):
             cs._BOOTH_SHOP.update(cache)
 
 
+def test_youtube_channel_page_unit(tmp: Path):
+    """YouTube のチャンネルのページ(2026-10-28: `youtube.com/@KamizuruCosmo/streams` が出典に載り、持ち主を取るパーサが無かった)。
+    単位はチャンネル `youtube.com/@<ハンドル>`(枝の streams・videos は同じ持ち主)。ページは取らない。トップ・検索は持ち主が無いので skip。
+    種別は動画の持ち主と同じ表(video_channels)で決まる: 表にあれば合議なしで当たり、無ければチャンネルの合議に掛けて表に足す
+    (パスの表に別の単位で足すと、表で公式のチャンネルのページが合議に回り、別の種別で二重に載りうる。監査 2026-10-28)。"""
+    import classify_sources as cs
+    url = "https://www.youtube.com/@KamizuruCosmo/streams"
+    key = "youtube.com/@KamizuruCosmo"
+    check(cs.platform_unit(url) == ("path", key), f"チャンネルのページの単位: {cs.platform_unit(url)}")
+    check(cs.platform_unit("https://m.youtube.com/@KamizuruCosmo") == ("path", key), "チャンネルのトップの単位")
+    check(cs.platform_unit("https://www.youtube.com/channel/UCabcdefghijklmnopqrstuv/videos")
+          == ("path", "youtube.com/channel/UCabcdefghijklmnopqrstuv"), "チャンネル ID のページの単位")
+    for u in ("https://www.youtube.com/", "https://www.youtube.com/results?search_query=imas", "https://www.youtube.com/feed/trending"):
+        check(cs.platform_unit(u)[0] == "skip", f"持ち主の無い YouTube の URL: {u} {cs.platform_unit(u)}")
+    check(cs.display_base(url) == "https://youtube.com/@KamizuruCosmo" and cs.display_base(key) == "https://youtube.com/@KamizuruCosmo",
+          f"表示の単位: {cs.display_base(url)} {cs.display_base(key)}")
+    tmp.mkdir(parents=True, exist_ok=True)
+    (tmp / "candidates").mkdir(exist_ok=True)
+    (tmp / "docs" / "_posts").mkdir(parents=True, exist_ok=True)
+    table = tmp / "source_types.yml"
+    saved = (cs.ROOT, pipelib.ROOT, pipelib._ST_TABLE, pipelib._ST_KEY, cs.POSTS_ONLY, cs.ask, cs.site_profile, cs.UNRESOLVED, sys.argv)
+    try:
+        cs.ROOT = pipelib.ROOT = tmp
+        cs.POSTS_ONLY, cs.UNRESOLVED = None, tmp / "metrics" / "classify-unresolved.json"
+        (tmp / "candidates" / "2026-10-28.json").write_text(json.dumps([{"url": url, "title": "上水流宇宙、今夜21時から配信"}]),
+                                                            encoding="utf-8")
+        # 表で公式のチャンネル: ページ(枝・大小文字違い)も公式。合議に回らない
+        table.write_text("official_domains:\n  - a.example\nvideo_channels:\n  公式:\n    - KamizuruCosmo\n", encoding="utf-8")
+        pipelib._ST_TABLE = pipelib._ST_KEY = None
+        got = [pipelib.classify_source(u) for u in (url, "https://m.youtube.com/@kamizurucosmo", "https://www.youtube.com/@KamizuruCosmoX/streams")]
+        check(got == ["公式", "公式", "未確認"], f"表のチャンネルの種別がページに当たらない: {got}")
+        d, a, paths = cs.unknown_targets("2026-10-28")
+        check(not d and not paths and not cs.YT_CHANNELS and not cs.NEED_PARSER, f"表で決まったチャンネルが合議に回る: {paths} {cs.YT_CHANNELS}")
+        # 表に無いチャンネル: パーサ待ちにもパスの合議にもせず、チャンネルの合議に掛けて video_channels に足す
+        table.write_text("official_domains:\n  - a.example\nvideo_channels:\n  公式:\n    - imas-official\n", encoding="utf-8")
+        pipelib._ST_TABLE = pipelib._ST_KEY = None
+        d, a, paths = cs.unknown_targets("2026-10-28")
+        check(not cs.NEED_PARSER and not cs.SKIPPED and not d and not paths and cs.YT_CHANNELS == {"KamizuruCosmo": (url, "上水流宇宙、今夜21時から配信")},
+              f"チャンネルのページがチャンネルの合議に回らない: {cs.NEED_PARSER} {cs.SKIPPED} {d} {paths} {cs.YT_CHANNELS}")
+        asked: list = []
+
+        def fake_ask(cmd, prompt, timeout=900):
+            asked.append(prompt)
+            return [{"host": key, "operator": "上水流宇宙", "type": "公式", "why": "ヴイアラの公式チャンネル"}]
+        cs.ask, cs.site_profile = fake_ask, (lambda *a, **k: "材料")
+        sys.argv = ["classify_sources.py", "--date", "2026-10-28", "--apply"]
+        cs.main()
+        pipelib._ST_TABLE = None
+        t = pipelib.parse_source_table(table.read_text(encoding="utf-8"), table)
+        check(asked and all(key in p for p in asked) and t.get("video_channels", {}).get("公式") == ["KamizuruCosmo", "imas-official"]
+              and not t.get("path_types") and pipelib.classify_source(url) == "公式",
+              f"合議の答えがチャンネルの表に載らない: {t.get('video_channels')} {t.get('path_types')} {len(asked)}")
+        d, a, paths = cs.unknown_targets("2026-10-28")
+        check(not paths and not cs.YT_CHANNELS and not cs.NEED_PARSER, f"決まった後も合議に回る: {paths} {cs.YT_CHANNELS}")
+        # 大文字小文字だけ違う同じチャンネル(と、それを投稿者に持つ動画)は1つの対象として合議に掛け、1つだけ表に足す
+        # (2つの対象にすると答えの対応付けで重なり、両モデルが公式と答えても無回答になった。Sol 監査 2026-10-27)
+        mixed = ["https://youtube.com/@MixedCase/streams", "https://m.youtube.com/@mixedcase/videos"]
+        (tmp / "candidates" / "2026-10-28.json").write_text(json.dumps([{"url": u, "title": "同じチャンネル"} for u in mixed]), encoding="utf-8")
+        asked.clear()
+
+        def fake_ask2(cmd, prompt, timeout=900):
+            asked.append(prompt)
+            return [{"host": f"youtube.com/@{h}", "operator": "x", "type": "公式", "why": "公式チャンネル"}
+                    for h in ("MixedCase", "mixedcase") if f"youtube.com/@{h}" in prompt]
+        cs.ask = fake_ask2
+        cs.main()
+        pipelib._ST_TABLE = pipelib._ST_KEY = None
+        t = pipelib.parse_source_table(table.read_text(encoding="utf-8"), table)
+        hs = [h for h in t.get("video_channels", {}).get("公式", []) if h.lower() == "mixedcase"]
+        check(len(hs) == 1 and all(pipelib.classify_source(u) == "公式" for u in mixed) and asked
+              and not any("youtube.com/@MixedCase" in p and "youtube.com/@mixedcase" in p for p in asked),
+              f"大文字小文字違いの同じチャンネルが1つの対象にならない: {t.get('video_channels')} {[pipelib.classify_source(u) for u in mixed]}")
+    except (Exception, SystemExit) as e:      # noqa: BLE001
+        check(False, f"YouTube のチャンネルのページのテストが例外: {type(e).__name__}: {e}")
+    finally:
+        cs.ROOT, pipelib.ROOT, pipelib._ST_TABLE, pipelib._ST_KEY, cs.POSTS_ONLY, cs.ask, cs.site_profile, cs.UNRESOLVED, sys.argv = saved
+        pipelib._ST_TABLE = pipelib._ST_KEY = None
+
+
+def test_path_types_mobile_host():
+    """判定の単位(path_key)は `m.` を落とすので、表(path_types)に書いたキーで、モバイル版の URL も引けること
+    (2026-10-28 当番の診断: classify_source は `m.` を落とさず、`m.tiktok.com/@h` は表に載っても当たらず毎回合議に回った)。
+    合議が書くキー(path_key)を表に載せ、同じ URL を classify_source の読み方で引き直す(書く側と読む側の往復)"""
+    import classify_sources as cs
+    for url in ("https://m.tiktok.com/@imas_official/video/7400000000000000000", "https://m.youtube.com/channel/UCabcdefghijklmnopqrstuv/videos",
+                "https://m.note.com/imas_staff/n/n0123456789ab", "https://m.twitch.tv/imas_official"):
+        key = cs.path_key(url)
+        t = {"path_types": {key: "公式"}} if key else {}
+        check(key and not key.startswith("m.") and pipelib.own_source_type(url, t) == "公式",
+              f"表に書いたキーでモバイル版の URL が引けない: {url} key={key} → {pipelib.own_source_type(url, t) if key else '-'}")
+    t = {"path_types": {"tiktok.com/@imas_official": "公式"}}
+    for url, want in (("https://tiktok.com/@imas_official", "公式"), ("https://www.tiktok.com/@imas_official/video/1", "公式"),
+                      ("https://m.tiktok.com/@imas_official_fake", "未確認"), ("https://m.tiktok.com.evil.example/@imas_official", "未確認"),
+                      ("https://evil.example/m.tiktok.com/@imas_official", "未確認")):
+        got = pipelib.own_source_type(url, t)
+        check(got == want, f"モバイル版の照合が広すぎる・狭すぎる: {url} → {got}(期待 {want})")
+
+
 def test_classify_txn_escaped_model(tmp: Path):
     """出典の判定の取引の中断・親の死で、合議の子が start_group で別のセッションに起動したモデルも止めてから戻す
     (2026-10-21 取り込みの監査: 子のセッションだけを見て、残ったモデルが戻したあとの判定表を書き直した)。
@@ -15676,6 +16032,7 @@ def test_cli_blocked_r8(tmp: Path):
     notes, restores = [], []
     values = dict(ROOT=rec, RECOVER=True, RECOVER_TARGET=("2026-10-21", "edition/2026-10-21"), RECOVER_TRIED=False,
                   STAGE_END_AT=time.time() + 3600, release_held_job_locks=lambda: None,
+                  DEADLINE_AT=oncall.DEADLINE_AT,       # main() が決める締切を後のテストへ持ち越さない(往復の残りが短くなる)
                   job_lock=lambda *a, **k: os.open(os.devnull, os.O_RDONLY), root_clean=lambda: True, ensure_edition=lambda *a: "",
                   sh=lambda *a, **k: subprocess.CompletedProcess([], 0, "", ""), commit_paths=lambda *a, **k: None,
                   untracked_files=lambda: set(), backup_edition=lambda *a: "backup/test",
@@ -17633,6 +17990,8 @@ NEW = OLD.replace("応募締切は10月30日。", "応募締切は11月3日ま�
 def err(url, code, body):
     h = email.message.Message()
     h["Content-Type"] = "text/html; charset=utf-8"
+    if code == 429:     # 取り直しの待ちは test_http429_retry が検める。ここで本番の既定(30 秒 × 3 回)を実時間で待たない
+        h["Retry-After"] = "0"
     return urllib.error.HTTPError(url, code, "x", h, io.BytesIO(body.encode("utf-8")))
 def fake_urlopen(url, phase):
     host = urllib.parse.urlsplit(url).hostname or ""
@@ -17737,7 +18096,13 @@ def test_page_archive_store(tmp: Path):
     dead = "http://127.0.0.1:9/news/1"
     pa.save(dead, "本体に残した原本。価格は3000円。", via="collect", at="2026-10-25T21:03:00+09:00", base=main_wt / "metrics" / "work" / "pages")
     env = {k: v for k, v in os.environ.items() if k not in ("IMAS_PAGE_ARCHIVE", pipelib.FETCH_RECORD_ENV, "IMAS_FETCH_PAGES")}
-    r = subprocess.run([sys.executable, str(wt / "scripts" / "fetch_page.py"), dead], cwd=wt, env=env, capture_output=True, text=True,
+    # 閉じたポートへの接続は、環境によっては拒否されずに 25 秒の時間切れまで待つ(2026-10-27 実測)。通信だけを接続の拒否に差し替えて、
+    # 作業ツリーの fetch_page.py をそのまま走らせる
+    refuse = (f"import runpy, sys, urllib.request\nsys.argv = [{str(wt / 'scripts' / 'fetch_page.py')!r}, {dead!r}]\n"
+              f"sys.path.insert(0, {str(wt / 'scripts')!r})\n"
+              "def refused(*a, **k):\n    raise urllib.request.URLError(ConnectionRefusedError(111, 'Connection refused'))\n"
+              "urllib.request.urlopen = refused\nrunpy.run_path(sys.argv[0], run_name='__main__')\n")
+    r = subprocess.run([sys.executable, "-c", refuse], cwd=wt, env=env, capture_output=True, text=True,
                        timeout=120, stdin=subprocess.DEVNULL)
     check(r.returncode == 0 and "本体に残した原本" in r.stdout and "いまは読み直せない" in r.stdout and "収集時点(2026-10-25 21:03)" in r.stdout,
           f"当番の作業ツリーから本体の置き場の原本を読めない: {r.returncode} {r.stdout[:300]!r} {r.stderr[-300:]!r}")
@@ -19697,6 +20062,8 @@ def main() -> int:
     test_platform_owner_units(tmp / "pou")
     test_youtube_playlist_owner(tmp / "ytpl")
     test_booth_item_owner(tmp / "booth")
+    test_youtube_channel_page_unit(tmp / "ytchan")
+    test_path_types_mobile_host()
     test_classify_txn_interrupt(tmp / "cti")
     test_classify_txn_escaped_model(tmp / "cte2")
     test_tags_and_idols(tmp / "ti")
@@ -19780,6 +20147,8 @@ def main() -> int:
     test_oncall_restore_to_backup(tmp / "rtb")
     test_oncall_merge_push_settles(tmp / "mps")
     test_oncall_fix_until_clean(tmp / "of")
+    test_oncall_check_limits_follow_measure(tmp / "oclm")
+    test_classify_retag_without_judge(tmp / "crwj")
     test_oncall_report_concurrence(tmp / "orc")
     test_settled_drops_not_rewritten(tmp / "sd")
     test_rule_bench_cases()

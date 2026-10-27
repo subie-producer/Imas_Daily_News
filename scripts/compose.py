@@ -2744,6 +2744,18 @@ def run_derive(date: str) -> bool:
     return True
 
 
+def lint_post_errors(out: str, date: str) -> dict[str, list[dict]]:
+    """lint の出力から、この号の記事の赤だけを記事ごとに集める(書き直し・落とす対象)。過去の号の記事(発行済み)の赤は、この号の
+    書き直しでは直らず、落とすと発行済みの記事を消す(2026-10-27: 判定のコードの修正で 10/27 号の記事の出典の種別が食い違った)。
+    それは集めず、lint 赤が解消できないものとして当番へ渡る"""
+    by_file: dict[str, list[dict]] = {}
+    for l in out.splitlines():
+        m2 = re.match(r"::error file=(docs/_posts/[^:]+)::(.*)$", l)
+        if m2 and Path(m2.group(1)).name.startswith(f"{date}-"):
+            by_file.setdefault(m2.group(1), []).append({"file": m2.group(1), "issue": "lint: " + m2.group(2), "quote": ""})
+    return by_file
+
+
 def run_lint(date: str) -> tuple[int, str]:
     r = subprocess.run([sys.executable, str(ROOT / "scripts" / "lint.py"), "--base", "origin/main"],
                        capture_output=True, text=True, cwd=ROOT)
@@ -4045,10 +4057,30 @@ def classify_post_sources(date: str, branch: str) -> bool:
             commit_and_push(branch, f"compose {date}: 出典の判定に失敗(当番へ)", "compose")
             escalate("compose", date, f"紙面の出典の判定で判定表と記事を戻せなかった: {why_cls[:300]}")
             return False
+        # 合議が失敗して戻すと、いまの判定表・判定のコードで決まる付け直しまで戻る(既知のチャンネルが公式になった過去の記事が未確認のまま
+        # lint が赤く残る。2026-10-27 Sol 監査)。合議を飛ばして、付け直しだけをもう一度1つの取引で行う
+        with stage("出典の付け直し(合議なし)"):
+            ok_rt, why_rt = classify_retag_lint(date, posts_only=True, timeout=remaining_seconds(cap=600), lint=False, judge=False)
+        if not ok_rt and "戻せない" in why_rt:
+            commit_and_push(branch, f"compose {date}: 出典の付け直しに失敗(当番へ)", "compose")
+            escalate("compose", date, f"紙面の出典の付け直しで記事を戻せなかった: {why_rt[:300]}")
+            return False
+        if not ok_rt:
+            # 付け直しも失敗: 過去の号の記事の種別が判定と食い違ったまま(lint 赤)なら、この号の書き直しでは直らない。後段へ進めず当番へ
+            # (Sol 監査 r2。食い違いが無ければ、この号の未確認が残るだけなので先へ進む)
+            past = [l for l in run_lint(date)[1].splitlines() if l.startswith("::error file=docs/_posts/")
+                    and not l.startswith(f"::error file=docs/_posts/{date}-")]
+            if past:
+                commit_and_push(branch, f"compose {date}: 出典の付け直しに失敗(当番へ)", "compose")
+                escalate("compose", date, f"出典の判定・合議なしの付け直しがどちらも失敗し({why_cls[:200]} / {why_rt[:200]})、"
+                                          f"過去の号の記事の lint が赤:\n" + "\n".join(past[:10]))
+                return False
         if why_cls.startswith(CLI_STOPPED) and CLI_BLOCKED:
             # 判定のモデル(執筆・校閲と同じ CLI)が認証切れ・利用上限で答えない。判定の失敗ではない。投稿は判定が済ませた
             raise CliBlocked(next(iter(CLI_BLOCKED.values())))
-        notify("compose", f"{date}: 紙面の出典の判定で失敗({why_cls[:300]})。判定表と記事は戻した。未確認のまま先へ進む(翌朝の watch に出る)", ok=False)
+        notify("compose", f"{date}: 紙面の出典の判定で失敗({why_cls[:300]})。判定表は戻した。"
+                          + ("合議なしの付け直しは済ませた" if ok_rt else f"合議なしの付け直しも失敗し({why_rt[:200]})、記事も戻した")
+                          + "。未確認のまま先へ進む(翌朝の watch に出る)", ok=False)
     return True
 
 
@@ -4432,13 +4464,7 @@ def main() -> int:
             print(f"組版のやり直しに失敗: {e}", flush=True)
         code, lint_out = run_lint(date)
 
-        def post_errors(out: str) -> dict[str, list[dict]]:
-            by_file: dict[str, list[dict]] = {}
-            for l in out.splitlines():
-                m2 = re.match(r"::error file=(docs/_posts/[^:]+)::(.*)$", l)
-                if m2:
-                    by_file.setdefault(m2.group(1), []).append({"file": m2.group(1), "issue": "lint: " + m2.group(2), "quote": ""})
-            return by_file
+        post_errors = lambda out: lint_post_errors(out, date)
 
         if code != 0 and post_errors(lint_out):
             # 機械で直せない記事の赤(時制矛盾など本文の話)は、**その記事だけ**を小さな修正セッションへ。

@@ -44,6 +44,21 @@
    "changed": 20,
    "elapsed_s": 61,
    "cycle_days_actual": 0.2
+  },
+  {
+   "at": "2026-10-27T23:36:33+09:00",
+   "cap": 60,
+   "parallel": 4,
+   "runs_per_day": 5,
+   "cycle_days": 0.14,
+   "oldest_age_h": 5.0,
+   "targets": 43,
+   "chosen": 43,
+   "tried": 43,
+   "checked": 43,
+   "changed": 17,
+   "elapsed_s": 71,
+   "cycle_days_actual": 0.2
   }
  ],
  "collect": [
@@ -323,6 +338,92 @@
     "failed": 0
    },
    "duration_s": 643
+  },
+  {
+   "at": "2026-10-27T23:41:44+09:00",
+   "edition": "2026-10-28",
+   "started_at": "2026-10-27T23:30:00+09:00",
+   "trigger": "timer",
+   "watch": {
+    "stats": {
+     "imas-portal": {
+      "found": 12,
+      "pages": 2,
+      "new": 2,
+      "deferred": 0
+     },
+     "pylonport-sidem": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-shiny": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-million": {
+      "found": 9,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "lantis-shiny": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "lantis-sidem": {
+      "error": "HTTP Error 503: Service Temporarily Unavailable",
+      "http": 503
+     },
+     "columbia-imas": {
+      "found": 351,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "bnam-tours": {
+      "found": 69,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "imasnews765": {
+      "found": 10,
+      "pages": 1,
+      "new": 1,
+      "deferred": 0
+     }
+    },
+    "new": 3,
+    "facted": 5,
+    "deferred": 0,
+    "blocked": 0,
+    "unavailable": 0
+   },
+   "per_query": {
+    "explore:765as": 0,
+    "explore:cinderella": 0,
+    "explore:million": 0,
+    "explore:shiny": 1,
+    "explore:sidem": 0,
+    "explore:gakuen": 0,
+    "explore:dsva": 1,
+    "explore:joint-other": 0,
+    "explore:trend": 0
+   },
+   "normalized": 7,
+   "added": 3,
+   "verify": {
+    "confirmed": 7,
+    "unconfirmed": 0,
+    "failed": 0
+   },
+   "duration_s": 704
   }
  ],
  "compose": [

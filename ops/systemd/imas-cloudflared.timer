@@ -3,6 +3,7 @@ Description=毎月1日 01:00 JST に cloudflared を更新(再起動で数秒落
 
 [Timer]
 OnCalendar=*-*-01 01:00:00 Asia/Tokyo
+# 01:00 に止まっていた月は復帰の時に追いつく。発行の時間帯に当たったら update_cloudflared.py が 07:00 まで待つ
 Persistent=true
 
 [Install]

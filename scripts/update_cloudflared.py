@@ -10,11 +10,14 @@ cloudflared は ~/.local/bin に手で置いた実行ファイルで、自動更
 - 最新の版は GitHub の release から取る。配布元が release の本文に載せている sha256 と照らしてから入れ替える
 - 入れ替えの前に、新しい実行ファイルが自分の版を名乗れること(--version)を確かめる
 - 旧版は cloudflared.<版>.bak に残す(直近 BACKUP_KEEP 個)
-- トンネルを再起動し、接続が CONNECTIONS 本張れて、外から公開ページが 200 で返るかを確かめる。だめなら旧版に戻して再起動し、異常として通知する
-  (当番がなぜなぜする)
-- 再起動で数秒、配信が落ちる(1台構成)。発行(06:00)・組版(03:00〜)と重ならない時刻に回す
+- トンネルを再起動し、今回の起動で異なる接続が CONNECTIONS 本張れて、外から公開ページが 200 で返るかを確かめる。だめなら旧版に戻して
+  再起動し、異常として通知する(当番がなぜなぜする)。途中の例外でも、戻しに失敗しても、必ず通知する
+- 再起動で数秒、配信が落ちる(1台構成)。発行(06:00)・組版(03:00〜)と重ならない時刻に回す。止まっていて追いつきで
+  発行の時間帯(QUIET_FROM〜QUIET_UNTIL)に起動したときは、その終わりまで待ってから上げる
+- --check は今の版と最新の版を表示するだけ(通知も当番の呼び出しもしない)
 """
 import argparse
+import datetime
 import hashlib
 import json
 import os
@@ -38,6 +41,10 @@ CONNECTIONS = 4          # cloudflared が張る接続の本数(既定の HA 接
 CONNECT_WAIT = 120       # 再起動から接続が揃うまで待つ秒
 BACKUP_KEEP = 2
 UA = {"User-Agent": "ImasNewsBot/1.0"}
+# 再起動しない時間帯(組版 03:00〜発行 06:00 とその前後)。timer の Persistent の追いつきがここに当たったら終わりまで待つ
+# (Sol 監査 r1 の later: 01:00 に止まっていた月は、復帰の時刻にそのまま再起動していた)
+QUIET_FROM = datetime.time(2, 30)
+QUIET_UNTIL = datetime.time(7, 0)
 
 
 def asset_name() -> str:
@@ -71,18 +78,43 @@ def download(url: str, dest: Path) -> None:
         shutil.copyfileobj(r, f)
 
 
+def tunnel_invocation() -> str:
+    """トンネルの今の起動の InvocationID(起動ごとに変わる。journal の _SYSTEMD_INVOCATION_ID と同じ)。"""
+    r = subprocess.run(["systemctl", "--user", "show", "-p", "InvocationID", "--value", UNIT],
+                       capture_output=True, text=True, timeout=60)
+    return (r.stdout or "").strip() if r.returncode == 0 else ""
+
+
+def registered_connections(log: str) -> set[str]:
+    """journal の「Registered tunnel connection connIndex=N …」から、張れた接続の番号の集まり。
+    同じ番号の張り直しは1本と数える(Sol 監査 r1: connIndex=0 の再登録4回を4本と数えていた)。"""
+    return set(re.findall(r"Registered tunnel connection connIndex=(\d+)", log or ""))
+
+
 def restart_and_verify() -> tuple[bool, str]:
-    """トンネルを再起動し、接続が揃い、外から公開ページが返るか。戻りは (つながったか, 状態の説明)。"""
-    since = now_jst().strftime("%Y-%m-%d %H:%M:%S")
+    """トンネルを再起動し、接続が揃い、外から公開ページが返るか。戻りは (つながったか, 状態の説明)。
+    例外は投げない(時間切れなども「つながらない」として返し、呼び手が旧版に戻して通知する。Sol 監査 r1)。"""
+    try:
+        return _restart_and_verify()
+    except Exception as e:
+        return False, f"再起動・確認の途中で例外({type(e).__name__}: {e})"
+
+
+def _restart_and_verify() -> tuple[bool, str]:
+    before = tunnel_invocation()
     r = subprocess.run(["systemctl", "--user", "restart", UNIT], capture_output=True, text=True, timeout=120)
     if r.returncode != 0:
         return False, f"再起動に失敗(exit {r.returncode}): {(r.stderr or '').strip()[-200:]}"
+    # 数えるのは今回の起動の行だけ(時刻の --since は秒に丸められ、再起動の前の行が入っていた。Sol 監査 r1)
+    inv = tunnel_invocation()
+    if not inv or inv == before:
+        return False, f"再起動しても新しい起動が見えない(InvocationID {before or '空'} → {inv or '空'})"
     n = 0
     end = time.time() + CONNECT_WAIT
     while time.time() < end:
-        j = subprocess.run(["journalctl", "--user", "-u", UNIT, "--since", since, "-o", "cat", "--no-pager"],
+        j = subprocess.run(["journalctl", "--user", f"_SYSTEMD_INVOCATION_ID={inv}", "-o", "cat", "--no-pager"],
                            capture_output=True, text=True, timeout=60)
-        n = (j.stdout or "").count("Registered tunnel connection")
+        n = len(registered_connections(j.stdout))
         if n >= CONNECTIONS:
             break
         time.sleep(5)
@@ -107,21 +139,64 @@ def prune_backups() -> None:
         p.unlink(missing_ok=True)
 
 
+def publishing_wait(now: datetime.datetime) -> float:
+    """now が再起動しない時間帯(QUIET_FROM〜QUIET_UNTIL)なら、その終わりまでの秒。外なら 0。"""
+    if not (QUIET_FROM <= now.time() < QUIET_UNTIL):
+        return 0.0
+    return (datetime.datetime.combine(now.date(), QUIET_UNTIL, tzinfo=now.tzinfo) - now).total_seconds()
+
+
+def fail(msg: str) -> int:
+    """更新できなかった・つながらない: 異常として通知し(台帳に入る)、当番に渡す。"""
+    notify("update", msg, ok=False)
+    diagnose_anomalies("update", now_jst().strftime("%Y-%m-%d"), edition=edition_date())
+    return 1
+
+
+def replace_bin(src: Path) -> None:
+    """BIN を src の中身に差し替える。同じディレクトリの .new から os.replace(途中で止まっても半端な実行ファイルを残さない)。
+    失敗しても .new は残さない(Sol 監査 r1)。"""
+    staged = BIN.with_name(BIN.name + ".new")
+    try:
+        shutil.copy2(src, staged)
+        os.replace(staged, BIN)
+    finally:
+        staged.unlink(missing_ok=True)
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--check", action="store_true", help="入れ替えず、今の版と最新の版を表示するだけ")
+    ap.add_argument("--check", action="store_true", help="入れ替えず、今の版と最新の版を表示するだけ(通知しない)")
     args = ap.parse_args()
+    if not args.check:
+        wait = publishing_wait(now_jst())
+        if wait:
+            print(f"発行の時間帯なので {QUIET_UNTIL:%H:%M} まで待ってから上げる({int(wait)}秒)", flush=True)
+            time.sleep(wait)
     cur = installed_version()
     try:
         rel = latest_release()
     except Exception as e:
-        notify("update", f"cloudflared の最新の版を GitHub から取れない({type(e).__name__}: {e})。{cur or '今の版'} のまま", ok=False)
-        diagnose_anomalies("update", now_jst().strftime("%Y-%m-%d"), edition=edition_date())
-        return 1
+        msg = f"cloudflared の最新の版を GitHub から取れない({type(e).__name__}: {e})。{cur or '今の版'} のまま"
+        if args.check:      # 表示だけ: 当番を起こさない(Sol 監査 r1)
+            print(msg, flush=True)
+            return 1
+        return fail(msg)
     latest = (rel.get("tag_name") or "").lstrip("v")
     print(f"cloudflared: 今 {cur or '(不明)'} / 最新 {latest}", flush=True)
     if args.check or (cur and cur == latest):
         return 0
+    if not BIN.is_file():
+        # 手で置いた実行ファイルが無い: 戻す先が無いので入れ替えない(人が置き直す)
+        return fail(f"{BIN} が無い。cloudflared {latest} に上げられない(手で置き直す)")
+    try:
+        return update(cur, latest, rel)
+    except Exception as e:
+        # 差し替えの前の例外(取った実行ファイルの読み書き・旧版の写し)。BIN は入れ替わっていない
+        return fail(f"cloudflared を {latest} に上げる途中で例外({type(e).__name__}: {e})。{cur or '今の版'} のまま")
+
+
+def update(cur: str, latest: str, rel: dict) -> int:
     name = asset_name()
     want = release_sha256(rel.get("body") or "", name)
     asset = next((a for a in rel.get("assets") or [] if a.get("name") == name), None)
@@ -143,26 +218,28 @@ def main() -> int:
             elif installed_version(new) != latest:
                 failed = f"取った {name} が版 {latest} を名乗らない({installed_version(new) or '起動できない'})。入れ替えない"
         if failed:
-            notify("update", f"cloudflared を {latest} に上げられなかった: {failed}。{cur or '今の版'} のまま", ok=False)
-            diagnose_anomalies("update", now_jst().strftime("%Y-%m-%d"), edition=edition_date())
-            return 1
+            return fail(f"cloudflared を {latest} に上げられなかった: {failed}。{cur or '今の版'} のまま")
         bak = BIN.with_name(f"{BIN.name}.{cur or 'unknown'}.bak")
         shutil.copy2(BIN, bak)
-        staged = BIN.with_name(BIN.name + ".new")
-        shutil.copy2(new, staged)
-        os.replace(staged, BIN)       # 同じディレクトリの中で差し替える(途中で止まっても半端な実行ファイルを残さない)
+        replace_bin(new)
+    # ここから先は例外を投げない(差し替えた後に抜けると、新しい版のまま通知もせずに終わる。Sol 監査 r1)
     ok, state = restart_and_verify()
     if ok:
-        prune_backups()
+        try:
+            prune_backups()
+        except OSError as e:
+            print(f"(古い旧版の片付けに失敗: {e})", flush=True)
         notify("update", f"cloudflared を更新した: {cur or '(不明)'} → {latest}({state})")
         return 0
     # つながらない: 旧版に戻して再起動し、戻った状態も添えて異常にする
-    os.replace(shutil.copy2(bak, BIN.with_name(BIN.name + ".new")), BIN)
+    try:
+        replace_bin(bak)
+    except Exception as e:
+        return fail(f"cloudflared {latest} でトンネルがつながらない({state})。旧版 {cur or '(不明)'} に戻せない"
+                    f"({type(e).__name__}: {e})。{bak} を手で {BIN} に戻して imas-tunnel を再起動する")
     ok2, state2 = restart_and_verify()
-    notify("update", f"cloudflared {latest} でトンネルがつながらない({state})。旧版 {cur or '(不明)'} に戻した: "
-           f"{'つながった' if ok2 else 'まだつながらない'}({state2})", ok=False)
-    diagnose_anomalies("update", now_jst().strftime("%Y-%m-%d"), edition=edition_date())
-    return 1
+    return fail(f"cloudflared {latest} でトンネルがつながらない({state})。旧版 {cur or '(不明)'} に戻した: "
+                f"{'つながった' if ok2 else 'まだつながらない'}({state2})")
 
 
 if __name__ == "__main__":

@@ -4,8 +4,13 @@ edition: "2026-09-21"
 brand: dsva
 src: 二次情報
 rank: roundup
-corrected: false
-corrections: []
+corrected: true
+corrections:
+- at: "2026-10-27T22:15:00+09:00"
+  by: 編集部(出典の日付の欠陥の修正)
+  initial: "出典「公式X「9/20(日) 灯里愛夏の朝活配信」」の日付 2026年9月19日"
+  corrected_to: "同じ出典の日付 2026年9月20日"
+  note: Xの投稿日時を日本時間に直さずに日付にしていたため、日本時間9月20日朝の投稿を前日の9月19日としていた。本文は変えていない
 candidate_ids:
 - 202609200734-explore-14
 - 202609201835-explore-22
@@ -27,7 +32,7 @@ sources:
 - label: 公式X「ON AIR INFO／9/19(土)ライバーアイドル夜配信」(2026年9月19日)
   url: https://x.com/valiv_official/status/2101280146967683503
   type: 公式
-- label: 公式X「9/20(日) 灯里愛夏の朝活配信」(2026年9月19日)
+- label: 公式X「9/20(日) 灯里愛夏の朝活配信」(2026年9月20日)
   url: https://x.com/valiv_official/status/2101453786120147063
   type: 公式
 - label: 公式X「NEXT LINEUP／9/20(日)ライバーアイドル イベント出演・夜配信」(2026年9月20日)

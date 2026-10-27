@@ -4,8 +4,13 @@ edition: "2026-10-07"
 brand: cg
 src: 公式
 rank: small
-corrected: false
-corrections: []
+corrected: true
+corrections:
+- at: "2026-10-27T22:15:00+09:00"
+  by: 編集部(出典の日付の欠陥の修正)
+  initial: "出典「アイマスch「砂塚あきらの誕生日お祝いムービー公開」」の日付 2026年10月6日"
+  corrected_to: "同じ出典の日付 2026年10月7日"
+  note: Xの投稿日時を日本時間に直さずに日付にしていたため、日本時間10月7日0時台の投稿を前日の10月6日としていた。本文は変えていない
 candidate_ids:
 - 202610070225-grok-42
 title: 砂塚あきら誕生日のお祝いShorts公開
@@ -16,7 +21,7 @@ tags:
 - 誕生日
 - 配信
 sources:
-- label: アイマスch「砂塚あきらの誕生日お祝いムービー公開」(2026年10月6日)
+- label: アイマスch「砂塚あきらの誕生日お祝いムービー公開」(2026年10月7日)
   url: https://x.com/imas_ch/status/2107486048695804178
   type: 公式
 event_date: "2026-10-07"

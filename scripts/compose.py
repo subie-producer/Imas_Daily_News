@@ -2744,6 +2744,18 @@ def run_derive(date: str) -> bool:
     return True
 
 
+def lint_post_errors(out: str, date: str) -> dict[str, list[dict]]:
+    """lint の出力から、この号の記事の赤だけを記事ごとに集める(書き直し・落とす対象)。過去の号の記事(発行済み)の赤は、この号の
+    書き直しでは直らず、落とすと発行済みの記事を消す(2026-10-27: 判定のコードの修正で 10/27 号の記事の出典の種別が食い違った)。
+    それは集めず、lint 赤が解消できないものとして当番へ渡る"""
+    by_file: dict[str, list[dict]] = {}
+    for l in out.splitlines():
+        m2 = re.match(r"::error file=(docs/_posts/[^:]+)::(.*)$", l)
+        if m2 and Path(m2.group(1)).name.startswith(f"{date}-"):
+            by_file.setdefault(m2.group(1), []).append({"file": m2.group(1), "issue": "lint: " + m2.group(2), "quote": ""})
+    return by_file
+
+
 def run_lint(date: str) -> tuple[int, str]:
     r = subprocess.run([sys.executable, str(ROOT / "scripts" / "lint.py"), "--base", "origin/main"],
                        capture_output=True, text=True, cwd=ROOT)
@@ -4442,13 +4454,7 @@ def main() -> int:
             print(f"組版のやり直しに失敗: {e}", flush=True)
         code, lint_out = run_lint(date)
 
-        def post_errors(out: str) -> dict[str, list[dict]]:
-            by_file: dict[str, list[dict]] = {}
-            for l in out.splitlines():
-                m2 = re.match(r"::error file=(docs/_posts/[^:]+)::(.*)$", l)
-                if m2:
-                    by_file.setdefault(m2.group(1), []).append({"file": m2.group(1), "issue": "lint: " + m2.group(2), "quote": ""})
-            return by_file
+        post_errors = lambda out: lint_post_errors(out, date)
 
         if code != 0 and post_errors(lint_out):
             # 機械で直せない記事の赤(時制矛盾など本文の話)は、**その記事だけ**を小さな修正セッションへ。

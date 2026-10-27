@@ -9791,6 +9791,12 @@ def test_classify_retag_without_judge(tmp: Path):
               f"組版が合議の失敗のあと付け直しを掛け直さない: {calls}")
     finally:
         compose.classify_retag_lint, compose.notify = saved_c
+    # 組版の lint 赤の書き直し・落とす対象は、この号の記事だけ(過去の号の発行済みの記事を書き直し・削除に回さない)
+    out = ("::error file=docs/_posts/2026-10-27-dsva-valiv-cosmo.md::出典 type が URL の判定と不一致(過小表示)\n"
+           "::error file=docs/_posts/2026-10-28-cg-new.md::本文の時制\n::warning file=docs/_posts/2026-10-28-cg-new.md::x\n")
+    got = compose.lint_post_errors(out, "2026-10-28")
+    check(list(got) == ["docs/_posts/2026-10-28-cg-new.md"] and got["docs/_posts/2026-10-28-cg-new.md"][0]["issue"] == "lint: 本文の時制",
+          f"過去の号の記事の lint の赤を、この号の書き直し・落とす対象にした: {got}")
     calls.clear()
     saved_k = collect.classify_retag_lint
     try:

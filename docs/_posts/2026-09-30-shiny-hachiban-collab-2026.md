@@ -4,8 +4,13 @@ edition: "2026-09-30"
 brand: shiny
 src: 当事者
 rank: medium
-corrected: false
-corrections: []
+corrected: true
+corrections:
+- at: "2026-10-27T22:30:00+09:00"
+  by: 編集部(出典の種別の判定の欠陥の修正)
+  initial: "出典「ハチバン「８番らーめん×『アイドルマスター シャイニーカラーズ』10月7日よりコラボキャンペーン開催！」(2026年9月28日)」の種別: 当事者"
+  corrected_to: "同じ出典の種別: 公式"
+  note: 編集長の規則(2026-10-21)により、公式の投稿・ページからリンクされ、告知と関係すると確かめた出典を公式に改めた。本文は変えていない
 candidate_ids:
 - 202609290733-explore-3
 - 202609290733-explore-20
@@ -23,7 +28,7 @@ sources:
   type: 公式
 - label: ハチバン「８番らーめん×『アイドルマスター シャイニーカラーズ』10月7日よりコラボキャンペーン開催！」(2026年9月28日)
   url: https://www.hachiban.co.jp/news/2026/20260925_01/
-  type: 当事者
+  type: 公式
 - label: 8番らーめん×シャニマスコラボ開催決定(2026年9月28日)
   url: https://prtimes.jp/main/html/rd/p/000000062.000161698.html
   type: 当事者

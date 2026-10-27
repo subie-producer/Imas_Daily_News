@@ -4,8 +4,13 @@ edition: "2026-10-10"
 brand: other
 src: 準公式
 rank: small
-corrected: false
-corrections: []
+corrected: true
+corrections:
+- at: "2026-10-27T22:30:00+09:00"
+  by: 編集部(出典の種別の判定の欠陥の修正)
+  initial: "出典「ASOBI STORE「283 PRODUCTION Solo Live Collection -Master ShowPiece- 開催記念グッズ販売」(掲載日不明)」の種別: 準公式"
+  corrected_to: "同じ出典の種別: 公式"
+  note: 編集長の規則(2026-10-21)により、公式の投稿・ページからリンクされ、告知と関係すると確かめた出典を公式に改めた。本文は変えていない
 candidate_ids:
 - 202610100218-grok-32
 title: シャニマスMSP記念グッズ、締切まであと2日
@@ -18,7 +23,7 @@ tags:
 sources:
 - label: ASOBI STORE「283 PRODUCTION Solo Live Collection -Master ShowPiece- 開催記念グッズ販売」(掲載日不明)
   url: https://shop.asobistore.jp/feature/283pro_sololive_msp_memorial
-  type: 準公式
+  type: 公式
 - label: ASOBI STORE「283 PRODUCTION Solo Live Collection -Master ShowPiece- 開催記念 公式ロングスリーブシャツ 櫻木真乃 Mサイズ」(掲載日不明)
   url: https://shop.asobistore.jp/products/detail/249675-00-00-s004
   type: 準公式

@@ -2,10 +2,15 @@
 slug: 765-chibigurumi-pouch-set-preorder
 edition: "2026-10-18"
 brand: "765"
-src: 準公式
+src: 公式
 rank: small
-corrected: false
-corrections: []
+corrected: true
+corrections:
+- at: "2026-10-27T22:30:00+09:00"
+  by: 編集部(出典の種別の判定の欠陥の修正)
+  initial: "出典「プレミアムバンダイ「菊地真・萩原雪歩の『ちびぐるみ』がおなまえ入りポーチとセットでプレミアムバンダイに登場」(日付不明)」「プレミアムバンダイ「ちびぐるみ＆ポーチセット ～ふたごぼしのつばさ～／～つみまつよるまち～」(日付不明)」「プレミアムバンダイ「ちびぐるみ＆ポーチセット ～961 PRODUCTION presents Re:FLAME～」(日付不明)」の種別: 準公式・準公式・準公式(記事の出典の表示: 準公式)"
+  corrected_to: "同じ出典の種別: 公式・公式・公式(記事の出典の表示: 公式)"
+  note: 編集長の規則(2026-10-21)により、公式の投稿・ページからリンクされ、告知と関係すると確かめた出典を公式に改めた。本文は変えていない
 candidate_ids:
 - 202610170732-explore-0
 - sched-2026-10-18-chibigurumi-pouch-set-preorder-締切
@@ -27,13 +32,13 @@ sources:
   type: 公式
 - label: プレミアムバンダイ「菊地真・萩原雪歩の『ちびぐるみ』がおなまえ入りポーチとセットでプレミアムバンダイに登場」(日付不明)
   url: https://p-bandai.jp/item/item-1000254246/
-  type: 準公式
+  type: 公式
 - label: プレミアムバンダイ「ちびぐるみ＆ポーチセット ～ふたごぼしのつばさ～／～つみまつよるまち～」(日付不明)
   url: https://p-bandai.jp/item/item-1000254243/
-  type: 準公式
+  type: 公式
 - label: プレミアムバンダイ「ちびぐるみ＆ポーチセット ～961 PRODUCTION presents Re:FLAME～」(日付不明)
   url: https://p-bandai.jp/item/item-1000256134/
-  type: 準公式
+  type: 公式
 event_date: "2026-10-18"
 title_fact_ids:
 - F5

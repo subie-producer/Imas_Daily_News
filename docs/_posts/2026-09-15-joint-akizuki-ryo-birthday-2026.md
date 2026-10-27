@@ -2,10 +2,15 @@
 slug: joint-akizuki-ryo-birthday-2026
 edition: "2026-09-15"
 brand: joint
-src: 当事者
+src: 公式
 rank: small
-corrected: false
-corrections: []
+corrected: true
+corrections:
+- at: "2026-10-27T22:30:00+09:00"
+  by: 編集部(出典の種別の判定の欠陥の修正)
+  initial: "出典「JR東海「推し旅」公式が秋月涼の誕生日を祝賀（旅マス） (2026-09-14)」の種別: 当事者(記事の出典の表示: 当事者)"
+  corrected_to: "同じ出典の種別: 公式(記事の出典の表示: 公式)"
+  note: 編集長の規則(2026-10-21)により、公式の投稿・ページからリンクされ、告知と関係すると確かめた出典を公式に改めた。本文は変えていない
 candidate_ids:
 - 202609150230-grok-53
 - 202609150230-grok-54
@@ -22,7 +27,7 @@ sources:
   type: 公式
 - label: JR東海「推し旅」公式が秋月涼の誕生日を祝賀（旅マス） (2026-09-14)
   url: https://x.com/oshitabi_update/status/2099513510493663548
-  type: 当事者
+  type: 公式
 event_date: "2026-09-15"
 title_fact_ids:
 - F3

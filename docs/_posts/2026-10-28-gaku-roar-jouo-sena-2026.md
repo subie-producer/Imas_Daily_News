@@ -9,7 +9,7 @@ corrections: []
 candidate_ids:
 - 202610280221-grok-40
 title: 十王星南「Roar」MVが100万再生突破
-lede: 十王星南の「Roar」Music Videoが100万再生を突破し、YouTubeの動画ページでは1,095,636回再生と表示されている。
+lede: 十王星南の「Roar」Music Videoが100万再生を突破し、YouTubeの動画ページでは1,096,192回再生と表示されている。
 tags:
 - 学マス
 - MV
@@ -28,7 +28,7 @@ lede_fact_ids:
 - N1
 verified_facts:
 - id: N1
-  text: YouTubeの動画ページに「1,095,636 views」と表示されている。
+  text: YouTubeの動画ページに「1,096,192 views」と表示されている。
   url: https://www.youtube.com/watch?v=Mdyk3h5-TQE
 - id: N2
   text: 「Roar」Official Music Videoは2026年10月20日にプレミア公開された。

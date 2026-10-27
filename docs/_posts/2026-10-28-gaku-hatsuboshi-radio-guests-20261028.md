@@ -9,7 +9,7 @@ corrections: []
 candidate_ids:
 - sched-2026-10-28-hatsuboshi-radio-guests-20261028-開始
 - sched-2026-10-28-hatsuboshi-radio-guests-20261028-開始-src1
-title: 学マス放送部、今夜21時に小鹿なおら出演
+title: 学マス放送部、今夜21時に小鹿なお・川村玲奈が出演
 lede: 初星学園放送部は10月28日（水）21時から、小鹿なおさん（月村手毬役）と川村玲奈さん（篠澤広役）をゲストに放送する。
 tags:
 - 学マス
@@ -28,7 +28,6 @@ event_date: "2026-10-28"
 title_fact_ids:
 - F1
 - F2
-- F8
 lede_fact_ids:
 - F1
 - F2

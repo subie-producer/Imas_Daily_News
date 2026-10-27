@@ -25,7 +25,7 @@ sources:
 - label: LivePocket「レトラ BIRTHDAY ONLINE LIVE 2026のチケット情報」
   url: https://livepocket.jp/e/va-liv_letora_bd2026
   type: 公式
-event_date: "2026-10-30"
+event_date: "2026-11-11"
 title_fact_ids:
 - F1
 - F3

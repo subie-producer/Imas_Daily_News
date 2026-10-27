@@ -305,5 +305,34 @@
   "src_candidate_id": "202610270222-grok-23",
   "companion_of": "sched-2026-11-02-shiny-song-madoka-birthday-gacha-2026-締切",
   "src_dedup_key": "shiny-song-madoka-birthday-story-2026"
+ },
+ {
+  "id": "sched-2026-11-02-valiv-3rd-live-meeting-special-2026-締切",
+  "dedup_key": "valiv-3rd-live-meeting-special-2026",
+  "brand": "dsva",
+  "subject": "ヴイアライベのいいところ大募集 締切",
+  "kind": "締切",
+  "note": "今日23:59までアンケートに回答できる最終日",
+  "reserved_on": "2026-10-28",
+  "occurs_on": "2026-11-02",
+  "title": "ヴイアラ3rdLIVE＆MEETING開催記念特番",
+  "url": "https://x.com/valiv_official/status/2115089011614384242",
+  "source_type": "公式",
+  "facts": [
+   "ヴイアラ公式チャンネルで特別配信を実施する。",
+   "配信日時: 11月3日(火・祝)20:00-",
+   "MCは土佐兄弟。",
+   "ヴイアライベのいいところ大募集！: 11月2日(月)23:59まで",
+   "配信の視聴先: https://www.youtube.com/live/WottZLGjB9o?si=fcC8bo_4G_ctUiQX",
+   "募集フォーム: https://docs.google.com/forms/d/e/1FAIpQLScDedjs1kcT9aYXTj7axsb4ZpoxGcHxvYWaLOxTYzIZdvPiwA/viewform?usp=send_form",
+   "リンク: https://www.youtube.com/live/WottZLGjB9o?si=fcC8bo_4G_ctUiQX",
+   "リンク: https://docs.google.com/forms/d/e/1FAIpQLScDedjs1kcT9aYXTj7axsb4ZpoxGcHxvYWaLOxTYzIZdvPiwA/viewform?usp=send_form",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "event_date": "2026-11-03",
+  "deadline": "2026-11-02",
+  "src_candidate_id": "202610280221-grok-45"
  }
 ]

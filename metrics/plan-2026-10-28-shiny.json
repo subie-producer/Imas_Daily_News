@@ -1,0 +1,461 @@
+{
+ "decisions": {
+  "shiny-hachiban-ramen-set-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10-27の記事が価格・期間・内容・発送時期を既に報じ、新事実なし。締切11/8は3日以内でない"
+  },
+  "shiny-hachiban-box-ramen-set-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "prior(10-27)の本文と同内容。味噌味の加賀味噌・パッケージ意匠も既報"
+  },
+  "shiny-kawaii-season-chibiguru-2027": {
+   "action": "article",
+   "angle": "「#KAWAII♡しーずん」のちびぐるみが2027年4月からクレーンゲームに登場し、vol.1・vol.2の計8人が発表された",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-birthday-support-birth-day-madoka-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "二次情報のカード性能解説で、誕生日ガシャの件は10-27に既報"
+  },
+  "shiny-hachiban-ramen-collab-set-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10-27「受注は11月8日まで」と同じ商品・同じ内容"
+  },
+  "shiny-shinyradio-password-outage-2026": {
+   "action": "article",
+   "angle": "シャニラジの「あいことば」入力はメンテナンスで引き続き停止中で、復旧は公式Xで告知し、おたよりは送れる",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-mattari-habataki-radio-november-2026": {
+   "action": "article",
+   "angle": "「まったり」はばたきラジオステーションの11月度MCは土屋李央と田嶌紗蘭、ゲストは紫月杏朱彩",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "MC発表なので roundup に入れず単独"
+  },
+  "shiny-song-for-prism-madoka-birthday-gacha-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10-27「円香誕生日記念ガシャ開催」と同内容。終了は11/2で3日以内でない"
+  },
+  "shiny-hate-ni-fureru-no-nara-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10-24に開催告知済み。開始日10/30は続報予約で扱う"
+  },
+  "shiny-maintenance-2026-10-30": {
+   "action": "article",
+   "angle": "シャニマスは10月30日12時〜15時にメンテナンスを行い、開催中の10連無料スタンプガシャはメンテ前まで引ける",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-hachiban-collab-set-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10-27「受注は11月8日まで」と同じ内容"
+  },
+  "shiny-8-5-anniversary-login-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10-26に受取期限の記事済みで、期限は10/26に終了"
+  },
+  "shiny-song-for-prism-third-anniversary-event-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10-24・10-26に報済み。開始は10/31で今日ではない"
+  },
+  "shiny-song-for-prism-3rd-anniversary-login-bonus-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "carried。10-25のログボ記事と同内容で、終了日も確認できず新事実なし"
+  },
+  "shiny-madoka-birthday-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10-27の誕生日記事に限定フェザージュエルセール(2日間・ブラウザ版のみ)まで記載済み"
+  },
+  "shiny-song-madoka-birthday-gacha-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10-27の円香誕生日記念ガシャの記事と同内容"
+  },
+  "shiny-song-3rd-anniversary-story-episode-4-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "carried。第4話は10-27に報済みで新事実なし"
+  },
+  "shinyson-pickup-poison-madoka-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10-26に報済みで新事実なし"
+  },
+  "shinyson-shiny-competition-2026": {
+   "action": "article",
+   "angle": "シャニソンのプロデュースミニイベント「シャイニーコンペティション」は明日10月29日20時59分で終了する",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "終了が3日以内の当日トリガー"
+  },
+  "shiny-chikusei-collab-conclusion-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10-27に報済みで、コラボは10/25に終了"
+  },
+  "shiny-8ban-ramen-collab-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10月上旬から報じてきた同コラボの店舗投稿で、終了11/8は3日以内でない。玉島店の甘奈来訪だけでは新事実にならない"
+  },
+  "shiny-yunel-live-rolyu-act2-act3-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10-27に Act-2・Act-3 の発表まで報済み"
+  },
+  "shiny-3-0-25": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "carried。10-25のログボ記事と同内容で、終了日も確認できない"
+  },
+  "shiny-fam-kuji-vol-2-2026": {
+   "action": "article",
+   "angle": "FAMくじ『シャイニーカラーズ』vol.2は10月31日23時59分で販売終了。引き換え締切は11月3日23時59分",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(締切前)。販売終了まで3日"
+  },
+  "shiny-noctchill-live-2027": {
+   "action": "article",
+   "angle": "ノクチル単独ライブ(2027年3月・ゼビオアリーナ仙台)の先行当選者の入金は今日23時59分が最終日",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(締切)。他の面に同じ施策の記事は無い"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "shiny-kawaii-season-chibiguru-2027",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "「#KAWAII♡しーずん」のちびぐるみが2027年4月からクレーンゲームに登場し、vol.1・vol.2の計8人が発表された",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "shiny-kawaii-season-chibiguru-2027",
+    "candidate_ids": [
+     "202610271834-watch-4"
+    ]
+   },
+   {
+    "slug": "shiny-shinyradio-password-outage-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "シャニラジの「あいことば」入力はメンテナンスで引き続き停止中で、復旧は公式Xで告知し、おたよりは送れる",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "shiny-shinyradio-password-outage-2026",
+    "candidate_ids": [
+     "202610280221-grok-24"
+    ]
+   },
+   {
+    "slug": "shiny-mattari-habataki-radio-november-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "「まったり」はばたきラジオステーションの11月度MCは土屋李央と田嶌紗蘭、ゲストは紫月杏朱彩",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "shiny-mattari-habataki-radio-november-2026",
+    "candidate_ids": [
+     "202610280221-grok-25"
+    ]
+   },
+   {
+    "slug": "shiny-maintenance-2026-10-30",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "シャニマスは10月30日12時〜15時にメンテナンスを行い、開催中の10連無料スタンプガシャはメンテ前まで引ける",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "shiny-maintenance-2026-10-30",
+    "candidate_ids": [
+     "202610280221-grok-28"
+    ]
+   },
+   {
+    "slug": "shiny-shinyson-shiny-competition-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "シャニソンのプロデュースミニイベント「シャイニーコンペティション」は明日10月29日20時59分で終了する",
+    "purpose": "期日の知らせ",
+    "lead_score": 10,
+    "dedup_key": "shinyson-shiny-competition-2026",
+    "candidate_ids": [
+     "202610270222-grok-26"
+    ]
+   },
+   {
+    "slug": "shiny-fam-kuji-vol-2-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "FAMくじ『シャイニーカラーズ』vol.2は10月31日23時59分で販売終了。引き換え締切は11月3日23時59分",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "shiny-fam-kuji-vol-2-2026",
+    "candidate_ids": [
+     "sched-2026-10-28-shiny-fam-kuji-vol-2-2026-締切前"
+    ]
+   },
+   {
+    "slug": "shiny-noctchill-live-2027",
+    "brand": "shiny",
+    "rank": "medium",
+    "angle": "ノクチル単独ライブ(2027年3月・ゼビオアリーナ仙台)の先行当選者の入金は今日23時59分が最終日",
+    "purpose": "期日の知らせ",
+    "lead_score": 60,
+    "dedup_key": "shiny-noctchill-live-2027",
+    "candidate_ids": [
+     "sched-2026-10-28-shiny-noctchill-live-2027-締切",
+     "sched-2026-10-28-shiny-noctchill-live-2027-締切-src1"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "shiny-hachiban-ramen-set-2026",
+    "reason": "既報",
+    "note": "10-27の記事が価格・期間・内容・発送時期を既に報じ、新事実なし。締切11/8は3日以内でない"
+   },
+   {
+    "dedup_key": "shiny-hachiban-box-ramen-set-2026",
+    "reason": "既報",
+    "note": "prior(10-27)の本文と同内容。味噌味の加賀味噌・パッケージ意匠も既報"
+   },
+   {
+    "dedup_key": "shiny-birthday-support-birth-day-madoka-2026",
+    "reason": "出典不足",
+    "note": "二次情報のカード性能解説で、誕生日ガシャの件は10-27に既報"
+   },
+   {
+    "dedup_key": "shiny-hachiban-ramen-collab-set-2026",
+    "reason": "既報",
+    "note": "10-27「受注は11月8日まで」と同じ商品・同じ内容"
+   },
+   {
+    "dedup_key": "shiny-song-for-prism-madoka-birthday-gacha-2026",
+    "reason": "既報",
+    "note": "10-27「円香誕生日記念ガシャ開催」と同内容。終了は11/2で3日以内でない"
+   },
+   {
+    "dedup_key": "shiny-hate-ni-fureru-no-nara-2026",
+    "reason": "既報",
+    "note": "10-24に開催告知済み。開始日10/30は続報予約で扱う"
+   },
+   {
+    "dedup_key": "shiny-hachiban-collab-set-2026",
+    "reason": "既報",
+    "note": "10-27「受注は11月8日まで」と同じ内容"
+   },
+   {
+    "dedup_key": "shiny-8-5-anniversary-login-2026",
+    "reason": "既報",
+    "note": "10-26に受取期限の記事済みで、期限は10/26に終了"
+   },
+   {
+    "dedup_key": "shiny-song-for-prism-third-anniversary-event-2026",
+    "reason": "既報",
+    "note": "10-24・10-26に報済み。開始は10/31で今日ではない"
+   },
+   {
+    "dedup_key": "shiny-song-for-prism-3rd-anniversary-login-bonus-2026",
+    "reason": "既報",
+    "note": "carried。10-25のログボ記事と同内容で、終了日も確認できず新事実なし"
+   },
+   {
+    "dedup_key": "shiny-madoka-birthday-2026",
+    "reason": "既報",
+    "note": "10-27の誕生日記事に限定フェザージュエルセール(2日間・ブラウザ版のみ)まで記載済み"
+   },
+   {
+    "dedup_key": "shiny-song-madoka-birthday-gacha-2026",
+    "reason": "既報",
+    "note": "10-27の円香誕生日記念ガシャの記事と同内容"
+   },
+   {
+    "dedup_key": "shiny-song-3rd-anniversary-story-episode-4-2026",
+    "reason": "既報",
+    "note": "carried。第4話は10-27に報済みで新事実なし"
+   },
+   {
+    "dedup_key": "shinyson-pickup-poison-madoka-2026",
+    "reason": "既報",
+    "note": "10-26に報済みで新事実なし"
+   },
+   {
+    "dedup_key": "shiny-chikusei-collab-conclusion-2026",
+    "reason": "既報",
+    "note": "10-27に報済みで、コラボは10/25に終了"
+   },
+   {
+    "dedup_key": "shiny-8ban-ramen-collab-2026",
+    "reason": "既報",
+    "note": "10月上旬から報じてきた同コラボの店舗投稿で、終了11/8は3日以内でない。玉島店の甘奈来訪だけでは新事実にならない"
+   },
+   {
+    "dedup_key": "shiny-yunel-live-rolyu-act2-act3-2026",
+    "reason": "既報",
+    "note": "10-27に Act-2・Act-3 の発表まで報済み"
+   },
+   {
+    "dedup_key": "shiny-3-0-25",
+    "reason": "既報",
+    "note": "carried。10-25のログボ記事と同内容で、終了日も確認できない"
+   }
+  ],
+  "cross_brand": []
+ }
+}

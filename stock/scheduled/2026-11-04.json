@@ -723,5 +723,54 @@
   "verify": "unconfirmed",
   "event_date": "2026-11-04",
   "src_candidate_id": "202610240226-grok-77"
+ },
+ {
+  "id": "sched-2026-11-04-kamizuru-ace-combat-8-report-2026-10-27-開始",
+  "dedup_key": "kamizuru-ace-combat-8-report-2026-10-27",
+  "brand": "dsva",
+  "subject": "上水流宇宙 ACE COMBAT 8 次回配信",
+  "kind": "開始",
+  "note": "20時から次回配信を視聴できる",
+  "reserved_on": "2026-10-28",
+  "occurs_on": "2026-11-04",
+  "title": "上水流宇宙 ACE COMBAT 8 配信後の報告",
+  "url": "https://x.com/KamizuruCosmo/status/2115115824105361896",
+  "source_type": "公式",
+  "facts": [
+   "上水流宇宙がACE COMBAT 8の配信を終え、ライトニングを入手したと報告した。",
+   "初めてベテランとエリートの難易度に挑戦した。",
+   "次回配信: 11月4日20:00-",
+   "エンゲージメント: 低",
+   "言及アイドル: 上水流宇宙"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "event_date": "2026-10-27",
+  "src_candidate_id": "202610280221-grok-49"
+ },
+ {
+  "id": "sched-2026-11-04-tours-halloween-commu-2026-締切前",
+  "dedup_key": "tours-halloween-commu-2026",
+  "brand": "joint",
+  "subject": "ツアマス ハロウィンログインボーナス",
+  "kind": "締切前",
+  "note": "11月7日23:59の終了まであと3日、ログボを取り逃していないか確認できる",
+  "reserved_on": "2026-10-28",
+  "occurs_on": "2026-11-07",
+  "title": "ツアマスのハロウィンコミュとログインボーナス",
+  "url": "https://x.com/TOURS_imas/status/2114914996513571057",
+  "source_type": "公式",
+  "facts": [
+   "コミュ再生期間: 10月31日 07:00 ～ 11月6日 25:59",
+   "ログインボーナス期間: 10月29日 07:00 ～ 11月7日 23:59",
+   "コミュは各アイドル1日1回ずつログイン時に見られる",
+   "ログインボーナスでお菓子を配布",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "event_date": "2026-10-29",
+  "deadline": "2026-11-07",
+  "src_candidate_id": "202610280221-grok-56"
  }
 ]

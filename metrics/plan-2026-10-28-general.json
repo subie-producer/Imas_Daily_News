@@ -1,0 +1,58 @@
+{
+ "decisions": {
+  "tours-sidem-contribution-debate-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "未確認の個人SNS投稿によるファン間の議論の話で、単体では記事にしない。炎上・係争に近い話題でもある"
+  },
+  "portal-emergency-maintenance-ended-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10月27日号「アイドルマスター ポータル、緊急メンテ終了」と内容が同じ。使える機能と使えない機能、アイドル名鑑が対応中という点まで一致し、新しい事実も当日のトリガーも無い"
+  },
+  "valiv-manaka-birthday-live-2026-postponed": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "重複",
+   "note": "灯里愛夏の延期公演は dsva 面が dsva-va-liv-manaka-birthday-live-2026 で記事にしている。ゲストの関裕美は別ブランドのアイドルがゲスト出演するだけなので、general にも joint にもならない"
+  }
+ },
+ "plan": {
+  "articles": [],
+  "dropped": [
+   {
+    "dedup_key": "tours-sidem-contribution-debate-2026",
+    "reason": "出典不足",
+    "note": "未確認の個人SNS投稿によるファン間の議論の話で、単体では記事にしない。炎上・係争に近い話題でもある"
+   },
+   {
+    "dedup_key": "portal-emergency-maintenance-ended-2026",
+    "reason": "既報",
+    "note": "10月27日号「アイドルマスター ポータル、緊急メンテ終了」と内容が同じ。使える機能と使えない機能、アイドル名鑑が対応中という点まで一致し、新しい事実も当日のトリガーも無い"
+   },
+   {
+    "dedup_key": "valiv-manaka-birthday-live-2026-postponed",
+    "reason": "重複",
+    "note": "灯里愛夏の延期公演は dsva 面が dsva-va-liv-manaka-birthday-live-2026 で記事にしている。ゲストの関裕美は別ブランドのアイドルがゲスト出演するだけなので、general にも joint にもならない"
+   }
+  ],
+  "cross_brand": []
+ }
+}

@@ -1117,6 +1117,12 @@ x_posts:
 
 # --- リンク元から引き継いだ種別(リンク先1つずつ。キーは pipelib.link_key)。合議がリンク元の告知と関係していると確かめたものだけ(classify_sources.inherit_from_links)。リンク先そのものの種別より強いときだけ効く ---
 link_types:
+  youtube.com/watch?v=zK4sFWc8FAo: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/imas_ch/status/2115043524626575685(公式)。告知の#4アフタートーク(メン限)の配信ページ
+  youtube.com/watch?v=X8snEPfj0J8: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/valiv_official/status/2115005596386619695(公式)。告知の上水流宇宙のソーラン節ショートそのもの
+  youtube.com/watch?v=WottZLGjB9o: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/valiv_official/status/2115089011614384242(公式)。告知の特番(ヴイアラ3rdLIVE＆MEETING)の配信ページ
+  youtube.com/watch?v=Rc9YCOqcp98: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://idolmaster-official.jp/news/01_20184(公式)。告知の次回放送(11/10 天音ゆかり回)の配信ページ
+  docs.google.com/forms/d/e/1FAIpQLScDedjs1kcT9aYXTj7axsb4ZpoxGcHxvYWaLOxTYzIZdvPiwA: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://x.com/valiv_official/status/2115089011614384242(公式)。告知の特番の募集フォーム。同じ企画のアンケート
+  bsp-prize.jp/title/IP00005012/: 公式          # リンク元から引き継ぎ(合議で関係を確認): https://idolmaster-official.jp/news/01_20163(公式)。告知のしーずんちびぐるみvol.1・2が新着に載っている
   x.com/i/status/2099513510493663548: 公式      # リンク元から引き継ぎ(合議で関係を確認): https://idollist.idolmaster-official.jp/search/detail/40004(公式)。同じ秋月涼の誕生日祝い投稿で、告知が引用する元
   www.tufave.com/pages/mayu_sakuma: 公式        # リンク元から引き継ぎ(合議で関係を確認): https://idolmaster-official.jp/news/01_20188(公式)。告知の販売サイトと同一のネックレス販売ページ
   www.the-chara.com/blog/?p=123566: 公式        # リンク元から引き継ぎ(合議で関係を確認): https://idolmaster-official.jp/news/01_20162(公式)。よこはまコスモワールドコラボの特設ページと同一

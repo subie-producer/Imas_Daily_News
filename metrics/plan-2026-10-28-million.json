@@ -1,0 +1,387 @@
+{
+ "decisions": {
+  "million-scratch-second-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/27号の記事と同内容。販売開始は11/2で当日のトリガー無し"
+  },
+  "million-theater-talk-party-vol-68-2026": {
+   "action": "article",
+   "angle": "ユニットオフショットVol.68は10月30日23:59まで。ハピピス♡メンバーのユニットトーク、交換期限11月9日14:59、ミリコレ！ガシャに北沢志保SR追加",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "10/27号は詳細後日としていたため、期間・報酬・ガシャは新事実"
+  },
+  "million-revival-fes-2026-10": {
+   "action": "article",
+   "angle": "復刻ミリオンフェスは10月31日14:59まで。本日15時から日替わりピックアップは永吉昴に切り替わり、引くたびにキラメキのしずくも獲得できる",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "報酬・マスターピースセット・公式の同催し主題を統合"
+  },
+  "hinata-sobetsu-apple-visitors-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "聖地巡礼・ファン現象でありculture(general面)の対象"
+  },
+  "million-rio-song-addition-bug-fix-2026": {
+   "action": "article",
+   "angle": "百瀬莉緒のアイドルグランプリで楽曲が追加されない不具合を10月27日17:20頃に修正し、お詫びにフラッシュGPメダルiGP引換券を配布",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "10/27号は不具合発生のみ。修正と補填は新事実"
+  },
+  "million-fes-masterpiece-set-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-revival-fes-2026-10",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "フェス限定マスターピースセットは復刻フェスと同じ施策"
+  },
+  "million-revival-million-fes-2026-10": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-revival-fes-2026-10",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ復刻ミリオンフェス"
+  },
+  "million-theater-talk-party-offshot-68-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-theater-talk-party-vol-68-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じイベント"
+  },
+  "million-off-time-voice-vol4-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/27号の記事に同じ事実のみ"
+  },
+  "million-idol-grand-prix-rio-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/27号の記事と同内容。不具合修正は別主題で記事化"
+  },
+  "million-platinum-star-tiara-happy-pease-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "販売期限は10/27に終了済みで10/27号に記事あり"
+  },
+  "million-event-item-exchange-additions-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/27号の記事と同内容"
+  },
+  "million-revival-fes-rewards-2026-10": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-revival-fes-2026-10",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ復刻ミリオンフェスの報酬"
+  },
+  "million-princess-a-la-mode-purchase-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/27号の記事と同内容"
+  },
+  "million-off-time-voice-vol4-bundle-campaign-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "両セット購入特典は10/27号の記事に既出"
+  },
+  "hinata-sobetsu-connection-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "現地ルポの二次情報でculture(general面)の対象"
+  },
+  "million-theater-talk-party-vol68-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-theater-talk-party-vol-68-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じイベント"
+  },
+  "elena-birthday-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/26号に記事あり。新事実なし"
+  },
+  "million-special-solo-records-event-setlist-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "個人投稿のみの未確認情報で、イベントは10/25に終了済み"
+  },
+  "million-weekend-harlequin-video-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/23号・10/26号に記事あり。公開は10/26で終了済み"
+  },
+  "million-special-solo-records-guinness-event-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "ギネス認定は10/26号に記事あり。イベントは終了済み"
+  },
+  "million-special-solo-records-guinness-certificate-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "ギネス認定は10/26号に記事あり。新事実なし"
+  },
+  "million-bot10-invisible-light": {
+   "action": "article",
+   "angle": "「THE IDOLM@STER MILLION BATTLE OF THE＠TER 10 INVISIBLE LIGHT」が本日10月28日発売。対象店舗で購入すると店舗特典が付く",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(発売)。当日のトリガー"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "million-theater-talk-party-vol-68-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "ユニットオフショットVol.68は10月30日23:59まで。ハピピス♡メンバーのユニットトーク、交換期限11月9日14:59、ミリコレ！ガシャに北沢志保SR追加",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "million-theater-talk-party-vol-68-2026",
+    "candidate_ids": [
+     "202610280221-explore-1",
+     "202610280221-grok-14",
+     "202610270222-grok-8"
+    ]
+   },
+   {
+    "slug": "million-revival-fes-2026-10",
+    "brand": "million",
+    "rank": "medium",
+    "angle": "復刻ミリオンフェスは10月31日14:59まで。本日15時から日替わりピックアップは永吉昴に切り替わり、引くたびにキラメキのしずくも獲得できる",
+    "purpose": "新情報",
+    "lead_score": 60,
+    "dedup_key": "million-revival-fes-2026-10",
+    "candidate_ids": [
+     "202610280221-explore-2",
+     "202610280221-grok-12",
+     "202610280221-grok-13",
+     "202610280221-grok-21"
+    ]
+   },
+   {
+    "slug": "million-rio-song-addition-bug-fix-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "百瀬莉緒のアイドルグランプリで楽曲が追加されない不具合を10月27日17:20頃に修正し、お詫びにフラッシュGPメダルiGP引換券を配布",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "million-rio-song-addition-bug-fix-2026",
+    "candidate_ids": [
+     "202610280221-grok-11"
+    ]
+   },
+   {
+    "slug": "million-bot10-invisible-light",
+    "brand": "million",
+    "rank": "small",
+    "angle": "「THE IDOLM@STER MILLION BATTLE OF THE＠TER 10 INVISIBLE LIGHT」が本日10月28日発売。対象店舗で購入すると店舗特典が付く",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "million-bot10-invisible-light",
+    "candidate_ids": [
+     "sched-2026-10-28-million-bot10-invisible-light-発売"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "million-scratch-second-2026",
+    "reason": "既報",
+    "note": "10/27号の記事と同内容。販売開始は11/2で当日のトリガー無し"
+   },
+   {
+    "dedup_key": "hinata-sobetsu-apple-visitors-2026",
+    "reason": "面違い",
+    "note": "聖地巡礼・ファン現象でありculture(general面)の対象"
+   },
+   {
+    "dedup_key": "million-off-time-voice-vol4-2026",
+    "reason": "既報",
+    "note": "10/27号の記事に同じ事実のみ"
+   },
+   {
+    "dedup_key": "million-idol-grand-prix-rio-2026",
+    "reason": "既報",
+    "note": "10/27号の記事と同内容。不具合修正は別主題で記事化"
+   },
+   {
+    "dedup_key": "million-platinum-star-tiara-happy-pease-2026",
+    "reason": "既報",
+    "note": "販売期限は10/27に終了済みで10/27号に記事あり"
+   },
+   {
+    "dedup_key": "million-event-item-exchange-additions-2026",
+    "reason": "既報",
+    "note": "10/27号の記事と同内容"
+   },
+   {
+    "dedup_key": "million-princess-a-la-mode-purchase-2026",
+    "reason": "既報",
+    "note": "10/27号の記事と同内容"
+   },
+   {
+    "dedup_key": "million-off-time-voice-vol4-bundle-campaign-2026",
+    "reason": "既報",
+    "note": "両セット購入特典は10/27号の記事に既出"
+   },
+   {
+    "dedup_key": "hinata-sobetsu-connection-2026",
+    "reason": "面違い",
+    "note": "現地ルポの二次情報でculture(general面)の対象"
+   },
+   {
+    "dedup_key": "elena-birthday-2026",
+    "reason": "既報",
+    "note": "10/26号に記事あり。新事実なし"
+   },
+   {
+    "dedup_key": "million-special-solo-records-event-setlist-2026",
+    "reason": "出典不足",
+    "note": "個人投稿のみの未確認情報で、イベントは10/25に終了済み"
+   },
+   {
+    "dedup_key": "million-weekend-harlequin-video-2026",
+    "reason": "既報",
+    "note": "10/23号・10/26号に記事あり。公開は10/26で終了済み"
+   },
+   {
+    "dedup_key": "million-special-solo-records-guinness-event-2026",
+    "reason": "既報",
+    "note": "ギネス認定は10/26号に記事あり。イベントは終了済み"
+   },
+   {
+    "dedup_key": "million-special-solo-records-guinness-certificate-2026",
+    "reason": "既報",
+    "note": "ギネス認定は10/26号に記事あり。新事実なし"
+   }
+  ],
+  "cross_brand": []
+ }
+}

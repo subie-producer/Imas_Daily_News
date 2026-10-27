@@ -1,0 +1,276 @@
+{
+ "decisions": {
+  "tours-halloween-commu-2026": {
+   "action": "article",
+   "angle": "ツアマスのハロウィンコミュは10月31日から、ログインボーナスは10月29日7時から始まりお菓子を配布する",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "tours-rhythm-live-recording-pstage-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/27の記事に参加費・特典・整理券制・定員がすべて既出。新事実もトリガーも無い"
+  },
+  "tours-s2-parallel-shibuya-rin-2026": {
+   "action": "article",
+   "angle": "S2弾でUR渋谷凛のパラレルカード「バイオレットフェアリー」が公開された",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "tours-s2-cardlist-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/27の記事に紫雲清夏のSPパラレルカードも稼働日も既出"
+  },
+  "765-961-ultimate-once-and-for-all-extension-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "765-961-idol-ultimate-ticket-2027",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ先行受付の締切の話。延長は二次情報(未確認)なので、締切記事の中で公式確認を促す形で扱う"
+  },
+  "tours-producers-station-nakano-panels-2026": {
+   "action": "article",
+   "angle": "Pステ中野の2Fで10月29日から、渋谷凛とS.E.Mの新規原画パネル2種を展示する",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "tours-s2-extra-commu-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/26の記事「ツアマスS2、編成でエクストラコミュ」と同じ内容"
+  },
+  "tours-s2-communication-video-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/27の記事「ツアマスS2弾、舞田類らとの交流動画」と同じ内容"
+  },
+  "joint-tours-s1-ex-2026": {
+   "action": "article",
+   "angle": "ツアマスS1弾Exのツアーズレア導入は今夜25時59分、開幕記念ログインボーナスは23時59分で終わる",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "tours-s1-ex-2026-09 を統合。読者が動けるのは今日が最後"
+  },
+  "tours-s1-ex-2026-09": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "joint-tours-s1-ex-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ施策(S1弾Exの終了)"
+  },
+  "765-961-xr-live-2027": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "765-961-idol-ultimate-ticket-2027",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ公演の同じ先行受付締切。公演概要・日程は既報"
+  },
+  "sidem-shinycolors-sparkle-showdown-2027-06": {
+   "action": "article",
+   "angle": "SideM×SHINY COLORSの合同ライブ先行当選者の入金は今日23時59分が最終日",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "当日のトリガー(入金締切)"
+  },
+  "tours-kameari-arcade-closure-2026": {
+   "action": "article",
+   "angle": "東京レジャーランド亀有店でツアマスを遊べるのは今日が最終日",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "10/21の記事の既報だが、稼働終了が当日のトリガー"
+  },
+  "765-961-idol-ultimate-ticket-2027": {
+   "action": "article",
+   "angle": "765×961「IDOL ULTIMATE ONCE AND FOR ALL」のアソビストアプレミアム会員先行は今日23時59分が締切で、11月8日までの延長の報もある",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 75,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "xr-live-2027 と延長の主題を統合。延長は二次情報で未確認のため、公式の最新表示を確認するよう書く"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "joint-tours-halloween-commu-2026",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "ツアマスのハロウィンコミュは10月31日から、ログインボーナスは10月29日7時から始まりお菓子を配布する",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "tours-halloween-commu-2026",
+    "candidate_ids": [
+     "202610280221-grok-56"
+    ]
+   },
+   {
+    "slug": "joint-tours-s2-parallel-shibuya-rin-2026",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "S2弾でUR渋谷凛のパラレルカード「バイオレットフェアリー」が公開された",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "tours-s2-parallel-shibuya-rin-2026",
+    "candidate_ids": [
+     "202610280221-grok-59"
+    ]
+   },
+   {
+    "slug": "joint-tours-producers-station-nakano-panels-2026",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "Pステ中野の2Fで10月29日から、渋谷凛とS.E.Mの新規原画パネル2種を展示する",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "tours-producers-station-nakano-panels-2026",
+    "candidate_ids": [
+     "202610280221-grok-63"
+    ]
+   },
+   {
+    "slug": "joint-tours-s1-ex-2026",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "ツアマスS1弾Exのツアーズレア導入は今夜25時59分、開幕記念ログインボーナスは23時59分で終わる",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "joint-tours-s1-ex-2026",
+    "candidate_ids": [
+     "sched-2026-10-28-joint-tours-s1-ex-2026-終了",
+     "sched-2026-10-28-tours-s1-ex-2026-09-終了",
+     "sched-2026-10-28-tours-s1-ex-2026-09-終了-src1"
+    ]
+   },
+   {
+    "slug": "joint-sidem-shinycolors-sparkle-showdown-2027-06",
+    "brand": "joint",
+    "rank": "medium",
+    "angle": "SideM×SHINY COLORSの合同ライブ先行当選者の入金は今日23時59分が最終日",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "sidem-shinycolors-sparkle-showdown-2027-06",
+    "candidate_ids": [
+     "sched-2026-10-28-sidem-shinycolors-sparkle-showdown-2027-06-締切"
+    ]
+   },
+   {
+    "slug": "joint-tours-kameari-arcade-closure-2026",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "東京レジャーランド亀有店でツアマスを遊べるのは今日が最終日",
+    "purpose": "期日の知らせ",
+    "lead_score": 10,
+    "dedup_key": "tours-kameari-arcade-closure-2026",
+    "candidate_ids": [
+     "sched-2026-10-28-tours-kameari-arcade-closure-2026-終了"
+    ]
+   },
+   {
+    "slug": "joint-765-961-idol-ultimate-ticket-2027",
+    "brand": "joint",
+    "rank": "medium",
+    "angle": "765×961「IDOL ULTIMATE ONCE AND FOR ALL」のアソビストアプレミアム会員先行は今日23時59分が締切で、11月8日までの延長の報もある",
+    "purpose": "期日の知らせ",
+    "lead_score": 75,
+    "dedup_key": "765-961-idol-ultimate-ticket-2027",
+    "candidate_ids": [
+     "sched-2026-10-28-765-961-idol-ultimate-ticket-2027-締切",
+     "sched-2026-10-28-765-961-idol-ultimate-ticket-2027-締切-src1",
+     "sched-2026-10-28-765-961-idol-ultimate-ticket-2027-締切-src2",
+     "202610280221-grok-62",
+     "sched-2026-10-28-765-961-xr-live-2027-締切",
+     "sched-2026-10-28-765-961-xr-live-2027-締切-src1"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "tours-rhythm-live-recording-pstage-2026",
+    "reason": "既報",
+    "note": "10/27の記事に参加費・特典・整理券制・定員がすべて既出。新事実もトリガーも無い"
+   },
+   {
+    "dedup_key": "tours-s2-cardlist-2026",
+    "reason": "既報",
+    "note": "10/27の記事に紫雲清夏のSPパラレルカードも稼働日も既出"
+   },
+   {
+    "dedup_key": "tours-s2-extra-commu-2026",
+    "reason": "既報",
+    "note": "10/26の記事「ツアマスS2、編成でエクストラコミュ」と同じ内容"
+   },
+   {
+    "dedup_key": "tours-s2-communication-video-2026",
+    "reason": "既報",
+    "note": "10/27の記事「ツアマスS2弾、舞田類らとの交流動画」と同じ内容"
+   }
+  ],
+  "cross_brand": []
+ }
+}

@@ -1,0 +1,420 @@
+{
+ "decisions": {
+  "imas-birthdays-2026-10-27": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "誕生日動画と強化月間の終了は10/27号で記事済み。強化月間は今朝4:59に終了済み"
+  },
+  "gakumas-espresto-sugary-prize-2027": {
+   "action": "article",
+   "angle": "花海咲季・花海佑芽の「天使と悪魔」プライズは各全1種・約18cmで、2027年4月から全国のクレーンゲームに順次登場する",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "既報にない新事実はサイズ(約18cm)と全1種の仕様"
+  },
+  "imas-radio-next-2026-11-10": {
+   "action": "article",
+   "angle": "IM@S RADIOの次回放送は11月10日20時からで、ゲストは天音ゆかり、パーソナリティは平田宏美",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-garakuta-road-tsubame-gasha-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-hatsuboshi-fes-garakuta-road-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ初星フェス開始の話題"
+  },
+  "gaku-ume-another-idol-free-gasha-2026": {
+   "action": "article",
+   "angle": "花海佑芽のシーズン限定アナザーアイドルが確定する無料1連ガシャは10月29日10時59分まで",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "終了まで3日以内"
+  },
+  "gaku-tsubame-hif-scenario-pv-2026": {
+   "action": "article",
+   "angle": "雨夜燕のH.I.F編シナリオ告知PVが公開され、「私にとって、最後の『H.I.F』だ。」の台詞が掲載された",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "既報は実装告知とSTEP4のみで、PV公開は新事実"
+  },
+  "gaku-shirube-final-gifts-2026": {
+   "action": "article",
+   "angle": "「標」ファイナル公演のプレゼント受付はメッセージ類のみで、詳細は公式サイトの「ATTENTION」「Q&A」で案内される",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "物販整理券とは読者の行動が別"
+  },
+  "gaku-shirube-final-merch-2026": {
+   "action": "article",
+   "angle": "「標」ファイナルの会場物販整理券の申込は今日23時59分が締切",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約。出典のアソビチケットは503で本文未確認。既報の締切・日程を伝え直す"
+  },
+  "gaku-hif-scenario-amaya-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-tsubame-hif-scenario-pv-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じH.I.F編告知PVの話題"
+  },
+  "gaku-jyuo-idol-training-starlight-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/27号『強化月間、明朝4時59分終了』で記事済み。今朝終了済み"
+  },
+  "gaku-roar-gacha-2026": {
+   "action": "article",
+   "angle": "十王星南の「Roar」ガシャ(SRサポートカード『威風堂々・お昼寝タイム』など)は今日10時59分に終了する",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(終了)。roar-gacha-2026 を統合"
+  },
+  "roar-jouo-sena-2026": {
+   "action": "article",
+   "angle": "十王星南の「Roar」Music Videoが100万再生を突破した",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "既報はMV公開とショート動画のみで、再生数の節目は新事実"
+  },
+  "gaku-hatsuboshi-fes-garakuta-road-2026": {
+   "action": "article",
+   "angle": "初星フェス vol.6で限定Pアイドル【ガラクタロード】雨夜燕が今日11時から登場し、楽曲『ガラクタロード』(作詞Rou-hou、作曲佐藤貴文)も始まる",
+   "purpose": "新情報",
+   "rank": "large",
+   "lead_score": 70,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "開始が今日。ガシャ・楽曲の3主題を統合"
+  },
+  "gaku-garakuta-road-song-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-hatsuboshi-fes-garakuta-road-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ初星フェスの施策"
+  },
+  "gaku-achievement-loading-issue-2026": {
+   "action": "article",
+   "angle": "ver.3.5.1以降、アチーブメントの「プロデュース」「その他」でロードが進まない不具合があり、再起動で対処し修正は今後のアップデートで行う",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "curtain-damashii-new-goods-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/26号・10/16号でタペストリー等の価格・品目が記事済み"
+  },
+  "gaku-rinami-another-idol-free-gacha-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/27に終了済みで、10/26・10/27号で記事済み"
+  },
+  "gakumasu-hanami-sisters-angel-devil-figure-2027": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gakumas-espresto-sugary-prize-2027",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ花海姉妹プライズ"
+  },
+  "jewel-sale-2026": {
+   "action": "article",
+   "angle": "ジュエル12,300個を9,800円で買えるセールが今日11時に始まり、12月1日10時59分まで1人1回購入できる",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(開始)"
+  },
+  "roar-gacha-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-roar-gacha-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じRoarガシャの終了"
+  },
+  "hatsuboshi-radio-guests-20261028": {
+   "action": "article",
+   "angle": "初星学園放送部は今夜21時から、小鹿なお(月村手毬役)と川村玲奈(篠澤広役)をゲストに放送する",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(開始)"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "gaku-gakumas-espresto-sugary-prize-2027",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "花海咲季・花海佑芽の「天使と悪魔」プライズは各全1種・約18cmで、2027年4月から全国のクレーンゲームに順次登場する",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "gakumas-espresto-sugary-prize-2027",
+    "candidate_ids": [
+     "202610271834-watch-3",
+     "202610270222-grok-70"
+    ]
+   },
+   {
+    "slug": "gaku-imas-radio-next-2026-11-10",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "IM@S RADIOの次回放送は11月10日20時からで、ゲストは天音ゆかり、パーソナリティは平田宏美",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "imas-radio-next-2026-11-10",
+    "candidate_ids": [
+     "202610272334-watch-2"
+    ]
+   },
+   {
+    "slug": "gaku-ume-another-idol-free-gasha-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "花海佑芽のシーズン限定アナザーアイドルが確定する無料1連ガシャは10月29日10時59分まで",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "gaku-ume-another-idol-free-gasha-2026",
+    "candidate_ids": [
+     "202610280221-explore-5"
+    ]
+   },
+   {
+    "slug": "gaku-tsubame-hif-scenario-pv-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "雨夜燕のH.I.F編シナリオ告知PVが公開され、「私にとって、最後の『H.I.F』だ。」の台詞が掲載された",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "gaku-tsubame-hif-scenario-pv-2026",
+    "candidate_ids": [
+     "202610280221-explore-6",
+     "202610280221-grok-37"
+    ]
+   },
+   {
+    "slug": "gaku-shirube-final-gifts-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "「標」ファイナル公演のプレゼント受付はメッセージ類のみで、詳細は公式サイトの「ATTENTION」「Q&A」で案内される",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "gaku-shirube-final-gifts-2026",
+    "candidate_ids": [
+     "202610280221-grok-35"
+    ]
+   },
+   {
+    "slug": "gaku-shirube-final-merch-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "「標」ファイナルの会場物販整理券の申込は今日23時59分が締切",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "gaku-shirube-final-merch-2026",
+    "candidate_ids": [
+     "202610280221-grok-36",
+     "sched-2026-10-28-gaku-shirube-final-merch-2026-締切"
+    ]
+   },
+   {
+    "slug": "gaku-roar-gacha-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "十王星南の「Roar」ガシャ(SRサポートカード『威風堂々・お昼寝タイム』など)は今日10時59分に終了する",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "gaku-roar-gacha-2026",
+    "candidate_ids": [
+     "202610280221-grok-39",
+     "sched-2026-10-28-roar-gacha-2026-終了",
+     "sched-2026-10-28-roar-gacha-2026-終了-src1",
+     "sched-2026-10-28-roar-gacha-2026-終了-src2",
+     "sched-2026-10-28-roar-gacha-2026-終了-src3",
+     "sched-2026-10-28-roar-gacha-2026-終了-src4",
+     "sched-2026-10-28-roar-gacha-2026-終了-src5",
+     "sched-2026-10-28-roar-gacha-2026-終了-src6",
+     "sched-2026-10-28-roar-gacha-2026-終了-src7"
+    ]
+   },
+   {
+    "slug": "gaku-roar-jouo-sena-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "十王星南の「Roar」Music Videoが100万再生を突破した",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "roar-jouo-sena-2026",
+    "candidate_ids": [
+     "202610280221-grok-40"
+    ]
+   },
+   {
+    "slug": "gaku-hatsuboshi-fes-garakuta-road-2026",
+    "brand": "gaku",
+    "rank": "large",
+    "angle": "初星フェス vol.6で限定Pアイドル【ガラクタロード】雨夜燕が今日11時から登場し、楽曲『ガラクタロード』(作詞Rou-hou、作曲佐藤貴文)も始まる",
+    "purpose": "新情報",
+    "lead_score": 70,
+    "dedup_key": "gaku-hatsuboshi-fes-garakuta-road-2026",
+    "candidate_ids": [
+     "202610280221-grok-41",
+     "202610280221-explore-4",
+     "202610280221-grok-42"
+    ]
+   },
+   {
+    "slug": "gaku-achievement-loading-issue-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "ver.3.5.1以降、アチーブメントの「プロデュース」「その他」でロードが進まない不具合があり、再起動で対処し修正は今後のアップデートで行う",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "gaku-achievement-loading-issue-2026",
+    "candidate_ids": [
+     "202610280221-grok-43"
+    ]
+   },
+   {
+    "slug": "gaku-jewel-sale-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "ジュエル12,300個を9,800円で買えるセールが今日11時に始まり、12月1日10時59分まで1人1回購入できる",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "jewel-sale-2026",
+    "candidate_ids": [
+     "sched-2026-10-28-jewel-sale-2026-開始"
+    ]
+   },
+   {
+    "slug": "gaku-hatsuboshi-radio-guests-20261028",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "初星学園放送部は今夜21時から、小鹿なお(月村手毬役)と川村玲奈(篠澤広役)をゲストに放送する",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "hatsuboshi-radio-guests-20261028",
+    "candidate_ids": [
+     "sched-2026-10-28-hatsuboshi-radio-guests-20261028-開始",
+     "sched-2026-10-28-hatsuboshi-radio-guests-20261028-開始-src1"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "imas-birthdays-2026-10-27",
+    "reason": "既報",
+    "note": "誕生日動画と強化月間の終了は10/27号で記事済み。強化月間は今朝4:59に終了済み"
+   },
+   {
+    "dedup_key": "gaku-jyuo-idol-training-starlight-2026",
+    "reason": "既報",
+    "note": "10/27号『強化月間、明朝4時59分終了』で記事済み。今朝終了済み"
+   },
+   {
+    "dedup_key": "curtain-damashii-new-goods-2026",
+    "reason": "既報",
+    "note": "10/26号・10/16号でタペストリー等の価格・品目が記事済み"
+   },
+   {
+    "dedup_key": "gaku-rinami-another-idol-free-gacha-2026",
+    "reason": "既報",
+    "note": "10/27に終了済みで、10/26・10/27号で記事済み"
+   }
+  ],
+  "cross_brand": []
+ }
+}

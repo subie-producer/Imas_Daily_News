@@ -1,0 +1,26 @@
+{
+ "decisions": {
+  "765-961-idol-ultimate-2027-ticket": {
+   "action": "cross_brand",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "joint-765-961-idol-ultimate-ticket-2027",
+   "reason": "",
+   "note": "765×961共同名義のライブ。アソビストア先行の締切(今日23:59)は合同面が既に記事化済み"
+  }
+ },
+ "plan": {
+  "articles": [],
+  "dropped": [],
+  "cross_brand": [
+   {
+    "slug": "joint-765-961-idol-ultimate-ticket-2027",
+    "dedup_key": "765-961-idol-ultimate-2027-ticket",
+    "note": "765×961共同名義のライブ。アソビストア先行の締切(今日23:59)は合同面が既に記事化済み"
+   }
+  ]
+ }
+}

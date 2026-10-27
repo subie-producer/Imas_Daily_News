@@ -1,0 +1,462 @@
+{
+ "decisions": {
+  "sidem-knick-knacks-vol2-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10-27号で全27種・価格・特典を記事化済み。新事実なし"
+  },
+  "sidem-monthly-theme-song-vol-3-goods-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10-24号で受注11/8までを記事化済み。締切は3日以内でない"
+  },
+  "sidem-knick-knacks-vol2-hands-2026": {
+   "action": "article",
+   "angle": "Knick-Knacks Vol.2のポップアップストアがハンズ全国15店舗で11月13日から12月6日まで開かれる",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "既報の本文に会期・店舗一覧が無い"
+  },
+  "315-pro-night-public-recording-goods-2026": {
+   "action": "article",
+   "angle": "315プロNight!出張版公開録音のグッズ先行受注は11月1日23:59まで、店頭は12月上旬からアニメイトで発売",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "過去記事に出張版公開録音グッズの話は無い"
+  },
+  "sidem-one-panel-highjoker-shinsoku-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10-27号で10月31日公開を記事化済み"
+  },
+  "sidem-content-services-maintenance-ended-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10-27号で利用再開を記事化済み"
+  },
+  "sidem-producer-meeting-ajewelholic-payment-extension-2026": {
+   "action": "article",
+   "angle": "AJewelholIc!!!のアソビストアプレミアム会員先行で、メンテの影響を受けた人の延長入金は今日23:59が最終期限",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "プロミ2027の別キーはこの記事に統合。SideM×シャニマス合同ライブの入金とは別の公演"
+  },
+  "sidem-joypolis-dippin-dots-trend-2026-10": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿のみ"
+  },
+  "sidem-315-night-mofumofuen-2026-11": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10-25号で11月もふもふえん回を記事化済み"
+  },
+  "sidem-sems-lifes-side-menu-mv-200k-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10-26号で記事化済み"
+  },
+  "sidem-cfirst-lailai-bishoku-mv-100k-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10-26号で記事化済み"
+  },
+  "sidem-legenders-refrain-atrium-ensemble-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "同人・ファン主催",
+   "note": "ファン主催の演奏企画の動画で、公式が関わる事実が素材に無い"
+  },
+  "sidem-2dmv-comments-goods-ds-altessimo-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10-23号で制作コメントとグッズ紹介を記事化済み。受付11/1まではまだ3日以内でない"
+  },
+  "sidem-renaissance-fitness-fan-visit-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人の体験投稿"
+  },
+  "sidem-cho-retroseparty-goods-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "ミニスカーフ・リングライトとも10-26/27号で記事化済み"
+  },
+  "sidem-howanuivol7-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10-27号でほわぬいvol.6・7を記事化済み"
+  },
+  "sidem-joypolis3-second-half-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10-27号で後半メニューと誕生日企画を記事化済み"
+  },
+  "sidem-agatsuma-collab-2026": {
+   "action": "article",
+   "angle": "吾妻6町村のデジタルスタンプラリー「あがつまニンニン!」が今日から12月13日まで始まる",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "開幕日。nin-nin はここへ統合"
+  },
+  "sidem-daimaru-matsuzakaya-2026": {
+   "action": "article",
+   "angle": "SideM×大丸松坂屋(vol.2)のポップアップが今日、大丸東京店3階で開幕し、今日は終日整理券対象で、オンライン受注も始まる",
+   "purpose": "期日の知らせ",
+   "rank": "large",
+   "lead_score": 70,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "大丸の5キーを1記事に統合。前日17時受付の整理券も本文に"
+  },
+  "sidem-daimaru-vol2-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-daimaru-matsuzakaya-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ大丸東京店の開幕"
+  },
+  "sidem-daimaru-matsuzakaya-popup-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-daimaru-matsuzakaya-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ大丸東京店の開幕"
+  },
+  "sidem-daimaru-tokyo-vol-2-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-daimaru-matsuzakaya-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ大丸東京店の開幕"
+  },
+  "sidem-fbfes-wgf-2026-stage-greeting": {
+   "action": "article",
+   "angle": "劇場版SideMの舞台挨拶(11月21日・新宿ピカデリー)のプレリク先行は今日23:59が締切",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ローソンチケットで申込、1人2枚まで"
+  },
+  "sidem-agatsuma-nin-nin-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-agatsuma-collab-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ吾妻コラボの開幕"
+  },
+  "sidem-promi-2027-payment-extension": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-producer-meeting-ajewelholic-payment-extension-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ延長入金の締切"
+  },
+  "sidem-tabi-masu-nagoya-2026": {
+   "action": "article",
+   "angle": "JR東海×SideMの旅マス名古屋企画は10月31日で終了。新幹線のボイスドラマとクリアカード引換はあと3日",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "終了3日前の続報予約"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "sidem-knick-knacks-vol2-hands-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "Knick-Knacks Vol.2のポップアップストアがハンズ全国15店舗で11月13日から12月6日まで開かれる",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "sidem-knick-knacks-vol2-hands-2026",
+    "candidate_ids": [
+     "202610271834-watch-2"
+    ]
+   },
+   {
+    "slug": "sidem-315-pro-night-public-recording-goods-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "315プロNight!出張版公開録音のグッズ先行受注は11月1日23:59まで、店頭は12月上旬からアニメイトで発売",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "315-pro-night-public-recording-goods-2026",
+    "candidate_ids": [
+     "202610280221-grok-30"
+    ]
+   },
+   {
+    "slug": "sidem-producer-meeting-ajewelholic-payment-extension-2026",
+    "brand": "sidem",
+    "rank": "medium",
+    "angle": "AJewelholIc!!!のアソビストアプレミアム会員先行で、メンテの影響を受けた人の延長入金は今日23:59が最終期限",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "sidem-producer-meeting-ajewelholic-payment-extension-2026",
+    "candidate_ids": [
+     "202610280221-grok-33",
+     "sched-2026-10-28-sidem-producer-meeting-ajewelholic-payment-extension-2026-締切",
+     "sched-2026-10-28-sidem-promi-2027-payment-extension-締切",
+     "sched-2026-10-28-sidem-promi-2027-payment-extension-締切-src1"
+    ]
+   },
+   {
+    "slug": "sidem-agatsuma-collab-2026",
+    "brand": "sidem",
+    "rank": "medium",
+    "angle": "吾妻6町村のデジタルスタンプラリー「あがつまニンニン!」が今日から12月13日まで始まる",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "sidem-agatsuma-collab-2026",
+    "candidate_ids": [
+     "sched-2026-10-28-sidem-agatsuma-collab-2026-開幕",
+     "sched-2026-10-28-sidem-agatsuma-nin-nin-2026-開幕"
+    ]
+   },
+   {
+    "slug": "sidem-daimaru-matsuzakaya-2026",
+    "brand": "sidem",
+    "rank": "large",
+    "angle": "SideM×大丸松坂屋(vol.2)のポップアップが今日、大丸東京店3階で開幕し、今日は終日整理券対象で、オンライン受注も始まる",
+    "purpose": "期日の知らせ",
+    "lead_score": 70,
+    "dedup_key": "sidem-daimaru-matsuzakaya-2026",
+    "candidate_ids": [
+     "sched-2026-10-28-sidem-daimaru-matsuzakaya-2026-開幕",
+     "sched-2026-10-28-sidem-daimaru-vol2-2026-開幕",
+     "sched-2026-10-28-sidem-daimaru-vol2-2026-開幕-src1",
+     "sched-2026-10-28-sidem-daimaru-vol2-2026-開幕-src2",
+     "sched-2026-10-28-sidem-daimaru-matsuzakaya-popup-2026-開幕",
+     "sched-2026-10-28-sidem-daimaru-matsuzakaya-popup-2026-開幕-src1",
+     "sched-2026-10-28-sidem-daimaru-tokyo-vol-2-2026-開幕"
+    ]
+   },
+   {
+    "slug": "sidem-fbfes-wgf-2026-stage-greeting",
+    "brand": "sidem",
+    "rank": "medium",
+    "angle": "劇場版SideMの舞台挨拶(11月21日・新宿ピカデリー)のプレリク先行は今日23:59が締切",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "sidem-fbfes-wgf-2026-stage-greeting",
+    "candidate_ids": [
+     "sched-2026-10-28-sidem-fbfes-wgf-2026-stage-greeting-締切",
+     "sched-2026-10-28-sidem-fbfes-wgf-2026-stage-greeting-締切-src1"
+    ]
+   },
+   {
+    "slug": "sidem-tabi-masu-nagoya-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "JR東海×SideMの旅マス名古屋企画は10月31日で終了。新幹線のボイスドラマとクリアカード引換はあと3日",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "sidem-tabi-masu-nagoya-2026",
+    "candidate_ids": [
+     "sched-2026-10-28-sidem-tabi-masu-nagoya-2026-締切前"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "sidem-knick-knacks-vol2-2026",
+    "reason": "既報",
+    "note": "10-27号で全27種・価格・特典を記事化済み。新事実なし"
+   },
+   {
+    "dedup_key": "sidem-monthly-theme-song-vol-3-goods-2026",
+    "reason": "既報",
+    "note": "10-24号で受注11/8までを記事化済み。締切は3日以内でない"
+   },
+   {
+    "dedup_key": "sidem-one-panel-highjoker-shinsoku-2026",
+    "reason": "既報",
+    "note": "10-27号で10月31日公開を記事化済み"
+   },
+   {
+    "dedup_key": "sidem-content-services-maintenance-ended-2026",
+    "reason": "既報",
+    "note": "10-27号で利用再開を記事化済み"
+   },
+   {
+    "dedup_key": "sidem-joypolis-dippin-dots-trend-2026-10",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿のみ"
+   },
+   {
+    "dedup_key": "sidem-315-night-mofumofuen-2026-11",
+    "reason": "既報",
+    "note": "10-25号で11月もふもふえん回を記事化済み"
+   },
+   {
+    "dedup_key": "sidem-sems-lifes-side-menu-mv-200k-2026",
+    "reason": "既報",
+    "note": "10-26号で記事化済み"
+   },
+   {
+    "dedup_key": "sidem-cfirst-lailai-bishoku-mv-100k-2026",
+    "reason": "既報",
+    "note": "10-26号で記事化済み"
+   },
+   {
+    "dedup_key": "sidem-legenders-refrain-atrium-ensemble-2026",
+    "reason": "同人・ファン主催",
+    "note": "ファン主催の演奏企画の動画で、公式が関わる事実が素材に無い"
+   },
+   {
+    "dedup_key": "sidem-2dmv-comments-goods-ds-altessimo-2026",
+    "reason": "既報",
+    "note": "10-23号で制作コメントとグッズ紹介を記事化済み。受付11/1まではまだ3日以内でない"
+   },
+   {
+    "dedup_key": "sidem-renaissance-fitness-fan-visit-2026",
+    "reason": "個人の話題",
+    "note": "個人の体験投稿"
+   },
+   {
+    "dedup_key": "sidem-cho-retroseparty-goods-2026",
+    "reason": "既報",
+    "note": "ミニスカーフ・リングライトとも10-26/27号で記事化済み"
+   },
+   {
+    "dedup_key": "sidem-howanuivol7-2026",
+    "reason": "既報",
+    "note": "10-27号でほわぬいvol.6・7を記事化済み"
+   },
+   {
+    "dedup_key": "sidem-joypolis3-second-half-2026",
+    "reason": "既報",
+    "note": "10-27号で後半メニューと誕生日企画を記事化済み"
+   }
+  ],
+  "cross_brand": []
+ }
+}

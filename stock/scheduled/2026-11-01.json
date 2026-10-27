@@ -1619,5 +1619,47 @@
   "src_candidate_id": "202610241231-explore-0",
   "companion_of": "sched-2026-11-01-cinderella-astromeda-popup-akihabara-2026-終了",
   "src_dedup_key": "cinderella-astromeda-popup-akihabara-2026"
+ },
+ {
+  "id": "sched-2026-11-01-cg-rose-tea-parlor-2026-shinsaibashi-締切前",
+  "dedup_key": "cg-rose-tea-parlor-2026-shinsaibashi",
+  "brand": "cg",
+  "subject": "Rose Tea Parlor 心斎橋店",
+  "kind": "締切前",
+  "note": "最終日の3日前。心斎橋店のカフェに行ける",
+  "reserved_on": "2026-10-28",
+  "occurs_on": "2026-11-04",
+  "title": "シンデレラガールズ、Rose Tea Parlorコラボカフェ開催決定",
+  "url": "https://idolmaster-official.jp/news/01_19811",
+  "source_type": "公式",
+  "facts": [
+   "心斎橋店は10月28日から11月04日まで開催、テーマは「Rose Tea Parlor」「Crescent Princess」"
+  ],
+  "via": "",
+  "verify": "confirmed",
+  "src_candidate_id": "sched-2026-10-28-cg-rose-tea-parlor-2026-shinsaibashi-開幕"
+ },
+ {
+  "id": "sched-2026-11-01-315-pro-night-public-recording-goods-2026-締切",
+  "dedup_key": "315-pro-night-public-recording-goods-2026",
+  "brand": "sidem",
+  "subject": "315プロNight! 出張版公開録音グッズ先行受注",
+  "kind": "締切",
+  "note": "23:59で先行受注が締切。最後の申込日",
+  "reserved_on": "2026-10-28",
+  "occurs_on": "2026-11-01",
+  "title": "315プロNight! 出張版公開録音グッズの先行受注と店頭発売",
+  "url": "https://x.com/SideM_lantis/status/2115012138381312026",
+  "source_type": "準公式",
+  "facts": [
+   "315プロNight! 出張版 公開録音のイベントグッズが告知された。",
+   "先行受注販売: 〜11/1(日)23:59",
+   "店頭発売: 2026年12月上旬よりアニメイト各店舗で販売開始",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "unconfirmed",
+  "deadline": "2026-11-01",
+  "src_candidate_id": "202610280221-grok-30"
  }
 ]

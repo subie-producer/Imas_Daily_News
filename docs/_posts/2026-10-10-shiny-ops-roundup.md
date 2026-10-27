@@ -4,8 +4,13 @@ edition: "2026-10-10"
 brand: shiny
 src: 公式
 rank: roundup
-corrected: false
-corrections: []
+corrected: true
+corrections:
+- at: "2026-10-27T22:15:00+09:00"
+  by: 編集部(出典の日付の欠陥の修正)
+  initial: "出典「アイドルマスター シャイニーカラーズ公式「有償限定 8.5th Anniversary 72時間限定パラコレセレチケ付きステップアップガシャ」」の日付 2026年10月9日"
+  corrected_to: "同じ出典の日付 2026年10月10日"
+  note: Xの投稿日時を日本時間に直さずに日付にしていたため、日本時間10月10日0時台の投稿を前日の10月9日としていた。本文は変えていない
 candidate_ids:
 - 202610100218-grok-30
 - 202610100218-grok-31
@@ -23,7 +28,7 @@ tags:
 - ガシャ
 - キャンペーン
 sources:
-- label: アイドルマスター シャイニーカラーズ公式「有償限定 8.5th Anniversary 72時間限定パラコレセレチケ付きステップアップガシャ」(2026年10月9日)
+- label: アイドルマスター シャイニーカラーズ公式「有償限定 8.5th Anniversary 72時間限定パラコレセレチケ付きステップアップガシャ」(2026年10月10日)
   url: https://x.com/imassc_official/status/2108573450285490512
   type: 公式
 - label: シャニソン公式「縦画面フォーカスカメラ追加楽曲」(2026年10月9日)

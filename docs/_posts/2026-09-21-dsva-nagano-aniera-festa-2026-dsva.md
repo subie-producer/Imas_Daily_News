@@ -4,8 +4,13 @@ edition: "2026-09-21"
 brand: dsva
 src: 当事者
 rank: small
-corrected: false
-corrections: []
+corrected: true
+corrections:
+- at: "2026-10-27T22:30:00+09:00"
+  by: 編集部(出典の種別の判定の欠陥の修正)
+  initial: "出典「ナガノアニエラフェスタ公式「NAGANO ANIERA FESTA 2026」(2026年)」の種別: 当事者"
+  corrected_to: "同じ出典の種別: 公式"
+  note: 編集長の規則(2026-10-21)により、公式の投稿・ページからリンクされ、告知と関係すると確かめた出典を公式に改めた。本文は変えていない
 candidate_ids:
 - 202609200734-explore-13
 - 202609201233-explore-16
@@ -23,7 +28,7 @@ tags:
 sources:
 - label: ナガノアニエラフェスタ公式「NAGANO ANIERA FESTA 2026」(2026年)
   url: https://aniera-festa.com/
-  type: 当事者
+  type: 公式
 - label: ナガノアニエラフェスタ公式「ナガノアニエラフェスタ2026 当日券について」(2026年9月19日)
   url: https://aniera-festa.com/news/day-ticket26/
   type: 当事者

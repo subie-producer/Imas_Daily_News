@@ -4,8 +4,13 @@ edition: "2026-10-03"
 brand: sidem
 src: 二次情報
 rank: roundup
-corrected: false
-corrections: []
+corrected: true
+corrections:
+- at: "2026-10-27T22:30:00+09:00"
+  by: 編集部(出典の種別の判定の欠陥の修正)
+  initial: "出典「Linkfire「彩『らんまん開花!』」(日付記載なし)」「Linkfire「THE 虎牙道『宵闇のイリュージョン』」(日付記載なし)」の種別: 二次情報・二次情報"
+  corrected_to: "同じ出典の種別: 準公式・準公式"
+  note: 編集長の規則(2026-10-21)により、準公式の投稿・ページからリンクされ、告知と関係すると確かめた出典を準公式に改めた。本文は変えていない
 candidate_ids:
 - 202610030230-explore-2
 - 202610030230-grok-44
@@ -24,7 +29,7 @@ sources:
   type: 準公式
 - label: Linkfire「彩『らんまん開花!』」(日付記載なし)
   url: https://lnk.to/SAI_2DMV
-  type: 二次情報
+  type: 準公式
 - label: Lantis「SideM TRANSCENDENT T@LESサブスク配信」(2026年10月2日)
   url: https://x.com/SideM_lantis/status/2105901298273169513
   type: 準公式
@@ -36,7 +41,7 @@ sources:
   type: 準公式
 - label: Linkfire「THE 虎牙道『宵闇のイリュージョン』」(日付記載なし)
   url: https://lnk.to/THEKOGADO_2DMV
-  type: 二次情報
+  type: 準公式
 event_date: "2026-10-02"
 title_fact_ids:
 - F4

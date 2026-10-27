@@ -4,8 +4,13 @@ edition: "2026-10-11"
 brand: sidem
 src: 準公式
 rank: medium
-corrected: false
-corrections: []
+corrected: true
+corrections:
+- at: "2026-10-27T22:30:00+09:00"
+  by: 編集部(出典の種別の判定の欠陥の修正)
+  initial: "出典「Lantis「THE IDOLM@STER SideM ～P@SSION CHALLENGE We are 315！～ MONTHLY THEME SONG 13 Jupiter」（2026-10-09）」の種別: 準公式"
+  corrected_to: "同じ出典の種別: 公式"
+  note: 編集長の規則(2026-10-21)により、公式の投稿・ページからリンクされ、告知と関係すると確かめた出典を公式に改めた。本文は変えていない
 candidate_ids:
 - 202610110238-grok-42
 title: SideM Jupiterのジャケットと試聴動画公開
@@ -20,7 +25,7 @@ sources:
   type: 準公式
 - label: Lantis「THE IDOLM@STER SideM ～P@SSION CHALLENGE We are 315！～ MONTHLY THEME SONG 13 Jupiter」（2026-10-09）
   url: https://www.lantis.jp/sidem/releaseinfo/release_LACM-24793.html
-  type: 準公式
+  type: 公式
 event_date: "2026-11-25"
 title_fact_ids:
 - F1

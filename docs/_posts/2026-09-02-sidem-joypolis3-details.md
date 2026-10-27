@@ -20,7 +20,7 @@ sources:
     type: "報道"
   - label: "東京ジョイポリス公式サイト"
     url: "https://tokyo-joypolis.com/event/sidem_jp2026/index.html"
-    type: "当事者"
+    type: 公式
 ---
 
 『アイドルマスター SideM in JOYPOLIS 3』が、東京・台場の東京ジョイポリスで9月12日（土）から12月6日（日）まで開催される。2024年春の「SideM in JOYPOLIS 2」に続く第3弾で、東京ジョイポリス30周年アンバサダーのHigh×Jokerと神速一魂を中心に、315プロダクション所属アイドルとコラボする。

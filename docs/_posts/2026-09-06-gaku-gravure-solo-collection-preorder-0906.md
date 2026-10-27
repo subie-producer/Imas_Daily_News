@@ -2,7 +2,7 @@
 slug: gaku-gravure-solo-collection-preorder-0906
 edition: 2026-09-06
 brand: gaku
-src: 準公式
+src: 公式
 rank: large
 corrected: false
 corrections: []
@@ -16,7 +16,7 @@ sources:
     type: 公式
   - url: https://gakuen-label.idolmaster-official.jp/news/gravure1
     label: "学マスレーベル公式サイト"
-    type: 準公式
+    type: 公式
 event_date: 2026-09-27
 ---
 

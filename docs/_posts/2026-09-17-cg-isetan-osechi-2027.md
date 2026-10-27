@@ -2,10 +2,15 @@
 slug: cg-isetan-osechi-2027
 edition: "2026-09-17"
 brand: cg
-src: 当事者
+src: 公式
 rank: small
-corrected: false
-corrections: []
+corrected: true
+corrections:
+- at: "2026-10-27T22:30:00+09:00"
+  by: 編集部(出典の種別の判定の欠陥の修正)
+  initial: "出典「「アイドルマスター シンデレラガールズ」×伊勢丹のおせち 2027 (2026-09-16)」の種別: 当事者(記事の出典の表示: 当事者)"
+  corrected_to: "同じ出典の種別: 公式(記事の出典の表示: 公式)"
+  note: 編集長の規則(2026-10-21)により、公式の投稿・ページからリンクされ、告知と関係すると確かめた出典を公式に改めた。本文は変えていない
 candidate_ids:
 - 202609161237-watch-4
 title: 鷹富士茄子の振袖おせち2027、予約は10月21日から
@@ -21,7 +26,7 @@ sources:
   type: 公式
 - label: 「アイドルマスター シンデレラガールズ」×伊勢丹のおせち 2027 (2026-09-16)
   url: https://www.mistore.jp/shopping/feature/foods_f2/idolmaster_i_osechi_f.html
-  type: 当事者
+  type: 公式
 event_date: "2026-10-21"
 title_fact_ids:
 - F8

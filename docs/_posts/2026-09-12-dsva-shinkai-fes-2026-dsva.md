@@ -12,7 +12,7 @@ lede: 深海フェス2026「超・深海」の第3弾出演者に上水流宇宙
 tags: [876プロ, イベント, チケット, ライブ]
 sources:
 - {label: 深海フェス2026「超・深海」に876プロ勢が出演, url: 'https://panora.tokyo/archives/156050', type: 報道}
-- {label: 深海フェス2026 超・深海, url: 'https://pjblue.zaiko.io/ja/item/383839', type: 当事者}
+- {label: 深海フェス2026 超・深海, url: 'https://pjblue.zaiko.io/ja/item/383839', type: 公式}
 event_date: "2026-10-17"
 ---
 

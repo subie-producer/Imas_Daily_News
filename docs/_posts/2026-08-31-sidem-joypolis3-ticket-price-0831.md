@@ -13,7 +13,7 @@ tags: [SideM, コラボ, チケット, イベント]
 sources:
   - label: 東京ジョイポリス公式特設ページ
     url: https://tokyo-joypolis.com/event/sidem_jp2026/index.html
-    type: 当事者
+    type: 公式
   - label: アニメ！アニメ！掲載記事
     url: https://animeanime.jp/article/2026/08/30/102538.html
     type: 報道

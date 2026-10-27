@@ -4,8 +4,13 @@ edition: "2026-10-19"
 brand: shiny
 src: 公式
 rank: small
-corrected: false
-corrections: []
+corrected: true
+corrections:
+- at: "2026-10-27T22:15:00+09:00"
+  by: 編集部(出典の日付の欠陥の修正)
+  initial: "シャニマス公式のXの出典2件の日付 2026年10月18日"
+  corrected_to: "同じ出典2件の日付 2026年10月19日"
+  note: Xの投稿日時を日本時間に直さずに日付にしていたため、日本時間10月19日0時台の投稿を前日の10月18日としていた。本文は変えていない
 candidate_ids:
 - 202610190222-grok-23
 - 202610190222-grok-24
@@ -17,10 +22,10 @@ tags:
 - ガシャ
 - キャンペーン
 sources:
-- label: アイドルマスター シャイニーカラーズ公式X「杜野凛世の誕生日記念施策」(2026年10月18日)
+- label: アイドルマスター シャイニーカラーズ公式X「杜野凛世の誕生日記念施策」(2026年10月19日)
   url: https://x.com/imassc_official/status/2111834940845277498
   type: 公式
-- label: アイドルマスター シャイニーカラーズ公式X「限定入り HAPPY BIRTHDAY 凛世スタンプガシャ」(2026年10月18日)
+- label: アイドルマスター シャイニーカラーズ公式X「限定入り HAPPY BIRTHDAY 凛世スタンプガシャ」(2026年10月19日)
   url: https://x.com/imassc_official/status/2111835946945831355
   type: 公式
 event_date: "2026-10-19"

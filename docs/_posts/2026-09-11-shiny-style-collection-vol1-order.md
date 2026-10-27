@@ -2,7 +2,7 @@
 slug: shiny-style-collection-vol1-order
 edition: 2026-09-11
 brand: shiny
-src: 準公式
+src: 公式
 rank: medium
 corrected: false
 corrections: []
@@ -15,7 +15,7 @@ sources:
     type: 公式
     label: "SHINY Style COLLECTION 新グッズシリーズ第1弾"
   - url: https://shop.asobistore.jp/feature/shiny_style_collection
-    type: 準公式
+    type: 公式
     label: "「SHINY Style COLLECTION」特設ページ(ASOBI STORE)"
 event_date: 2026-09-27
 

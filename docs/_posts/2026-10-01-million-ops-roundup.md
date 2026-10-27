@@ -4,8 +4,13 @@ edition: "2026-10-01"
 brand: million
 src: 公式
 rank: roundup
-corrected: false
-corrections: []
+corrected: true
+corrections:
+- at: "2026-10-27T22:15:00+09:00"
+  by: 編集部(出典の日付の欠陥の修正)
+  initial: "出典「ミリシタ公式X「プレミアムメダルショップにプレミアムノーツ＆ボイス追加」」の日付 2026年9月30日"
+  corrected_to: "同じ出典の日付 2026年10月1日"
+  note: Xの投稿日時を日本時間に直さずに日付にしていたため、日本時間10月1日0時台の投稿を前日の9月30日としていた。本文は変えていない
 candidate_ids:
 - 202610010223-grok-54
 - 202610010223-grok-55
@@ -24,7 +29,7 @@ sources:
 - label: ミリシタ公式X「イベントアイテム交換所 期間限定の特別キャンペーン」(2026年9月30日)
   url: https://x.com/imasml_theater/status/2105176315246657937
   type: 公式
-- label: ミリシタ公式X「プレミアムメダルショップにプレミアムノーツ＆ボイス追加」(2026年9月30日)
+- label: ミリシタ公式X「プレミアムメダルショップにプレミアムノーツ＆ボイス追加」(2026年10月1日)
   url: https://x.com/imasml_theater/status/2105311716435472538
   type: 公式
 event_date: "2026-09-30"

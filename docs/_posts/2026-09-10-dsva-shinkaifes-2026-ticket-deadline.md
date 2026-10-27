@@ -19,7 +19,7 @@ tags:
 - 締切
 sources:
 - url: https://pjblue.zaiko.io/ja/item/383839
-  type: 当事者
+  type: 公式
   label: 深海フェス2026 超・深海
 - url: https://panora.tokyo/archives/156050
   type: 報道

@@ -4,8 +4,13 @@ edition: "2026-10-10"
 brand: general
 src: ファン
 rank: culture
-corrected: false
-corrections: []
+corrected: true
+corrections:
+- at: "2026-10-27T22:15:00+09:00"
+  by: 編集部(出典の日付の欠陥の修正)
+  initial: "出典「X「常磐カナメの『Poison Berry Daughters』踊ってみた動画」」の日付 2026年10月9日"
+  corrected_to: "同じ出典の日付 2026年10月10日"
+  note: Xの投稿日時を日本時間に直さずに日付にしていたため、日本時間10月10日未明の投稿を前日の10月9日としていた。本文は変えていない
 candidate_ids:
 - 202610100218-grok-39
 - 202610100218-grok-86
@@ -17,7 +22,7 @@ tags:
 - ライブ
 - チケット
 sources:
-- label: X「常磐カナメの『Poison Berry Daughters』踊ってみた動画」(2026年10月9日)
+- label: X「常磐カナメの『Poison Berry Daughters』踊ってみた動画」(2026年10月10日)
   url: https://x.com/lirel8006/status/2108601180524019793
   type: ファン
 - label: YouTube「『Poison Berry Daughters』踊ってみた動画」(日付不明)

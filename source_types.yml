@@ -1056,7 +1056,7 @@ path_types:
   t.co/MdlrfC0LCI: 準公式                         # 機械で追加: 展開先 https://shop.asobistore.jp/products/detail/250322-00-00-comp_01
   t.co/7vGeJPaJ4M: 公式                         # 機械で追加: 展開先 https://twitter.com/gkmas_official/status/2112504712830574836/photo/1
   note.com/kijo_mio: ファン                       # 合議で追加: 個人名のnoteで日記を発信。運営者情報なし、個人に紐づく発信
-  t.co/UWj9DyM42R: 二次情報                         # 機械で追加: 展開先 https://lnk.to/S.E.M_2DMV
+  t.co/UWj9DyM42R: 準公式                         # 機械で追加: 展開先 https://lnk.to/S.E.M_2DMV(展開先そのものが上位。公開済みの記事の訂正 2026-10-27)
   t.co/Gt69PLU1aE: 当事者                         # 機械で追加: 展開先 https://pjblue.zaiko.io/ja/e/shinsea-fest-2026
   nicovideo.jp/user/1633964: ファン               # 合議で追加: 個人のユーザーページ。動画紹介や声無し生放送などの個人発信
   t.co/smNOzH7hAc: 当事者                         # 機械で追加: 展開先 https://www.vitalartbox.info/imascg1023
@@ -1109,6 +1109,80 @@ x_posts:
 
 # --- リンク元から引き継いだ種別(リンク先1つずつ。キーは pipelib.link_key)。合議がリンク元の告知と関係していると確かめたものだけ(classify_sources.inherit_from_links)。リンク先そのものの種別より強いときだけ効く ---
 link_types:
+  x.com/i/status/2099513510493663548: 公式      # リンク元から引き継ぎ(合議で関係を確認): https://idollist.idolmaster-official.jp/search/detail/40004(公式)。同じ秋月涼の誕生日祝い投稿で、告知が引用する元
+  www.tufave.com/pages/mayu_sakuma: 公式        # リンク元から引き継ぎ(合議で関係を確認): https://idolmaster-official.jp/news/01_20188(公式)。告知の販売サイトと同一のネックレス販売ページ
+  www.the-chara.com/blog/?p=123566: 公式        # リンク元から引き継ぎ(合議で関係を確認): https://idolmaster-official.jp/news/01_20162(公式)。よこはまコスモワールドコラボの特設ページと同一
+  www.the-chara.com/blog/?p=117534: 公式        # リンク元から引き継ぎ(合議で関係を確認): https://idolmaster-official.jp/news/01_19659(公式)。京まふ出展の特設ページ。告知の特設サイトと同一
+  www.sweets-paradise.jp/collaboration/shinycolors: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://idolmaster-official.jp/news/01_19890(公式)。コラボカフェの詳細ページ。告知の案内先と同一
+  www.seibu-leisure.co.jp/matsuri/gakuenidolmaster/index.html: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://idolmaster-official.jp/news/01_20099(公式)。コラボ企画の特設サイトと同一
+  www.mistore.jp/shopping/feature/foods_f2/idolmaster_osechi_f.html: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://idolmaster-official.jp/news/01_19847(公式)。おせち企画の特設サイト。告知の案内先と同一
+  www.mistore.jp/shopping/feature/foods_f2/idolmaster_i_osechi_f.html: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://idolmaster-official.jp/news/01_19848(公式)。告知の特設サイト（伊勢丹のおせち企画）
+  www.lantis.jp/sidem/releaseinfo/release_LACM-24793.html: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://idolmaster-official.jp/news/01_20123(公式)。告知に商品詳細として明記されたCDの製品ページ。本文は取得できず
+  www.kotobukiya.co.jp/product/detail/p4934054081837/: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://idolmaster-official.jp/news/01_19854(公式)。告知に製品ページとして明記。本文は取得できず
+  www.hachiban.co.jp/news/2026/20260925_01/: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://idolmaster-official.jp/news/01_20022(公式)。告知のコラボ（8番らーめん×シャニマス）の案内ページ
+  www.animate-onlineshop.jp/pn/pd/3579061/: 準公式 # リンク元から引き継ぎ(合議で関係を確認): https://x.com/SideM_lantis/status/2101938274126450843(準公式)。告知に予約（アニメイト）先として明記されたページ
+  www.animate-onlineshop.jp/corner/cc/sidem-1023goods/cd/4867/: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://idolmaster-official.jp/news/01_20196(公式)。告知に予約先として明記されたアニメイト通販ページ
+  www.animate-onlineshop.jp/contents/fair_event/detail.php?id=116271: 準公式 # リンク元から引き継ぎ(合議で関係を確認): https://x.com/SideM_lantis/status/2098738178261922063(準公式)。告知の公開録音イベントの申込ページ
+  webstore.asobistore.jp/shinycolors-song-for-prism: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://x.com/imassc_prism/status/2100782865265086577(公式)。告知の対象であるジュエルセールの販売ページ
+  tokyo-joypolis.com/event/sidem_jp2026/index.html: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://idolmaster-official.jp/news/01_19776(公式)。告知の協賛展示にジョイポリス版の景品・グッズがあり、同催しのページ
+  t.co/odKdocfVW3: 公式                         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/shinyc_official/status/2112559715754639519(公式)。番組のお便り（お問い合わせ）ページで、告知の案内と一致
+  t.co/MdlrfC0LCI: 公式                         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/gkmas_official/status/2112502309670535387(公式)。告知の予約先の商品ページ。メンテ中で本文は未確認
+  shop.kotobukiya.co.jp/shop/g/g4934054081837/: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://idolmaster-official.jp/news/01_19854(公式)。告知と同じ最上静香フィギュアの商品ページ（予約リンク）
+  shop.asobistore.jp/products/detail/250711-00-00-00: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://x.com/gkmas_official/status/2112503112653287692(公式)。告知の予約先の商品ページ。メンテ中で本文は未確認
+  shop.asobistore.jp/products/detail/249260-500-00-00: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://x.com/imasml_765PRO/status/2105960995546087626(公式)。ミリシタ9周年BIGアクリルスタンド告知と同じ商品
+  shop.asobistore.jp/products/detail/245054-00-00-00: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://x.com/gkmas_official/status/2106293175530995734(公式)。雨夜燕2nd・3rd Single予約告知に同じ商品ページ
+  shop.asobistore.jp/products/detail/243706-00-00-00: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://idolmaster-official.jp/news/01_19841(公式)。バースデー記念グッズ告知と同じ商品ページ
+  shop.asobistore.jp/products/detail/225029-00-00-00: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://idolmaster-official.jp/news/01_19926(公式)。Blu-ray受注期間延長告知と同じ商品ページ
+  shop.asobistore.jp/product/catalog/s/older/t/category/ca/mltd9th_goods/n/120: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://x.com/imasml_765PRO/status/2105960995546087626(公式)。ミリシタ9周年グッズ告知と同じカテゴリURL
+  shop.asobistore.jp/feature/sidem_fbfes_wsi: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://idolmaster-official.jp/news/01_19739(公式)。F@NTASTIC BATTLE FES告知本文の公式グッズ特設URL
+  shop.asobistore.jp/feature/sidem_315mode: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://x.com/SideM_official/status/2102699496484512155(公式)。315 MODE vol.1受注告知と同じ特設サイト
+  shop.asobistore.jp/feature/sidem11th_memorial: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://x.com/SideM_official/status/2099823406170714226(公式)。SideM 11th開催記念グッズ告知と同じ特設サイト
+  shop.asobistore.jp/feature/shiny_style_collection: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://x.com/shinyc_official/status/2097929218298610098(公式)。Style COLLECTION第1弾受注告知と同じ特設サイト
+  shop.asobistore.jp/feature/ml14th_memorial: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://idolmaster-official.jp/news/01_19883(公式)。告知本文に同じ14th記念グッズの特設URLあり
+  shop.asobistore.jp/feature/283pro_sololive_msp_memorial: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://x.com/shinyc_official/status/2107410539353924012(公式)。283PRO MSP開催記念グッズ告知と同じ特設ページ
+  shop.asobistore.jp/category/gkms_tmr_msz_ytmp: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://idolmaster-official.jp/news/01_19875(公式)。告知の美鈴ゆたんぽ受注と同じカテゴリURL
+  shop.asobistore.jp/category/gakuen_3rdcd_comp_gd: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://x.com/gkmas_official/status/2112503941204435058(公式)。告知と同じURL。カテゴリ名も完走記念グッズと一致
+  shinycolors.lantis.jp/extra/260903_1/: 公式   # リンク元から引き継ぎ(合議で関係を確認): https://idolmaster-official.jp/live_event/283production_msp/(公式)。同じMSPソロライブの会場CD・映像物販の特典ページで、告知と同じ催し
+  shinkaifes.pjblue.com/: 公式                  # リンク元から引き継ぎ(合議で関係を確認): https://x.com/KamizuruCosmo/status/2101645418811781173(公式)。投稿が出演予定の10/17深海フェスの公式サイト
+  pjblue.zaiko.io/ja/item/383839: 公式          # リンク元から引き継ぎ(合議で関係を確認): https://x.com/valiv_official/status/2097295371613724939(公式)。深海フェス2026の詳細・チケットページ
+  p-bandai.jp/item/item-1000256134/: 公式       # リンク元から引き継ぎ(合議で関係を確認): https://idolmaster-official.jp/news/01_19807(公式)。961 Re:FLAMEセットの販売サイトと一致
+  p-bandai.jp/item/item-1000254246/: 公式       # リンク元から引き継ぎ(合議で関係を確認): https://idolmaster-official.jp/news/01_20143(公式)。はんげつであえたらセットの予約ページ(取得で確認)
+  p-bandai.jp/item/item-1000254243/: 公式       # リンク元から引き継ぎ(合議で関係を確認): https://idolmaster-official.jp/news/01_20143(公式)。ふたごぼし・つみまつセットの予約ページ
+  mequrimequru.jp/kp/regulars/details/idolmaster-cinderellagirls_toybox/: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://x.com/imas_CGofficial/status/2091359784201343372(公式)。取得できず。投稿が同じ連載ページと明記
+  lnk.to/UmBHry: 公式                           # リンク元から引き継ぎ(合議で関係を確認): https://x.com/gkmas_official/status/2096195062661087259(公式)。Gravure Solo Collection Vol.1の予約先
+  lnk.to/THEKOGADO_2DMV: 準公式                   # リンク元から引き継ぎ(合議で関係を確認): https://x.com/SideM_lantis/status/2090799135666434320(準公式)。「宵闇のイリュージョン」の配信・DL案内先
+  lnk.to/SideM11th_day2: 準公式                   # リンク元から引き継ぎ(合議で関係を確認): https://x.com/SideM_lantis/status/2108534760427696276(準公式)。SideM 11th STAGE DAY2プレイリストへの案内
+  lnk.to/SideM11th_day1: 公式                   # リンク元から引き継ぎ(合議で関係を確認): https://x.com/SideM_official/status/2098755409331081301(公式)。同じ公演DAY1のセットリスト・プレイリスト
+  lnk.to/SAI_2DMV: 準公式                         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/SideM_lantis/status/2106006288425464198(準公式)。「らんまん開花!」の配信・DL先。告知と一致
+  lnk.to/LACZ-10383: 公式                       # リンク元から引き継ぎ(合議で関係を確認): https://x.com/imasml_765PRO/status/2103424274656886800(公式)。同じ新曲『Waking Up My Heart』の視聴先
+  lnk.to/LACZ-10382: 公式                       # リンク元から引き継ぎ(合議で関係を確認): https://x.com/imasml_765PRO/status/2104481238123757640(公式)。同じ新曲『If I...』の視聴先。告知と一致
+  lnk.to/LACZ-10380: 公式                       # リンク元から引き継ぎ(合議で関係を確認): https://x.com/imasml_765PRO/status/2104492699873411490(公式)。ネバーエンド・ワンダーランドの配信リンク。告知と同じ曲
+  lnk.to/LACZ-10379: 公式                       # リンク元から引き継ぎ(合議で関係を確認): https://x.com/imasml_765PRO/status/2104488785626988704(公式)。ひととせ結びの配信リンク。告知と同じ曲
+  lnk.to/LACM-25317: 準公式                       # リンク元から引き継ぎ(合議で関係を確認): https://x.com/SideM_lantis/status/2112106492723879941(準公式)。Mフェス2026テーマソングの配信リンク。告知と同じ曲
+  livepocket.jp/e/va-liv_manaka_bd2026_re: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://idolmaster-official.jp/news/01_19896(公式)。灯里愛夏延期公演のチケット購入ページ。告知と同じ公演
+  livepocket.jp/e/va-liv_letora_bd2026: 公式    # リンク元から引き継ぎ(合議で関係を確認): https://x.com/valiv_official/status/2106262978987270454(公式)。レトラ公演のチケット購入ページ。告知と同じ公演
+  kuji-pop.com/: 公式                           # リンク元から引き継ぎ(合議で関係を確認): https://idolmaster-official.jp/news/01_20049(公式)。くじぽっぷのトップ。告知のGGWP ver.が販売中として載る
+  imas.lnk.to/Overclock: 準公式                   # リンク元から引き継ぎ(合議で関係を確認): https://x.com/imas_columbia/status/2107486286768390419(準公式)。オーバークロック!の配信リンク。告知と同じ曲
+  imas.lnk.to/NeonSphere: 準公式                  # リンク元から引き継ぎ(合議で関係を確認): https://x.com/imas_columbia/status/2104950325719568859(準公式)。Neon Sphereの配信リンク。告知と同じ曲
+  imas.lnk.to/Am-IAm: 準公式                      # リンク元から引き継ぎ(合議で関係を確認): https://x.com/imas_columbia/status/2107486538443506123(準公式)。エイエム×アイアムの配信リンク。告知と同じ曲
+  gakuen-label.idolmaster-official.jp/news/schoosicaltrip: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://x.com/gkmas_official/status/2096194880473338166(公式)。修楽旅行の告知ページ。投稿の予約先と同じ
+  gakuen-label.idolmaster-official.jp/news/gravure1: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://x.com/gkmas_official/status/2092537536841417157(公式)。Gravure Solo Collectionの公式ページ。告知の予約先と同じ
+  gakuen-label.idolmaster-official.jp/news/duetsongcollection: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://x.com/gkmas_official/status/2076871808658378831(公式)。Duet Song Collectionの公式ページ。告知の予約先と同じ
+  enso-order.acecombat.jp/: 公式                # リンク元から引き継ぎ(合議で関係を確認): https://x.com/valiv_official/status/2102238962219942271(公式)。ACE COMBAT 8の公式サイト。告知の作品情報リンクと同じ商品
+  comifuro.net/: 公式                           # リンク元から引き継ぎ(合議で関係を確認): https://idolmaster-official.jp/news/01_20133(公式)。CF23の公式サイト。告知が参加方法の確認先として挙げる
+  columbia.jp/idolmaster/derepaform/: 公式      # リンク元から引き継ぎ(合議で関係を確認): https://x.com/dereparty/status/2092605484842766542(公式)。デレパ今後のゲスト告知のメールフォーム
+  caltla.com/pages/the-idolmaster-sidem2: 公式  # リンク元から引き継ぎ(合議で関係を確認): https://x.com/SideM_official/status/2107742725109858360(公式)。SideM×大丸松坂屋VOL.2の公式ページ
+  bnfaq.channel.or.jp/faq/detail/3055/7699: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://x.com/SideM_official/status/2093250733433081866(公式)。リンク元がSNS投稿ルールのFAQを案内
+  bandainamco-am.co.jp/event/game_center/gkmas2026/: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://x.com/TOURS_imas/status/2099694713427169414(公式)。ナムコ景品キャンペーンの詳細ページ
+  asobistory.asobistore.jp/productionepisode/: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://x.com/SideM_official/status/2110611629612396752(公式)。リンク元が『AJIプロジェクト』ストーリーのURLとして案内。ページは315エピ
+  asobistory.asobistore.jp/episode/entrance/02jgpdx3dkmym6v: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://idolmaster-official.jp/sidem(公式)。リンク元の告知がこのエピソード入口URLを案内
+  asobistage.asobistore.jp/event/valiv_bd2026_cosmo/information: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://x.com/KamizuruCosmo/status/2098617281056280730(公式)。上水流宇宙BDライブ開演告知、詳細ページ
+  asobistage.asobistore.jp/event/gakuen_shirube_iwate/ticket: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://x.com/gkmas_official/status/2092900856488460535(公式)。岩手公演の配信視聴チケット販売開始の告知
+  asobistage.asobistore.jp/event/765as_dualtwin_haneda/ticket: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://x.com/imas_official/status/2091426738031264178(公式)。千秋楽東京公演の週明け告知、配信チケット案内
+  asobistage.asobistore.jp/event/765as_dualtwin_haneda/player/re_day1: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://idolmaster-official.jp/news/01_19810(公式)。同ツアー東京公演DAY1の視聴ページ
+  aniera-festa.com/ticket/: 公式                # リンク元から引き継ぎ(合議で関係を確認): https://x.com/valiv_official/status/2101113212225945912(公式)。リンク元はアニエラフェス出演告知、チケットURL
+  aniera-festa.com/: 公式                       # リンク元から引き継ぎ(合議で関係を確認): https://x.com/valiv_official/status/2101514183443349680(公式)。リンク元の出演告知にある、フェスの公式サイト
+  1kuji.com/products/gkmas07: 公式              # リンク元から引き継ぎ(合議で関係を確認): https://x.com/gkmas_official/status/2112504923975979353(公式)。リンク元も一番くじPart7の発売・詳細告知
   nicovideo.jp/watch/sm46966652: ファン           # リンク元から引き継ぎ(合議で関係を確認): https://x.com/music315p/status/2114688502373962084(ファン)。リンク元もリンク先もLegendersの「リフレインアトリウム」弦楽器演奏動画
   youtube.com/watch?v=oGHR8K4YJHI: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/KamizuruCosmo/status/2114689078428078564(公式)。告知の上水流宇宙の踊り動画と同じショート動画
   youtube.com/watch?v=Zt3T3ulcCnY: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/imasml_theater/status/2113244477418615038(公式)。告知されたPV(週末だけのハーレクイン)そのもの

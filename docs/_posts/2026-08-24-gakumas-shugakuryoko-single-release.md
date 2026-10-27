@@ -2,7 +2,7 @@
 slug: gakumas-shugakuryoko-single-release
 edition: 2026-08-24
 brand: gaku
-src: 準公式
+src: 公式
 rank: medium
 corrected: false
 corrections: []
@@ -13,7 +13,7 @@ tags: [学マス, CD, ライブ, 予約]
 sources:
   - label: 学園アイドルマスターレーベル公式のお知らせ
     url: https://gakuen-label.idolmaster-official.jp/news/schoosicaltrip
-    type: 準公式
+    type: 公式
 event_date: 2026-11-04
 ---
 

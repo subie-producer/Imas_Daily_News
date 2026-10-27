@@ -2,10 +2,15 @@
 slug: gaku-gakumas-gravure-solo-collection-vol1-2026
 edition: "2026-09-27"
 brand: gaku
-src: 準公式
+src: 公式
 rank: small
-corrected: false
-corrections: []
+corrected: true
+corrections:
+- at: "2026-10-27T22:30:00+09:00"
+  by: 編集部(出典の種別の判定の欠陥の修正)
+  initial: "出典「学園アイドルマスター（学マス）レーベル公式サイト「【学園アイドルマスター】Gravure Solo Collection Vol.1 「ねえ、言っちゃうよ。」が発売決定！」(2026年8月14日)」の種別: 準公式(記事の出典の表示: 準公式)"
+  corrected_to: "同じ出典の種別: 公式(記事の出典の表示: 公式)"
+  note: 編集長の規則(2026-10-21)により、公式の投稿・ページからリンクされ、告知と関係すると確かめた出典を公式に改めた。本文は変えていない
 candidate_ids:
 - sched-2026-09-27-gakumas-gravure-solo-collection-vol1-2026-締切
 title: 学マス新CD、店舗別特典予約は9月27日まで
@@ -18,7 +23,7 @@ tags:
 sources:
 - label: 学園アイドルマスター（学マス）レーベル公式サイト「【学園アイドルマスター】Gravure Solo Collection Vol.1 「ねえ、言っちゃうよ。」が発売決定！」(2026年8月14日)
   url: https://gakuen-label.idolmaster-official.jp/news/gravure1
-  type: 準公式
+  type: 公式
 event_date: "2026-09-27"
 title_fact_ids:
 - F1

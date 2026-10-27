@@ -4082,8 +4082,16 @@ def own_source_type(url: str, t: dict | None = None) -> str:
     # manga.nicovideo.jp/comic/…)は、パス単位で種別が決まる。合議が足す(path_types: パス → 種別)
     # クエリの id で決まる文書(Microsoft Forms)は、その文書のキーとの完全一致だけ(パスの前方一致ではどの文書にも当たる)
     qdoc = query_doc_key(url)
+    # 表のキーは判定の単位(classify_sources.path_key)と同じく `m.` を落とした表記。モバイル版のページも同じ表記で引く
+    # (2026-10-28 当番の診断: `m.tiktok.com/@h` などは表に載っても当たらず、毎回合議に回った)
+    mpath = path.removeprefix("m.")
+
+    def under_unit(pre: str) -> bool:
+        base = pre.rstrip("/")
+        return under(pre) or mpath.rstrip("/") == base or mpath.startswith(base + "/")
+
     for pre, typ in (t.get("path_types") or {}).items():
-        if (str(pre).strip().rstrip("/") == qdoc) if qdoc else under(str(pre)):
+        if (str(pre).strip().rstrip("/") == qdoc) if qdoc else under_unit(str(pre)):
             return str(typ)
     # 共有サービス(短縮 URL・フォーム・メールフォーム)は、短縮・文書・アカウント1つずつの登録(上の path_types)にだけ当てる。
     # ドメインの一覧に載っていても使わない(t.co の丸ごと登録で、どこへの短縮も公式になった。監査指摘 2026-10-14)

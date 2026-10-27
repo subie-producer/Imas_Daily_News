@@ -13035,6 +13035,25 @@ def test_youtube_channel_page_unit(tmp: Path):
         pipelib._ST_TABLE = pipelib._ST_KEY = None
 
 
+def test_path_types_mobile_host():
+    """判定の単位(path_key)は `m.` を落とすので、表(path_types)に書いたキーで、モバイル版の URL も引けること
+    (2026-10-28 当番の診断: classify_source は `m.` を落とさず、`m.tiktok.com/@h` は表に載っても当たらず毎回合議に回った)。
+    合議が書くキー(path_key)を表に載せ、同じ URL を classify_source の読み方で引き直す(書く側と読む側の往復)"""
+    import classify_sources as cs
+    for url in ("https://m.tiktok.com/@imas_official/video/7400000000000000000", "https://m.youtube.com/channel/UCabcdefghijklmnopqrstuv/videos",
+                "https://m.note.com/imas_staff/n/n0123456789ab", "https://m.twitch.tv/imas_official"):
+        key = cs.path_key(url)
+        t = {"path_types": {key: "公式"}} if key else {}
+        check(key and not key.startswith("m.") and pipelib.own_source_type(url, t) == "公式",
+              f"表に書いたキーでモバイル版の URL が引けない: {url} key={key} → {pipelib.own_source_type(url, t) if key else '-'}")
+    t = {"path_types": {"tiktok.com/@imas_official": "公式"}}
+    for url, want in (("https://tiktok.com/@imas_official", "公式"), ("https://www.tiktok.com/@imas_official/video/1", "公式"),
+                      ("https://m.tiktok.com/@imas_official_fake", "未確認"), ("https://m.tiktok.com.evil.example/@imas_official", "未確認"),
+                      ("https://evil.example/m.tiktok.com/@imas_official", "未確認")):
+        got = pipelib.own_source_type(url, t)
+        check(got == want, f"モバイル版の照合が広すぎる・狭すぎる: {url} → {got}(期待 {want})")
+
+
 def test_classify_txn_escaped_model(tmp: Path):
     """出典の判定の取引の中断・親の死で、合議の子が start_group で別のセッションに起動したモデルも止めてから戻す
     (2026-10-21 取り込みの監査: 子のセッションだけを見て、残ったモデルが戻したあとの判定表を書き直した)。
@@ -19759,6 +19778,7 @@ def main() -> int:
     test_youtube_playlist_owner(tmp / "ytpl")
     test_booth_item_owner(tmp / "booth")
     test_youtube_channel_page_unit(tmp / "ytchan")
+    test_path_types_mobile_host()
     test_classify_txn_interrupt(tmp / "cti")
     test_classify_txn_escaped_model(tmp / "cte2")
     test_tags_and_idols(tmp / "ti")

@@ -2,8 +2,15 @@
 Description=アイマスNEWS 監視(発行忘れ・異常検知)
 Wants=network-online.target
 After=network-online.target
+# 止まり方を問わず、自分で知らせずに失敗したら人と当番に届ける(2026-10-27: OOM で殺されて何も届かなかった)
+OnFailure=imas-failure@%n.service
 
 [Service]
 Type=oneshot
 WorkingDirectory=%h/git/imas-ops
 ExecStart=/usr/bin/python3 %h/git/imas-ops/scripts/watch.py
+Slice=imas.slice
+# 実測のピークは 0.5G(54回)。回帰テストを走らせる分の余裕を見て 2G(2026-10-27 は止まったテストが 6.4G まで膨らんだ)
+MemoryMax=2G
+# 回帰テストは selfcheck が 45 分で止める。監視の全体も1時間で止める(2026-10-27 は 7 時間半走り続けた)
+TimeoutStartSec=60min

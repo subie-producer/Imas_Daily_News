@@ -2,8 +2,11 @@
 Description=アイマスNEWS 紙面生成(Claude執筆+derive+Codex校閲)
 Wants=network-online.target
 After=network-online.target
+OnFailure=imas-failure@%n.service
 
 [Service]
+# 実測のピークは 4.9G(ファイルのキャッシュを含む)。個別の上限は付けず、slice の上限で守る
+Slice=imas.slice
 Type=oneshot
 WorkingDirectory=%h/git/imas-ops
 Environment=PATH=%h/.local/bin:%h/.grok/bin:/usr/local/bin:/usr/bin:/bin

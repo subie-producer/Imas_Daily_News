@@ -32,7 +32,7 @@ TARGETS = ["collect.py", "compose.py", "pipelib.py", "release.py", "lint.py",
            "derive.py", "watch.py", "deploy.py", "indexer.py", "tags.py",
            "fetch_page.py", "cost.py", "source_type.py", "classify_sources.py",
            "retag_sources.py", "withdraw.py", "storylink.py", "update_clis.py", "update_cloudflared.py", "child_guard.py", "source_rescue.py",
-           "page_archive.py", "source_watch.py"]
+           "page_archive.py", "source_watch.py", "unit_failed.py"]
 # import 漏れを検出する対象。ローカル変数と区別が付くものだけを挙げる
 # (AST だけではスコープを追えないため、モジュール名の allowlist で線を引く)
 KNOWN_MODULES = {"os", "sys", "re", "json", "time", "shutil", "signal", "subprocess",
@@ -104,6 +104,29 @@ def check(path: Path) -> list[str]:
     return errs
 
 
+# 回帰テストの時間の上限(秒)。手元の実測は 9〜17 分。止まったテストを待ち続けない(2026-10-27: watch の selfcheck の下でテストが
+# 終わらず 7 時間半走り、6.4G を使って OOM で殺された。そのあいだ機械が止まり 12:30 の収集も起動しなかった)
+TEST_TIMEOUT_SEC = 45 * 60
+
+
+def run_tests() -> tuple[str, str]:
+    """回帰テストを走らせる。戻りは(結果の文, 出力)。結果の文は通れば空。待つのは TEST_TIMEOUT_SEC まで。テストは自前のグループで
+    起動し(pipelib.run_group)、時間切れ・中断(SIGTERM で止められたときも)では、別のセッションへ逃げた子孫まで印で見つけて止める
+    (当番が selfcheck を上限で止めるときも、当番の run_group が同じ印で selfcheck のテストまで止める: oncall.sh)。"""
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    from pipelib import exit_on_term, partial_output, run_group
+    exit_on_term()      # SIGTERM で止められても、テストの子孫を止めてから終える
+    try:
+        r = run_group([sys.executable, str(ROOT / "scripts" / "test_pipeline.py")], TEST_TIMEOUT_SEC, cwd=ROOT,
+                      preexec_fn=die_with_parent)
+    except subprocess.TimeoutExpired as e:
+        return f"回帰テストが {TEST_TIMEOUT_SEC // 60} 分で終わらない(子孫ごと止めた)", "\n".join(partial_output(e))
+    out = (r.stdout or "") + (r.stderr or "")
+    if r.returncode == 0:
+        return "", out
+    return ("回帰テストが赤" if r.returncode > 0 else f"回帰テストがシグナル {-r.returncode} で止まった"), out
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--quiet", action="store_true")
@@ -121,12 +144,11 @@ def main() -> int:
             print(f"  [ERROR] scripts/{name}: {e}", file=sys.stderr)
     # 静的検査だけでは実行時の欠陥(未定義変数・保存漏れ)を見逃す(監査指摘)。回帰テストも走らせる
     t1 = time.monotonic()
-    r = subprocess.run([sys.executable, str(ROOT / "scripts" / "test_pipeline.py")],
-                       capture_output=True, text=True, cwd=ROOT, stdin=subprocess.DEVNULL, preexec_fn=die_with_parent)
-    if r.returncode != 0:
+    why, out = run_tests()
+    if why:
         total += 1
-        print("::error file=scripts/test_pipeline.py::回帰テストが赤")
-        print((r.stdout + r.stderr)[-2000:], file=sys.stderr)
+        print(f"::error file=scripts/test_pipeline.py::{why}")
+        print(out[-2000:], file=sys.stderr)
     else:
         # 最後まで走った回の所要を残す(当番・監査の検査の時間の上限は、この実測から決める。pipelib.check_seconds)
         note_seconds({"test_pipeline": time.monotonic() - t1, "selfcheck": time.monotonic() - t0})
@@ -136,7 +158,7 @@ def main() -> int:
 
 
 def die_with_parent() -> None:
-    """回帰テストは selfcheck と一緒に終わる(当番が上限で selfcheck を止めたとき、テストが残って走り続けない。2026-10-27)"""
+    """回帰テストは selfcheck と一緒に終わる(当番・監査が selfcheck を直接止めたとき、テストが残って走り続けない。2026-10-27)"""
     try:
         import ctypes
         import signal

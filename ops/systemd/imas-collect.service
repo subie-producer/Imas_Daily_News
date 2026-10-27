@@ -2,8 +2,11 @@
 Description=アイマスNEWS 収集(定点観測+Claude探索+Grok X調査)
 Wants=network-online.target
 After=network-online.target
+OnFailure=imas-failure@%n.service
 
 [Service]
+# 実測のピークは 6.1G(02:00 の Grok の回。ファイルのキャッシュを含む)。個別の上限は付けず、slice の上限で守る
+Slice=imas.slice
 Type=oneshot
 WorkingDirectory=%h/git/imas-ops
 Environment=PATH=%h/.local/bin:%h/.grok/bin:/usr/local/bin:/usr/bin:/bin

@@ -141,11 +141,24 @@ pipelib.urllib.request.urlopen = _no_network
 pipelib.HOST_GAP = 0.0
 os.environ[pipelib.HOST_GAP_DIR_ENV] = tempfile.mkdtemp(prefix="imas-test-hostgap-")
 atexit.register(shutil.rmtree, os.environ[pipelib.HOST_GAP_DIR_ENV], True)
+# テストは systemd の下(watch・当番の selfcheck)でも手で回したときと同じに動かす。INVOCATION_ID があると収集の締切が決まり
+# (collect.collect_deadline)、当番が systemd-run で起動する。systemd の起動を検めるテストは自分で入れる
+# (2026-10-27: watch の selfcheck の下でだけ締切が残り、終わりを返さない偽の応答を読み続けて 6.4G で OOM になった)
+os.environ.pop("INVOCATION_ID", None)
 
 
 def check(cond, msg):
     if not cond:
         FAILS.append(msg)
+
+
+def read_once(res, body: bytes, n=None) -> bytes:
+    """偽の応答の read: 本物と同じく、読んだ分だけ進み、読み切ったら空を返す(毎回同じ本文を返す偽物は、読み切るまで読む受信を
+    止まらなくする。2026-10-27: 原本の保存のテストの偽物で、watch の selfcheck が 6.4G で OOM になった)"""
+    pos = res.__dict__.get("_read_pos", 0)
+    end = len(body) if n is None or n < 0 else min(len(body), pos + n)
+    res.__dict__["_read_pos"] = end
+    return body[pos:end]
 
 
 MATS = [{"id": "c1", "url": "https://a.example/1", "title": "告知 2026-10-01", "published_date": "2026-09-01",
@@ -2949,7 +2962,7 @@ def test_page_body_past_inline_css(tmp: Path):
         status = 200
         headers = type("H", (), {"get_content_charset": lambda self: "utf-8"})()
         def geturl(self): return url
-        def read(self, n=None): return page if n is None else page[:n]
+        def read(self, n=None): return read_once(self, page, n)
         def __enter__(self): return self
         def __exit__(self, *a): return False
     url = "https://asobiticket2.asobistore.jp/news/x"
@@ -3177,7 +3190,7 @@ def test_maintenance_page_is_not_read(tmp: Path):
         status = 200
         headers = type("H", (), {"get_content_charset": lambda self: "utf-8"})()
         def geturl(self): return mainte
-        def read(self, n=None): return page.encode("utf-8")
+        def read(self, n=None): return read_once(self, page.encode("utf-8"), n)
         def __enter__(self): return self
         def __exit__(self, *a): return False
     rec = tmp / "rec.jsonl"
@@ -3263,7 +3276,12 @@ class U:
         self.final, self.body = final, body
         self.headers = type("H", (), {"get_content_charset": lambda s: "utf-8"})()
     def geturl(self): return self.final
-    def read(self, n=None): return self.body.encode("utf-8")
+    def read(self, n=None):     # 本物と同じく、読んだ分だけ進み、読み切ったら空を返す
+        data = self.body.encode("utf-8")
+        pos = self.__dict__.get("_pos", 0)
+        end = len(data) if n is None or n < 0 else min(len(data), pos + n)
+        self._pos = end
+        return data[pos:end]
     def __enter__(self): return self
     def __exit__(self, *a): return False
 def page(title, text):
@@ -5470,7 +5488,7 @@ def test_fetch_page_renders_whitespace_only_page():
         status = 200
         def geturl(self): return ""
         headers = type("H", (), {"get_content_charset": lambda self: "utf-8"})()
-        def read(self, n=None): return ("<p>" + nav + "</p>").encode("utf-8")
+        def read(self, n=None): return read_once(self, ("<p>" + nav + "</p>").encode("utf-8"), n)
         def __enter__(self): return self
         def __exit__(self, *a): return False
     rcalls = []
@@ -5503,7 +5521,7 @@ def test_fetch_page_records_read_pages(tmp: Path):
         status = 200
         headers = type("H", (), {"get_content_charset": lambda self: "utf-8"})()
         def geturl(self): return "https://www.lantis.jp/release_1.html"
-        def read(self, n=None): return page.encode("utf-8")
+        def read(self, n=None): return read_once(self, page.encode("utf-8"), n)
         def __enter__(self): return self
         def __exit__(self, *a): return False
 
@@ -5766,7 +5784,7 @@ def test_render_failure_reaches_classify_and_verify(tmp: Path):
         def geturl(self): return ""
         headers = type("H", (), {"get_content_charset": staticmethod(lambda: "utf-8")})()
         def read(self, n=-1):
-            return menu.encode()
+            return read_once(self, menu.encode(), n)
         def __enter__(self):
             return self
         def __exit__(self, *a):
@@ -6094,7 +6112,7 @@ def test_watch_body_cp932(tmp: Path):
 
     class Res:
         headers = type("H", (), {"get_content_charset": lambda self: None})()
-        def read(self, *a): return raw
+        def read(self, n=None): return read_once(self, raw, n)
         def __enter__(self): return self
         def __exit__(self, *a): return False
     prompts = []
@@ -6124,7 +6142,7 @@ def test_watch_static_page_body(tmp: Path):
     class Res:
         headers = type("H", (), {"get_content_charset": lambda self: None})()
         def __init__(self, body): self.body = body
-        def read(self, *a): return self.body
+        def read(self, n=None): return read_once(self, self.body, n)
         def __enter__(self): return self
         def __exit__(self, *a): return False
     prompts = []
@@ -7313,7 +7331,7 @@ def test_empty_answer_is_not_done(tmp: Path):
         status = 200
         def geturl(self): return ""
         headers = type("H", (), {"get_content_charset": lambda self: "utf-8"})()
-        def read(self, n=None): return ("<p>" + page + "</p>" + "あ" * 500).encode("utf-8")
+        def read(self, n=None): return read_once(self, ("<p>" + page + "</p>" + "あ" * 500).encode("utf-8"), n)
         def __enter__(self): return self
         def __exit__(self, *a): return False
     try:
@@ -7365,7 +7383,7 @@ def test_accept_only_normal_and_schema(tmp: Path):
         status = 200
         def geturl(self): return ""
         headers = type("H", (), {"get_content_charset": lambda self: "utf-8"})()
-        def read(self, n=None): return page.encode("utf-8")
+        def read(self, n=None): return read_once(self, page.encode("utf-8"), n)
         def __enter__(self): return self
         def __exit__(self, *a): return False
     saved = (collect.urllib.request.urlopen, collect.fetch_rendered, collect.classify_source)
@@ -18313,7 +18331,12 @@ class U:
         self.final, self.body = final, body
         self.headers = type("H", (), {"get_content_charset": lambda s: "utf-8"})()
     def geturl(self): return self.final
-    def read(self, n=None): return self.body.encode("utf-8")
+    def read(self, n=None):     # 本物と同じく、読んだ分だけ進み、読み切ったら空を返す
+        data = self.body.encode("utf-8")
+        pos = self.__dict__.get("_pos", 0)
+        end = len(data) if n is None or n < 0 else min(len(data), pos + n)
+        self._pos = end
+        return data[pos:end]
     def __enter__(self): return self
     def __exit__(self, *a): return False
 def page(title, text):
@@ -18540,7 +18563,7 @@ def test_page_archive_versions_and_reads(tmp: Path):
         status = 200
         headers = type("H", (), {"get_content_charset": lambda s: "utf-8"})()
         def geturl(self): return r_url
-        def read(self, n=None): return ("<html><body>" + "ニュース一覧、会社概要、お問い合わせ。" * 40 + "</body></html>").encode()
+        def read(self, n=None): return read_once(self, ("<html><body>" + "ニュース一覧、会社概要、お問い合わせ。" * 40 + "</body></html>").encode(), n)
         def __enter__(self): return self
         def __exit__(self, *a): return False
     c = {"url": r_url, "title": "新商品", "facts": ["価格は3000円"], "quotes": [quote], "via": "explore", "source_type": "公式"}
@@ -18716,7 +18739,7 @@ def test_page_archive_versions_and_reads(tmp: Path):
 
     class NavRes(Res):
         def geturl(self): return w_url
-        def read(self, n=None): return nav
+        def read(self, n=None): return read_once(self, nav, n)
     try:
         collect.watch_get = lambda u, t: (nav, "utf-8")
         collect.needs_render = lambda u, t: True
@@ -18740,7 +18763,7 @@ def test_page_archive_versions_and_reads(tmp: Path):
 
     class LongNav(Res):
         def geturl(self): return s_url
-        def read(self, n=None): return long_nav
+        def read(self, n=None): return read_once(self, long_nav, n)
 
     def first_nav_then_503(req, timeout=15):
         calls["n"] += 1
@@ -18808,7 +18831,7 @@ def test_page_archive_versions_and_reads(tmp: Path):
 
     class Other(Res):
         def geturl(self): return t_url
-        def read(self, n=None): return other_body
+        def read(self, n=None): return read_once(self, other_body, n)
 
     def ok_then_503(req, timeout=15):
         calls["n"] += 1
@@ -18904,9 +18927,13 @@ def test_page_archive_versions_and_reads(tmp: Path):
     class R203:
         status = 203
         headers = type("H", (), {"get_content_charset": lambda s: "utf-8"})()
-        def __init__(self, u): self.u = u
+        def __init__(self, u):
+            self.u, self.left = u, ("<html><body>" + "状態コードの告知。価格は3000円。" * 30 + "</body></html>").encode()
         def geturl(self): return self.u
-        def read(self, n=None): return ("<html><body>" + "状態コードの告知。価格は3000円。" * 30 + "</body></html>").encode()
+
+        def read(self, n=None):     # 本物の応答と同じく、読み切ったら空を返す(毎回同じ本文を返すと、読み切るまで溜め込み続けた。2026-10-27)
+            b, self.left = (self.left, b"") if n is None or n < 0 else (self.left[:n], self.left[n:])
+            return b
         def __enter__(self): return self
         def __exit__(self, *a): return False
     saved_o = (fetch_page.urllib.request.urlopen, collect.urllib.request.urlopen)
@@ -18928,7 +18955,7 @@ def test_page_archive_versions_and_reads(tmp: Path):
 
     class OtherM(Res):
         def geturl(self): return m_url
-        def read(self, n=None): return other_body
+        def read(self, n=None): return read_once(self, other_body, n)
 
     def ok_then_mainte(req, timeout=15):
         calls["n"] += 1
@@ -18967,7 +18994,7 @@ def test_page_archive_versions_and_reads(tmp: Path):
 
         class NavB(Res):
             def geturl(self, u=b_url): return u
-            def read(self, n=None): return nav
+            def read(self, n=None): return read_once(self, nav, n)
 
         def fake_render(u, limit=None, r=ret, s=st, wait_deadline=None):
             if s:
@@ -19264,7 +19291,7 @@ class RescueFakes:
             headers = type("H", (), {"get_content_charset": staticmethod(lambda: "utf-8")})()
 
             def read(self, n=-1):
-                return body
+                return read_once(self, body, n)
 
             def geturl(self):
                 return req.full_url
@@ -20283,6 +20310,397 @@ def test_source_update_sessions(tmp: Path):
     check(got["blocked"] == "止まった", f"CLI の利用上限を答えの読めない回と取り違えた: {got['blocked']}")
 
 
+def test_page_reads_are_bounded(tmp: Path):
+    """応答の読み取りは PAGE_READ_BYTES まで(2026-10-27: 終わりを返さない応答を、定点観測の受信が締切まで読み続けて溜め込み、
+    09:00 の watch が 6.4G で OOM になった)。締切のある読み方・無い読み方・出典の判定の読み取りのどれも有界"""
+    import contextlib
+    import io
+    import time as _t
+    import collect
+    import classify_sources as cs
+    cap = pipelib.PAGE_READ_BYTES
+
+    class Endless:
+        """終わりを返さない応答。上限の3倍を渡したら、溜め込み続けたとして止める(テストを止めない)"""
+        status = 200
+        headers = type("H", (), {"get_content_charset": lambda s: "utf-8"})()
+
+        def __init__(self):
+            self.served, self.unbounded = 0, False
+
+        def _give(self, n):
+            if n is None or n < 0:
+                self.unbounded = True
+                raise AssertionError("上限なしで読んだ")
+            if self.served > 3 * cap:
+                raise AssertionError("終わらない応答を上限を越えて読み続けた")
+            self.served += n
+            return b"x" * n
+        read = read1 = lambda self, n=None: self._give(n)
+        def geturl(self): return "https://endless.example/"
+        def __enter__(self): return self
+        def __exit__(self, *a): return False
+    class Sized(Endless):
+        """上限ちょうどの本文で終わる応答"""
+        def _give(self, n):
+            if n is None or n < 0:
+                self.unbounded = True
+                raise AssertionError("上限なしで読んだ")
+            k = max(0, min(n, cap - self.served))
+            self.served += k
+            return b"y" * k
+        read = read1 = lambda self, n=None: self._give(n)
+    got = {}
+    saved_dl = collect.DEADLINE
+    for k, dl, cls in (("締切あり", _t.time() + 3600, Endless), ("締切なし", None, Endless),
+                       ("締切あり・上限ちょうど", _t.time() + 3600, Sized), ("締切なし・上限ちょうど", None, Sized)):
+        res = cls()
+        try:
+            collect.DEADLINE = dl
+            body = collect.watch_read(res)
+            got[k] = (len(body), None, res.served)
+        except Exception as e:      # noqa: BLE001
+            got[k] = (None, type(e).__name__, res.served)
+        finally:
+            collect.DEADLINE = saved_dl
+    # 上限を越える応答は切った本文を正常として返さない(読めなかった回にする)。溜め込むのは上限と1回の受信の分まで
+    check(all(got[k][1] == "PageTooLarge" and got[k][2] <= cap + 65536 for k in ("締切あり", "締切なし"))
+          and all(got[k][:2] == (cap, None) for k in ("締切あり・上限ちょうど", "締切なし・上限ちょうど")),
+          f"定点観測の受信が終わらない応答を上限なしで読んだ・上限を越えた本文を切って正常に返した: {got}")
+    # 上限を越えた新着の本文は原本に残さず、読めなかったとして返す(セッションの fetch_page.py に任せる)
+    import page_archive as pa
+    saved_w = collect.watch_get
+    try:
+        collect.watch_get = lambda u, t: (_ for _ in ()).throw(collect.PageTooLarge("大きすぎる"))
+        html, why = collect.page_html_or_note("https://huge.example/news/1", False)
+    finally:
+        collect.watch_get = saved_w
+    check(html == "" and "PageTooLarge" in why and not pa.versions("https://huge.example/news/1"),
+          f"上限を越えた本文を原本にした・読めたとした: {html[:50]!r} {why!r}")
+    # 出典の判定(BOOTH の商品・YouTube の oEmbed と視聴ページ・再生リスト)と X の投稿者も上限まで
+    seen = []
+    saved = (cs.polite_urlopen, pipelib.polite_urlopen)
+
+    def opener(req, timeout=20, **k):
+        r = Endless()
+        seen.append(r)
+        return r
+    try:
+        cs.polite_urlopen = pipelib.polite_urlopen = opener
+        with contextlib.redirect_stdout(io.StringIO()):
+            cs.booth_item_shop("1")
+            cs.video_author("abc")
+            cs.playlist_author("PLx")
+            pipelib.x_post_author("123")
+    finally:
+        cs.polite_urlopen, pipelib.polite_urlopen = saved
+    # 配信の Cloudflare の答えも上限まで
+    import deploy
+    saved_d = (deploy.urllib.request.urlopen, dict(deploy.ENV))
+    try:
+        deploy.ENV.update(CF_API_TOKEN="t", CF_ZONE_ID="z")
+        deploy.urllib.request.urlopen = lambda req, timeout=30: opener(req)
+        with contextlib.redirect_stdout(io.StringIO()):
+            try:
+                deploy.purge_cache()
+            except Exception:       # noqa: BLE001  答えの形は問わない(読み方だけ見る)
+                pass
+    finally:
+        deploy.urllib.request.urlopen = saved_d[0]
+        deploy.ENV.clear()
+        deploy.ENV.update(saved_d[1])
+    check(len(seen) >= 6 and not any(r.unbounded for r in seen),
+          f"出典の判定・X の投稿者・配信の取得が応答を上限なしで読んだ: {[(r.served, r.unbounded) for r in seen]}")
+
+
+def test_suite_same_under_systemd(tmp: Path):
+    """回帰テストは systemd の下(watch・当番の selfcheck。INVOCATION_ID がある)でも手で回したときと同じに動く。前のテストが決めた
+    収集の締切は次のテストに残らない(2026-10-27: systemd の下でだけ収集の締切が残り、原本の保存のテストが終わらない偽の応答を
+    読み続け、watch が 6.4G・7 時間半で OOM になった。手で回すと通るので、監査も当番も気づかなかった)"""
+    import time as _t
+    import collect
+    code = ("import os, sys; sys.path.insert(0, sys.argv[1]); os.environ['INVOCATION_ID'] = 'from-systemd'\n"
+            "import test_pipeline, collect\n"
+            "print(repr(os.environ.get('INVOCATION_ID')), repr(collect.collect_deadline(False)))\n")
+    r = subprocess.run([sys.executable, "-c", code, str(Path(__file__).resolve().parent)], capture_output=True, text=True,
+                       timeout=300, stdin=subprocess.DEVNULL)
+    check(r.returncode == 0 and r.stdout.strip() == "None None",
+          f"systemd の下で回帰テストを読み込むと、INVOCATION_ID と収集の締切が残る: {r.stdout.strip()!r} {r.stderr[-300:]!r}")
+    saved = collect.DEADLINE
+
+    def sets_deadline(_tmp):
+        collect.DEADLINE = _t.time() + 3600
+    try:
+        collect.DEADLINE = None
+        _own_archive(sets_deadline)(tmp)
+        left = collect.DEADLINE
+    finally:
+        collect.DEADLINE = saved
+    check(left is None, f"前のテストが決めた収集の締切が、次のテストに残る: {left}")
+
+
+def test_selfcheck_stops_stuck_tests(tmp: Path):
+    """selfcheck は回帰テストを時間の上限で止め(子孫ごと)、赤にする。止まったテストを待ち続けない
+    (2026-10-27: watch の selfcheck の下でテストが終わらず、7 時間半走って OOM で殺された)。別のセッションへ逃げて出力を握る子孫も
+    止める。テストがシグナルで止まったのを時間切れと言わない。当番が selfcheck を上限で止める・当番が止められるときも、selfcheck が
+    起動したテストまで止める(Sol 監査 WT r1・r2)"""
+    import oncall
+    scripts = str(Path(__file__).resolve().parent)
+
+    def alive(pidfile: Path) -> bool:
+        try:
+            pid = int(pidfile.read_text())
+            st = Path(f"/proc/{pid}/stat").read_text().split(")")[-1].split()[0]
+        except (OSError, ValueError):
+            return False
+        if st != "Z":
+            os.kill(pid, 9)
+            return True
+        return False
+
+    def fake_repo(name: str, body: str) -> tuple[Path, Path]:
+        root, pidfile = tmp / name, tmp / f"{name}.pid"
+        (root / "scripts").mkdir(parents=True)
+        (root / "scripts" / "test_pipeline.py").write_text(body.replace("PIDFILE", repr(str(pidfile))), encoding="utf-8")
+        return root, pidfile
+    # 別のセッションへ逃げ、標準出力を握ったままの子孫
+    escaping = ("import subprocess, sys, time\n"
+                "p = subprocess.Popen(['sleep', '600'], start_new_session=True)\nopen(PIDFILE, 'w').write(str(p.pid))\n"
+                "print('止まったテスト', flush=True)\ntime.sleep(600)\n")
+    sc = ("import sys; sys.path.insert(0, sys.argv[1]); import selfcheck\n"
+          "from pathlib import Path\n"
+          "selfcheck.ROOT, selfcheck.TARGETS, selfcheck.TEST_TIMEOUT_SEC = Path(sys.argv[2]), [], 3\n"
+          "sys.argv = ['selfcheck.py']\nsys.exit(selfcheck.main())\n")
+    got = {}
+    for name, body in (("stuck", escaping), ("killed", "import os, signal\nos.kill(os.getpid(), signal.SIGKILL)\n")):
+        root, pidfile = fake_repo(name, body)
+        t0 = __import__("time").time()
+        try:
+            r = subprocess.run([sys.executable, "-c", sc, scripts, str(root)], capture_output=True, text=True, timeout=90,
+                               stdin=subprocess.DEVNULL)
+            got[name] = (r.returncode, r.stdout + r.stderr, alive(pidfile), round(__import__("time").time() - t0, 1))
+        except subprocess.TimeoutExpired:
+            got[name] = (None, "selfcheck が止まったテストを待ち続けた", alive(pidfile), 90)
+    check(got["stuck"][0] == 1 and "で終わらない" in got["stuck"][1] and not got["stuck"][2] and got["stuck"][3] < 60,
+          f"selfcheck が止まったテストを時間の上限で止めない・逃げた子孫を残した: {got['stuck'][0]} 子孫 {got['stuck'][2]} "
+          f"{got['stuck'][3]}秒 {got['stuck'][1][-300:]!r}")
+    check(got["killed"][0] == 1 and "シグナル 9" in got["killed"][1] and "終わらない" not in got["killed"][1],
+          f"シグナルで止まったテストを時間切れと言った: {got['killed'][1][-300:]!r}")
+    # 当番の検査の上限で selfcheck(本物)を止めたとき・当番だけが SIGTERM で止められたときも、selfcheck が起動した回帰テスト
+    # (別のセッションへ逃げた子孫も)を残さない(Sol 監査 WT r1・r2 の later)
+    def real_selfcheck(name: str, body: str) -> tuple[Path, Path]:
+        root, pidfile = fake_repo(name, body)
+        (root / "scripts" / "selfcheck.py").write_text(
+            f"import sys; sys.path.insert(0, {scripts!r}); import selfcheck; from pathlib import Path\n"
+            f"selfcheck.ROOT, selfcheck.TARGETS = Path({str(root)!r}), []\nsys.argv = ['selfcheck.py']\nsys.exit(selfcheck.main())\n",
+            encoding="utf-8")
+        return root, pidfile
+    root, pidfile = real_selfcheck("limit", escaping)
+    t0 = __import__("time").time()
+    rc, lim = oncall.run_check("selfcheck", ["scripts/selfcheck.py"], root, lambda: 3)
+    took, left_alive = __import__("time").time() - t0, alive(pidfile)
+    check(rc is None and lim == 3 and not left_alive and took < 60,
+          f"当番の検査の上限で selfcheck を止めたとき、テストの子孫が残った: {rc} {lim} 子孫 {left_alive} {took:.0f}秒")
+    root, pidfile = real_selfcheck("term", "import os, time\nopen(PIDFILE, 'w').write(str(os.getpid()))\ntime.sleep(120)\n")
+    boot = ("import sys; sys.path.insert(0, sys.argv[1]); import oncall; from pipelib import exit_on_term; exit_on_term()\n"
+            "oncall.run_check('selfcheck', ['scripts/selfcheck.py'], sys.argv[2], lambda: 90)\n")
+    p = subprocess.Popen([sys.executable, "-c", boot, scripts, str(root)], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+                         stdin=subprocess.DEVNULL)
+    try:
+        end = __import__("time").monotonic() + 30
+        while not pidfile.exists() and __import__("time").monotonic() < end:
+            __import__("time").sleep(0.05)
+        started = pidfile.exists()
+        p.terminate()
+        p.wait(timeout=30)
+        __import__("time").sleep(0.5)
+    finally:
+        if p.poll() is None:
+            p.kill()
+            p.wait()
+    check(started and not alive(pidfile), f"当番が止められたとき、検査が起動した回帰テストが残った(起動 {started})")
+
+
+def test_unit_failed_reaches_human(tmp: Path):
+    """定時の工程・当番の unit が、自分で知らせずに止まったら(OOM・シグナル・時間切れ・通知せずに非0)、人に知らせて当番に渡す
+    (2026-10-27: 09:00 の watch が OOM で殺されたが、人には何も届かなかった)。走行が自分で知らせ終えたかは、表示した行ではなく
+    通知が届いたかの記録で見る(Sol 監査 WT r1: 送る前に出る 🚨 の行で、届かなかった通知も知らせ終えたと見ていた)"""
+    import contextlib
+    import io
+    import unit_failed as uf
+    inv = "0123456789abcdef0123456789abcdef"
+    sent = {"notice": "watch", "delivered": True}
+    unsent = {"notice": "collect", "delivered": False}
+    calls = []
+    saved = (uf.unit_props, uf.unit_run_notes, uf.notify, uf.diagnose_anomalies, uf.now_jst, uf.edition_date)
+    cases = {   # 名前: (unit, 状態, その走行の記録)
+        "watch-oom": ("imas-watch.service", {"Result": "oom-kill", "ExecMainStatus": "15", "MemoryPeak": str(6_900_000_000)}, []),
+        "watch-届けて渡した": ("imas-watch.service", {"Result": "exit-code", "ExecMainStatus": "1"}, [sent, {"escalated": "watch"}]),
+        "collect-届かなかった": ("imas-collect.service", {"Result": "exit-code", "ExecMainStatus": "1"}, [unsent]),
+        "collect-届かず渡した": ("imas-collect.service", {"Result": "exit-code", "ExecMainStatus": "1"}, [unsent, {"escalated": "collect"}]),
+        "collect-黙って非0": ("imas-collect.service", {"Result": "exit-code", "ExecMainStatus": "1"}, []),
+        "compose-時間切れ": ("imas-compose.service", {"Result": "timeout", "ExecMainStatus": "15"}, [sent, {"escalated": "compose"}]),
+        "release-シグナル": ("imas-release.service", {"Result": "signal", "ExecMainStatus": "9"}, []),
+        "当番-oom": ("imas-oncall-2026-10-28-compose-1", {"Result": "oom-kill", "ExecMainStatus": "9"}, []),
+        "当番-渡し終えた": ("imas-oncall-2026-10-28-compose-1", {"Result": "exit-code", "ExecMainStatus": str(pipelib.ONCALL_HANDED_EXIT)},
+                       [{"notice": "oncall", "delivered": True}]),
+        "当番-届かず渡し終えた": ("imas-oncall-2026-10-28-compose-1",
+                           {"Result": "exit-code", "ExecMainStatus": str(pipelib.ONCALL_HANDED_EXIT)},
+                           [{"notice": "oncall", "delivered": False}]),
+    }
+    got = {}
+    try:
+        uf.now_jst = lambda: __import__("datetime").datetime(2026, 10, 27, 16, 38, tzinfo=pipelib.JST)
+        uf.edition_date = lambda: "2026-10-28"
+        for name, (unit, props, notes) in cases.items():
+            calls.clear()
+            uf.unit_props = lambda u, p=props: dict(p, InvocationID=inv)
+            uf.unit_run_notes = lambda i, n=notes: list(n) if i == inv else []
+            uf.notify = lambda job, msg, ok=True, **k: (calls.append(("notify", job, msg, ok, k.get("ledger", True))), True)[1]
+            uf.diagnose_anomalies = lambda *a, **k: calls.append(("当番", a, k)) or True
+            code = uf.main([unit])
+            got[name] = (code, list(calls))
+    finally:
+        (uf.unit_props, uf.unit_run_notes, uf.notify, uf.diagnose_anomalies, uf.now_jst, uf.edition_date) = saved
+    n = lambda k: [c for c in got[k][1] if c[0] == "notify"]
+    h = lambda k: [c for c in got[k][1] if c[0] == "当番"]
+    check(len(n("watch-oom")) == 1 and n("watch-oom")[0][1] == "watch" and n("watch-oom")[0][3] is False
+          and "OOM" in n("watch-oom")[0][2] and "6.4G" in n("watch-oom")[0][2]
+          and h("watch-oom") == [("当番", ("watch", "2026-10-27"), {"rerun": False, "reason": n("watch-oom")[0][2], "edition": "2026-10-28"})],
+          f"OOM で殺された watch を人に知らせて当番に渡さない: {got['watch-oom']}")
+    check(len(n("watch-届けて渡した")) == 1 and "非0で終わった" in n("watch-届けて渡した")[0][2] and n("watch-届けて渡した")[0][4] is False
+          and not h("watch-届けて渡した"),
+          f"知らせ終えて当番に渡した走行の非0を、短く知らせない・当番を重ねた: {got['watch-届けて渡した']}")
+    for k in ("collect-届かなかった", "collect-黙って非0"):
+        check(len(n(k)) == 1 and h(k) and h(k)[0][2]["rerun"] is False, f"{k}: 通知が届いていない・通知せずに非0で終えた収集を、知らせて当番に渡さない: {got[k]}")
+    check("届いていない" in n("collect-届かなかった")[0][2] and "1つも届けていない" in n("collect-黙って非0")[0][2],
+          f"知らせる理由(届いていない・届けていない)を書かない: {got['collect-届かなかった']} {got['collect-黙って非0']}")
+    check(len(n("collect-届かず渡した")) == 1 and not h("collect-届かず渡した"),
+          f"当番に渡し済みの走行で、届かなかった通知を知らせ直さない・当番を重ねた: {got['collect-届かず渡した']}")
+    check(len(n("compose-時間切れ")) == 1 and h("compose-時間切れ") and h("compose-時間切れ")[0][1] == ("compose", "2026-10-28")
+          and h("compose-時間切れ")[0][2]["rerun"] is True,
+          f"時間切れで止められた組版を、取り直す当番に渡さない(自分の通知があっても止められたことは届ける): {got['compose-時間切れ']}")
+    check(h("release-シグナル") and h("release-シグナル")[0][1] == ("release", "2026-10-27") and h("release-シグナル")[0][2]["rerun"] is True,
+          f"シグナルで止まった発行を、今日の号を取り直す当番に渡さない: {got['release-シグナル']}")
+    check(len(n("当番-oom")) == 1 and n("当番-oom")[0][4] is False and not h("当番-oom"),
+          f"当番の unit の失敗を知らせない・当番に当番を重ねた: {got['当番-oom']}")
+    check(got["当番-渡し終えた"][1] == [] and len(n("当番-届かず渡し終えた")) == 1 and not h("当番-届かず渡し終えた"),
+          f"当番が人に渡し終えた終わり方を二重に知らせた・届かなかったのに黙った: {got['当番-渡し終えた']} {got['当番-届かず渡し終えた']}")
+    # 通知が届いたか・当番に渡したかは、走行(INVOCATION_ID)ごとの記録に残る(届かなかった通知は届かなかったとして)
+    saved_env = (os.environ.get("INVOCATION_ID"), os.environ.get("IMAS_SCRATCH"), pipelib.ENV.get("DISCORD_WEBHOOK_URL"),
+                 pipelib.urllib.request.urlopen, list(pipelib.ANOMALIES))
+    try:
+        os.environ["INVOCATION_ID"], os.environ["IMAS_SCRATCH"] = inv, str(tmp / "scratch")
+        pipelib.ENV["DISCORD_WEBHOOK_URL"] = "https://discord.invalid/webhook"
+        pipelib.urllib.request.urlopen = lambda req, timeout=15: (_ for _ in ()).throw(OSError("届かない"))
+        with contextlib.redirect_stdout(io.StringIO()):
+            r1 = pipelib.notify("watch", "異常", ok=False)
+            pipelib.urllib.request.urlopen = lambda req, timeout=15: None
+            r2 = pipelib.notify("watch", "異常2", ok=False)
+            pipelib.notify("watch", "正常", ok=True)
+        rows = pipelib.unit_run_notes(inv)
+    finally:
+        for k, v in (("INVOCATION_ID", saved_env[0]), ("IMAS_SCRATCH", saved_env[1])):
+            if v is None:
+                os.environ.pop(k, None)
+            else:
+                os.environ[k] = v
+        if saved_env[2] is None:
+            pipelib.ENV.pop("DISCORD_WEBHOOK_URL", None)
+        else:
+            pipelib.ENV["DISCORD_WEBHOOK_URL"] = saved_env[2]
+        pipelib.urllib.request.urlopen = saved_env[3]
+        pipelib.ANOMALIES[:] = saved_env[4]
+    check(r1 is False and r2 is True and [(x.get("notice"), x.get("delivered")) for x in rows] == [("watch", False), ("watch", True)],
+          f"走行の記録に、異常の通知が届いたかを残さない: {r1} {r2} {rows}")
+    # 古い走行の記録は、走行ごとのファイルで古さを見て片付ける(新しい走行が足されても残り続けない。Sol 監査 WT r2 の later)
+    runs = tmp / "scratch2" / pipelib.UNIT_RUNS_DIR
+    runs.mkdir(parents=True)
+    old, old2 = runs / ("a" * 32 + ".jsonl"), runs / ("b" * 32 + ".jsonl")
+    for f in (old, old2):
+        f.write_text("{}\n", encoding="utf-8")
+        os.utime(f, (__import__("time").time() - 3 * 86400,) * 2)
+    saved_env2 = (os.environ.get("INVOCATION_ID"), os.environ.get("IMAS_SCRATCH"))
+    try:
+        os.environ["INVOCATION_ID"], os.environ["IMAS_SCRATCH"] = "c" * 32, str(tmp / "scratch2")
+        pipelib.note_unit_run({"escalated": "watch"})
+        after_note = old.exists()
+        old.write_text("{}\n", encoding="utf-8")
+        os.utime(old, (__import__("time").time() - 3 * 86400,) * 2)
+        pipelib.sweep_scratch()
+        after_sweep = old.exists()
+    finally:
+        for k, v in zip(("INVOCATION_ID", "IMAS_SCRATCH"), saved_env2):
+            if v is None:
+                os.environ.pop(k, None)
+            else:
+                os.environ[k] = v
+    check(not after_note and not old2.exists() and not after_sweep and (runs / ("c" * 32 + ".jsonl")).exists(),
+          f"古い走行の記録が片付かない: 記録のあと {after_note} / 片付けのあと {after_sweep}")
+
+
+def test_units_bound_memory_and_report_failure(tmp: Path):
+    """定時の工程の unit は工程の slice(メモリの上限)の中で動き、失敗したら通知の unit を起動する。当番の unit も同じ。
+    通知の unit は導入の手順で入る(2026-10-27: 09:00 の watch が 6.4G を使って機械を止め、OOM で殺されても誰にも届かなかった)"""
+    import configparser
+    units = Path(__file__).resolve().parent.parent / "ops" / "systemd"
+
+    def read(name):
+        cp = configparser.ConfigParser(strict=False, interpolation=None, comment_prefixes=("#",))
+        cp.optionxform = str
+        cp.read(units / name, encoding="utf-8")
+        return cp
+    bad = []
+    for st in ("collect", "compose", "release", "update", "watch"):
+        u = read(f"imas-{st}.service")
+        if u.get("Unit", "OnFailure", fallback="") != "imas-failure@%n.service" or u.get("Service", "Slice", fallback="") != "imas.slice":
+            bad.append(st)
+    w = read("imas-watch.service")
+    sl = read("imas.slice")
+    fl = read("imas-failure@.service")
+    install = (units / "install.sh").read_text(encoding="utf-8")
+    check(not bad and w.get("Service", "MemoryMax", fallback="") and w.get("Service", "TimeoutStartSec", fallback="")
+          and sl.get("Slice", "MemoryMax", fallback="") and "unit_failed.py %i" in fl.get("Service", "ExecStart", fallback="")
+          and "imas.slice" in install,
+          f"工程の unit がメモリの上限・失敗の通知を持たない: {bad} / watch {dict(w['Service']) if w.has_section('Service') else {}}")
+    # 当番の unit も工程の slice の中で起動し、失敗したら通知の unit を起動する
+    rec = []
+    run_id = "fedcba9876543210fedcba9876543210"
+    saved = (pipelib.subprocess.run, pipelib.shutil.which, os.environ.get("INVOCATION_ID"), pipelib._ESCALATED, pipelib.oncall_clis_blocked,
+             list(pipelib.ANOMALIES), pipelib.ENV.get("ONCALL"), os.environ.get("IMAS_SCRATCH"))
+
+    def fake_run(cmd, **k):
+        rec.append(list(cmd))
+        return subprocess.CompletedProcess(cmd, 0, "active\n" if cmd[:3] == ["systemctl", "--user", "is-active"] else "", "")
+    try:
+        pipelib.subprocess.run, pipelib.shutil.which = fake_run, lambda n: f"/usr/bin/{n}"
+        os.environ["INVOCATION_ID"], os.environ["IMAS_SCRATCH"] = run_id, str(tmp / "scratch")
+        pipelib._ESCALATED, pipelib.oncall_clis_blocked = False, lambda: []
+        pipelib.ENV["ONCALL"] = "on"
+        pipelib.ANOMALIES[:] = ["[watch] 異常"]
+        pipelib.escalate("watch", "2026-10-27", "テスト", rerun=False)
+        handed = [r.get("escalated") for r in pipelib.unit_run_notes(run_id)]
+    finally:
+        (pipelib.subprocess.run, pipelib.shutil.which, inv, pipelib._ESCALATED, pipelib.oncall_clis_blocked, an, onc, scr) = saved
+        if scr is None:
+            os.environ.pop("IMAS_SCRATCH", None)
+        else:
+            os.environ["IMAS_SCRATCH"] = scr
+        pipelib.ANOMALIES[:] = an
+        os.environ.pop("INVOCATION_ID", None)
+        if inv is not None:
+            os.environ["INVOCATION_ID"] = inv
+        if onc is None:
+            pipelib.ENV.pop("ONCALL", None)
+        else:
+            pipelib.ENV["ONCALL"] = onc
+    sd = next((c for c in rec if c[:1] == ["systemd-run"]), [])
+    unit = sd[sd.index("--unit") + 1] if "--unit" in sd else ""
+    check(unit and "--slice=imas.slice" in sd and f"--property=OnFailure=imas-failure@{unit}.service" in sd,
+          f"当番の unit を工程の slice の外で起動した・失敗の通知を付けない: {sd}")
+    check(handed == ["watch"], f"当番に渡したことを走行の記録に残さない(通知の unit が当番を重ねる): {handed}")
+
+
 def main() -> int:
     tmp = Path(tempfile.mkdtemp(prefix="imas-test-"))
     test_assemble_run_returns_reservations(tmp / "arrr")
@@ -20510,6 +20928,11 @@ def main() -> int:
     test_source_watch(tmp / "sw")
     test_article_updates_render(tmp / "aur")
     test_source_update_sessions(tmp / "sus")
+    test_page_reads_are_bounded(tmp / "prb")
+    test_suite_same_under_systemd(tmp / "ssu2")
+    test_selfcheck_stops_stuck_tests(tmp / "sst")
+    test_unit_failed_reaches_human(tmp / "ufh")
+    test_units_bound_memory_and_report_failure(tmp / "ubm")
     check(not STRAY_WRITES, "書式で決めたファイルを write_checked を通さずに書いた本番のコード(書く前に書式で検めること): "
           + "; ".join(sorted(set(STRAY_WRITES))[:10]))
     for f in FAILS:
@@ -20520,17 +20943,24 @@ def main() -> int:
 
 def _own_archive(fn):
     """テストごとに原本の置き場(page_archive)を空の別の置き場にする(前のテストが読んだページの原本を、次のテストの fetch_page.py が
-    「読み直せないときの原本」として返さない)"""
+    「読み直せないときの原本」として返さない)。収集の締切(collect.DEADLINE。collect.main が決める)もテストの前の値に戻す
+    (前のテストの締切が次のテストに残ると、締切の有無で読み方が変わる。2026-10-27 の watch の OOM)"""
     import functools
 
     @functools.wraps(fn)
     def run(*a, **k):
         saved = os.environ.get("IMAS_PAGE_ARCHIVE")
         os.environ["IMAS_PAGE_ARCHIVE"] = tempfile.mkdtemp(prefix=f"pages-{fn.__name__[:40]}-")
+        col = sys.modules.get("collect")
+        saved_dl = getattr(col, "DEADLINE", None)
         try:
             return fn(*a, **k)
         finally:
             os.environ["IMAS_PAGE_ARCHIVE"] = saved
+            if col is None:
+                col = sys.modules.get("collect")
+            if col is not None:
+                col.DEADLINE = saved_dl
     return run
 
 

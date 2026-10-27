@@ -233,13 +233,15 @@ def sweep_scratch(max_age: float = SCRATCH_MAX_AGE_SEC) -> list[str]:
     """置き場(と TMPDIR の置き場)に残った、max_age より古いものを消す。戻りは消したもの。消せないものは飛ばす(次の回にまた試す)。"""
     gone = []
     root = scratch_root()
-    for base in (root, root / "tmp"):
+    # 走行の記録(unit-runs)は走行ごとのファイルで古さを見る(置き場ごとだと、新しい走行が足されるたびに置き場が新しくなり、
+    # 古い記録が残り続けた。Sol 監査 WT r2 の later)
+    for base in (root, root / "tmp", root / UNIT_RUNS_DIR):
         try:
             entries = list(base.iterdir())
         except OSError:
             continue
         for e in entries:
-            if e.name == "tmp" and base == root:
+            if e.name in ("tmp", UNIT_RUNS_DIR) and base == root:
                 continue
             try:
                 if time.time() - e.lstat().st_mtime < max_age:
@@ -648,6 +650,9 @@ def escalate(stage: str, date: str, reason: str, rerun: bool = True, edition: st
     if shutil.which("systemd-run") and os.environ.get("INVOCATION_ID"):
         unit = f"imas-oncall-{date}-{stage}-{int(time.time())}"
         r = subprocess.run(["systemd-run", "--user", "--collect", "--unit", unit,
+                            # 工程と同じメモリの上限(ops/systemd/imas.slice)の中で動かし、自分で知らせずに止まったら人に届ける
+                            # (2026-10-27: watch の selfcheck の回帰テストが膨らんで機械を止めた。当番も同じテストを走らせる)
+                            "--slice=imas.slice", f"--property=OnFailure=imas-failure@{unit}.service",
                             f"--working-directory={ROOT}", f"--setenv=PATH={tool_path()}",
                             f"--setenv=HOME={os.environ.get('HOME', '')}",
                             f"--property=StandardOutput=append:{log}", "--property=StandardError=inherit",
@@ -665,6 +670,8 @@ def escalate(stage: str, date: str, reason: str, rerun: bool = True, edition: st
                 # 台帳を渡した起動だけを「この process の異常は当番に渡した」とする(保管していた指摘の依頼で、
                 # 同じ process のあとの異常のなぜなぜを止めない)
                 _ESCALATED = _ESCALATED or ledger
+                if ledger:
+                    note_unit_run({"escalated": stage, "unit": unit})
                 return True
             notify("oncall", f"{date} {stage}: 当番の unit {unit} が動いていない({st.stdout.strip()})。人の判断が要る", ok=False)
             return False
@@ -678,6 +685,8 @@ def escalate(stage: str, date: str, reason: str, rerun: bool = True, edition: st
                              start_new_session=True, env={**os.environ, "PATH": tool_path()})
         print(f"当番(oncall)を起動した: {stage} {date}", flush=True)
         _ESCALATED = _ESCALATED or ledger
+        if ledger:
+            note_unit_run({"escalated": stage})
         return True
     except Exception as e:
         print(f"当番の起動に失敗: {e}", flush=True)
@@ -814,6 +823,8 @@ def notify(job: str, msg: str, ok: bool = True, require: bool = False, ledger: b
     print(text, flush=True)
     url = ENV.get("DISCORD_WEBHOOK_URL")
     if not url:
+        if not ok:
+            note_unit_run({"notice": job, "delivered": False})
         return not require
     # Discord は1件 2000 字まで。長い通知は分割して**全部**送る(超えると webhook が落ちて通知ごと届かない。監査指摘)
     chunks = split_chunks(text, DISCORD_LIMIT)
@@ -828,7 +839,55 @@ def notify(job: str, msg: str, ok: bool = True, require: bool = False, ledger: b
         except Exception as e:
             print(f"(Discord 通知失敗: {e})", flush=True)
             delivered = False
+    if not ok:
+        note_unit_run({"notice": job, "delivered": delivered})
     return delivered
+
+
+# systemd の走行(INVOCATION_ID)ごとの、人への異常の通知を届けたか・当番に渡したかの記録。工程の unit が失敗したとき、
+# 通知の unit(unit_failed.py)が「その走行が自分で知らせ終えたか」を、表示した行ではなく届いたかで見る(Sol 監査 WT r1:
+# 🚨 の行は送る前に出るので、届かなかった通知でも知らせ終えたと見ていた)
+UNIT_RUNS_DIR = "unit-runs"
+
+
+def note_unit_run(event: dict) -> None:
+    """この走行の記録に1行足す(systemd の外・試験実行では何もしない。書けなくても工程を止めない: 通知の unit は知らせる側に倒す)。"""
+    inv = os.environ.get("INVOCATION_ID", "")
+    if not re.fullmatch(r"[0-9a-f]{32}", inv) or _QUIET:
+        return
+    try:
+        d = scratch_root() / UNIT_RUNS_DIR
+        d.mkdir(parents=True, exist_ok=True)
+        p = d / f"{inv}.jsonl"
+        first = not p.exists()
+        with open(p, "a", encoding="utf-8") as f:
+            f.write(json.dumps({**event, "at": time.time()}, ensure_ascii=False) + "\n")
+        if first:       # 走行の始めの1回、古い記録を片付ける(走行ごとのファイルで古さを見る。ほかの置き場は sweep_scratch)
+            for old in d.glob("*.jsonl"):
+                with contextlib.suppress(OSError):
+                    if time.time() - old.stat().st_mtime >= SCRATCH_MAX_AGE_SEC:
+                        old.unlink()
+    except OSError:
+        pass
+
+
+def unit_run_notes(invocation: str) -> list[dict]:
+    """走行の記録(note_unit_run)。無い・読めない行は飛ばす(無ければ空 = 何も知らせていない)。"""
+    if not re.fullmatch(r"[0-9a-f]{32}", invocation or ""):
+        return []
+    try:
+        lines = (scratch_root() / UNIT_RUNS_DIR / f"{invocation}.jsonl").read_text(encoding="utf-8").splitlines()
+    except OSError:
+        return []
+    out = []
+    for line in lines:
+        try:
+            row = json.loads(line)
+        except ValueError:
+            continue
+        if isinstance(row, dict):
+            out.append(row)
+    return out
 
 
 DISCORD_LIMIT = 1800
@@ -1351,7 +1410,7 @@ def stop_tree(pgid: int | None, root: int | None = None, wait: float = 5, mark: 
     return sorted(caught)
 
 
-def start_group(cmd: list[str], *, cwd=None, env: dict | None = None, stdout=subprocess.PIPE, stderr=subprocess.PIPE):
+def start_group(cmd: list[str], *, cwd=None, env: dict | None = None, stdout=subprocess.PIPE, stderr=subprocess.PIPE, preexec_fn=None):
     """モデル・道具のセッションを自前のセッション(プロセスグループ)で起動する。回収は finish_group。
     並列に起動するときは、起動のたびに一覧へ足し、finally で stop_groups(一覧) を呼ぶ(途中の例外・中断で置き去りにしない)。
     起動できなければ例外にせず LaunchFailed(その担当だけの異常終了)を返す。
@@ -1368,8 +1427,10 @@ def start_group(cmd: list[str], *, cwd=None, env: dict | None = None, stdout=sub
     late = False
     try:
         with _hold_signals():
+            # preexec_fn は子の起動の直前に子の中で走る(selfcheck の回帰テストを selfcheck と一緒に終わらせる PR_SET_PDEATHSIG など)
             p = subprocess.Popen(cmd, cwd=cwd, env=env, stdout=stdout, stderr=stderr, text=True,
-                                 stdin=subprocess.DEVNULL, start_new_session=True)
+                                 stdin=subprocess.DEVNULL, start_new_session=True,
+                                 **({"preexec_fn": preexec_fn} if preexec_fn is not None else {}))
             try:
                 p.session_mark = mark
             except AttributeError:      # 差し替えた起動(テストの偽物)が属性を持てないときは、印なしで回収する
@@ -1454,14 +1515,15 @@ ANSWER_POLL_SEC = 0.5
 
 
 def run_group(cmd: list[str], timeout: float | None, *, cwd=None, env: dict | None = None,
-              answered=None, settle: float | None = None) -> subprocess.CompletedProcess:
+              answered=None, settle: float | None = None, preexec_fn=None) -> subprocess.CompletedProcess:
     """モデル・道具を1つ走らせて終わりを待つ(subprocess.run(capture_output=True, text=True, stdin=DEVNULL, timeout=) の代わり)。
     時間切れは TimeoutExpired(それまでの出力を持つ。partial_output で読める)で上げる。起動できなければ終了コード 127(理由は stderr)。
-    answered(標準出力のファイルの Path → 答えが採用の形で出ているか)を渡すと、待つあいだ答えを見張る(_run_group_answered)。"""
+    answered(標準出力のファイルの Path → 答えが採用の形で出ているか)を渡すと、待つあいだ答えを見張る(_run_group_answered)。
+    preexec_fn は start_group へ(answered とは使わない)。"""
     if answered is not None:
         return _run_group_answered(cmd, timeout, answered, cwd=cwd, env=env,
                                    settle=ANSWER_SETTLE_SEC if settle is None else settle)
-    p = start_group(cmd, cwd=cwd, env=env)
+    p = start_group(cmd, cwd=cwd, env=env, **({"preexec_fn": preexec_fn} if preexec_fn is not None else {}))
     so, se, timed_out = finish_group(p, timeout)
     if timed_out:
         raise subprocess.TimeoutExpired(cmd, timeout, output=so, stderr=se)
@@ -4056,7 +4118,7 @@ def x_post_author(post_id: str, fetch=None) -> str:
     def get(url: str) -> str:
         req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0 (compatible; ImasNews/1.0)"})
         with polite_urlopen(req, timeout=20) as r:
-            return r.read().decode("utf-8", errors="replace")
+            return r.read(PAGE_READ_BYTES).decode("utf-8", errors="replace")    # 上限まで(終わらない応答を溜め込まない。2026-10-27)
     meta = {}
     try:
         q = urllib.parse.urlencode({"url": f"https://x.com/i/status/{post_id}", "omit_script": "1"})

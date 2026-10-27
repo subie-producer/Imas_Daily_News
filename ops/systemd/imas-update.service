@@ -2,8 +2,12 @@
 Description=アイマスNEWS 道具の更新(Claude Code / Codex / Grok の CLI を更新し、動作を確かめる)
 Wants=network-online.target
 After=network-online.target
+OnFailure=imas-failure@%n.service
 
 [Service]
+Slice=imas.slice
+# 実測のピークは 1.7G(25回)
+MemoryMax=3G
 Type=oneshot
 WorkingDirectory=%h/git/imas-ops
 Environment=PATH=%h/.local/bin:%h/.grok/bin:/usr/local/bin:/usr/bin:/bin

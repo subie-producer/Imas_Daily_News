@@ -2,8 +2,12 @@
 Description=アイマスNEWS 発行(edition ブランチを main へ squash push)
 Wants=network-online.target
 After=network-online.target
+OnFailure=imas-failure@%n.service
 
 [Service]
 Type=oneshot
 WorkingDirectory=%h/git/imas-ops
 ExecStart=/usr/bin/python3 %h/git/imas-ops/scripts/release.py
+Slice=imas.slice
+# 実測のピークは 0.44G(46回)
+MemoryMax=1500M

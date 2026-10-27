@@ -2643,6 +2643,20 @@ def main() -> int:
         _TERM.update(defer=False, got=False)
 
 
+def classify_then_retag(date: str) -> tuple[bool, str]:
+    """判定表の更新 → 紙面の種別付け直し → lint の取引(classify_retag_lint)。合議の失敗で戻したら、いまの判定表・判定のコードで決まる
+    付け直しまで戻るので、合議を飛ばして付け直し → lint だけを掛け直す(2026-10-27 Sol 監査。組版の出典の判定と同じ)。
+    戻りは合議の取引の (成否, 理由)。掛け直しが「戻せない」で終わったら、その理由を返す"""
+    ok, why = classify_retag_lint(date, timeout=max(1, int(session_left(1800))))
+    if not ok and "戻せない" not in why:
+        ok_rt, why_rt = classify_retag_lint(date, timeout=max(1, int(session_left(600))), judge=False)
+        if not ok_rt and "戻せない" in why_rt:
+            return ok, why_rt
+        # 通知が結果と食い違わないよう、付け直しの結果を理由に足す(Sol 監査 r2)。通知は理由を 500 字で切るので、元の理由を先に短くする(r3)
+        why = f"{why[:240]}。" + ("合議なしの付け直し・lint は済ませた" if ok_rt else f"合議なしの付け直しも失敗し記事も戻した({why_rt[:200]})")
+    return ok, why
+
+
 def run_collect(args, date: str, branch: str, t0: float) -> int:
     """収集の本体(main が号のブランチを checkout したあと)。"""
     # Grok は SuperGrok の週次上限を消費するため、収集のたびに回すと枠を使い切る
@@ -2715,7 +2729,7 @@ def run_collect(args, date: str, branch: str, t0: float) -> int:
             # この取引が触った判定表と記事を開始時に戻し、commit しない(表だけ進んで次の lint が赤くなる、
             # 部分的な付け直しが混ざる、を防ぐ。監査指摘)
             # 合議も収集の締切までに終える(越えたら取引の失敗として戻す)
-            ok, why = classify_retag_lint(date, timeout=max(1, int(session_left(1800))))
+            ok, why = classify_then_retag(date)
             if not ok:
                 if "戻せない" in why:
                     notify("collect", f"{date}: 判定表の取引に失敗({why[:400]})。commit せずに終える。作業ツリーを確かめること", ok=False)
@@ -2723,7 +2737,7 @@ def run_collect(args, date: str, branch: str, t0: float) -> int:
                 if why.startswith(CLI_STOPPED):
                     print(f"{date}: 出典の判定は次回の収集でやり直す({why[:300]})", flush=True)   # 投稿は判定が済ませた
                 else:
-                    notify("collect", f"{date}: 判定表の更新〜紙面の付け直し〜lint で失敗({why[:400]})。判定表と記事を"
+                    notify("collect", f"{date}: 判定表の更新〜紙面の付け直し〜lint で失敗({why[:500]})。判定表は"
                                       f"戻した(候補は残す)。次回の収集で再試行する", ok=False)
     if not args.no_git:
         _TERM["defer"] = True     # 確定の途中では SIGTERM で中断しない(受けたら確定のあとで終える)

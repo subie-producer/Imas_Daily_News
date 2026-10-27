@@ -24,6 +24,7 @@ import ast
 import builtins
 import subprocess
 import sys
+import time
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -108,18 +109,18 @@ def check(path: Path) -> list[str]:
 TEST_TIMEOUT_SEC = 45 * 60
 
 
-def run_tests(limit: float | None = None) -> tuple[str, str]:
-    """回帰テストを走らせる。戻りは(結果の文, 出力)。結果の文は通れば空。待つのは limit 秒(TEST_TIMEOUT_SEC を越えない。当番は
-    自分の待ちより短く渡す)。テストは自前のグループで起動し(pipelib.run_group)、時間切れ・中断(SIGTERM で止められたときも)では、
-    別のセッションへ逃げた子孫まで印で見つけて止める。"""
+def run_tests() -> tuple[str, str]:
+    """回帰テストを走らせる。戻りは(結果の文, 出力)。結果の文は通れば空。待つのは TEST_TIMEOUT_SEC まで。テストは自前のグループで
+    起動し(pipelib.run_group)、時間切れ・中断(SIGTERM で止められたときも)では、別のセッションへ逃げた子孫まで印で見つけて止める
+    (当番が selfcheck を上限で止めるときも、当番の run_group が同じ印で selfcheck のテストまで止める: oncall.sh)。"""
     sys.path.insert(0, str(Path(__file__).resolve().parent))
     from pipelib import exit_on_term, partial_output, run_group
     exit_on_term()      # SIGTERM で止められても、テストの子孫を止めてから終える
-    limit = TEST_TIMEOUT_SEC if limit is None else max(1, min(limit, TEST_TIMEOUT_SEC))
     try:
-        r = run_group([sys.executable, str(ROOT / "scripts" / "test_pipeline.py")], limit, cwd=ROOT)
+        r = run_group([sys.executable, str(ROOT / "scripts" / "test_pipeline.py")], TEST_TIMEOUT_SEC, cwd=ROOT,
+                      preexec_fn=die_with_parent)
     except subprocess.TimeoutExpired as e:
-        return f"回帰テストが {int(limit)} 秒で終わらない(子孫ごと止めた)", "\n".join(partial_output(e))
+        return f"回帰テストが {TEST_TIMEOUT_SEC // 60} 分で終わらない(子孫ごと止めた)", "\n".join(partial_output(e))
     out = (r.stdout or "") + (r.stderr or "")
     if r.returncode == 0:
         return "", out
@@ -129,8 +130,8 @@ def run_tests(limit: float | None = None) -> tuple[str, str]:
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--quiet", action="store_true")
-    ap.add_argument("--test-timeout", type=float, default=None, help="回帰テストを待つ秒数(TEST_TIMEOUT_SEC を越えない)")
     args = ap.parse_args()
+    t0 = time.monotonic()
     total = 0
     for name in TARGETS:
         p = ROOT / "scripts" / name
@@ -142,14 +143,39 @@ def main() -> int:
             print(f"::error file=scripts/{name}::{e}")
             print(f"  [ERROR] scripts/{name}: {e}", file=sys.stderr)
     # 静的検査だけでは実行時の欠陥(未定義変数・保存漏れ)を見逃す(監査指摘)。回帰テストも走らせる
-    why, out = run_tests(args.test_timeout)
+    t1 = time.monotonic()
+    why, out = run_tests()
     if why:
         total += 1
         print(f"::error file=scripts/test_pipeline.py::{why}")
         print(out[-2000:], file=sys.stderr)
+    else:
+        # 最後まで走った回の所要を残す(当番・監査の検査の時間の上限は、この実測から決める。pipelib.check_seconds)
+        note_seconds({"test_pipeline": time.monotonic() - t1, "selfcheck": time.monotonic() - t0})
     if not args.quiet:
         print(f"selfcheck: {total} errors ({len(TARGETS)} scripts + 回帰テスト)")
     return 1 if total else 0
+
+
+def die_with_parent() -> None:
+    """回帰テストは selfcheck と一緒に終わる(当番・監査が selfcheck を直接止めたとき、テストが残って走り続けない。2026-10-27)"""
+    try:
+        import ctypes
+        import signal
+        ctypes.CDLL(None).prctl(1, signal.SIGKILL, 0, 0, 0)     # PR_SET_PDEATHSIG
+    except (OSError, AttributeError):
+        pass
+
+
+def note_seconds(rows: dict) -> None:
+    """検査の所要を pipelib の記録へ。pipelib を読めなくても selfcheck の結果は変えない(静的検査は pipelib の壊れも見る側)"""
+    try:
+        sys.path.insert(0, str(ROOT / "scripts"))
+        from pipelib import note_check_seconds
+        for k, v in rows.items():
+            note_check_seconds(k, v)
+    except Exception:       # noqa: BLE001
+        pass
 
 
 if __name__ == "__main__":

@@ -152,6 +152,65 @@ def scratch_root() -> Path:
     return p
 
 
+# 当番・監査がコードで走らせる検査(selfcheck・test_pipeline・lint)の所要の実測。検査の時間の上限はこの実測から決める
+# (2026-10-27: 回帰テストが組の取り込みで伸び、当番の selfcheck の固定の上限 300 秒で3回とも時間切れになり「当番の作業が途中で止まった」)。
+# 走らせた側(selfcheck.py・当番)が終わるたびに秒を足す。置き場は使い捨ての置き場の直下(毎日の selfcheck で更新され、片付けで消えたら既定)
+CHECK_SECONDS_FILE = "check-seconds.json"
+CHECK_SECONDS_KEEP = 5          # 直近この回数の最大を見積もりにする(重い時間帯の実測も入る。古いものは送り出される)
+CHECK_SECONDS_DEFAULT = {"selfcheck": 1200.0, "test_pipeline": 1200.0, "lint": 120.0}     # 実測が無いとき(2026-10-27 の実測は 9〜17 分・8 秒)
+
+
+CHECK_SECONDS_MAX = 24 * 3600.0    # これを超える実測は壊れた記録として読まない
+
+
+def _check_rows(d, name: str) -> list[float]:
+    """記録 d(読んだ JSON)の name の実測のうち、有限の正の秒だけ(形の違う記録・Infinity・NaN は読まない。2026-10-27 Sol 監査)"""
+    rows = d.get(name) if isinstance(d, dict) else None
+    # 比べるのは型を確かめた値だけ。巨大な整数(10**400)も float にせず上限との比較で落とす(Sol 監査 r2: float への変換で OverflowError)。
+    # NaN は比較が偽になるので落ち、Infinity は上限を超えるので落ちる
+    return [float(x) for x in rows if isinstance(x, (int, float)) and not isinstance(x, bool)
+            and 0 < x <= CHECK_SECONDS_MAX] if isinstance(rows, list) else []
+
+
+def note_check_seconds(name: str, sec: float) -> None:
+    """検査 name の所要(秒)を記録する。書けなければ何もしない(検査の結果には関わらない。監査の sandbox など)。
+    読んでから置き換えるまでを排他にする(並行に記録すると、長い実測が短い実測で上書きされて消えた。2026-10-27 Sol 監査)"""
+    import fcntl
+    try:
+        p = scratch_root() / CHECK_SECONDS_FILE
+        with open(p.with_name(p.name + ".lock"), "a") as lock:
+            fcntl.flock(lock, fcntl.LOCK_EX)
+            try:
+                d = json.loads(p.read_text(encoding="utf-8"))
+            except (OSError, ValueError):
+                d = {}
+            d = d if isinstance(d, dict) else {}
+            d[name] = (_check_rows(d, name) + [round(float(sec), 1)])[-CHECK_SECONDS_KEEP:]
+            tmp = p.with_name(f"{p.name}.{os.getpid()}.tmp")
+            tmp.write_text(json.dumps(d), encoding="utf-8")
+            tmp.replace(p)
+    except (OSError, TypeError, ValueError):
+        pass
+
+
+def check_seconds(name: str) -> float:
+    """検査 name の所要の見積もり(直近の実測の最大。実測が無い・読めなければ CHECK_SECONDS_DEFAULT)"""
+    try:
+        rows = _check_rows(json.loads((scratch_root() / CHECK_SECONDS_FILE).read_text(encoding="utf-8")), name)
+    except (OSError, ValueError):
+        rows = []
+    return max(rows) if rows else CHECK_SECONDS_DEFAULT.get(name, 1200.0)
+
+
+CHECK_MARGIN = 3.0          # 検査の上限は実測の何倍か(重い時間帯で遅くなる分。2026-10-27 は軽いとき 330 秒・重いとき約2倍。これを超えるのは止まっているもの)
+CHECK_FLOOR_SEC = 300       # 検査の上限の下限(実測の短い lint など)
+
+
+def check_limit(name: str, floor: int = CHECK_FLOOR_SEC) -> int:
+    """コードが走らせる検査 name の時間の上限(秒)。当番の往復(oncall)と、判定の取引の lint が使う"""
+    return int(max(floor, CHECK_MARGIN * check_seconds(name)))
+
+
 def _under_tmp(p: str) -> bool:
     try:
         return not p or Path(p).resolve().is_relative_to("/tmp")
@@ -1351,7 +1410,7 @@ def stop_tree(pgid: int | None, root: int | None = None, wait: float = 5, mark: 
     return sorted(caught)
 
 
-def start_group(cmd: list[str], *, cwd=None, env: dict | None = None, stdout=subprocess.PIPE, stderr=subprocess.PIPE):
+def start_group(cmd: list[str], *, cwd=None, env: dict | None = None, stdout=subprocess.PIPE, stderr=subprocess.PIPE, preexec_fn=None):
     """モデル・道具のセッションを自前のセッション(プロセスグループ)で起動する。回収は finish_group。
     並列に起動するときは、起動のたびに一覧へ足し、finally で stop_groups(一覧) を呼ぶ(途中の例外・中断で置き去りにしない)。
     起動できなければ例外にせず LaunchFailed(その担当だけの異常終了)を返す。
@@ -1368,8 +1427,10 @@ def start_group(cmd: list[str], *, cwd=None, env: dict | None = None, stdout=sub
     late = False
     try:
         with _hold_signals():
+            # preexec_fn は子の起動の直前に子の中で走る(selfcheck の回帰テストを selfcheck と一緒に終わらせる PR_SET_PDEATHSIG など)
             p = subprocess.Popen(cmd, cwd=cwd, env=env, stdout=stdout, stderr=stderr, text=True,
-                                 stdin=subprocess.DEVNULL, start_new_session=True)
+                                 stdin=subprocess.DEVNULL, start_new_session=True,
+                                 **({"preexec_fn": preexec_fn} if preexec_fn is not None else {}))
             try:
                 p.session_mark = mark
             except AttributeError:      # 差し替えた起動(テストの偽物)が属性を持てないときは、印なしで回収する
@@ -1454,14 +1515,15 @@ ANSWER_POLL_SEC = 0.5
 
 
 def run_group(cmd: list[str], timeout: float | None, *, cwd=None, env: dict | None = None,
-              answered=None, settle: float | None = None) -> subprocess.CompletedProcess:
+              answered=None, settle: float | None = None, preexec_fn=None) -> subprocess.CompletedProcess:
     """モデル・道具を1つ走らせて終わりを待つ(subprocess.run(capture_output=True, text=True, stdin=DEVNULL, timeout=) の代わり)。
     時間切れは TimeoutExpired(それまでの出力を持つ。partial_output で読める)で上げる。起動できなければ終了コード 127(理由は stderr)。
-    answered(標準出力のファイルの Path → 答えが採用の形で出ているか)を渡すと、待つあいだ答えを見張る(_run_group_answered)。"""
+    answered(標準出力のファイルの Path → 答えが採用の形で出ているか)を渡すと、待つあいだ答えを見張る(_run_group_answered)。
+    preexec_fn は start_group へ(answered とは使わない)。"""
     if answered is not None:
         return _run_group_answered(cmd, timeout, answered, cwd=cwd, env=env,
                                    settle=ANSWER_SETTLE_SEC if settle is None else settle)
-    p = start_group(cmd, cwd=cwd, env=env)
+    p = start_group(cmd, cwd=cwd, env=env, **({"preexec_fn": preexec_fn} if preexec_fn is not None else {}))
     so, se, timed_out = finish_group(p, timeout)
     if timed_out:
         raise subprocess.TimeoutExpired(cmd, timeout, output=so, stderr=se)
@@ -3454,8 +3516,10 @@ def _restore(snap: dict[str, bytes | None], new_under: Path | None = None) -> st
 
 
 def classify_retag_lint(date: str, posts_only: bool = False, lint_base: str = "origin/main",
-                        timeout: int = 1800, lint: bool = True, require_parsers: bool = False) -> tuple[bool, str]:
+                        timeout: int = 1800, lint: bool = True, require_parsers: bool = False, judge: bool = True) -> tuple[bool, str]:
     """判定表の更新(合議)→ 紙面の種別付け直し(→ lint)を**1つの取引**にする。
+    judge=False は合議を飛ばし、いまの判定表(とコードの判定)で付け直すだけ(合議が失敗して戻したあとに使う。2026-10-27 Sol 監査:
+    判定のコードの修正で既知のチャンネルが公式になった記事が、合議の失敗で付け直しごと戻り、lint が赤のまま組版へ進んだ)。
 
     どれかが失敗したら、この取引が触った判定表と記事を**開始時の中身**に戻す(表だけ進んで次の lint が
     赤くなる、部分的な付け直しが混ざる、を防ぐ)。戻り値は (成功したか, 失敗の理由)。戻すことにも
@@ -3497,13 +3561,17 @@ def classify_retag_lint(date: str, posts_only: bool = False, lint_base: str = "o
             cmd.append("--require-parsers")
         # 各段は _txn_run(自前のセッションで起動し、時間切れ・中断は reap=stop_tree で子孫まで止める)。合議のモデルのセッションは
         # classify_sources.py の中で start_group 越しに起動する
-        steps = [("合議", cmd, timeout), ("付け直し", [sys.executable, str(scripts / "retag_sources.py"), "--apply"], 600)]
+        steps = ([("合議", cmd, timeout)] if judge else []) + [("付け直し", [sys.executable, str(scripts / "retag_sources.py"), "--apply"], 600)]
         if lint:
-            steps.append(("lint", [sys.executable, str(scripts / "lint.py"), "--base", lint_base], 600))
+            # lint の上限も実測に追従する(固定の 600 秒は lint が伸びると足りなくなる。2026-10-27 Sol 監査)
+            steps.append(("lint", [sys.executable, str(scripts / "lint.py"), "--base", lint_base], check_limit("lint", floor=600)))
         for name, step, limit in steps:
             if _TXN["signum"] is not None:
                 break
+            t_step = time.monotonic()
             r = _txn_run(step, limit)
+            if name == "lint" and r.returncode in (0, 1):    # 最後まで走った lint の所要(赤でも走り切っている)
+                note_check_seconds("lint", time.monotonic() - t_step)
             if name == "合議":
                 print(r.stdout[-1200:], flush=True)
             elif name == "付け直し":
@@ -4141,8 +4209,16 @@ def own_source_type(url: str, t: dict | None = None) -> str:
     # manga.nicovideo.jp/comic/…)は、パス単位で種別が決まる。合議が足す(path_types: パス → 種別)
     # クエリの id で決まる文書(Microsoft Forms)は、その文書のキーとの完全一致だけ(パスの前方一致ではどの文書にも当たる)
     qdoc = query_doc_key(url)
+    # 表のキーは判定の単位(classify_sources.path_key)と同じく `m.` を落とした表記。モバイル版のページも同じ表記で引く
+    # (2026-10-28 当番の診断: `m.tiktok.com/@h` などは表に載っても当たらず、毎回合議に回った)
+    mpath = path.removeprefix("m.")
+
+    def under_unit(pre: str) -> bool:
+        base = pre.rstrip("/")
+        return under(pre) or mpath.rstrip("/") == base or mpath.startswith(base + "/")
+
     for pre, typ in (t.get("path_types") or {}).items():
-        if (str(pre).strip().rstrip("/") == qdoc) if qdoc else under(str(pre)):
+        if (str(pre).strip().rstrip("/") == qdoc) if qdoc else under_unit(str(pre)):
             return str(typ)
     # 共有サービス(短縮 URL・フォーム・メールフォーム)は、短縮・文書・アカウント1つずつの登録(上の path_types)にだけ当てる。
     # ドメインの一覧に載っていても使わない(t.co の丸ごと登録で、どこへの短縮も公式になった。監査指摘 2026-10-14)
@@ -4174,6 +4250,14 @@ def own_source_type(url: str, t: dict | None = None) -> str:
     if vid:
         for label, ids in (t.get("video_ids") or {}).items():
             if vid in set(ids):
+                return label
+        return "未確認"
+    # チャンネルのページ(`/@<ハンドル>` とその枝 `/streams`・`/videos` …)は、そのチャンネル(video_channels)で決まる
+    # (2026-10-28: 表で公式の @KamizuruCosmo の `/streams` が未確認になった)。ハンドルは大文字小文字を区別しない
+    if is_host("youtube.com") and seg and seg[0].startswith("@") and len(seg[0]) > 1:
+        handle = urllib.parse.unquote(seg[0][1:]).lower()
+        for label, hs in (t.get("video_channels") or {}).items():
+            if handle in {str(h).lower() for h in hs or []}:
                 return label
         return "未確認"
 

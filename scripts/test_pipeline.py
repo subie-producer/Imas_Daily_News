@@ -9599,7 +9599,8 @@ def test_oncall_check_limits_follow_measure(tmp: Path):
         # 壊れた記録・書けない置き場で当番を止めない(読めない値は既定、記録できなくても例外にしない。Sol 監査 r1 M2)
         recf = tmp / "scratch" / pipelib.CHECK_SECONDS_FILE
         good = recf.read_text(encoding="utf-8")
-        for broken in ('{"selfcheck": 42}', '{"selfcheck": [Infinity, NaN, -3, true, "9"]}', "[1, 2]", "{"):
+        for broken in ('{"selfcheck": 42}', '{"selfcheck": [Infinity, NaN, -3, true, "9"]}', "[1, 2]", "{",
+                       '{"selfcheck": [1' + "0" * 400 + "]}"):
             recf.write_text(broken, encoding="utf-8")
             try:
                 got = (pipelib.check_seconds("selfcheck"), oncall.check_limit("selfcheck"))
@@ -9784,13 +9785,29 @@ def test_classify_retag_without_judge(tmp: Path):
     def fake(date, posts_only=False, lint_base="origin/main", timeout=1800, lint=True, require_parsers=False, judge=True):
         calls.append(judge)
         return (False, "合議 exit 1: 割れた") if judge else (True, "")
-    saved_c = (compose.classify_retag_lint, compose.notify)
+    saved_c = (compose.classify_retag_lint, compose.notify, compose.run_lint, compose.escalate, compose.commit_and_push)
+    notes, escalated, lints = [], [], []
     try:
-        compose.classify_retag_lint, compose.notify = fake, (lambda *a, **k: True)
-        check(compose.classify_post_sources("2026-10-28", "edition/2026-10-28") is True and calls == [True, False],
-              f"組版が合議の失敗のあと付け直しを掛け直さない: {calls}")
+        compose.classify_retag_lint = fake
+        compose.notify = lambda job, msg, ok=True, **k: notes.append(msg) or True
+        compose.escalate = lambda *a, **k: escalated.append(a)
+        compose.commit_and_push = lambda *a, **k: True
+        compose.run_lint = lambda d: (lints.append(d), (1, "::error file=docs/_posts/2026-10-27-old.md::出典 type が不一致\n"))[1]
+        check(compose.classify_post_sources("2026-10-28", "edition/2026-10-28") is True and calls == [True, False]
+              and len(notes) == 1 and "付け直しは済ませた" in notes[0] and not lints,
+              f"組版が合議の失敗のあと付け直しを掛け直さない・通知が結果と食い違う: {calls} {notes}")
+        # 付け直しも失敗し、過去の号の記事の lint が赤: 後段へ進めず当番へ(この号の書き直しでは直らない。Sol 監査 r2)
+        calls.clear(), notes.clear()
+        compose.classify_retag_lint = lambda date, **k: (calls.append(k.get("judge", True)) or (False, "合議 exit 1" if k.get("judge", True) else "付け直し exit 1"))
+        check(compose.classify_post_sources("2026-10-28", "edition/2026-10-28") is False and escalated and lints == ["2026-10-28"],
+              f"付け直しも失敗して過去の号の記事が赤のまま後段へ進んだ: {escalated} {notes}")
+        # 付け直しが失敗しても、過去の号の記事に赤が無ければ先へ進む(この号の未確認が残るだけ)。通知は1回
+        escalated.clear(), notes.clear()
+        compose.run_lint = lambda d: (1, "::error file=docs/_posts/2026-10-28-new.md::本文\n")
+        check(compose.classify_post_sources("2026-10-28", "edition/2026-10-28") is True and not escalated
+              and len(notes) == 1 and "付け直しも失敗" in notes[0], f"過去の号に赤が無いのに止めた・通知: {escalated} {notes}")
     finally:
-        compose.classify_retag_lint, compose.notify = saved_c
+        compose.classify_retag_lint, compose.notify, compose.run_lint, compose.escalate, compose.commit_and_push = saved_c
     # 組版の lint 赤の書き直し・落とす対象は、この号の記事だけ(過去の号の発行済みの記事を書き直し・削除に回さない)
     out = ("::error file=docs/_posts/2026-10-27-dsva-valiv-cosmo.md::出典 type が URL の判定と不一致(過小表示)\n"
            "::error file=docs/_posts/2026-10-28-cg-new.md::本文の時制\n::warning file=docs/_posts/2026-10-28-cg-new.md::x\n")
@@ -9802,7 +9819,8 @@ def test_classify_retag_without_judge(tmp: Path):
     try:
         collect.classify_retag_lint = fake
         ok, why = collect.classify_then_retag("2026-10-28")
-        check(not ok and "割れた" in why and calls == [True, False], f"収集が合議の失敗のあと付け直しを掛け直さない: {calls} {why}")
+        check(not ok and "割れた" in why and "付け直し・lint は済ませた" in why and calls == [True, False],
+              f"収集が合議の失敗のあと付け直しを掛け直さない・理由が結果と食い違う: {calls} {why}")
         calls.clear()
         collect.classify_retag_lint = lambda date, **k: (calls.append(k.get("judge", True)) or (False, "表を戻せない"))
         ok, why = collect.classify_then_retag("2026-10-28")

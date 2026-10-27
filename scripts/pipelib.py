@@ -165,10 +165,11 @@ CHECK_SECONDS_MAX = 24 * 3600.0    # これを超える実測は壊れた記録�
 
 def _check_rows(d, name: str) -> list[float]:
     """記録 d(読んだ JSON)の name の実測のうち、有限の正の秒だけ(形の違う記録・Infinity・NaN は読まない。2026-10-27 Sol 監査)"""
-    import math
     rows = d.get(name) if isinstance(d, dict) else None
+    # 比べるのは型を確かめた値だけ。巨大な整数(10**400)も float にせず上限との比較で落とす(Sol 監査 r2: float への変換で OverflowError)。
+    # NaN は比較が偽になるので落ち、Infinity は上限を超えるので落ちる
     return [float(x) for x in rows if isinstance(x, (int, float)) and not isinstance(x, bool)
-            and math.isfinite(x) and 0 < x <= CHECK_SECONDS_MAX] if isinstance(rows, list) else []
+            and 0 < x <= CHECK_SECONDS_MAX] if isinstance(rows, list) else []
 
 
 def note_check_seconds(name: str, sec: float) -> None:

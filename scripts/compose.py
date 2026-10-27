@@ -4066,11 +4066,21 @@ def classify_post_sources(date: str, branch: str) -> bool:
             escalate("compose", date, f"紙面の出典の付け直しで記事を戻せなかった: {why_rt[:300]}")
             return False
         if not ok_rt:
-            notify("compose", f"{date}: 合議なしの出典の付け直しも失敗({why_rt[:300]})。記事は戻した", ok=False)
+            # 付け直しも失敗: 過去の号の記事の種別が判定と食い違ったまま(lint 赤)なら、この号の書き直しでは直らない。後段へ進めず当番へ
+            # (Sol 監査 r2。食い違いが無ければ、この号の未確認が残るだけなので先へ進む)
+            past = [l for l in run_lint(date)[1].splitlines() if l.startswith("::error file=docs/_posts/")
+                    and not l.startswith(f"::error file=docs/_posts/{date}-")]
+            if past:
+                commit_and_push(branch, f"compose {date}: 出典の付け直しに失敗(当番へ)", "compose")
+                escalate("compose", date, f"出典の判定・合議なしの付け直しがどちらも失敗し({why_cls[:200]} / {why_rt[:200]})、"
+                                          f"過去の号の記事の lint が赤:\n" + "\n".join(past[:10]))
+                return False
         if why_cls.startswith(CLI_STOPPED) and CLI_BLOCKED:
             # 判定のモデル(執筆・校閲と同じ CLI)が認証切れ・利用上限で答えない。判定の失敗ではない。投稿は判定が済ませた
             raise CliBlocked(next(iter(CLI_BLOCKED.values())))
-        notify("compose", f"{date}: 紙面の出典の判定で失敗({why_cls[:300]})。判定表と記事は戻した。未確認のまま先へ進む(翌朝の watch に出る)", ok=False)
+        notify("compose", f"{date}: 紙面の出典の判定で失敗({why_cls[:300]})。判定表は戻した。"
+                          + ("合議なしの付け直しは済ませた" if ok_rt else f"合議なしの付け直しも失敗し({why_rt[:200]})、記事も戻した")
+                          + "。未確認のまま先へ進む(翌朝の watch に出る)", ok=False)
     return True
 
 

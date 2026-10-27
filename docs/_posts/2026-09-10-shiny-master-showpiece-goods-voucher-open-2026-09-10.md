@@ -2,7 +2,7 @@
 slug: shiny-master-showpiece-goods-voucher-open-2026-09-10
 edition: 2026-09-10
 brand: shiny
-src: 準公式
+src: 公式
 rank: medium
 corrected: false
 corrections: []
@@ -19,7 +19,7 @@ tags:
 - 抽選
 sources:
 - url: https://shinycolors.lantis.jp/extra/260903_1/
-  type: 準公式
+  type: 公式
   label: Master ShowPiece会場CD/Blu-ray物販特典を発表
 - url: https://idolmaster-official.jp/live_event/283production_msp/
   type: 公式

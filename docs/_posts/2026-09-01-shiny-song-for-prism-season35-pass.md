@@ -2,7 +2,7 @@
 slug: shiny-song-for-prism-season35-pass
 edition: 2026-09-01
 brand: shiny
-src: 準公式
+src: 公式
 rank: small
 corrected: false
 corrections: []
@@ -16,7 +16,7 @@ tags:
 - 通販
 sources:
 - url: https://webstore.asobistore.jp/shinycolors-song-for-prism
-  type: 準公式
+  type: 公式
   label: ASOBI STORE商品ページ
 ---
 「シーズンパス：シーズン35『月の和』」は1960円。購入すると、シーズン35「月の和」のプレミアム報酬が解放され、シーズンメダル75個を受け取れる。おまけは無償プリズムジュエル250個と虹の結晶15個。

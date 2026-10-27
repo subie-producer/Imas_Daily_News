@@ -2,7 +2,7 @@
 slug: gaku-shirube-fukuoka-live-opens
 edition: 2026-09-05
 brand: gaku
-src: 準公式
+src: 公式
 rank: large
 corrected: false
 corrections: []
@@ -32,7 +32,7 @@ sources:
   type: 公式
   label: アイドルマスター公式ポータル
 - url: https://gakuen-label.idolmaster-official.jp/news/schoosicaltrip
-  type: 準公式
+  type: 公式
   label: 学園アイドルマスター レーベルサイト
 - url: https://x.com/gkmas_official/status/2095829224385118363
   type: 公式

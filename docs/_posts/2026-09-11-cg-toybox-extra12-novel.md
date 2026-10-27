@@ -2,7 +2,7 @@
 slug: cg-toybox-extra12-novel
 edition: 2026-09-11
 brand: cg
-src: 当事者
+src: 公式
 rank: small
 corrected: false
 corrections: []
@@ -15,7 +15,7 @@ sources:
     type: 公式
     label: "2. トイボックス・エクストラ12「ザ・ラスト・ローズ・オブ・サマー」公開"
   - url: https://mequrimequru.jp/kp/regulars/details/idolmaster-cinderellagirls_toybox/
-    type: 当事者
+    type: 公式
     label: "「池袋晶葉とウサちゃんロボはオモチャ箱の夢を見る」連載ページ"
 event_date: 2026-09-10
 

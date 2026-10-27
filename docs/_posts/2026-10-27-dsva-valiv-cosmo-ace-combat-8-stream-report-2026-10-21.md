@@ -2,10 +2,15 @@
 slug: dsva-valiv-cosmo-ace-combat-8-stream-report-2026-10-21
 edition: "2026-10-27"
 brand: dsva
-src: 未確認
+src: 公式
 rank: small
-corrected: false
-corrections: []
+corrected: true
+corrections:
+- at: "2026-10-28T00:10:00+09:00"
+  by: 編集部(出典の種別の判定の欠陥の修正)
+  initial: "出典「YouTube「上水流 宇宙 / Cosmo Kamizuru」」の種別: 未確認(記事の出典の表示: 未確認)"
+  corrected_to: "同じ出典の種別: 公式(記事の出典の表示: 公式)"
+  note: YouTube のチャンネルのページ(@ハンドル)を判定できない欠陥を直し、本人の公式チャンネルと判定されたため公式に改めた。本文は変えていない
 candidate_ids:
 - sched-2026-10-27-valiv-cosmo-ace-combat-8-stream-report-2026-10-21-開始
 - 202610270404-explore-0
@@ -22,7 +27,7 @@ sources:
   type: 公式
 - label: YouTube「上水流 宇宙 / Cosmo Kamizuru」
   url: https://www.youtube.com/@KamizuruCosmo/streams
-  type: 未確認
+  type: 公式
 event_date: "2026-10-27"
 title_fact_ids:
 - F3

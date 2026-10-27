@@ -9821,6 +9821,10 @@ def test_classify_retag_without_judge(tmp: Path):
         ok, why = collect.classify_then_retag("2026-10-28")
         check(not ok and "割れた" in why and "付け直し・lint は済ませた" in why and calls == [True, False],
               f"収集が合議の失敗のあと付け直しを掛け直さない・理由が結果と食い違う: {calls} {why}")
+        # 合議の失敗の理由が長くても、通知(理由を 500 字で切る)に付け直しの結果が残る(Sol 監査 r3 later)
+        collect.classify_retag_lint = lambda date, **k: (False, "合議 exit 1: " + "長い出力" * 400) if k.get("judge", True) else (True, "")
+        ok, why = collect.classify_then_retag("2026-10-28")
+        check("付け直し・lint は済ませた" in why[:500], f"長い理由で付け直しの結果が通知から切れる: {why[-120:]}")
         calls.clear()
         collect.classify_retag_lint = lambda date, **k: (calls.append(k.get("judge", True)) or (False, "表を戻せない"))
         ok, why = collect.classify_then_retag("2026-10-28")

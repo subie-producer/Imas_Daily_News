@@ -2638,8 +2638,8 @@ def classify_then_retag(date: str) -> tuple[bool, str]:
         ok_rt, why_rt = classify_retag_lint(date, timeout=max(1, int(session_left(600))), judge=False)
         if not ok_rt and "戻せない" in why_rt:
             return ok, why_rt
-        # 通知が結果と食い違わないよう、付け直しの結果を理由に足す(Sol 監査 r2)
-        why = f"{why}。" + ("合議なしの付け直し・lint は済ませた" if ok_rt else f"合議なしの付け直しも失敗し記事も戻した({why_rt[:200]})")
+        # 通知が結果と食い違わないよう、付け直しの結果を理由に足す(Sol 監査 r2)。通知は理由を 500 字で切るので、元の理由を先に短くする(r3)
+        why = f"{why[:240]}。" + ("合議なしの付け直し・lint は済ませた" if ok_rt else f"合議なしの付け直しも失敗し記事も戻した({why_rt[:200]})")
     return ok, why
 
 

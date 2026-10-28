@@ -532,5 +532,38 @@
   "src_candidate_id": "202610091834-watch-0",
   "event_date": "2026-10-23",
   "deadline": "2026-12-27"
+ },
+ {
+  "id": "sched-2026-12-27-sidem-fantastic-battle-fes-nagano-general-advance-2026-千秋楽",
+  "dedup_key": "sidem-fantastic-battle-fes-nagano-general-advance-2026",
+  "brand": "sidem",
+  "subject": "F＠NTASTIC BATTLE FES長野公演 2日目",
+  "kind": "千秋楽",
+  "note": "ホクト文化ホールで昼・夜2公演(12:00/17:00開演)を観覧できる",
+  "reserved_on": "2026-10-29",
+  "occurs_on": "2026-12-27",
+  "title": "F＠NTASTIC BATTLE FES長野公演アソビストア一般会員先行",
+  "url": "https://asobiticket2.asobistore.jp/receptions/c42df7e9-30a9-40d6-954b-17fafab5c159",
+  "source_type": "公式",
+  "facts": [
+   "受付対象は『315 Production presents F＠NTASTIC BATTLE FES ～Wanna step in～』長野公演のSP席ストーリーセットとSP席。",
+   "受付期間: 2026年10月23日(金) 12:00 〜 2026年11月3日(火・祝) 23:59",
+   "結果発表: 2026年11月13日(金) 13:00",
+   "入金期間: 2026年11月13日(金) 13:00 〜 2026年11月17日(火) 23:59",
+   "SP席ストーリーセットは20,000円（税込）。",
+   "SP席は17,800円（税込）。",
+   "SP席はアリーナ前方ブロック確約・入場特典付き。",
+   "未就学児は入場不可。",
+   "一人1公演につき2枚まで申し込み可能で、複数公演に申し込み可能。",
+   "公演はホクト文化ホールで開催。2026年12月26日昼公演は開場11:00・開演12:00、夜公演は開場16:00・開演17:00。",
+   "公演はホクト文化ホールで開催。2026年12月27日昼公演は開場11:00・開演12:00、夜公演は開場16:00・開演17:00。",
+   "エンゲージメント: 高"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "event_date": "2026-12-26",
+  "deadline": "2026-11-03",
+  "link_from": "https://x.com/SideM_official/status/2115367971027824706",
+  "src_candidate_id": "202610290225-grok-44"
  }
 ]

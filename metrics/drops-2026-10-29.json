@@ -71,5 +71,27 @@
    "202610281834-explore-7",
    "202610290225-grok-48"
   ]
+ },
+ "cg-popntoybox-revival-general-lottery-2026": {
+  "title": "シンデレラガールズ「トイボ」先行、締切まであと3日",
+  "stage": "校閲ブロック",
+  "why": "P1 同じ知らせが2本ある。joint-xr-live-revival-asobistore-general-advance-2026 と本記事は、同じアソビチケットの一般会員先行受付（同一の受付URL、締切11月1日23時59分）を扱っている。",
+  "candidate_ids": [
+   "sched-2026-10-29-cg-popntoybox-revival-general-lottery-2026-締切前"
+  ],
+  "settled": {
+   "rule": "P1",
+   "dup_of": [
+    "joint-xr-live-revival-asobistore-general-advance-2026"
+   ]
+  }
+ },
+ "cg-sweet-melty-whip-popup-2026": {
+  "title": "デレマス大阪会場、パネル応募は11月1日まで",
+  "stage": "校閲ブロック",
+  "why": "R5 R5: この催し(POP UP SHOP ~Sweet Melty Whip~ と等身大パネル応募キャンペーン)は公式が告知する話題だが、sources に公式・準公式、または公式の発表を報じた報道が無い。sources は当事者(アベノラ",
+  "candidate_ids": [
+   "sched-2026-10-29-cg-sweet-melty-whip-popup-2026-締切前"
+  ]
  }
 }

@@ -38,7 +38,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import collect  # noqa: E402
-from pipelib import (CLI_BLOCKED_EXIT, CliBlocked, exit_on_term, now_jst, render_prompt, schema_ok,  # noqa: E402
+from pipelib import (CLI_BLOCKED_EXIT, SOURCE_REVIEW_RULES, CliBlocked, exit_on_term, now_jst, render_prompt, schema_ok,  # noqa: E402
                      source_lacking_drops, write_checked)
 
 MAX_PAGES = 4               # 記事1本で読むページの上限(当たりの調べの答え)
@@ -53,8 +53,18 @@ TASK_SCHEMA = {"type": "object", "required": ["kind", "why"],
                               "url": {"type": "string", "pattern": r"^https?://\S+$"},
                               "question": {"type": "string", "minLength": 1}}}
 GOOD_SOURCE_TYPES = collect.GOOD_SOURCE_TYPES
-# 校閲の R5(公式が無い)で落ちた記事が通るのに要る種別(prompts/review-article.md の R5。当事者だけでは通らない)
+# 公式の出典が要る見送りが通るのに要る種別。執筆の NO_PRIMARY_SOURCE(prompts/write-article.md の 3・6)と校閲の R5
+# (prompts/review-article.md)。当事者だけでは通らない
 R5_SOURCE_TYPES = ("公式", "準公式", "報道")
+
+
+def needed_types(drop: dict) -> tuple[str, ...]:
+    """見送りの記録(drops の1行)から、揃えたと言える出典の種別。公式が要る見送り(執筆の NO_PRIMARY_SOURCE・校閲の R5)は
+    公式・準公式・報道、中核の事実の食い違い(SOURCE_MISMATCH)は当事者を含む GOOD_SOURCE_TYPES。"""
+    code = str(drop.get("why") or "").strip().split(" ", 1)[0].rstrip(":")
+    if code == "NO_PRIMARY_SOURCE" or (drop.get("stage") == "校閲ブロック" and code in SOURCE_REVIEW_RULES):
+        return R5_SOURCE_TYPES
+    return GOOD_SOURCE_TYPES
 
 
 def root() -> Path:
@@ -389,7 +399,7 @@ def rescue(date: str, slugs: list[str], until: float | None = None, dry_run: boo
             ids = set(arts[s].get("candidate_ids") or [])
             usable = [stored[c["url"]] for c in checked.get(s, []) if c["url"] in stored and stored[c["url"]].get("id") in ids]
         d = drops.get(s) if isinstance(drops.get(s), dict) else {}
-        need = R5_SOURCE_TYPES if d.get("stage") == "校閲ブロック" else GOOD_SOURCE_TYPES
+        need = needed_types(d)
         good = [c for c in usable if c.get("verify") != "failed" and c.get("source_type") in need]
         tried = [{"page": r["url"], "why": r.get("why"), "result": r["result"]} for r in (log.get("pages") or {}).get(s, [])]
         tried += [{"x": q, "posts": v} for q, v in ((log.get("asks") or {}).get(s) or {}).items()]

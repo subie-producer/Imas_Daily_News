@@ -19198,7 +19198,7 @@ RESCUE_WRONG = "https://www.curtain-damashii.com/item/other-goods/"
 
 def rescue_fixture(tmp: Path) -> None:
     """10/26 号の形: 出典不足の見送り3本(当日 23:59 締切の8.5周年プレゼント、シャニソン3周年イベント、カーテン魂の学マスグッズ)。
-    素材は二次情報だけ。計画・外れた記事の記録・素材を書く。"""
+    素材は二次情報だけ。前の2本は NO_PRIMARY_SOURCE、グッズは SOURCE_MISMATCH。計画・外れた記事の記録・素材を書く。"""
     (tmp / "metrics").mkdir(parents=True, exist_ok=True)
     (tmp / "candidates").mkdir(parents=True, exist_ok=True)
     (tmp / "docs" / "_posts").mkdir(parents=True, exist_ok=True)
@@ -19212,6 +19212,8 @@ def rescue_fixture(tmp: Path) -> None:
     (tmp / "metrics" / f"plan-{RESCUE_DATE}.json").write_text(json.dumps({"articles": arts}, ensure_ascii=False), encoding="utf-8")
     drops = {a["slug"]: {"title": a["angle"], "stage": "執筆で見送り", "candidate_ids": a["candidate_ids"],
                          "why": "NO_PRIMARY_SOURCE 素材は二次情報だけで、公式の告知に届かない"} for a in arts[:3]}
+    # カーテン魂のグッズは、中核の値(予約期限)を販売元で確かめられなかった見送り。販売元(当事者)のページで揃う
+    drops["gaku-curtain-damashii-new-goods-2026"]["why"] = "SOURCE_MISMATCH 予約期限を二次情報でしか確かめられない"
     (tmp / "metrics" / f"drops-{RESCUE_DATE}.json").write_text(json.dumps(drops, ensure_ascii=False), encoding="utf-8")
     rows = [cand_row("c-gameo", "https://gameo.jp/imassc/169460", brand="shiny", source_type="二次情報", verify="unconfirmed",
                      facts=["8.5周年記念ログインプレゼント"]),
@@ -19518,6 +19520,33 @@ def test_rescue_takes_review_r5_drops(tmp: Path):
           f"校閲 R5 の記事を、当事者の出典だけで揃えたとした: {r['gaku-curtain-damashii-new-goods-2026']}")
     check(RESCUE_PAGE in source_rescue.report_text(rep), "R5 の記事で揃わなかったのに、試したページを書いていない")
     check(r["shiny-85th-anniversary-gifts-2026"]["outcome"] == "揃えた", f"公式 X に届いた見送りの結果: {r['shiny-85th-anniversary-gifts-2026']}")
+
+
+def test_rescue_no_primary_needs_official(tmp: Path):
+    """執筆の NO_PRIMARY_SOURCE(公式が告知するはずの話題で、公式・準公式・報道に届かない)の見送りは、入口が当事者のページ
+    だけに届いても「揃えた」にしない。素材と計画には足すが、結果は「揃わない」で、試したページを書く(10/29: Astromeda の
+    POPUP は d3p.co.jp(当事者)にだけ届きうる。校閲 R5 と同じ要件なのに執筆の見送りだけ当事者で揃えたとした。Sol 監査 R3)。
+    SOURCE_MISMATCH の見送りは、当事者のページで中核の値を確かめられれば揃う。"""
+    import source_rescue
+    for code, want in (("NO_PRIMARY_SOURCE", "揃わない"), ("SOURCE_MISMATCH", "揃えた")):
+        root = tmp / code
+        rescue_fixture(root)
+        p = root / "metrics" / f"drops-{RESCUE_DATE}.json"
+        d = json.loads(p.read_text(encoding="utf-8"))
+        d["gaku-curtain-damashii-new-goods-2026"]["why"] = f"{code} 素材は二次情報だけ"
+        p.write_text(json.dumps(d, ensure_ascii=False), encoding="utf-8")
+        with RescueFakes(root):
+            rep = source_rescue.rescue(RESCUE_DATE, ["gaku-curtain-damashii-new-goods-2026"])
+        r = rep["articles"]["gaku-curtain-damashii-new-goods-2026"]
+        plan = {a["slug"]: a for a in json.loads((root / "metrics" / f"plan-{RESCUE_DATE}.json").read_text(encoding="utf-8"))["articles"]}
+        cands = {c["id"]: c for c in json.loads((root / "candidates" / f"{RESCUE_DATE}.json").read_text(encoding="utf-8"))}
+        added = [cands[i] for i in r.get("added_ids") or []]
+        check(added and all(c["source_type"] == "当事者" for c in added)
+              and all(c["id"] in plan["gaku-curtain-damashii-new-goods-2026"]["candidate_ids"] for c in added),
+              f"{code}: 当事者のページを素材・計画に足していない: {r}")
+        check(r["outcome"] == want, f"{code}: 当事者のページだけに届いた見送りの結果が {r['outcome']}(期待 {want}): {r}")
+        if want == "揃わない":
+            check(RESCUE_PAGE in source_rescue.report_text(rep), f"{code}: 揃わなかったのに試したページを書いていない")
 
 
 def test_oncall_recover_rescues_sources(tmp: Path):
@@ -20824,6 +20853,7 @@ def main() -> int:
     test_storylink_roundup_topic(tmp / "srt")
     test_source_rescue_entry(tmp / "sre")
     test_rescue_takes_review_r5_drops(tmp / "rr5")
+    test_rescue_no_primary_needs_official(tmp / "rnp")
     test_oncall_recover_rescues_sources(tmp / "ors")
     test_stray_governed_write_is_caught(tmp / "sgw")
     test_write_checked_contract(tmp / "wcc")

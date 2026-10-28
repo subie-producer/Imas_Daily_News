@@ -45,7 +45,7 @@ RECHECK_CYCLE_DAYS = 2              # 対象を全部一巡する日数の上限
 RECHECK_BUDGET_SEC = int(ENV.get("RECHECK_BUDGET_SEC", "1200"))   # 1回の見回りの時間の上限
 RECHECK_FETCH_SEC = 180             # 見回りの読み直し1件の待ちの上限(描画を含む)
 UPDATE_KINDS = ("変更", "出典元の訂正", "追加")            # 記事に時系列の更新として足す種類
-MAX_TRIES = 3                       # 判定・校閲の答えが読めない変化をやり直す回数
+MAX_TRIES = 3                       # 判定・校閲の答えが読めない変化をやり直す回数(CLI の異常終了・停止は数えない)
 SESSION_TIMEOUT_SEC = 600           # 判定・校閲のセッション1本の待ちの上限(収集の締切の残りでも切る)
 CANDIDATE_DIFF_CHARS = 60000        # 出典の更新の素材に入れる違いの上限の字数(判定に渡す違いと同じ範囲を含む大きさ)
 X_HOSTS = ("x.com", "twitter.com", "mobile.x.com", "mobile.twitter.com")
@@ -251,7 +251,8 @@ def _day(at: str) -> str:
 
 def run_session(kind: str, prompt: str, schema_name: str, date: str, name: str, root: Path = ROOT, timeout: float = SESSION_TIMEOUT_SEC):
     """判定・校閲の構造化セッション1本: 書き手は codex(CODEX_WRITE_MODEL)、校閲は claude(REVIEW_MODEL)。正常に終わり、渡した schema に
-    合う答えだけを返す(それ以外は None)。CLI の停止は CliStopped で上げる(この変化は次の回にやり直す)"""
+    合う答えだけを返す(それ以外は None)。CLI の停止は CliStopped、それ以外の異常終了(起動の失敗を含む)は CliFailed で上げる
+    (どちらも答えの不備ではない。この変化は次の回にやり直す)"""
     schema = (root / "schema" / schema_name).read_text(encoding="utf-8")
     short = prompt_file(date, name, prompt)
     out_p = root / "metrics" / "work" / date / f"{name}.answer.json"
@@ -274,14 +275,26 @@ def run_session(kind: str, prompt: str, schema_name: str, date: str, name: str, 
     save_raw(date, name, so, se, code, files={"answer": text})
     if code is not None and code != 0 and cli_check(tool, "collect", f"出典の変更の{'判定' if kind == 'write' else '校閲'}", code, so or "", se or ""):
         raise CliStopped(tool)
+    if code is None:
+        return None     # 時間切れ(答えを出しきれなかった回。締切で切ったかどうかは呼び側が残り時間で決める)
     if code != 0:
-        return None
+        # 異常終了(起動できない回は run_group が 127 を返す)は CLI の失敗で、モデルの答えの不備ではない(2026-10-28: 校閲の schema の名乗りで claude が起動せず終了 1、
+        # 「答えが読めない」に数えて3回目に変化を扱い済みにし、4件の出典の変更を失った。当番の指摘 86cf622496)
+        raise CliFailed(tool, code, ((se or "").strip() or (so or "").strip())[-300:])
     ans, _ = read_answer(text)
     return ans if isinstance(ans, dict) and schema_ok(ans, schema) else None
 
 
 class CliStopped(RuntimeError):
     """モデル CLI が認証切れ・利用上限で答えなかった(投稿は済み。変化は次の回にやり直す)。"""
+
+
+class CliFailed(RuntimeError):
+    """モデル CLI が異常終了した(起動できなかった・途中で落ちた)。答えの不備ではないので、やり直しの回数に数えず、変化は次の回にやり直す。"""
+
+    def __init__(self, tool: str, code, detail: str):
+        super().__init__(f"{tool} が異常終了(exit {code}): {detail or '(出力なし)'}")
+        self.tool, self.code, self.detail = tool, code, detail
 
 
 def judge(art: dict, row: dict, diff: str, date: str, prev: dict | None = None, issue: str = "", root: Path = ROOT,
@@ -371,7 +384,8 @@ def process_changes(today: str, arts: list[dict], root: Path = ROOT, judge_fn=ju
     読まれていた版)」から「いまの版(いちばん新しく読んだ版)」への違いを1回だけ判定する(Sol 監査 b1・b2・b4: 台帳の行ごと・ページごとに
     扱うと、やり直しで新しい版から古い版への違いを告知した・元の内容に戻った変化を一部の記事だけ失った・裏取りが先に新しい版を残すと
     変化を黙って失った)。
-    判定・校閲が答えなかった記事は進めない(次の回にやり直す。MAX_TRIES 回で諦めて申告)。CLI の停止・時間切れは数えず、この回は止める。
+    判定・校閲が答えなかった記事は進めない(次の回にやり直す。MAX_TRIES 回で諦めて申告)。CLI の停止・CLI の異常終了(起動の失敗を含む)・
+    締切による時間切れは数えず、この回は止める(異常終了は申告する。直るまで変化は扱い済みにならない)。
     収集の締切(late)を過ぎた・残り時間(left)が足りなければ、どのセッションも始めない。セッションの待ちは残り時間で切る。
     素材は記事を書く前に控え(pending)、記事を書いたら反映した版を進める(途中で止まっても、素材を失わず、同じ更新を重ねない)"""
     st = load_state()
@@ -448,6 +462,12 @@ def process_changes(today: str, arts: list[dict], root: Path = ROOT, judge_fn=ju
                 outcome = decide(art, row, diff, today, root, judge_fn, review_fn, has_time, left)
             except CliStopped:
                 # 認証切れ・利用上限(投稿は済み): やり直しの回数に数えず、この回はこれ以上セッションを起動しない
+                stopped = True
+                break
+            except CliFailed as e:
+                # CLI の異常終了(起動できない・落ちた): 答えの不備ではないので、やり直しの回数に数えず控えも進めない。同じ CLI で続けても
+                # 同じく落ちるので、この回はこれ以上セッションを起動しない。直すまで毎回申告する(当番の指摘 86cf622496)
+                anomaly("collect", f"出典の変更の判定・校閲で {e}。記事 {art['id']} の {url} の変化は扱い済みにせず、次の回にやり直す")
                 stopped = True
                 break
             if outcome == "deferred":

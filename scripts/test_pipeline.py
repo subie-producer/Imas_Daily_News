@@ -19666,6 +19666,25 @@ def test_assemble_roundup_reservation(tmp: Path):
         check(len({assemble.reservation_id(r, mats) for r in clean["reservations"]}) == 1 and anomalies
               and "別の項目の受け取り締切" in anomalies[-1],
               f"採れていた予約の繰り返しを、差し戻した予約が戻ったと数えた: {clean['reservations']} {anomalies}")
+        # 素材に無い日に置いた締切前を差し戻し、答え直しが日を正しく直したら、戻ったと数える(2026-10-29: 締切 11/3 の締切前を
+        # 11/1 に置き、答え直しが 10/31 に直したのを、日が違うので「戻らない」と異常にした)
+        anomalies.clear()
+        mats2 = dict(mats, g50=cand_row("g50", "https://asobiticket2.asobistore.jp/receptions/x", brand="sidem", title="長野公演先行",
+                                        facts=["受付期間: 2026年10月23日(金) 12:00 〜 2026年11月3日(火・祝) 23:59"], deadline="2026-11-03"))
+        posts2 = [{"slug": "sidem-nagano", "brand": "sidem", "candidate_ids": ["g50"], "title": "SideM長野先行、11月3日締切",
+                   "lede": "l", "rank": "medium", "_name": f"{d}-sidem-nagano.md"}]
+        inp2 = assemble.build_input(d, posts2, mats2, [], [])
+        off = {"slug": "sidem-nagano", "candidate_id": "g50", "date": "2026-11-01", "occurs_on": "2026-11-03", "kind": "締切前",
+               "subject": "長野先行 締切まで3日", "note": "締切前に申し込める"}
+        fixed = dict(off, date="2026-10-31")
+        out4 = dict(out, reservations=[off])
+        assemble.run_session = lambda text, date, name, schema, budget=None: fake_session(text, date, name, schema, answer=fixed)
+        rejected = []
+        clean, notes = assemble.validate(d, out4, posts2, mats2, inp2, rejected=rejected)
+        check(not clean["reservations"] and len(rejected) == 1, f"素材に無い日の締切前を検算が捨てない: {clean['reservations']}")
+        clean, notes = assemble.return_reservations(d, inp2, out4, posts2, mats2, rejected, notes)
+        check([r["date"] for r in clean["reservations"]] == ["2026-10-31"] and not anomalies,
+              f"答え直しが日を直して採れたのに、戻らないと異常にした: {clean['reservations']} {anomalies}")
     finally:
         assemble.ROOT, assemble.run_session, assemble.anomaly = saved
 

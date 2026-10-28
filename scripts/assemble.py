@@ -1233,12 +1233,14 @@ def return_reservations(date: str, inp: dict, out: dict, posts: list[dict], mats
     first, _ = validate(date, {**out, "reservations": kept_rows}, posts, mats, inp)
     out = {**out, "reservations": kept_rows + redo}
     clean, notes2 = validate(date, out, posts, mats, inp)
-    # 差し戻した予約が、答え直しで採れたかを数で照合する: 記事・日・種別ごとに、答え直しで**新しく反映される**予約(反映が重ねない
+    # 差し戻した予約が、答え直しで採れたかを数で照合する: 記事・種別ごとに、答え直しで**新しく反映される**予約(反映が重ねない
     # 単位 reservation_id で、初めから採れていた予約に無いもの)の数が、差し戻した数に足りなければ、その組を名指しする。答え直しが
     # 予約を省いた・また採れない形だった(Sol 監査 r1)、同じ日・種別の2件の片方だけ戻った(r2)、採れていた予約を答え直しが繰り返した
     # (r3。繰り返しは反映で1件になり、戻ったことにならない)のどれも黙って消さない。答え直しは candidate_id も件名も直しうるので、
-    # どの予約が戻ったかは数でしか言えない。足りない組の差し戻した予約を全部挙げる
-    key = lambda r: (r.get("slug"), r.get("date"), r.get("kind"))
+    # どの予約が戻ったかは数でしか言えない。足りない組の差し戻した予約を全部挙げる。
+    # 組は記事・種別で取り、日を鍵に入れない: 差し戻しの多くは「素材にその日付が無い」で、答え直しは日を直す(2026-10-29: 締切
+    # 11/3 の締切前を 11/1 に置いて差し戻され、答え直しが正しい 10/31 に直したのを、日が違うので「戻らない」と数えた)
+    key = lambda r: (r.get("slug"), r.get("kind"))
     had = {reservation_id(r, mats) for r in first.get("reservations") or []}
     new: dict[tuple, set] = collections.defaultdict(set)
     for r in clean.get("reservations") or []:
@@ -1251,7 +1253,7 @@ def return_reservations(date: str, inp: dict, out: dict, posts: list[dict], mats
                            "次の組の予約が、差し戻した数より少ない:\n"
                            + "\n".join(f"- {_v(r.get('slug'))}: {_v(r.get('date'))} {_v(r.get('kind'))}「{_v(r.get('subject'))}」"
                                        f"(candidate_id {_v(r.get('candidate_id'))}): {why}"
-                                       f"(同じ記事・日・種別の差し戻し {sent[key(r)]}件のうち {short[key(r)]}件が戻らない)"
+                                       f"(同じ記事・種別の差し戻し {sent[key(r)]}件のうち {short[key(r)]}件が戻らない)"
                                        for r, why in rejected if key(r) in short))
     return clean, notes + ["差し戻しのあと:"] + notes2
 

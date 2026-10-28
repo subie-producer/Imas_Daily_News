@@ -2,7 +2,7 @@
 slug: cg-sweet-melty-whip-popup-2026
 edition: "2026-10-29"
 brand: cg
-src: 当事者
+src: 二次情報
 rank: small
 corrected: false
 corrections: []
@@ -19,13 +19,22 @@ sources:
 - label: アベノラクバス「『アイドルマスター シンデレラガールズ』POP UP SHOP ~Sweet Melty Whip~」
   url: https://www.vitalartbox.info/imascg1023
   type: 当事者
+- label: デレマス スイーツドレス ストア in 渋谷・大阪 9月10日より開催!(2026-08-28)
+  url: https://collabo-cafe.com/events/collabo/imascg-sweet-melty-whip-popup-shop-2026/?amp=1
+  type: 二次情報
 event_date: "2026-11-01"
 title_fact_ids:
 - N1
+- N9
 lede_fact_ids:
 - N1
 - N2
+- N5
+- N9
 verified_facts:
+- id: N9
+  text: 2026年8月28日掲載の二次情報ページによると、POP UP SHOPの等身大パネル全5種を東京・大阪会場あわせて抽選で5人に贈るキャンペーンを実施する。関連商品を税込5,000円購入するごとに応募券1枚を配布し、応募期間は2026年9月10日から11月1日23時59分まで。
+  url: https://collabo-cafe.com/events/collabo/imascg-sweet-melty-whip-popup-shop-2026/?amp=1
 - id: N1
   text: 等身大パネルプレゼントキャンペーンの応募期間は2026年9月10日から2026年11月1日23時59分まで。
   url: https://www.vitalartbox.info/imascg1023
@@ -53,6 +62,6 @@ verified_facts:
 ---
 締め切りまであと3日。大阪会場はアベノラクバス（あべのHoop4階）で11月1日まで開催中で、営業時間は11時から19時。 <!-- N3 N4 -->
 
-応募券は、会場でシンデレラガールズ関連商品を税込5,000円購入するごとに1枚受け取れる。税込10,000円の購入なら2枚。レシートの合算はできず、希望するアイドルを選べる。 <!-- N2 N5 N6 -->
+応募券は、会場でシンデレラガールズ関連商品を税込5,000円購入するごとに1枚受け取れる。税込10,000円の購入なら2枚。レシートの合算はできず、希望するアイドルを選べる。 <!-- N2 N5 N6 N9 -->
 
 応募期間は2026年11月1日23時59分まで。応募は日本国内在住者に限られ、当選発表はイベント終了後の景品発送をもって代える。パネルは展示品のため、傷や凹み、汚れがある場合がある。 <!-- N1 N7 N8 -->

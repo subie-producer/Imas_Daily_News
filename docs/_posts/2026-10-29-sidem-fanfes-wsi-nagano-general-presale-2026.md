@@ -19,7 +19,7 @@ sources:
 - label: ASOBI TICKET「【SP席】アソビストア一般会員先行（長野公演）」(2026-10-28)
   url: https://asobiticket2.asobistore.jp/receptions/c42df7e9-30a9-40d6-954b-17fafab5c159
   type: 公式
-event_date: "2026-11-03"
+event_date: "2026-12-26"
 title_fact_ids:
 - F2
 lede_fact_ids:

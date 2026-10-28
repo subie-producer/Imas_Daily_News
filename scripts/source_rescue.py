@@ -53,6 +53,8 @@ TASK_SCHEMA = {"type": "object", "required": ["kind", "why"],
                               "url": {"type": "string", "pattern": r"^https?://\S+$"},
                               "question": {"type": "string", "minLength": 1}}}
 GOOD_SOURCE_TYPES = collect.GOOD_SOURCE_TYPES
+# 校閲の R5(公式が無い)で落ちた記事が通るのに要る種別(prompts/review-article.md の R5。当事者だけでは通らない)
+R5_SOURCE_TYPES = ("公式", "準公式", "報道")
 
 
 def root() -> Path:
@@ -386,7 +388,9 @@ def rescue(date: str, slugs: list[str], until: float | None = None, dry_run: boo
         else:
             ids = set(arts[s].get("candidate_ids") or [])
             usable = [stored[c["url"]] for c in checked.get(s, []) if c["url"] in stored and stored[c["url"]].get("id") in ids]
-        good = [c for c in usable if c.get("verify") != "failed" and c.get("source_type") in GOOD_SOURCE_TYPES]
+        d = drops.get(s) if isinstance(drops.get(s), dict) else {}
+        need = R5_SOURCE_TYPES if d.get("stage") == "校閲ブロック" else GOOD_SOURCE_TYPES
+        good = [c for c in usable if c.get("verify") != "failed" and c.get("source_type") in need]
         tried = [{"page": r["url"], "why": r.get("why"), "result": r["result"]} for r in (log.get("pages") or {}).get(s, [])]
         tried += [{"x": q, "posts": v} for q, v in ((log.get("asks") or {}).get(s) or {}).items()]
         report["articles"][s] = {

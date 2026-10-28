@@ -311,12 +311,16 @@ def settled_drops(date: str, root: Path | None = None) -> dict[str, str]:
 
 # 出典が足りずに見送った理由コード(renderlib.DECLINE_CODES のうち、出典を揃えれば書ける見送り)
 SOURCE_DECLINE_CODES = ("NO_PRIMARY_SOURCE", "SOURCE_MISMATCH")
+# 校閲が出典の不足でブロックした項目(prompts/review-article.md の R5 公式が無い)。drops の理由は「R5 …」で始まる
+SOURCE_REVIEW_RULES = ("R5",)
 
 
 def source_lacking_drops(date: str, root: Path | None = None) -> dict[str, str]:
-    """その号で出典が足りずに見送った記事(metrics/drops-<日付>.json の理由が SOURCE_DECLINE_CODES で始まり、紙面に無いもの)の
-    {slug: 理由}。組み直しの前に出典を揃える入口(scripts/source_rescue.py)の対象(2026-10-26: 当番が「外部」で閉じ、
-    当日 23:59 締切のプレゼントを戻さなかった)。記録が無い・読めないときは空。"""
+    """その号で出典が足りずに見送った記事(metrics/drops-<日付>.json の理由が SOURCE_DECLINE_CODES(執筆の見送り)か
+    SOURCE_REVIEW_RULES(校閲ブロック)で始まり、紙面に無いもの)の {slug: 理由}。組み直しの前に出典を揃える入口
+    (scripts/source_rescue.py)の対象(2026-10-26: 当番が「外部」で閉じ、当日 23:59 締切のプレゼントを戻さなかった。
+    2026-10-29: 校閲 R5 で落ちた 11/1 締切のパネル応募が、執筆の見送りの理由だけを見ていたので入口を通らなかった)。
+    記録が無い・読めないときは空。"""
     root = root or ROOT
     p = root / "metrics" / f"drops-{date}.json"
     try:
@@ -327,7 +331,9 @@ def source_lacking_drops(date: str, root: Path | None = None) -> dict[str, str]:
     out = {}
     for slug, r in (rows if isinstance(rows, dict) else {}).items():
         why = str(r.get("why") or "").strip() if isinstance(r, dict) else ""
-        if (why.split(" ", 1)[0].rstrip(":") in SOURCE_DECLINE_CODES and slug not in settled
+        code = why.split(" ", 1)[0].rstrip(":")
+        stage = r.get("stage") if isinstance(r, dict) else None
+        if ((code in SOURCE_DECLINE_CODES or (stage == "校閲ブロック" and code in SOURCE_REVIEW_RULES)) and slug not in settled
                 and not (root / "docs" / "_posts" / f"{date}-{slug}.md").exists()):
             out[slug] = why
     return out

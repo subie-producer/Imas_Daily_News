@@ -19464,6 +19464,62 @@ def test_source_rescue_entry(tmp: Path):
     check(all(c["verify"] == "unconfirmed" for c in cs), f"締切のあとに終わった裏取りが候補を書き換えた: {cs}")
 
 
+def test_rescue_takes_review_r5_drops(tmp: Path):
+    """校閲が出典の不足(R5 公式が無い)でブロックした記事も、執筆の見送り(NO_PRIMARY_SOURCE)と同じく、復帰の組み直しの前に
+    出典を揃える入口へ渡す(2026-10-29: 11/1 締切の大阪パネル応募が校閲 R5 で落ち、入口の対象から漏れた)。
+    出典と関係の無い校閲ブロック(R16 誤字)・同じ知らせの重複(P1、紙面に相方がある)は渡さない。"""
+    import time
+    import oncall
+    date = "2026-10-29"
+    (tmp / "metrics").mkdir(parents=True, exist_ok=True)
+    (tmp / "docs" / "_posts").mkdir(parents=True, exist_ok=True)
+    (tmp / "docs" / "_posts" / f"{date}-joint-xr-live-revival-asobistore-general-advance-2026.md").write_text("x", encoding="utf-8")
+    drops = {
+        "cg-sweet-melty-whip-popup-2026": {"title": "デレマス大阪会場、パネル応募は11月1日まで", "stage": "校閲ブロック",
+                                           "why": "R5 R5: この催しは公式が告知する話題だが、sources に公式・準公式、または公式の発表を報じた報道が無い。",
+                                           "candidate_ids": ["sched-2026-10-29-cg-sweet-melty-whip-popup-2026-締切前"]},
+        "cg-cinderella-fes-blanc-2026-10": {"title": "シンデレラフェス", "stage": "執筆で見送り",
+                                            "why": "NO_PRIMARY_SOURCE 公式のお知らせを見つけて本文を確認できませんでした。", "candidate_ids": ["c1"]},
+        "cg-typo": {"title": "誤字", "stage": "校閲ブロック", "why": "R16 R16: 文字化けがある", "candidate_ids": ["c2"]},
+        "cg-popntoybox-revival-general-lottery-2026": {
+            "title": "トイボ先行", "stage": "校閲ブロック", "why": "P1 同じ知らせが2本ある。", "candidate_ids": ["c3"],
+            "settled": {"rule": "P1", "dup_of": ["joint-xr-live-revival-asobistore-general-advance-2026"]}},
+    }
+    (tmp / "metrics" / f"drops-{date}.json").write_text(json.dumps(drops, ensure_ascii=False), encoding="utf-8")
+    want = ["cg-cinderella-fes-blanc-2026-10", "cg-sweet-melty-whip-popup-2026"]
+    got = sorted(pipelib.source_lacking_drops(date, tmp))
+    check(got == want, f"出典不足の見送りの取り出し(校閲 R5 を含め、R16・P1 を外す): {got}")
+    saved = (oncall.ROOT, oncall.run_stage, oncall.commit_paths, oncall.notify, oncall.STAGE_END_AT)
+    calls = []
+    try:
+        oncall.ROOT = tmp
+        oncall.run_stage = lambda cmd, log, limit: calls.append([cmd[i + 1] for i, x in enumerate(cmd) if x == "--slug"]) or 0
+        oncall.commit_paths = lambda paths, msg, branch, push_timeout=120: None
+        oncall.notify = lambda *a, **k: True
+        oncall.STAGE_END_AT = time.time() + 3 * 3600
+        oncall.rescue_sources(date, f"edition/{date}", tmp / "metrics" / "rerun.log")
+    finally:
+        oncall.ROOT, oncall.run_stage, oncall.commit_paths, oncall.notify, oncall.STAGE_END_AT = saved
+    check(calls == [want], f"復帰が出典を揃える入口へ渡した記事: {calls}")
+    # 入口の結果: 校閲 R5 で落ちた記事は、当事者のページだけでは R5 を通らないので「揃えた」にせず、試した出典を書く。
+    # 公式 X の原本に届いた記事は「揃えた」(10/29: 大阪のパネル応募は主催の当事者のページと X だけに届いた)
+    import source_rescue
+    root = tmp / "entry"
+    rescue_fixture(root)
+    p = root / "metrics" / f"drops-{RESCUE_DATE}.json"
+    d = json.loads(p.read_text(encoding="utf-8"))
+    d["gaku-curtain-damashii-new-goods-2026"].update(stage="校閲ブロック", why="R5 R5: 公式が告知する話題だが sources が当事者だけ")
+    p.write_text(json.dumps(d, ensure_ascii=False), encoding="utf-8")
+    with RescueFakes(root):
+        rep = source_rescue.rescue(RESCUE_DATE, sorted(pipelib.source_lacking_drops(RESCUE_DATE, root)), dry_run=True)
+    r = rep["articles"]
+    types = [c["source_type"] for c in r["gaku-curtain-damashii-new-goods-2026"]["candidates"]]
+    check(r["gaku-curtain-damashii-new-goods-2026"]["outcome"] == "揃わない" and types and set(types) <= {"当事者", "二次情報", "未確認"},
+          f"校閲 R5 の記事を、当事者の出典だけで揃えたとした: {r['gaku-curtain-damashii-new-goods-2026']}")
+    check(RESCUE_PAGE in source_rescue.report_text(rep), "R5 の記事で揃わなかったのに、試したページを書いていない")
+    check(r["shiny-85th-anniversary-gifts-2026"]["outcome"] == "揃えた", f"公式 X に届いた見送りの結果: {r['shiny-85th-anniversary-gifts-2026']}")
+
+
 def test_oncall_recover_rescues_sources(tmp: Path):
     """当番の組版の復帰: 出典不足の見送りは、組み直しの前に入口で出典を揃え(素材と計画を確定して送り)、--reuse-plan で書き直して
     当日号に戻す(2026-10-26: 3本を「外部」「後続号に戻るかも」で終え、当日 23:59 締切のプレゼントを戻さなかった)。
@@ -20767,6 +20823,7 @@ def main() -> int:
     test_assemble_roundup_reservation(tmp / "arr")
     test_storylink_roundup_topic(tmp / "srt")
     test_source_rescue_entry(tmp / "sre")
+    test_rescue_takes_review_r5_drops(tmp / "rr5")
     test_oncall_recover_rescues_sources(tmp / "ors")
     test_stray_governed_write_is_caught(tmp / "sgw")
     test_write_checked_contract(tmp / "wcc")

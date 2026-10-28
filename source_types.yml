@@ -256,6 +256,7 @@ party_paths:
   - item.rakuten.co.jp/f272078-takatsuki        # 高槻市ふるさと納税
 
 party_domains:
+  - atre.co.jp            # 合議で追加: アトレ川崎の運営会社。店舗の展示告知を掲載
   - bushiroad-creative.com # 合議で追加: ライセンス商品を企画・販売する会社。シャニマス商品の販売元として告知
   - animatecafe.jp        # 合議で追加: コラボカフェを企画・運営する会社。SideMコラボの催しを自ら告知
   - u-neru.com            # 合議で追加: 個人情報保護方針で運営者を確認。コラボ先の施設が自ら告知

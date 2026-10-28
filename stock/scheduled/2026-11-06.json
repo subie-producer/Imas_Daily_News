@@ -283,12 +283,12 @@
   "src_dedup_key": "million-theater-talk-party-offshot-68-2026"
  },
  {
-  "id": "sched-2026-11-06-gacha-garakuta-road-ameya-2026-live-締切",
+  "id": "sched-2026-11-06-gacha-garakuta-road-ameya-2026-live-終了",
   "dedup_key": "gacha-garakuta-road-ameya-2026-live",
   "brand": "gaku",
-  "subject": "学マス 雨夜燕ガラクタロードガシャ",
-  "kind": "締切",
-  "note": "10時59分まで雨夜燕のSSR1.5倍ガシャを引ける最終日",
+  "subject": "雨夜燕ガシャ 開催終了",
+  "kind": "終了",
+  "note": "10時59分の終了前にガシャを引ける最終日",
   "reserved_on": "2026-10-29",
   "occurs_on": "2026-11-06",
   "title": "初星フェス限定Pアイドル「ガラクタロード」雨夜 燕ガシャ開始",
@@ -312,12 +312,12 @@
   "src_candidate_id": "202610290225-grok-60"
  },
  {
-  "id": "sched-2026-11-06-gacha-garakuta-road-ameya-2026-live-締切-src1",
+  "id": "sched-2026-11-06-gacha-garakuta-road-ameya-2026-live-終了-src1",
   "dedup_key": "gacha-garakuta-road-ameya-2026-live",
   "brand": "gaku",
-  "subject": "学マス 雨夜燕ガラクタロードガシャ",
-  "kind": "締切",
-  "note": "10時59分まで雨夜燕のSSR1.5倍ガシャを引ける最終日",
+  "subject": "雨夜燕ガシャ 開催終了",
+  "kind": "終了",
+  "note": "10時59分の終了前にガシャを引ける最終日",
   "reserved_on": "2026-10-29",
   "occurs_on": "2026-11-06",
   "title": "燕 ガラクタロードガシャ開催",
@@ -338,7 +338,7 @@
   "event_date": "2026-10-28",
   "deadline": "2026-11-06",
   "src_candidate_id": "202610281834-explore-8",
-  "companion_of": "sched-2026-11-06-gacha-garakuta-road-ameya-2026-live-締切",
+  "companion_of": "sched-2026-11-06-gacha-garakuta-road-ameya-2026-live-終了",
   "src_dedup_key": "gaku-garakuta-road-tsubame-2026"
  },
  {
@@ -347,7 +347,7 @@
   "brand": "joint",
   "subject": "ツアマス ハロウィンコミュ再生期間終了",
   "kind": "終了",
-  "note": "コミュ再生は11月7日1:59(表記25:59)まで、最後に見られる夜",
+  "note": "11月7日深夜1時59分までハロウィンコミュを見られる最終日",
   "reserved_on": "2026-10-29",
   "occurs_on": "2026-11-07",
   "title": "ツアマスのハロウィンコミュとログインボーナス",

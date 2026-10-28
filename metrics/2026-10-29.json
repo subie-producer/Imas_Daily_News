@@ -122,5 +122,49 @@
    },
    "duration_s": 2541
   }
+ ],
+ "compose": [
+  {
+   "at": "2026-10-29T03:29:44+09:00",
+   "edition": "2026-10-29",
+   "rounds": 5,
+   "approved": true,
+   "lint_green": true,
+   "planned": 42,
+   "written": 32,
+   "roundups": 1,
+   "dropped": 0,
+   "coverage": {
+    "subjects": 186,
+    "covered": 186,
+    "missing": 0,
+    "missing_keys": []
+   },
+   "dropped_by_review": [
+    "cg-popntoybox-revival-general-lottery-2026",
+    "cg-sweet-melty-whip-popup-2026"
+   ],
+   "stages_min": {
+    "選定": 2.1361638824145,
+    "執筆": 5.4954925894737245,
+    "出典の判定": 2.81061209042867,
+    "組版": 1.0031808137893676,
+    "校閲": 0.9187943736712137,
+    "校閲1波": 0.9187943736712137
+   },
+   "target_min": 60,
+   "over_target": false,
+   "aborted": [
+    "shiny-birthday-support-birth-day-madoka-2026",
+    "sidem-passion-challenge-monthly-song-12-cafe-parade-2026",
+    "gaku-gakumas-amayo-kisama-kentei-2026",
+    "million-theater-talk-party-vol-68-2026",
+    "cg-cinderella-fes-blanc-2026-10",
+    "cg-cinderella-astromeda-popup-akihabara-2026",
+    "shiny-kawaii-season-chibigurumi-2026",
+    "sidem-mfes-2026-animate-cafe"
+   ],
+   "duration_s": 1783
+  }
  ]
 }

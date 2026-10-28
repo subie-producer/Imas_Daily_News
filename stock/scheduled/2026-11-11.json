@@ -1390,32 +1390,5 @@
   "src_candidate_id": "sched-2026-10-27-valiv-letora-birthday-live-2026-締切前",
   "companion_of": "sched-2026-11-11-letora-birthday-online-live-2026-lv-開始",
   "src_dedup_key": "valiv-letora-birthday-live-2026"
- },
- {
-  "id": "sched-2026-11-11-letora-birthday-online-live-2026-lv-開幕",
-  "dedup_key": "letora-birthday-online-live-2026-lv",
-  "brand": "dsva",
-  "subject": "レトラ BIRTHDAY ONLINE LIVE 2026 現地ライブビューイング",
-  "kind": "開幕",
-  "note": "開場18時・開演19時で、アクアシティお台場のユナイテッド・シネマにて上映される",
-  "reserved_on": "2026-10-29",
-  "occurs_on": "2026-11-11",
-  "title": "レトラ BIRTHDAY ONLINE LIVE 2026 現地ライブビューイング二次抽選",
-  "url": "https://x.com/valiv_official/status/2114280816104652842",
-  "source_type": "公式",
-  "facts": [
-   "レトラ BIRTHDAY ONLINE LIVE 2026の現地ライブビューイング二次抽選を受付中。",
-   "限定グッズとお見送り会付きライブビューイング。",
-   "抽選申込は10/30(金)まで。",
-   "リンク: https://t.co/ON7vMQoxvl",
-   "リンク: https://t.co/0F5NqOGpwI",
-   "エンゲージメント: 中",
-   "言及アイドル: レトラ"
-  ],
-  "via": "grok",
-  "verify": "confirmed",
-  "event_date": "2026-11-11",
-  "deadline": "2026-10-30",
-  "src_candidate_id": "202610270222-grok-44"
  }
 ]

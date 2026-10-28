@@ -51,7 +51,7 @@ from pipelib import (ENV, ROOT, COLLECT_MODEL, CODEX_WRITE_MODEL, EXPLORE_MODEL,
                      extract_json_array, git, notify, notify_crash, now_jst, prompt_part, render_prompt,
                      X_ANON_POST, x_post_author, x_status_time, align_x_published_date,
                      CLI_BLOCKED, CLI_BLOCKED_EXIT, CLI_STOPPED, CliBlocked, cli_blocked_reason, cli_check, grok_session_reasons,
-                     scratch_dir, link_key, polite_urlopen)
+                     scratch_dir, link_key, polite_urlopen, check_seconds)
 from storylink import url_key
 import page_archive
 # モデル・道具のセッションの起動と回収(自前のプロセスグループ。時間切れ・中断では子孫まで止める)
@@ -2643,6 +2643,12 @@ def main() -> int:
         _TERM.update(defer=False, got=False)
 
 
+def classify_fits() -> bool:
+    """収集の締切までに合議(判定表の更新)が終わる見込みがあるか。締切の残りを、直近の合議の所要の最大(check_seconds)と比べる。
+    締切の無い実行(当番の取り直し・手で回した)は常に True"""
+    return not DEADLINE or session_left(1800) >= check_seconds("classify")
+
+
 def classify_then_retag(date: str) -> tuple[bool, str]:
     """判定表の更新 → 紙面の種別付け直し → lint の取引(classify_retag_lint)。合議の失敗で戻したら、いまの判定表・判定のコードで決まる
     付け直しまで戻るので、合議を飛ばして付け直し → lint だけを掛け直す(2026-10-27 Sol 監査。組版の出典の判定と同じ)。
@@ -2716,9 +2722,11 @@ def run_collect(args, date: str, branch: str, t0: float) -> int:
         # 当番の取り直しでは判定表の取引(合議。単独で最大30分)をしない。取り直しは次の定時工程の前に終えて、
         # 素材を commit するのが先(監査指摘)。未知の出典の判定は次の定時収集で行う
         print("当番の取り直しのため、未知の出典の判定は次の定時収集で行う", flush=True)
-    elif needs_classify(cands) and deadline_passed():
-        # 収集の締切を過ぎたら合議を始めない(組版の開始を妨げない)。素材の commit を先にし、判定は次の定時収集で行う
-        print("収集の締切を過ぎたので、未知の出典の判定は次の定時収集で行う", flush=True)
+    elif needs_classify(cands) and not classify_fits():
+        # 収集の締切までに合議が終わる見込みが無ければ始めない(組版の開始を妨げない。始めても締切で切れて戻すだけ:
+        # 2026-10-29 02:43 は残り 112 秒で始めて時間切れになり、異常として当番まで起動した)。素材の commit を先にし、判定は次の定時収集で行う
+        print(f"収集の締切まで残り {int(session_left(1800))} 秒で、出典の判定の見込み({int(check_seconds('classify'))} 秒)に足りないので、"
+              "未知の出典の判定は次の定時収集で行う", flush=True)
     elif needs_classify(cands):
         # **未知のドメインは合議で振り分ける。**表を人が育てるまで待つと、
         # 会場・チケット販売・自治体が未確認のまま紙面に載る。

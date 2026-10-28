@@ -10096,6 +10096,76 @@ def test_oncall_check_limits_follow_measure(tmp: Path):
     check(tp_pid and gone, f"selfcheck を止めても回帰テストが残って走り続ける(pid {tp_pid})")
 
 
+def test_collect_classify_fits_deadline(tmp: Path):
+    """収集は、締切の残りが合議の見込み(直近の合議の所要の最大)に足りなければ合議を始めない(2026-10-29 02:43: 残り 112 秒で
+    合議を始めて時間切れになり、判定表を戻して「判定表の更新〜lint で失敗」と異常を通知し、当番まで起動した。直近の 02:00 の合議は 72〜190 秒)。
+    - 取引は収集の合議(posts_only でない)の所要を記録する(組版前の posts_only は記録しない)
+    - 残りが見込みに足りなければ合議の取引を起動せず、異常として通知しない。足りれば起動する。締切の無い実行は常に起動する"""
+    import time as _t
+    import types
+    import collect
+    tmp.mkdir(parents=True, exist_ok=True)
+    (tmp / "docs" / "_posts").mkdir(parents=True, exist_ok=True)
+    (tmp / "source_types.yml").write_text("official_domains:\n  - a.example\n", encoding="utf-8")
+    saved_scr = os.environ.get("IMAS_SCRATCH")
+    os.environ["IMAS_SCRATCH"] = str(tmp / "scratch")
+    saved = (pipelib._txn_run, pipelib.ROOT)
+    try:
+        def slow(step, limit):
+            if str(step[1]).endswith("classify_sources.py"):
+                _t.sleep(0.3)
+            return subprocess.CompletedProcess(step, 0, "", "")
+        pipelib.ROOT = tmp
+        pipelib._txn_run = slow
+        pipelib.classify_retag_lint("2026-10-29", posts_only=True, lint=False)
+        check(pipelib.check_seconds("classify") == pipelib.CHECK_SECONDS_DEFAULT["classify"],
+              f"組版前(posts_only)の合議の所要を収集の見込みに記録した: {pipelib.check_seconds('classify')}")
+        ok, why = pipelib.classify_retag_lint("2026-10-29", lint=False)
+        est = pipelib.check_seconds("classify")
+        check(ok and 0.3 <= est < 5, f"収集の合議の所要を記録しない: {ok} {why} 見込み {est}")
+        pipelib.note_check_seconds("classify", 190)
+    finally:
+        pipelib._txn_run, pipelib.ROOT = saved
+    calls, notes = [], []
+    names = ("DEADLINE", "run_explores", "normalize", "ingest_spools", "verify", "watch_sources", "merge_into_day_file", "append_metric",
+             "needs_classify", "classify_then_retag", "notify", "commit_and_push")
+    saved_c = {n: getattr(collect, n) for n in names}
+    saved_prune = collect.page_archive.prune
+    args = types.SimpleNamespace(skip_watch=True, skip_explore=True, skip_grok=True, force_grok=False, no_git=False, oncall_rerun=False)
+    try:
+        collect.run_explores = lambda *a, **k: ([], {})
+        collect.normalize = lambda c: c
+        collect.ingest_spools = lambda c: 0
+        collect.verify = lambda c: {}
+        collect.watch_sources = lambda late=None: []
+        collect.page_archive.prune = lambda: {"removed": 0, "bytes": 0}
+        collect.merge_into_day_file = lambda c, d: 1
+        collect.append_metric = lambda *a, **k: None
+        collect.needs_classify = lambda c: True
+        collect.classify_then_retag = lambda d: calls.append(d) or (False, "TimeoutExpired: timed out after 112 seconds")
+        collect.notify = lambda job, msg, ok=True, require=False: notes.append((ok, msg)) or True
+        collect.commit_and_push = lambda *a, **k: True
+        pipelib.set_quiet(True)
+        try:
+            for left, want in ((112, False), (600, True), (None, True)):
+                calls.clear(); notes.clear()
+                collect.DEADLINE = None if left is None else _t.time() + left
+                collect.run_collect(args, "2026-10-29", "unused", _t.time())
+                bad = [m for ok, m in notes if not ok and "判定表" in m]
+                check(bool(calls) == want and (want or not bad),
+                      f"締切の残り {left} 秒(見込み 190 秒)で合議の起動が {bool(calls)}(期待 {want})・異常の通知 {bad[:1]}")
+        finally:
+            pipelib.set_quiet(False)
+    finally:
+        for n, v in saved_c.items():
+            setattr(collect, n, v)
+        collect.page_archive.prune = saved_prune
+        if saved_scr is None:
+            os.environ.pop("IMAS_SCRATCH", None)
+        else:
+            os.environ["IMAS_SCRATCH"] = saved_scr
+
+
 def test_classify_retag_without_judge(tmp: Path):
     """合議が失敗して取引を戻したあとも、いまの判定表・判定のコードで決まる付け直しは行う(2026-10-27 Sol 監査: 判定のコードの修正で
     既知のチャンネル(video_channels の公式)の配信一覧のページが公式になった 10/27 号の記事が、合議の失敗で付け直しごと戻り、
@@ -20784,6 +20854,7 @@ def main() -> int:
     test_derive_write(tmp / "dw")
     test_compose_run_derive(tmp / "crd")
     test_oncall_collect_rerun_killed_classify(tmp / "ock")
+    test_collect_classify_fits_deadline(tmp / "ccf")
     test_failed_rollback_blocks_commit(tmp / "frb")
     test_canonicalize_and_assign_ranks(tmp / "car2")
     test_reassemble_reranks_rewritten(tmp / "rerank")

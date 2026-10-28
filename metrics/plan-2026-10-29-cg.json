@@ -1,0 +1,352 @@
+{
+ "decisions": {
+  "cg-15th-anniversary-party-2026-general": {
+   "action": "article",
+   "angle": "15th ANNIVERSARY PARTY（Kアリーナ横浜、11/28・29）の現地チケット一般販売（先着）が11月7日12時に始まり、公式リセールは同日15時開始。SPラウンジ席・バルコニー席は完売",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 80,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "manaka-birthday-live-guest-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "他ブランド声優の個人BDライブへのゲスト出演で、10/28に終了済み"
+  },
+  "cinderella-popup-shop-after-sales-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/22号と同内容。締切11/5は7日先で当日トリガー無し"
+  },
+  "answer-dere-ster-mv-upload-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人投稿者による動画投稿の告知で、公式の発表ではない"
+  },
+  "cg-rose-tea-parlor-2026-nagoya": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "店舗一覧とメニュー紹介のみ。新しい日程や期日が無い（心斎橋は10/28号で記事化済み）"
+  },
+  "rose-tea-parlor-fan-visit-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS来店投稿"
+  },
+  "cinderella-last-order-hub-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/28号に同内容（期間・店舗・出演者）。新事実も当日トリガーも無い"
+  },
+  "cg-hourglass-radio-premiere-2026": {
+   "action": "article",
+   "angle": "「HOURGLASS」初公開回のデレパ第623回のタイムシフトが11月4日23:59まで公開中。事前予約が無い場合はニコニコプレミアム登録が必要",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "出典ページの変更（タイムシフト公開期限と視聴条件）を新事実とする"
+  },
+  "cinderella-fes-blanc-2026-10": {
+   "action": "article",
+   "angle": "シンデレラフェス ブランとノワールは10月31日23:59まで。セレクトピックアップガシャで対象SSレアを選べ、プラチナオーディションのSSレア割合は2倍",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ノワールを統合して1記事。終了まで2日"
+  },
+  "cinderella-fes-noir-2026-10": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cinderella-fes-blanc-2026-10",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一期間・同一施策のためブランと1記事"
+  },
+  "cinderella-astromeda-popup-akihabara-2026": {
+   "action": "article",
+   "angle": "アニメイト秋葉原2号館のAstromeda POPUPストアは11月1日まで。終了まで3日",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "10/26号の商品・価格は繰り返さず、期日を中心に伝える"
+  },
+  "mayu-bound-to-you-necklace-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/22号「佐久間まゆのネックレス、予約は11月30日まで」と同じ商品。締切は先で当日トリガー無し"
+  },
+  "fumika-birthday-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "個人のSNS投稿。ファン面（general）の扱い"
+  },
+  "cinderella-girls-sapporo-tv-tower-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/25号・10/28号で記事化済み。終了の11/3は5日先で当日トリガー無し"
+  },
+  "cg-mayu-necklace-bound-to-you-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/22号と同内容（予約期間・価格・特典）。締切11/30は先"
+  },
+  "cg-sega-lucky-kuji-vol-1-cute-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "10/19付の販売開始の告知タイトルのみ。購入条件・販売期間・当日トリガーが無い"
+  },
+  "cg-hourglass-first-play-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-hourglass-radio-premiere-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ放送回の話題。初公開は10/28号で記事化済みで、新事実はタイムシフトのみ"
+  },
+  "cg-sweet-melty-whip-popup-2026": {
+   "action": "article",
+   "angle": "Sweet Melty Whip大阪会場と等身大パネルのプレゼント応募は11月1日23:59まで。終了まで3日",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約（締切前）。応募は5,000円購入ごとに応募券1枚"
+  },
+  "cg-popntoybox-revival-general-lottery-2026": {
+   "action": "article",
+   "angle": "「Pop'n ToyBox!! もういっかい！」のアソビチケット一般会員先行（抽選）は11月1日が申込締切。あと3日",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約（締切前）。joint の xR LIVE REVIVAL とは別公演"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "cg-15th-anniversary-party-2026-general",
+    "brand": "cg",
+    "rank": "medium",
+    "angle": "15th ANNIVERSARY PARTY（Kアリーナ横浜、11/28・29）の現地チケット一般販売（先着）が11月7日12時に始まり、公式リセールは同日15時開始。SPラウンジ席・バルコニー席は完売",
+    "purpose": "新情報",
+    "lead_score": 80,
+    "dedup_key": "cg-15th-anniversary-party-2026-general",
+    "candidate_ids": [
+     "202610281233-watch-0"
+    ]
+   },
+   {
+    "slug": "cg-hourglass-radio-premiere-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "「HOURGLASS」初公開回のデレパ第623回のタイムシフトが11月4日23:59まで公開中。事前予約が無い場合はニコニコプレミアム登録が必要",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "cg-hourglass-radio-premiere-2026",
+    "candidate_ids": [
+     "update-7ffb60ffc95c",
+     "202610260732-explore-4",
+     "202610270222-grok-56",
+     "202610271834-explore-7"
+    ]
+   },
+   {
+    "slug": "cg-cinderella-fes-blanc-2026-10",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "シンデレラフェス ブランとノワールは10月31日23:59まで。セレクトピックアップガシャで対象SSレアを選べ、プラチナオーディションのSSレア割合は2倍",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "cinderella-fes-blanc-2026-10",
+    "candidate_ids": [
+     "202610260732-explore-0",
+     "202610260732-explore-1"
+    ]
+   },
+   {
+    "slug": "cg-cinderella-astromeda-popup-akihabara-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "アニメイト秋葉原2号館のAstromeda POPUPストアは11月1日まで。終了まで3日",
+    "purpose": "期日の知らせ",
+    "lead_score": 10,
+    "dedup_key": "cinderella-astromeda-popup-akihabara-2026",
+    "candidate_ids": [
+     "202610261232-explore-2",
+     "202610261832-explore-1"
+    ]
+   },
+   {
+    "slug": "cg-sweet-melty-whip-popup-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "Sweet Melty Whip大阪会場と等身大パネルのプレゼント応募は11月1日23:59まで。終了まで3日",
+    "purpose": "期日の知らせ",
+    "lead_score": 15,
+    "dedup_key": "cg-sweet-melty-whip-popup-2026",
+    "candidate_ids": [
+     "sched-2026-10-29-cg-sweet-melty-whip-popup-2026-締切前"
+    ]
+   },
+   {
+    "slug": "cg-popntoybox-revival-general-lottery-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "「Pop'n ToyBox!! もういっかい！」のアソビチケット一般会員先行（抽選）は11月1日が申込締切。あと3日",
+    "purpose": "期日の知らせ",
+    "lead_score": 15,
+    "dedup_key": "cg-popntoybox-revival-general-lottery-2026",
+    "candidate_ids": [
+     "sched-2026-10-29-cg-popntoybox-revival-general-lottery-2026-締切前"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "manaka-birthday-live-guest-2026",
+    "reason": "個人の話題",
+    "note": "他ブランド声優の個人BDライブへのゲスト出演で、10/28に終了済み"
+   },
+   {
+    "dedup_key": "cinderella-popup-shop-after-sales-2026",
+    "reason": "既報",
+    "note": "10/22号と同内容。締切11/5は7日先で当日トリガー無し"
+   },
+   {
+    "dedup_key": "answer-dere-ster-mv-upload-2026",
+    "reason": "個人の話題",
+    "note": "個人投稿者による動画投稿の告知で、公式の発表ではない"
+   },
+   {
+    "dedup_key": "cg-rose-tea-parlor-2026-nagoya",
+    "reason": "既報",
+    "note": "店舗一覧とメニュー紹介のみ。新しい日程や期日が無い（心斎橋は10/28号で記事化済み）"
+   },
+   {
+    "dedup_key": "rose-tea-parlor-fan-visit-2026",
+    "reason": "個人の話題",
+    "note": "個人のSNS来店投稿"
+   },
+   {
+    "dedup_key": "cinderella-last-order-hub-2026",
+    "reason": "既報",
+    "note": "10/28号に同内容（期間・店舗・出演者）。新事実も当日トリガーも無い"
+   },
+   {
+    "dedup_key": "mayu-bound-to-you-necklace-2026",
+    "reason": "既報",
+    "note": "10/22号「佐久間まゆのネックレス、予約は11月30日まで」と同じ商品。締切は先で当日トリガー無し"
+   },
+   {
+    "dedup_key": "fumika-birthday-2026",
+    "reason": "面違い",
+    "note": "個人のSNS投稿。ファン面（general）の扱い"
+   },
+   {
+    "dedup_key": "cinderella-girls-sapporo-tv-tower-2026",
+    "reason": "既報",
+    "note": "10/25号・10/28号で記事化済み。終了の11/3は5日先で当日トリガー無し"
+   },
+   {
+    "dedup_key": "cg-mayu-necklace-bound-to-you-2026",
+    "reason": "既報",
+    "note": "10/22号と同内容（予約期間・価格・特典）。締切11/30は先"
+   },
+   {
+    "dedup_key": "cg-sega-lucky-kuji-vol-1-cute-2026",
+    "reason": "出典不足",
+    "note": "10/19付の販売開始の告知タイトルのみ。購入条件・販売期間・当日トリガーが無い"
+   }
+  ],
+  "cross_brand": []
+ }
+}

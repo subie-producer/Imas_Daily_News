@@ -1,0 +1,46 @@
+{
+ "sidem-passion-challenge-monthly-song-12-cafe-parade-2026": {
+  "title": "MONTHLY THEME SONG 12『Café Parade』が10月28日に発売。ストーリー解放シリアルコードと初回特典ブロマイドが付く",
+  "stage": "執筆で見送り",
+  "why": "NOT_NEWS 公式の試聴動画ページで発売日は2026年10月21日と確認でき、10月29日06:00時点ですでに終了した出来事です。素材の「10月28日発売」は公式情報と一致しません。今日新しく起きたことや今後の期日は確認できませんでした。",
+  "candidate_ids": [
+   "202610290225-grok-50",
+   "202610290508-grok-0-r3",
+   "202610290508-explore-1-r1"
+  ]
+ },
+ "gaku-gakumas-amayo-kisama-kentei-2026": {
+  "title": "雨夜燕の「貴様ぁ！検定」の受付が11月8日23:59まで延長された。結果を#雨夜燕貴様検定で投稿すると抽選で10名に認定証カードホルダー。",
+  "stage": "執筆で見送り",
+  "why": "SOURCE_MISMATCH 延長を伝える素材では受付期限を2026年11月8日23:59としている一方、公式キャンペーンページは期間を2026年10月28日23:59までと記載し、延長を確認できませんでした。記事の中心となる延長後の期限を公式出典で確かめられないため、",
+  "candidate_ids": [
+   "202610290225-grok-89",
+   "202610282333-watch-3",
+   "202610290225-explore-6"
+  ]
+ },
+ "million-theater-talk-party-vol-68-2026": {
+  "title": "ユニットオフショットVol.68は明日10月30日23:59まで。ユニットトークの解放とユニットコイン交換の締切を伝える",
+  "stage": "執筆で見送り",
+  "why": "NO_PRIMARY_SOURCE ミリシタ公式Xの投稿でイベント開催は確認できましたが、記事の軸となる10月30日23時59分の終了期限と、ユニットトークの解放・ユニットコイン交換の期限は公式・準公式・報道の出典で確認できませんでした。期限は攻略Wikiで確認できたものの、",
+  "candidate_ids": [
+   "202610290225-grok-26",
+   "202610270222-grok-8",
+   "202610280221-explore-1"
+  ]
+ },
+ "cg-popntoybox-revival-general-lottery-2026": {
+  "title": "シンデレラガールズ「トイボ」先行、締切まであと3日",
+  "stage": "校閲ブロック",
+  "why": "P1 同じ知らせが2本ある。joint-xr-live-revival-asobistore-general-advance-2026 と本記事は、同じアソビチケットの一般会員先行受付（同一の受付URL、締切11月1日23時59分）を扱っている。",
+  "candidate_ids": [
+   "sched-2026-10-29-cg-popntoybox-revival-general-lottery-2026-締切前"
+  ],
+  "settled": {
+   "rule": "P1",
+   "dup_of": [
+    "joint-xr-live-revival-asobistore-general-advance-2026"
+   ]
+  }
+ }
+}

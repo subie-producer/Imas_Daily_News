@@ -1,0 +1,203 @@
+{
+ "recheck": [
+  {
+   "at": "2026-10-29T02:29:09+09:00",
+   "cap": 60,
+   "parallel": 4,
+   "runs_per_day": 5,
+   "cycle_days": 0.25,
+   "oldest_age_h": 7.9,
+   "targets": 75,
+   "chosen": 60,
+   "tried": 60,
+   "checked": 60,
+   "changed": 29,
+   "elapsed_s": 98,
+   "cycle_days_actual": 0.25
+  }
+ ],
+ "collect": [
+  {
+   "at": "2026-10-29T02:43:07+09:00",
+   "edition": "2026-10-29",
+   "started_at": "2026-10-29T02:00:45+09:00",
+   "trigger": "timer",
+   "watch": {
+    "stats": {
+     "imas-portal": {
+      "found": 12,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-sidem": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-shiny": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-million": {
+      "found": 9,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "lantis-shiny": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "lantis-sidem": {
+      "error": "HTTP Error 503: Service Temporarily Unavailable",
+      "http": 503
+     },
+     "columbia-imas": {
+      "found": 351,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "bnam-tours": {
+      "found": 69,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "imasnews765": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     }
+    },
+    "new": 0,
+    "facted": 0,
+    "deferred": 0,
+    "blocked": 0,
+    "unavailable": 0
+   },
+   "per_query": {
+    "explore:765as": 1,
+    "explore:cinderella": 0,
+    "explore:million": 1,
+    "explore:shiny": 3,
+    "explore:sidem": 1,
+    "explore:gakuen": 0,
+    "explore:dsva": 0,
+    "explore:joint-other": 0,
+    "explore:trend": 1,
+    "grok_week_searches": 553,
+    "grok:765as": 5,
+    "grok:cinderella": 7,
+    "grok:million": 8,
+    "grok:shiny": 13,
+    "grok:sidem": 10,
+    "grok:gakuen": 16,
+    "grok:dsva": 1,
+    "grok:joint-other": 11,
+    "grok:trend": 11,
+    "grok_searches:million": 5,
+    "grok_searches:joint": 14,
+    "grok_searches:765": 8,
+    "grok_searches:cg": 5,
+    "grok_searches:shiny": 6,
+    "grok_searches:sidem": 5,
+    "grok_searches:dsva": 10,
+    "grok_searches:gaku": 7,
+    "grok_searches:general": 8
+   },
+   "normalized": 92,
+   "added": 72,
+   "verify": {
+    "confirmed": 60,
+    "unconfirmed": 29,
+    "failed": 1
+   },
+   "duration_s": 2541
+  }
+ ],
+ "compose": [
+  {
+   "at": "2026-10-29T03:29:44+09:00",
+   "edition": "2026-10-29",
+   "rounds": 5,
+   "approved": true,
+   "lint_green": true,
+   "planned": 42,
+   "written": 32,
+   "roundups": 1,
+   "dropped": 0,
+   "coverage": {
+    "subjects": 186,
+    "covered": 186,
+    "missing": 0,
+    "missing_keys": []
+   },
+   "dropped_by_review": [
+    "cg-popntoybox-revival-general-lottery-2026",
+    "cg-sweet-melty-whip-popup-2026"
+   ],
+   "stages_min": {
+    "選定": 2.1361638824145,
+    "執筆": 5.4954925894737245,
+    "出典の判定": 2.81061209042867,
+    "組版": 1.0031808137893676,
+    "校閲": 0.9187943736712137,
+    "校閲1波": 0.9187943736712137
+   },
+   "target_min": 60,
+   "over_target": false,
+   "aborted": [
+    "shiny-birthday-support-birth-day-madoka-2026",
+    "sidem-passion-challenge-monthly-song-12-cafe-parade-2026",
+    "gaku-gakumas-amayo-kisama-kentei-2026",
+    "million-theater-talk-party-vol-68-2026",
+    "cg-cinderella-fes-blanc-2026-10",
+    "cg-cinderella-astromeda-popup-akihabara-2026",
+    "shiny-kawaii-season-chibigurumi-2026",
+    "sidem-mfes-2026-animate-cafe"
+   ],
+   "duration_s": 1783
+  },
+  {
+   "at": "2026-10-29T05:18:33+09:00",
+   "edition": "2026-10-29",
+   "rounds": 3,
+   "approved": true,
+   "lint_green": true,
+   "planned": 42,
+   "written": 38,
+   "roundups": 1,
+   "dropped": 0,
+   "coverage": {
+    "subjects": 189,
+    "covered": 189,
+    "missing": 0,
+    "missing_keys": []
+   },
+   "dropped_by_review": [],
+   "stages_min": {
+    "執筆": 1.2571789820988972,
+    "組版": 0.9809990286827087,
+    "校閲": 1.135392963886261,
+    "校閲1波": 1.135392963886261,
+    "出典の判定": 0.5927384893099467
+   },
+   "target_min": 60,
+   "over_target": false,
+   "aborted": [
+    "sidem-passion-challenge-monthly-song-12-cafe-parade-2026",
+    "gaku-gakumas-amayo-kisama-kentei-2026",
+    "million-theater-talk-party-vol-68-2026"
+   ],
+   "duration_s": 590
+  }
+ ]
+}

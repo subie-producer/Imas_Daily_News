@@ -36,6 +36,13 @@ lede_fact_ids:
 - F1
 - F22
 - F58
+updates:
+- at: '2026-10-28T18:47:41+09:00'
+  kind: 変更
+  text: 申込受付が10月28日23時59分から11月8日23時59分に延長され、当落発表・入金期間も11月16日〜23日から11月25日〜30日に変更されました。
+  source: https://asobiticket2.asobistore.jp/receptions/36ac2a17-d201-44fd-ab28-049fc28c560d
+  from_at: '2026-10-27T23:35:49+09:00'
+  to_at: '2026-10-28T18:35:16+09:00'
 ---
 申込先は[ASOBI TICKET](https://asobiticket2.asobistore.jp/receptions/36ac2a17-d201-44fd-ab28-049fc28c560d)。抽選受付の対象はアソビストアプレミアム12か月会員で、1か月会員は対象外。申込から当落発表までに12か月会員を退会すると抽選対象外となる。 <!-- F6 F7 F8 F22 F59 -->
 

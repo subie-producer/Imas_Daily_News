@@ -1,0 +1,91 @@
+{
+ "decisions": {
+  "765-961-idol-ultimate-2027-ticket": {
+   "action": "cross_brand",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "joint-765-961-ultimate-once-and-for-all-extension-2026",
+   "reason": "",
+   "note": "765×961の共同主催。先行の延長(11/8 23:59)と結果発表・入金期間の変更は合同面が記事化済み"
+  },
+  "imas-radio-next-2026-11-10": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/28号が日時・ゲスト・パーソナリティ・アフタートークを掲載済み。新事実も当日のトリガーも無い"
+  },
+  "imas-radio-4-hasegawa-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/28号でアーカイブ公開を記事化済み。新しい事実は無い"
+  },
+  "765-961-idol-ultimate-once-and-for-all-2027": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "開催決定・日程・出演者・料金は9/7、9/8、9/30号で既報。新事実も当日のトリガーも無い(先行延長は合同面が記事化)"
+  },
+  "765-hangetsu-xr-revival-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "重複",
+   "note": "一般会員先行の11/1締切まであと3日は、合同面の joint-xr-live-revival-asobistore-general-advance-2026 が記事化済み。この公演は765単独のため cross_brand にはしない"
+  }
+ },
+ "plan": {
+  "articles": [],
+  "dropped": [
+   {
+    "dedup_key": "imas-radio-next-2026-11-10",
+    "reason": "既報",
+    "note": "10/28号が日時・ゲスト・パーソナリティ・アフタートークを掲載済み。新事実も当日のトリガーも無い"
+   },
+   {
+    "dedup_key": "imas-radio-4-hasegawa-2026",
+    "reason": "既報",
+    "note": "10/28号でアーカイブ公開を記事化済み。新しい事実は無い"
+   },
+   {
+    "dedup_key": "765-961-idol-ultimate-once-and-for-all-2027",
+    "reason": "既報",
+    "note": "開催決定・日程・出演者・料金は9/7、9/8、9/30号で既報。新事実も当日のトリガーも無い(先行延長は合同面が記事化)"
+   },
+   {
+    "dedup_key": "765-hangetsu-xr-revival-2026",
+    "reason": "重複",
+    "note": "一般会員先行の11/1締切まであと3日は、合同面の joint-xr-live-revival-asobistore-general-advance-2026 が記事化済み。この公演は765単独のため cross_brand にはしない"
+   }
+  ],
+  "cross_brand": [
+   {
+    "slug": "joint-765-961-ultimate-once-and-for-all-extension-2026",
+    "dedup_key": "765-961-idol-ultimate-2027-ticket",
+    "note": "765×961の共同主催。先行の延長(11/8 23:59)と結果発表・入金期間の変更は合同面が記事化済み"
+   }
+  ]
+ }
+}

@@ -1,0 +1,336 @@
+{
+ "decisions": {
+  "tours-series-2-2026": {
+   "action": "article",
+   "angle": "ツアマスS2弾が本日稼働開始。山下次郎・舞田類、『Study Equal Magic!』と『SYMPHONY』、中部エリア、ハロウィンのカード群を店舗で遊べる",
+   "purpose": "期日の知らせ",
+   "rank": "large",
+   "lead_score": 80,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "S2弾関連の他11主題をここへ統合"
+  },
+  "tours-s2-side-m-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "tours-series-2-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "SideM衣装・SPアピール。S2稼働開始と同じ施策"
+  },
+  "tours-s2-launch-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "tours-series-2-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "舞田類・山下次郎のパラレルカード(エターナルブライト)を素材に加える"
+  },
+  "tourmas-s2-2026-sidem": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "tours-series-2-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じS2稼働開始"
+  },
+  "tours-s2-halloween-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "tours-series-2-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じS2稼働開始"
+  },
+  "tours-s2-happy-halloween-card-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "tours-series-2-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じS2稼働開始。既報の内容"
+  },
+  "tours-s2-study-equal-magic-tips-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "tours-series-2-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じS2稼働開始。既報の内容"
+  },
+  "tours-s2-cyber-core-green-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "tours-series-2-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じS2稼働開始。既報の内容"
+  },
+  "tours-season-2-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "tours-series-2-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "コミュ200以上・中部エリア。同じS2稼働開始"
+  },
+  "tours-s2-cardlist-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "tours-series-2-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じS2稼働開始。既報の内容"
+  },
+  "tours-s2-communication-video-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "tours-series-2-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じS2稼働開始。既報の内容"
+  },
+  "tours-s2-extra-commu-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "tours-series-2-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じS2稼働開始。既報の内容"
+  },
+  "tours-s2-parallel-shibuya-rin-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "tours-series-2-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じS2稼働開始。既報の内容"
+  },
+  "xr-live-revival-asobistore-general-advance-2026": {
+   "action": "article",
+   "angle": "xR LIVE REVIVALのアソビストア一般会員先行は11月1日締切まであと3日。受付時刻が既報の23:59から14:59に変わり、同行者登録が必要",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "出典の受付期間(〜11/1 14:59)が10/7号の記事(23:59)と異なる点を確認して書く"
+  },
+  "765-961-ultimate-once-and-for-all-extension-2026": {
+   "action": "article",
+   "angle": "765×961公演のアソビストアプレミアム会員先行が11月8日23:59まで延長され、結果発表・入金期間も変更になった",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "二次情報のみ。出典が足りるかは執筆と校閲で判断"
+  },
+  "tours-halloween-commu-2026": {
+   "action": "article",
+   "angle": "ツアマスのハロウィンログインボーナスが本日7時に始まる。お菓子を受け取れ、コミュは31日から",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "新しい事実は無く、開始当日のトリガーで記事にする"
+  },
+  "tours-producers-station-nakano-panels-2026": {
+   "action": "article",
+   "angle": "Pステ中野2Fで本日から、渋谷凛とS.E.Mの新規原画パネル2種の展示が始まる",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "展示開始当日のトリガー"
+  },
+  "deremiri-clash-match-warmup-stream-2026": {
+   "action": "article",
+   "angle": "デレミリ合同ライブ『CLASH M@TCH!!』開催記念のウォームアップ生配信が10月30日20時に始まる",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "シンデレラ×ミリオンの共同主催。配信は明日で、当日のトリガーが近い"
+  },
+  "tomori-manaka-birthday-live-2026-guest-seki-hiromi": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "灯里愛夏はシャニマス側の催し。関裕美のゲスト出演だけでは共同にならない"
+  },
+  "tours-rhythm-live-recording-pstage-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/27号の記事に参加費・特典・定員が既出。新事実も当日のトリガーも無い"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "joint-deremiri-clash-match-warmup-stream-2026",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "デレミリ合同ライブ『CLASH M@TCH!!』開催記念のウォームアップ生配信が10月30日20時に始まる",
+    "purpose": "新情報",
+    "lead_score": 30,
+    "dedup_key": "deremiri-clash-match-warmup-stream-2026",
+    "candidate_ids": [
+     "202610290225-grok-73"
+    ]
+   },
+   {
+    "slug": "joint-tours-halloween-commu-2026",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "ツアマスのハロウィンログインボーナスが本日7時に始まる。お菓子を受け取れ、コミュは31日から",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "tours-halloween-commu-2026",
+    "candidate_ids": [
+     "202610290225-grok-74",
+     "sched-2026-10-29-tours-halloween-commu-2026-開始"
+    ]
+   },
+   {
+    "slug": "joint-765-961-ultimate-once-and-for-all-extension-2026",
+    "brand": "joint",
+    "rank": "medium",
+    "angle": "765×961公演のアソビストアプレミアム会員先行が11月8日23:59まで延長され、結果発表・入金期間も変更になった",
+    "purpose": "新情報",
+    "lead_score": 30,
+    "dedup_key": "765-961-ultimate-once-and-for-all-extension-2026",
+    "candidate_ids": [
+     "202610280221-grok-62"
+    ]
+   },
+   {
+    "slug": "joint-tours-producers-station-nakano-panels-2026",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "Pステ中野2Fで本日から、渋谷凛とS.E.Mの新規原画パネル2種の展示が始まる",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "tours-producers-station-nakano-panels-2026",
+    "candidate_ids": [
+     "202610280221-grok-63",
+     "sched-2026-10-29-tours-producers-station-nakano-panels-2026-開始"
+    ]
+   },
+   {
+    "slug": "joint-xr-live-revival-asobistore-general-advance-2026",
+    "brand": "joint",
+    "rank": "medium",
+    "angle": "xR LIVE REVIVALのアソビストア一般会員先行は11月1日締切まであと3日。受付時刻が既報の23:59から14:59に変わり、同行者登録が必要",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "xr-live-revival-asobistore-general-advance-2026",
+    "candidate_ids": [
+     "sched-2026-10-29-xr-live-revival-asobistore-general-advance-2026-締切前",
+     "sched-2026-10-29-xr-live-revival-asobistore-general-advance-2026-締切前-src1"
+    ]
+   },
+   {
+    "slug": "joint-tours-series-2-2026",
+    "brand": "joint",
+    "rank": "large",
+    "angle": "ツアマスS2弾が本日稼働開始。山下次郎・舞田類、『Study Equal Magic!』と『SYMPHONY』、中部エリア、ハロウィンのカード群を店舗で遊べる",
+    "purpose": "期日の知らせ",
+    "lead_score": 80,
+    "dedup_key": "tours-series-2-2026",
+    "candidate_ids": [
+     "sched-2026-10-29-tours-series-2-2026-開始",
+     "sched-2026-10-29-tours-series-2-2026-開始-src1",
+     "202610281834-explore-10",
+     "202610290225-grok-69",
+     "202610270222-grok-49",
+     "sched-2026-10-29-tours-s2-cardlist-2026-開始",
+     "sched-2026-10-29-tours-s2-cardlist-2026-開始-src1",
+     "202610270222-grok-52",
+     "202610270222-grok-53",
+     "sched-2026-10-29-tours-s2-communication-video-2026-開始",
+     "202610280221-grok-59",
+     "sched-2026-10-29-tours-s2-parallel-shibuya-rin-2026-開始",
+     "sched-2026-10-29-tourmas-s2-2026-sidem-開始",
+     "sched-2026-10-29-tourmas-s2-2026-sidem-開始-src1",
+     "sched-2026-10-29-tours-s2-halloween-2026-開始",
+     "sched-2026-10-29-tours-s2-happy-halloween-card-2026-開始",
+     "sched-2026-10-29-tours-s2-study-equal-magic-tips-2026-開始",
+     "sched-2026-10-29-tours-s2-cyber-core-green-2026-開始",
+     "sched-2026-10-29-tours-s2-cyber-core-green-2026-開始-src1",
+     "sched-2026-10-29-tours-season-2-2026-開始",
+     "sched-2026-10-29-tours-season-2-2026-開始-src1"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "tomori-manaka-birthday-live-2026-guest-seki-hiromi",
+    "reason": "面違い",
+    "note": "灯里愛夏はシャニマス側の催し。関裕美のゲスト出演だけでは共同にならない"
+   },
+   {
+    "dedup_key": "tours-rhythm-live-recording-pstage-2026",
+    "reason": "既報",
+    "note": "10/27号の記事に参加費・特典・定員が既出。新事実も当日のトリガーも無い"
+   }
+  ],
+  "cross_brand": []
+ }
+}

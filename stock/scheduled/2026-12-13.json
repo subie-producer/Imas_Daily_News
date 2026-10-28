@@ -433,5 +433,30 @@
   "src_candidate_id": "sched-2026-10-28-sidem-agatsuma-nin-nin-2026-開幕",
   "companion_of": "sched-2026-12-13-sidem-agatsuma-collab-2026-終了",
   "src_dedup_key": "sidem-agatsuma-nin-nin-2026"
+ },
+ {
+  "id": "sched-2026-12-13-shiny-283-pop-up-egai-eikou-2026-千秋楽",
+  "dedup_key": "shiny-283-pop-up-egai-eikou-2026",
+  "brand": "shiny",
+  "subject": "283PRODUCTION POP UP SHOP 最終日",
+  "kind": "千秋楽",
+  "note": "秋葉原本店でグッズを購入できる最終日",
+  "reserved_on": "2026-10-29",
+  "occurs_on": "2026-12-13",
+  "title": "283PRODUCTION POP UP SHOP～笑顔、その永劫の光～",
+  "url": "https://moca-news.net/artdisp.php?artid=202610271800a03",
+  "source_type": "二次情報",
+  "facts": [
+   "開催期間: 2026年11月27日（金）～2026年12月13日（日）",
+   "会場はブシロードクリエイティブストア秋葉原本店。",
+   "Impressionismがテーマの描き下ろしイラストを使用したオリジナルグッズを販売する。",
+   "商品購入3,000円（税込）ごとに、チケット風カード（全3種）をランダムで1枚プレゼントする。",
+   "エンゲージメント: 中"
+  ],
+  "via": "explore",
+  "verify": "unconfirmed",
+  "event_date": "2026-11-27",
+  "deadline": "2026-12-13",
+  "src_candidate_id": "202610282333-explore-6"
  }
 ]

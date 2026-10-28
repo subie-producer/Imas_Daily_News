@@ -1,0 +1,418 @@
+{
+ "decisions": {
+  "gaku-tsubame-garaku-road-gasha-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gacha-garakuta-road-ameya-2026-live",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ【ガラクタロード】雨夜燕ガシャの事前告知"
+  },
+  "gaku-tsubame-hif-scenario-pv-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "hif-step4-ameya-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "告知PVは10/28に記事済み。STEP4実装の記事へ統合"
+  },
+  "gaku-duet-song-collection-desc-error-2026": {
+   "action": "article",
+   "angle": "Duet Song Collection通常盤3作の商品ページにあった「私服」描き下ろしイラストの記載が実際の商品には無く、公式がお詫びした。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公式の訂正・お詫び。購入者に関わる"
+  },
+  "gaku-garakuta-road-tsubame-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gacha-garakuta-road-ameya-2026-live",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じガシャ。終了日11/6、ピックアップ率0.333%・天井交換不可の事実を統合"
+  },
+  "gaku-ame-yo-tsubame-kisama-kentei-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gakumas-amayo-kisama-kentei-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ貴様ぁ！検定。元の締切10/28から11/8へ延長された点を統合"
+  },
+  "hatsuboshi-radio-2026-10-28": {
+   "action": "roundup",
+   "angle": "配信・放送出演:初星学園放送部10/28回のアーカイブ公開と来週も21時放送",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "radio-guest-amane-yukari-2026-11-04": {
+   "action": "article",
+   "angle": "初星学園放送部11月4日回のゲストに天音ゆかり(雨夜燕役)が出演。STEP4実装に合わせた出演で、投稿募集は金曜午前まで。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "jewel-sale-2026-oct": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/28「ジュエルセールが本日11時開始」で記事済み。新事実・当日トリガー無し"
+  },
+  "gakumas-4koma-177": {
+   "action": "roundup",
+   "angle": "定常運営:学マス4コマ第177話「カッコよさの追求を」公開",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gakumas-wednesday-jewels-2026-10-28": {
+   "action": "roundup",
+   "angle": "定常運営:学マ水曜日のジュエル250個配布(11/4 4:59まで)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "hif-step4-ameya-2026": {
+   "action": "article",
+   "angle": "新プロデュース/新シナリオ「Hatsuboshi IDOL FESTIVAL」が登場し、雨夜燕のSTEP4が実装された(告知PV・「最後のH.I.F」の台詞も含め伝える)。",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 70,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "面でいちばん大きなニュース"
+  },
+  "gacha-garakuta-road-ameya-2026-live": {
+   "action": "article",
+   "angle": "初星フェス限定【ガラクタロード】雨夜燕ガシャが開催中。SSR出現率1.5倍、11/6 10:59まで、ピックアップ0.333%・天井交換不可、楽曲『ガラクタロード』の制作陣も。",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "終了日・出現率が前日記事に無い新事実"
+  },
+  "roar-jouo-sena-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/28に100万再生突破で記事済み"
+  },
+  "gaku-achievement-loading-issue-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/28に同内容で記事済み。修正情報なし"
+  },
+  "gaku-ume-another-idol-free-gasha-2026": {
+   "action": "article",
+   "angle": "花海佑芽のアナザーアイドル確定無料1連ガシャは本日10時59分で終了。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(締切)。当日が最終日"
+  },
+  "gaku-shirube-final-merch-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "整理券受付は10/28で終了、当落は11/3。新事実・当日トリガー無し"
+  },
+  "gaku-shirube-final-gifts-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/28に同内容で記事済み"
+  },
+  "gakumas-espresto-sugary-prize-2027": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/27・10/28に記事済み"
+  },
+  "gakumas-amayo-kisama-kentei-2026": {
+   "action": "article",
+   "angle": "雨夜燕の「貴様ぁ！検定」の受付が11月8日23:59まで延長された。結果を#雨夜燕貴様検定で投稿すると抽選で10名に認定証カードホルダー。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "出典は二次情報(unconfirmed)。公式の延長告知の確認は校閲に委ねる"
+  },
+  "curtain-damashii-new-goods-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/16・10/26に記事済み。予約締切11/15も3日以内ではない"
+  },
+  "gaku-rinami-another-idol-free-gacha-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/27 10:59に終了済み"
+  },
+  "gaku-jyuo-idol-training-starlight-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "10/28 4:59に終了済みの施策"
+  },
+  "gaku-roar-gacha-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "10/28 10:59に終了済みで既報"
+  },
+  "gaku-hatsuboshi-fes-garakuta-road-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gacha-garakuta-road-ameya-2026-live",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "10/28に開始告知で記事済み。同じガシャ・楽曲の統合素材"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "gaku-duet-song-collection-desc-error-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "Duet Song Collection通常盤3作の商品ページにあった「私服」描き下ろしイラストの記載が実際の商品には無く、公式がお詫びした。",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "gaku-duet-song-collection-desc-error-2026",
+    "candidate_ids": [
+     "202610281834-watch-0"
+    ]
+   },
+   {
+    "slug": "gaku-radio-guest-amane-yukari-2026-11-04",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "初星学園放送部11月4日回のゲストに天音ゆかり(雨夜燕役)が出演。STEP4実装に合わせた出演で、投稿募集は金曜午前まで。",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "radio-guest-amane-yukari-2026-11-04",
+    "candidate_ids": [
+     "202610290225-grok-54"
+    ]
+   },
+   {
+    "slug": "gaku-hif-step4-ameya-2026",
+    "brand": "gaku",
+    "rank": "medium",
+    "angle": "新プロデュース/新シナリオ「Hatsuboshi IDOL FESTIVAL」が登場し、雨夜燕のSTEP4が実装された(告知PV・「最後のH.I.F」の台詞も含め伝える)。",
+    "purpose": "新情報",
+    "lead_score": 70,
+    "dedup_key": "hif-step4-ameya-2026",
+    "candidate_ids": [
+     "202610290225-grok-59",
+     "202610281233-explore-5",
+     "202610290225-grok-66"
+    ]
+   },
+   {
+    "slug": "gaku-gacha-garakuta-road-ameya-2026-live",
+    "brand": "gaku",
+    "rank": "medium",
+    "angle": "初星フェス限定【ガラクタロード】雨夜燕ガシャが開催中。SSR出現率1.5倍、11/6 10:59まで、ピックアップ0.333%・天井交換不可、楽曲『ガラクタロード』の制作陣も。",
+    "purpose": "新情報",
+    "lead_score": 30,
+    "dedup_key": "gacha-garakuta-road-ameya-2026-live",
+    "candidate_ids": [
+     "202610290225-grok-60",
+     "202610280732-explore-3",
+     "202610281834-explore-8",
+     "202610280221-grok-42"
+    ]
+   },
+   {
+    "slug": "gaku-ume-another-idol-free-gasha-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "花海佑芽のアナザーアイドル確定無料1連ガシャは本日10時59分で終了。",
+    "purpose": "期日の知らせ",
+    "lead_score": 10,
+    "dedup_key": "gaku-ume-another-idol-free-gasha-2026",
+    "candidate_ids": [
+     "202610290225-grok-63",
+     "sched-2026-10-29-gaku-ume-another-idol-free-gasha-2026-締切"
+    ]
+   },
+   {
+    "slug": "gaku-gakumas-amayo-kisama-kentei-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "雨夜燕の「貴様ぁ！検定」の受付が11月8日23:59まで延長された。結果を#雨夜燕貴様検定で投稿すると抽選で10名に認定証カードホルダー。",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "gakumas-amayo-kisama-kentei-2026",
+    "candidate_ids": [
+     "202610290225-grok-89",
+     "202610282333-watch-3",
+     "202610290225-explore-6"
+    ]
+   },
+   {
+    "slug": "gaku-ops-roundup",
+    "brand": "gaku",
+    "rank": "roundup",
+    "angle": "配信・放送出演:初星学園放送部10/28回のアーカイブ公開と来週も21時放送",
+    "lead_score": 0,
+    "dedup_key": "hatsuboshi-radio-2026-10-28",
+    "candidate_ids": [
+     "202610290225-grok-53",
+     "202610290225-grok-57",
+     "202610290225-grok-58"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "jewel-sale-2026-oct",
+    "reason": "既報",
+    "note": "10/28「ジュエルセールが本日11時開始」で記事済み。新事実・当日トリガー無し"
+   },
+   {
+    "dedup_key": "roar-jouo-sena-2026",
+    "reason": "既報",
+    "note": "10/28に100万再生突破で記事済み"
+   },
+   {
+    "dedup_key": "gaku-achievement-loading-issue-2026",
+    "reason": "既報",
+    "note": "10/28に同内容で記事済み。修正情報なし"
+   },
+   {
+    "dedup_key": "gaku-shirube-final-merch-2026",
+    "reason": "既報",
+    "note": "整理券受付は10/28で終了、当落は11/3。新事実・当日トリガー無し"
+   },
+   {
+    "dedup_key": "gaku-shirube-final-gifts-2026",
+    "reason": "既報",
+    "note": "10/28に同内容で記事済み"
+   },
+   {
+    "dedup_key": "gakumas-espresto-sugary-prize-2027",
+    "reason": "既報",
+    "note": "10/27・10/28に記事済み"
+   },
+   {
+    "dedup_key": "curtain-damashii-new-goods-2026",
+    "reason": "既報",
+    "note": "10/16・10/26に記事済み。予約締切11/15も3日以内ではない"
+   },
+   {
+    "dedup_key": "gaku-rinami-another-idol-free-gacha-2026",
+    "reason": "既報",
+    "note": "10/27 10:59に終了済み"
+   },
+   {
+    "dedup_key": "gaku-jyuo-idol-training-starlight-2026",
+    "reason": "その他",
+    "note": "10/28 4:59に終了済みの施策"
+   },
+   {
+    "dedup_key": "gaku-roar-gacha-2026",
+    "reason": "その他",
+    "note": "10/28 10:59に終了済みで既報"
+   }
+  ],
+  "cross_brand": []
+ }
+}

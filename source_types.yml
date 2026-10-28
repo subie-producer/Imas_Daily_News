@@ -256,6 +256,8 @@ party_paths:
   - item.rakuten.co.jp/f272078-takatsuki        # 高槻市ふるさと納税
 
 party_domains:
+  - bushiroad-creative.com # 合議で追加: ライセンス商品を企画・販売する会社。シャニマス商品の販売元として告知
+  - animatecafe.jp        # 合議で追加: コラボカフェを企画・運営する会社。SideMコラボの催しを自ら告知
   - u-neru.com            # 合議で追加: 個人情報保護方針で運営者を確認。コラボ先の施設が自ら告知
   - anime-store.jp        # 合議で追加: 多作品の通販で学マス品を予約受付。販売元の立場。社名は未確認
   - d3p.co.jp             # 合議で追加: Astromeda POPUPの告知を掲載。他作品のゲーム販売元サイト
@@ -939,6 +941,7 @@ x_accounts:
     - procinen1
     - yutaleP
   当事者:
+    - animate_cafe        # 合議で追加: アニメイトカフェ公式。コラボカフェの運営・メニュー販売元として当事者
     - fukuinpmedia        # 合議で追加: ラーメン店が限定箱ラーメンを受注販売する販売元(ライセンス商品)
     - chikusei_city       # 合議で追加: 筑西市(自治体)。シャニマスとのコラボを実施
     - anicloset           # 合議で追加: グッズ販売元。SideM商品の販売特設サイトを公開
@@ -1117,6 +1120,10 @@ x_posts:
 
 # --- リンク元から引き継いだ種別(リンク先1つずつ。キーは pipelib.link_key)。合議がリンク元の告知と関係していると確かめたものだけ(classify_sources.inherit_from_links)。リンク先そのものの種別より強いときだけ効く ---
 link_types:
+  youtube.com/watch?v=4zXVjj3zApk: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://idolmaster-official.jp/news/01_20072(公式)。告知のウォームアップ生配信のYouTube Liveページ
+  www.animate-onlineshop.jp/corner/cc/sidem-1019goods/cd/4855/: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://idolmaster-official.jp/news/01_20147(公式)。315プロNight!出張版グッズのアニメイト先行受注ページ。告知と同じ
+  asobiticket2.asobistore.jp/receptions/d0d5822a-deb6-46fa-b2ab-19b2fedb592c: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://idolmaster-official.jp/news/01_20062(公式)。はんげつであえたらの公演チケット申込ページ。告知と同じ企画
+  asobiticket2.asobistore.jp/receptions/c42df7e9-30a9-40d6-954b-17fafab5c159: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://x.com/SideM_official/status/2113468428627673260(公式)。SideMフェス長野公演のSP席申込ページ。告知の申込リンクと一致
   youtube.com/watch?v=zK4sFWc8FAo: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/imas_ch/status/2115043524626575685(公式)。告知の#4アフタートーク(メン限)の配信ページ
   youtube.com/watch?v=X8snEPfj0J8: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/valiv_official/status/2115005596386619695(公式)。告知の上水流宇宙のソーラン節ショートそのもの
   youtube.com/watch?v=WottZLGjB9o: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/valiv_official/status/2115089011614384242(公式)。告知の特番(ヴイアラ3rdLIVE＆MEETING)の配信ページ

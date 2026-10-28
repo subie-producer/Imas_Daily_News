@@ -287,5 +287,30 @@
   "src_candidate_id": "sched-2026-10-28-sidem-daimaru-matsuzakaya-popup-2026-開幕",
   "companion_of": "sched-2026-11-27-sidem-daimaru-matsuzakaya-popup-2026-開始",
   "src_dedup_key": "sidem-daimaru-matsuzakaya-popup-2026"
+ },
+ {
+  "id": "sched-2026-11-27-shiny-283-pop-up-egai-eikou-2026-開幕",
+  "dedup_key": "shiny-283-pop-up-egai-eikou-2026",
+  "brand": "shiny",
+  "subject": "283PRODUCTION POP UP SHOP 秋葉原開幕",
+  "kind": "開幕",
+  "note": "ブシロードクリエイティブストア秋葉原本店で描き下ろしグッズを購入できる",
+  "reserved_on": "2026-10-29",
+  "occurs_on": "2026-11-27",
+  "title": "283PRODUCTION POP UP SHOP～笑顔、その永劫の光～",
+  "url": "https://moca-news.net/artdisp.php?artid=202610271800a03",
+  "source_type": "二次情報",
+  "facts": [
+   "開催期間: 2026年11月27日（金）～2026年12月13日（日）",
+   "会場はブシロードクリエイティブストア秋葉原本店。",
+   "Impressionismがテーマの描き下ろしイラストを使用したオリジナルグッズを販売する。",
+   "商品購入3,000円（税込）ごとに、チケット風カード（全3種）をランダムで1枚プレゼントする。",
+   "エンゲージメント: 中"
+  ],
+  "via": "explore",
+  "verify": "unconfirmed",
+  "event_date": "2026-11-27",
+  "deadline": "2026-12-13",
+  "src_candidate_id": "202610282333-explore-6"
  }
 ]

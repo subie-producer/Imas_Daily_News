@@ -19924,6 +19924,24 @@ def test_source_watch(tmp: Path):
         check(not any(v.get("result") == "判定できなかった" for k, v in st["marks"].items() if k.endswith("|src.example/news/4"))
               and not any(k.endswith("|src.example/news/4") for k in st["tries"]),
               f"CLI の停止をやり直しの回数に数えた: {st['tries']}")
+        # (2b) CLI の異常終了(起動できない)も回数に数えず、控えを進めず、毎回申告する。この回はほかの記事のセッションも起動しない
+        # (当番の指摘 86cf622496: 校閲の CLI が起動できず、3回で変化を扱い済みにした)
+        launched: list[int] = []
+
+        def failed(*a, **k):
+            launched.append(1)
+            raise sw.CliFailed("claude", 1, "Error: --json-schema is not a valid JSON Schema")
+        for _ in range(sw.MAX_TRIES + 1):
+            pipelib.ANOMALIES.clear()
+            sw.process_changes(today, sw.published(today, tmp), tmp, failed, approve)
+            check(any("異常終了(exit 1)" in str(a) and "次の回にやり直す" in str(a) for a in pipelib.ANOMALIES),
+                  f"CLI の異常終了を申告しない: {pipelib.ANOMALIES}")
+        st = sw.load_state()
+        check(len(launched) == sw.MAX_TRIES + 1, f"CLI の異常終了のあとも同じ回にセッションを起動した: {len(launched)}")
+        check(not any(v.get("result") == "判定できなかった" for k, v in st["marks"].items() if k.endswith("|src.example/news/4"))
+              and not any(k.endswith("|src.example/news/4") for k in st["tries"]),
+              f"CLI の異常終了をやり直しの回数に数え、変化を扱い済みにした: {st['tries']}")
+        pipelib.ANOMALIES.clear()
         # (3) 判定が読めないうちにページがまた変わった(A→B 失敗、A→C): いまの版 C への違いを1回だけ判定し、古い版 B へ戻る違いを告知しない
         pa.save(u4, "応募締切は10月30日。価格は3000円。C版。", via="read", at=later_at(3))
         pa.note_change(u4, None, pa.baseline(u4), pa.latest(u4))
@@ -20285,8 +20303,7 @@ def test_source_update_sessions(tmp: Path):
         pipelib.ROOT = tmp
         os.environ["PATH"] = f"{bindir}{os.pathsep}{os.environ.get('PATH', '')}"
         good = json.dumps({"kind": "追加", "text": "特典が増えました。", "reason": "+特典"}, ensure_ascii=False)
-        for name, ans, code in (("ok", good, "0"), ("bad", json.dumps({"kind": "増えた", "text": "x", "reason": "-"}), "0"),
-                                ("exit", good, "1")):
+        for name, ans, code in (("ok", good, "0"), ("bad", json.dumps({"kind": "増えた", "text": "x", "reason": "-"}), "0")):
             os.environ.update(FAKE_ANSWER=ans, FAKE_EXIT=code)
             got[name] = sw.run_session("write", "依頼", "source-update.schema.json", "2026-10-27", f"t-{name}", tmp)
         os.environ.update(FAKE_ANSWER=json.dumps({"verdict": "approve", "issue": ""}), FAKE_EXIT="0")
@@ -20294,14 +20311,26 @@ def test_source_update_sessions(tmp: Path):
         # 校閲も、schema に合わない答え・異常終了の答えは採らない(Sol 監査 b5 の later)
         os.environ.update(FAKE_ANSWER=json.dumps({"verdict": "INVALID", "issue": ""}), FAKE_EXIT="0")
         got["review-bad"] = sw.run_session("review", "依頼", "source-update-review.schema.json", "2026-10-27", "t-review-bad", tmp)
-        os.environ.update(FAKE_ANSWER=json.dumps({"verdict": "approve", "issue": ""}), FAKE_EXIT="1", FAKE_ERR="something failed")
-        got["review-exit"] = sw.run_session("review", "依頼", "source-update-review.schema.json", "2026-10-27", "t-review-exit", tmp)
         os.environ.update(FAKE_ANSWER="", FAKE_EXIT="1", FAKE_ERR="Error: You've hit your usage limit. Try again later.")
         try:
             sw.run_session("review", "依頼", "source-update-review.schema.json", "2026-10-27", "t-blocked", tmp)
             got["blocked"] = "答えた"
         except sw.CliStopped:
             got["blocked"] = "止まった"
+        # 異常終了(起動の失敗を含む)は答えの不備(None)ではなく CliFailed(やり直しの回数に数えない。当番の指摘 86cf622496)
+        for name, kind, schema_name in (("exit", "write", "source-update.schema.json"),
+                                        ("review-exit", "review", "source-update-review.schema.json")):
+            os.environ.update(FAKE_ANSWER=json.dumps({"verdict": "approve", "issue": ""}) if kind == "review" else good, FAKE_EXIT="1",
+                              FAKE_ERR="something failed")
+            try:
+                got[name] = sw.run_session(kind, "依頼", schema_name, "2026-10-27", f"t-{name}-2", tmp)
+            except sw.CliFailed as e:
+                got[name] = "異常終了" if e.code == 1 else str(e)
+        os.environ["PATH"] = str(tmp / "nowhere")
+        try:
+            got["missing"] = sw.run_session("review", "依頼", "source-update-review.schema.json", "2026-10-27", "t-missing", tmp)
+        except sw.CliFailed as e:
+            got["missing"] = "起動できない" if e.code == 127 else str(e)
     finally:
         pipelib.set_quiet(False)
         pipelib.CLI_BLOCKED.clear()
@@ -20311,8 +20340,8 @@ def test_source_update_sessions(tmp: Path):
                 os.environ.pop(k, None)
             else:
                 os.environ[k] = v
-    check(got["ok"] == json.loads(good) and got["bad"] is None and got["exit"] is None and got["review"] == {"verdict": "approve", "issue": ""}
-          and got["review-bad"] is None and got["review-exit"] is None,
+    check(got["ok"] == json.loads(good) and got["bad"] is None and got["exit"] == "異常終了" and got["review"] == {"verdict": "approve", "issue": ""}
+          and got["review-bad"] is None and got["review-exit"] == "異常終了" and got["missing"] == "起動できない",
           f"判定・校閲の答えを schema・終了状態で検めない: {got}")
     check(got["blocked"] == "止まった", f"CLI の利用上限を答えの読めない回と取り違えた: {got['blocked']}")
     # claude の --json-schema に渡す schema のファイルは、どれも draft-07 以外の $schema を名乗らない(名乗ると CLI が起動しない)

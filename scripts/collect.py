@@ -1410,7 +1410,10 @@ def verify_grok_faces(queries: list[dict], outdir: Path, suffix: str = "",
         left_keys = {post_key(post_url(b)) for b in left}
         ledger["settled"] |= {k for k in map(post_key, map(post_url, post_blocks(text))) if k and k not in left_keys}
         if asked and q["key"] in asked and got is not None:
-            ledger["settled"] |= ask_settled_posts(text, read_json_list(wd / "posts.json"), left_keys, asked[q["key"]])
+            # 問いとの結び付きは、重なりを1つにする前の書き出しで読む(同じ公式の投稿が2つの問いの答えとして2回書かれると、
+            # dedupe_posts が1つ目の塊だけを残し、2つ目の問いの元の投稿を「失った」と通知した。監査指摘 deep-answer-dedup)
+            ledger["settled"] |= ask_settled_posts(read_written(outdir / f"{q['key']}{suffix}.md"), read_json_list(wd / "posts.json"),
+                                                   left_keys, asked[q["key"]])
         if left and not final:
             # 残った投稿だけを <key><suffix>-again.md に書き出し、もう1回だけ確かめさせる(下でまとめて)
             (outdir / f"{q['key']}{suffix}-again.md").write_text("\n\n".join(left) + "\n", encoding="utf-8")
@@ -1732,7 +1735,8 @@ def ask_settled_posts(text: str, results, left_keys: set[str], asks: list[dict])
     元の投稿は、確かめ役が自分では確かめられず問いにした投稿で、答えの原本が候補になれば、その投稿の話題は紙面の素材に入っている。
     これを済みに数えないと、深掘りで公式の告知を候補にしたのに、問いを出したファンの共有の投稿を「失った」と通知した
     (2026-10-30 02:41 の cinderella 面: くじの結果の共有2件 → 深掘りでセガプラザ公式の販売開始の投稿を候補にした)。
-    答えの投稿と問いの結び付きは unanswered_asks と同じ(「- 問い: 番号」、番号の無い答えは問いが1つのときだけその問い)。"""
+    答えの投稿と問いの結び付きは unanswered_asks と同じ(「- 問い: 番号」、番号の無い答えは問いが1つのときだけその問い)。
+    text は重なりを1つにする前の書き出し(同じ投稿が別の問いの答えとして2回出れば、どちらの問いも済む)。"""
     extracted = {post_key(r["url"]) for r in (results if isinstance(results, list) else [])
                  if schema_ok(r, POST_RESULT_SCHEMA) and r["status"] == "extracted"}
     out: set[str] = set()

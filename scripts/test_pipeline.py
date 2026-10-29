@@ -1313,7 +1313,7 @@ def test_deep_answer_settles_asking_post(tmp: Path):
             "published_date": "2026-10-19", "deadline": "2026-12-04", "facts": ["くじ1回840円"], "quote": "q",
             "dedup_key": "cg-kuji", "engagement": "中", "mentioned_idols": []}
 
-    def run(tag: str, deep_status: str, posts_field) -> list[str]:
+    def run(tag: str, deep_status: str, posts_field, split: bool = False) -> list[str]:
         root = tmp / tag
         (root / "candidates").mkdir(parents=True)
         notes = []
@@ -1339,7 +1339,8 @@ def test_deep_answer_settles_asking_post(tmp: Path):
                 ask = {"question": "公式の告知は", "why": "共有の文面だけ"}
                 if posts_field is not None:
                     ask["posts"] = posts_field
-                (wd / "deep.json").write_text(json.dumps([ask], ensure_ascii=False), encoding="utf-8")
+                asks = [{**ask, "posts": [u]} for u in posts_field] if split else [ask]
+                (wd / "deep.json").write_text(json.dumps(asks, ensure_ascii=False), encoding="utf-8")
             return P()
 
         def basic(queries, outdir, errs):
@@ -1348,7 +1349,8 @@ def test_deep_answer_settles_asking_post(tmp: Path):
             return []
 
         def dive(queries, outdir, chosen, errs, suffix="-deep", retry=False):
-            (outdir / f"cinderella{suffix}.md").write_text(f"### 1\n- url: {off}\n- 問い: 1\n- 本文: 販売開始\n", encoding="utf-8")
+            body = "".join(f"### {n}\n- url: {off}\n- 問い: {n}\n- 本文: 販売開始\n\n" for n in ([1, 2] if split else [1]))
+            (outdir / f"cinderella{suffix}.md").write_text(body, encoding="utf-8")
             return set()
         names = ("ROOT", "build_prompts", "grok_basic", "deep_dive_grok", "grok_week_usage", "grok_search_counts", "notify",
                  "prompt_file", "save_raw", "explore_workdir")
@@ -1383,6 +1385,10 @@ def test_deep_answer_settles_asking_post(tmp: Path):
     # 問いに元の投稿が書かれていない(従来の形): 名指しする
     lost = run("legacy", "extracted", None)
     check(len(lost) == 1 and fan1 in lost[0] and fan2 in lost[0], f"元の投稿の無い問いで投稿を済みにした: {lost}")
+    # 元の投稿ごとに問いが分かれ、深掘りが同じ公式の投稿を両方の問いの答えとして書いた: 重なりを1つにしても両方の問いが済む
+    # (監査指摘 deep-answer-dedup: 1つ目の塊だけが残り、2つ目の問いの元の投稿を「失った」と通知した)
+    lost = run("split", "extracted", [fan1, fan2], split=True)
+    check(not lost, f"同じ公式の投稿が答えた2つ目の問いの元の投稿を、失ったと通知した: {lost}")
 
 
 def test_grok_verify_keeps_what_it_counts(tmp: Path):

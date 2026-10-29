@@ -1,0 +1,462 @@
+{
+ "decisions": {
+  "million-tune-november-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-event-yoru-to-akari-to-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ次回イベント。名称が「月と、明かりと。」「夜と、明かりと。」で食い違うため執筆時に確認"
+  },
+  "ibuki-tsubasa-1-8-figure-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10-24号で予約開始を記事化済み。受注締切12/8は遠く当日のトリガー無し"
+  },
+  "invisible-light-cd-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10-28号「本日発売」で記事化済み。発売は2日前でトリガー無し"
+  },
+  "idol-grand-prix-october-flash-gp-medal-2026": {
+   "action": "article",
+   "angle": "アイドルグランプリ10月分のフラッシュGPメダルは、受け取りも使用も明日10月31日23時59分で期限を迎える。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "期限が3日以内のトリガー"
+  },
+  "million-event-yoru-to-akari-to-2026": {
+   "action": "article",
+   "angle": "ミリシタ次回イベントはチューン『夜と、明かりと。』で、ランキング報酬は百瀬莉緒、ポイント報酬は馬場このみのSRと告知された(11月上旬のプラチナスターチューン予定と統合)。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 45,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "出典はファン投稿(MillionRADIO由来)。名称の食い違いは校閲で確認"
+  },
+  "million-gasha-shs-glasses-sayoko-ritsuko-2026": {
+   "action": "article",
+   "angle": "ミリシタ次回ガシャはセカンドヘアスタイル3周目(メガネ)で、SSR高山紗代子とSSR秋月律子が登場すると告知された。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "出典はファン投稿(MillionRADIO由来)"
+  },
+  "million-scratch-second-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10-27号で価格・賞品・期間まで記事化済み。販売開始は11/2で今日ではない"
+  },
+  "million-idol-grand-prix-rio-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10-27号で記事化済み。修正も10-28号で報じ済み"
+  },
+  "million-off-time-voice-vol4-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10-27号の記事に同内容(ポータル再生予定など)が既出"
+  },
+  "million-theater-talk-party-vol-68-2026": {
+   "action": "article",
+   "angle": "「THEATER TALK PARTY☆ Vol.68」は本日23時59分で最終日を迎え、イベントptを貯めてユニットトークを解放できるのは今日まで。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(締切)。イベントショップ交換期限は11/9 14:59"
+  },
+  "million-princess-a-la-mode-purchase-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10-27号で記事化済み。新しい事実無し"
+  },
+  "million-platinum-star-tiara-happy-pease-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "販売期限10/27 14:59は終了済み。10-27号で記事化済み"
+  },
+  "million-event-item-exchange-additions-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10-27号で記事化済み。新しい事実無し"
+  },
+  "elena-birthday-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/26の誕生日。10-26号で記事化済み"
+  },
+  "million-special-solo-records-event-setlist-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "個人投稿のみで未確認。10/25開催の終了済みイベント"
+  },
+  "hinata-sobetsu-local-connection-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "地域・聖地巡礼系の読み物。ファン面(general)向けで発表・開催でもない"
+  },
+  "million-weekend-harlequin-video-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10-23号と10-26号でPV公開を記事化済み"
+  },
+  "million-special-solo-records-guinness-event-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "ギネス認定は10-26号で記事化済み。10/25の記念イベントは終了済みで出典も未確認"
+  },
+  "million-special-solo-records-guinness-certificate-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "ギネス認定は10-26号で記事化済み。出演者個人の投稿のみ"
+  },
+  "million-revival-fes-2026-10": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-revival-million-fes-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ復刻ミリオンフェス"
+  },
+  "hinata-sobetsu-apple-visitors-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "10/11開催済みの町のイベントとPの来訪を伝える読み物。ファン面(general)向け"
+  },
+  "million-rio-song-addition-bug-fix-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10-28号「莉緒の楽曲追加不具合を修正」で記事化済み"
+  },
+  "million-off-time-voice-vol4-bundle-campaign-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10-27号の記事に両セット購入特典が既出"
+  },
+  "ittan-aishite-dance-video-2026-10": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "同人・ファン主催",
+   "note": "ファンの踊ってみた動画。ファン面向け"
+  },
+  "million-live-fan-video-thieves-2026-10": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "同人・ファン主催",
+   "note": "個人投稿のファン動画紹介"
+  },
+  "million-revival-million-fes-2026": {
+   "action": "article",
+   "angle": "復刻ミリオンフェスは本日15時から双海亜美のSSR「コドモの殻を破る時」がピックアップされ、開催は明日10月31日14時59分まで。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(開始)。revival-fes-2026-10を統合。亜美ピックアップは公式の予約情報に基づく"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "million-idol-grand-prix-october-flash-gp-medal-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "アイドルグランプリ10月分のフラッシュGPメダルは、受け取りも使用も明日10月31日23時59分で期限を迎える。",
+    "purpose": "期日の知らせ",
+    "lead_score": 10,
+    "dedup_key": "idol-grand-prix-october-flash-gp-medal-2026",
+    "candidate_ids": [
+     "202610300224-grok-8"
+    ]
+   },
+   {
+    "slug": "million-event-yoru-to-akari-to-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "ミリシタ次回イベントはチューン『夜と、明かりと。』で、ランキング報酬は百瀬莉緒、ポイント報酬は馬場このみのSRと告知された(11月上旬のプラチナスターチューン予定と統合)。",
+    "purpose": "新情報",
+    "lead_score": 45,
+    "dedup_key": "million-event-yoru-to-akari-to-2026",
+    "candidate_ids": [
+     "202610300224-grok-12",
+     "202610291832-explore-2"
+    ]
+   },
+   {
+    "slug": "million-gasha-shs-glasses-sayoko-ritsuko-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "ミリシタ次回ガシャはセカンドヘアスタイル3周目(メガネ)で、SSR高山紗代子とSSR秋月律子が登場すると告知された。",
+    "purpose": "新情報",
+    "lead_score": 25,
+    "dedup_key": "million-gasha-shs-glasses-sayoko-ritsuko-2026",
+    "candidate_ids": [
+     "202610300224-grok-13"
+    ]
+   },
+   {
+    "slug": "million-theater-talk-party-vol-68-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "「THEATER TALK PARTY☆ Vol.68」は本日23時59分で最終日を迎え、イベントptを貯めてユニットトークを解放できるのは今日まで。",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "million-theater-talk-party-vol-68-2026",
+    "candidate_ids": [
+     "202610270222-grok-8",
+     "202610280221-explore-1",
+     "202610280221-grok-14",
+     "sched-2026-10-30-million-theater-talk-party-vol-68-2026-締切",
+     "sched-2026-10-30-million-theater-talk-party-vol-68-2026-締切-src1"
+    ]
+   },
+   {
+    "slug": "million-revival-million-fes-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "復刻ミリオンフェスは本日15時から双海亜美のSSR「コドモの殻を破る時」がピックアップされ、開催は明日10月31日14時59分まで。",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "million-revival-million-fes-2026",
+    "candidate_ids": [
+     "sched-2026-10-30-million-revival-million-fes-2026-開始",
+     "sched-2026-10-30-million-revival-million-fes-2026-開始-src1",
+     "202610280221-explore-2",
+     "202610280221-grok-12",
+     "202610280221-grok-21",
+     "202610281834-explore-5"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "ibuki-tsubasa-1-8-figure-2026",
+    "reason": "既報",
+    "note": "10-24号で予約開始を記事化済み。受注締切12/8は遠く当日のトリガー無し"
+   },
+   {
+    "dedup_key": "invisible-light-cd-2026",
+    "reason": "既報",
+    "note": "10-28号「本日発売」で記事化済み。発売は2日前でトリガー無し"
+   },
+   {
+    "dedup_key": "million-scratch-second-2026",
+    "reason": "既報",
+    "note": "10-27号で価格・賞品・期間まで記事化済み。販売開始は11/2で今日ではない"
+   },
+   {
+    "dedup_key": "million-idol-grand-prix-rio-2026",
+    "reason": "既報",
+    "note": "10-27号で記事化済み。修正も10-28号で報じ済み"
+   },
+   {
+    "dedup_key": "million-off-time-voice-vol4-2026",
+    "reason": "既報",
+    "note": "10-27号の記事に同内容(ポータル再生予定など)が既出"
+   },
+   {
+    "dedup_key": "million-princess-a-la-mode-purchase-2026",
+    "reason": "既報",
+    "note": "10-27号で記事化済み。新しい事実無し"
+   },
+   {
+    "dedup_key": "million-platinum-star-tiara-happy-pease-2026",
+    "reason": "既報",
+    "note": "販売期限10/27 14:59は終了済み。10-27号で記事化済み"
+   },
+   {
+    "dedup_key": "million-event-item-exchange-additions-2026",
+    "reason": "既報",
+    "note": "10-27号で記事化済み。新しい事実無し"
+   },
+   {
+    "dedup_key": "elena-birthday-2026",
+    "reason": "既報",
+    "note": "10/26の誕生日。10-26号で記事化済み"
+   },
+   {
+    "dedup_key": "million-special-solo-records-event-setlist-2026",
+    "reason": "出典不足",
+    "note": "個人投稿のみで未確認。10/25開催の終了済みイベント"
+   },
+   {
+    "dedup_key": "hinata-sobetsu-local-connection-2026",
+    "reason": "面違い",
+    "note": "地域・聖地巡礼系の読み物。ファン面(general)向けで発表・開催でもない"
+   },
+   {
+    "dedup_key": "million-weekend-harlequin-video-2026",
+    "reason": "既報",
+    "note": "10-23号と10-26号でPV公開を記事化済み"
+   },
+   {
+    "dedup_key": "million-special-solo-records-guinness-event-2026",
+    "reason": "既報",
+    "note": "ギネス認定は10-26号で記事化済み。10/25の記念イベントは終了済みで出典も未確認"
+   },
+   {
+    "dedup_key": "million-special-solo-records-guinness-certificate-2026",
+    "reason": "既報",
+    "note": "ギネス認定は10-26号で記事化済み。出演者個人の投稿のみ"
+   },
+   {
+    "dedup_key": "hinata-sobetsu-apple-visitors-2026",
+    "reason": "面違い",
+    "note": "10/11開催済みの町のイベントとPの来訪を伝える読み物。ファン面(general)向け"
+   },
+   {
+    "dedup_key": "million-rio-song-addition-bug-fix-2026",
+    "reason": "既報",
+    "note": "10-28号「莉緒の楽曲追加不具合を修正」で記事化済み"
+   },
+   {
+    "dedup_key": "million-off-time-voice-vol4-bundle-campaign-2026",
+    "reason": "既報",
+    "note": "10-27号の記事に両セット購入特典が既出"
+   },
+   {
+    "dedup_key": "ittan-aishite-dance-video-2026-10",
+    "reason": "同人・ファン主催",
+    "note": "ファンの踊ってみた動画。ファン面向け"
+   },
+   {
+    "dedup_key": "million-live-fan-video-thieves-2026-10",
+    "reason": "同人・ファン主催",
+    "note": "個人投稿のファン動画紹介"
+   }
+  ],
+  "cross_brand": []
+ }
+}

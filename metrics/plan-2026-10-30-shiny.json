@@ -1,0 +1,791 @@
+{
+ "decisions": {
+  "shiny-kawaii-season-chibigurumi-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/28・10/29の記事と同内容(2027年4月・各4種)"
+  },
+  "shiny-hate-ni-fureru-no-nara-2026": {
+   "action": "article",
+   "angle": "シーズのシナリオイベント「果てにふれるのなら」が本日開幕し、11月10日11時59分までミッションと報酬交換に挑める。",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 70,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "auto-73を統合"
+  },
+  "shiny-style-collection-vol2-order-extension-2026": {
+   "action": "article",
+   "angle": "ASOBI STOREの緊急メンテを受け、SHINY Style COLLECTION第2弾の受注が再開され11月1日まで延長された。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "既報の締切10/25から変更された新事実"
+  },
+  "shiny-sweets-paradise-cafe-2026": {
+   "action": "article",
+   "angle": "シャニマス×スイパラのコラボカフェが本日、東京・大阪・愛知の3店舗で開幕する。",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "開幕日の続報予約"
+  },
+  "fan-halloween-hiori-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のAIイラスト投稿。shiny面にculture枠なし"
+  },
+  "shiny-song-for-prism-ver-2-19-1": {
+   "action": "roundup",
+   "angle": "シャニソン運営まとめ: Ver.2.19.1でセレチケ交換一覧・アイドル一覧を獲得方法で絞り込み可能に",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-song-for-prism-3rd-anniversary-story-episode-7": {
+   "action": "roundup",
+   "angle": "シャニソン運営まとめ: 3rd Anniversary Story第7話「きみはただの現在にすぎない」公開",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-song-for-prism-madoka-pickup-gacha-2026-10": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/26の限定★3円香ピックアップ記事と同じ施策"
+  },
+  "shiny-new-idol-gacha-package-ending-2026": {
+   "action": "roundup",
+   "angle": "シャニマス運営まとめ: 新アイドルを含むお得なガシャ・パッケージの販売がもうすぐ終了",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "終了日不明のため単独記事にしない"
+  },
+  "shiny-gacha-package-ending-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-new-idol-gacha-package-ending-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じパッケージ終了予告"
+  },
+  "alstroemeria-beam-digital-release-2026": {
+   "action": "article",
+   "angle": "アルストロメリア新曲「BEAM」が本日0時に各種音楽配信を開始し、15時にMVを公開する。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "beam-mvを統合。作詞作編曲クレジットを新情報として補う"
+  },
+  "shiny-karaoke-tetsujin-concept-room-2026": {
+   "action": "article",
+   "angle": "カラオケの鉄人×PJ:REFRAC7IONSのコラボで、11月19日開始のコンセプトルーム予約が10月29日17時に始まった。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "等身大パネル設置店舗を統合"
+  },
+  "shiny-karaoke-tetsujin-panels-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-karaoke-tetsujin-concept-room-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じコラボ施策"
+  },
+  "shiny-song-for-prism-3rd-anniversary-login-bonus-2026": {
+   "action": "roundup",
+   "angle": "シャニソン運営まとめ: 3周年記念カウントダウンログボ(毎日プリズムジュエル300個とピックアップガシャチケット1枚)開催中",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-hachiban-box-ramen-set-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/27記事と同内容。締切11/8は3日以内でない"
+  },
+  "shiny-madoka-birthday-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "2日間限定セールは10/27で終了済み、円香誕生日は既報"
+  },
+  "shiny-song-madoka-birthday-gacha-2026": {
+   "action": "article",
+   "angle": "シャニソンの樋口円香誕生日記念ガシャ・パックが11月2日23時59分の終了まで残りわずかになった。",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "締切前の続報予約。同じ施策のkeyを統合"
+  },
+  "shiny-song-3rd-anniversary-story-episode-4-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/27に第4話の記事あり"
+  },
+  "shinyson-pickup-poison-madoka-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/26に記事あり、新事実・当日トリガー無し"
+  },
+  "shiny-song-shiny-competition-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "10/29 20:59に終了済み"
+  },
+  "shiny-chikusei-collab-conclusion-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/27に記事あり"
+  },
+  "shiny-8ban-ramen-collab-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "店舗限定の残り2週間告知。コラボ概要は既報、締切11/8は3日以内でない"
+  },
+  "shiny-yunel-live-rolyu-act2-act3-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/27に記事あり"
+  },
+  "shiny-8-5-anniversary-login-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "受取期限10/26で終了済み、10/26に記事あり"
+  },
+  "shiny-song-for-prism-third-anniversary-event-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/24・10/26に記事あり。開始は明日10/31で本日のトリガー無し"
+  },
+  "shiny-hachiban-ramen-set-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/27の8番らーめんコラボセット記事と同じ商品"
+  },
+  "shiny-birthday-support-birth-day-madoka-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/27・10/29に記事あり"
+  },
+  "shiny-hachiban-ramen-collab-set-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/27の記事と同じ商品・同じ条件"
+  },
+  "shiny-shinyradio-password-outage-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/28に同内容の記事あり、復旧の新情報無し"
+  },
+  "shiny-mattari-habataki-radio-november-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/28に記事あり"
+  },
+  "shiny-song-for-prism-madoka-birthday-gacha-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-song-madoka-birthday-gacha-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ誕生日記念ガシャ"
+  },
+  "shiny-maintenance-2026-10-30": {
+   "action": "article",
+   "angle": "シャニマスは本日12時から15時にメンテナンスで、10連無料スタンプガシャはメンテ前の12時までが最終日。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約。shiny-maintenance-oct-30を統合"
+  },
+  "shiny-hachiban-collab-set-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "パッケージ意匠も10/27記事に既出"
+  },
+  "shiny-akihabara-lottery-stock-2026-10-27": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/29に在庫更新の記事あり"
+  },
+  "shiny-283-pop-up-egai-eikou-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/29に記事あり、開催は11/27"
+  },
+  "shiny-coherent-light-scattering-28-part2": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/29に記事あり"
+  },
+  "shiny-3rd-anniversary-story": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "第6話は10/29に記事あり"
+  },
+  "shiny-3-0-25": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-song-for-prism-3rd-anniversary-login-bonus-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じログボ"
+  },
+  "shiny-hbt-kokoro-advice": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "10/28のおたより締切済み、当日トリガー無し"
+  },
+  "shiny-hbt-oct-broadcast-completed": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "放送終了済みで当日トリガー無し"
+  },
+  "shiny-hbt-oct-broadcast": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "10/27放送は終了済み"
+  },
+  "shiny-hachiban-collab-set": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/27の記事と同じ商品"
+  },
+  "fan-hachiban-collab-visit": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿"
+  },
+  "fan-shiny-concept-song": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "ファンの個人投稿"
+  },
+  "auto-73": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-hate-ni-fureru-no-nara-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じシナリオイベント"
+  },
+  "beam-mv": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "alstroemeria-beam-digital-release-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ新曲の配信とMV"
+  },
+  "shiny-maintenance-oct-30": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-maintenance-2026-10-30",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じメンテ"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "shiny-hate-ni-fureru-no-nara-2026",
+    "brand": "shiny",
+    "rank": "medium",
+    "angle": "シーズのシナリオイベント「果てにふれるのなら」が本日開幕し、11月10日11時59分までミッションと報酬交換に挑める。",
+    "purpose": "期日の知らせ",
+    "lead_score": 70,
+    "dedup_key": "shiny-hate-ni-fureru-no-nara-2026",
+    "candidate_ids": [
+     "202610291832-explore-4",
+     "202610300224-grok-86",
+     "sched-2026-10-30-shiny-hate-ni-fureru-no-nara-2026-開幕",
+     "sched-2026-10-30-shiny-hate-ni-fureru-no-nara-2026-開幕-src1",
+     "sched-2026-10-30-auto-73-開始"
+    ]
+   },
+   {
+    "slug": "shiny-style-collection-vol2-order-extension-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "ASOBI STOREの緊急メンテを受け、SHINY Style COLLECTION第2弾の受注が再開され11月1日まで延長された。",
+    "purpose": "新情報",
+    "lead_score": 25,
+    "dedup_key": "shiny-style-collection-vol2-order-extension-2026",
+    "candidate_ids": [
+     "202610292334-watch-5",
+     "202610300224-grok-14"
+    ]
+   },
+   {
+    "slug": "shiny-sweets-paradise-cafe-2026",
+    "brand": "shiny",
+    "rank": "medium",
+    "angle": "シャニマス×スイパラのコラボカフェが本日、東京・大阪・愛知の3店舗で開幕する。",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "shiny-sweets-paradise-cafe-2026",
+    "candidate_ids": [
+     "202610292334-explore-8",
+     "sched-2026-10-30-shiny-sweets-paradise-cafe-2026-開幕"
+    ]
+   },
+   {
+    "slug": "shiny-alstroemeria-beam-digital-release-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "アルストロメリア新曲「BEAM」が本日0時に各種音楽配信を開始し、15時にMVを公開する。",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "alstroemeria-beam-digital-release-2026",
+    "candidate_ids": [
+     "202610300224-grok-87",
+     "sched-2026-10-30-beam-mv-発売",
+     "sched-2026-10-30-beam-mv-開始"
+    ]
+   },
+   {
+    "slug": "shiny-karaoke-tetsujin-concept-room-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "カラオケの鉄人×PJ:REFRAC7IONSのコラボで、11月19日開始のコンセプトルーム予約が10月29日17時に始まった。",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "shiny-karaoke-tetsujin-concept-room-2026",
+    "candidate_ids": [
+     "202610300224-grok-88",
+     "202610300224-grok-89"
+    ]
+   },
+   {
+    "slug": "shiny-song-madoka-birthday-gacha-2026",
+    "brand": "shiny",
+    "rank": "medium",
+    "angle": "シャニソンの樋口円香誕生日記念ガシャ・パックが11月2日23時59分の終了まで残りわずかになった。",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "shiny-song-madoka-birthday-gacha-2026",
+    "candidate_ids": [
+     "202610270222-grok-21",
+     "202610270222-grok-22",
+     "202610270222-grok-23",
+     "sched-2026-10-30-shiny-song-madoka-birthday-gacha-2026-締切前",
+     "sched-2026-10-30-shiny-song-madoka-birthday-gacha-2026-締切前-src1",
+     "sched-2026-10-30-shiny-song-madoka-birthday-gacha-2026-締切前-src2",
+     "sched-2026-10-30-shiny-song-madoka-birthday-gacha-2026-締切前-src3",
+     "202610280221-grok-26"
+    ]
+   },
+   {
+    "slug": "shiny-maintenance-2026-10-30",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "シャニマスは本日12時から15時にメンテナンスで、10連無料スタンプガシャはメンテ前の12時までが最終日。",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "shiny-maintenance-2026-10-30",
+    "candidate_ids": [
+     "202610280221-grok-28",
+     "sched-2026-10-30-shiny-maintenance-2026-10-30-終了",
+     "sched-2026-10-30-shiny-maintenance-oct-30-締切"
+    ]
+   },
+   {
+    "slug": "shiny-ops-roundup",
+    "brand": "shiny",
+    "rank": "roundup",
+    "angle": "シャニソン運営まとめ: Ver.2.19.1でセレチケ交換一覧・アイドル一覧を獲得方法で絞り込み可能に",
+    "lead_score": 0,
+    "dedup_key": "shiny-song-for-prism-ver-2-19-1",
+    "candidate_ids": [
+     "202610300224-grok-16",
+     "202610300224-grok-17",
+     "202610300224-grok-67",
+     "202610260732-explore-2",
+     "202610300224-grok-68",
+     "202610290225-grok-31"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "shiny-kawaii-season-chibigurumi-2026",
+    "reason": "既報",
+    "note": "10/28・10/29の記事と同内容(2027年4月・各4種)"
+   },
+   {
+    "dedup_key": "fan-halloween-hiori-2026",
+    "reason": "個人の話題",
+    "note": "個人のAIイラスト投稿。shiny面にculture枠なし"
+   },
+   {
+    "dedup_key": "shiny-song-for-prism-madoka-pickup-gacha-2026-10",
+    "reason": "既報",
+    "note": "10/26の限定★3円香ピックアップ記事と同じ施策"
+   },
+   {
+    "dedup_key": "shiny-hachiban-box-ramen-set-2026",
+    "reason": "既報",
+    "note": "10/27記事と同内容。締切11/8は3日以内でない"
+   },
+   {
+    "dedup_key": "shiny-madoka-birthday-2026",
+    "reason": "その他",
+    "note": "2日間限定セールは10/27で終了済み、円香誕生日は既報"
+   },
+   {
+    "dedup_key": "shiny-song-3rd-anniversary-story-episode-4-2026",
+    "reason": "既報",
+    "note": "10/27に第4話の記事あり"
+   },
+   {
+    "dedup_key": "shinyson-pickup-poison-madoka-2026",
+    "reason": "既報",
+    "note": "10/26に記事あり、新事実・当日トリガー無し"
+   },
+   {
+    "dedup_key": "shiny-song-shiny-competition-2026",
+    "reason": "その他",
+    "note": "10/29 20:59に終了済み"
+   },
+   {
+    "dedup_key": "shiny-chikusei-collab-conclusion-2026",
+    "reason": "既報",
+    "note": "10/27に記事あり"
+   },
+   {
+    "dedup_key": "shiny-8ban-ramen-collab-2026",
+    "reason": "既報",
+    "note": "店舗限定の残り2週間告知。コラボ概要は既報、締切11/8は3日以内でない"
+   },
+   {
+    "dedup_key": "shiny-yunel-live-rolyu-act2-act3-2026",
+    "reason": "既報",
+    "note": "10/27に記事あり"
+   },
+   {
+    "dedup_key": "shiny-8-5-anniversary-login-2026",
+    "reason": "既報",
+    "note": "受取期限10/26で終了済み、10/26に記事あり"
+   },
+   {
+    "dedup_key": "shiny-song-for-prism-third-anniversary-event-2026",
+    "reason": "既報",
+    "note": "10/24・10/26に記事あり。開始は明日10/31で本日のトリガー無し"
+   },
+   {
+    "dedup_key": "shiny-hachiban-ramen-set-2026",
+    "reason": "既報",
+    "note": "10/27の8番らーめんコラボセット記事と同じ商品"
+   },
+   {
+    "dedup_key": "shiny-birthday-support-birth-day-madoka-2026",
+    "reason": "既報",
+    "note": "10/27・10/29に記事あり"
+   },
+   {
+    "dedup_key": "shiny-hachiban-ramen-collab-set-2026",
+    "reason": "既報",
+    "note": "10/27の記事と同じ商品・同じ条件"
+   },
+   {
+    "dedup_key": "shiny-shinyradio-password-outage-2026",
+    "reason": "既報",
+    "note": "10/28に同内容の記事あり、復旧の新情報無し"
+   },
+   {
+    "dedup_key": "shiny-mattari-habataki-radio-november-2026",
+    "reason": "既報",
+    "note": "10/28に記事あり"
+   },
+   {
+    "dedup_key": "shiny-hachiban-collab-set-2026",
+    "reason": "既報",
+    "note": "パッケージ意匠も10/27記事に既出"
+   },
+   {
+    "dedup_key": "shiny-akihabara-lottery-stock-2026-10-27",
+    "reason": "既報",
+    "note": "10/29に在庫更新の記事あり"
+   },
+   {
+    "dedup_key": "shiny-283-pop-up-egai-eikou-2026",
+    "reason": "既報",
+    "note": "10/29に記事あり、開催は11/27"
+   },
+   {
+    "dedup_key": "shiny-coherent-light-scattering-28-part2",
+    "reason": "既報",
+    "note": "10/29に記事あり"
+   },
+   {
+    "dedup_key": "shiny-3rd-anniversary-story",
+    "reason": "既報",
+    "note": "第6話は10/29に記事あり"
+   },
+   {
+    "dedup_key": "shiny-hbt-kokoro-advice",
+    "reason": "その他",
+    "note": "10/28のおたより締切済み、当日トリガー無し"
+   },
+   {
+    "dedup_key": "shiny-hbt-oct-broadcast-completed",
+    "reason": "その他",
+    "note": "放送終了済みで当日トリガー無し"
+   },
+   {
+    "dedup_key": "shiny-hbt-oct-broadcast",
+    "reason": "その他",
+    "note": "10/27放送は終了済み"
+   },
+   {
+    "dedup_key": "shiny-hachiban-collab-set",
+    "reason": "既報",
+    "note": "10/27の記事と同じ商品"
+   },
+   {
+    "dedup_key": "fan-hachiban-collab-visit",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿"
+   },
+   {
+    "dedup_key": "fan-shiny-concept-song",
+    "reason": "個人の話題",
+    "note": "ファンの個人投稿"
+   }
+  ],
+  "cross_brand": []
+ }
+}

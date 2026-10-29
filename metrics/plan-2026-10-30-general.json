@@ -1,0 +1,171 @@
+{
+ "decisions": {
+  "tours-second-stage-s2-sidem": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/29号「ツアマスS2弾、本日稼働 次郎・類と新曲追加」と同じ施策。新事実・当日トリガー無し"
+  },
+  "idolmaster-portal-maintenance-release-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/27号「ポータル、緊急メンテ終了」で報道済み。公開日も10/26で当日のトリガー無し"
+  },
+  "fan-notices-agatsuma-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "fan-yukiho-mami-pc-panel-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "あがつまニンニンのチラシ目撃報告。ファン面の1本に束ねる"
+  },
+  "gaku-shirube-final-goods-arrival-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "fan-yukiho-mami-pc-panel-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "標ファイナルのグッズ到着報告。ファン面の1本に束ねる"
+  },
+  "imas-birthdays-2026-10-27": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/27号「鷺沢文香・樋口円香の誕生日動画、衣装を縫うファンも」と同内容"
+  },
+  "portal-emergency-maintenance-ended-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/27号「アイドルマスター ポータル、緊急メンテ終了」と同内容"
+  },
+  "valiv-manaka-birthday-live-2026-postponed": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "重複",
+   "note": "dsva面が同公演を記事化済み。関裕美は他ブランドのゲストで共同にならない"
+  },
+  "tours-sidem-contribution-debate-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "未確認のファン間の議論で、論争・炎上に近く記事にしない"
+  },
+  "fan-yukiho-mami-pc-panel-2026": {
+   "action": "article",
+   "angle": "雪歩と真美の着せ替えPCパネル到着、あがつまニンニンのチラシ目撃、標ファイナルのグッズ到着など、ファンが寄せた身近な報告をまとめて紹介する。",
+   "purpose": "新情報",
+   "rank": "culture",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ファン面の1本。特定の個人を主役にせず、SNS投稿は単体では扱わない"
+  },
+  "deremi-warmup-stream-2026-10-30": {
+   "action": "cross_brand",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "joint-deremiri-clash-match-warmup-stream-2026",
+   "reason": "",
+   "note": "続報予約の配信開始。joint面が本日20時の生配信を記事化済み"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "general-fan-yukiho-mami-pc-panel-2026",
+    "brand": "general",
+    "rank": "culture",
+    "angle": "雪歩と真美の着せ替えPCパネル到着、あがつまニンニンのチラシ目撃、標ファイナルのグッズ到着など、ファンが寄せた身近な報告をまとめて紹介する。",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "fan-yukiho-mami-pc-panel-2026",
+    "candidate_ids": [
+     "202610290225-grok-13",
+     "202610300224-grok-30",
+     "202610300224-grok-47"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "tours-second-stage-s2-sidem",
+    "reason": "既報",
+    "note": "10/29号「ツアマスS2弾、本日稼働 次郎・類と新曲追加」と同じ施策。新事実・当日トリガー無し"
+   },
+   {
+    "dedup_key": "idolmaster-portal-maintenance-release-2026",
+    "reason": "既報",
+    "note": "10/27号「ポータル、緊急メンテ終了」で報道済み。公開日も10/26で当日のトリガー無し"
+   },
+   {
+    "dedup_key": "imas-birthdays-2026-10-27",
+    "reason": "既報",
+    "note": "10/27号「鷺沢文香・樋口円香の誕生日動画、衣装を縫うファンも」と同内容"
+   },
+   {
+    "dedup_key": "portal-emergency-maintenance-ended-2026",
+    "reason": "既報",
+    "note": "10/27号「アイドルマスター ポータル、緊急メンテ終了」と同内容"
+   },
+   {
+    "dedup_key": "valiv-manaka-birthday-live-2026-postponed",
+    "reason": "重複",
+    "note": "dsva面が同公演を記事化済み。関裕美は他ブランドのゲストで共同にならない"
+   },
+   {
+    "dedup_key": "tours-sidem-contribution-debate-2026",
+    "reason": "その他",
+    "note": "未確認のファン間の議論で、論争・炎上に近く記事にしない"
+   }
+  ],
+  "cross_brand": [
+   {
+    "slug": "joint-deremiri-clash-match-warmup-stream-2026",
+    "dedup_key": "deremi-warmup-stream-2026-10-30",
+    "note": "続報予約の配信開始。joint面が本日20時の生配信を記事化済み"
+   }
+  ]
+ }
+}

@@ -368,3 +368,18 @@
   subject: 'シャニマス #KAWAII♡しーずん ちびぐるみ vol.1・vol.2'
   watch: 2027年4月からの正式な登場日(店舗により前後。判明次第 triggers へ)
   added_on: '2026-10-29'
+- dedup_key: tachibana-arisu-figure-announcement-2026
+  brand: cg
+  subject: PLUM 橘ありす1/7スケールフィギュア
+  watch: 「近日予約開始予定」の予約開始日と、直販限定豪華版の内容・価格(判明次第 triggers へ)
+  added_on: '2026-10-30'
+- dedup_key: cg-toybox-novel-book-2026
+  brand: cg
+  subject: 『池袋晶葉とウサちゃんロボはオモチャ箱の夢を見る』書籍化
+  watch: 「詳細は後日告知」とされた書籍の発売日・価格・仕様(判明次第 triggers へ)
+  added_on: '2026-10-30'
+- dedup_key: gaku-endless-dance-tshirt-amaya-2027
+  brand: gaku
+  subject: 雨夜燕「ENDLESS DANCE」グラフィックTシャツ
+  watch: 2027年2月末までとされた正式な発売日(判明次第 triggers へ)
+  added_on: '2026-10-30'

@@ -44,6 +44,12 @@ sources:
 - label: 学園アイドルマスター公式「ミラクルナナウ SSR確定セレクトガシャ」(2026-10-29)
   url: https://x.com/gkmas_official/status/2115732119112585632
   type: 公式
+- label: 学園アイドルマスター公式「ミラクルナナウ！復刻サポートカード」(2026-10-21)
+  url: https://x.com/gkmas_official/status/2112789227494850921
+  type: 公式
+- label: 学園アイドルマスター公式「復刻SSRサポートカード「おっと、危ないよ」」(2026-10-21)
+  url: https://x.com/gkmas_official/status/2112788724157489434
+  type: 公式
 event_date: "2026-10-30"
 title_fact_ids:
 - F45

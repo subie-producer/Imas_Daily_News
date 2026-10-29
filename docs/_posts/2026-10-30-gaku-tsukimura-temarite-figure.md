@@ -19,12 +19,18 @@ sources:
 - label: ユニオンクリエイティブ「『学園アイドルマスター』月村手毬 1/6スケール完成品フィギュア」
   url: https://union-creative.jp/goods/detail/?id=1705
   type: 公式
+- label: 【学マス】ユニオンクリエイティブより、「月村手毬 1/6スケール完成品フィギュア」の予約が開始！10月30日(金)まで！（2026年9月1日）
+  url: https://idolmaster-official.jp/news/01_19683
+  type: 公式
 event_date: "2026-10-30"
 title_fact_ids:
 - F1
 lede_fact_ids:
 - N1
 verified_facts:
+- id: N5
+  text: 公式ニュースに価格19,800円（税別）/21,780円（税込）、発売予定2027年6月と記載されている。
+  url: https://idolmaster-official.jp/news/01_19683
 - id: N1
   text: 月村手毬1/6スケール完成品フィギュアの予約受付期間は2026年9月1日12:00:00から2026年10月30日23:59:59まで。予約ページに「予約注文する」ボタンがある。
   url: https://union-creative.jp/goods/detail/?id=1705

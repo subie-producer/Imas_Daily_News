@@ -41,11 +41,11 @@ verified_facts:
   text: YouTube Liveの配信ページが公開されており、配信URLはhttps://www.youtube.com/live/4zXVjj3zApk。公式告知ページではYouTube Liveの配信URLを後日公開予定としていた。
   url: https://www.youtube.com/live/4zXVjj3zApk
 ---
-YouTube Liveは[アイドルマスターチャンネル](https://www.youtube.com/live/4zXVjj3zApk)、X Liveは[アイドルマスター公式Xアカウント](https://x.com/imas_official)で視聴できる。配信は21時までの予定。YouTubeの配信ページは現在公開されており、公式告知ページではURLを後日公開予定としていた。 <!-- F27 F28 F29 N1 -->
+YouTube Liveは[アイドルマスターチャンネル](https://www.youtube.com/live/4zXVjj3zApk)、X Liveは[アイドルマスター公式Xアカウント](https://x.com/imas_official)で視聴できる。配信は21時までの予定。YouTubeの配信ページは現在公開されている。 <!-- F27 F28 F29 N1 -->
 
 出演は福原綾香（渋谷 凛役）、高森奈津美（前川みく役）、山崎はるか（春日未来役）、駒形友梨（高山紗代子役）。MCはLIVE構成・演出のJUNGO。感想は「#デレミリ合同ライブ生配信」を付けて投稿できる。 <!-- F30 F31 F32 F33 F34 F35 -->
 
-## 生配信記念キャンペーン
+## 生配信記念キャンペーン <!-- F37 -->
 
 出演キャスト4人のサイン色紙が抽選で計3人に当たる。応募は本日20時から21時まで（生配信終了時までの予定）。日本国内在住者が対象で、複数のXアカウントで応募すると当選資格を失う。 <!-- F38 F40 F44 F45 -->
 

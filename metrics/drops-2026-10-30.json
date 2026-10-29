@@ -66,5 +66,23 @@
    "202610260732-explore-0",
    "202610260732-explore-1"
   ]
+ },
+ "cg-cinderella-astromeda-popup-akihabara-2026": {
+  "title": "デレマス×Astromeda、POP UPは11月1日まで",
+  "stage": "書き直しで見送り",
+  "why": "NO_PRIMARY_SOURCE 素材と取得できたページには、アイマス／バンダイナムコの公式・準公式情報、またはそれらの発表を報じた報道がありません。Astromeda公式Xは当事者情報で、指摘が求める裏付けには該当しません。D3Pのイベント一覧には同会場・会期の「Astromeda POPUPストア」がありますが、",
+  "candidate_ids": [
+   "202610261232-explore-2",
+   "202610261832-explore-1",
+   "202610290508-grok-0"
+  ]
+ },
+ "sidem-legenders-refrain-atrium-ensemble-2026": {
+  "title": "SideM「リフレインアトリウム」を弦楽器で演奏",
+  "stage": "書き直しで見送り",
+  "why": "NOT_NEWS 校閲指摘I1のとおり、扱っているのは「315プロ演奏企画」が公開した、ファンメンバーによる演奏動画であり、公式の発表や公式が関わるコラボとして確認できる素材がありません。記事を取り下げます。",
+  "candidate_ids": [
+   "202610270222-grok-36"
+  ]
  }
 }

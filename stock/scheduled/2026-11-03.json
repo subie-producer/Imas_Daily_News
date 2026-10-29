@@ -313,5 +313,51 @@
   "deadline": "2026-11-03",
   "link_from": "https://x.com/SideM_official/status/2115367971027824706",
   "src_candidate_id": "202610290225-grok-44"
+ },
+ {
+  "id": "sched-2026-11-03-valiv-october-activity-survey-2026-締切",
+  "dedup_key": "valiv-october-activity-survey-2026",
+  "brand": "dsva",
+  "subject": "ヴイアライヴ10月度活動アンケート締切",
+  "kind": "締切",
+  "note": "23:59までにフォームから回答できる最終日",
+  "reserved_on": "2026-10-30",
+  "occurs_on": "2026-11-03",
+  "title": "ヴイアライヴ10月度活動アンケート",
+  "url": "https://x.com/valiv_official/status/2115277529754067021",
+  "source_type": "公式",
+  "facts": [
+   "プロデューサー向けに10月度の活動に関するアンケートを実施。",
+   "回答期限: 11月3日(火・祝)23:59。",
+   "リンク: https://docs.google.com/forms/d/e/1FAIpQLSeFOn8R66BjXkG4fyLYh1En0KAggKPp7S5jwhQihwhoRHoogA/viewform?usp=send_form",
+   "エンゲージメント: 低",
+   "言及アイドル: 灯里愛夏、上水流宇宙、レトラ"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "deadline": "2026-11-03",
+  "src_candidate_id": "202610300224-grok-54"
+ },
+ {
+  "id": "sched-2026-11-03-gaku-jewel-wednesday-2026-10-28-締切",
+  "dedup_key": "gaku-jewel-wednesday-2026-10-28",
+  "brand": "gaku",
+  "subject": "学マス水曜日 ジュエル配布終了",
+  "kind": "締切",
+  "note": "翌4:59で配布終了。今夜中にジュエル250個を受け取れる最終日",
+  "reserved_on": "2026-10-30",
+  "occurs_on": "2026-11-04",
+  "title": "学マス水曜日 ジュエル配布",
+  "url": "https://x.com/gkmas_official/status/2115307571758104702",
+  "source_type": "公式",
+  "facts": [
+   "今週はジュエル250個を配布。",
+   "配布期間：11/4 (水) 4:59まで (予定)",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "deadline": "2026-11-04",
+  "src_candidate_id": "202610300224-grok-45"
  }
 ]

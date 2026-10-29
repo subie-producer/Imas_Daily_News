@@ -1,0 +1,119 @@
+{
+ "decisions": {
+  "765-961-ultimate-once-and-for-all-extension-2026": {
+   "action": "article",
+   "angle": "765×961 xRライブ第一公演に、神崎蘭子・春日未来・小宮果穂がゲストアイドルとして出演する。",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "既報の本文にゲスト出演の記載は無い。受付延長・価格・日程・出演者は既報なので書かない。"
+  },
+  "765-961-live-ticket-extension-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "受付11月8日までの延長は10-29号で記事化済み。新しい事実も当日のトリガーも無い。"
+  },
+  "xr-live-revival-2026-presale-extension": {
+   "action": "cross_brand",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "joint-xr-live-revival-asobistore-general-advance-2026",
+   "reason": "",
+   "note": "合同面が同じ先行受付期間の延長を記事にしている。"
+  },
+  "tours-symphony-release-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "配信開始は10-29号の記事に同じ内容がある。新しい事実も当日のトリガーも無い。"
+  },
+  "imas-radio-4-hasegawa-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "アーカイブとアフタートークの公開は10-28号で記事化済み。"
+  },
+  "765-961-idol-ultimate-once-and-for-all-2027": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "公演名・日程・会場・出演者は9-07号と9-08号の記事にある。新しい事実も当日のトリガーも無い。"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "765-961-ultimate-once-and-for-all-extension-2026",
+    "brand": "765",
+    "rank": "medium",
+    "angle": "765×961 xRライブ第一公演に、神崎蘭子・春日未来・小宮果穂がゲストアイドルとして出演する。",
+    "purpose": "新情報",
+    "lead_score": 60,
+    "dedup_key": "765-961-ultimate-once-and-for-all-extension-2026",
+    "candidate_ids": [
+     "202610291232-explore-1",
+     "202610300224-grok-66",
+     "202610300224-grok-79",
+     "202610270222-grok-58",
+     "202610280221-grok-62"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "765-961-live-ticket-extension-2026",
+    "reason": "既報",
+    "note": "受付11月8日までの延長は10-29号で記事化済み。新しい事実も当日のトリガーも無い。"
+   },
+   {
+    "dedup_key": "tours-symphony-release-2026",
+    "reason": "既報",
+    "note": "配信開始は10-29号の記事に同じ内容がある。新しい事実も当日のトリガーも無い。"
+   },
+   {
+    "dedup_key": "imas-radio-4-hasegawa-2026",
+    "reason": "既報",
+    "note": "アーカイブとアフタートークの公開は10-28号で記事化済み。"
+   },
+   {
+    "dedup_key": "765-961-idol-ultimate-once-and-for-all-2027",
+    "reason": "既報",
+    "note": "公演名・日程・会場・出演者は9-07号と9-08号の記事にある。新しい事実も当日のトリガーも無い。"
+   }
+  ],
+  "cross_brand": [
+   {
+    "slug": "joint-xr-live-revival-asobistore-general-advance-2026",
+    "dedup_key": "xr-live-revival-2026-presale-extension",
+    "note": "合同面が同じ先行受付期間の延長を記事にしている。"
+   }
+  ]
+ }
+}

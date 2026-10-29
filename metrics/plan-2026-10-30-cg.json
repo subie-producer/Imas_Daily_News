@@ -1,0 +1,400 @@
+{
+ "decisions": {
+  "mayu-makino-sign-display-kawasaki-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-mayu-necklace-bound-to-you-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じネックレス施策のアトレ川崎限定サイン展示"
+  },
+  "cg-15th-for-your-one-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "価格・席種・日時とも10/15・10/29の記事に既出。新事実もトリガーも無い"
+  },
+  "cg-toybox-novel-book-2026": {
+   "action": "article",
+   "angle": "『池袋晶葉とウサちゃんロボはオモチャ箱の夢を見る』の書籍化が決定し、12月12・13日の大阪リバイバルxR公演で先行販売される。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公式発表。詳細は後日告知"
+  },
+  "cg-15th-anniversary-party-2026-general": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/29の記事(一般販売11/7・リセール)と同内容。11/7は3日以内でない"
+  },
+  "tsukimiya-miyabi-birthday-2026": {
+   "action": "article",
+   "angle": "アイマスchが月宮雅の誕生日を祝うお祝いムービーをYouTube Shortsで公開した。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "本日10/30の公式投稿"
+  },
+  "cinderella-last-order-hub-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/28の記事に期間・店舗・参加アイドルとも既出"
+  },
+  "tachibana-arisu-figure-announcement-2026": {
+   "action": "article",
+   "angle": "PLUMが橘ありすの1/7スケールフィギュア化を進行中と発表し、近日予約開始で直販限定の豪華版も準備中とした。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "出典は未確認。校閲で確認"
+  },
+  "cinderella-sega-lucky-kuji-vol1-cute": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/20の記事に販売期間・価格・賞品とも既出。締切12/4は遠い"
+  },
+  "cinderella-fes-blanc-2026-10": {
+   "action": "article",
+   "angle": "デレステのシンデレラフェス ブラン・ノワールは明日10月31日23:59に終了する。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "終了まで1日。10/29の記事に続く期日の知らせ"
+  },
+  "cg-hourglass-radio-premiere-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "CD収録曲・品番・価格まで10/24の記事に既出。初公開は10/28に済み"
+  },
+  "cinderella-astromeda-popup-akihabara-2026": {
+   "action": "article",
+   "angle": "アニメイト秋葉原のAstromeda POPUPストアは11月1日まで。終了まで残り2日。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "終了まで2日。商品・価格は既報なので期日中心に"
+  },
+  "mayu-bound-to-you-necklace-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-mayu-necklace-bound-to-you-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ佐久間まゆネックレスの予約開始の知らせ"
+  },
+  "fumika-birthday-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人の誕生日祝い投稿で、単体では記事にしない"
+  },
+  "cinderella-girls-sapporo-tv-tower-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/25・10/28の記事に既出。終了11/3は3日以内でない"
+  },
+  "cg-mayu-necklace-bound-to-you-2026": {
+   "action": "article",
+   "angle": "「佐久間まゆイメージネックレス～Bound to you.～」の予約が11月30日まで受付中で、価格は25,850円。アトレ川崎では牧野由依のサインも展示される。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "予約開始10/21、2027年2月下旬から順次発送。サイン展示は川崎店限定(未確認出典)"
+  },
+  "cg-sega-lucky-kuji-vol-1-cute-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "carried。10/20の記事と同じ施策で、新事実も当日のトリガーも無い"
+  },
+  "cg-hourglass-first-play-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/24・10/28・10/29の記事に既出。初公開は10/28に済み、タイムシフト終了11/4は3日以内でない"
+  },
+  "manaka-birthday-live-guest-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "声優個人のアイマス外ライブで、10/28に終了済み"
+  },
+  "cinderella-popup-shop-after-sales-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/22の記事に事後通販の期限11/5まで既出。締切は3日以内でない"
+  },
+  "answer-dere-ster-mv-upload-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "同人・ファン主催",
+   "note": "ファンによるMV動画の投稿"
+  },
+  "cg-rose-tea-parlor-2026-nagoya": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/28「心斎橋でカフェ開幕」と同じ施策。期日などのトリガーも無い"
+  },
+  "rose-tea-parlor-fan-visit-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人の来店投稿"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "cg-toybox-novel-book-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "『池袋晶葉とウサちゃんロボはオモチャ箱の夢を見る』の書籍化が決定し、12月12・13日の大阪リバイバルxR公演で先行販売される。",
+    "purpose": "新情報",
+    "lead_score": 60,
+    "dedup_key": "cg-toybox-novel-book-2026",
+    "candidate_ids": [
+     "202610300224-grok-6"
+    ]
+   },
+   {
+    "slug": "cg-tsukimiya-miyabi-birthday-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "アイマスchが月宮雅の誕生日を祝うお祝いムービーをYouTube Shortsで公開した。",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "tsukimiya-miyabi-birthday-2026",
+    "candidate_ids": [
+     "202610300224-grok-62"
+    ]
+   },
+   {
+    "slug": "cg-tachibana-arisu-figure-announcement-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "PLUMが橘ありすの1/7スケールフィギュア化を進行中と発表し、近日予約開始で直販限定の豪華版も準備中とした。",
+    "purpose": "新情報",
+    "lead_score": 25,
+    "dedup_key": "tachibana-arisu-figure-announcement-2026",
+    "candidate_ids": [
+     "202610300224-grok-85"
+    ]
+   },
+   {
+    "slug": "cg-cinderella-fes-blanc-2026-10",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "デレステのシンデレラフェス ブラン・ノワールは明日10月31日23:59に終了する。",
+    "purpose": "期日の知らせ",
+    "lead_score": 15,
+    "dedup_key": "cinderella-fes-blanc-2026-10",
+    "candidate_ids": [
+     "202610260732-explore-0",
+     "202610260732-explore-1"
+    ]
+   },
+   {
+    "slug": "cg-cinderella-astromeda-popup-akihabara-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "アニメイト秋葉原のAstromeda POPUPストアは11月1日まで。終了まで残り2日。",
+    "purpose": "期日の知らせ",
+    "lead_score": 15,
+    "dedup_key": "cinderella-astromeda-popup-akihabara-2026",
+    "candidate_ids": [
+     "202610261232-explore-2",
+     "202610261832-explore-1",
+     "202610290508-grok-0"
+    ]
+   },
+   {
+    "slug": "cg-mayu-necklace-bound-to-you-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "「佐久間まゆイメージネックレス～Bound to you.～」の予約が11月30日まで受付中で、価格は25,850円。アトレ川崎では牧野由依のサインも展示される。",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "cg-mayu-necklace-bound-to-you-2026",
+    "candidate_ids": [
+     "202610271834-explore-5",
+     "202610290732-explore-0",
+     "202610270222-explore-0"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "cg-15th-for-your-one-2026",
+    "reason": "既報",
+    "note": "価格・席種・日時とも10/15・10/29の記事に既出。新事実もトリガーも無い"
+   },
+   {
+    "dedup_key": "cg-15th-anniversary-party-2026-general",
+    "reason": "既報",
+    "note": "10/29の記事(一般販売11/7・リセール)と同内容。11/7は3日以内でない"
+   },
+   {
+    "dedup_key": "cinderella-last-order-hub-2026",
+    "reason": "既報",
+    "note": "10/28の記事に期間・店舗・参加アイドルとも既出"
+   },
+   {
+    "dedup_key": "cinderella-sega-lucky-kuji-vol1-cute",
+    "reason": "既報",
+    "note": "10/20の記事に販売期間・価格・賞品とも既出。締切12/4は遠い"
+   },
+   {
+    "dedup_key": "cg-hourglass-radio-premiere-2026",
+    "reason": "既報",
+    "note": "CD収録曲・品番・価格まで10/24の記事に既出。初公開は10/28に済み"
+   },
+   {
+    "dedup_key": "fumika-birthday-2026",
+    "reason": "個人の話題",
+    "note": "個人の誕生日祝い投稿で、単体では記事にしない"
+   },
+   {
+    "dedup_key": "cinderella-girls-sapporo-tv-tower-2026",
+    "reason": "既報",
+    "note": "10/25・10/28の記事に既出。終了11/3は3日以内でない"
+   },
+   {
+    "dedup_key": "cg-sega-lucky-kuji-vol-1-cute-2026",
+    "reason": "既報",
+    "note": "carried。10/20の記事と同じ施策で、新事実も当日のトリガーも無い"
+   },
+   {
+    "dedup_key": "cg-hourglass-first-play-2026",
+    "reason": "既報",
+    "note": "10/24・10/28・10/29の記事に既出。初公開は10/28に済み、タイムシフト終了11/4は3日以内でない"
+   },
+   {
+    "dedup_key": "manaka-birthday-live-guest-2026",
+    "reason": "個人の話題",
+    "note": "声優個人のアイマス外ライブで、10/28に終了済み"
+   },
+   {
+    "dedup_key": "cinderella-popup-shop-after-sales-2026",
+    "reason": "既報",
+    "note": "10/22の記事に事後通販の期限11/5まで既出。締切は3日以内でない"
+   },
+   {
+    "dedup_key": "answer-dere-ster-mv-upload-2026",
+    "reason": "同人・ファン主催",
+    "note": "ファンによるMV動画の投稿"
+   },
+   {
+    "dedup_key": "cg-rose-tea-parlor-2026-nagoya",
+    "reason": "既報",
+    "note": "10/28「心斎橋でカフェ開幕」と同じ施策。期日などのトリガーも無い"
+   },
+   {
+    "dedup_key": "rose-tea-parlor-fan-visit-2026",
+    "reason": "個人の話題",
+    "note": "個人の来店投稿"
+   }
+  ],
+  "cross_brand": []
+ }
+}

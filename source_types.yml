@@ -632,6 +632,7 @@ x_accounts:
     - imasnews765
     - zutapoke
   ファン:
+    - EinhardP_yukiho     # 合議で追加: 個人アカウントによるグッズ到着の報告
     - vocaloidfan_sp      # 合議で追加: ファン記事。個人またはファンサイトの発信
     - umino_ku            # 合議で追加: 個人がコラボ現地を訪れた際の投稿
     - medamasam           # 合議で追加: 個人のファンイラスト投稿
@@ -951,6 +952,7 @@ x_accounts:
     - procinen1
     - yutaleP
   当事者:
+    - pmoa_plum           # 合議で追加: フィギュアメーカーPLUMの製品進捗の一次発信
     - animegame_kt        # 合議で追加: カラオケ事業者。シャニマスとのコラボ会場の告知
     - Neowing_Otome       # 合議で追加: グッズ販売店の予約告知。商品の販売元として発信
     - AnimeStore_jp       # 合議で追加: グッズ販売店の販売元告知。Teddy's Collection IIの販売元
@@ -1134,6 +1136,11 @@ x_posts:
 
 # --- リンク元から引き継いだ種別(リンク先1つずつ。キーは pipelib.link_key)。合議がリンク元の告知と関係していると確かめたものだけ(classify_sources.inherit_from_links)。リンク先そのものの種別より強いときだけ効く ---
 link_types:
+  youtube.com/watch?v=lGb1zNIqjHI: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/imas_ch/status/2115820965720474090(公式)。月宮雅のお祝いムービーで、告知の誕生日企画と同じ
+  youtube.com/watch?v=bc620bZt3No: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/valiv_official/status/2115730363486200109(公式)。宇宙のショート動画「お返事まだカナ」で、告知の公開動画と同じ
+  youtube.com/watch?v=_xkM67zBPFs: 準公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/lantis_imasSC/status/2115821871614906856(準公式)。アルストロメリア「BEAM」2DMVの動画で、告知の配信楽曲と同じ
+  union-creative.jp/goods/detail/?id=1705: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://idolmaster-official.jp/news/01_19683(公式)。月村手毬1/6フィギュアの商品ページで、告知の予約商品と同じ
+  docs.google.com/forms/d/e/1FAIpQLSeFOn8R66BjXkG4fyLYh1En0KAggKPp7S5jwhQihwhoRHoogA: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://x.com/valiv_official/status/2115277529754067021(公式)。10月度プロジェクト活動アンケートの回答フォームで、告知と同じ企画
   youtube.com/watch?v=4zXVjj3zApk: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://idolmaster-official.jp/news/01_20072(公式)。告知のウォームアップ生配信のYouTube Liveページ
   www.animate-onlineshop.jp/corner/cc/sidem-1019goods/cd/4855/: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://idolmaster-official.jp/news/01_20147(公式)。315プロNight!出張版グッズのアニメイト先行受注ページ。告知と同じ
   asobiticket2.asobistore.jp/receptions/d0d5822a-deb6-46fa-b2ab-19b2fedb592c: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://idolmaster-official.jp/news/01_20062(公式)。はんげつであえたらの公演チケット申込ページ。告知と同じ企画

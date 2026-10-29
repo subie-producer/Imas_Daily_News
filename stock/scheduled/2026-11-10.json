@@ -459,5 +459,60 @@
   "src_candidate_id": "202610290225-grok-38",
   "companion_of": "sched-2026-11-10-shiny-hate-ni-fureru-no-nara-2026-終了",
   "src_dedup_key": "shiny-scenario-hate-ni-fureru"
+ },
+ {
+  "id": "sched-2026-11-10-shiny-hate-ni-fureru-nonara-2026-終了",
+  "dedup_key": "shiny-hate-ni-fureru-nonara-2026",
+  "brand": "shiny",
+  "subject": "シャニマス「果てにふれるのなら」最終日",
+  "kind": "終了",
+  "note": "11:59までイベントに挑戦できる最終日",
+  "reserved_on": "2026-10-30",
+  "occurs_on": "2026-11-10",
+  "title": "シャニマスシーズシナリオイベント「果てにふれるのなら」",
+  "url": "https://x.com/imassc_official/status/2114960534957445218",
+  "source_type": "公式",
+  "facts": [
+   "イベント名: 果てにふれるのなら",
+   "開催期間: 2026年10月30日～2026年11月10日11:59（予定）",
+   "シーズの物語を描くシナリオイベント",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "event_date": "2026-10-30",
+  "deadline": "2026-11-10",
+  "src_candidate_id": "202610300224-grok-86"
+ },
+ {
+  "id": "sched-2026-11-10-shiny-hate-ni-fureru-nonara-2026-終了-src1",
+  "dedup_key": "shiny-hate-ni-fureru-nonara-2026",
+  "brand": "shiny",
+  "subject": "シャニマス「果てにふれるのなら」最終日",
+  "kind": "終了",
+  "note": "11:59までイベントに挑戦できる最終日",
+  "reserved_on": "2026-10-30",
+  "occurs_on": "2026-11-10",
+  "title": "シーズのシナリオイベント「果てにふれるのなら」開催決定",
+  "url": "https://gameo.jp/imassc/169695",
+  "source_type": "二次情報",
+  "facts": [
+   "開催期間: 2026年10月30日 ～ 2026年11月10日 11:59（予定）",
+   "シーズをプロデュースしてイベント限定ミッションを達成すると、シナリオポイントを獲得できる。",
+   "獲得したシナリオポイントはイベントショップで報酬と交換できる。",
+   "イベント報酬: シーズの絆を描いたイベント限定コミュ",
+   "イベント報酬: イベント限定SSRサポートアイドル",
+   "イベント報酬: プチセレクションチケット",
+   "イベント報酬: ホームユニット用背景",
+   "イベント報酬: 各種トレーニングチケット",
+   "エンゲージメント: 中"
+  ],
+  "via": "explore",
+  "verify": "unconfirmed",
+  "event_date": "2026-10-30",
+  "deadline": "2026-11-10",
+  "src_candidate_id": "202610291832-explore-4",
+  "companion_of": "sched-2026-11-10-shiny-hate-ni-fureru-nonara-2026-終了",
+  "src_dedup_key": "shiny-hate-ni-fureru-no-nara-2026"
  }
 ]

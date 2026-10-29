@@ -1,0 +1,205 @@
+{
+ "decisions": {
+  "tours-second-stage-s2-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/29稼働の本日号で、SideM衣装・楽曲・カードとも既報の本文と同内容"
+  },
+  "xr-live-revival-asobistore-general-advance-2026": {
+   "action": "article",
+   "angle": "アソビストア一般会員先行の受付期間が、緊急メンテナンスを受けて11月1日から11月8日23時59分まで延長された。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "source_change: 締切が11/1→11/8に変更。読者に関わる変更"
+  },
+  "clash-match-warmup-stream-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "deremiri-clash-match-warmup-stream-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じウォームアップ生配信(10/30 20時)の別ソース"
+  },
+  "tours-s2-cardlist-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "S2弾稼働・次郎と類・Study Equal Magic!・SYMPHONYはいずれも10/29の記事に既出"
+  },
+  "tours-tournament-prelim-entry-2026": {
+   "action": "article",
+   "angle": "マイページのメンテナンスが完了し、ツアマス大会予選のエントリーが始まった。詳細はマイページのお知らせで確認できる。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "エントリー開始は既報(10/23の予選11月12日開始)にない新しい事実"
+  },
+  "tours-season-6-all-songs-first-place-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "ファン個人のSNS投稿のみ・未確認で、単体では記事にしない"
+  },
+  "tours-rhythm-live-recording-pstage-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "参加費・特典・定員・整理券制とも10/27の記事と同じで、新事実も当日トリガーも無い"
+  },
+  "tours-halloween-commu-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "ログボ・コミュ期間とも10/28・10/29の記事と同じ。開始・締切の当日トリガー無し"
+  },
+  "tours-producers-station-nakano-panels-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/28・10/29の記事と同内容"
+  },
+  "tomori-manaka-birthday-live-2026-guest-seki-hiromi": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "関裕美のゲスト出演のみで共同主催ではない。出典も二次情報・未確認"
+  },
+  "deremiri-clash-match-warmup-stream-2026": {
+   "action": "article",
+   "angle": "デレミリ合同ライブ「CLASH M@TCH!!」のウォームアップ生配信が本日20時から、YouTubeとXで始まる。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(開始)。当日トリガー。サイン色紙の応募は配信中の20〜21時"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "joint-xr-live-revival-asobistore-general-advance-2026",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "アソビストア一般会員先行の受付期間が、緊急メンテナンスを受けて11月1日から11月8日23時59分まで延長された。",
+    "purpose": "新情報",
+    "lead_score": 60,
+    "dedup_key": "xr-live-revival-asobistore-general-advance-2026",
+    "candidate_ids": [
+     "update-23fb268bd75f"
+    ]
+   },
+   {
+    "slug": "joint-tours-tournament-prelim-entry-2026",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "マイページのメンテナンスが完了し、ツアマス大会予選のエントリーが始まった。詳細はマイページのお知らせで確認できる。",
+    "purpose": "新情報",
+    "lead_score": 25,
+    "dedup_key": "tours-tournament-prelim-entry-2026",
+    "candidate_ids": [
+     "202610300224-grok-60"
+    ]
+   },
+   {
+    "slug": "joint-deremiri-clash-match-warmup-stream-2026",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "デレミリ合同ライブ「CLASH M@TCH!!」のウォームアップ生配信が本日20時から、YouTubeとXで始まる。",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "deremiri-clash-match-warmup-stream-2026",
+    "candidate_ids": [
+     "202610290225-grok-73",
+     "sched-2026-10-30-deremiri-clash-match-warmup-stream-2026-開始",
+     "202610300224-grok-57"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "tours-second-stage-s2-2026",
+    "reason": "既報",
+    "note": "10/29稼働の本日号で、SideM衣装・楽曲・カードとも既報の本文と同内容"
+   },
+   {
+    "dedup_key": "tours-s2-cardlist-2026",
+    "reason": "既報",
+    "note": "S2弾稼働・次郎と類・Study Equal Magic!・SYMPHONYはいずれも10/29の記事に既出"
+   },
+   {
+    "dedup_key": "tours-season-6-all-songs-first-place-2026",
+    "reason": "個人の話題",
+    "note": "ファン個人のSNS投稿のみ・未確認で、単体では記事にしない"
+   },
+   {
+    "dedup_key": "tours-rhythm-live-recording-pstage-2026",
+    "reason": "既報",
+    "note": "参加費・特典・定員・整理券制とも10/27の記事と同じで、新事実も当日トリガーも無い"
+   },
+   {
+    "dedup_key": "tours-halloween-commu-2026",
+    "reason": "既報",
+    "note": "ログボ・コミュ期間とも10/28・10/29の記事と同じ。開始・締切の当日トリガー無し"
+   },
+   {
+    "dedup_key": "tours-producers-station-nakano-panels-2026",
+    "reason": "既報",
+    "note": "10/28・10/29の記事と同内容"
+   },
+   {
+    "dedup_key": "tomori-manaka-birthday-live-2026-guest-seki-hiromi",
+    "reason": "面違い",
+    "note": "関裕美のゲスト出演のみで共同主催ではない。出典も二次情報・未確認"
+   }
+  ],
+  "cross_brand": []
+ }
+}

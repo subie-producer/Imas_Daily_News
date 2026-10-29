@@ -46,5 +46,59 @@
   "src_candidate_id": "202609102333-explore-15",
   "companion_of": "sched-2026-12-31-gaku-garakuta-road-disc2-exchange-2026-締切",
   "src_dedup_key": "gaku-garaku-road-disc2-exchange-2026"
+ },
+ {
+  "id": "sched-2026-12-31-shiny-karaoke-tetsujin-concept-room-2026-終了",
+  "dedup_key": "shiny-karaoke-tetsujin-concept-room-2026",
+  "brand": "shiny",
+  "subject": "シャニマス×カラオケの鉄人 コンセプトルーム最終日",
+  "kind": "終了",
+  "note": "コンセプトルームを利用できる最終日",
+  "reserved_on": "2026-10-30",
+  "occurs_on": "2026-12-31",
+  "title": "シャニマス×カラオケの鉄人コンセプトルーム予約",
+  "url": "https://x.com/animegame_kt/status/2115715266646585533",
+  "source_type": "当事者",
+  "facts": [
+   "コラボ名: PJ:REFRAC7IONS Special Collaboration",
+   "コンセプトルーム予約受付開始: 2026年10月29日17:00",
+   "開催期間: 2026年11月19日(木)〜12月31日(木)",
+   "予約案内ページ: https://www.karatetsu.com/animegame/shinycolors.shtml",
+   "リンク: https://t.co/8Lw10GjoLm",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "unconfirmed",
+  "event_date": "2026-11-19",
+  "deadline": "2026-12-31",
+  "link_from": "https://t.co/8Lw10GjoLm",
+  "src_candidate_id": "202610300224-grok-88"
+ },
+ {
+  "id": "sched-2026-12-31-shiny-karaoke-tetsujin-concept-room-2026-終了-src1",
+  "dedup_key": "shiny-karaoke-tetsujin-concept-room-2026",
+  "brand": "shiny",
+  "subject": "シャニマス×カラオケの鉄人 コンセプトルーム最終日",
+  "kind": "終了",
+  "note": "コンセプトルームを利用できる最終日",
+  "reserved_on": "2026-10-30",
+  "occurs_on": "2026-12-31",
+  "title": "シャニマス×カラオケの鉄人等身大パネル設置",
+  "url": "https://x.com/animegame_kt/status/2115715267477094673",
+  "source_type": "当事者",
+  "facts": [
+   "開催期間: 2026年11月19日(木)〜12月31日(木)",
+   "等身大パネル設置店舗と展示楽曲: 名古屋名駅店—I’m a Cutie Finder、大阪なんば店—Fumage、福岡天神店—Sonic Heart (and Signal)、札幌すすきの店—∑ Desire、松山銀天街店—ザ・ふたりトラベラー、京都河原町店—彼岸流、秋葉原電気街店—No 1 feel alone",
+   "リンク: https://t.co/8Lw10GjoLm",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "unconfirmed",
+  "event_date": "2026-11-19",
+  "deadline": "2026-12-31",
+  "link_from": "https://t.co/8Lw10GjoLm",
+  "src_candidate_id": "202610300224-grok-89",
+  "companion_of": "sched-2026-12-31-shiny-karaoke-tetsujin-concept-room-2026-終了",
+  "src_dedup_key": "shiny-karaoke-tetsujin-panels-2026"
  }
 ]

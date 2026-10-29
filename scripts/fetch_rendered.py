@@ -67,6 +67,45 @@ def document_status(entries) -> tuple[int | None, str, str]:
     return last
 
 
+# 読み込み完了のあと、後から入る要求(XHR の一覧・本文)が止むまで待つ: 最短 SETTLE_MIN 秒、要求の無い時間が SETTLE_QUIET 秒続いたら
+# 終わり、最長 SETTLE_MAX 秒。固定の2秒では、中継のホストの間隔(並列の描画と共有)で遅れた一覧の要求を待たず、ナビだけの本文を返した
+# (2026-10-30: 公式ポータルのお知らせ一覧の描画4回のうち3回が記事0件で、出典を揃える入口が読めなかったにした)
+SETTLE_MIN, SETTLE_QUIET, SETTLE_MAX = 2.0, 1.0, 10.0
+# 終わりの来ない要求(常時接続)と、読み込まない画像は待たない。主フレームの文書は読み込み完了で済んでいる
+SETTLE_SKIP_TYPES = {"WebSocket", "EventSource", "Image", "Media", "Document"}
+
+
+def pending_requests(entries) -> set[str]:
+    """性能ログで、送ったがまだ終わっていない要求(待つ種類だけ)の id。"""
+    sent: set[str] = set()
+    for method, p in _events(entries):
+        rid = p.get("requestId")
+        if method == "Network.requestWillBeSent" and p.get("type") not in SETTLE_SKIP_TYPES:
+            sent.add(rid)
+        elif method in ("Network.loadingFinished", "Network.loadingFailed"):
+            sent.discard(rid)
+    return sent
+
+
+def settle(drain, logs: list, until: float, clock=time.time, sleep=time.sleep) -> None:
+    """読み込み完了のあと、終わっていない要求が無い時間が SETTLE_QUIET 秒続くまで待つ(SETTLE_MIN〜SETTLE_MAX 秒。until を越えない)。
+    drain() は性能ログを logs に足す。"""
+    start = clock()
+    end = min(until, start + SETTLE_MAX)
+    sleep(max(0.0, min(SETTLE_MIN, end - start)))
+    quiet_since = None
+    while clock() < end:
+        drain()
+        now = clock()
+        if pending_requests(logs):
+            quiet_since = None
+        elif quiet_since is None:
+            quiet_since = now
+        elif now - quiet_since >= SETTLE_QUIET:
+            return
+        sleep(0.25)
+
+
 def held_match(host: str, holds) -> str | None:
     """host が控えているホスト(holds のどれか、またはその下のホスト)なら、その控えのホスト名。"""
     host = (host or "").lower()
@@ -338,7 +377,7 @@ def fetch(url: str, wait_css: str | None, timeout: int, holds: dict[str, float] 
             WebDriverWait(driver, timeout).until(
                 lambda d: d.execute_script("return document.readyState") == "complete"
             )
-            time.sleep(2)  # CSR の描画待ち
+            settle(drain, logs, deadline)  # CSR の描画待ち(後から入る要求が止むまで)
         # 描画を待つあいだに JS で別の文書へ移って 429 になった・差し止めたなら、その画面を本文にしない
         drain()
         check()

@@ -119,15 +119,22 @@ _DAY_LIST_RE = re.compile(r"(?<!\d)(?:(20\d{2})\s*年\s*)?(\d{1,2})\s*月\s*(\d{
 # 小数(「8/9」「8:00」「8.5」)の数字は日として読まない
 _SLASH_DAY_LIST_RE = re.compile(r"(?<![\d/])(?:(20\d{2})\s*/\s*)?(\d{1,2})\s*/\s*(\d{1,2})(?![\d/])(?:\s*[(（][^)）\d]{1,3}[)）])?"
                                 r"((?:\s*[・、,，～〜~\-－]\s*\d{1,2}(?![\d/:.月])\s*日?(?:\s*[(（][^)）\d]{1,3}[)）])?)+)")
+# 最初の日にも「日」を付けず、最後の日にだけ付けた書き方(「8月20・21日」「12月12・13日」「11月1～8日」)。最初の日も
+# 「8月20日」の形で書かれていないので、最初の日と続く日の両方を足す
+_BARE_DAY_LIST_RE = re.compile(r"(?<!\d)(?:(20\d{2})\s*年\s*)?(\d{1,2})\s*月\s*(\d{1,2})(?:\s*[(（][^)）\d]{1,3}[)）])?"
+                               r"((?:\s*[・、,，～〜~\-－]\s*\d{1,2}(?:\s*[(（][^)）\d]{1,3}[)）])?)*"
+                               r"\s*[・、,，～〜~\-－]\s*\d{1,2}\s*日)")
 
 
 def _spell_day_lists(hay: str) -> str:
-    """「12月12日・13日」「11/7・8」の後ろの日を「12月13日」「11月8日」(年があれば「2026年12月13日」)と書いた形を、文言の後ろに足す。"""
+    """「12月12日・13日」「11/7・8」の後ろの日を「12月13日」「11月8日」(年があれば「2026年12月13日」)と書いた形を、文言の後ろに足す。
+    「8月20・21日」は最初の日(8月20日)も足す。"""
     extra = []
-    for rx, day_re in ((_DAY_LIST_RE, r"(\d{1,2})\s*日"), (_SLASH_DAY_LIST_RE, r"(\d{1,2})")):
+    for rx, day_re, with_first in ((_DAY_LIST_RE, r"(\d{1,2})\s*日", False), (_SLASH_DAY_LIST_RE, r"(\d{1,2})", False),
+                                   (_BARE_DAY_LIST_RE, r"(\d{1,2})", True)):
         for m in rx.finditer(hay):
             y, mo = m.group(1), m.group(2)
-            for day in re.findall(day_re, m.group(4)):
+            for day in ([m.group(3)] if with_first else []) + re.findall(day_re, m.group(4)):
                 extra.append(f"{y}年{mo}月{day}日" if y else f"{mo}月{day}日")
     return hay + (" " + " ".join(extra) if extra else "")
 

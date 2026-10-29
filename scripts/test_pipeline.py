@@ -20758,7 +20758,15 @@ def test_reservation_day_list_date(tmp: Path):
                            ("2026-11-08", "11/7(土)・8(日)", True), ("2026-11-08", "11/1～8", True), ("2026-11-08", "2026/11/7・8", True),
                            ("2026-12-08", "11/7・8", False), ("2026-11-09", "11/7・8", False), ("2099-11-08", "11/7・8", False),
                            ("2026-11-08", "2099/11/7・8", False), ("2026-11-08", "11/7・8:00開演", False),
-                           ("2026-11-08", "11/7・8/9", False), ("2026-11-08", "11/7、8.5cm", False)]:
+                           ("2026-11-08", "11/7・8/9", False), ("2026-11-08", "11/7、8.5cm", False),
+                           # 最初の日にも「日」が無い書き方(実データ candidates/2026-08-29.json「福井(8月20・21日) → 福岡(9月5・6日)
+                           # → 岩手(9月22・23日)」、candidates/2026-07-15.json「7月25・26日」。監査指摘)
+                           ("2026-09-06", "公演順序: 福井(8月20・21日) → 福岡(9月5・6日) → 岩手(9月22・23日)", True),
+                           ("2026-08-20", "福井(8月20・21日)", True), ("2026-09-23", "岩手(9月22・23日)", True),
+                           ("2026-12-13", "2026年12月12・13日", True), ("2026-11-08", "11月1～8日", True),
+                           ("2026-12-13", "12月12(土)・13日(日)", True), ("2026-07-26", "7月24日9:00～18:30、7月25・26日9:00～18:00営業", True),
+                           ("2026-09-21", "福井(8月20・21日)", False), ("2026-08-22", "福井(8月20・21日)", False),
+                           ("2099-08-21", "8月20・21日", False), ("2026-08-21", "2099年8月20・21日", False)]:
         check(renderlib.date_mentioned(iso, hay, {2026}) == want, f"日の列挙の照合が違う: {iso} / {hay} → {not want}")
     inp = {"facts": [], "existing_story": {}, "tomorrow_reservations": [], "pending": [], "subjects": []}
     st = tmp / "stock"; (st / "scheduled").mkdir(parents=True)
@@ -20776,7 +20784,9 @@ def test_reservation_day_list_date(tmp: Path):
                 ("202610300224-grok-6", "cg-toybox-novel-book-2026",
                  "2026年12月12日・13日に大阪オリックス劇場で開催するリバイバルxR公演にて先行販売予定", ("2026-12-12", "2026-12-13")),
                 ("c-shirube-final", "gaku-shirube-finale-ticket-buzz", "ファイナル公演は11/7・8開催、同日事前グッズ販売開始",
-                 ("2026-11-07", "2026-11-08"))]:
+                 ("2026-11-07", "2026-11-08")),
+                ("c-xr-revival", "joint-xr-live-revival-osaka-2026",
+                 "【765】【シンデレラ】12月12・13日大阪・オリックス劇場にて「xR LIVE REVIVAL」開催決定", ("2026-12-12", "2026-12-13"))]:
             mats = {cid: cand_row(cid, "https://x.com/imas_CGofficial/status/2115654861718990986", title="t", brand="cg",
                                   dedup_key=slug, facts=["2026年の公演", fact], event_date=days[0])}
             posts = [{"slug": slug, "brand": "cg", "candidate_ids": [cid], "title": "t", "lede": "l", "rank": "small"}]
@@ -20796,11 +20806,97 @@ def test_reservation_day_list_date(tmp: Path):
     check(compose.reminder_event_date(row, "2026-12-13") == "2026-12-13", "続報予約の出来事の日が、日の列挙から決まらない")
     row = {"kind": "千秋楽", "facts": ["ファイナル公演は11/7・8開催"], "title": "", "note": ""}
     check(compose.reminder_event_date(row, "2026-11-08") == "2026-11-08", "続報予約の出来事の日が、スラッシュの日の列挙から決まらない")
+    row = {"kind": "千秋楽", "facts": ["福岡(9月5・6日)"], "title": "", "note": ""}
+    check(compose.reminder_event_date(row, "2026-09-06") == "2026-09-06", "続報予約の出来事の日が、「9月5・6日」から決まらない")
+
+
+def test_render_waits_for_late_requests(tmp: Path):
+    """描画は、読み込み完了のあとに後から入る要求(XHR の一覧)が終わるまで待つ(2026-10-30 号: 公式ポータルのお知らせ一覧を
+    固定の2秒で切り上げ、記事0件のナビだけの本文を facts 化に渡して「読めなかった」になり、シンデレラフェスの出典に届かなかった)。
+    終わらない要求・常時接続は最長で切り上げる。"""
+    import types
+    import fetch_rendered
+
+    def ev(method, **params):
+        return {"message": json.dumps({"message": {"method": method, "params": params}})}
+    doc = ev("Network.requestWillBeSent", requestId="d1", type="Document", frameId="F1", request={"url": "https://p.example/news/"})
+    xhr = ev("Network.requestWillBeSent", requestId="x1", type="XHR", frameId="F1", request={"url": "https://p.example/api/news"})
+    done = ev("Network.loadingFinished", requestId="x1")
+
+    class FakeDriver:
+        """一覧の要求(x1)は性能ログの4回目の読み出しで終わり、そこで初めて一覧が描かれる"""
+        def __init__(self):
+            self.reads = 0
+            self.current_url = "https://p.example/news/"
+
+        @property
+        def page_source(self):
+            return "<html>nav<a href='/news/01_1'>記事</a></html>" if self.reads >= 4 else "<html>nav</html>"
+
+        def set_page_load_timeout(self, t):
+            pass
+
+        def get(self, url):
+            pass
+
+        def get_log(self, kind):
+            self.reads += 1
+            return {1: [doc, xhr], 4: [done]}.get(self.reads, [])
+
+        def execute_script(self, js):
+            return "complete" if "readyState" in js else 200
+
+        def quit(self):
+            pass
+
+    class FakeProxy:
+        port, blocked = 4321, {}
+
+        def __init__(self, held, turn=None):
+            pass
+
+        def close(self):
+            pass
+    fake_mods = {n: types.ModuleType(n) for n in ("selenium", "selenium.webdriver", "selenium.webdriver.common",
+                                                  "selenium.webdriver.common.by", "selenium.webdriver.support",
+                                                  "selenium.webdriver.support.ui", "selenium.webdriver.support.expected_conditions")}
+    fake_mods["selenium.webdriver.common.by"].By = object
+    fake_mods["selenium.webdriver.support"].expected_conditions = fake_mods["selenium.webdriver.support.expected_conditions"]
+    fake_mods["selenium.webdriver.support.ui"].WebDriverWait = lambda d, t: types.SimpleNamespace(until=lambda fn: fn(d))
+    saved_mods = {n: sys.modules.get(n) for n in fake_mods}
+    saved = fetch_rendered.make_driver, fetch_rendered.HoldProxy
+    try:
+        sys.modules.update(fake_mods)
+        fetch_rendered.make_driver = lambda proxy_port=None: FakeDriver()
+        fetch_rendered.HoldProxy = FakeProxy
+        html = fetch_rendered.fetch("https://p.example/news/", None, 20)
+    except Exception as e:      # noqa: BLE001
+        html = f"{type(e).__name__}: {e}"
+    finally:
+        fetch_rendered.make_driver, fetch_rendered.HoldProxy = saved
+        for n, m in saved_mods.items():
+            if m is None:
+                sys.modules.pop(n, None)
+            else:
+                sys.modules[n] = m
+    check("/news/01_1" in html, f"描画が後から入る一覧の要求を待たず、ナビだけの本文を返した: {html[:120]}")
+    # 待ち方(時計は偽物): 要求が無ければ最短、終わらない要求は最長で切り上げ、常時接続(WebSocket)は待たない
+    for logs, want in [([], fetch_rendered.SETTLE_MIN + fetch_rendered.SETTLE_QUIET),
+                       ([xhr], fetch_rendered.SETTLE_MAX),
+                       ([ev("Network.requestWillBeSent", requestId="w1", type="WebSocket")], fetch_rendered.SETTLE_MIN + fetch_rendered.SETTLE_QUIET)]:
+        now = [1000.0]
+        fetch_rendered.settle(lambda: None, list(logs), now[0] + 60, clock=lambda: now[0],
+                              sleep=lambda t: now.__setitem__(0, now[0] + t))
+        check(abs(now[0] - 1000.0 - want) <= 0.5, f"描画の待ちが {now[0] - 1000.0:.2f} 秒(期待 {want} 秒): {logs}")
+    now = [1000.0]
+    fetch_rendered.settle(lambda: None, [xhr], now[0] + 3, clock=lambda: now[0], sleep=lambda t: now.__setitem__(0, now[0] + t))
+    check(now[0] - 1000.0 <= 3.3, f"描画の待ちが締切を越えた: {now[0] - 1000.0:.2f} 秒")
 
 
 def main() -> int:
     tmp = Path(tempfile.mkdtemp(prefix="imas-test-"))
     test_reservation_day_list_date(tmp / "rdl")
+    test_render_waits_for_late_requests(tmp / "rwl")
     test_assemble_run_returns_reservations(tmp / "arrr")
     test_assemble_roundup_reservation(tmp / "arr")
     test_storylink_roundup_topic(tmp / "srt")

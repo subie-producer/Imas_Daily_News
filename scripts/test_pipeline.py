@@ -20742,8 +20742,54 @@ def test_units_bound_memory_and_report_failure(tmp: Path):
     check(handed == ["watch"], f"当番に渡したことを走行の記録に残さない(通知の unit が当番を重ねる): {handed}")
 
 
+def test_reservation_day_list_date(tmp: Path):
+    """同じ月の日を続けた書き方(「2026年12月12日・13日」)の後ろの日も、素材の日付として見る(2026-10-30 号: 実データ
+    202610300224-grok-6 の「12月12日・13日に大阪オリックス劇場で開催するリバイバルxR公演」の千秋楽 12/13 の予約を、
+    素材に日付が無いとして捨て、差し戻しても戻らなかった)。期間の終わり(「11月1日～8日」)も同じ。別の月・別の年は通さない。"""
+    for iso, hay, want in [("2026-12-13", "2026年12月12日・13日に開催", True), ("2026-12-13", "12月12日(土)・13日(日)開催", True),
+                           ("2026-11-08", "11月1日～8日まで", True), ("2026-10-04", "１０月３日、４日", True),
+                           ("2026-12-12", "2026年12月12日・13日に開催", True), ("2026-11-13", "2026年12月12日・13日に開催", False),
+                           ("2099-12-13", "12月12日・13日", False), ("2026-12-14", "2026年12月12日・13日に開催", False),
+                           ("2026-12-13", "2099年12月12日・13日", False)]:
+        check(renderlib.date_mentioned(iso, hay, {2026}) == want, f"日の列挙の照合が違う: {iso} / {hay} → {not want}")
+    cid = "202610300224-grok-6"
+    mats = {cid: cand_row(cid, "https://x.com/imas_CGofficial/status/2115654861718990986", title="『池袋晶葉とウサちゃんロボはオモチャ箱の夢を見る』書籍化",
+                          brand="cg", dedup_key="cg-toybox-novel-book-2026",
+                          facts=["『池袋晶葉とウサちゃんロボはオモチャ箱の夢を見る』の書籍化が決定",
+                                 "2026年12月12日・13日に大阪オリックス劇場で開催するリバイバルxR公演にて先行販売予定", "詳細は後日告知予定"],
+                          event_date="2026-12-12")}
+    posts = [{"slug": "cg-toybox-novel-book-2026", "brand": "cg", "candidate_ids": [cid], "title": "t", "lede": "l", "rank": "small"}]
+    out = {"digest": [], "stories": [], "pending_add": [], "pending_remove": [],
+           "reservations": [{"slug": "cg-toybox-novel-book-2026", "candidate_id": cid, "date": d, "occurs_on": d, "kind": k,
+                             "subject": s, "note": ""} for d, k, s in [("2026-12-12", "開幕", "初日"), ("2026-12-13", "千秋楽", "2日目")]]}
+    inp = {"facts": [], "existing_story": {}, "tomorrow_reservations": [], "pending": [], "subjects": []}
+    st = tmp / "stock"; (st / "scheduled").mkdir(parents=True)
+    (tmp / "metrics").mkdir(); (tmp / "docs" / "_editions").mkdir(parents=True); (tmp / "docs" / "_posts").mkdir(parents=True)
+    assemble.dump_yaml(st / "stories.yml", [])
+    assemble.dump_yaml(st / "pending.yml", [])
+    saved = (assemble.ROOT, assemble.STORIES, assemble.SCHEDULED, assemble.PENDING, assemble.EDITIONS, compose.ROOT, pipelib.ROOT,
+             assemble.classify_source)
+    try:
+        assemble.ROOT, assemble.STORIES, assemble.SCHEDULED, assemble.PENDING, assemble.EDITIONS = \
+            tmp, st / "stories.yml", st / "scheduled", st / "pending.yml", tmp / "docs" / "_editions"
+        compose.ROOT = pipelib.ROOT = tmp
+        assemble.classify_source = lambda u: "公式"
+        rejected: list = []
+        clean, notes = assemble.validate("2026-10-30", out, posts, mats, inp, rejected)
+        got = {(r["date"], r.get("occurs_on")) for r in clean["reservations"]}
+        check(got == {("2026-12-12", "2026-12-12"), ("2026-12-13", "2026-12-13")} and not rejected,
+              f"「12月12日・13日」の千秋楽 12/13 の予約が素材に無いとされた: {got} {rejected} {notes}")
+    finally:
+        (assemble.ROOT, assemble.STORIES, assemble.SCHEDULED, assemble.PENDING, assemble.EDITIONS, compose.ROOT, pipelib.ROOT,
+         assemble.classify_source) = saved
+    # 続報予約の出来事の日(組版が出来事の日を書かない古い予約)も同じ照合で決まる
+    row = {"kind": "千秋楽", "facts": ["2026年12月12日・13日に大阪オリックス劇場で開催"], "title": "", "note": ""}
+    check(compose.reminder_event_date(row, "2026-12-13") == "2026-12-13", "続報予約の出来事の日が、日の列挙から決まらない")
+
+
 def main() -> int:
     tmp = Path(tempfile.mkdtemp(prefix="imas-test-"))
+    test_reservation_day_list_date(tmp / "rdl")
     test_assemble_run_returns_reservations(tmp / "arrr")
     test_assemble_roundup_reservation(tmp / "arr")
     test_storylink_roundup_topic(tmp / "srt")

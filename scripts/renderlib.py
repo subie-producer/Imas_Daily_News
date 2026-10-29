@@ -111,6 +111,22 @@ def years_in(text: str) -> set[int]:
     return {int(y) for y in re.findall(r"(?<!\d)(20\d{2})(?!\d)", (text or "").translate(_ZEN))}
 
 
+# 月の付いた日付のあとに、同じ月の日だけを続けた書き方(「12月12日・13日」「11月1日～8日」「10月3日(土)、4日(日)」)。
+# 続く日は月(と年)を前の日付から引き継ぐ
+_DAY_LIST_RE = re.compile(r"(?<!\d)(?:(20\d{2})\s*年\s*)?(\d{1,2})\s*月\s*(\d{1,2})\s*日(?:\s*[(（][^)）\d]{1,3}[)）])?"
+                          r"((?:\s*[・、,，～〜~\-－]\s*\d{1,2}\s*日(?:\s*[(（][^)）\d]{1,3}[)）])?)+)")
+
+
+def _spell_day_lists(hay: str) -> str:
+    """「12月12日・13日」の「13日」を「12月13日」(年があれば「2026年12月13日」)と書いた形を、文言の後ろに足す。"""
+    extra = []
+    for m in _DAY_LIST_RE.finditer(hay):
+        y, mo = m.group(1), m.group(2)
+        for day in re.findall(r"(\d{1,2})\s*日", m.group(4)):
+            extra.append(f"{y}年{mo}月{day}日" if y else f"{mo}月{day}日")
+    return hay + (" " + " ".join(extra) if extra else "")
+
+
 def date_mentioned(iso: str, hay: str, years: set[int] | None = None) -> bool:
     """その日付の書き方のどれかが文言に**日付として**現れるか。数字の境界を見る
     (「9/1」が「9/13」の一部として当たらないように)。年なしの表記(9月13日)は、その年が
@@ -121,6 +137,9 @@ def date_mentioned(iso: str, hay: str, years: set[int] | None = None) -> bool:
     except ValueError:
         return False
     hay = (hay or "").translate(_ZEN)        # 全角の数字・記号(１０/１)も日付として見る
+    # 同じ月の日の列挙・期間の終わり(「12月12日・13日」の13日)も日付として見る(2026-10-30: 12/12・13 の公演の
+    # 千秋楽 12/13 の予約を、素材に日付が無いとして捨てた)
+    hay = _spell_day_lists(hay)
     year_ok = years is None or y in years
     # 年付きの日付(2099年9月13日 / 2099/9/13 …)の月日部分を、年なし表記の照合対象から外す
     # (別の年の日付を号の年の「9月13日」として拾わない。監査指摘)

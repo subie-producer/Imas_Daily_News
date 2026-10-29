@@ -3,7 +3,7 @@ slug: shiny-style-collection-vol2-order-extension-2026
 edition: "2026-10-30"
 brand: shiny
 src: 公式
-rank: large
+rank: small
 corrected: false
 corrections: []
 candidate_ids:

@@ -295,7 +295,6 @@
   subject: シャニマス×カラオケの鉄人 PJ:REFRAC7IONS コラボの続報
   watch: 記事で「続報は後日発表」とされたコラボの詳細(判明次第 triggers へ)
   added_on: '2026-10-17'
-  removed_on: '2026-10-30'
 - dedup_key: gaku-hif-tsubame-garakt-road-gacha-announcement-2026
   brand: gaku
   subject: 学マス H.I.F編 燕実装・ガラクタロードガシャ
@@ -371,11 +370,11 @@
   added_on: '2026-10-29'
 - dedup_key: tachibana-arisu-figure-announcement-2026
   brand: cg
-  subject: 橘ありす 1/7スケールフィギュア(PLUM)
-  watch: 「近日予約開始予定」とされた予約開始日・価格と、直販限定豪華版の内容(判明次第 triggers へ)
+  subject: 橘ありす1/7スケールフィギュア(PLUM)
+  watch: 「近日」予約開始の日程・価格と直販限定豪華版の内容(判明次第 triggers へ)
   added_on: '2026-10-30'
 - dedup_key: cg-toybox-novel-book-2026
   brand: cg
   subject: 『池袋晶葉とウサちゃんロボはオモチャ箱の夢を見る』書籍化
-  watch: 「詳細は後日告知」とされた書籍の発売日・価格・先行販売の詳細(判明次第 triggers へ)
+  watch: 書籍の詳細(後日告知)。判明次第 triggers へ
   added_on: '2026-10-30'

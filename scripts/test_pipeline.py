@@ -1301,6 +1301,90 @@ def test_grok_deep_retry(tmp: Path):
     check(any("投げ直し" in m and "cg" in m for m in notes), f"投げ直しの失敗を知らせない: {notes}")
 
 
+def test_deep_answer_settles_asking_post(tmp: Path):
+    """深掘りで答えの原本が候補になった問いは、その問いを出した元の投稿を済みに数え、「失った」と通知しない。答えの原本が
+    事実なしで終わった問い・元の投稿を書いていない問いは、従来どおり名指しする。実測 2026-10-30 02:41 の cinderella 面:
+    セガ ラッキーくじの結果を共有したファンの投稿2件を確かめ役が unreadable にして問いを出し、深掘りでセガプラザ公式の
+    販売開始の投稿を候補にしたのに、2件を「X の動きを失う」と通知した。run_explores 越しに通す"""
+    import collect
+    fan1, fan2 = "https://x.com/fan/status/2115843216792826133", "https://x.com/fan/status/2115835992498385239"
+    off = "https://x.com/seganewsnavi/status/2112000993202479124"
+    item = {"title": "くじ", "brand": "cg", "kind": "party", "url": off, "link_from": "", "event_date": "",
+            "published_date": "2026-10-19", "deadline": "2026-12-04", "facts": ["くじ1回840円"], "quote": "q",
+            "dedup_key": "cg-kuji", "engagement": "中", "mentioned_idols": []}
+
+    def run(tag: str, deep_status: str, posts_field) -> list[str]:
+        root = tmp / tag
+        (root / "candidates").mkdir(parents=True)
+        notes = []
+
+        class P:
+            pid = 0
+            returncode = 0
+            def wait(self, timeout=None): return 0
+            def communicate(self, timeout=None): return None, None
+
+        def fake_popen(args, cwd=None, **kw):
+            wd = Path(cwd)
+            urls = re.findall(r"(?m)^- url:\s*(\S+)", (wd / "x-posts.md").read_text(encoding="utf-8"))
+            if "-deep" in wd.name:
+                ok = deep_status == "extracted"
+                (wd / "items.json").write_text(json.dumps([item] if ok else [], ensure_ascii=False), encoding="utf-8")
+                (wd / "posts.json").write_text(json.dumps([{"url": u, "status": deep_status, "item": off if ok else ""} for u in urls]),
+                                               encoding="utf-8")
+            else:
+                (wd / "items.json").write_text("[]", encoding="utf-8")
+                (wd / "posts.json").write_text(json.dumps([{"url": u, "status": "unreadable", "item": ""} for u in urls]),
+                                               encoding="utf-8")
+                ask = {"question": "公式の告知は", "why": "共有の文面だけ"}
+                if posts_field is not None:
+                    ask["posts"] = posts_field
+                (wd / "deep.json").write_text(json.dumps([ask], ensure_ascii=False), encoding="utf-8")
+            return P()
+
+        def basic(queries, outdir, errs):
+            (outdir / "cinderella.md").write_text(f"### 1\n- url: {fan1}\n- 本文: くじの結果\n\n### 2\n- url: {fan2}\n- 本文: くじの結果\n",
+                                                  encoding="utf-8")
+            return []
+
+        def dive(queries, outdir, chosen, errs, suffix="-deep", retry=False):
+            (outdir / f"cinderella{suffix}.md").write_text(f"### 1\n- url: {off}\n- 問い: 1\n- 本文: 販売開始\n", encoding="utf-8")
+            return set()
+        names = ("ROOT", "build_prompts", "grok_basic", "deep_dive_grok", "grok_week_usage", "grok_search_counts", "notify",
+                 "prompt_file", "save_raw", "explore_workdir")
+        saved = {n: getattr(collect, n) for n in names}
+        saved_popen = collect.subprocess.Popen
+        try:
+            collect.ROOT = root
+            collect.build_prompts = lambda: [{"key": "cinderella", "brand": "cg", "topic": "t"}]
+            collect.grok_basic, collect.deep_dive_grok = basic, dive
+            collect.grok_week_usage = lambda *a: 0
+            collect.grok_search_counts = lambda since: {}
+            collect.notify = lambda job, msg, ok=True, require=False: notes.append(msg) or True
+            collect.prompt_file = lambda date, name, prompt, base=None: "p"
+            collect.save_raw = lambda *a, **kw: None
+            collect.explore_workdir = lambda key: (root / "wd" / key).mkdir(parents=True) or root / "wd" / key
+            collect.subprocess.Popen = fake_popen
+            collect.run_explores(True, False)
+        finally:
+            for n, v in saved.items():
+                setattr(collect, n, v)
+            collect.subprocess.Popen = saved_popen
+        return [m for m in notes if "X の動きを失う" in m]
+    # 答えの原本が候補になった: 問いを出した2件は失っていない(x.com/i/status の形で書かれても同じ投稿)
+    lost = run("ok", "extracted", [fan1, fan2.replace("/fan/", "/i/")])
+    check(not lost, f"深掘りで答えの原本を候補にした問いの元の投稿を、失ったと通知した: {lost}")
+    # 元の投稿を1件しか挙げていない問い: 挙げていない投稿は名指しする
+    lost = run("one", "extracted", [fan1])
+    check(len(lost) == 1 and fan2 in lost[0] and fan1 not in lost[0], f"問いが挙げていない投稿まで済みにした: {lost}")
+    # 答えの原本が事実なし: 元の投稿の話題は素材に入っていないので名指しする
+    lost = run("none", "none", [fan1, fan2])
+    check(len(lost) == 1 and fan1 in lost[0] and fan2 in lost[0], f"答えが事実なしの問いの元の投稿を済みにした: {lost}")
+    # 問いに元の投稿が書かれていない(従来の形): 名指しする
+    lost = run("legacy", "extracted", None)
+    check(len(lost) == 1 and fan1 in lost[0] and fan2 in lost[0], f"元の投稿の無い問いで投稿を済みにした: {lost}")
+
+
 def test_grok_verify_keeps_what_it_counts(tmp: Path):
     """X の投稿の確かめで、候補にする判定と投稿を済みと数える判定が同じ(candidate_usable)。2026-10-22 02:39 の gakuen 面: 確かめ役が
     kind にアイドル名の配列を入れた候補は、欄を落として候補になったのに投稿は「結果が無い」と数え、「失った」と通知した。
@@ -20820,6 +20904,7 @@ def main() -> int:
     test_lost_post_notified_once(tmp / "lpn")
     test_grok_verify_keeps_what_it_counts(tmp / "gvk")
     test_grok_deep_retry(tmp / "gdr")
+    test_deep_answer_settles_asking_post(tmp / "dasp")
     test_review_failed_changed_article(tmp / "rfc")
     test_review_unchecked_scope_not_approved(tmp / "rus")
     test_leave_tree_clean_partial(tmp / "ltc")

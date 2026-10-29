@@ -1325,7 +1325,7 @@ def backfill_post_links(day: str, root: Path = ROOT) -> int:
 
 
 def verify_grok_faces(queries: list[dict], outdir: Path, suffix: str = "",
-                      ledger: dict | None = None) -> tuple[list[dict], dict[str, list[dict]]]:
+                      ledger: dict | None = None, asked: dict[str, list[dict]] | None = None) -> tuple[list[dict], dict[str, list[dict]]]:
     """Grok が書き出した X の投稿(<key><suffix>.md)を、面ごとに Luna が読み、リンク先を開いて確かめて候補にする(並列)。
     戻りは (候補, 面 → X の原本でしか確かめられない問い)。「なし」だけの面・ファイルの無い面は飛ばす。
     投稿ごとの結果(posts.json)と入力の投稿を突き合わせ、結果の無い投稿だけで1回やり直す(suffix に -again)。
@@ -1333,6 +1333,8 @@ def verify_grok_faces(queries: list[dict], outdir: Path, suffix: str = "",
     喪失を通知し、渡されたら通知は呼び手が最後の段(深掘りの確かめ)のあとで report_lost_posts で1度だけ出す
     (深掘りの前に通知すると、深掘りで済んだ投稿を失ったと言い、深掘りでも読めない投稿は二度通知した。当番の指摘 11fc3de74b)。
     深掘りの確かめ(suffix に -deep)の問い(deep.json)は使わないので、読まず、読めなくても通知しない。
+    asked は深掘りの確かめに渡す、面 → 深掘りに出した問いの並び(書き出しの「- 問い: 番号」の番号順)。答えの投稿が候補になった問いは、
+    その問いを出した元の投稿(問いの posts)を済みに数える(ask_settled_posts)。
     Luna は探索と同じくリポジトリ外の作業ディレクトリで走る(ページの中身に指示が仕込まれていても、リポジトリに手が届かない)。"""
     own = ledger is None
     if own:
@@ -1407,6 +1409,8 @@ def verify_grok_faces(queries: list[dict], outdir: Path, suffix: str = "",
         ledger.setdefault("stray", []).extend((q["key"], u) for u in stray)
         left_keys = {post_key(post_url(b)) for b in left}
         ledger["settled"] |= {k for k in map(post_key, map(post_url, post_blocks(text))) if k and k not in left_keys}
+        if asked and q["key"] in asked and got is not None:
+            ledger["settled"] |= ask_settled_posts(text, read_json_list(wd / "posts.json"), left_keys, asked[q["key"]])
         if left and not final:
             # 残った投稿だけを <key><suffix>-again.md に書き出し、もう1回だけ確かめさせる(下でまとめて)
             (outdir / f"{q['key']}{suffix}-again.md").write_text("\n\n".join(left) + "\n", encoding="utf-8")
@@ -1439,7 +1443,7 @@ def verify_grok_faces(queries: list[dict], outdir: Path, suffix: str = "",
     print(f"grok: 確かめ{suffix or ''} {len(jobs)}面 → 候補 {len(items)}件、原本の問い {sum(len(v) for v in deep.values())}件", flush=True)
     if again:
         print(f"grok: 結果の無い投稿が残った面 {', '.join(q['key'] for q in again)} を、残った投稿だけでもう1回確かめる", flush=True)
-        more, more_deep = verify_grok_faces(again, outdir, suffix=suffix + "-again", ledger=ledger)
+        more, more_deep = verify_grok_faces(again, outdir, suffix=suffix + "-again", ledger=ledger, asked=asked)
         items += more
         for k, v in more_deep.items():
             deep.setdefault(k, []).extend(v)
@@ -1723,6 +1727,27 @@ def deep_dive_grok(queries: list[dict], outdir: Path, chosen: dict[str, list[dic
 DEEP_ASK_NO = re.compile(r"(?m)^\s*[-*・]?\s*問い\s*[:：]\s*(\d+)")
 
 
+def ask_settled_posts(text: str, results, left_keys: set[str], asks: list[dict]) -> set[str]:
+    """深掘りの確かめで、答えの投稿が候補になった(結果が extracted で済んだ)問いについて、その問いを出した元の投稿の鍵(問いの posts)。
+    元の投稿は、確かめ役が自分では確かめられず問いにした投稿で、答えの原本が候補になれば、その投稿の話題は紙面の素材に入っている。
+    これを済みに数えないと、深掘りで公式の告知を候補にしたのに、問いを出したファンの共有の投稿を「失った」と通知した
+    (2026-10-30 02:41 の cinderella 面: くじの結果の共有2件 → 深掘りでセガプラザ公式の販売開始の投稿を候補にした)。
+    答えの投稿と問いの結び付きは unanswered_asks と同じ(「- 問い: 番号」、番号の無い答えは問いが1つのときだけその問い)。"""
+    extracted = {post_key(r["url"]) for r in (results if isinstance(results, list) else [])
+                 if schema_ok(r, POST_RESULT_SCHEMA) and r["status"] == "extracted"}
+    out: set[str] = set()
+    for b in post_blocks(text):
+        k = post_key(post_url(b))
+        if not k or k in left_keys or k not in extracted:
+            continue
+        m = DEEP_ASK_NO.search(b)
+        n = int(m.group(1)) if m else (1 if len(asks) == 1 else 0)
+        if 1 <= n <= len(asks):
+            out |= {post_key(u) for u in asks[n - 1].get("posts") or [] if u.strip()}
+    out.discard("")
+    return out
+
+
 def unanswered_asks(text: str, asks: list[dict]) -> list[dict]:
     """深掘りの書き出しで、答えの投稿(url のある塊の「- 問い: 番号」)が1つも無かった問い。
     番号の無い答えの投稿は、問いが1つならその問いの答えとみなす。問いが複数で番号の無い答えがあれば、どの問いの答えか
@@ -1912,7 +1937,7 @@ def run_explores(skip_explore: bool, skip_grok: bool) -> tuple[list[dict], dict]
                 if lost:
                     notify("collect", "Grok の深掘りが時間切れ・異常終了し、X の原本の確かめを失った面: "
                                       + ", ".join(f"{k}({grok_errs.get(k, '')[:120]})" for k in lost), ok=False)
-                more, _ = verify_grok_faces([q for q in queries if q["key"] in chosen], outdir, suffix="-deep", ledger=ledger)
+                more, _ = verify_grok_faces([q for q in queries if q["key"] in chosen], outdir, suffix="-deep", ledger=ledger, asked=chosen)
                 got += more
                 # 答えの投稿が無かった問いは、予算の範囲で1回だけ、違う角度で投げ直す(「見つからない」で終えない。
                 # 2026-10-09: アスラン=BBⅡ世の誕生日ガシャの公式告知を1〜2回の検索で「見つからない」として、その号に載らなかった)。
@@ -1936,7 +1961,8 @@ def run_explores(skip_explore: bool, skip_grok: bool) -> tuple[list[dict], dict]
                         # 投げ直しの失敗も、1回目と同じく名指しで異常にする(黙って問いの確かめを失わない。監査指摘)
                         notify("collect", "Grok の深掘りの投げ直しが時間切れ・異常終了し、X の原本の確かめを失った面: "
                                           + ", ".join(f"{k}({grok_errs.get(k, '')[:120]})" for k in lost2), ok=False)
-                    more, _ = verify_grok_faces([q for q in queries if q["key"] in chosen2], outdir, suffix="-deep2", ledger=ledger)
+                    more, _ = verify_grok_faces([q for q in queries if q["key"] in chosen2], outdir, suffix="-deep2", ledger=ledger,
+                                                asked=chosen2)
                     got += more
         report_lost_posts(ledger)
         for t in taken:     # 読み直しの列は確かめ終えたら消す(止まった面は確かめ役が列に足し直している)
@@ -2120,7 +2146,8 @@ POST_RESULT_SCHEMA = {"type": "object", "required": ["url", "status", "item"],
                       "properties": {"url": {"type": "string", "minLength": 1},
                                      "status": {"enum": ["extracted", "none", "unreadable"]}, "item": {"type": "string"}}}
 DEEP_ASK_SCHEMA = {"type": "object", "required": ["question"],
-                   "properties": {"question": {"type": "string", "minLength": 1}, "why": _S}}
+                   "properties": {"question": {"type": "string", "minLength": 1}, "why": _S,
+                                  "posts": {"type": "array", "items": {"type": "string"}}}}
 
 
 def item_intact(it) -> bool:

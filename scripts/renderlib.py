@@ -115,15 +115,20 @@ def years_in(text: str) -> set[int]:
 # 続く日は月(と年)を前の日付から引き継ぐ
 _DAY_LIST_RE = re.compile(r"(?<!\d)(?:(20\d{2})\s*年\s*)?(\d{1,2})\s*月\s*(\d{1,2})\s*日(?:\s*[(（][^)）\d]{1,3}[)）])?"
                           r"((?:\s*[・、,，～〜~\-－]\s*\d{1,2}\s*日(?:\s*[(（][^)）\d]{1,3}[)）])?)+)")
+# スラッシュの書き方(「11/7・8」「2026/8/13・14」「11/1～8」)。続く日に「日」が付かないので、後ろが別の日付・時刻・
+# 小数(「8/9」「8:00」「8.5」)の数字は日として読まない
+_SLASH_DAY_LIST_RE = re.compile(r"(?<![\d/])(?:(20\d{2})\s*/\s*)?(\d{1,2})\s*/\s*(\d{1,2})(?![\d/])(?:\s*[(（][^)）\d]{1,3}[)）])?"
+                                r"((?:\s*[・、,，～〜~\-－]\s*\d{1,2}(?![\d/:.月])\s*日?(?:\s*[(（][^)）\d]{1,3}[)）])?)+)")
 
 
 def _spell_day_lists(hay: str) -> str:
-    """「12月12日・13日」の「13日」を「12月13日」(年があれば「2026年12月13日」)と書いた形を、文言の後ろに足す。"""
+    """「12月12日・13日」「11/7・8」の後ろの日を「12月13日」「11月8日」(年があれば「2026年12月13日」)と書いた形を、文言の後ろに足す。"""
     extra = []
-    for m in _DAY_LIST_RE.finditer(hay):
-        y, mo = m.group(1), m.group(2)
-        for day in re.findall(r"(\d{1,2})\s*日", m.group(4)):
-            extra.append(f"{y}年{mo}月{day}日" if y else f"{mo}月{day}日")
+    for rx, day_re in ((_DAY_LIST_RE, r"(\d{1,2})\s*日"), (_SLASH_DAY_LIST_RE, r"(\d{1,2})")):
+        for m in rx.finditer(hay):
+            y, mo = m.group(1), m.group(2)
+            for day in re.findall(day_re, m.group(4)):
+                extra.append(f"{y}年{mo}月{day}日" if y else f"{mo}月{day}日")
     return hay + (" " + " ".join(extra) if extra else "")
 
 

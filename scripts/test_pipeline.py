@@ -20750,18 +20750,16 @@ def test_reservation_day_list_date(tmp: Path):
                            ("2026-11-08", "11月1日～8日まで", True), ("2026-10-04", "１０月３日、４日", True),
                            ("2026-12-12", "2026年12月12日・13日に開催", True), ("2026-11-13", "2026年12月12日・13日に開催", False),
                            ("2099-12-13", "12月12日・13日", False), ("2026-12-14", "2026年12月12日・13日に開催", False),
-                           ("2026-12-13", "2099年12月12日・13日", False)]:
+                           ("2026-12-13", "2099年12月12日・13日", False),
+                           # スラッシュの書き方(実データ stock/scheduled/2026-11-07.json「ファイナル公演は11/7・8開催」、
+                           # candidates/2026-07-15.json「Zepp Namba(大阪、8/6・7)」。監査指摘)
+                           ("2026-11-08", "ファイナル公演は11/7・8開催", True), ("2026-08-07", "Zepp Namba(大阪、8/6・7)", True),
+                           ("2026-08-28", "Zepp Nagoya(8/13・14)、Zepp Haneda(東京、8/27・28)", True),
+                           ("2026-11-08", "11/7(土)・8(日)", True), ("2026-11-08", "11/1～8", True), ("2026-11-08", "2026/11/7・8", True),
+                           ("2026-12-08", "11/7・8", False), ("2026-11-09", "11/7・8", False), ("2099-11-08", "11/7・8", False),
+                           ("2026-11-08", "2099/11/7・8", False), ("2026-11-08", "11/7・8:00開演", False),
+                           ("2026-11-08", "11/7・8/9", False), ("2026-11-08", "11/7、8.5cm", False)]:
         check(renderlib.date_mentioned(iso, hay, {2026}) == want, f"日の列挙の照合が違う: {iso} / {hay} → {not want}")
-    cid = "202610300224-grok-6"
-    mats = {cid: cand_row(cid, "https://x.com/imas_CGofficial/status/2115654861718990986", title="『池袋晶葉とウサちゃんロボはオモチャ箱の夢を見る』書籍化",
-                          brand="cg", dedup_key="cg-toybox-novel-book-2026",
-                          facts=["『池袋晶葉とウサちゃんロボはオモチャ箱の夢を見る』の書籍化が決定",
-                                 "2026年12月12日・13日に大阪オリックス劇場で開催するリバイバルxR公演にて先行販売予定", "詳細は後日告知予定"],
-                          event_date="2026-12-12")}
-    posts = [{"slug": "cg-toybox-novel-book-2026", "brand": "cg", "candidate_ids": [cid], "title": "t", "lede": "l", "rank": "small"}]
-    out = {"digest": [], "stories": [], "pending_add": [], "pending_remove": [],
-           "reservations": [{"slug": "cg-toybox-novel-book-2026", "candidate_id": cid, "date": d, "occurs_on": d, "kind": k,
-                             "subject": s, "note": ""} for d, k, s in [("2026-12-12", "開幕", "初日"), ("2026-12-13", "千秋楽", "2日目")]]}
     inp = {"facts": [], "existing_story": {}, "tomorrow_reservations": [], "pending": [], "subjects": []}
     st = tmp / "stock"; (st / "scheduled").mkdir(parents=True)
     (tmp / "metrics").mkdir(); (tmp / "docs" / "_editions").mkdir(parents=True); (tmp / "docs" / "_posts").mkdir(parents=True)
@@ -20774,17 +20772,30 @@ def test_reservation_day_list_date(tmp: Path):
             tmp, st / "stories.yml", st / "scheduled", st / "pending.yml", tmp / "docs" / "_editions"
         compose.ROOT = pipelib.ROOT = tmp
         assemble.classify_source = lambda u: "公式"
-        rejected: list = []
-        clean, notes = assemble.validate("2026-10-30", out, posts, mats, inp, rejected)
-        got = {(r["date"], r.get("occurs_on")) for r in clean["reservations"]}
-        check(got == {("2026-12-12", "2026-12-12"), ("2026-12-13", "2026-12-13")} and not rejected,
-              f"「12月12日・13日」の千秋楽 12/13 の予約が素材に無いとされた: {got} {rejected} {notes}")
+        for cid, slug, fact, days in [
+                ("202610300224-grok-6", "cg-toybox-novel-book-2026",
+                 "2026年12月12日・13日に大阪オリックス劇場で開催するリバイバルxR公演にて先行販売予定", ("2026-12-12", "2026-12-13")),
+                ("c-shirube-final", "gaku-shirube-finale-ticket-buzz", "ファイナル公演は11/7・8開催、同日事前グッズ販売開始",
+                 ("2026-11-07", "2026-11-08"))]:
+            mats = {cid: cand_row(cid, "https://x.com/imas_CGofficial/status/2115654861718990986", title="t", brand="cg",
+                                  dedup_key=slug, facts=["2026年の公演", fact], event_date=days[0])}
+            posts = [{"slug": slug, "brand": "cg", "candidate_ids": [cid], "title": "t", "lede": "l", "rank": "small"}]
+            out = {"digest": [], "stories": [], "pending_add": [], "pending_remove": [],
+                   "reservations": [{"slug": slug, "candidate_id": cid, "date": d, "occurs_on": d, "kind": k,
+                                     "subject": sj, "note": ""} for d, k, sj in [(days[0], "開幕", "初日"), (days[1], "千秋楽", "2日目")]]}
+            rejected: list = []
+            clean, notes = assemble.validate("2026-10-30", out, posts, mats, inp, rejected)
+            got = {(r["date"], r.get("occurs_on")) for r in clean["reservations"]}
+            check(got == {(d, d) for d in days} and not rejected,
+                  f"「{fact}」の千秋楽 {days[1]} の予約が素材に無いとされた: {got} {rejected} {notes}")
     finally:
         (assemble.ROOT, assemble.STORIES, assemble.SCHEDULED, assemble.PENDING, assemble.EDITIONS, compose.ROOT, pipelib.ROOT,
          assemble.classify_source) = saved
     # 続報予約の出来事の日(組版が出来事の日を書かない古い予約)も同じ照合で決まる
     row = {"kind": "千秋楽", "facts": ["2026年12月12日・13日に大阪オリックス劇場で開催"], "title": "", "note": ""}
     check(compose.reminder_event_date(row, "2026-12-13") == "2026-12-13", "続報予約の出来事の日が、日の列挙から決まらない")
+    row = {"kind": "千秋楽", "facts": ["ファイナル公演は11/7・8開催"], "title": "", "note": ""}
+    check(compose.reminder_event_date(row, "2026-11-08") == "2026-11-08", "続報予約の出来事の日が、スラッシュの日の列挙から決まらない")
 
 
 def main() -> int:

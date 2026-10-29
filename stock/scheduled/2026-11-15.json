@@ -1368,12 +1368,12 @@
   "src_dedup_key": "valiv-3rd-live-qonnect-as-one-2027"
  },
  {
-  "id": "sched-2026-11-15-shiny-sweets-paradise-cafe-2026-終了",
+  "id": "sched-2026-11-15-shiny-sweets-paradise-cafe-2026-千秋楽",
   "dedup_key": "shiny-sweets-paradise-cafe-2026",
   "brand": "shiny",
-  "subject": "シャニマス×スイパラ 名古屋栄店",
-  "kind": "終了",
-  "note": "名古屋栄店の最終日。コラボカフェに行ける最後の日",
+  "subject": "シャニマス×スイパラカフェ 名古屋栄店 最終日",
+  "kind": "千秋楽",
+  "note": "名古屋栄店でコラボカフェに行ける最終日",
   "reserved_on": "2026-10-30",
   "occurs_on": "2026-11-15",
   "title": "シャニマスコラボカフェが3店舗で開催",
@@ -1412,12 +1412,12 @@
   "src_candidate_id": "202610292334-explore-8"
  },
  {
-  "id": "sched-2026-11-15-shiny-sweets-paradise-cafe-2026-終了-src1",
+  "id": "sched-2026-11-15-shiny-sweets-paradise-cafe-2026-千秋楽-src1",
   "dedup_key": "shiny-sweets-paradise-cafe-2026",
   "brand": "shiny",
-  "subject": "シャニマス×スイパラ 名古屋栄店",
-  "kind": "終了",
-  "note": "名古屋栄店の最終日。コラボカフェに行ける最後の日",
+  "subject": "シャニマス×スイパラカフェ 名古屋栄店 最終日",
+  "kind": "千秋楽",
+  "note": "名古屋栄店でコラボカフェに行ける最終日",
   "reserved_on": "2026-10-30",
   "occurs_on": "2026-11-15",
   "title": "I'm a Cutie Finder × スイーツパラダイスコラボカフェ",
@@ -1490,7 +1490,7 @@
   "event_date": "2026-10-30",
   "deadline": "2026-11-24",
   "src_candidate_id": "sched-2026-10-30-shiny-sweets-paradise-cafe-2026-開幕",
-  "companion_of": "sched-2026-11-15-shiny-sweets-paradise-cafe-2026-終了",
+  "companion_of": "sched-2026-11-15-shiny-sweets-paradise-cafe-2026-千秋楽",
   "src_dedup_key": "shiny-sweets-paradise-cafe-2026"
  }
 ]

@@ -124,5 +124,49 @@
    },
    "duration_s": 2287
   }
+ ],
+ "compose": [
+  {
+   "at": "2026-10-30T03:47:00+09:00",
+   "edition": "2026-10-30",
+   "rounds": 5,
+   "approved": true,
+   "lint_green": true,
+   "planned": 49,
+   "written": 39,
+   "roundups": 1,
+   "dropped": 0,
+   "coverage": {
+    "subjects": 232,
+    "covered": 232,
+    "missing": 0,
+    "missing_keys": []
+   },
+   "dropped_by_review": [
+    "shiny-karaoke-tetsujin-concept-room-2026"
+   ],
+   "stages_min": {
+    "選定": 2.643953859806061,
+    "執筆": 7.40252681573232,
+    "出典の判定": 0.7960511088371277,
+    "組版": 1.2112493594487508,
+    "校閲": 0.7258174180984497,
+    "校閲1波": 0.7258174180984497
+   },
+   "target_min": 60,
+   "over_target": false,
+   "aborted": [
+    "sidem-teddys-collection-ii-goods",
+    "sidem-passion-challenge-monthly-song-12-cafe-parade-2026",
+    "gaku-gakumas-amayo-kisama-kentei-2026",
+    "million-event-yoru-to-akari-to-2026",
+    "million-gasha-shs-glasses-sayoko-ritsuko-2026",
+    "million-theater-talk-party-vol-68-2026",
+    "cg-cinderella-fes-blanc-2026-10",
+    "cg-cinderella-astromeda-popup-akihabara-2026",
+    "sidem-legenders-refrain-atrium-ensemble-2026"
+   ],
+   "duration_s": 2774
+  }
  ]
 }

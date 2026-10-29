@@ -699,12 +699,12 @@
   "src_candidate_id": "sched-2026-10-29-sidem-315pro-night-goods-2026-締切前"
  },
  {
-  "id": "sched-2026-12-12-cg-toybox-novel-book-2026-開幕",
+  "id": "sched-2026-12-12-cg-toybox-novel-book-2026-発売",
   "dedup_key": "cg-toybox-novel-book-2026",
   "brand": "cg",
-  "subject": "リバイバルxR公演(大阪・オリックス劇場)",
-  "kind": "開幕",
-  "note": "公演初日。書籍『オモチャ箱の夢を見る』が会場で先行販売される",
+  "subject": "『池袋晶葉とウサちゃんロボはオモチャ箱の夢を見る』書籍 先行販売",
+  "kind": "発売",
+  "note": "大阪・オリックス劇場のリバイバルxR公演会場で書籍を先行購入できる",
   "reserved_on": "2026-10-30",
   "occurs_on": "2026-12-12",
   "title": "『池袋晶葉とウサちゃんロボはオモチャ箱の夢を見る』書籍化",

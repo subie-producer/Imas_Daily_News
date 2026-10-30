@@ -12503,6 +12503,88 @@ def test_release_dry_run_no_push(tmp: Path):
     check(seen == [(True, True)], f"--dry-run が発行なら出す origin の中身でなく、遅れた手元の中身を点検した: {seen}")
 
 
+def test_deploy_notice(tmp: Path):
+    """配信の成功の通知は、何が変わったか(足した・訂正した・直した・外した記事)と、外から新しい版が見えたかを言う。
+    毎回同じ「パージ省略」「アプリのコードに変更なし」は出さない。発行からの配信は成功を知らせない(発行の通知に載る)。
+    外から新しい版が見えなければ、発行からの配信でも異常として知らせる(編集長 2026-10-31「意味のあるログになってるかな?」)。"""
+    import datetime
+    import deploy
+    import release
+    root, srv = tmp / "root", tmp / "srv"
+    posts = root / "docs" / "_posts"
+    posts.mkdir(parents=True)
+    def post(name, title, corrections=0, body="本文"):
+        corr = "corrections: []\n" if not corrections else "corrections:\n" + "".join(
+            f"- at: '2026-10-31T06:{i:02d}:00+09:00'\n  note: n\n" for i in range(corrections))
+        (posts / name).write_text(f"---\ntitle: {title}\n{corr}---\n{body}\n", encoding="utf-8")
+    post("2026-10-30-a.md", "記事A")
+    post("2026-10-30-b.md", "記事B")
+    post("2026-10-30-c.md", "記事C")
+    releases, current = srv / "releases", srv / "current"
+    notes, served = [], {"id": None}
+    names = iter([f"20261031T0{m}0000" for m in range(6, 10)])
+    saved = {k: getattr(deploy, k) for k in ("ROOT", "SRV", "RELEASES", "CURRENT", "build", "purge_cache", "notify", "sync_app",
+                                             "now_jst", "reindex", "served_release_id")}
+    saved_argv = sys.argv
+
+    def fake_build(dest: Path, timeout=None):
+        for rel in deploy.REQUIRED + [f"articles/{p.stem}/index.html" for p in posts.glob("*.md")]:
+            p = dest / rel
+            p.parent.mkdir(parents=True, exist_ok=True)
+            p.write_text("版", encoding="utf-8")
+
+    def run(*argv):
+        notes.clear()
+        sys.argv = ["deploy.py", *argv]
+        return deploy.main()
+    try:
+        deploy.ROOT, deploy.SRV, deploy.RELEASES, deploy.CURRENT = root, srv, releases, current
+        deploy.build, deploy.sync_app, deploy.purge_cache = fake_build, (lambda: False), (lambda: "")
+        deploy.notify = lambda job, msg, ok=True, **k: notes.append((ok, msg)) or True
+        deploy.now_jst = lambda: datetime.datetime.strptime(next(names), "%Y%m%dT%H%M%S")
+        deploy.reindex = lambda run_id, timeout=None: len(list(posts.glob("*.md")))
+        deploy.served_release_id = lambda: served["id"] or (current / deploy.RELEASE_ID).read_text(encoding="utf-8").strip()
+        # 1回目: 前の控えが無い
+        check(run() == 0 and any(ok and "数えられない" in m and "外から新しい版を確認" in m for ok, m in notes),
+              f"前の控えが無い配信の通知: {notes}")
+        # 2回目(手での配信): 足した・訂正した・直した・外した記事を見出しで言い、毎回同じ文言は出さない
+        post("2026-10-31-d.md", "記事D")
+        post("2026-10-30-a.md", "記事A", corrections=1, body="直した本文")
+        post("2026-10-30-b.md", "記事B", body="書き換えた本文")
+        (posts / "2026-10-30-c.md").unlink()
+        check(run() == 0 and len(notes) == 1, f"手での配信の成功が1通にならない: {notes}")
+        ok, m = notes[0] if notes else (False, "")
+        check(ok and "足した記事 1本(「記事D」)" in m and "訂正した記事 1本(「記事A」)" in m and "直した記事 1本(「記事B」)" in m
+              and "外した記事 1本(「記事C」)" in m and "外から新しい版を確認" in m
+              and "パージ省略" not in m and "アプリのコードに変更なし" not in m, f"変わった記事を言わない・毎回同じ文言を出す: {m}")
+        # 3回目(発行からの配信): 成功は知らせず、結果の行を出す。release はその行を通知に載せる
+        import contextlib
+        import io
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            rc = run("--from-release")
+        check(rc == 0 and not notes and f"{deploy.RESULT_MARK}外から新しい版を確認" in buf.getvalue(),
+              f"発行からの配信の成功を重ねて知らせた・結果の行を出さない: {notes} {buf.getvalue()[-200:]}")
+        # 4回目: 外から見える版が違う → 発行からの配信でも異常として知らせる
+        served["id"] = "20261031T060000"
+        check(run("--from-release") == 0 and any(not ok and "外から見える版が違う" in m for ok, m in notes),
+              f"外から新しい版が見えないのに知らせない: {notes}")
+    finally:
+        for k, v in saved.items():
+            setattr(deploy, k, v)
+        sys.argv = saved_argv
+    # release は deploy の結果の行を成功の通知に載せ、deploy には発行からの配信と伝える
+    saved_run, asked = subprocess.run, []
+    try:
+        subprocess.run = lambda cmd, *a, **k: asked.append(cmd) or subprocess.CompletedProcess(
+            cmd, 0, f"検証OK\n{deploy.RESULT_MARK}外から新しい版を確認\n{deploy.STATE_MARK}current・索引とも新しい版\n", "")
+        out = release.deploy_site()
+    finally:
+        subprocess.run = saved_run
+    check(out == "自前オリジンへ配信済み(外から新しい版を確認)。" and asked and "--from-release" in asked[0]
+          and release.DEPLOY_RESULT_MARK == deploy.RESULT_MARK, f"release が配信の結果を載せない・発行からと伝えない: {out!r} {asked}")
+
+
 def test_deploy_index_failure(tmp: Path):
     """current を切り替えた後に索引の更新が落ちたら、current を索引が取り込んだリリース(索引の run_id)へ戻してパージし、
     実態どおりに知らせる(監査指摘 ar7-4: 新しい静的と古い索引が残り、取り下げた記事が検索に残った)。前の配信が索引の状態を
@@ -12570,12 +12652,14 @@ def test_deploy_index_failure(tmp: Path):
     stamps = iter(names)
     saved = {k: getattr(deploy, k) for k in ("ROOT", "SRV", "RELEASES", "CURRENT", "build", "purge_cache", "notify", "sync_app",
                                              "now_jst", "INDEX_ATTEMPTS", "INDEX_RETRY_SEC", "reindex", "indexed_run",
-                                             "INDEX_TIMEOUT_SEC", "INDEX_MIN_SEC", "RESERVE_SEC") if hasattr(deploy, k)}
+                                             "INDEX_TIMEOUT_SEC", "INDEX_MIN_SEC", "RESERVE_SEC", "served_release_id") if hasattr(deploy, k)}
     saved_db, saved_argv = getattr(deploy, "DB", None), sys.argv
     lock = sqlite3.connect(db)
     try:
         deploy.ROOT, deploy.SRV, deploy.RELEASES, deploy.CURRENT = root, srv, releases, current
         deploy.DB = db
+        # 外から見える版は、試験の current の印を読む(本物の公開の URL を叩かない)
+        deploy.served_release_id = lambda: (current / deploy.RELEASE_ID).read_text(encoding="utf-8").strip()
         deploy.build, deploy.sync_app = fake_build, (lambda: False)
         deploy.purge_cache = lambda: purges.append(True) or "パージ(試験)"
         deploy.notify = lambda job, msg, ok=True, **k: notes.append((ok, msg)) or True
@@ -20755,6 +20839,7 @@ def main() -> int:
     test_release_squash_conflict(tmp / "rsc")
     test_release_dry_run_no_push(tmp / "rdr")
     test_deploy_index_failure(tmp / "dif")
+    test_deploy_notice(tmp / "dn")
     test_correction_append_only(tmp / "cao")
     test_indexer_tag_dictionary(tmp / "itd")
     test_remove_worktree(tmp / "rmw")

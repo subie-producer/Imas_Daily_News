@@ -51,7 +51,7 @@ from pipelib import (ENV, ROOT, COLLECT_MODEL, CODEX_WRITE_MODEL, EXPLORE_MODEL,
                      extract_json_array, git, notify, notify_crash, now_jst, prompt_part, render_prompt,
                      X_ANON_POST, x_post_author, x_status_time, align_x_published_date,
                      CLI_BLOCKED, CLI_BLOCKED_EXIT, CLI_STOPPED, CliBlocked, cli_blocked_reason, cli_check, grok_session_reasons,
-                     scratch_dir, link_key, polite_urlopen)
+                     scratch_dir, link_key, polite_urlopen, check_seconds, CHECK_SECONDS_DEFAULT, SLOT_MARGIN_MIN)
 from storylink import url_key
 import page_archive
 # モデル・道具のセッションの起動と回収(自前のプロセスグループ。時間切れ・中断では子孫まで止める)
@@ -2643,11 +2643,27 @@ def main() -> int:
         _TERM.update(defer=False, got=False)
 
 
+# 合議(判定表の更新)は収集の締切のあと、この秒数まで使ってよい(次の定時工程の5分前まで)。締切は見回りなどの全段が使い切る上限なので、
+# 最後に回る合議には残りが無い(2026-10-29 02:43 は残り 112 秒、10-31 02:44 は 55 秒で時間切れ。合議は実測で最大 193 秒)。
+# 合議のあとは付け直し・lint・commit の 20 秒ほどで、03:00 の組版の開始を妨げない
+CLASSIFY_GRACE_SEC = (SLOT_MARGIN_MIN - 5) * 60
+
+
+def classify_left(cap: float) -> float:
+    """合議に待たせてよい秒数(締切の無い実行は cap)"""
+    return cap if not DEADLINE else max(0.0, min(cap, DEADLINE + CLASSIFY_GRACE_SEC - time.time()))
+
+
+def classify_estimate() -> float:
+    """合議の所要の見込み。直近の実測の最大だが、新規の少ない回の実測だけで下限より短くしない(02:00 の収集の合議は件数が多い)"""
+    return max(CHECK_SECONDS_DEFAULT["classify"], check_seconds("classify"))
+
+
 def classify_then_retag(date: str) -> tuple[bool, str]:
     """判定表の更新 → 紙面の種別付け直し → lint の取引(classify_retag_lint)。合議の失敗で戻したら、いまの判定表・判定のコードで決まる
     付け直しまで戻るので、合議を飛ばして付け直し → lint だけを掛け直す(2026-10-27 Sol 監査。組版の出典の判定と同じ)。
     戻りは合議の取引の (成否, 理由)。掛け直しが「戻せない」で終わったら、その理由を返す"""
-    ok, why = classify_retag_lint(date, timeout=max(1, int(session_left(1800))))
+    ok, why = classify_retag_lint(date, timeout=max(1, int(classify_left(1800))))
     if not ok and "戻せない" not in why:
         ok_rt, why_rt = classify_retag_lint(date, timeout=max(1, int(session_left(600))), judge=False)
         if not ok_rt and "戻せない" in why_rt:
@@ -2716,9 +2732,10 @@ def run_collect(args, date: str, branch: str, t0: float) -> int:
         # 当番の取り直しでは判定表の取引(合議。単独で最大30分)をしない。取り直しは次の定時工程の前に終えて、
         # 素材を commit するのが先(監査指摘)。未知の出典の判定は次の定時収集で行う
         print("当番の取り直しのため、未知の出典の判定は次の定時収集で行う", flush=True)
-    elif needs_classify(cands) and deadline_passed():
-        # 収集の締切を過ぎたら合議を始めない(組版の開始を妨げない)。素材の commit を先にし、判定は次の定時収集で行う
-        print("収集の締切を過ぎたので、未知の出典の判定は次の定時収集で行う", flush=True)
+    elif needs_classify(cands) and DEADLINE and classify_left(1800) < classify_estimate():
+        # 合議が終わる見込みが無ければ始めない(始めても切れて戻すだけで、組版の開始も妨げる)。素材の commit を先にし、判定は組版前と次の定時収集で行う
+        print(f"合議に使える残りが {int(classify_left(1800))} 秒で、見込み({int(classify_estimate())} 秒)に足りないので、"
+              "未知の出典の判定は次の定時収集で行う", flush=True)
     elif needs_classify(cands):
         # **未知のドメインは合議で振り分ける。**表を人が育てるまで待つと、
         # 会場・チケット販売・自治体が未確認のまま紙面に載る。
@@ -2728,7 +2745,7 @@ def run_collect(args, date: str, branch: str, t0: float) -> int:
             # 判定表の更新 → 紙面の種別付け直し → lint を**1つの取引**にする。どれかが失敗したら、
             # この取引が触った判定表と記事を開始時に戻し、commit しない(表だけ進んで次の lint が赤くなる、
             # 部分的な付け直しが混ざる、を防ぐ。監査指摘)
-            # 合議も収集の締切までに終える(越えたら取引の失敗として戻す)
+            # 合議は締切の猶予(CLASSIFY_GRACE_SEC)までに終える(越えたら取引の失敗として戻す)
             ok, why = classify_then_retag(date)
             if not ok:
                 if "戻せない" in why:

@@ -259,5 +259,33 @@
   "src_candidate_id": "202609300733-explore-10",
   "event_date": "2027-01-20",
   "deadline": "2026-11-08"
+ },
+ {
+  "id": "sched-2027-01-20-gaku-gravure-solo-collection-agitato-発売",
+  "dedup_key": "gaku-gravure-solo-collection-agitato",
+  "brand": "gaku",
+  "subject": "Gravure Solo Collection Vol.2「Agitato」発売",
+  "kind": "発売",
+  "note": "CDが店頭・通販で発売され、購入できる",
+  "reserved_on": "2026-10-31",
+  "occurs_on": "2027-01-20",
+  "title": "Gravure Solo Collection Vol.2「Agitato」",
+  "url": "https://x.com/gkmas_official/status/2116092768145535342",
+  "source_type": "公式",
+  "facts": [
+   "Gravure Solo Collection Vol.2「Agitato」の予約を受付中。",
+   "2027年1月20日発売。",
+   "CD限定でアイドル13人のソロ歌唱Full ver.を収録。",
+   "公式投稿では葛城リーリヤのソロ歌唱ver.をMVに載せて一部公開。",
+   "YouTube: https://www.youtube.com/shorts/F4OpPsdXVjk",
+   "リンク: https://lnk.to/TPMjsn",
+   "リンク: https://www.youtube.com/shorts/F4OpPsdXVjk",
+   "エンゲージメント: 中",
+   "言及アイドル: 葛城リーリヤ"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "event_date": "2027-01-20",
+  "src_candidate_id": "202610310225-grok-89"
  }
 ]

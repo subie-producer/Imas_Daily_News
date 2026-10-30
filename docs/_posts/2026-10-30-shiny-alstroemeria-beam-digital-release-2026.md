@@ -43,6 +43,13 @@ verified_facts:
 - id: N2
   text: YouTubeページの楽曲クレジットに「All Instruments & Programming：Eunsol(1008)」、MVクレジットに「Illustration：Yozai」「Movie：yuiru」と記載されている。
   url: https://www.youtube.com/watch?v=_xkM67zBPFs
+updates:
+- at: '2026-10-30T23:55:56+09:00'
+  kind: 変更
+  text: 2DMVは10月30日15時公開予定でしたが、出典元では公開済み（8時間前）と表示されています。
+  source: https://www.youtube.com/watch?v=_xkM67zBPFs
+  from_at: '2026-10-30T12:37:32+09:00'
+  to_at: '2026-10-30T23:42:53+09:00'
 ---
 「BEAM」は本日0時に各種音楽配信を開始した。楽曲は配信リンクから聴ける。 <!-- F1 F11 F14 F6 N1 -->
 

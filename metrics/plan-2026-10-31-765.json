@@ -1,0 +1,58 @@
+{
+ "decisions": {
+  "xr-live-revival-asobistore-general-advance-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11月8日までの延長は10-30号が記事化済み。新事実なく、締切(11/8)も3日以内でない"
+  },
+  "imas-radio-4-hasegawa-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "本編・アフタートークのアーカイブ公開は10-28号が記事化済み。新事実もトリガーも無い"
+  },
+  "765-961-live-ticket-extension-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "先行の11月8日への延長は10-29号が記事化済み。新事実なく締切も3日以内でない。出典は二次情報で未確認"
+  }
+ },
+ "plan": {
+  "articles": [],
+  "dropped": [
+   {
+    "dedup_key": "xr-live-revival-asobistore-general-advance-2026",
+    "reason": "既報",
+    "note": "11月8日までの延長は10-30号が記事化済み。新事実なく、締切(11/8)も3日以内でない"
+   },
+   {
+    "dedup_key": "imas-radio-4-hasegawa-2026",
+    "reason": "既報",
+    "note": "本編・アフタートークのアーカイブ公開は10-28号が記事化済み。新事実もトリガーも無い"
+   },
+   {
+    "dedup_key": "765-961-live-ticket-extension-2026",
+    "reason": "既報",
+    "note": "先行の11月8日への延長は10-29号が記事化済み。新事実なく締切も3日以内でない。出典は二次情報で未確認"
+   }
+  ],
+  "cross_brand": []
+ }
+}

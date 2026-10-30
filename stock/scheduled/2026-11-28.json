@@ -313,5 +313,33 @@
   "deadline": "2026-11-23",
   "link_from": "https://x.com/imas_CGofficial/status/2115278551352234409",
   "src_candidate_id": "202610281233-watch-0"
+ },
+ {
+  "id": "sched-2026-11-28-cg-15th-anniversary-party-bakusute-talk-2026-開始",
+  "dedup_key": "cg-15th-anniversary-party-bakusute-talk-2026",
+  "brand": "cg",
+  "subject": "ばくすて！とーく DAY1配信",
+  "kind": "開始",
+  "note": "DAY1公演終了後、YouTubeアイドルマスターチャンネルで振り返り生配信を視聴できる",
+  "reserved_on": "2026-10-31",
+  "occurs_on": "2026-11-28",
+  "title": "15th ANNIVERSARY PARTY 振り返り生配信「ばくすて！とーく」配信決定",
+  "url": "https://idolmaster-official.jp/news/01_20197",
+  "source_type": "公式",
+  "facts": [
+   "配信日時（DAY1）: 2026年11月28日(土) 公演終了後～",
+   "DAY1 出演者: 武内 駿輔（TVアニメ「アイドルマスター シンデレラガールズ」プロデューサー役）、米内 佑希（TVアニメ「アイドルマスター シンデレラガールズ U149」プロデューサー役）",
+   "DAY1 配信URL: https://www.youtube.com/live/6Ziw2DFn2EQ",
+   "配信日時（DAY2）: 2026年11月29日(日) 公演終了後～",
+   "DAY2 出演者: 佐藤 利奈（「アイドルマスター シンデレラガールズ」千川ちひろ役）、たくみ 靖明（「アイドルマスター シンデレラガールズ WILD WIND GIRL」プロデューサー役）",
+   "DAY2 配信URL: https://www.youtube.com/live/cTV74NaboNc",
+   "YouTube「アイドルマスターチャンネル」で、公演終了後に振り返りの生配信「ばくすて！とーく」を実施",
+   "ぜひチャット欄からコメントで参加可能",
+   "エンゲージメント: 中"
+  ],
+  "via": "watch",
+  "verify": "confirmed",
+  "event_date": "2026-11-28",
+  "src_candidate_id": "202610302337-watch-0"
  }
 ]

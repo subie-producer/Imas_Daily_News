@@ -1,0 +1,565 @@
+{
+ "decisions": {
+  "va-liv-manaka-birthday-live-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "valiv-letora-birthday-live-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "タイトルは愛夏だがURL・内容はレトラ11/11公演の二次受付(10/30締切)。同じ施策"
+  },
+  "tomori-manaka-birthday-online-live-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/29にボイス再販、10/30にセットリスト・アーカイブを記事化済み。新事実なし"
+  },
+  "valiv-3rdlive-meeting-2027": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "受付〜入金の日程は10/27の記事に全て掲載済み。締切11/15は3日以内でない"
+  },
+  "cosmo-shig-um-od-san-koumoku-dance-short-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/30に同じおじさん構文動画を記事化済み"
+  },
+  "cosmo-shigure-ittan-aishite-short-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "出典はしぐれうい個人のX投稿のみ(未確認)。個人のSNS投稿は単体で記事にしない"
+  },
+  "valiv-letora-birthday-live-2026": {
+   "action": "article",
+   "angle": "レトラBD現地ライブビューイング二次抽選の当落発表が本日。当選者の入金は11月3日23時59分まで",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "source_changeの支払い方法は既報と同じで新事実ではない。トリガーは当落発表"
+  },
+  "manaka-ramen-simulator-2026-10-26": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "10/26に終了した配信で二次情報のみ"
+  },
+  "manaka-birthday-live-platform-change-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "配信先のZ-aN変更は10/24の記事で報じ済み。公演も終了"
+  },
+  "valiv-3rd-live-meeting-special-2026": {
+   "action": "article",
+   "angle": "特番の魅力募集は11月2日23時59分に締切、特番は11月3日20時から配信",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "締切が2日後でトリガーに該当。新事実は無く期日の伝え直し"
+  },
+  "kamizuru-soranbushi-short-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/28に記事化済み"
+  },
+  "dsva-3rd-live-meeting-qonnect-as-one": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "10/26週の配信スケジュール告知で、週は既に過ぎた。内容の記載も無い"
+  },
+  "kamizuru-ace-combat-8-report-2026-10-27": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/28に記事化済み。次回配信11/4も案内済みで当日のトリガーなし"
+  },
+  "manaka-birthday-live-fanart-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "同人・ファン主催",
+   "note": "ファンの個人投稿。dsva面にfan記事枠は無い"
+  },
+  "manaka-birthday-live-fan-goods-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "同人・ファン主催",
+   "note": "ファンの個人投稿(未確認)"
+  },
+  "manaka-birthday-live-onsite-fan-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "同人・ファン主催",
+   "note": "ファンの個人投稿(未確認)"
+  },
+  "manaka-biohazard-re2-stream-2026-10-25": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "10/25に終了済みの配信で未確認ソース"
+  },
+  "letora-birthday-online-live-2026-lv": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "valiv-letora-birthday-live-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ二次抽選の施策"
+  },
+  "cosmo-shigure-ui-uikosen-dance-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/26に記事化済み"
+  },
+  "cosmo-cfirst-sunny-day-perfect-day-dance-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/27に記事化済み"
+  },
+  "valiv-3rd-live-qonnect-as-one-2027": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "二都市開催・料金・日程は10/27の記事に全て掲載済み。締切11/15は3日以内でない"
+  },
+  "kamizuru-free-chat-2027-09-12": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "YouTube配信枠の予定表示のみ(日付も2027年のプレースホルダ)。ACE8配信は既報"
+  },
+  "valiv-cosmo-ace-combat-8-stream-report-2026-10-21": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "内容は3rdLIVE二都市開催・先行受付で10/24と10/27に記事化済み"
+  },
+  "manaka-birthday-live-fan-report-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "同人・ファン主催",
+   "note": "観客の個人の感想投稿(未確認)"
+  },
+  "manaka-bd-live-fan-report-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "同人・ファン主催",
+   "note": "個人ブログの感想(未確認)"
+  },
+  "valiv-fan-intro-video-2026-10-29": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "同人・ファン主催",
+   "note": "ファン制作の紹介動画(未確認)"
+  },
+  "manaka-birthday-voice-resale-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/29に記事化済み(11/29まで再販)。新事実なし"
+  },
+  "valiv-october-activity-survey-2026": {
+   "action": "article",
+   "angle": "10月度活動アンケートの回答期限は11月3日23時59分、締切まであと3日",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約。締切3日前で当日のトリガーあり"
+  },
+  "manaka-birthday-live-recap-stream-2026-10-29": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "10/29に終了済みの感想配信"
+  },
+  "manaka-birthday-fan-art-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "同人・ファン主催",
+   "note": "ファンのハッシュタグ投稿(未確認)"
+  },
+  "vialive-leatra-birthday-live-2026-lottery-2": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "valiv-letora-birthday-live-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ二次抽選。facts中のフィギュア記載は他ブランドの無関係な話題"
+  },
+  "dsva-kimchikura-vol-13-2026": {
+   "action": "article",
+   "angle": "上水流宇宙がDJ setで出演するKIMCHIKURA VOL.13がソウルで本日14時開幕、19時30分まで",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約。10/9の記事に概要掲載済みで、トリガーは本日開催"
+  },
+  "manaka-halloween-pumpkin-recipe-2026": {
+   "action": "article",
+   "angle": "ハロウィン企画「愛夏かぼちゃ１個食う」が本日配信、採用レシピの発表と実食を見られる",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約。配信時刻はfactsに無く、配信URLも無いため執筆側で出典を確認"
+  },
+  "manaka-pumpkin-recipe-fan-replies-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "manaka-halloween-pumpkin-recipe-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ配信企画。ファンのコメントは記事にしない"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "dsva-valiv-letora-birthday-live-2026",
+    "brand": "dsva",
+    "rank": "medium",
+    "angle": "レトラBD現地ライブビューイング二次抽選の当落発表が本日。当選者の入金は11月3日23時59分まで",
+    "purpose": "期日の知らせ",
+    "lead_score": 60,
+    "dedup_key": "valiv-letora-birthday-live-2026",
+    "candidate_ids": [
+     "update-76d5cd3783af",
+     "202610270222-grok-45",
+     "202610292334-watch-0",
+     "202610300224-grok-63",
+     "sched-2026-10-31-valiv-letora-birthday-live-2026-結果",
+     "202610301234-watch-3",
+     "202610270222-grok-44",
+     "202610300505-explore-0-r1"
+    ]
+   },
+   {
+    "slug": "dsva-valiv-3rd-live-meeting-special-2026",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "特番の魅力募集は11月2日23時59分に締切、特番は11月3日20時から配信",
+    "purpose": "期日の知らせ",
+    "lead_score": 10,
+    "dedup_key": "valiv-3rd-live-meeting-special-2026",
+    "candidate_ids": [
+     "202610280221-grok-45"
+    ]
+   },
+   {
+    "slug": "dsva-valiv-october-activity-survey-2026",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "10月度活動アンケートの回答期限は11月3日23時59分、締切まであと3日",
+    "purpose": "期日の知らせ",
+    "lead_score": 10,
+    "dedup_key": "valiv-october-activity-survey-2026",
+    "candidate_ids": [
+     "202610300224-grok-54",
+     "sched-2026-10-31-valiv-october-activity-survey-2026-締切前"
+    ]
+   },
+   {
+    "slug": "dsva-kimchikura-vol-13-2026",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "上水流宇宙がDJ setで出演するKIMCHIKURA VOL.13がソウルで本日14時開幕、19時30分まで",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "dsva-kimchikura-vol-13-2026",
+    "candidate_ids": [
+     "sched-2026-10-31-dsva-kimchikura-vol-13-2026-開幕",
+     "sched-2026-10-31-dsva-kimchikura-vol-13-2026-開幕-src1"
+    ]
+   },
+   {
+    "slug": "dsva-manaka-halloween-pumpkin-recipe-2026",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "ハロウィン企画「愛夏かぼちゃ１個食う」が本日配信、採用レシピの発表と実食を見られる",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "manaka-halloween-pumpkin-recipe-2026",
+    "candidate_ids": [
+     "sched-2026-10-31-manaka-halloween-pumpkin-recipe-2026-開始",
+     "sched-2026-10-31-manaka-pumpkin-recipe-fan-replies-2026-開始",
+     "sched-2026-10-31-manaka-pumpkin-recipe-fan-replies-2026-開始-src1"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "tomori-manaka-birthday-online-live-2026",
+    "reason": "既報",
+    "note": "10/29にボイス再販、10/30にセットリスト・アーカイブを記事化済み。新事実なし"
+   },
+   {
+    "dedup_key": "valiv-3rdlive-meeting-2027",
+    "reason": "既報",
+    "note": "受付〜入金の日程は10/27の記事に全て掲載済み。締切11/15は3日以内でない"
+   },
+   {
+    "dedup_key": "cosmo-shig-um-od-san-koumoku-dance-short-2026",
+    "reason": "既報",
+    "note": "10/30に同じおじさん構文動画を記事化済み"
+   },
+   {
+    "dedup_key": "cosmo-shigure-ittan-aishite-short-2026",
+    "reason": "出典不足",
+    "note": "出典はしぐれうい個人のX投稿のみ(未確認)。個人のSNS投稿は単体で記事にしない"
+   },
+   {
+    "dedup_key": "manaka-ramen-simulator-2026-10-26",
+    "reason": "その他",
+    "note": "10/26に終了した配信で二次情報のみ"
+   },
+   {
+    "dedup_key": "manaka-birthday-live-platform-change-2026",
+    "reason": "既報",
+    "note": "配信先のZ-aN変更は10/24の記事で報じ済み。公演も終了"
+   },
+   {
+    "dedup_key": "kamizuru-soranbushi-short-2026",
+    "reason": "既報",
+    "note": "10/28に記事化済み"
+   },
+   {
+    "dedup_key": "dsva-3rd-live-meeting-qonnect-as-one",
+    "reason": "その他",
+    "note": "10/26週の配信スケジュール告知で、週は既に過ぎた。内容の記載も無い"
+   },
+   {
+    "dedup_key": "kamizuru-ace-combat-8-report-2026-10-27",
+    "reason": "既報",
+    "note": "10/28に記事化済み。次回配信11/4も案内済みで当日のトリガーなし"
+   },
+   {
+    "dedup_key": "manaka-birthday-live-fanart-2026",
+    "reason": "同人・ファン主催",
+    "note": "ファンの個人投稿。dsva面にfan記事枠は無い"
+   },
+   {
+    "dedup_key": "manaka-birthday-live-fan-goods-2026",
+    "reason": "同人・ファン主催",
+    "note": "ファンの個人投稿(未確認)"
+   },
+   {
+    "dedup_key": "manaka-birthday-live-onsite-fan-2026",
+    "reason": "同人・ファン主催",
+    "note": "ファンの個人投稿(未確認)"
+   },
+   {
+    "dedup_key": "manaka-biohazard-re2-stream-2026-10-25",
+    "reason": "その他",
+    "note": "10/25に終了済みの配信で未確認ソース"
+   },
+   {
+    "dedup_key": "cosmo-shigure-ui-uikosen-dance-2026",
+    "reason": "既報",
+    "note": "10/26に記事化済み"
+   },
+   {
+    "dedup_key": "cosmo-cfirst-sunny-day-perfect-day-dance-2026",
+    "reason": "既報",
+    "note": "10/27に記事化済み"
+   },
+   {
+    "dedup_key": "valiv-3rd-live-qonnect-as-one-2027",
+    "reason": "既報",
+    "note": "二都市開催・料金・日程は10/27の記事に全て掲載済み。締切11/15は3日以内でない"
+   },
+   {
+    "dedup_key": "kamizuru-free-chat-2027-09-12",
+    "reason": "出典不足",
+    "note": "YouTube配信枠の予定表示のみ(日付も2027年のプレースホルダ)。ACE8配信は既報"
+   },
+   {
+    "dedup_key": "valiv-cosmo-ace-combat-8-stream-report-2026-10-21",
+    "reason": "既報",
+    "note": "内容は3rdLIVE二都市開催・先行受付で10/24と10/27に記事化済み"
+   },
+   {
+    "dedup_key": "manaka-birthday-live-fan-report-2026",
+    "reason": "同人・ファン主催",
+    "note": "観客の個人の感想投稿(未確認)"
+   },
+   {
+    "dedup_key": "manaka-bd-live-fan-report-2026",
+    "reason": "同人・ファン主催",
+    "note": "個人ブログの感想(未確認)"
+   },
+   {
+    "dedup_key": "valiv-fan-intro-video-2026-10-29",
+    "reason": "同人・ファン主催",
+    "note": "ファン制作の紹介動画(未確認)"
+   },
+   {
+    "dedup_key": "manaka-birthday-voice-resale-2026",
+    "reason": "既報",
+    "note": "10/29に記事化済み(11/29まで再販)。新事実なし"
+   },
+   {
+    "dedup_key": "manaka-birthday-live-recap-stream-2026-10-29",
+    "reason": "その他",
+    "note": "10/29に終了済みの感想配信"
+   },
+   {
+    "dedup_key": "manaka-birthday-fan-art-2026",
+    "reason": "同人・ファン主催",
+    "note": "ファンのハッシュタグ投稿(未確認)"
+   }
+  ],
+  "cross_brand": []
+ }
+}

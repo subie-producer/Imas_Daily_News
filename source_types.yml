@@ -257,6 +257,10 @@ party_paths:
   - item.rakuten.co.jp/f272078-takatsuki        # 高槻市ふるさと納税
 
 party_domains:
+  - gotoken-shop.jp       # 合議で追加: 特定商取引表示の販売業者は五島軒。アルストロメリアとのコラボ商品の販売元
+  - shibuyatsutaya.tsite.jp # 合議で追加: サイト下部のクレジットで運営確認。POP UP会場・グッズ販売元
+  - pmoa.co.jp            # 合議で追加: 会社概要で運営。ライセンスを受けたフィギュアの企画・製造・販売元
+  - ono-gift.com          # 合議で追加: 特商法表記の販売業者で、コラボ商品の制作・販売元
   - atre.co.jp            # 合議で追加: アトレ川崎の運営会社。店舗の展示告知を掲載
   - bushiroad-creative.com # 合議で追加: ライセンス商品を企画・販売する会社。シャニマス商品の販売元として告知
   - animatecafe.jp        # 合議で追加: コラボカフェを企画・運営する会社。SideMコラボの催しを自ら告知
@@ -534,6 +538,7 @@ video_ids:
     - Y3n-42r-m0A   # 上水流宇宙(ヴイアラ)配信「朝活」
     - wgCWiC2SQPw   # アイドルマスターチャンネル(@imas-official)「CLASH M@TCH!!」開催決定PV
   準公式:
+    - lv351338553         # 機械で追加: ch.nicovideo.jp/MillionRADIO「THE IDOLM@STER MillionRADIO - 」
     - 15tTRtSiJoY         # 機械で追加: @Lantis「【SideM】彩「らんまん開花!」2DMV【アイドルマスター」
     - tic6VTNYQ5Y         # 機械で追加: @Lantis「【SideM】Altessimo「Panorama's Fa」
     - jnsINjCz6P4   # 機械で追加: @Lantis「【試聴動画】THE IDOLM@STER SHINY COL」
@@ -952,6 +957,7 @@ x_accounts:
     - procinen1
     - yutaleP
   当事者:
+    - gotokenhanbai       # 合議で追加: 五島軒の販売・コラボ先の公式発信。アイマス公式ではない
     - pmoa_plum           # 合議で追加: フィギュアメーカーPLUMの製品進捗の一次発信
     - animegame_kt        # 合議で追加: カラオケ事業者。シャニマスとのコラボ会場の告知
     - Neowing_Otome       # 合議で追加: グッズ販売店の予約告知。商品の販売元として発信
@@ -1074,6 +1080,7 @@ x_accounts:
 # tiktok.com/@…、ch.nicovideo.jp/…、manga.nicovideo.jp/comic/… など。ドメイン(プラットフォーム)では
 # 決まらず、そのパスの主体で決まる。合議が足す(classify_sources.add_paths)。
 path_types:
+  ch.nicovideo.jp/MillionRADIO: 準公式            # 合議で追加: ニコニコ公式生放送の番組を自ら配信する公式チャンネル
   note.com/senshu_idol: ファン                    # 合議で追加: 大学のファンサークルが書く考察記事。公式の立場はない
   t.co/oXqVG6t5e5: 公式                         # 機械で追加: 展開先 https://bandainamco-am.co.jp/am/vg/idolmaster-tours/rhythmlivefestival2027/
   docs.google.com/forms/d/e/1FAIpQLSfZVNOhPhPThv8acFBOEkdlxhDAGTNUuYtKUJn7gZZd1CjfWg: 公式 # 合議で追加: リンク元@imas_chは登録済み公式。同じ配信企画のフォーム
@@ -1136,6 +1143,17 @@ x_posts:
 
 # --- リンク元から引き継いだ種別(リンク先1つずつ。キーは pipelib.link_key)。合議がリンク元の告知と関係していると確かめたものだけ(classify_sources.inherit_from_links)。リンク先そのものの種別より強いときだけ効く ---
 link_types:
+  www.fumo-collection.com/collections/gim?sort_by=created-descending: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://x.com/gkmas_official/status/2116082075770220804(公式)。告知の学マス×ふもコレ第二弾と同じ学マス商品の一覧
+  shop.asobistore.jp/feature/cg_ml_clash_match: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://x.com/imasml_765PRO/status/2116142716262494617(公式)。告知と同じCLASH M@TCH!!グッズの事前販売ページ
+  youtube.com/watch?v=BNAAuViiAaM: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/imas_CGofficial/status/2116141422546211101(公式)。告知と同じ15周年記念楽曲「HOURGLASS」のYouTube動画
+  www.yunikavision.jp/news/CUb-ZPux: 公式       # リンク元から引き継ぎ(合議で関係を確認): https://x.com/imas_CGofficial/status/2116083293879681441(公式)。ユニカビジョンでのハロウィン放映告知と同じ放映の案内
+  shop.asobistore.jp/products/detail/250950-00-00-00: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://idolmaster-official.jp/news/01_20172(公式)。伊吹翼フィギュアのASOBI STORE予約ページで告知と同じ商品
+  shop.asobistore.jp/products/detail/229336-00-00-00: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://idolmaster-official.jp/news/01_20234(公式)。12thLIVE Blu-rayアソビストア特装版の商品ページで告知と同じ
+  palverse-figure.com/product/product-3709/: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://x.com/gkmas_official/status/2116039627887014276(公式)。PalVerse学園アイドルマスターvol.2の商品ページで告知と同じ商品
+  lnk.to/TPMjsn: 公式                           # リンク元から引き継ぎ(合議で関係を確認): https://x.com/gkmas_official/status/2116092768145535342(公式)。告知本文に載るGravure Solo Collection Vol.2の予約受
+  asobiticket2.asobistore.jp/receptions/eea32b55-afb5-4ff8-be1b-f9ed1bf22008: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://idolmaster-official.jp/news/01_20072(公式)。受付期間・結果発表・入金期間が告知と一致する同じ合同ライブの先行受付ページ
+  gotoken-shop.jp/SHOP/109990.html: 二次情報        # リンク元から引き継ぎ(合議で関係を確認): https://imasnews765.com/?p=32618(二次情報)。リンク元は同商品の予約開始告知で、リンク先はその予約ページ
+  www.jomo-news.co.jp/articles/-/1053725: 二次情報  # リンク元から引き継ぎ(合議で関係を確認): https://imasnews765.com/?p=32613(二次情報)。リンク元の題名・本文は同記事。相手の「内容なし」は材料の欠落で誤り
   youtube.com/watch?v=lGb1zNIqjHI: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/imas_ch/status/2115820965720474090(公式)。月宮雅のお祝いムービーで、告知の誕生日企画と同じ
   youtube.com/watch?v=bc620bZt3No: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/valiv_official/status/2115730363486200109(公式)。宇宙のショート動画「お返事まだカナ」で、告知の公開動画と同じ
   youtube.com/watch?v=_xkM67zBPFs: 準公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/lantis_imasSC/status/2115821871614906856(準公式)。アルストロメリア「BEAM」2DMVの動画で、告知の配信楽曲と同じ

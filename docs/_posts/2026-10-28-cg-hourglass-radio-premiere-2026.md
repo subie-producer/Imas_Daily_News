@@ -47,6 +47,12 @@ updates:
   source: https://live.nicovideo.jp/watch/lv351405530
   from_at: '2026-10-28T18:45:02+09:00'
   to_at: '2026-10-29T02:36:17+09:00'
+- at: '2026-10-31T02:42:59+09:00'
+  kind: 追加
+  text: 「HOURGLASS」の試聴が開始されました。
+  source: https://columbia.jp/idolmaster/
+  from_at: '2026-10-27T18:35:45+09:00'
+  to_at: '2026-10-31T02:29:00+09:00'
 ---
 ## 放送概要
 

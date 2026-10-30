@@ -1,0 +1,35 @@
+[
+ {
+  "id": "sched-2026-12-08-million-tsubasa-figure-asobi-reservation-2026-締切",
+  "dedup_key": "million-tsubasa-figure-asobi-reservation-2026",
+  "brand": "million",
+  "subject": "伊吹翼フィギュア メーカー受注締切",
+  "kind": "締切",
+  "note": "この日がメーカー受注締切。ASOBI STOREとコトブキヤショップで予約できる最終日",
+  "reserved_on": "2026-10-31",
+  "occurs_on": "2026-12-08",
+  "title": "伊吹翼フィギュアのASOBI STORE予約開始",
+  "url": "https://x.com/kotobukiyas/status/2115732953678676396",
+  "source_type": "当事者",
+  "facts": [
+   "一時見合わせていたフィギュア『伊吹 翼-The Animation-』のASOBI STOREでの予約が開始した。",
+   "本商品はASOBI STOREおよびコトブキヤショップ限定商品。",
+   "価格: 23,100円(税込)。",
+   "発売月: 2027年6月発売予定。",
+   "メーカー受注締切: 2026年12月8日(火)。",
+   "1/8スケール。全高約221mm（台座含む）、全高約333mm（台座・背景シート含む）。",
+   "PVC塗装済み完成品フィギュア。素材: PVC・ABS・アクリル・PP。原型製作: HIROHITO。",
+   "セット内容: フィギュア本体1種、台座2種。",
+   "販売元: 壽屋。",
+   "お届け: 2027年6月予定。",
+   "リンク: https://shop.asobistore.jp/products/detail/250950-00-00-00",
+   "リンク: https://idolmaster-official.jp/news/01_20172",
+   "エンゲージメント: 中",
+   "言及アイドル: 伊吹翼"
+  ],
+  "via": "grok",
+  "verify": "unconfirmed",
+  "deadline": "2026-12-08",
+  "src_candidate_id": "202610300224-grok-11"
+ }
+]

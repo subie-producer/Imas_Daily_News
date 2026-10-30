@@ -47,6 +47,13 @@ verified_facts:
 - id: N7
   text: オンラインくじ・カプセル筐体商品・くまめいと関連商品・一部TCG等はフェア特典付与の対象外。
   url: https://www.animate-onlineshop.jp/contents/fair_event/detail.php?id=115933
+updates:
+- at: '2026-10-30T12:44:20+09:00'
+  kind: 追加
+  text: 対象商品に「学園アイドルマスター GOLD RUSH(8) 特装版 発売記念 アニメイトセット」と公式ぬいぐるみ「みてぬい【秦谷 美鈴】」が加わりました。
+  source: https://www.animate-onlineshop.jp/contents/fair_event/detail.php?id=115933
+  from_at: '2026-10-30T03:21:36+09:00'
+  to_at: '2026-10-30T12:37:17+09:00'
 ---
 開催場所は全国アニメイトとアニメイト通販。前半は10月10日から30日まで、後半は10月31日から11月23日までで、前半期間に後半の絵柄、後半期間に前半の絵柄は配布されない。 <!-- F2 F3 F4 N1 -->
 

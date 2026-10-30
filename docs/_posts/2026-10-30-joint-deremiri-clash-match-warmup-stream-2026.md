@@ -40,6 +40,13 @@ verified_facts:
 - id: N1
   text: YouTube Liveの配信ページが公開されており、配信URLはhttps://www.youtube.com/live/4zXVjj3zApk。公式告知ページではYouTube Liveの配信URLを後日公開予定としていた。
   url: https://www.youtube.com/live/4zXVjj3zApk
+updates:
+- at: '2026-10-30T23:55:07+09:00'
+  kind: 変更
+  text: YouTube Liveの配信は10月30日20時の予定から、配信済みに変わりました。
+  source: https://www.youtube.com/live/4zXVjj3zApk
+  from_at: '2026-10-30T12:37:48+09:00'
+  to_at: '2026-10-30T23:52:09+09:00'
 ---
 YouTube Liveは[アイドルマスターチャンネル](https://www.youtube.com/live/4zXVjj3zApk)、X Liveは[アイドルマスター公式Xアカウント](https://x.com/imas_official)で視聴できる。配信は21時までの予定。YouTubeの配信ページは現在公開されている。 <!-- F27 F28 F29 N1 -->
 

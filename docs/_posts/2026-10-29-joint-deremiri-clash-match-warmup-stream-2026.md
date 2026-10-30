@@ -76,6 +76,13 @@ verified_facts:
 - id: N14
   text: プレゼントの発送は国内のみで、2026年12月上旬頃の予定。
   url: https://idolmaster-official.jp/news/01_20072
+updates:
+- at: '2026-10-30T23:52:17+09:00'
+  kind: 変更
+  text: 配信ページの表示が「Scheduled for Oct 30, 2026」から「Streamed live 3 hours ago」に変わり、アーカイブを視聴できる状態になりました。
+  source: https://youtube.com/live/4zXVjj3zApk
+  from_at: '2026-10-30T12:36:31+09:00'
+  to_at: '2026-10-30T23:42:11+09:00'
 ---
 ## 配信概要
 

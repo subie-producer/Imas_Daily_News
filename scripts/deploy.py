@@ -313,7 +313,7 @@ def reindex_or_restore(release: Path, prev: Path | None, run_id: str, skip_purge
         notify("deploy", f"索引の更新に失敗した。{STATE}:\n```\n{err[-600:]}\n```", ok=False)
         return None
     # 切り替えていた間にエッジが新しい版を載せたかもしれないので、戻した版でも落とす
-    purge_msg = "パージ省略(--skip-purge)" if skip_purge else purge_cache()
+    purge_msg = "" if skip_purge else purge_cache()
     notify("deploy", f"索引の更新に失敗したので配信を戻した。{STATE}。{purge_msg + '。' if purge_msg else ''}\n```\n{err[-600:]}\n```",
            ok=False)
     return None
@@ -464,7 +464,7 @@ def main() -> int:
     if removed:
         print(f"旧リリース削除: {', '.join(removed)}", flush=True)
 
-    purge_msg = "パージ省略(--skip-purge)" if args.skip_purge else purge_cache()
+    purge_msg = "" if args.skip_purge else purge_cache()       # パージしたときだけ結果を言う(省略は言わない)
     if purge_msg:
         print(purge_msg, flush=True)
     say_state(f"current・索引とも新しい版({release.name})。{purge_msg}".rstrip("。"))

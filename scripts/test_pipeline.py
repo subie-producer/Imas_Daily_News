@@ -12580,6 +12580,12 @@ def test_deploy_notice(tmp: Path):
         deploy.purge_cache = lambda: "パージ失敗: 試験"
         check(run("--from-release") == 0 and any(not ok and "アプリの再起動に失敗" in m and "パージ失敗" in m for ok, m in notes),
               f"発行からの配信で、アプリの再起動・パージの失敗を知らせない: {notes}")
+        # 7回目(手での配信・--skip-purge): パージしていないので、パージのことは書かない(Sol 監査 r1)
+        deploy.sync_app = lambda: False
+        purged = []
+        deploy.purge_cache = lambda: purged.append(True) or "キャッシュパージ完了"
+        check(run("--skip-purge") == 0 and not purged and len(notes) == 1 and notes[0][0] and "パージ" not in notes[0][1],
+              f"--skip-purge の配信の通知にパージのことを書いた: {notes} {purged}")
     finally:
         for k, v in saved.items():
             setattr(deploy, k, v)

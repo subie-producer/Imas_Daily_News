@@ -44,6 +44,13 @@ verified_facts:
 - id: N1
   text: 先行抽選二次申込受付では1人1回のみ申し込みが可能。支払い方法はクレジットカード決済、コンビニ決済、LivePocketあと払い powered by atoneで、コンビニ決済は販売終了の2日前まで選択可能。会場住所は〒135-0091 東京都港区台場1-7-1 アクアシティお台場。
   url: https://livepocket.jp/e/va-liv_letora_bd2026
+updates:
+- at: '2026-10-31T02:41:03+09:00'
+  kind: 変更
+  text: 先行抽選二次申込受付とチケットは「販売中」から「受付終了」「販売終了」に変わりました。
+  source: https://livepocket.jp/e/va-liv_letora_bd2026
+  from_at: '2026-10-29T02:27:49+09:00'
+  to_at: '2026-10-31T02:28:22+09:00'
 ---
 ## 先行抽選二次受付
 

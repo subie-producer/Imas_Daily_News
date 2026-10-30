@@ -188,6 +188,61 @@ def test_lede_contract():
           "執筆の事実の上限と記事の verified_facts の上限が揃っていない")
 
 
+def test_reuse_rewrites_cut_lede(tmp: Path):
+    """組み直し(--reuse-plan)は書けている稿を再執筆しないが、切れたリードの稿は書き直しに回す。書き切ったリードの稿には触らない
+    (2026-10-31 監査指摘: 検算は執筆の答えにしか掛からず、承認済みの号の組み直しでは切れたリードが承認ごと残った)。"""
+    date = "2026-10-31"
+    posts = tmp / "docs" / "_posts"
+    posts.mkdir(parents=True)
+    cut = "公演終了後に振り返り生配信が予定されており、各日の出演者と配信URL"
+    head = "---\ntitle: t\nlede: {}\n---\n本文の段落。\n"
+    (posts / f"{date}-cut.md").write_text(head.format(cut), encoding="utf-8")
+    (posts / f"{date}-ok.md").write_text(head.format("公演終了後に生配信がある。"), encoding="utf-8")
+    plan = {"articles": [{"slug": "cut"}, {"slug": "ok"}]}
+    written, seen, notes = list(plan["articles"]), [], []
+    saved = (compose.ROOT, compose.revise_articles, compose.anomaly)
+
+    def fake(date_, by_file, plan_, cands, aborted):
+        seen.append(by_file)
+        if result == "dropped":
+            (posts / f"{date}-cut.md").unlink()
+        return {"cut": result}
+    compose.ROOT, compose.revise_articles, compose.anomaly = tmp, fake, lambda stage, msg: notes.append(msg)
+    try:
+        by_file = compose.contract_issues(date, written)
+        result = "fixed"
+        compose.rewrite_contract_breaks(date, plan, {}, written, [])
+        check(list(seen[0]) == [f"docs/_posts/{date}-cut.md"] and not notes, f"切れた稿だけを書き直しに回していない: {seen} {notes}")
+        result = "kept"
+        compose.rewrite_contract_breaks(date, plan, {}, written, [])
+        check(any("cut" in n and "kept" in n for n in notes), f"書き直せなかったことを申告していない: {notes}")
+        result = "dropped"
+        compose.rewrite_contract_breaks(date, plan, {}, written, [])
+        check([a["slug"] for a in written] == ["ok"], "書き直しで落ちた記事を written に残した")
+        seen.clear()
+        compose.rewrite_contract_breaks(date, plan, {}, written, [])
+        check(seen == [], "直す稿が無いのに書き直しを起動した")
+    finally:
+        compose.ROOT, compose.revise_articles, compose.anomaly = saved
+    # リードを直す答えは、指摘の外の変更に数えられず、検算も通る
+    issue = dict(by_file[f"docs/_posts/{date}-cut.md"][0], issue_id="I1")
+    ans = {"status": "ok", "title": "t", "lede": cut + "を案内している。", "tags": [], "event_date": None, "sources": [],
+           "addressed_issue_ids": ["I1"], "blocks": [{"markdown": "本文の段落。", "fact_ids": []}]}
+    fm = {"title": "t", "lede": cut, "tags": [], "sources": []}
+    probs = compose.revise_check(ans, [issue], fm, "本文の段落。\n")
+    check(not any("リード" in x for x in probs), f"リードの書き直しを指摘の外と数えた: {probs}")
+    src = (pipelib.ROOT / "scripts" / "compose.py").read_text(encoding="utf-8")
+    at = src.index("rewrite_contract_breaks(date, plan, cands, written, aborted)\n    outcomes")
+    check(src.index("written, aborted = write_articles(") < at < src.index("assign_ranks(date, plan, written)\n"),
+          "書き直しが、執筆のあと・枠割りの前に無い")
+    # 揃わなかった記事の報告: X の問いを切らず、ページの応答を書く
+    import source_rescue
+    long_q = "@imasml_theater の投稿で次回ガシャを探す。" * 10
+    text = source_rescue.report_text({"articles": {"a": {"outcome": "揃わない", "tried": [
+        {"page": "https://example.jp/p", "why": "HTTP 429 で読めなかった", "result": "読めなかった"}, {"x": long_q, "posts": []}]}}})
+    check(long_q in text and "HTTP 429 で読めなかった" in text, f"問いの全文・ページの応答が報告に無い:\n{text}")
+
+
 def test_check_output():
     import copy
     _, fb = renderlib.materials_with_ids(MATS)
@@ -20810,6 +20865,7 @@ def main() -> int:
     tmp = Path(tempfile.mkdtemp(prefix="imas-test-"))
     test_assemble_run_returns_reservations(tmp / "arrr")
     test_lede_contract()
+    test_reuse_rewrites_cut_lede(tmp / "rcl")
     test_assemble_verified_fact_reservation(tmp / "avr")
     test_assemble_roundup_reservation(tmp / "arr")
     test_storylink_roundup_topic(tmp / "srt")

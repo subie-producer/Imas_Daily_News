@@ -416,9 +416,9 @@ def report_text(report: dict, slugs: list[str] | None = None) -> str:
         if r["outcome"] != "揃えた":
             for t in r.get("tried") or []:
                 if "page" in t:
-                    lines.append(f"  ページ {t['page']}: {t['result']}")
+                    lines.append(f"  ページ {t['page']}: {t['result']}" + (f"({t['why']})" if t.get("why") else ""))
                 else:
-                    lines.append(f"  X「{str(t['x'])[:80]}」: " + (", ".join(map(str, t['posts'])) or "投稿なし"))
+                    lines.append(f"  X「{t['x']}」: " + (", ".join(map(str, t['posts'])) or "投稿なし"))
             for c in r.get("candidates") or []:
                 lines.append(f"  候補 {c['url']}: {c['source_type']} / {c['verify']}" + (f"({c['note']})" if c.get("note") else ""))
             if not r.get("tried") and not r.get("plan_error"):

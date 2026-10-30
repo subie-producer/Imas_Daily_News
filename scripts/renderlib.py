@@ -141,6 +141,12 @@ def date_mentioned(iso: str, hay: str, years: set[int] | None = None) -> bool:
 LEDE_END = re.compile(r"[。．！？!?」』）)]$")
 
 
+def lede_problem(lede) -> str:
+    """リードが文末まで書き切れていなければ、その説明(書き切れていれば空)。執筆の検算と、既存稿の見直し(compose.contract_issues)で使う。"""
+    lede = str(lede or "").strip()
+    return f"リードが文の途中で終わっている(…{lede[-12:]})。短くして文末まで書き切る" if lede and not LEDE_END.search(lede) else ""
+
+
 # 続報予約の種別ごとに、予約が指す出来事の日(occurs_on)が予約の日(予約のファイルの日付 = 記事を出す号)から何日後になりうるか。
 # 先頭が既定。締切前は締切の3日前の号に、06:00 より前に終わる締切・終了は前日の号に予約する(prompts/assemble-ledger.md)。
 # 締切前の4日後は、06:00 より前の締切を前日の号に予約し、その3日前にも予約したとき。ほかの種別はずれない
@@ -431,9 +437,8 @@ def check_output(out: dict, fact_by_id: dict[str, str], materials: list[dict], r
         m = markdown_in_plain(str(out.get(key) or "").strip())
         if m:
             problems.append(f"{label}に Markdown 記法 {m.group(0)!r} がある(この欄は記号がそのまま紙面に出る)")
-    lede = str(out.get("lede") or "").strip()
-    if lede and not LEDE_END.search(lede):
-        problems.append(f"リードが文の途中で終わっている(…{lede[-12:]})。短くして文末まで書き切る")
+    if lede_problem(out.get("lede")):
+        problems.append(lede_problem(out.get("lede")))
     if not out.get("blocks"):
         problems.append("本文が空")
     if not out.get("sources"):

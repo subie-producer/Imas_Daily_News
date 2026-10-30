@@ -59,6 +59,21 @@
    "changed": 26,
    "elapsed_s": 106,
    "cycle_days_actual": 0.43
+  },
+  {
+   "at": "2026-10-30T23:43:09+09:00",
+   "cap": 60,
+   "parallel": 4,
+   "runs_per_day": 5,
+   "cycle_days": 0.44,
+   "oldest_age_h": 16.0,
+   "targets": 131,
+   "chosen": 60,
+   "tried": 60,
+   "checked": 60,
+   "changed": 36,
+   "elapsed_s": 101,
+   "cycle_days_actual": 0.44
   }
  ],
  "collect": [
@@ -432,6 +447,94 @@
     "failed": 0
    },
    "duration_s": 1143
+  },
+  {
+   "at": "2026-10-30T23:57:27+09:00",
+   "edition": "2026-10-31",
+   "started_at": "2026-10-30T23:30:45+09:00",
+   "trigger": "timer",
+   "watch": {
+    "stats": {
+     "imas-portal": {
+      "found": 24,
+      "pages": 2,
+      "new": 7,
+      "deferred": 0
+     },
+     "pylonport-sidem": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-shiny": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-million": {
+      "found": 8,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "lantis-shiny": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "lantis-sidem": {
+      "found": 4,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "columbia-imas": {
+      "found": 352,
+      "pages": 1,
+      "new": 1,
+      "deferred": 0
+     },
+     "bnam-tours": {
+      "found": 69,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "imasnews765": {
+      "found": 10,
+      "pages": 1,
+      "new": 2,
+      "deferred": 0
+     }
+    },
+    "new": 10,
+    "facted": 28,
+    "deferred": 0,
+    "blocked": 0,
+    "unavailable": 0
+   },
+   "per_query": {
+    "explore:765as": 1,
+    "explore:cinderella": 1,
+    "explore:million": 1,
+    "explore:shiny": 5,
+    "explore:sidem": 1,
+    "explore:gakuen": 2,
+    "explore:dsva": 0,
+    "explore:joint-other": 1,
+    "explore:trend": 2
+   },
+   "normalized": 45,
+   "added": 22,
+   "verify": {
+    "confirmed": 34,
+    "unconfirmed": 8,
+    "failed": 0
+   },
+   "duration_s": 1601
   }
  ],
  "compose": [

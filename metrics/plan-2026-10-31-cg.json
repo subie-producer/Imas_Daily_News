@@ -1,0 +1,668 @@
+{
+ "decisions": {
+  "cg-15th-anniversary-party-2026-general": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "一般販売11/7・リセールは10-29号に掲載済みで新事実なし"
+  },
+  "arisu-seaside-memory-plum-figure-2027": {
+   "action": "article",
+   "angle": "橘ありす[シーサイド・メモリー]+のPLUM製1/7フィギュアが予約開始、通常版22,000円・限定豪華版24,200円で2027年1月発売予定",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "10-30号は告知のみ。予約開始・価格は新事実"
+  },
+  "cg-asuka-fujiwara-world-heritage-collab-2026": {
+   "action": "article",
+   "angle": "世界遺産「飛鳥・藤原の宮都」登録記念の奈良県明日香村コラボが12月17日〜2027年3月4日に開催決定、二宮飛鳥ら8人が四神衣装で登場",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 28,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公式・未確認の2系統あり"
+  },
+  "cinderella-last-order-hub-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10-28号に期間・店舗・出演6人掲載済み。新事実なし"
+  },
+  "cg-hourglass-radio-premiere-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "source_changeは再生数等の表示変化のみ。タイムシフト11/4は10-29号に掲載済み"
+  },
+  "cg-15th-anniversary-party-bakusute-talk-2026": {
+   "action": "article",
+   "angle": "15th PARTY振り返り生配信「ばくすて!とーく」がDAY1・DAY2とも公演終了後にYouTubeで配信決定、出演者も発表",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "cg-memory-pict-8-2026": {
+   "action": "article",
+   "angle": "「Memory Pict.」第8弾(神崎蘭子・的場梨沙、テーマは初詣)の受注が始まり、1月お届けでSpecial PVも公開",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 12,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "cg-10th-memorial-starlight-stage-bd-2027": {
+   "action": "article",
+   "angle": "10th MEMORIAL LIVE STARLIGHT STAGE Blu-ray BOXの予約が開始、2027年3月24日発売でアソビストア版は12月20日まで",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 22,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "verifyはunconfirmed。出典は執筆・校閲で確認"
+  },
+  "cg-15th-anniversary-song-hourglass-2026": {
+   "action": "article",
+   "angle": "15周年記念曲「HOURGLASS」の試聴が公開され、CDは11月18日発売、Full Size MVも同日21時に公開予定",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 70,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "試聴・CD・フルMVを1記事に統合。面の一面候補"
+  },
+  "cg-hourglass-preview-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-15th-anniversary-song-hourglass-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "試聴公開・作詞作曲・歌唱メンバーを統合"
+  },
+  "cg-hourglass-full-mv-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-15th-anniversary-song-hourglass-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "Full Size MV 11/18 21:00公開予定を統合"
+  },
+  "cg-villains-night-yunika-2026": {
+   "action": "article",
+   "angle": "本日限り、西武新宿駅前のユニカビジョンでハロウィン楽曲MV6曲(THE VILLAIN'S NIGHTなど)を毎時放映",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "放映は10/31の1日限り。当日トリガー"
+  },
+  "cg-fan-frilled-square-screenshot-2026-10-31": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿。単体では記事にしない(culture枠はgeneral面)"
+  },
+  "cg-fan-miyabi-art-2026-10-30": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のファンアート投稿"
+  },
+  "cg-fan-halloween-post-2026-10-31": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿"
+  },
+  "cg-fan-makino-halloween-2026-10-31": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿"
+  },
+  "dememiri-costume-fanart-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のファンアート。デレミリ衣装自体は合同面が記事化済み"
+  },
+  "cg-asuka-fujiwara-world-heritage-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-asuka-fujiwara-world-heritage-collab-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じコラボ開催決定の別出典"
+  },
+  "cg-mayu-necklace-bound-to-you-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10-30号に予約11/30まで掲載済み。締切は30日後でトリガーなし"
+  },
+  "cg-sega-lucky-kuji-vol-1-cute-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10-20号に販売期間・賞品掲載済み。締切は12/4でトリガーなし"
+  },
+  "cinderella-fes-blanc-2026-10": {
+   "action": "article",
+   "angle": "デレステのシンデレラフェス ブラン・ノワール、セレクトピックアップを引けるのは本日23:59まで",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 22,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(終了)。当日が最終日"
+  },
+  "cinderella-astromeda-popup-akihabara-2026": {
+   "action": "article",
+   "angle": "アニメイト秋葉原のAstromeda POP UPストアは明日11月1日で終了、モバイルバッテリー等を買えるのは残り2日",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 18,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "終了まで3日以内のトリガー。10-26・10-29号と同内容を締切視点で伝え直す"
+  },
+  "fumika-birthday-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿で10/27の過ぎた話題"
+  },
+  "cinderella-girls-sapporo-tv-tower-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cinderella-silky-sparkling-sapporo-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じテレビ塔コラボ"
+  },
+  "manaka-birthday-live-guest-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "10/28に終了済みの他ブランド声優のBD配信ライブへのゲスト出演"
+  },
+  "cinderella-popup-shop-after-sales-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10-22号に事後通販11/5締切掲載済み。締切まで5日でトリガーなし"
+  },
+  "answer-dere-ster-mv-upload-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "ファン投稿者によるMV動画の告知"
+  },
+  "cg-rose-tea-parlor-2026-nagoya": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "Rose Tea Parlorは10-05・10-28号に掲載済み。facts に新事実・当日トリガーなし"
+  },
+  "rose-tea-parlor-fan-visit-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人の来店投稿"
+  },
+  "tsukimiya-miyabi-birthday-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10-30号で祝福を掲載済み"
+  },
+  "tachibana-arisu-figure-announcement-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "arisu-seaside-memory-plum-figure-2027",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じフィギュアの告知。10-30号で既報、予約開始の記事に統合"
+  },
+  "cinderella-sega-lucky-kuji-vol1-cute": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10-20号に掲載済み"
+  },
+  "cinderella-15th-anniversary-party-2026": {
+   "action": "article",
+   "angle": "15th ANNIVERSARY PARTYのアソビストア一般会員先行の当落が本日13時に発表、当選者の入金は11月4日23:59まで",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(結果)。11/7一般販売の予告も添えられる"
+  },
+  "cg-xr-live-apple-of-my-ai-2027": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-apple-of-my-ai-2027",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ公演の先行当落発表"
+  },
+  "cg-athome-apple-of-my-ai-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-apple-of-my-ai-2027",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ公演の先行当落発表"
+  },
+  "cg-apple-of-my-ai-2027": {
+   "action": "article",
+   "angle": "ATHOME xR LIVE「Apple of my アイ」(山形)のアソビストアプレミアム12か月会員先行の当落が本日13時に発表、入金は11月4日23:59まで",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 28,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(結果)3件をここに統合"
+  },
+  "cinderella-silky-sparkling-sapporo-2026": {
+   "action": "article",
+   "angle": "さっぽろテレビ塔のシンデレラガールズコラボは11月3日まで、最終日まであと3日。特設会場でグッズ購入や売切れ時の配送受注ができる",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(締切前)。売切れ配送受注は10-28号既報なので締切視点で伝える"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "cg-arisu-seaside-memory-plum-figure-2027",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "橘ありす[シーサイド・メモリー]+のPLUM製1/7フィギュアが予約開始、通常版22,000円・限定豪華版24,200円で2027年1月発売予定",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "arisu-seaside-memory-plum-figure-2027",
+    "candidate_ids": [
+     "202610301234-watch-0",
+     "202610310225-explore-2",
+     "202610300224-grok-85"
+    ]
+   },
+   {
+    "slug": "cg-asuka-fujiwara-world-heritage-collab-2026",
+    "brand": "cg",
+    "rank": "medium",
+    "angle": "世界遺産「飛鳥・藤原の宮都」登録記念の奈良県明日香村コラボが12月17日〜2027年3月4日に開催決定、二宮飛鳥ら8人が四神衣装で登場",
+    "purpose": "新情報",
+    "lead_score": 28,
+    "dedup_key": "cg-asuka-fujiwara-world-heritage-collab-2026",
+    "candidate_ids": [
+     "202610301836-watch-2",
+     "202610302337-explore-29",
+     "202610310225-explore-1",
+     "202610310225-grok-116"
+    ]
+   },
+   {
+    "slug": "cg-15th-anniversary-party-bakusute-talk-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "15th PARTY振り返り生配信「ばくすて!とーく」がDAY1・DAY2とも公演終了後にYouTubeで配信決定、出演者も発表",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "cg-15th-anniversary-party-bakusute-talk-2026",
+    "candidate_ids": [
+     "202610302337-watch-0"
+    ]
+   },
+   {
+    "slug": "cg-memory-pict-8-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "「Memory Pict.」第8弾(神崎蘭子・的場梨沙、テーマは初詣)の受注が始まり、1月お届けでSpecial PVも公開",
+    "purpose": "新情報",
+    "lead_score": 12,
+    "dedup_key": "cg-memory-pict-8-2026",
+    "candidate_ids": [
+     "202610302337-watch-15"
+    ]
+   },
+   {
+    "slug": "cg-10th-memorial-starlight-stage-bd-2027",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "10th MEMORIAL LIVE STARLIGHT STAGE Blu-ray BOXの予約が開始、2027年3月24日発売でアソビストア版は12月20日まで",
+    "purpose": "新情報",
+    "lead_score": 22,
+    "dedup_key": "cg-10th-memorial-starlight-stage-bd-2027",
+    "candidate_ids": [
+     "202610302337-watch-18"
+    ]
+   },
+   {
+    "slug": "cg-15th-anniversary-song-hourglass-2026",
+    "brand": "cg",
+    "rank": "medium",
+    "angle": "15周年記念曲「HOURGLASS」の試聴が公開され、CDは11月18日発売、Full Size MVも同日21時に公開予定",
+    "purpose": "新情報",
+    "lead_score": 70,
+    "dedup_key": "cg-15th-anniversary-song-hourglass-2026",
+    "candidate_ids": [
+     "202610302337-watch-23",
+     "202610310225-grok-23",
+     "202610310225-grok-24"
+    ]
+   },
+   {
+    "slug": "cg-villains-night-yunika-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "本日限り、西武新宿駅前のユニカビジョンでハロウィン楽曲MV6曲(THE VILLAIN'S NIGHTなど)を毎時放映",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "cg-villains-night-yunika-2026",
+    "candidate_ids": [
+     "202610310225-grok-25"
+    ]
+   },
+   {
+    "slug": "cg-cinderella-fes-blanc-2026-10",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "デレステのシンデレラフェス ブラン・ノワール、セレクトピックアップを引けるのは本日23:59まで",
+    "purpose": "期日の知らせ",
+    "lead_score": 22,
+    "dedup_key": "cinderella-fes-blanc-2026-10",
+    "candidate_ids": [
+     "202610260732-explore-0",
+     "202610260732-explore-1",
+     "sched-2026-10-31-cinderella-fes-blanc-2026-10-終了",
+     "sched-2026-10-31-cinderella-fes-blanc-2026-10-終了-src1"
+    ]
+   },
+   {
+    "slug": "cg-cinderella-astromeda-popup-akihabara-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "アニメイト秋葉原のAstromeda POP UPストアは明日11月1日で終了、モバイルバッテリー等を買えるのは残り2日",
+    "purpose": "期日の知らせ",
+    "lead_score": 18,
+    "dedup_key": "cinderella-astromeda-popup-akihabara-2026",
+    "candidate_ids": [
+     "202610261232-explore-2",
+     "202610261832-explore-1",
+     "202610290508-grok-0"
+    ]
+   },
+   {
+    "slug": "cg-cinderella-15th-anniversary-party-2026",
+    "brand": "cg",
+    "rank": "medium",
+    "angle": "15th ANNIVERSARY PARTYのアソビストア一般会員先行の当落が本日13時に発表、当選者の入金は11月4日23:59まで",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "cinderella-15th-anniversary-party-2026",
+    "candidate_ids": [
+     "sched-2026-10-31-cinderella-15th-anniversary-party-2026-結果"
+    ]
+   },
+   {
+    "slug": "cg-apple-of-my-ai-2027",
+    "brand": "cg",
+    "rank": "medium",
+    "angle": "ATHOME xR LIVE「Apple of my アイ」(山形)のアソビストアプレミアム12か月会員先行の当落が本日13時に発表、入金は11月4日23:59まで",
+    "purpose": "期日の知らせ",
+    "lead_score": 28,
+    "dedup_key": "cg-apple-of-my-ai-2027",
+    "candidate_ids": [
+     "sched-2026-10-31-cg-apple-of-my-ai-2027-結果",
+     "sched-2026-10-31-cg-xr-live-apple-of-my-ai-2027-結果",
+     "sched-2026-10-31-cg-xr-live-apple-of-my-ai-2027-結果-src1",
+     "sched-2026-10-31-cg-athome-apple-of-my-ai-2026-結果"
+    ]
+   },
+   {
+    "slug": "cg-cinderella-silky-sparkling-sapporo-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "さっぽろテレビ塔のシンデレラガールズコラボは11月3日まで、最終日まであと3日。特設会場でグッズ購入や売切れ時の配送受注ができる",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "cinderella-silky-sparkling-sapporo-2026",
+    "candidate_ids": [
+     "sched-2026-10-31-cinderella-silky-sparkling-sapporo-2026-締切前",
+     "202610270222-grok-59"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "cg-15th-anniversary-party-2026-general",
+    "reason": "既報",
+    "note": "一般販売11/7・リセールは10-29号に掲載済みで新事実なし"
+   },
+   {
+    "dedup_key": "cinderella-last-order-hub-2026",
+    "reason": "既報",
+    "note": "10-28号に期間・店舗・出演6人掲載済み。新事実なし"
+   },
+   {
+    "dedup_key": "cg-hourglass-radio-premiere-2026",
+    "reason": "既報",
+    "note": "source_changeは再生数等の表示変化のみ。タイムシフト11/4は10-29号に掲載済み"
+   },
+   {
+    "dedup_key": "cg-fan-frilled-square-screenshot-2026-10-31",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿。単体では記事にしない(culture枠はgeneral面)"
+   },
+   {
+    "dedup_key": "cg-fan-miyabi-art-2026-10-30",
+    "reason": "個人の話題",
+    "note": "個人のファンアート投稿"
+   },
+   {
+    "dedup_key": "cg-fan-halloween-post-2026-10-31",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿"
+   },
+   {
+    "dedup_key": "cg-fan-makino-halloween-2026-10-31",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿"
+   },
+   {
+    "dedup_key": "dememiri-costume-fanart-2026",
+    "reason": "個人の話題",
+    "note": "個人のファンアート。デレミリ衣装自体は合同面が記事化済み"
+   },
+   {
+    "dedup_key": "cg-mayu-necklace-bound-to-you-2026",
+    "reason": "既報",
+    "note": "10-30号に予約11/30まで掲載済み。締切は30日後でトリガーなし"
+   },
+   {
+    "dedup_key": "cg-sega-lucky-kuji-vol-1-cute-2026",
+    "reason": "既報",
+    "note": "10-20号に販売期間・賞品掲載済み。締切は12/4でトリガーなし"
+   },
+   {
+    "dedup_key": "fumika-birthday-2026",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿で10/27の過ぎた話題"
+   },
+   {
+    "dedup_key": "manaka-birthday-live-guest-2026",
+    "reason": "その他",
+    "note": "10/28に終了済みの他ブランド声優のBD配信ライブへのゲスト出演"
+   },
+   {
+    "dedup_key": "cinderella-popup-shop-after-sales-2026",
+    "reason": "既報",
+    "note": "10-22号に事後通販11/5締切掲載済み。締切まで5日でトリガーなし"
+   },
+   {
+    "dedup_key": "answer-dere-ster-mv-upload-2026",
+    "reason": "個人の話題",
+    "note": "ファン投稿者によるMV動画の告知"
+   },
+   {
+    "dedup_key": "cg-rose-tea-parlor-2026-nagoya",
+    "reason": "既報",
+    "note": "Rose Tea Parlorは10-05・10-28号に掲載済み。facts に新事実・当日トリガーなし"
+   },
+   {
+    "dedup_key": "rose-tea-parlor-fan-visit-2026",
+    "reason": "個人の話題",
+    "note": "個人の来店投稿"
+   },
+   {
+    "dedup_key": "tsukimiya-miyabi-birthday-2026",
+    "reason": "既報",
+    "note": "10-30号で祝福を掲載済み"
+   },
+   {
+    "dedup_key": "cinderella-sega-lucky-kuji-vol1-cute",
+    "reason": "既報",
+    "note": "10-20号に掲載済み"
+   }
+  ],
+  "cross_brand": []
+ }
+}

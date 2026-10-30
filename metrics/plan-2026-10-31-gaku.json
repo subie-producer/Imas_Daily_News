@@ -1,0 +1,737 @@
+{
+ "decisions": {
+  "eclipse-light-animate-fair-2026": {
+   "action": "article",
+   "angle": "アニメイト「ECLIPSE LIGHT」フェアは本日から後半特典に切り替わり、ポストカード7種(千奈・清夏・広・星南・美鈴・佑芽・莉波)の配布が始まる",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約・開始。出典更新の商品表示の変化は読者に関わらないため扱わない"
+  },
+  "gakumas-live-tour-final-collab-drink-2026": {
+   "action": "article",
+   "angle": "「標」ファイナルのKアリーナ横浜でコラボドリンクを販売、11月6〜8日の注文で限定トレーディングカードがランダムで付く",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "チケット・物販整理券・メッセージ受付とは別の施策で既報にない新情報"
+  },
+  "gaku-asari-produce-seminar-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "第10回は10/30に「きょう11時開始」で記事化済み。新事実もトリガーも無い"
+  },
+  "gaku-lawson-collaboration-2026-autumn": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11月10日開始・13名・青いリボンとレースは10/21と10/23に既報。詳細は11月公開で今日の新事実なし"
+  },
+  "gaku-fumocolle-pc-goods-2026": {
+   "action": "article",
+   "angle": "学マス×ふもコレ第2弾の予約が開始、ゲーミングマウス19,980円やマウスパッド、アクリル系BOXが並び、発送は2027年4月頃",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ふもコレ第2弾の2件を統合。価格・仕様と発送時期を書く"
+  },
+  "gaku-asari-produce-seminar-2026-10": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "あさり先生ゼミ第10回は10/30に記事化済み。復刻ガシャ情報も既報"
+  },
+  "hatsuboshi-radio-2026-10-28": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/28放送のアーカイブと来週21時の放送は10/29に既報"
+  },
+  "gaku-hatsuboshi-store-saki-poster-2026": {
+   "action": "article",
+   "angle": "ハツボシストア応援部の本テーマ担当・花海咲季のポスターが11月6日から店内で展示される",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-gravure-solo-collection-agitato": {
+   "action": "article",
+   "angle": "Gravure Solo Collection Vol.2「Agitato」が2027年1月20日発売、CD限定でアイドル13人のソロ歌唱Full ver.を収録し予約受付中",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "この面の新発表でいちばん大きい"
+  },
+  "gaku-fumocolle-collab-2-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-fumocolle-pc-goods-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じふもコレ第2弾の予約開始。発送が2027年4月頃の事実をこちらに統合"
+  },
+  "gaku-palverse-vol-2": {
+   "action": "article",
+   "angle": "PalVerse 学園アイドルマスター vol.2が10月30日に発売、清夏・広・星南・美鈴・佑芽・莉波の全6種で1BOX6,600円",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-gamushara-cheer-outfit-2026": {
+   "action": "article",
+   "angle": "手毬とことねの衣装「がむしゃらチア」が衣装ショップに追加、有償ジュエル500個で11月7日10時59分まで",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "衣装販売は10/30のガシャ記事に無い別の施策。roundup は3件に満たず通常記事"
+  },
+  "gaku-gamushara-another-gacha-rerun-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "燕のアナザーガシャとことね・手毬復刻は10/30に「本日11時開始」で記事化済み"
+  },
+  "gaku-kotone-endless-dance-graphic-tee": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "カーテン魂のENDLESS DANCE Tシャツは10/26に全13人分を記事化済み。出典もファン投稿"
+  },
+  "gaku-campus-mode-hirase-live-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "声優個人のアイマス外ライブの話。出典は個人の投稿"
+  },
+  "imas-birthdays-2026-10-27": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "誕生日動画は10/27に記事化済み。強化月間は10/28に終了"
+  },
+  "gakumas-espresto-sugary-prize-2027": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/27と10/28に記事化済みで新事実なし"
+  },
+  "imas-radio-next-2026-11-10": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/28に記事化済み。放送は11月10日でトリガーなし"
+  },
+  "gaku-ume-another-idol-free-gasha-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/29に終了済み"
+  },
+  "hif-step4-ameya-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/28と10/29に記事化済み"
+  },
+  "gaku-shirube-final-gifts-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/28に記事化済み。公演は11月7日でトリガーなし"
+  },
+  "gaku-shirube-final-merch-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "整理券は申込終了、当落発表は11月3日13時で今日ではない。新事実なし"
+  },
+  "gaku-jyuo-idol-training-starlight-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/28 4時59分に終了済み、10/27に記事化済み"
+  },
+  "gaku-roar-gacha-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/28に終了済みで記事化済み"
+  },
+  "gacha-garakuta-road-ameya-2026-live": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/28と10/29に記事化済み。ガシャ終了は11月6日でトリガーなし"
+  },
+  "gaku-achievement-loading-issue-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/28に記事化済み。修正の続報なし"
+  },
+  "curtain-damashii-new-goods-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/26に新作4種の予約を記事化済み。受付は11月15日まででトリガーなし"
+  },
+  "gaku-rinami-another-idol-free-gacha-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/27に終了済み"
+  },
+  "gaku-duet-song-collection-desc-error-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/29に記事化済み"
+  },
+  "gaku-ame-yo-tsubame-kisama-kentei-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gakumas-amayo-kisama-kentei-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ貴様ぁ！検定。公式LPの応募方法・賞品の事実を統合"
+  },
+  "radio-guest-amane-yukari-2026-11-04": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/29に記事化済み。投稿募集は金曜午前で終了済み、放送は11月4日でトリガーなし"
+  },
+  "gakumas-4koma-177": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/30に記事化済み"
+  },
+  "gakumas-amayo-kisama-kentei-2026": {
+   "action": "article",
+   "angle": "雨夜燕の「貴様ぁ！検定」の受付が11月8日23時59分まで延長され、#雨夜燕貴様検定の投稿で抽選10名に認定証カードホルダーが当たる",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "終了(10/28)とされていたが延長の記載が新事実。出典は二次情報(未確認)で、公式LPの記載との食い違いを校閲で確認すること"
+  },
+  "gaku-amaya-tsubame-kisama-kentei-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gakumas-amayo-kisama-kentei-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ貴様ぁ！検定の紹介"
+  },
+  "gaku-google-play-ranking-tsubame-2026-10-29": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/30に記事化済み"
+  },
+  "gaku-another-idol-26-gamushara-gacha": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/21〜10/30に記事化済み"
+  },
+  "miracle-nanau-gacha-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/30に終了済み、記事化済み"
+  },
+  "gaku-smile-skirt-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/30に販売終了済み、記事化済み"
+  },
+  "gamushara-rerun-gacha-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/30に記事化済み"
+  },
+  "gaku-seinan-another-free-2026": {
+   "action": "article",
+   "angle": "十王星南のシーズン限定アナザーアイドル確定の無料1連ガシャは本日10時59分で終了する",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約・終了。当日のトリガーあり"
+  },
+  "gakumas-wednesday-jewels-2026-10-28": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/30に記事化済み。期限は11月4日4時59分で3日以内ではない"
+  },
+  "gaku-endless-dance-tshirt-amaya-2027": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/30に記事化済み"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "gaku-eclipse-light-animate-fair-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "アニメイト「ECLIPSE LIGHT」フェアは本日から後半特典に切り替わり、ポストカード7種(千奈・清夏・広・星南・美鈴・佑芽・莉波)の配布が始まる",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "eclipse-light-animate-fair-2026",
+    "candidate_ids": [
+     "update-5a1c121db3e4",
+     "sched-2026-10-31-eclipse-light-animate-fair-2026-開始"
+    ]
+   },
+   {
+    "slug": "gaku-gakumas-live-tour-final-collab-drink-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "「標」ファイナルのKアリーナ横浜でコラボドリンクを販売、11月6〜8日の注文で限定トレーディングカードがランダムで付く",
+    "purpose": "新情報",
+    "lead_score": 25,
+    "dedup_key": "gakumas-live-tour-final-collab-drink-2026",
+    "candidate_ids": [
+     "202610301836-watch-0"
+    ]
+   },
+   {
+    "slug": "gaku-fumocolle-pc-goods-2026",
+    "brand": "gaku",
+    "rank": "medium",
+    "angle": "学マス×ふもコレ第2弾の予約が開始、ゲーミングマウス19,980円やマウスパッド、アクリル系BOXが並び、発送は2027年4月頃",
+    "purpose": "新情報",
+    "lead_score": 30,
+    "dedup_key": "gaku-fumocolle-pc-goods-2026",
+    "candidate_ids": [
+     "202610302337-explore-38",
+     "202610310225-grok-90"
+    ]
+   },
+   {
+    "slug": "gaku-hatsuboshi-store-saki-poster-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "ハツボシストア応援部の本テーマ担当・花海咲季のポスターが11月6日から店内で展示される",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "gaku-hatsuboshi-store-saki-poster-2026",
+    "candidate_ids": [
+     "202610310225-grok-88"
+    ]
+   },
+   {
+    "slug": "gaku-gravure-solo-collection-agitato",
+    "brand": "gaku",
+    "rank": "medium",
+    "angle": "Gravure Solo Collection Vol.2「Agitato」が2027年1月20日発売、CD限定でアイドル13人のソロ歌唱Full ver.を収録し予約受付中",
+    "purpose": "新情報",
+    "lead_score": 60,
+    "dedup_key": "gaku-gravure-solo-collection-agitato",
+    "candidate_ids": [
+     "202610310225-grok-89"
+    ]
+   },
+   {
+    "slug": "gaku-palverse-vol-2",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "PalVerse 学園アイドルマスター vol.2が10月30日に発売、清夏・広・星南・美鈴・佑芽・莉波の全6種で1BOX6,600円",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "gaku-palverse-vol-2",
+    "candidate_ids": [
+     "202610310225-grok-91"
+    ]
+   },
+   {
+    "slug": "gaku-gamushara-cheer-outfit-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "手毬とことねの衣装「がむしゃらチア」が衣装ショップに追加、有償ジュエル500個で11月7日10時59分まで",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "gaku-gamushara-cheer-outfit-2026",
+    "candidate_ids": [
+     "202610310225-grok-93"
+    ]
+   },
+   {
+    "slug": "gaku-gakumas-amayo-kisama-kentei-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "雨夜燕の「貴様ぁ！検定」の受付が11月8日23時59分まで延長され、#雨夜燕貴様検定の投稿で抽選10名に認定証カードホルダーが当たる",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "gakumas-amayo-kisama-kentei-2026",
+    "candidate_ids": [
+     "202610290225-grok-89",
+     "202610282333-watch-3",
+     "202610290225-explore-6",
+     "202610290732-explore-6"
+    ]
+   },
+   {
+    "slug": "gaku-seinan-another-free-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "十王星南のシーズン限定アナザーアイドル確定の無料1連ガシャは本日10時59分で終了する",
+    "purpose": "期日の知らせ",
+    "lead_score": 15,
+    "dedup_key": "gaku-seinan-another-free-2026",
+    "candidate_ids": [
+     "202610300224-grok-38",
+     "sched-2026-10-31-gaku-seinan-another-free-2026-終了"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "gaku-asari-produce-seminar-2026",
+    "reason": "既報",
+    "note": "第10回は10/30に「きょう11時開始」で記事化済み。新事実もトリガーも無い"
+   },
+   {
+    "dedup_key": "gaku-lawson-collaboration-2026-autumn",
+    "reason": "既報",
+    "note": "11月10日開始・13名・青いリボンとレースは10/21と10/23に既報。詳細は11月公開で今日の新事実なし"
+   },
+   {
+    "dedup_key": "gaku-asari-produce-seminar-2026-10",
+    "reason": "既報",
+    "note": "あさり先生ゼミ第10回は10/30に記事化済み。復刻ガシャ情報も既報"
+   },
+   {
+    "dedup_key": "hatsuboshi-radio-2026-10-28",
+    "reason": "既報",
+    "note": "10/28放送のアーカイブと来週21時の放送は10/29に既報"
+   },
+   {
+    "dedup_key": "gaku-gamushara-another-gacha-rerun-2026",
+    "reason": "既報",
+    "note": "燕のアナザーガシャとことね・手毬復刻は10/30に「本日11時開始」で記事化済み"
+   },
+   {
+    "dedup_key": "gaku-kotone-endless-dance-graphic-tee",
+    "reason": "既報",
+    "note": "カーテン魂のENDLESS DANCE Tシャツは10/26に全13人分を記事化済み。出典もファン投稿"
+   },
+   {
+    "dedup_key": "gaku-campus-mode-hirase-live-2026",
+    "reason": "個人の話題",
+    "note": "声優個人のアイマス外ライブの話。出典は個人の投稿"
+   },
+   {
+    "dedup_key": "imas-birthdays-2026-10-27",
+    "reason": "既報",
+    "note": "誕生日動画は10/27に記事化済み。強化月間は10/28に終了"
+   },
+   {
+    "dedup_key": "gakumas-espresto-sugary-prize-2027",
+    "reason": "既報",
+    "note": "10/27と10/28に記事化済みで新事実なし"
+   },
+   {
+    "dedup_key": "imas-radio-next-2026-11-10",
+    "reason": "既報",
+    "note": "10/28に記事化済み。放送は11月10日でトリガーなし"
+   },
+   {
+    "dedup_key": "gaku-ume-another-idol-free-gasha-2026",
+    "reason": "既報",
+    "note": "10/29に終了済み"
+   },
+   {
+    "dedup_key": "hif-step4-ameya-2026",
+    "reason": "既報",
+    "note": "10/28と10/29に記事化済み"
+   },
+   {
+    "dedup_key": "gaku-shirube-final-gifts-2026",
+    "reason": "既報",
+    "note": "10/28に記事化済み。公演は11月7日でトリガーなし"
+   },
+   {
+    "dedup_key": "gaku-shirube-final-merch-2026",
+    "reason": "既報",
+    "note": "整理券は申込終了、当落発表は11月3日13時で今日ではない。新事実なし"
+   },
+   {
+    "dedup_key": "gaku-jyuo-idol-training-starlight-2026",
+    "reason": "既報",
+    "note": "10/28 4時59分に終了済み、10/27に記事化済み"
+   },
+   {
+    "dedup_key": "gaku-roar-gacha-2026",
+    "reason": "既報",
+    "note": "10/28に終了済みで記事化済み"
+   },
+   {
+    "dedup_key": "gacha-garakuta-road-ameya-2026-live",
+    "reason": "既報",
+    "note": "10/28と10/29に記事化済み。ガシャ終了は11月6日でトリガーなし"
+   },
+   {
+    "dedup_key": "gaku-achievement-loading-issue-2026",
+    "reason": "既報",
+    "note": "10/28に記事化済み。修正の続報なし"
+   },
+   {
+    "dedup_key": "curtain-damashii-new-goods-2026",
+    "reason": "既報",
+    "note": "10/26に新作4種の予約を記事化済み。受付は11月15日まででトリガーなし"
+   },
+   {
+    "dedup_key": "gaku-rinami-another-idol-free-gacha-2026",
+    "reason": "既報",
+    "note": "10/27に終了済み"
+   },
+   {
+    "dedup_key": "gaku-duet-song-collection-desc-error-2026",
+    "reason": "既報",
+    "note": "10/29に記事化済み"
+   },
+   {
+    "dedup_key": "radio-guest-amane-yukari-2026-11-04",
+    "reason": "既報",
+    "note": "10/29に記事化済み。投稿募集は金曜午前で終了済み、放送は11月4日でトリガーなし"
+   },
+   {
+    "dedup_key": "gakumas-4koma-177",
+    "reason": "既報",
+    "note": "10/30に記事化済み"
+   },
+   {
+    "dedup_key": "gaku-google-play-ranking-tsubame-2026-10-29",
+    "reason": "既報",
+    "note": "10/30に記事化済み"
+   },
+   {
+    "dedup_key": "gaku-another-idol-26-gamushara-gacha",
+    "reason": "既報",
+    "note": "10/21〜10/30に記事化済み"
+   },
+   {
+    "dedup_key": "miracle-nanau-gacha-2026",
+    "reason": "既報",
+    "note": "10/30に終了済み、記事化済み"
+   },
+   {
+    "dedup_key": "gaku-smile-skirt-2026",
+    "reason": "既報",
+    "note": "10/30に販売終了済み、記事化済み"
+   },
+   {
+    "dedup_key": "gamushara-rerun-gacha-2026",
+    "reason": "既報",
+    "note": "10/30に記事化済み"
+   },
+   {
+    "dedup_key": "gakumas-wednesday-jewels-2026-10-28",
+    "reason": "既報",
+    "note": "10/30に記事化済み。期限は11月4日4時59分で3日以内ではない"
+   },
+   {
+    "dedup_key": "gaku-endless-dance-tshirt-amaya-2027",
+    "reason": "既報",
+    "note": "10/30に記事化済み"
+   }
+  ],
+  "cross_brand": []
+ }
+}

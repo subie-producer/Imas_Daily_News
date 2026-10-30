@@ -1,0 +1,162 @@
+{
+ "decisions": {
+  "bandainamco-am-co-jp-32": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "予選日程は10/1号、エントリー開始は10/30号(合同面)で記事済み。今日のトリガー無し"
+  },
+  "akai-sekai-cover-video-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人投稿の未確認カバー動画で、アイマス外の話題"
+  },
+  "tours-sidem-contribution-debate-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "ファン間の議論・論争で、未確認の個人SNS投稿のみ"
+  },
+  "portal-emergency-maintenance-ended-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/27号の記事と同内容で、新事実無し"
+  },
+  "765-961-idol-ultimate-2027-ticket": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "締切は11月8日に延長済みで記事化済み。今日は期日の3日以内でない"
+  },
+  "valiv-manaka-birthday-live-2026-postponed": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "公演は10/28に終了済み。アーカイブ購入期限は11/29でまだ先"
+  },
+  "tours-symphony-release-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/29号で配信開始を記事化済み"
+  },
+  "fan-yukiho-mami-pc-panel-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/30号のファン面で同内容を記事化済み"
+  },
+  "idolmaster-portal-maintenance-release-2026": {
+   "action": "article",
+   "angle": "ポータルのメンテ解除後も、ムービー・配信番組ページ、ASOBI STORE購入履歴、ダイレクトカートインが引き続き使えない",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "10/27号の本文に無い利用不可の機能が新しい事実"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "general-idolmaster-portal-maintenance-release-2026",
+    "brand": "general",
+    "rank": "small",
+    "angle": "ポータルのメンテ解除後も、ムービー・配信番組ページ、ASOBI STORE購入履歴、ダイレクトカートインが引き続き使えない",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "idolmaster-portal-maintenance-release-2026",
+    "candidate_ids": [
+     "202610292334-explore-13"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "bandainamco-am-co-jp-32",
+    "reason": "既報",
+    "note": "予選日程は10/1号、エントリー開始は10/30号(合同面)で記事済み。今日のトリガー無し"
+   },
+   {
+    "dedup_key": "akai-sekai-cover-video-2026",
+    "reason": "個人の話題",
+    "note": "個人投稿の未確認カバー動画で、アイマス外の話題"
+   },
+   {
+    "dedup_key": "tours-sidem-contribution-debate-2026",
+    "reason": "その他",
+    "note": "ファン間の議論・論争で、未確認の個人SNS投稿のみ"
+   },
+   {
+    "dedup_key": "portal-emergency-maintenance-ended-2026",
+    "reason": "既報",
+    "note": "10/27号の記事と同内容で、新事実無し"
+   },
+   {
+    "dedup_key": "765-961-idol-ultimate-2027-ticket",
+    "reason": "既報",
+    "note": "締切は11月8日に延長済みで記事化済み。今日は期日の3日以内でない"
+   },
+   {
+    "dedup_key": "valiv-manaka-birthday-live-2026-postponed",
+    "reason": "その他",
+    "note": "公演は10/28に終了済み。アーカイブ購入期限は11/29でまだ先"
+   },
+   {
+    "dedup_key": "tours-symphony-release-2026",
+    "reason": "既報",
+    "note": "10/29号で配信開始を記事化済み"
+   },
+   {
+    "dedup_key": "fan-yukiho-mami-pc-panel-2026",
+    "reason": "既報",
+    "note": "10/30号のファン面で同内容を記事化済み"
+   }
+  ],
+  "cross_brand": []
+ }
+}

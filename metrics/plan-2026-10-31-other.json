@@ -1,0 +1,26 @@
+{
+ "decisions": {
+  "765-961-ultimate-once-and-for-all-extension-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "公演名・会場・3公演の日時は10/29・10/30の記事に既出。先行締切は11月8日で3日以内ではなく、当日のトリガーも無い。"
+  }
+ },
+ "plan": {
+  "articles": [],
+  "dropped": [
+   {
+    "dedup_key": "765-961-ultimate-once-and-for-all-extension-2026",
+    "reason": "既報",
+    "note": "公演名・会場・3公演の日時は10/29・10/30の記事に既出。先行締切は11月8日で3日以内ではなく、当日のトリガーも無い。"
+   }
+  ],
+  "cross_brand": []
+ }
+}

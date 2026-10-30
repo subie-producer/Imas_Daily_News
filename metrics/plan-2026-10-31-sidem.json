@@ -1,0 +1,938 @@
+{
+ "decisions": {
+  "tours-s2-sidem-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "S2弾稼働は10/19・10/29に合同面で記事済み"
+  },
+  "idolmaster-tours-second-stage-2-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "S2弾稼働は合同面で記事済み"
+  },
+  "sidem-mfes-winter-2026-theme-song": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-m-fes-winter-wonderland-theme-song-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じMフェステーマソングCD"
+  },
+  "sidem-agatsuma-ninja-tourism-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/24・10/28に記事済み"
+  },
+  "shiny-kawaii-season-chibiguru-2027": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-howanui-crane-game-vol3-5-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ほわぬいvol.3〜5登場の同じ出来事"
+  },
+  "tours-series-2-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "S2弾稼働は合同面で記事済み"
+  },
+  "cd-the-idolm-ster-sidem-m": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-m-fes-winter-wonderland-theme-song-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "出典の変更はアニメイト特典で、既報の内容。同じCDの記事へ統合"
+  },
+  "tours-sidem-second-stage-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "S2弾稼働は合同面で記事済み"
+  },
+  "tours-s2-sidem-launch-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "S2弾稼働は合同面で記事済み"
+  },
+  "sidem-315-episode-one-panel-update-2026-10": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-one-panel-highjoker-shinsoku-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "1コマ更新の同じ話題"
+  },
+  "sidem-kuzunoha-amehiko-birthday-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "誕生日の祝い投稿。記念日の盛り上がりは総合面のファン面の扱い"
+  },
+  "sidem-11th-setlist-playlists-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/10に記事済み"
+  },
+  "sidem-passion-challenge-monthly-theme-song-11-flags-streaming-2026": {
+   "action": "article",
+   "angle": "P@SSION CHALLENGE MONTHLY THEME SONG 11 F-LAGSのサブスク配信が各音楽サービスで始まった",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "sidem-passion-challenge-monthly-theme-song-12-cafe-parade-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "Café Parade CDは発売済み。carriedで既報と判断済み"
+  },
+  "sidem-high-joker-poppin-planet-2dmv-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/4公開は10/24に記事済み。当日トリガー無し"
+  },
+  "sidem-315-pronight-2026-10-30": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "10/30放送は終了済み"
+  },
+  "sidem-315-pronight-2026-10-30-time-change": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "10/30放送は終了済み"
+  },
+  "sidem-m-fes-winter-wonderland-theme-song-2026": {
+   "action": "article",
+   "angle": "Mフェス2026初のテーマソングCDは12月2日発売。W・神速一魂・C.FIRSTの歌唱とソロVer.を収録し、初回生産特典は全7種から2枚のブロマイド",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 40,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "既報の本文にない収録内容・初回特典が新しい事実"
+  },
+  "sidem-agatsuma-nin-nin-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/28に記事済み"
+  },
+  "sidem-knick-knacks-vol2-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/27・10/28に記事済み"
+  },
+  "sidem-monthly-theme-song-vol-3-goods-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/24に記事済み。締切11/8は3日以内でない"
+  },
+  "sidem-knick-knacks-vol2-hands-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/28に記事済み"
+  },
+  "sidem-315pro-night-goods-2026": {
+   "action": "article",
+   "angle": "315プロNight!出張版公開録音グッズの先行受注は明日11月1日23:59まで",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "sidem-one-panel-highjoker-shinsoku-2026": {
+   "action": "article",
+   "angle": "「アイドルたちの1コマ」High×Joker回と神速一魂回が本日10月31日に公開され、315 PASSION CONTENTSで読める",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "sidem-content-services-maintenance-ended-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/27に記事済み"
+  },
+  "sidem-joypolis-dippin-dots-trend-2026-10": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿"
+  },
+  "sidem-315-night-mofumofuen-2026-11": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/25に記事済み"
+  },
+  "sidem-sems-lifes-side-menu-mv-200k-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/26に記事済み"
+  },
+  "sidem-cfirst-lailai-bishoku-mv-100k-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/26に記事済み"
+  },
+  "sidem-legenders-refrain-atrium-ensemble-2026": {
+   "action": "article",
+   "angle": "LegendersのCDデビュー10周年を記念し、弦楽器による「リフレインアトリウム」のアンサンブル動画が公開された",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "sidem-2dmv-goods-vol3": {
+   "action": "article",
+   "angle": "2DMV公開記念グッズ第3弾の受注は明日11月1日23:59まで。DRAMATIC STARS・Altessimo・彩・S.E.Mの制作コメントとサンプルも公開",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "締切が3日以内"
+  },
+  "sidem-renaissance-fitness-fan-visit-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿"
+  },
+  "sidem-super-retrose-party-2026": {
+   "action": "article",
+   "angle": "西武園ゆうえんちのSideM「超!!レトローズ パーティ」は本日18時からレオランド特設ステージでスペシャルパーティを観覧できる",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約。西武園の2主題をここへ統合"
+  },
+  "sidem-howanuivol7-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/27に記事済み"
+  },
+  "sidem-joypolis3-second-half-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/27に記事済み"
+  },
+  "sidem-2dmv-sai-ranman-story-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/29に記事済み"
+  },
+  "sidem-mfes-2026-animate-cafe": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/29に記事済み"
+  },
+  "sidem-2dmv-comment-goods-aya-sem-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-2dmv-goods-vol3",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "2DMVグッズ第3弾の同じ施策"
+  },
+  "sidem-passion-challenge-monthly-song-12-cafe-parade-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "Café Parade CDは発売済み。carriedで既報と判断済み"
+  },
+  "sidem-fan-music-analysis-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "ファンの個人記事。ファン面(総合)の扱い"
+  },
+  "sidem-agatsuma-fan-attendance-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "ファンの参加報告。ファン面(総合)の扱い"
+  },
+  "sidem-monthly-theme-song-12-cafe-parade": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "Café Parade CDは発売済み。carriedで既報と判断済み"
+  },
+  "sidem-315-monthly-theme-12-cafe-parade-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "Café Parade CDは発売済み。carriedで既報と判断済み"
+  },
+  "315night-20261023": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "10/23放送回の動画。終了済み"
+  },
+  "teddys-collection-ii-goods": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/30に記事済み。締切11/15は先"
+  },
+  "sidem-beam-subscription-2026": {
+   "action": "article",
+   "angle": "SideM楽曲「BEAM」がサブスクで配信開始",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "fans-visit-agatsuma-nin-nin-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿"
+  },
+  "fan-article-never-end-opus-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "ファンの個人記事。ファン面(総合)の扱い"
+  },
+  "deramasu-sidem-special-site-update-20260713": {
+   "action": "article",
+   "angle": "でらます×SideMの名古屋コラボは本日10月31日が会期最終日",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(千秋楽)"
+  },
+  "sidem-seibuen-retro-party-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-super-retrose-party-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "西武園コラボ・本日18時のパーティ"
+  },
+  "sidem-tabi-masu-nagoya-2026": {
+   "action": "article",
+   "angle": "JR東海×SideM「旅マス」名古屋企画は本日が最終日。乗車当日限りでクリアカードを引き換えられる",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(終了・締切)"
+  },
+  "sidem-fantastic-battle-fes-nagano-general-advance-2026": {
+   "action": "article",
+   "angle": "F＠NTASTIC BATTLE FES長野のSP席アソビストア一般会員先行は11月3日23:59まで、締切まで3日",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(締切前)"
+  },
+  "sidem-howanui-crane-game-vol3-5-2026": {
+   "action": "article",
+   "angle": "SideMのほわぬいvol.3〜5が本日10月31日から全国のクレーンゲームに順次登場",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(開始)"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "sidem-passion-challenge-monthly-theme-song-11-flags-streaming-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "P@SSION CHALLENGE MONTHLY THEME SONG 11 F-LAGSのサブスク配信が各音楽サービスで始まった",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "sidem-passion-challenge-monthly-theme-song-11-flags-streaming-2026",
+    "candidate_ids": [
+     "202610310225-grok-80"
+    ]
+   },
+   {
+    "slug": "sidem-m-fes-winter-wonderland-theme-song-2026",
+    "brand": "sidem",
+    "rank": "medium",
+    "angle": "Mフェス2026初のテーマソングCDは12月2日発売。W・神速一魂・C.FIRSTの歌唱とソロVer.を収録し、初回生産特典は全7種から2枚のブロマイド",
+    "purpose": "新情報",
+    "lead_score": 40,
+    "dedup_key": "sidem-m-fes-winter-wonderland-theme-song-2026",
+    "candidate_ids": [
+     "202610310225-grok-85",
+     "202610301234-watch-5",
+     "update-e862168a793a"
+    ]
+   },
+   {
+    "slug": "sidem-315pro-night-goods-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "315プロNight!出張版公開録音グッズの先行受注は明日11月1日23:59まで",
+    "purpose": "期日の知らせ",
+    "lead_score": 15,
+    "dedup_key": "sidem-315pro-night-goods-2026",
+    "candidate_ids": [
+     "202610280221-grok-30"
+    ]
+   },
+   {
+    "slug": "sidem-one-panel-highjoker-shinsoku-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "「アイドルたちの1コマ」High×Joker回と神速一魂回が本日10月31日に公開され、315 PASSION CONTENTSで読める",
+    "purpose": "期日の知らせ",
+    "lead_score": 15,
+    "dedup_key": "sidem-one-panel-highjoker-shinsoku-2026",
+    "candidate_ids": [
+     "202610280221-grok-31",
+     "sched-2026-10-31-sidem-one-panel-highjoker-shinsoku-2026-開始",
+     "202610310225-grok-77"
+    ]
+   },
+   {
+    "slug": "sidem-legenders-refrain-atrium-ensemble-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "LegendersのCDデビュー10周年を記念し、弦楽器による「リフレインアトリウム」のアンサンブル動画が公開された",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "sidem-legenders-refrain-atrium-ensemble-2026",
+    "candidate_ids": [
+     "202610270222-grok-36"
+    ]
+   },
+   {
+    "slug": "sidem-2dmv-goods-vol3",
+    "brand": "sidem",
+    "rank": "medium",
+    "angle": "2DMV公開記念グッズ第3弾の受注は明日11月1日23:59まで。DRAMATIC STARS・Altessimo・彩・S.E.Mの制作コメントとサンプルも公開",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "sidem-2dmv-goods-vol3",
+    "candidate_ids": [
+     "202610270222-grok-37",
+     "202610281834-watch-1",
+     "202610300224-grok-24",
+     "202610300224-grok-25",
+     "202610290225-grok-43"
+    ]
+   },
+   {
+    "slug": "sidem-super-retrose-party-2026",
+    "brand": "sidem",
+    "rank": "medium",
+    "angle": "西武園ゆうえんちのSideM「超!!レトローズ パーティ」は本日18時からレオランド特設ステージでスペシャルパーティを観覧できる",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "sidem-super-retrose-party-2026",
+    "candidate_ids": [
+     "202610270222-grok-39",
+     "202610270404-grok-0-r1",
+     "202610290225-grok-49",
+     "sched-2026-10-31-sidem-super-retrose-party-2026-その他",
+     "sched-2026-10-31-sidem-super-retrose-party-2026-その他-src1",
+     "sched-2026-10-31-sidem-super-retrose-party-2026-その他-src2",
+     "sched-2026-10-31-sidem-seibuen-retro-party-2026-その他",
+     "sched-2026-10-31-sidem-seibuen-retro-party-2026-その他-src1"
+    ]
+   },
+   {
+    "slug": "sidem-beam-subscription-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "SideM楽曲「BEAM」がサブスクで配信開始",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "sidem-beam-subscription-2026",
+    "candidate_ids": [
+     "202610300224-grok-26"
+    ]
+   },
+   {
+    "slug": "sidem-deramasu-sidem-special-site-update-20260713",
+    "brand": "sidem",
+    "rank": "medium",
+    "angle": "でらます×SideMの名古屋コラボは本日10月31日が会期最終日",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "deramasu-sidem-special-site-update-20260713",
+    "candidate_ids": [
+     "sched-2026-10-31-deramasu-sidem-special-site-update-20260713-千秋楽",
+     "sched-2026-10-31-deramasu-sidem-special-site-update-20260713-千秋楽-src1",
+     "sched-2026-10-31-deramasu-sidem-special-site-update-20260713-千秋楽-src2",
+     "sched-2026-10-31-deramasu-sidem-special-site-update-20260713-千秋楽-src3",
+     "sched-2026-10-31-deramasu-sidem-special-site-update-20260713-千秋楽-src4",
+     "sched-2026-10-31-deramasu-sidem-special-site-update-20260713-千秋楽-src5",
+     "sched-2026-10-31-deramasu-sidem-special-site-update-20260713-千秋楽-src6"
+    ]
+   },
+   {
+    "slug": "sidem-tabi-masu-nagoya-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "JR東海×SideM「旅マス」名古屋企画は本日が最終日。乗車当日限りでクリアカードを引き換えられる",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "sidem-tabi-masu-nagoya-2026",
+    "candidate_ids": [
+     "sched-2026-10-31-sidem-tabi-masu-nagoya-2026-終了",
+     "sched-2026-10-31-sidem-tabi-masu-nagoya-2026-締切"
+    ]
+   },
+   {
+    "slug": "sidem-fantastic-battle-fes-nagano-general-advance-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "F＠NTASTIC BATTLE FES長野のSP席アソビストア一般会員先行は11月3日23:59まで、締切まで3日",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "sidem-fantastic-battle-fes-nagano-general-advance-2026",
+    "candidate_ids": [
+     "sched-2026-10-31-sidem-fantastic-battle-fes-nagano-general-advance-2026-締切前"
+    ]
+   },
+   {
+    "slug": "sidem-howanui-crane-game-vol3-5-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "SideMのほわぬいvol.3〜5が本日10月31日から全国のクレーンゲームに順次登場",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "sidem-howanui-crane-game-vol3-5-2026",
+    "candidate_ids": [
+     "sched-2026-10-31-sidem-howanui-crane-game-vol3-5-2026-開始",
+     "202610301234-explore-10",
+     "202610301836-explore-13",
+     "202610271834-watch-4"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "tours-s2-sidem-2026",
+    "reason": "既報",
+    "note": "S2弾稼働は10/19・10/29に合同面で記事済み"
+   },
+   {
+    "dedup_key": "idolmaster-tours-second-stage-2-2026",
+    "reason": "既報",
+    "note": "S2弾稼働は合同面で記事済み"
+   },
+   {
+    "dedup_key": "sidem-agatsuma-ninja-tourism-2026",
+    "reason": "既報",
+    "note": "10/24・10/28に記事済み"
+   },
+   {
+    "dedup_key": "tours-series-2-2026",
+    "reason": "既報",
+    "note": "S2弾稼働は合同面で記事済み"
+   },
+   {
+    "dedup_key": "tours-sidem-second-stage-2026",
+    "reason": "既報",
+    "note": "S2弾稼働は合同面で記事済み"
+   },
+   {
+    "dedup_key": "tours-s2-sidem-launch-2026",
+    "reason": "既報",
+    "note": "S2弾稼働は合同面で記事済み"
+   },
+   {
+    "dedup_key": "sidem-kuzunoha-amehiko-birthday-2026",
+    "reason": "面違い",
+    "note": "誕生日の祝い投稿。記念日の盛り上がりは総合面のファン面の扱い"
+   },
+   {
+    "dedup_key": "sidem-11th-setlist-playlists-2026",
+    "reason": "既報",
+    "note": "10/10に記事済み"
+   },
+   {
+    "dedup_key": "sidem-passion-challenge-monthly-theme-song-12-cafe-parade-2026",
+    "reason": "既報",
+    "note": "Café Parade CDは発売済み。carriedで既報と判断済み"
+   },
+   {
+    "dedup_key": "sidem-high-joker-poppin-planet-2dmv-2026",
+    "reason": "既報",
+    "note": "11/4公開は10/24に記事済み。当日トリガー無し"
+   },
+   {
+    "dedup_key": "sidem-315-pronight-2026-10-30",
+    "reason": "その他",
+    "note": "10/30放送は終了済み"
+   },
+   {
+    "dedup_key": "sidem-315-pronight-2026-10-30-time-change",
+    "reason": "その他",
+    "note": "10/30放送は終了済み"
+   },
+   {
+    "dedup_key": "sidem-agatsuma-nin-nin-2026",
+    "reason": "既報",
+    "note": "10/28に記事済み"
+   },
+   {
+    "dedup_key": "sidem-knick-knacks-vol2-2026",
+    "reason": "既報",
+    "note": "10/27・10/28に記事済み"
+   },
+   {
+    "dedup_key": "sidem-monthly-theme-song-vol-3-goods-2026",
+    "reason": "既報",
+    "note": "10/24に記事済み。締切11/8は3日以内でない"
+   },
+   {
+    "dedup_key": "sidem-knick-knacks-vol2-hands-2026",
+    "reason": "既報",
+    "note": "10/28に記事済み"
+   },
+   {
+    "dedup_key": "sidem-content-services-maintenance-ended-2026",
+    "reason": "既報",
+    "note": "10/27に記事済み"
+   },
+   {
+    "dedup_key": "sidem-joypolis-dippin-dots-trend-2026-10",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿"
+   },
+   {
+    "dedup_key": "sidem-315-night-mofumofuen-2026-11",
+    "reason": "既報",
+    "note": "10/25に記事済み"
+   },
+   {
+    "dedup_key": "sidem-sems-lifes-side-menu-mv-200k-2026",
+    "reason": "既報",
+    "note": "10/26に記事済み"
+   },
+   {
+    "dedup_key": "sidem-cfirst-lailai-bishoku-mv-100k-2026",
+    "reason": "既報",
+    "note": "10/26に記事済み"
+   },
+   {
+    "dedup_key": "sidem-renaissance-fitness-fan-visit-2026",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿"
+   },
+   {
+    "dedup_key": "sidem-howanuivol7-2026",
+    "reason": "既報",
+    "note": "10/27に記事済み"
+   },
+   {
+    "dedup_key": "sidem-joypolis3-second-half-2026",
+    "reason": "既報",
+    "note": "10/27に記事済み"
+   },
+   {
+    "dedup_key": "sidem-2dmv-sai-ranman-story-2026",
+    "reason": "既報",
+    "note": "10/29に記事済み"
+   },
+   {
+    "dedup_key": "sidem-mfes-2026-animate-cafe",
+    "reason": "既報",
+    "note": "10/29に記事済み"
+   },
+   {
+    "dedup_key": "sidem-passion-challenge-monthly-song-12-cafe-parade-2026",
+    "reason": "既報",
+    "note": "Café Parade CDは発売済み。carriedで既報と判断済み"
+   },
+   {
+    "dedup_key": "sidem-fan-music-analysis-2026",
+    "reason": "面違い",
+    "note": "ファンの個人記事。ファン面(総合)の扱い"
+   },
+   {
+    "dedup_key": "sidem-agatsuma-fan-attendance-2026",
+    "reason": "面違い",
+    "note": "ファンの参加報告。ファン面(総合)の扱い"
+   },
+   {
+    "dedup_key": "sidem-monthly-theme-song-12-cafe-parade",
+    "reason": "既報",
+    "note": "Café Parade CDは発売済み。carriedで既報と判断済み"
+   },
+   {
+    "dedup_key": "sidem-315-monthly-theme-12-cafe-parade-2026",
+    "reason": "既報",
+    "note": "Café Parade CDは発売済み。carriedで既報と判断済み"
+   },
+   {
+    "dedup_key": "315night-20261023",
+    "reason": "その他",
+    "note": "10/23放送回の動画。終了済み"
+   },
+   {
+    "dedup_key": "teddys-collection-ii-goods",
+    "reason": "既報",
+    "note": "10/30に記事済み。締切11/15は先"
+   },
+   {
+    "dedup_key": "fans-visit-agatsuma-nin-nin-2026",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿"
+   },
+   {
+    "dedup_key": "fan-article-never-end-opus-2026",
+    "reason": "面違い",
+    "note": "ファンの個人記事。ファン面(総合)の扱い"
+   }
+  ],
+  "cross_brand": []
+ }
+}

@@ -522,5 +522,60 @@
   "src_candidate_id": "202610300224-grok-52",
   "companion_of": "sched-2026-11-30-manaka-birthday-live-setlist-2026-締切",
   "src_dedup_key": "manaka-birthday-online-live-2026-result"
+ },
+ {
+  "id": "sched-2026-11-30-song-gasha-category-2026-終了",
+  "dedup_key": "song-gasha-category-2026",
+  "brand": "shiny",
+  "subject": "シャニソン ガシャカテゴリ表示",
+  "kind": "終了",
+  "note": "23:59までガシャカテゴリ画面を使える最終日",
+  "reserved_on": "2026-10-31",
+  "occurs_on": "2026-11-30",
+  "title": "シャニソン ガシャカテゴリ表示アップデート",
+  "url": "https://x.com/imassc_prism/status/2116017248938688513",
+  "source_type": "公式",
+  "facts": [
+   "10/31 12:00～11/30 23:59にガシャカテゴリ画面を表示。",
+   "従来表示とカテゴリ表示を選択でき、ガシャ画面上部の設定アイコンから切替可能。",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "event_date": "2026-10-31",
+  "deadline": "2026-11-30",
+  "src_candidate_id": "202610310225-grok-64"
+ },
+ {
+  "id": "sched-2026-11-30-shiny-tsutaya-yujo-fumetsu-popup-2026-終了",
+  "dedup_key": "shiny-tsutaya-yujo-fumetsu-popup-2026",
+  "brand": "shiny",
+  "subject": "『友情不滅宣言』POP UP SHOP 東京",
+  "kind": "終了",
+  "note": "東京会場の最終日、SHIBUYA TSUTAYAで買える最後の日",
+  "reserved_on": "2026-10-31",
+  "occurs_on": "2026-11-30",
+  "title": "『友情不滅宣言』POP UP SHOP（TSUTAYA×放課後クライマックスガールズ）",
+  "url": "https://idolmaster-official.jp/news/01_20237",
+  "source_type": "公式",
+  "facts": [
+   "コラボ: 「TSUTAYA」と283プロダクション所属ユニット『放課後クライマックスガールズ』のコラボ",
+   "東京会場 開催期間: 2026年11月11日（水)～2026年11月30日（月）",
+   "東京会場 開催店舗: SHIBUYA TSUTAYA IP書店",
+   "京都会場 開催期間: 2026年12月11日（金）～2027年1月7日（木)",
+   "京都会場 開催店舗: 京都髙島屋S.C. 6階 京都 IP書店",
+   "購入特典①: 『友情不滅宣言』POP UP SHOPの商品のお会計1回ごとに『4コマ漫画しおり』を1枚プレゼント",
+   "購入特典②（東京会場）: 『友情不滅宣言』POP UP SHOPの商品を2,200円（税込）以上ご購入ごとに『ポストカード（全21種）』をランダムで1枚プレゼント",
+   "購入特典②（京都会場）: 『友情不滅宣言』POP UP SHOPの商品を2,200円（税込）以上ご購入ごとに『ポストカード（全21種）』をランダムで1枚プレゼント",
+   "平成ギャルをイメージしたオリジナル衣装の小宮果穂、園田智代子、西城樹里、杜野凛世、有栖川夏葉がコラボキャンペーンを盛り上げる",
+   "詳細: https://shibuyatsutaya.tsite.jp/article/2840.html（東京）、https://shibuyatsutaya.tsite.jp/kyoto/article/2841.html（京都）",
+   "エンゲージメント: 中",
+   "言及アイドル: 小宮果穂、園田智代子、西城樹里、杜野凛世、有栖川夏葉"
+  ],
+  "via": "watch",
+  "verify": "confirmed",
+  "event_date": "2026-11-11",
+  "deadline": "2027-01-07",
+  "src_candidate_id": "202610301836-watch-1"
  }
 ]

@@ -153,5 +153,41 @@
   "src_candidate_id": "202610191833-explore-3",
   "companion_of": "sched-2026-12-04-cinderella-sega-lucky-kuji-vol1-cute-終了",
   "src_dedup_key": "cg-sega-lucky-kuji-cute-vol1-2026"
+ },
+ {
+  "id": "sched-2026-12-04-demirimi-clash-radio-yoshichizu-2026-開始",
+  "dedup_key": "demirimi-clash-radio-yoshichizu-2026",
+  "brand": "joint",
+  "subject": "第2回よしちづラジオ 配信",
+  "kind": "開始",
+  "note": "20:00からプレミア公開で視聴できる",
+  "reserved_on": "2026-10-31",
+  "occurs_on": "2026-12-04",
+  "title": "第2回「よしちづラジオ」おたより募集・配信日決定",
+  "url": "https://idolmaster-official.jp/news/01_20223",
+  "source_type": "公式",
+  "facts": [
+   "第2回は「よしちづラジオ」",
+   "出演: 依田 芳乃、二階堂 千鶴",
+   "おたより締切: 2026年11月5日(木)23:59まで",
+   "配信日時: 2026年12月4日(金)20:00 ～ プレミア公開",
+   "配信URL: 後日公開いたします",
+   "エンゲージメント: 中",
+   "言及アイドル: 依田芳乃、二階堂千鶴",
+   "11月13日(金)20:00～ 第1回「フレあかラジオ」配信",
+   "配信日時: 2026年11月13日(金) 20:00 ～ プレミア公開",
+   "出演者: 宮本 フレデリカ、野々原 茜",
+   "言及アイドル: 宮本フレデリカ、野々原茜",
+   "公演タイトル: THE IDOLM@STER CINDERELLA GIRLS × MILLION LIVE! CLASH M@TCH!!",
+   "公演日時: 2027年2月27日(土) 開場15:30 / 開演17:00",
+   "公演日時: 2027年2月28日(日) 開場15:30 / 開演17:00",
+   "会場: 愛知県・IGアリーナ",
+   "エンゲージメント: 高"
+  ],
+  "via": "watch",
+  "verify": "confirmed",
+  "event_date": "2026-12-04",
+  "deadline": "2026-11-05",
+  "src_candidate_id": "202610302337-watch-19"
  }
 ]

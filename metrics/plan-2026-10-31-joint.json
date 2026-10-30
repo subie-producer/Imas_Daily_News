@@ -1,0 +1,295 @@
+{
+ "decisions": {
+  "starlight-dining-chinese-maid-plush-2027": {
+   "action": "article",
+   "angle": "シンデレラガールズと学マスの9人の中華風メイド衣装ぬいぐるみ・餃子ぬいぐるみが2027年2月26日発売、ASOBI STOREのWEB事前受注は11月9日23:59まで受注生産",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "imas-popup-starlight-dining-plush-2026 を統合"
+  },
+  "demirimi-clash-costume-2026": {
+   "action": "article",
+   "angle": "デレミリ合同ライブの特別衣装「クラッシュ・オン・ステージ」と出演アイドル全員集合ビジュアルが公開、一般会員先行は11月1日まで",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "demirimi-clash-goods-preorder-2026": {
+   "action": "article",
+   "angle": "CLASH M@TCH!!の公式グッズ事前販売が始まり、受注は11月15日まで",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "チケット先行とは読者の行動が別なので別記事"
+  },
+  "demirimi-clash-radio-yoshichizu-2026": {
+   "action": "article",
+   "angle": "第2回「よしちづラジオ」(依田芳乃・二階堂千鶴)のおたより締切は11月5日23:59、配信は12月4日20時",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "deremiri-clash-match-warmup-stream-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "出典の変更は配信前ページからアーカイブ表示への変化のみ。読者に関わる変更なし"
+  },
+  "dememiri-live-campaign-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10月30日の配信と応募は終了済みで、内容は既報の記事に掲載済み"
+  },
+  "tours-s2-card-read-error-2026": {
+   "action": "article",
+   "angle": "S2弾で未使用の新規ICカードが読み込み中で止まる不具合を確認、修正まではゲストプレイ経由の回避方法がある",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公式お知らせ。verify は unconfirmed だが出典は公式サイト"
+  },
+  "imas-popup-starlight-dining-plush-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "starlight-dining-chinese-maid-plush-2027",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じぬいぐるみ発売の告知"
+  },
+  "tours-tournament-prelim-entry-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10月30日号で記事化済み。新しい事実も当日のトリガーも無い"
+  },
+  "tours-halloween-commu-2026": {
+   "action": "article",
+   "angle": "ハロウィンコミュの再生が本日7時に始まり、11月6日25:59まで各アイドル1日1回ログイン時に見られる",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約。本日開始のトリガー"
+  },
+  "tours-rhythm-live-recording-pstage-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10月27日号に参加費・特典・整理券制まで掲載済みで、新しい事実無し"
+  },
+  "tours-producers-station-nakano-panels-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10月28日・29日号で記事化済み。展示は開始済みで新しい事実無し"
+  },
+  "tomori-manaka-birthday-live-2026-guest-seki-hiromi": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "他ブランドのゲスト出演だけで共同主催ではなく、出典も二次情報のみ"
+  },
+  "tours-second-stage-s2-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10月29日号「ツアマスS2弾、本日稼働」で記事化済み"
+  },
+  "tours-season-6-all-songs-first-place-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿のみで未確認。単体では記事にしない"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "joint-starlight-dining-chinese-maid-plush-2027",
+    "brand": "joint",
+    "rank": "medium",
+    "angle": "シンデレラガールズと学マスの9人の中華風メイド衣装ぬいぐるみ・餃子ぬいぐるみが2027年2月26日発売、ASOBI STOREのWEB事前受注は11月9日23:59まで受注生産",
+    "purpose": "新情報",
+    "lead_score": 60,
+    "dedup_key": "starlight-dining-chinese-maid-plush-2027",
+    "candidate_ids": [
+     "202610301234-watch-1",
+     "202610310225-explore-3",
+     "202610310225-grok-109"
+    ]
+   },
+   {
+    "slug": "joint-demirimi-clash-costume-2026",
+    "brand": "joint",
+    "rank": "medium",
+    "angle": "デレミリ合同ライブの特別衣装「クラッシュ・オン・ステージ」と出演アイドル全員集合ビジュアルが公開、一般会員先行は11月1日まで",
+    "purpose": "新情報",
+    "lead_score": 30,
+    "dedup_key": "demirimi-clash-costume-2026",
+    "candidate_ids": [
+     "202610302337-watch-1",
+     "202610310225-grok-99",
+     "202610310225-grok-100"
+    ]
+   },
+   {
+    "slug": "joint-demirimi-clash-goods-preorder-2026",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "CLASH M@TCH!!の公式グッズ事前販売が始まり、受注は11月15日まで",
+    "purpose": "新情報",
+    "lead_score": 25,
+    "dedup_key": "demirimi-clash-goods-preorder-2026",
+    "candidate_ids": [
+     "202610302337-watch-16",
+     "202610310225-grok-101"
+    ]
+   },
+   {
+    "slug": "joint-demirimi-clash-radio-yoshichizu-2026",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "第2回「よしちづラジオ」(依田芳乃・二階堂千鶴)のおたより締切は11月5日23:59、配信は12月4日20時",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "demirimi-clash-radio-yoshichizu-2026",
+    "candidate_ids": [
+     "202610302337-watch-19",
+     "202610310225-grok-102"
+    ]
+   },
+   {
+    "slug": "joint-tours-s2-card-read-error-2026",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "S2弾で未使用の新規ICカードが読み込み中で止まる不具合を確認、修正まではゲストプレイ経由の回避方法がある",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "tours-s2-card-read-error-2026",
+    "candidate_ids": [
+     "202610310225-grok-108"
+    ]
+   },
+   {
+    "slug": "joint-tours-halloween-commu-2026",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "ハロウィンコミュの再生が本日7時に始まり、11月6日25:59まで各アイドル1日1回ログイン時に見られる",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "tours-halloween-commu-2026",
+    "candidate_ids": [
+     "202610280221-grok-56",
+     "sched-2026-10-31-tours-halloween-commu-2026-開始"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "deremiri-clash-match-warmup-stream-2026",
+    "reason": "既報",
+    "note": "出典の変更は配信前ページからアーカイブ表示への変化のみ。読者に関わる変更なし"
+   },
+   {
+    "dedup_key": "dememiri-live-campaign-2026",
+    "reason": "既報",
+    "note": "10月30日の配信と応募は終了済みで、内容は既報の記事に掲載済み"
+   },
+   {
+    "dedup_key": "tours-tournament-prelim-entry-2026",
+    "reason": "既報",
+    "note": "10月30日号で記事化済み。新しい事実も当日のトリガーも無い"
+   },
+   {
+    "dedup_key": "tours-rhythm-live-recording-pstage-2026",
+    "reason": "既報",
+    "note": "10月27日号に参加費・特典・整理券制まで掲載済みで、新しい事実無し"
+   },
+   {
+    "dedup_key": "tours-producers-station-nakano-panels-2026",
+    "reason": "既報",
+    "note": "10月28日・29日号で記事化済み。展示は開始済みで新しい事実無し"
+   },
+   {
+    "dedup_key": "tomori-manaka-birthday-live-2026-guest-seki-hiromi",
+    "reason": "面違い",
+    "note": "他ブランドのゲスト出演だけで共同主催ではなく、出典も二次情報のみ"
+   },
+   {
+    "dedup_key": "tours-second-stage-s2-2026",
+    "reason": "既報",
+    "note": "10月29日号「ツアマスS2弾、本日稼働」で記事化済み"
+   },
+   {
+    "dedup_key": "tours-season-6-all-songs-first-place-2026",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿のみで未確認。単体では記事にしない"
+   }
+  ],
+  "cross_brand": []
+ }
+}

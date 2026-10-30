@@ -78,6 +78,13 @@ def left() -> float:
 RESULT_MARK = "配信の結果: "
 RELEASE_ID = "release-id.txt"       # 外から新しい版が見えるかを確かめる印(配信の版の名前だけを書く)
 CHANGES_SHOWN = 5                   # 通知に見出しを並べる記事の数
+# 外からの確認の読み直し。この機械(WSL)の DNS は断続的に落ちるので、1回の失敗で「見えない」と言わない(誤報で当番が起きる。
+# 2026-10-31)。読み・待ちは配信の予算の残りに収め、通知の分(SERVED_MARGIN_SEC)は残す
+SERVED_ATTEMPTS = 3
+SERVED_RETRY_SEC = 10
+SERVED_TIMEOUT_SEC = 30
+SERVED_MARGIN_SEC = 15
+SERVED_MIN_SEC = 3
 
 
 def manifest_path() -> Path:
@@ -145,26 +152,38 @@ def describe_changes(old: dict | None, new: dict) -> str:
     return " / ".join(parts) if parts else "記事の変更なし"
 
 
-def served_release_id() -> str:
+def served_release_id(timeout: float = SERVED_TIMEOUT_SEC) -> str:
     """外(公開の URL)から見えている版の名前。読めなければ例外。"""
     site = ENV.get("SITE_URL", "").rstrip("/")
     if not site:
         raise RuntimeError("SITE_URL が未設定")
     req = urllib.request.Request(f"{site}/{RELEASE_ID}?v={time.time_ns()}",
                                  headers={"User-Agent": "ImasNewsBot/1.0", "Cache-Control": "no-cache"})
-    with urllib.request.urlopen(req, timeout=30) as r:
+    with urllib.request.urlopen(req, timeout=timeout) as r:
         return r.read(200).decode("utf-8", errors="replace").strip()
 
 
 def check_served(stamp: str) -> tuple[bool, str]:
-    """外から新しい版が見えるか。戻りは (見えたか, 説明)。"""
-    try:
-        seen = served_release_id()
-    except Exception as e:      # noqa: BLE001  トンネル・DNS・オリジンのどこで落ちても「見えない」と言う
-        return False, f"外から新しい版を確かめられない({type(e).__name__}: {str(e)[:120]})"
-    if seen == stamp:
-        return True, "外から新しい版を確認"
-    return False, f"外から見える版が違う(見えた版 {seen[:40]!r} / 配信した版 {stamp})"
+    """外から新しい版が見えるか。戻りは (見えたか, 説明)。読めない・古い版が見えたら SERVED_RETRY_SEC おきに
+    SERVED_ATTEMPTS 回まで読み直し、全部だめなときだけ見えないと言う(予算の残りが尽きれば、そこでやめる)。"""
+    msg = "外から新しい版を確かめられない(配信の時間の予算が残っていない)"
+    for i in range(SERVED_ATTEMPTS):
+        budget = min(SERVED_TIMEOUT_SEC, left() - SERVED_MARGIN_SEC)
+        if budget < SERVED_MIN_SEC:
+            break
+        try:
+            seen = served_release_id(timeout=budget)
+        except Exception as e:      # noqa: BLE001  トンネル・DNS・オリジンのどこで落ちても「見えない」と言う
+            msg = f"外から新しい版を確かめられない({type(e).__name__}: {str(e)[:120]})"
+        else:
+            if seen == stamp:
+                return True, "外から新しい版を確認"
+            msg = f"外から見える版が違う(見えた版 {seen[:40]!r} / 配信した版 {stamp})"
+        if i == SERVED_ATTEMPTS - 1 or left() - SERVED_RETRY_SEC - SERVED_MARGIN_SEC < SERVED_MIN_SEC:
+            break
+        print(f"外からの確認 {i + 1}/{SERVED_ATTEMPTS}: {msg}。{SERVED_RETRY_SEC}秒後に読み直す", flush=True)
+        time.sleep(SERVED_RETRY_SEC)
+    return False, f"{msg}({i + 1}回読んだ)" if SERVED_ATTEMPTS > 1 else msg
 
 # 公開の状態。止まった所で実態が違うので、段ごとに言い直し、最後に STATE_MARK の行で出す(release が通知に載せる)
 STATE_MARK = "配信の状態: "

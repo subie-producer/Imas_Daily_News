@@ -12524,7 +12524,8 @@ def test_deploy_notice(tmp: Path):
     notes, served = [], {"id": None}
     names = iter([f"20261031T{m:02d}0000" for m in range(6, 13)])
     saved = {k: getattr(deploy, k) for k in ("ROOT", "SRV", "RELEASES", "CURRENT", "build", "purge_cache", "notify", "sync_app",
-                                             "now_jst", "reindex", "served_release_id", "restart_app")}
+                                             "now_jst", "reindex", "served_release_id", "restart_app", "SERVED_RETRY_SEC")
+             if hasattr(deploy, k)}
     saved_argv = sys.argv
 
     def fake_build(dest: Path, timeout=None):
@@ -12543,7 +12544,8 @@ def test_deploy_notice(tmp: Path):
         deploy.notify = lambda job, msg, ok=True, **k: notes.append((ok, msg)) or True
         deploy.now_jst = lambda: datetime.datetime.strptime(next(names), "%Y%m%dT%H%M%S")
         deploy.reindex = lambda run_id, timeout=None: len(list(posts.glob("*.md")))
-        deploy.served_release_id = lambda: served["id"] or (current / deploy.RELEASE_ID).read_text(encoding="utf-8").strip()
+        deploy.served_release_id = lambda timeout=None: served["id"] or (current / deploy.RELEASE_ID).read_text(encoding="utf-8").strip()
+        deploy.SERVED_RETRY_SEC = 0     # 古い版が見える場面で読み直しを待たない(待ちは test_deploy_served_retry で検める)
         # 1回目: 前の控えが無い
         check(run() == 0 and any(ok and "数えられない" in m and "外から新しい版を確認" in m for ok, m in notes),
               f"前の控えが無い配信の通知: {notes}")
@@ -12600,6 +12602,53 @@ def test_deploy_notice(tmp: Path):
         subprocess.run = saved_run
     check(out == "自前オリジンへ配信済み(外から新しい版を確認)。" and asked and "--from-release" in asked[0]
           and release.DEPLOY_RESULT_MARK == deploy.RESULT_MARK, f"release が配信の結果を載せない・発行からと伝えない: {out!r} {asked}")
+
+
+def test_deploy_served_retry(tmp: Path):
+    """外からの確認は、読めない・古い版が見えたら間を空けて読み直し、全部だめなときだけ「見えない」と言う。待ちと読みは
+    配信の予算(left())の残りに収める(2026-10-31: この機械の DNS は断続的に落ちる。1回の失敗で異常にすると誤報で当番が起きる)。"""
+    import time
+    import deploy
+    saved = {k: getattr(deploy, k) for k in ("served_release_id", "DEADLINE")}
+    saved_sleep = deploy.time.sleep
+    calls, sleeps = [], []
+
+    def serve(answers):
+        it = iter(answers)
+
+        def fake(timeout=None):
+            calls.append(timeout)
+            a = next(it, OSError("名前解決に失敗"))
+            if isinstance(a, Exception):
+                raise a
+            return a
+        return fake
+    try:
+        deploy.time.sleep = lambda s: sleeps.append(s)
+        # 1回目は DNS の失敗、2回目は古い版、3回目で新しい版 → 見えた(異常にしない)
+        deploy.DEADLINE = time.time() + 600
+        calls.clear(); sleeps.clear()
+        deploy.served_release_id = serve([OSError("名前解決に失敗"), "20261031T060000", "20261031T070000"])
+        ok, msg = deploy.check_served("20261031T070000")
+        check(ok and len(calls) == 3 and len(sleeps) == 2 and all(s > 0 for s in sleeps),
+              f"一時の失敗・古い版で読み直さない: {ok} {msg} 読んだ {len(calls)}回 待ち {sleeps}")
+        # 全部だめ → 見えない(最後の失敗を言う)。読みは SERVED_ATTEMPTS 回まで
+        calls.clear(); sleeps.clear()
+        deploy.served_release_id = serve([])
+        ok, msg = deploy.check_served("20261031T070000")
+        check(not ok and len(calls) == getattr(deploy, "SERVED_ATTEMPTS", 1) >= 2 and "名前解決に失敗" in msg,
+              f"全部だめなときの判定: {ok} {msg} 読んだ {len(calls)}回")
+        # 予算の残りが少ない → 待ちと読みの上限を残りに収める(残りを越えて待たない・読まない)
+        deploy.DEADLINE = time.time() + 20
+        calls.clear(); sleeps.clear()
+        deploy.served_release_id = serve([])
+        ok, msg = deploy.check_served("20261031T070000")
+        check(not ok and calls and all(t is not None and t <= 20 for t in calls) and sum(sleeps) + sum(calls) <= 20,
+              f"予算の残りを越えて待つ・読む: 読みの上限 {calls} 待ち {sleeps}")
+    finally:
+        deploy.time.sleep = saved_sleep
+        for k, v in saved.items():
+            setattr(deploy, k, v)
 
 
 def test_deploy_index_failure(tmp: Path):
@@ -12676,7 +12725,7 @@ def test_deploy_index_failure(tmp: Path):
         deploy.ROOT, deploy.SRV, deploy.RELEASES, deploy.CURRENT = root, srv, releases, current
         deploy.DB = db
         # 外から見える版は、試験の current の印を読む(本物の公開の URL を叩かない)
-        deploy.served_release_id = lambda: (current / deploy.RELEASE_ID).read_text(encoding="utf-8").strip()
+        deploy.served_release_id = lambda timeout=None: (current / deploy.RELEASE_ID).read_text(encoding="utf-8").strip()
         deploy.build, deploy.sync_app = fake_build, (lambda: False)
         deploy.purge_cache = lambda: purges.append(True) or "パージ(試験)"
         deploy.notify = lambda job, msg, ok=True, **k: notes.append((ok, msg)) or True
@@ -20857,6 +20906,7 @@ def main() -> int:
     test_release_dry_run_no_push(tmp / "rdr")
     test_deploy_index_failure(tmp / "dif")
     test_deploy_notice(tmp / "dn")
+    test_deploy_served_retry(tmp / "dsr")
     test_correction_append_only(tmp / "cao")
     test_indexer_tag_dictionary(tmp / "itd")
     test_remove_worktree(tmp / "rmw")

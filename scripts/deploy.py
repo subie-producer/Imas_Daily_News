@@ -35,6 +35,7 @@ import sqlite3
 import subprocess
 import sys
 import tempfile
+import threading
 import time
 import urllib.error
 import urllib.request
@@ -163,6 +164,26 @@ def served_release_id(timeout: float = SERVED_TIMEOUT_SEC) -> str:
         return r.read(200).decode("utf-8", errors="replace").strip()
 
 
+def within(fn, timeout: float):
+    """fn(timeout=...) を timeout 秒で見切る。urlopen の timeout は名前解決の待ちを止めないので、使い捨てのスレッドで読み、
+    締切を過ぎたら待たずに TimeoutError にする(スレッドは daemon なので、止まったままでも終了を妨げない。Sol 監査 r3)"""
+    box: dict = {}
+
+    def run():
+        try:
+            box["v"] = fn(timeout=timeout)
+        except BaseException as e:      # noqa: BLE001  読みの例外は呼び出し側へそのまま渡す
+            box["e"] = e
+    t = threading.Thread(target=run, daemon=True)
+    t.start()
+    t.join(timeout)
+    if t.is_alive():
+        raise TimeoutError(f"{timeout:.0f}秒で読めない(名前解決・接続のどこかで止まった)")
+    if "e" in box:
+        raise box["e"]
+    return box["v"]
+
+
 def check_served(stamp: str) -> tuple[bool, str]:
     """外から新しい版が見えるか。戻りは (見えたか, 説明)。読めない・古い版が見えたら SERVED_RETRY_SEC おきに
     SERVED_ATTEMPTS 回まで読み直し、全部だめなときだけ見えないと言う(予算の残りが尽きれば、そこでやめる)。"""
@@ -172,7 +193,7 @@ def check_served(stamp: str) -> tuple[bool, str]:
         if budget < SERVED_MIN_SEC:
             break
         try:
-            seen = served_release_id(timeout=budget)
+            seen = within(served_release_id, budget)
         except Exception as e:      # noqa: BLE001  トンネル・DNS・オリジンのどこで落ちても「見えない」と言う
             msg = f"外から新しい版を確かめられない({type(e).__name__}: {str(e)[:120]})"
         else:

@@ -12645,6 +12645,35 @@ def test_deploy_served_retry(tmp: Path):
         ok, msg = deploy.check_served("20261031T070000")
         check(not ok and calls and all(t is not None and t <= 20 for t in calls) and sum(sleeps) + sum(calls) <= 20,
               f"予算の残りを越えて待つ・読む: 読みの上限 {calls} 待ち {sleeps}")
+        # 名前解決が止まる(urlopen の timeout は名前解決の待ちを止めない)→ 本物の読み(urllib)を通しても締切で見切る
+        # (Sol 監査 r3: DNS の待ちで予算と release の打ち切りを越えた)。外へは出ない(名前解決を差し替える)
+        import socket
+        import threading
+        stuck, saved_gai, saved_site = threading.Event(), socket.getaddrinfo, deploy.ENV.get("SITE_URL")
+
+        def slow_gai(*a, **k):
+            stuck.wait(8)
+            raise socket.gaierror("名前解決が止まった(試験)")
+        saved_urlopen = deploy.urllib.request.urlopen
+        try:
+            socket.getaddrinfo = slow_gai
+            # 塞いである urlopen の代わりに本物の取得の経路(名前解決は止めてあるので外へは出ない)
+            deploy.urllib.request.urlopen = lambda req, timeout=None: deploy.urllib.request.build_opener().open(req, timeout=timeout)
+            deploy.ENV["SITE_URL"] = "http://imas-test.invalid"
+            deploy.served_release_id = saved["served_release_id"]
+            deploy.DEADLINE = time.time() + deploy.SERVED_MARGIN_SEC + 4
+            t0 = time.monotonic()
+            ok, msg = deploy.check_served("20261031T070000")
+            spent = time.monotonic() - t0
+        finally:
+            stuck.set()
+            socket.getaddrinfo = saved_gai
+            deploy.urllib.request.urlopen = saved_urlopen
+            if saved_site is None:
+                deploy.ENV.pop("SITE_URL", None)
+            else:
+                deploy.ENV["SITE_URL"] = saved_site
+        check(not ok and spent < 5.5, f"名前解決が止まると締切を越えて待つ: {spent:.1f}秒 {ok} {msg}")
     finally:
         deploy.time.sleep = saved_sleep
         for k, v in saved.items():

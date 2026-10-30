@@ -11,7 +11,7 @@ candidate_ids:
 - sched-2026-10-31-sidem-one-panel-highjoker-shinsoku-2026-開始
 - 202610310225-grok-77
 title: SideM「アイドルたちの1コマ」2回を公開
-lede: 『アイドルたちの1コマ』のHigh×Joker回と神速一魂回が10月31日に公開され、315 PASSION CONTENTSで読める。
+lede: High×Joker回と神速一魂回は10月31日に公開予定と案内され、同日付の更新告知では「315プロダクション エピソード」の「アイドルたちの1コマ」が315 PASSION CONTENTSで公開中と案内された。
 tags:
 - SideM
 - お知らせ
@@ -30,6 +30,7 @@ title_fact_ids:
 lede_fact_ids:
 - F1
 - F2
+- F8
 - F9
 ---
 High×Joker回と神速一魂回は、いずれも10月31日に公開予定と案内されていた。 <!-- F1 F2 -->

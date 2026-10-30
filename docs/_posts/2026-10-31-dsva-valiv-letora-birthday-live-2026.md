@@ -44,7 +44,7 @@ verified_facts:
   text: 会場住所は〒135-0091 東京都港区台場1-7-1 アクアシティお台場。
   url: https://livepocket.jp/e/va-liv_letora_bd2026
 ---
-二次受付のLivePocket上の表示は、10月29日に読んだ版の「販売中」から、10月31日に確認した版では「受付終了」に変わった。当落発表は本日予定で、抽選結果は[LivePocketの受付ページ](https://livepocket.jp/e/va-liv_letora_bd2026)で確認できる。 <!-- F21 F7 F20 F50 -->
+二次受付のLivePocket上の表示は、10月29日に読んだ版の「販売中」から、10月31日に確認した版では「受付終了」に変わった。当落発表は本日予定。 <!-- F21 F7 F20 -->
 
 ## 当選後の入金
 

@@ -2,7 +2,7 @@
 slug: sidem-tabi-masu-nagoya-2026
 edition: "2026-10-31"
 brand: sidem
-src: 当事者
+src: 報道
 rank: small
 corrected: false
 corrections: []
@@ -20,6 +20,12 @@ sources:
 - label: 推し旅公式サイト「Welcome to NEXT 旅マス！315な旅をお届けしマス！」
   url: https://recommend.jr-central.co.jp/oshi-tabi/idolmaster_sidem/?utm_source=oshitabi_x&utm_medium=social&utm_campaign=idolmaster_sidem_cjr&utm_content=261024_idolmaster_sidem_cjr
   type: 当事者
+- label: 【名古屋開催】『アイドルマスター SideM』とコラボするふたつのキャンペーンに協力！「でらます」＆「Welcome to NEXT 旅マス！」 (2026年7月16日)
+  url: https://prtimes.jp/main/html/rd/p/000004950.000003670.html
+  type: 当事者
+- label: 『アイドルマスター SideM』×名古屋「でらます」が8月3日開幕！DRAMATIC STARSが公式アンバサダーに (2026年6月24日)
+  url: https://nijimen.kusuguru.co.jp/topics/622227
+  type: 報道
 event_date: "2026-10-31"
 title_fact_ids:
 - F1
@@ -30,14 +36,16 @@ lede_fact_ids:
 - F5
 - F8
 - F10
+- N3
 verified_facts:
+- id: N3
+  text: にじめんの記事は、JR東海「推し旅」と『アイドルマスター SideM』のコラボ企画「Welcome to NEXT 旅マス！」が2026年8月3日から10月31日まで開催されると報じている。
+  url: https://nijimen.kusuguru.co.jp/topics/622227
 - id: N1
   text: 乗車証明の引換操作はスタッフと一緒に行う必要があり、スクリーンショットでは引換できない。端末が通信できる状態で引換画面を提示する。代理の引換は不可。
   url: https://recommend.jr-central.co.jp/oshi-tabi/idolmaster_sidem/?utm_source=oshitabi_x&utm_medium=social&utm_campaign=idolmaster_sidem_cjr&utm_content=261024_idolmaster_sidem_cjr
 ---
-## クリアカードの引換場所と時間
-
-引換場所は、でらます×アイドルマスター SideM2026 ポップアップストア at マンガ展（愛知県名古屋市中区栄3-25-39 サカエサウススクエア3D）。後半の引換期間は9月17日～10月31日で、本日の営業時間は11時30分～18時30分、休業日はない。特典はなくなり次第終了する。 <!-- F6 F8 F9 F12 -->
+## クリアカードの引換場所と時間 <!-- F6 F8 F9 F12 -->
 
 東海道新幹線に乗車し、スマートフォンで位置情報による速度測定を行い、アンケートに答えてボイスドラマを聴くと乗車証明を取得できる。利用には無料アカウント登録が必要。10月31日に乗車した場合、証明は当日限り有効となる。 <!-- F3 F4 F10 -->
 

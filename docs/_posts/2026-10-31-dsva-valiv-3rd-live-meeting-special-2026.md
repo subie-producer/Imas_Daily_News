@@ -24,7 +24,7 @@ sources:
 - label: "PROJECT IM@S vα-liv／ヴイアラ公式YouTube「【新情報あり】ヴイアラ3rdLIVE＆MEETING開催記念特番【 #ヴイアラ 】」"
   url: https://www.youtube.com/live/WottZLGjB9o
   type: 公式
-event_date: "2026-11-02"
+event_date: "2026-11-03"
 title_fact_ids:
 - F4
 lede_fact_ids:

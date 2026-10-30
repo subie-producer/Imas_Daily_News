@@ -40,7 +40,7 @@ verified_facts:
   text: Caper Parade「THE VILLAIN’S NIGHT」はゲーム内MVとなる。
   url: https://www.yunikavision.jp/news/CUb-ZPux
 ---
-放映場所は西武新宿駅前のユニカビジョン。放映は10月31日限定で、A・Bの各プログラムをそれぞれ毎時放映する。 <!-- F1 F2 N1 -->
+放映場所は西武新宿駅前のユニカビジョン。放映は10月31日限定で、Aプログラムは8時から2時間ごと、Bプログラムは7時から2時間ごとに放映する。 <!-- F1 F2 N1 F3 F4 -->
 
 ## 放映時刻
 

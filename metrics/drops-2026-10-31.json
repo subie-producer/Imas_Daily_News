@@ -36,5 +36,37 @@
    "sched-2026-10-31-cinderella-fes-blanc-2026-10-終了",
    "sched-2026-10-31-cinderella-fes-blanc-2026-10-終了-src1"
   ]
+ },
+ "general-idolmaster-portal-maintenance-release-2026": {
+  "title": "アイマスポータル、メンテ解除後も6機能停止",
+  "stage": "書き直しで見送り",
+  "why": "NOT_NEWS 校閲指摘のとおり、記事の内容は10月27日号で既報のお知らせを詳しく言い換えたもので、10月31日時点の新しい事実や当日のトリガーがありません。",
+  "candidate_ids": [
+   "202610292334-explore-13"
+  ]
+ },
+ "million-ova-onkyo-audio-goods-2026": {
+  "title": "ミリオンOVAイヤホン受注、11月13日まで",
+  "stage": "書き直しで見送り",
+  "why": "NOT_NEWS 校閲指摘I1のとおり、この記事の中核は2026年9月に発表済みの商品の受注・仕様で、2026年10月31日時点の新しい発表や変更、締切直前の動きが素材から確認できません。既報の続報として成立しないため、記事化を見送ります。",
+  "candidate_ids": [
+   "202610310225-grok-37"
+  ]
+ },
+ "shiny-alstroemeria-gotoken-christmas-2026": {
+  "title": "アルストロメリア×五島軒、オードブル予約開始",
+  "stage": "書き直しで見送り",
+  "why": "NO_PRIMARY_SOURCE 素材に公式・準公式の出典、または公式発表を報じた報道がなく、記事の主要な話題を裏付ける出典要件を満たせないため。",
+  "candidate_ids": [
+   "202610302337-explore-31"
+  ]
+ },
+ "sidem-legenders-refrain-atrium-ensemble-2026": {
+  "title": "Legenders「リフレインアトリウム」を弦楽器で演奏",
+  "stage": "書き直しで見送り",
+  "why": "NOT_NEWS 記事の中核はファン主催の演奏企画による動画公開であり、指摘のとおり記事化の対象外。",
+  "candidate_ids": [
+   "202610270222-grok-36"
+  ]
  }
 }

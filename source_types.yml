@@ -1141,6 +1141,8 @@ x_posts:
 
 # --- リンク元から引き継いだ種別(リンク先1つずつ。キーは pipelib.link_key)。合議がリンク元の告知と関係していると確かめたものだけ(classify_sources.inherit_from_links)。リンク先そのものの種別より強いときだけ効く ---
 link_types:
+  www.fumo-collection.com/collections/gim?sort_by=created-descending: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://x.com/gkmas_official/status/2116082075770220804(公式)。告知の学マス×ふもコレ第二弾と同じ学マス商品の一覧
+  shop.asobistore.jp/feature/cg_ml_clash_match: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://x.com/imasml_765PRO/status/2116142716262494617(公式)。告知と同じCLASH M@TCH!!グッズの事前販売ページ
   youtube.com/watch?v=BNAAuViiAaM: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/imas_CGofficial/status/2116141422546211101(公式)。告知と同じ15周年記念楽曲「HOURGLASS」のYouTube動画
   www.yunikavision.jp/news/CUb-ZPux: 公式       # リンク元から引き継ぎ(合議で関係を確認): https://x.com/imas_CGofficial/status/2116083293879681441(公式)。ユニカビジョンでのハロウィン放映告知と同じ放映の案内
   shop.asobistore.jp/products/detail/250950-00-00-00: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://idolmaster-official.jp/news/01_20172(公式)。伊吹翼フィギュアのASOBI STORE予約ページで告知と同じ商品

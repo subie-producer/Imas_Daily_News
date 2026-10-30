@@ -2,7 +2,7 @@
 slug: joint-demirimi-clash-goods-preorder-2026
 edition: "2026-10-31"
 brand: joint
-src: 準公式
+src: 公式
 rank: large
 corrected: false
 corrections: []
@@ -23,7 +23,7 @@ sources:
   type: 公式
 - label: ASOBI STORE「THE IDOLM@STER CINDERELLA GIRLS × MILLION LIVE! CLASH M@TCH!!イベントグッズ事前販売」(2026-10-30)
   url: https://shop.asobistore.jp/feature/cg_ml_clash_match
-  type: 準公式
+  type: 公式
 event_date: "2026-10-30"
 title_fact_ids:
 - F4

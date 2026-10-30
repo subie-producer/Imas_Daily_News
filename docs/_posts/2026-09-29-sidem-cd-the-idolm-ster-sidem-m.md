@@ -43,6 +43,13 @@ verified_facts:
 - id: N3
   text: 対象CDを全国アニメイト（通販含む）で全額内金予約した人にイベント応募シリアルを配布。応募締切は2026年11月17日23時59分、当選発表は11月下旬予定。応募には無料のCLUB animate登録が必要で、1シリアルにつき1回応募でき、応募回数に制限はない。
   url: https://www.lantis.jp/sidem/event/index.html
+updates:
+- at: '2026-10-30T12:41:42+09:00'
+  kind: 追加
+  text: 購入特典の対象店舗として、アニメイトに加えAmazon.co.jp（メガジャケ）、あみあみ・ゲーマーズ（L判ブロマイド）などが追加されました。
+  source: https://www.lantis.jp/sidem/extra/
+  from_at: '2026-10-30T03:19:42+09:00'
+  to_at: '2026-10-30T12:37:24+09:00'
 ---
 対象CDは12月2日発売の「THE IDOLM@STER SideM Mフェス 2026 in Winter Wonderland テーマソング『Season's Greetings Party！』」。品番はLACA-25317、価格は2,750円（税込）／2,500円（税抜）で、アニメイト特典としてミニフォト＆ロングフォトが用意される。特典はなくなり次第終了。 <!-- F4 F6 N1 -->
 

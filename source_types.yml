@@ -1136,6 +1136,7 @@ x_posts:
 
 # --- リンク元から引き継いだ種別(リンク先1つずつ。キーは pipelib.link_key)。合議がリンク元の告知と関係していると確かめたものだけ(classify_sources.inherit_from_links)。リンク先そのものの種別より強いときだけ効く ---
 link_types:
+  www.jomo-news.co.jp/articles/-/1053725: 二次情報  # リンク元から引き継ぎ(合議で関係を確認): https://imasnews765.com/?p=32613(二次情報)。リンク元の題名・本文は同記事。相手の「内容なし」は材料の欠落で誤り
   youtube.com/watch?v=lGb1zNIqjHI: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/imas_ch/status/2115820965720474090(公式)。月宮雅のお祝いムービーで、告知の誕生日企画と同じ
   youtube.com/watch?v=bc620bZt3No: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/valiv_official/status/2115730363486200109(公式)。宇宙のショート動画「お返事まだカナ」で、告知の公開動画と同じ
   youtube.com/watch?v=_xkM67zBPFs: 準公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/lantis_imasSC/status/2115821871614906856(準公式)。アルストロメリア「BEAM」2DMVの動画で、告知の配信楽曲と同じ

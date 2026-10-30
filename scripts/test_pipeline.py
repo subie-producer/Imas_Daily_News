@@ -12503,6 +12503,183 @@ def test_release_dry_run_no_push(tmp: Path):
     check(seen == [(True, True)], f"--dry-run が発行なら出す origin の中身でなく、遅れた手元の中身を点検した: {seen}")
 
 
+def test_deploy_notice(tmp: Path):
+    """配信の成功の通知は、何が変わったか(足した・訂正した・直した・外した記事)と、外から新しい版が見えたかを言う。
+    毎回同じ「パージ省略」「アプリのコードに変更なし」は出さない。発行からの配信は成功を知らせない(発行の通知に載る)。
+    外から新しい版が見えなければ、発行からの配信でも異常として知らせる(編集長 2026-10-31「意味のあるログになってるかな?」)。"""
+    import datetime
+    import deploy
+    import release
+    root, srv = tmp / "root", tmp / "srv"
+    posts = root / "docs" / "_posts"
+    posts.mkdir(parents=True)
+    def post(name, title, corrections=0, body="本文"):
+        corr = "corrections: []\n" if not corrections else "corrections:\n" + "".join(
+            f"- at: '2026-10-31T06:{i:02d}:00+09:00'\n  note: n\n" for i in range(corrections))
+        (posts / name).write_text(f"---\ntitle: {title}\n{corr}---\n{body}\n", encoding="utf-8")
+    post("2026-10-30-a.md", "記事A")
+    post("2026-10-30-b.md", "記事B")
+    post("2026-10-30-c.md", "記事C")
+    releases, current = srv / "releases", srv / "current"
+    notes, served = [], {"id": None}
+    names = iter([f"20261031T{m:02d}0000" for m in range(6, 13)])
+    saved = {k: getattr(deploy, k) for k in ("ROOT", "SRV", "RELEASES", "CURRENT", "build", "purge_cache", "notify", "sync_app",
+                                             "now_jst", "reindex", "served_release_id", "restart_app", "SERVED_RETRY_SEC")
+             if hasattr(deploy, k)}
+    saved_argv = sys.argv
+
+    def fake_build(dest: Path, timeout=None):
+        for rel in deploy.REQUIRED + [f"articles/{p.stem}/index.html" for p in posts.glob("*.md")]:
+            p = dest / rel
+            p.parent.mkdir(parents=True, exist_ok=True)
+            p.write_text("版", encoding="utf-8")
+
+    def run(*argv):
+        notes.clear()
+        sys.argv = ["deploy.py", *argv]
+        return deploy.main()
+    try:
+        deploy.ROOT, deploy.SRV, deploy.RELEASES, deploy.CURRENT = root, srv, releases, current
+        deploy.build, deploy.sync_app, deploy.purge_cache = fake_build, (lambda: False), (lambda: "")
+        deploy.notify = lambda job, msg, ok=True, **k: notes.append((ok, msg)) or True
+        deploy.now_jst = lambda: datetime.datetime.strptime(next(names), "%Y%m%dT%H%M%S")
+        deploy.reindex = lambda run_id, timeout=None: len(list(posts.glob("*.md")))
+        deploy.served_release_id = lambda timeout=None: served["id"] or (current / deploy.RELEASE_ID).read_text(encoding="utf-8").strip()
+        deploy.SERVED_RETRY_SEC = 0     # 古い版が見える場面で読み直しを待たない(待ちは test_deploy_served_retry で検める)
+        # 1回目: 前の控えが無い
+        check(run() == 0 and any(ok and "数えられない" in m and "外から新しい版を確認" in m for ok, m in notes),
+              f"前の控えが無い配信の通知: {notes}")
+        # 2回目(手での配信): 足した・訂正した・直した・外した記事を見出しで言い、毎回同じ文言は出さない
+        post("2026-10-31-d.md", "記事D")
+        post("2026-10-30-a.md", "記事A", corrections=1, body="直した本文")
+        post("2026-10-30-b.md", "記事B", body="書き換えた本文")
+        (posts / "2026-10-30-c.md").unlink()
+        check(run() == 0 and len(notes) == 1, f"手での配信の成功が1通にならない: {notes}")
+        ok, m = notes[0] if notes else (False, "")
+        check(ok and "足した記事 1本(「記事D」)" in m and "訂正した記事 1本(「記事A」)" in m and "直した記事 1本(「記事B」)" in m
+              and "外した記事 1本(「記事C」)" in m and "外から新しい版を確認" in m
+              and "パージ省略" not in m and "アプリのコードに変更なし" not in m, f"変わった記事を言わない・毎回同じ文言を出す: {m}")
+        # 3回目(発行からの配信): 成功は知らせず、結果の行を出す。release はその行を通知に載せる
+        import contextlib
+        import io
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            rc = run("--from-release")
+        check(rc == 0 and not notes and f"{deploy.RESULT_MARK}外から新しい版を確認" in buf.getvalue(),
+              f"発行からの配信の成功を重ねて知らせた・結果の行を出さない: {notes} {buf.getvalue()[-200:]}")
+        # 4回目: 外から見える版が違う → 発行からの配信でも異常として知らせる
+        served["id"] = "20261031T060000"
+        check(run("--from-release") == 0 and any(not ok and "外から見える版が違う" in m for ok, m in notes),
+              f"外から新しい版が見えないのに知らせない: {notes}")
+        # 5回目(手での配信)で外から見えない: 変わった記事も1通の異常の通知で言う(控えは進むので、ここで言わないと失われる)
+        post("2026-10-31-e.md", "記事E")
+        check(run() == 0 and len(notes) == 1 and not notes[0][0] and "足した記事 1本(「記事E」)" in notes[0][1]
+              and "外から見える版が違う" in notes[0][1], f"手での配信で外から見えないとき、変わった記事を言わない・2通に割れる: {notes}")
+        # 6回目(発行からの配信): 外から見えても、アプリの再起動・パージの失敗は異常として知らせる(成功の通知を出さないので
+        # 黙ると誰にも届かない)
+        served["id"] = None
+        deploy.sync_app, deploy.restart_app = (lambda: True), (lambda: "⚠️アプリの再起動に失敗: 試験")
+        deploy.purge_cache = lambda: "パージ失敗: 試験"
+        check(run("--from-release") == 0 and any(not ok and "アプリの再起動に失敗" in m and "パージ失敗" in m for ok, m in notes),
+              f"発行からの配信で、アプリの再起動・パージの失敗を知らせない: {notes}")
+        # 7回目(手での配信・--skip-purge): パージしていないので、パージのことは書かない(Sol 監査 r1)
+        deploy.sync_app = lambda: False
+        purged = []
+        deploy.purge_cache = lambda: purged.append(True) or "キャッシュパージ完了"
+        check(run("--skip-purge") == 0 and not purged and len(notes) == 1 and notes[0][0] and "パージ" not in notes[0][1],
+              f"--skip-purge の配信の通知にパージのことを書いた: {notes} {purged}")
+    finally:
+        for k, v in saved.items():
+            setattr(deploy, k, v)
+        sys.argv = saved_argv
+    # release は deploy の結果の行を成功の通知に載せ、deploy には発行からの配信と伝える
+    saved_run, asked = subprocess.run, []
+    try:
+        subprocess.run = lambda cmd, *a, **k: asked.append(cmd) or subprocess.CompletedProcess(
+            cmd, 0, f"検証OK\n{deploy.RESULT_MARK}外から新しい版を確認\n{deploy.STATE_MARK}current・索引とも新しい版\n", "")
+        out = release.deploy_site()
+    finally:
+        subprocess.run = saved_run
+    check(out == "自前オリジンへ配信済み(外から新しい版を確認)。" and asked and "--from-release" in asked[0]
+          and release.DEPLOY_RESULT_MARK == deploy.RESULT_MARK, f"release が配信の結果を載せない・発行からと伝えない: {out!r} {asked}")
+
+
+def test_deploy_served_retry(tmp: Path):
+    """外からの確認は、読めない・古い版が見えたら間を空けて読み直し、全部だめなときだけ「見えない」と言う。待ちと読みは
+    配信の予算(left())の残りに収める(2026-10-31: この機械の DNS は断続的に落ちる。1回の失敗で異常にすると誤報で当番が起きる)。"""
+    import time
+    import deploy
+    saved = {k: getattr(deploy, k) for k in ("served_release_id", "DEADLINE")}
+    saved_sleep = deploy.time.sleep
+    calls, sleeps = [], []
+
+    def serve(answers):
+        it = iter(answers)
+
+        def fake(timeout=None):
+            calls.append(timeout)
+            a = next(it, OSError("名前解決に失敗"))
+            if isinstance(a, Exception):
+                raise a
+            return a
+        return fake
+    try:
+        deploy.time.sleep = lambda s: sleeps.append(s)
+        # 1回目は DNS の失敗、2回目は古い版、3回目で新しい版 → 見えた(異常にしない)
+        deploy.DEADLINE = time.time() + 600
+        calls.clear(); sleeps.clear()
+        deploy.served_release_id = serve([OSError("名前解決に失敗"), "20261031T060000", "20261031T070000"])
+        ok, msg = deploy.check_served("20261031T070000")
+        check(ok and len(calls) == 3 and len(sleeps) == 2 and all(s > 0 for s in sleeps),
+              f"一時の失敗・古い版で読み直さない: {ok} {msg} 読んだ {len(calls)}回 待ち {sleeps}")
+        # 全部だめ → 見えない(最後の失敗を言う)。読みは SERVED_ATTEMPTS 回まで
+        calls.clear(); sleeps.clear()
+        deploy.served_release_id = serve([])
+        ok, msg = deploy.check_served("20261031T070000")
+        check(not ok and len(calls) == getattr(deploy, "SERVED_ATTEMPTS", 1) >= 2 and "名前解決に失敗" in msg,
+              f"全部だめなときの判定: {ok} {msg} 読んだ {len(calls)}回")
+        # 予算の残りが少ない → 待ちと読みの上限を残りに収める(残りを越えて待たない・読まない)
+        deploy.DEADLINE = time.time() + 20
+        calls.clear(); sleeps.clear()
+        deploy.served_release_id = serve([])
+        ok, msg = deploy.check_served("20261031T070000")
+        check(not ok and calls and all(t is not None and t <= 20 for t in calls) and sum(sleeps) + sum(calls) <= 20,
+              f"予算の残りを越えて待つ・読む: 読みの上限 {calls} 待ち {sleeps}")
+        # 名前解決が止まる(urlopen の timeout は名前解決の待ちを止めない)→ 本物の読み(urllib)を通しても締切で見切る
+        # (Sol 監査 r3: DNS の待ちで予算と release の打ち切りを越えた)。外へは出ない(名前解決を差し替える)
+        import socket
+        import threading
+        stuck, saved_gai, saved_site = threading.Event(), socket.getaddrinfo, deploy.ENV.get("SITE_URL")
+
+        def slow_gai(*a, **k):
+            stuck.wait(8)
+            raise socket.gaierror("名前解決が止まった(試験)")
+        saved_urlopen = deploy.urllib.request.urlopen
+        try:
+            socket.getaddrinfo = slow_gai
+            # 塞いである urlopen の代わりに本物の取得の経路(名前解決は止めてあるので外へは出ない)
+            deploy.urllib.request.urlopen = lambda req, timeout=None: deploy.urllib.request.build_opener().open(req, timeout=timeout)
+            deploy.ENV["SITE_URL"] = "http://imas-test.invalid"
+            deploy.served_release_id = saved["served_release_id"]
+            deploy.DEADLINE = time.time() + deploy.SERVED_MARGIN_SEC + 4
+            t0 = time.monotonic()
+            ok, msg = deploy.check_served("20261031T070000")
+            spent = time.monotonic() - t0
+        finally:
+            stuck.set()
+            socket.getaddrinfo = saved_gai
+            deploy.urllib.request.urlopen = saved_urlopen
+            if saved_site is None:
+                deploy.ENV.pop("SITE_URL", None)
+            else:
+                deploy.ENV["SITE_URL"] = saved_site
+        check(not ok and spent < 5.5, f"名前解決が止まると締切を越えて待つ: {spent:.1f}秒 {ok} {msg}")
+    finally:
+        deploy.time.sleep = saved_sleep
+        for k, v in saved.items():
+            setattr(deploy, k, v)
+
+
 def test_deploy_index_failure(tmp: Path):
     """current を切り替えた後に索引の更新が落ちたら、current を索引が取り込んだリリース(索引の run_id)へ戻してパージし、
     実態どおりに知らせる(監査指摘 ar7-4: 新しい静的と古い索引が残り、取り下げた記事が検索に残った)。前の配信が索引の状態を
@@ -12570,12 +12747,14 @@ def test_deploy_index_failure(tmp: Path):
     stamps = iter(names)
     saved = {k: getattr(deploy, k) for k in ("ROOT", "SRV", "RELEASES", "CURRENT", "build", "purge_cache", "notify", "sync_app",
                                              "now_jst", "INDEX_ATTEMPTS", "INDEX_RETRY_SEC", "reindex", "indexed_run",
-                                             "INDEX_TIMEOUT_SEC", "INDEX_MIN_SEC", "RESERVE_SEC") if hasattr(deploy, k)}
+                                             "INDEX_TIMEOUT_SEC", "INDEX_MIN_SEC", "RESERVE_SEC", "served_release_id") if hasattr(deploy, k)}
     saved_db, saved_argv = getattr(deploy, "DB", None), sys.argv
     lock = sqlite3.connect(db)
     try:
         deploy.ROOT, deploy.SRV, deploy.RELEASES, deploy.CURRENT = root, srv, releases, current
         deploy.DB = db
+        # 外から見える版は、試験の current の印を読む(本物の公開の URL を叩かない)
+        deploy.served_release_id = lambda timeout=None: (current / deploy.RELEASE_ID).read_text(encoding="utf-8").strip()
         deploy.build, deploy.sync_app = fake_build, (lambda: False)
         deploy.purge_cache = lambda: purges.append(True) or "パージ(試験)"
         deploy.notify = lambda job, msg, ok=True, **k: notes.append((ok, msg)) or True
@@ -20755,6 +20934,8 @@ def main() -> int:
     test_release_squash_conflict(tmp / "rsc")
     test_release_dry_run_no_push(tmp / "rdr")
     test_deploy_index_failure(tmp / "dif")
+    test_deploy_notice(tmp / "dn")
+    test_deploy_served_retry(tmp / "dsr")
     test_correction_append_only(tmp / "cao")
     test_indexer_tag_dictionary(tmp / "itd")
     test_remove_worktree(tmp / "rmw")

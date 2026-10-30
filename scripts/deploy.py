@@ -27,6 +27,7 @@
 """
 import argparse
 import datetime
+import hashlib
 import json
 import os
 import shutil
@@ -34,6 +35,7 @@ import sqlite3
 import subprocess
 import sys
 import tempfile
+import threading
 import time
 import urllib.error
 import urllib.request
@@ -70,6 +72,139 @@ DEADLINE = 0.0
 def left() -> float:
     """配信の予算の残り(秒)。"""
     return DEADLINE - time.time()
+
+# 配信の結果の行(release が成功の通知に載せる)。成功の通知は「何が変わったか」と「外から新しい版が見えたか」を言う
+# (編集長 2026-10-31「毎度のこれ、意味のあるログになってるかな?」: 全体の本数・版の名前・毎回同じ「パージ省略」
+# 「アプリのコードに変更なし」だけで、何を配信したかも、読者に届いたかも書いていなかった)
+RESULT_MARK = "配信の結果: "
+RELEASE_ID = "release-id.txt"       # 外から新しい版が見えるかを確かめる印(配信の版の名前だけを書く)
+CHANGES_SHOWN = 5                   # 通知に見出しを並べる記事の数
+# 外からの確認の読み直し。この機械(WSL)の DNS は断続的に落ちるので、1回の失敗で「見えない」と言わない(誤報で当番が起きる。
+# 2026-10-31)。読み・待ちは配信の予算の残りに収め、通知の分(SERVED_MARGIN_SEC)は残す
+SERVED_ATTEMPTS = 3
+SERVED_RETRY_SEC = 10
+SERVED_TIMEOUT_SEC = 30
+SERVED_MARGIN_SEC = 15
+SERVED_MIN_SEC = 3
+
+
+def manifest_path() -> Path:
+    """最後に配信した版の記事の控え(元の md の指紋・訂正の数・見出し)。公開の領域の外に置く。"""
+    return SRV / "state" / "posts-manifest.json"
+
+
+def post_manifest() -> dict[str, list]:
+    """いまの記事の控え {ファイル名: [元の md の指紋, 訂正の数, 見出し]}。"""
+    import yaml
+    out = {}
+    for p in sorted((ROOT / "docs" / "_posts").glob("*.md")):
+        text = p.read_text(encoding="utf-8")
+        fm = {}
+        if text.startswith("---\n") and "\n---\n" in text[4:]:
+            try:
+                fm = yaml.safe_load(text[4:text.index("\n---\n", 4)]) or {}
+            except yaml.YAMLError:
+                fm = {}
+        if not isinstance(fm, dict):
+            fm = {}
+        corr = fm.get("corrections")
+        out[p.name] = [hashlib.sha256(text.encode("utf-8")).hexdigest(), len(corr) if isinstance(corr, list) else 0,
+                       str(fm.get("title") or p.stem)]
+    return out
+
+
+def read_manifest() -> dict | None:
+    try:
+        m = json.loads(manifest_path().read_text(encoding="utf-8"))
+        return m if isinstance(m, dict) else None
+    except (OSError, ValueError):
+        return None
+
+
+def write_manifest(m: dict) -> None:
+    try:
+        manifest_path().parent.mkdir(parents=True, exist_ok=True)
+        tmp = manifest_path().with_suffix(".tmp")
+        tmp.write_text(json.dumps(m, ensure_ascii=False), encoding="utf-8")
+        os.replace(tmp, manifest_path())
+    except OSError as e:
+        print(f"記事の控えを保存できない({e})。次の配信は変わった記事を数えられない", flush=True)
+
+
+def describe_changes(old: dict | None, new: dict) -> str:
+    """前に配信した版と比べて、足した・訂正した・直した・外した記事を言う。"""
+    if old is None:
+        return "前に配信した版の控えが無いので、変わった記事は数えられない"
+
+    def same(v) -> bool:
+        return isinstance(v, list) and len(v) == 3
+
+    old = {k: v for k, v in old.items() if same(v)}
+    groups = [("足した記事", [new[k][2] for k in new if k not in old]),
+              ("訂正した記事", [new[k][2] for k in new if k in old and new[k][1] > old[k][1]]),
+              ("直した記事", [new[k][2] for k in new if k in old and new[k][0] != old[k][0] and new[k][1] <= old[k][1]]),
+              ("外した記事", [old[k][2] for k in old if k not in new])]
+    parts = []
+    for label, titles in groups:
+        if titles:
+            shown = "・".join(f"「{t}」" for t in titles[:CHANGES_SHOWN])
+            more = f" ほか{len(titles) - CHANGES_SHOWN}本" if len(titles) > CHANGES_SHOWN else ""
+            parts.append(f"{label} {len(titles)}本({shown}{more})")
+    return " / ".join(parts) if parts else "記事の変更なし"
+
+
+def served_release_id(timeout: float = SERVED_TIMEOUT_SEC) -> str:
+    """外(公開の URL)から見えている版の名前。読めなければ例外。"""
+    site = ENV.get("SITE_URL", "").rstrip("/")
+    if not site:
+        raise RuntimeError("SITE_URL が未設定")
+    req = urllib.request.Request(f"{site}/{RELEASE_ID}?v={time.time_ns()}",
+                                 headers={"User-Agent": "ImasNewsBot/1.0", "Cache-Control": "no-cache"})
+    with urllib.request.urlopen(req, timeout=timeout) as r:
+        return r.read(200).decode("utf-8", errors="replace").strip()
+
+
+def within(fn, timeout: float):
+    """fn(timeout=...) を timeout 秒で見切る。urlopen の timeout は名前解決の待ちを止めないので、使い捨てのスレッドで読み、
+    締切を過ぎたら待たずに TimeoutError にする(スレッドは daemon なので、止まったままでも終了を妨げない。Sol 監査 r3)"""
+    box: dict = {}
+
+    def run():
+        try:
+            box["v"] = fn(timeout=timeout)
+        except BaseException as e:      # noqa: BLE001  読みの例外は呼び出し側へそのまま渡す
+            box["e"] = e
+    t = threading.Thread(target=run, daemon=True)
+    t.start()
+    t.join(timeout)
+    if t.is_alive():
+        raise TimeoutError(f"{timeout:.0f}秒で読めない(名前解決・接続のどこかで止まった)")
+    if "e" in box:
+        raise box["e"]
+    return box["v"]
+
+
+def check_served(stamp: str) -> tuple[bool, str]:
+    """外から新しい版が見えるか。戻りは (見えたか, 説明)。読めない・古い版が見えたら SERVED_RETRY_SEC おきに
+    SERVED_ATTEMPTS 回まで読み直し、全部だめなときだけ見えないと言う(予算の残りが尽きれば、そこでやめる)。"""
+    msg = "外から新しい版を確かめられない(配信の時間の予算が残っていない)"
+    for i in range(SERVED_ATTEMPTS):
+        budget = min(SERVED_TIMEOUT_SEC, left() - SERVED_MARGIN_SEC)
+        if budget < SERVED_MIN_SEC:
+            break
+        try:
+            seen = within(served_release_id, budget)
+        except Exception as e:      # noqa: BLE001  トンネル・DNS・オリジンのどこで落ちても「見えない」と言う
+            msg = f"外から新しい版を確かめられない({type(e).__name__}: {str(e)[:120]})"
+        else:
+            if seen == stamp:
+                return True, "外から新しい版を確認"
+            msg = f"外から見える版が違う(見えた版 {seen[:40]!r} / 配信した版 {stamp})"
+        if i == SERVED_ATTEMPTS - 1 or left() - SERVED_RETRY_SEC - SERVED_MARGIN_SEC < SERVED_MIN_SEC:
+            break
+        print(f"外からの確認 {i + 1}/{SERVED_ATTEMPTS}: {msg}。{SERVED_RETRY_SEC}秒後に読み直す", flush=True)
+        time.sleep(SERVED_RETRY_SEC)
+    return False, f"{msg}({i + 1}回読んだ)" if SERVED_ATTEMPTS > 1 else msg
 
 # 公開の状態。止まった所で実態が違うので、段ごとに言い直し、最後に STATE_MARK の行で出す(release が通知に載せる)
 STATE_MARK = "配信の状態: "
@@ -218,8 +353,9 @@ def reindex_or_restore(release: Path, prev: Path | None, run_id: str, skip_purge
         notify("deploy", f"索引の更新に失敗した。{STATE}:\n```\n{err[-600:]}\n```", ok=False)
         return None
     # 切り替えていた間にエッジが新しい版を載せたかもしれないので、戻した版でも落とす
-    purge_msg = "パージ省略(--skip-purge)" if skip_purge else purge_cache()
-    notify("deploy", f"索引の更新に失敗したので配信を戻した。{STATE}。{purge_msg}:\n```\n{err[-600:]}\n```", ok=False)
+    purge_msg = "" if skip_purge else purge_cache()
+    notify("deploy", f"索引の更新に失敗したので配信を戻した。{STATE}。{purge_msg + '。' if purge_msg else ''}\n```\n{err[-600:]}\n```",
+           ok=False)
     return None
 
 
@@ -284,7 +420,7 @@ def purge_cache() -> str:
     token = ENV.get("CF_API_TOKEN", "")
     zone = ENV.get("CF_ZONE_ID", "")
     if not token or not zone:
-        return "CF_API_TOKEN/CF_ZONE_ID 未設定のためパージ省略"
+        return ""       # パージを使っていない(エッジのキャッシュも効かせていない)。毎回言っても情報にならない
     req = urllib.request.Request(
         f"https://api.cloudflare.com/client/v4/zones/{zone}/purge_cache",
         data=json.dumps({"purge_everything": True}).encode(),
@@ -305,6 +441,8 @@ def main() -> int:
     ap.add_argument("--dry-run", action="store_true", help="ビルドと検証だけ行い、配信は差し替えない")
     ap.add_argument("--budget-sec", type=float, default=BUDGET_SEC,
                     help="この秒数のうちに必ず終える(release が打ち切る時間より短く渡す)")
+    ap.add_argument("--from-release", action="store_true",
+                    help="発行(release)からの配信。成功は release の通知に載るので、ここでは成功を知らせない(失敗は知らせる)")
     args = ap.parse_args()
     global DEADLINE
     DEADLINE = time.time() + args.budget_sec
@@ -336,6 +474,9 @@ def main() -> int:
 
     n_posts = len(list((staging / "articles").glob("*/index.html")))
     print(f"検証OK: 静的ページ 記事{n_posts}本", flush=True)
+    # 外から新しい版が見えるかを確かめる印。記事の控えはビルドの直後に取る(ビルドの元と同じ記事)
+    (staging / RELEASE_ID).write_text(stamp + "\n", encoding="utf-8")
+    manifest = post_manifest()
 
     if args.dry_run:
         print(f"[dry-run] {staging} は配信せず残置します", flush=True)
@@ -355,19 +496,32 @@ def main() -> int:
         return 1
     say_state(f"current・索引とも新しい版({release.name})。キャッシュのパージはまだ")
 
-    app_msg = restart_app() if sync_app() else "アプリのコードに変更なし"
-    print(app_msg, flush=True)
+    app_msg = restart_app() if sync_app() else ""      # 再起動したときだけ言う
+    if app_msg:
+        print(app_msg, flush=True)
 
     removed = prune(KEEP_RELEASES)
     if removed:
         print(f"旧リリース削除: {', '.join(removed)}", flush=True)
 
-    purge_msg = "パージ省略(--skip-purge)" if args.skip_purge else purge_cache()
-    print(purge_msg, flush=True)
-    say_state(f"current・索引とも新しい版({release.name})。{purge_msg}")
+    purge_msg = "" if args.skip_purge else purge_cache()       # パージしたときだけ結果を言う(省略は言わない)
+    if purge_msg:
+        print(purge_msg, flush=True)
+    say_state(f"current・索引とも新しい版({release.name})。{purge_msg}".rstrip("。"))
 
-    notify("deploy", f"配信を更新しました(記事 {n_posts}本・索引 {n_indexed}本・{release.name})。"
-                     f"{app_msg}。{purge_msg}")
+    changes = describe_changes(read_manifest(), manifest)
+    write_manifest(manifest)
+    served, served_msg = check_served(stamp)
+    mismatch = f"静的 {n_posts}本と索引 {n_indexed}本が食い違う" if n_posts != n_indexed else ""
+    # 異常: 食い違い・外から見えない(トンネル・オリジンの不調)・アプリの再起動やパージの失敗。発行からの配信でも知らせる
+    # (成功の通知は release に任せるので、ここで黙ると誰にも届かない)。手での配信は成功も異常も1通にまとめる
+    trouble = bool(mismatch) or not served or app_msg.startswith("⚠️") or purge_msg.startswith("パージ失敗")
+    print(f"{RESULT_MARK}{served_msg}", flush=True)
+    if trouble or not args.from_release:
+        parts = [mismatch, served_msg, app_msg, purge_msg]
+        if not served:
+            parts.append(f"current・索引とも新しい版({release.name})")
+        notify("deploy", "。".join([f"配信を更新: {changes}"] + [m for m in parts if m]), ok=not trouble)
     return 0
 
 

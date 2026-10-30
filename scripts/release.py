@@ -183,6 +183,7 @@ def review_verdict(date: str) -> tuple[str, str]:
 
 
 DEPLOY_STATE_MARK = "配信の状態: "      # deploy.py が最後に出す行(公開の状態。deploy.STATE_MARK と同じ)
+DEPLOY_RESULT_MARK = "配信の結果: "     # deploy.py が成功のときに出す行(外から新しい版が見えたか。deploy.RESULT_MARK と同じ)
 # deploy を打ち切る時間。deploy にはそれより短い予算(--budget-sec)を渡し、打ち切られる前に戻す・知らせるまで終えさせる
 DEPLOY_TIMEOUT_SEC = 2400
 DEPLOY_BUDGET_MARGIN_SEC = 60
@@ -197,7 +198,7 @@ def deploy_site() -> str:
     「current は前号のまま」と通知していた)。
     """
     try:
-        r = subprocess.run([sys.executable, str(ROOT / "scripts" / "deploy.py"),
+        r = subprocess.run([sys.executable, str(ROOT / "scripts" / "deploy.py"), "--from-release",
                             "--budget-sec", str(DEPLOY_TIMEOUT_SEC - DEPLOY_BUDGET_MARGIN_SEC)],
                            cwd=ROOT, capture_output=True, text=True, timeout=DEPLOY_TIMEOUT_SEC)
     except subprocess.TimeoutExpired as e:
@@ -205,7 +206,9 @@ def deploy_site() -> str:
         r = subprocess.CompletedProcess(e.cmd, -9, out, "deploy.py が時間切れで止められた")
     print(r.stdout[-1500:], flush=True)
     if r.returncode == 0:
-        return "自前オリジンへ配信済み。"
+        # 配信の成功は deploy が知らせず、ここに載せる(外から新しい版が見えたかも添える)
+        results = [l[len(DEPLOY_RESULT_MARK):] for l in r.stdout.splitlines() if l.startswith(DEPLOY_RESULT_MARK)]
+        return f"自前オリジンへ配信済み({results[-1]})。" if results else "自前オリジンへ配信済み。"
     states = [l[len(DEPLOY_STATE_MARK):] for l in r.stdout.splitlines() if l.startswith(DEPLOY_STATE_MARK)]
     state = states[-1] if states else "deploy.py の出力から読めない(current と索引を確かめること)"
     tail = (r.stderr.strip() or r.stdout.strip())[-400:]

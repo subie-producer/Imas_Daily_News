@@ -3,7 +3,7 @@ slug: gaku-eclipse-light-animate-fair-2026
 edition: "2026-10-31"
 brand: gaku
 src: 当事者
-rank: large
+rank: medium
 corrected: false
 corrections: []
 candidate_ids:

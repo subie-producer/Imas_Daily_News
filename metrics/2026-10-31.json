@@ -124,5 +124,47 @@
    },
    "duration_s": 2598
   }
+ ],
+ "compose": [
+  {
+   "at": "2026-10-31T03:45:56+09:00",
+   "edition": "2026-10-31",
+   "rounds": 4,
+   "approved": true,
+   "lint_green": true,
+   "planned": 77,
+   "written": 69,
+   "roundups": 1,
+   "dropped": 0,
+   "coverage": {
+    "subjects": 322,
+    "covered": 322,
+    "missing": 0,
+    "missing_keys": []
+   },
+   "dropped_by_review": [],
+   "stages_min": {
+    "選定": 2.823197154204051,
+    "選定の拾い直し": 1.8750817894935607,
+    "執筆": 10.221771347522736,
+    "出典の判定": 3.4797240336736044,
+    "組版": 1.6260242422421773,
+    "校閲": 1.4637409249941509,
+    "校閲1波": 1.4637409249941509
+   },
+   "target_min": 60,
+   "over_target": false,
+   "aborted": [
+    "sidem-beam-subscription-2026",
+    "gaku-gakumas-amayo-kisama-kentei-2026",
+    "million-gasha-shs-glasses-sayoko-ritsuko-2026",
+    "cg-cinderella-fes-blanc-2026-10",
+    "general-idolmaster-portal-maintenance-release-2026",
+    "million-ova-onkyo-audio-goods-2026",
+    "shiny-alstroemeria-gotoken-christmas-2026",
+    "sidem-legenders-refrain-atrium-ensemble-2026"
+   ],
+   "duration_s": 2728
+  }
  ]
 }

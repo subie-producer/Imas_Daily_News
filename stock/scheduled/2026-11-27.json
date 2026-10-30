@@ -466,28 +466,5 @@
   "src_candidate_id": "202610300224-grok-52",
   "companion_of": "sched-2026-11-27-manaka-birthday-live-setlist-2026-締切前",
   "src_dedup_key": "manaka-birthday-online-live-2026-result"
- },
- {
-  "id": "sched-2026-11-27-song-gasha-category-2026-締切前",
-  "dedup_key": "song-gasha-category-2026",
-  "brand": "shiny",
-  "subject": "シャニソン ガシャカテゴリ表示",
-  "kind": "締切前",
-  "note": "ガシャカテゴリ画面の表示期間があと3日で終わる。切替を試せる",
-  "reserved_on": "2026-10-31",
-  "occurs_on": "2026-11-30",
-  "title": "シャニソン ガシャカテゴリ表示アップデート",
-  "url": "https://x.com/imassc_prism/status/2116017248938688513",
-  "source_type": "公式",
-  "facts": [
-   "10/31 12:00～11/30 23:59にガシャカテゴリ画面を表示。",
-   "従来表示とカテゴリ表示を選択でき、ガシャ画面上部の設定アイコンから切替可能。",
-   "エンゲージメント: 中"
-  ],
-  "via": "grok",
-  "verify": "confirmed",
-  "event_date": "2026-10-31",
-  "deadline": "2026-11-30",
-  "src_candidate_id": "202610310225-grok-64"
  }
 ]

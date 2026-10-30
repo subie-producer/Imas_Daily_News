@@ -3,7 +3,7 @@ slug: dsva-valiv-letora-birthday-live-2026
 edition: "2026-10-31"
 brand: dsva
 src: 公式
-rank: large
+rank: medium
 corrected: false
 corrections: []
 candidate_ids:

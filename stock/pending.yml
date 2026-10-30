@@ -321,7 +321,6 @@
   subject: アイマスポータル メンテナンスと各発表の詳細
   watch: メンテ終了とNEWS閲覧再開、「改めて知らせる」とされた各発表内容の詳細(判明次第 triggers へ)
   added_on: '2026-10-24'
-  removed_on: '2026-10-31'
 - dedup_key: sidem-story-release-delay-2026-10
   brand: sidem
   subject: SideM「アイドルたちの1コマ」High×Joker編・神速一魂編の公開日
@@ -385,23 +384,13 @@
   subject: 雨夜燕「ENDLESS DANCE」グラフィックTシャツ
   watch: 2027年2月末までとされた正式な発売日(判明次第 triggers へ)
   added_on: '2026-10-30'
-- dedup_key: charm-nuit-piece-discount-2026
-  brand: million
-  subject: シャルム・ニュイ+交換のプラチナスターピース減少キャンペーン
-  watch: キャンペーンの終了日(期間の記載なし。判明次第 triggers へ)
-  added_on: '2026-10-31'
 - dedup_key: platinum-star-tune-yoru-akari-2026
   brand: million
-  subject: ミリシタ プラチナスターチューン～夜と、明かりと。～
-  watch: 「詳細はイベント開催後に告知」とされたイベント期間・内容(判明次第 triggers へ)
+  subject: ミリシタ「プラチナスターチューン～夜と、明かりと。～」イベント詳細
+  watch: 記事で「詳細はイベント開催後に告知予定」とされたイベント内容の詳細(判明次第 triggers へ)
   added_on: '2026-10-31'
-- dedup_key: refrac7ions-rerun-2026
-  brand: shiny
-  subject: 'シャニソン PJ: REFRAC7IONS「I''m a Cutie Finder」復刻ピックアップガシャ'
-  watch: 「近日開催予定」とされた復刻ガシャの開催日時・期間(判明次第 triggers へ)
-  added_on: '2026-10-31'
-- dedup_key: song-pickup-kiriko-mei-2026
-  brand: shiny
-  subject: シャニソン ピックアップガシャ「反射する星々、その先へ」
-  watch: 「近日開催予定」とされた開催日時・期間、カード名(判明次第 triggers へ)
+- dedup_key: tours-s2-card-read-error-2026
+  brand: general
+  subject: ツアマスS2弾 新規ICカード読み込み不具合の修正
+  watch: 修正アップデートの配信日(「対応完了後にアップデートで修正」とされ日付未定。判明次第 triggers へ)
   added_on: '2026-10-31'

@@ -14,7 +14,7 @@ corrections:
 candidate_ids:
 - 202610302337-watch-0
 title: シンデレラ15周年ライブ後に振り返り生配信
-lede: 「アイドルマスター シンデレラガールズ 15th ANNIVERSARY PARTY!!!! ～for your ONE～」のDAY1・DAY2公演終了後に、YouTube「アイドルマスターチャンネル」で振り返り生配信「ばくすて！とーく」が予定されており、各日の出演者と配信URL
+lede: 「アイドルマスター シンデレラガールズ 15th ANNIVERSARY PARTY!!!! ～for your ONE～」のDAY1・DAY2公演終了後に、YouTube「アイドルマスターチャンネル」で振り返り生配信「ばくすて！とーく」が予定されている。
 tags:
 - シンデレラガールズ
 - アイマスch

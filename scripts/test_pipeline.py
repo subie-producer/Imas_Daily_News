@@ -12522,9 +12522,9 @@ def test_deploy_notice(tmp: Path):
     post("2026-10-30-c.md", "記事C")
     releases, current = srv / "releases", srv / "current"
     notes, served = [], {"id": None}
-    names = iter([f"20261031T0{m}0000" for m in range(6, 10)])
+    names = iter([f"20261031T{m:02d}0000" for m in range(6, 13)])
     saved = {k: getattr(deploy, k) for k in ("ROOT", "SRV", "RELEASES", "CURRENT", "build", "purge_cache", "notify", "sync_app",
-                                             "now_jst", "reindex", "served_release_id")}
+                                             "now_jst", "reindex", "served_release_id", "restart_app")}
     saved_argv = sys.argv
 
     def fake_build(dest: Path, timeout=None):
@@ -12569,6 +12569,17 @@ def test_deploy_notice(tmp: Path):
         served["id"] = "20261031T060000"
         check(run("--from-release") == 0 and any(not ok and "外から見える版が違う" in m for ok, m in notes),
               f"外から新しい版が見えないのに知らせない: {notes}")
+        # 5回目(手での配信)で外から見えない: 変わった記事も1通の異常の通知で言う(控えは進むので、ここで言わないと失われる)
+        post("2026-10-31-e.md", "記事E")
+        check(run() == 0 and len(notes) == 1 and not notes[0][0] and "足した記事 1本(「記事E」)" in notes[0][1]
+              and "外から見える版が違う" in notes[0][1], f"手での配信で外から見えないとき、変わった記事を言わない・2通に割れる: {notes}")
+        # 6回目(発行からの配信): 外から見えても、アプリの再起動・パージの失敗は異常として知らせる(成功の通知を出さないので
+        # 黙ると誰にも届かない)
+        served["id"] = None
+        deploy.sync_app, deploy.restart_app = (lambda: True), (lambda: "⚠️アプリの再起動に失敗: 試験")
+        deploy.purge_cache = lambda: "パージ失敗: 試験"
+        check(run("--from-release") == 0 and any(not ok and "アプリの再起動に失敗" in m and "パージ失敗" in m for ok, m in notes),
+              f"発行からの配信で、アプリの再起動・パージの失敗を知らせない: {notes}")
     finally:
         for k, v in saved.items():
             setattr(deploy, k, v)

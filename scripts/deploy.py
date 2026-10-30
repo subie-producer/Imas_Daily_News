@@ -472,14 +472,16 @@ def main() -> int:
     changes = describe_changes(read_manifest(), manifest)
     write_manifest(manifest)
     served, served_msg = check_served(stamp)
-    extras = "。".join(m for m in (app_msg, purge_msg) if m)
-    mismatch = f"静的 {n_posts}本と索引 {n_indexed}本が食い違う。" if n_posts != n_indexed else ""
+    mismatch = f"静的 {n_posts}本と索引 {n_indexed}本が食い違う" if n_posts != n_indexed else ""
+    # 異常: 食い違い・外から見えない(トンネル・オリジンの不調)・アプリの再起動やパージの失敗。発行からの配信でも知らせる
+    # (成功の通知は release に任せるので、ここで黙ると誰にも届かない)。手での配信は成功も異常も1通にまとめる
+    trouble = bool(mismatch) or not served or app_msg.startswith("⚠️") or purge_msg.startswith("パージ失敗")
     print(f"{RESULT_MARK}{served_msg}", flush=True)
-    if not served:
-        # 配信したのに読者に見えない(トンネル・オリジンの不調)。発行からの配信でも知らせる
-        notify("deploy", f"配信した版が外から見えない: {served_msg}。{STATE}", ok=False)
-    if mismatch or (not args.from_release and served):
-        notify("deploy", f"配信を更新: {changes}。{mismatch}{served_msg}" + (f"。{extras}" if extras else ""), ok=not mismatch)
+    if trouble or not args.from_release:
+        parts = [mismatch, served_msg, app_msg, purge_msg]
+        if not served:
+            parts.append(f"current・索引とも新しい版({release.name})")
+        notify("deploy", "。".join([f"配信を更新: {changes}"] + [m for m in parts if m]), ok=not trouble)
     return 0
 
 

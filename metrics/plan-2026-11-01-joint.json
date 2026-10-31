@@ -1,0 +1,383 @@
+{
+ "decisions": {
+  "xr-live-revival-asobistore-general-advance-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "締切は11/8に延長済み(10/30報)。本日は締切でも3日以内でもなく、続報予約の前提(最終日)が成り立たない"
+  },
+  "starlight-dining-chinese-maid-plush-2027": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/31報で受注11/9・発売日など全て掲載済み。新事実・当日トリガー無し"
+  },
+  "bandainamco-am-co-jp-32": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/1報と同内容。予選開始は11/12で当日トリガー無し"
+  },
+  "cg-million-clashmatch-goods-2027": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "重複",
+   "note": "CLASH M@TCH!!グッズ事前販売は demirimi-clash-goods-preorder と同じ施策で10/31報済み"
+  },
+  "demirimi-clash-costume-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "dememiri-clash-match-ticket-2027",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "内容は一般会員先行の受付で、締切記事に統合。衣装ビジュアルは10/31報済み"
+  },
+  "demirimi-clash-goods-preorder-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/31報に価格・期間・発送時期とも掲載済み。締切11/15は3日以内でない"
+  },
+  "clash-match-warmup-stream-archive-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "deremiri-clash-match-warmup-stream-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じウォームアップ生配信のアーカイブ公開として統合"
+  },
+  "tours-s2-cardlist-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "S2弾のパラレルカード紹介は10/27・10/28・10/29報済みで新事実無し"
+  },
+  "demirimi-clash-radio-yoshichizu-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "おたより締切11/5、よしちづ12/4・フレあか11/13の配信日とも10/31報に掲載済み"
+  },
+  "deremiri-clash-match-warmup-stream-2026": {
+   "action": "article",
+   "angle": "ウォームアップ生配信で新曲制作と会場のぼりのプロデュース権販売が決まり、アーカイブも公開された",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 35,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "配信前の告知記事(10/29・10/30報)に無い新曲制作・のぼり販売が新事実。アーカイブ公開も含める"
+  },
+  "deremiri-stream-post-campaign-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "配信中(10/30)限定の投稿企画で終了済み"
+  },
+  "tours-s2-card-read-error-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/31報に不具合と回避方法を掲載済み。修正完了などの新事実無し"
+  },
+  "tours-halloween-commu-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "期間・条件とも10/28〜10/31報済み。終了11/6・11/7は3日以内でない"
+  },
+  "tours-thanks-background-photo-trend-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "ファンの遊びの話題で、ファン面(general)の対象。共同面ではない"
+  },
+  "tomori-manaka-birthday-live-2026-guest-seki-hiromi": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "個人のバースデーオンラインライブで、関裕美はゲスト出演。共同主催ではなく出典も未確認"
+  },
+  "tours-rhythm-live-recording-pstage-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/27報に参加費・定員・特典とも掲載済み"
+  },
+  "tours-producers-station-nakano-panels-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/28・10/29報済みで新事実無し"
+  },
+  "tours-second-stage-s2-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/29稼働済み。10/27〜10/29報で内容は掲載済み"
+  },
+  "tours-tournament-prelim-entry-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/30報でエントリー開始を報道済み。新事実・当日トリガー無し"
+  },
+  "tours-season-6-all-songs-first-place-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "ファン個人のSNS投稿で未確認。単体では記事にしない"
+  },
+  "starlit-season-ps4-sale-2026": {
+   "action": "article",
+   "angle": "PS4版デジタルデラックスエディションの4,125円セールは11月4日23時59分まで、終了まであと3日",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(締切前)。終了3日以内のトリガー"
+  },
+  "dememiri-clash-match-ticket-2027": {
+   "action": "article",
+   "angle": "デレミリ合同ライブのアソビストア一般会員先行は本日23時59分締切、結果発表は11月14日",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 70,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(締切)。当日が締切。demirimi-clash-costume-2026 を統合"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "joint-deremiri-clash-match-warmup-stream-2026",
+    "brand": "joint",
+    "rank": "medium",
+    "angle": "ウォームアップ生配信で新曲制作と会場のぼりのプロデュース権販売が決まり、アーカイブも公開された",
+    "purpose": "新情報",
+    "lead_score": 35,
+    "dedup_key": "deremiri-clash-match-warmup-stream-2026",
+    "candidate_ids": [
+     "202611010230-grok-114",
+     "202611010230-grok-115",
+     "202611010230-grok-116",
+     "202610290225-grok-73",
+     "202610300224-grok-57",
+     "202610310225-grok-106",
+     "202611010230-grok-14"
+    ]
+   },
+   {
+    "slug": "joint-starlit-season-ps4-sale-2026",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "PS4版デジタルデラックスエディションの4,125円セールは11月4日23時59分まで、終了まであと3日",
+    "purpose": "期日の知らせ",
+    "lead_score": 10,
+    "dedup_key": "starlit-season-ps4-sale-2026",
+    "candidate_ids": [
+     "sched-2026-11-01-starlit-season-ps4-sale-2026-締切前"
+    ]
+   },
+   {
+    "slug": "joint-dememiri-clash-match-ticket-2027",
+    "brand": "joint",
+    "rank": "medium",
+    "angle": "デレミリ合同ライブのアソビストア一般会員先行は本日23時59分締切、結果発表は11月14日",
+    "purpose": "期日の知らせ",
+    "lead_score": 70,
+    "dedup_key": "dememiri-clash-match-ticket-2027",
+    "candidate_ids": [
+     "sched-2026-11-01-dememiri-clash-match-ticket-2027-締切",
+     "sched-2026-11-01-dememiri-clash-match-ticket-2027-締切-src1",
+     "202610311835-explore-21",
+     "202611010230-grok-110"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "xr-live-revival-asobistore-general-advance-2026",
+    "reason": "既報",
+    "note": "締切は11/8に延長済み(10/30報)。本日は締切でも3日以内でもなく、続報予約の前提(最終日)が成り立たない"
+   },
+   {
+    "dedup_key": "starlight-dining-chinese-maid-plush-2027",
+    "reason": "既報",
+    "note": "10/31報で受注11/9・発売日など全て掲載済み。新事実・当日トリガー無し"
+   },
+   {
+    "dedup_key": "bandainamco-am-co-jp-32",
+    "reason": "既報",
+    "note": "10/1報と同内容。予選開始は11/12で当日トリガー無し"
+   },
+   {
+    "dedup_key": "cg-million-clashmatch-goods-2027",
+    "reason": "重複",
+    "note": "CLASH M@TCH!!グッズ事前販売は demirimi-clash-goods-preorder と同じ施策で10/31報済み"
+   },
+   {
+    "dedup_key": "demirimi-clash-goods-preorder-2026",
+    "reason": "既報",
+    "note": "10/31報に価格・期間・発送時期とも掲載済み。締切11/15は3日以内でない"
+   },
+   {
+    "dedup_key": "tours-s2-cardlist-2026",
+    "reason": "既報",
+    "note": "S2弾のパラレルカード紹介は10/27・10/28・10/29報済みで新事実無し"
+   },
+   {
+    "dedup_key": "demirimi-clash-radio-yoshichizu-2026",
+    "reason": "既報",
+    "note": "おたより締切11/5、よしちづ12/4・フレあか11/13の配信日とも10/31報に掲載済み"
+   },
+   {
+    "dedup_key": "deremiri-stream-post-campaign-2026",
+    "reason": "その他",
+    "note": "配信中(10/30)限定の投稿企画で終了済み"
+   },
+   {
+    "dedup_key": "tours-s2-card-read-error-2026",
+    "reason": "既報",
+    "note": "10/31報に不具合と回避方法を掲載済み。修正完了などの新事実無し"
+   },
+   {
+    "dedup_key": "tours-halloween-commu-2026",
+    "reason": "既報",
+    "note": "期間・条件とも10/28〜10/31報済み。終了11/6・11/7は3日以内でない"
+   },
+   {
+    "dedup_key": "tours-thanks-background-photo-trend-2026",
+    "reason": "面違い",
+    "note": "ファンの遊びの話題で、ファン面(general)の対象。共同面ではない"
+   },
+   {
+    "dedup_key": "tomori-manaka-birthday-live-2026-guest-seki-hiromi",
+    "reason": "面違い",
+    "note": "個人のバースデーオンラインライブで、関裕美はゲスト出演。共同主催ではなく出典も未確認"
+   },
+   {
+    "dedup_key": "tours-rhythm-live-recording-pstage-2026",
+    "reason": "既報",
+    "note": "10/27報に参加費・定員・特典とも掲載済み"
+   },
+   {
+    "dedup_key": "tours-producers-station-nakano-panels-2026",
+    "reason": "既報",
+    "note": "10/28・10/29報済みで新事実無し"
+   },
+   {
+    "dedup_key": "tours-second-stage-s2-2026",
+    "reason": "既報",
+    "note": "10/29稼働済み。10/27〜10/29報で内容は掲載済み"
+   },
+   {
+    "dedup_key": "tours-tournament-prelim-entry-2026",
+    "reason": "既報",
+    "note": "10/30報でエントリー開始を報道済み。新事実・当日トリガー無し"
+   },
+   {
+    "dedup_key": "tours-season-6-all-songs-first-place-2026",
+    "reason": "個人の話題",
+    "note": "ファン個人のSNS投稿で未確認。単体では記事にしない"
+   }
+  ],
+  "cross_brand": []
+ }
+}

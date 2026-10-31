@@ -36,6 +36,13 @@ verified_facts:
 - id: N8
   text: グッズの購入・決済はASOBI STOREにログインして行う。数量限定販売商品は数に限りがあり、ASOBI STOREプレミアム会員限定販売商品の購入にはプレミアム会員登録が必要。配送料は注文ごとに発生する。ページ上でカートに入れても購入は保証されず、カートイン後に売り切れや期限切れとなる場合がある。
   url: https://idolmaster-official.jp/news/01_20224
+updates:
+- at: '2026-10-31T07:50:51+09:00'
+  kind: 追加
+  text: 「全ラインナップはこちら！」の下に、八宮めぐるの公式グッズセットや「Sonic Heart (and Signal)」のアクリルシャドーボックスなどの商品情報が追加されました。
+  source: https://idolmaster-official.jp/news/01_20224
+  from_at: '2026-10-30T12:35:47+09:00'
+  to_at: '2026-10-31T03:31:13+09:00'
 ---
 受注対象は「Sonic Heart (and Signal)」のデコラStyleと、「No 1 feel alone」のAcademic Styleの撮りおろしビジュアルを使ったグッズ。PJ: REFRAC7IONSの新ユニットに焦点を当て、全7つの「Style」に沿って魅力を紹介するシリーズで、特設サイトにはアイドルのコメントも掲載されている。 <!-- F4 F5 F7 -->
 

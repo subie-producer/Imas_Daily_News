@@ -2,7 +2,7 @@
 slug: dsva-manaka-halloween-pumpkin-recipe-2026
 edition: "2026-10-31"
 brand: dsva
-src: 未確認
+src: 公式
 rank: small
 corrected: false
 corrections: []
@@ -22,7 +22,7 @@ sources:
   type: 公式
 - label: "灯里 愛夏 / Manaka Tomori 【ヴイアラ】【876プロ】「【ハロウィン】苦手なカボチャ、丸々1個食う。【灯里愛夏 / #ヴイアラ】」"
   url: https://www.youtube.com/watch?v=iVOtp0VZh8g
-  type: 未確認
+  type: 公式
 event_date: "2026-10-31"
 title_fact_ids:
 - F1

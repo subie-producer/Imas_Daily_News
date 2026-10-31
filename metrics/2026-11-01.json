@@ -1,0 +1,203 @@
+{
+ "recheck": [
+  {
+   "at": "2026-11-01T02:36:20+09:00",
+   "cap": 60,
+   "parallel": 4,
+   "runs_per_day": 5,
+   "cycle_days": 0.51,
+   "oldest_age_h": 14.0,
+   "targets": 154,
+   "chosen": 60,
+   "tried": 60,
+   "checked": 60,
+   "changed": 36,
+   "elapsed_s": 151,
+   "cycle_days_actual": 0.51
+  }
+ ],
+ "collect": [
+  {
+   "at": "2026-11-01T02:44:03+09:00",
+   "edition": "2026-11-01",
+   "started_at": "2026-11-01T02:00:45+09:00",
+   "trigger": "timer",
+   "watch": {
+    "stats": {
+     "imas-portal": {
+      "found": 12,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-sidem": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-shiny": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-million": {
+      "found": 8,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "lantis-shiny": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "lantis-sidem": {
+      "found": 4,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "columbia-imas": {
+      "found": 352,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "bnam-tours": {
+      "found": 69,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "imasnews765": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     }
+    },
+    "new": 0,
+    "facted": 0,
+    "deferred": 0,
+    "blocked": 0,
+    "unavailable": 0
+   },
+   "per_query": {
+    "explore:765as": 1,
+    "explore:cinderella": 2,
+    "explore:million": 3,
+    "explore:shiny": 3,
+    "explore:sidem": 0,
+    "explore:gakuen": 1,
+    "explore:dsva": 0,
+    "explore:joint-other": 1,
+    "explore:trend": 1,
+    "grok_week_searches": 715,
+    "grok:765as": 0,
+    "grok:cinderella": 13,
+    "grok:million": 18,
+    "grok:shiny": 47,
+    "grok:sidem": 7,
+    "grok:gakuen": 15,
+    "grok:dsva": 7,
+    "grok:joint-other": 13,
+    "grok:trend": 2,
+    "grok_searches:gaku": 17,
+    "grok_searches:joint": 9,
+    "grok_searches:dsva": 6,
+    "grok_searches:765": 5,
+    "grok_searches:cg": 6,
+    "grok_searches:sidem": 6,
+    "grok_searches:shiny": 11,
+    "grok_searches:general": 9,
+    "grok_searches:million": 8
+   },
+   "normalized": 138,
+   "added": 128,
+   "verify": {
+    "confirmed": 101,
+    "unconfirmed": 32,
+    "failed": 4
+   },
+   "duration_s": 2597
+  }
+ ],
+ "compose": [
+  {
+   "at": "2026-11-01T03:38:42+09:00",
+   "edition": "2026-11-01",
+   "rounds": 4,
+   "approved": true,
+   "lint_green": true,
+   "planned": 51,
+   "written": 44,
+   "roundups": 4,
+   "dropped": 0,
+   "coverage": {
+    "subjects": 400,
+    "covered": 400,
+    "missing": 0,
+    "missing_keys": []
+   },
+   "dropped_by_review": [],
+   "stages_min": {
+    "選定": 3.683253041903178,
+    "選定の拾い直し": 2.5297784090042112,
+    "執筆": 8.325049146016438,
+    "出典の判定": 2.151198474566142,
+    "組版": 0.8937942941983541,
+    "校閲": 1.3710036198298137,
+    "校閲1波": 1.3710036198298137
+   },
+   "target_min": 60,
+   "over_target": false,
+   "aborted": [
+    "sidem-teddys-collection-ii-goods",
+    "shiny-song-3rd-story",
+    "cg-popntoybox-revival-general-lottery-2026",
+    "general-shigure-ui-ittan-aishite-dance-2026",
+    "sidem-high-joker-poppin-planet-2dmv-2026",
+    "sidem-ops-roundup",
+    "shiny-alstroemeria-gotoken-christmas-2026"
+   ],
+   "duration_s": 2277
+  },
+  {
+   "at": "2026-11-01T05:25:34+09:00",
+   "edition": "2026-11-01",
+   "rounds": 4,
+   "approved": true,
+   "lint_green": true,
+   "planned": 51,
+   "written": 46,
+   "roundups": 4,
+   "dropped": 0,
+   "coverage": {
+    "subjects": 400,
+    "covered": 400,
+    "missing": 0,
+    "missing_keys": []
+   },
+   "dropped_by_review": [],
+   "stages_min": {
+    "執筆": 1.6472063859303792,
+    "組版": 0.7803075989087422,
+    "校閲": 1.5987132827440897,
+    "校閲1波": 1.5987132827440897
+   },
+   "target_min": 60,
+   "over_target": false,
+   "aborted": [
+    "shiny-song-3rd-story",
+    "sidem-high-joker-poppin-planet-2dmv-2026",
+    "sidem-ops-roundup",
+    "sidem-teddys-collection-ii-goods",
+    "shiny-alstroemeria-gotoken-christmas-2026"
+   ],
+   "duration_s": 900
+  }
+ ]
+}

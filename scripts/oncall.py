@@ -1660,7 +1660,8 @@ def rerun_stage(stage: str, date: str, edition: str, full: bool, recover: bool =
             limit, extra = 7200, []
             if recover:
                 RECOVER_TRIED = True
-                # 日付が書き換えられた続報予約の記事は、組み直しが外す(承認済みでも古い日付の記事は失ったことに数えない)
+                # 素材が全部、日付の書き換えられた続報予約の記事は、組み直しが計画から外す(承認済みでも失ったことに数えない)。
+                # ほかの素材が残る記事は書き直すので、ここに入れない(書き直しが見送りなら失った記事として控えへ戻す)
                 stale = superseded_slugs(date, ROOT)
                 before, planned = posted_slugs(date) - set(stale), [s for s in planned_slugs(date) if s not in stale]
                 backup = backup_edition(date, edition)

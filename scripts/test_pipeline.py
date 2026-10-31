@@ -19700,7 +19700,7 @@ def test_superseded_reservation(tmp: Path):
     for s in ("only", "mixed", "fine"):
         (tmp / "docs" / "_posts" / f"{date}-{s}.md").write_text("---\ntitle: t\n---\n", encoding="utf-8")
     stale = pipelib.superseded_slugs(date, tmp)
-    check(set(stale) == {"only", "mixed"}, f"記事の見分け: {stale}")
+    check(set(stale) == {"only"}, f"計画から外す記事の見分け(ほかの素材が残る記事は入れない): {stale}")
     saved = compose.ROOT
     compose.ROOT = tmp
     try:
@@ -19717,7 +19717,50 @@ def test_superseded_reservation(tmp: Path):
     finally:
         compose.ROOT = saved
     before = {"only", "mixed", "fine"} - set(stale)
-    check(oncall.recover_outcome(before, {"fine"}, ["fine"])[2] == [], "外した記事を承認済みの紙面から失ったと数えた")
+    check(oncall.recover_outcome(before, {"mixed", "fine"}, ["mixed", "fine"])[2] == [], "外した記事を承認済みの紙面から失ったと数えた")
+
+    # 本物の rerun_stage: 素材が全部失効した記事は外して採る。ほかの素材が残る記事の書き直しが見送りになれば、採らずに控えへ戻す
+    # (Sol 監査 R1: 混在の記事まで喪失の検出から外し、記事が消えたまま「戻らない 0本」で採っていた)
+    plan_text = json.dumps({"articles": [
+        {"slug": "only", "candidate_ids": ["via-fact"]},
+        {"slug": "mixed", "candidate_ids": ["c1", "via-url"]},
+        {"slug": "fine", "candidate_ids": ["no-page"]}]}, ensure_ascii=False)
+    for rewritten in (True, False):
+        (tmp / "metrics" / f"plan-{date}.json").write_text(plan_text, encoding="utf-8")
+        for s in ("only", "mixed", "fine"):
+            (tmp / "docs" / "_posts" / f"{date}-{s}.md").write_text("---\ntitle: t\n---\n", encoding="utf-8")
+        restored, notes = [], []
+
+        def run_stage(cmd, log, limit):
+            p = json.loads((tmp / "metrics" / f"plan-{date}.json").read_text(encoding="utf-8"))
+            compose.ROOT = tmp
+            try:
+                compose.withdraw_superseded(date, p)
+                compose.DROP_LOG.pop(date, None)
+            finally:
+                compose.ROOT = saved
+            (tmp / "metrics" / f"plan-{date}.json").write_text(json.dumps(p, ensure_ascii=False), encoding="utf-8")
+            if rewritten:   # 残った素材で書き直せた。見送りなら稿が無いまま終わる
+                (tmp / "docs" / "_posts" / f"{date}-mixed.md").write_text("---\ntitle: 書き直し\n---\n", encoding="utf-8")
+            return 0
+        kept = {k: getattr(oncall, k) for k in ("ROOT", "untracked_files", "backup_edition", "rescue_sources", "latest_review",
+                                                "commit_paths", "run_stage", "restore_edition", "notify", "RECOVER_TRIED")}
+        try:
+            oncall.ROOT, oncall.run_stage = tmp, run_stage
+            oncall.untracked_files, oncall.backup_edition = (lambda: set()), (lambda d, e: "backup/x")
+            oncall.rescue_sources, oncall.latest_review = (lambda *a: ""), (lambda d: None)
+            oncall.commit_paths = lambda *a, **k: None
+            oncall.restore_edition = lambda *a: restored.append(a)
+            oncall.notify = lambda job, msg, ok=True, require=False: notes.append(msg) or True
+            got = oncall.rerun_stage("compose", date, f"edition/{date}", False, recover=True)
+        finally:
+            for k, v in kept.items():
+                setattr(oncall, k, v)
+        msg = "\n".join(notes)
+        if rewritten:
+            check(got == 0 and not restored and "外れた" not in msg, f"外すべき記事を失ったと数えて組み直しを捨てた: exit {got} {notes}")
+        else:
+            check(got == 1 and restored and "外れた 1本: mixed" in msg, f"混在の記事の見送りで組み直しを採った: exit {got} 控え {restored} {notes}")
 
 
 def test_source_rescue_entry(tmp: Path):

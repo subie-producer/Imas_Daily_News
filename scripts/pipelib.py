@@ -415,7 +415,8 @@ def superseded_reservations(date: str, root: Path | None = None) -> dict[str, st
 
 
 def superseded_slugs(date: str, root: Path | None = None) -> dict[str, str]:
-    """計画の記事のうち、素材にした続報予約の日付が書き換えられたものの {slug: 根拠}。"""
+    """組み直しが計画から外す記事(素材が全部、日付の書き換えられた続報予約とその添え)の {slug: 根拠}。ほかの素材が残る記事は
+    計画に残って書き直される(compose.withdraw_superseded)ので、ここに入れない。その書き直しが見送りになれば、失った記事に数える。"""
     root = root or ROOT
     gone = superseded_reservations(date, root)
     if not gone:
@@ -424,8 +425,8 @@ def superseded_slugs(date: str, root: Path | None = None) -> dict[str, str]:
         plan = json.loads((root / "metrics" / f"plan-{date}.json").read_text(encoding="utf-8"))
     except (OSError, ValueError):
         return {}
-    return {a["slug"]: gone[i] for a in plan.get("articles") or [] if a.get("slug")
-            for i in reversed(a.get("candidate_ids") or []) if i in gone}
+    return {a["slug"]: gone[a["candidate_ids"][0]] for a in plan.get("articles") or []
+            if a.get("slug") and a.get("candidate_ids") and all(i in gone for i in a["candidate_ids"])}
 
 
 # --- 当番(oncall)への引き継ぎ -------------------------------------------------

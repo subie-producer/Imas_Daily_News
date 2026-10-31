@@ -184,8 +184,12 @@ def test_lede_contract():
           and any(f"上限{renderlib.LEDE_MAX}字" in p for p in renderlib.check_output(dict(OK, lede=long_ok), fb, MATS)),
           f"{renderlib.LEDE_MAX}字を超えたリードが検算を通った({len(long_ok)}字)")
     at_max = "あ" * (renderlib.LEDE_MAX - 1) + "。"
-    for lede in (at_max, "本日開催！", "公演名は「HOURGLASS」"):
+    for lede in (at_max, "本日開催！", "公演名は「HOURGLASS」", "公式は“本日開催します。”", '公式は"本日開催します。"',
+                 "公式は'本日開催！'", "【開催決定】", " 本日開催。 "):
         check(renderlib.check_output(dict(OK, lede=lede), fb, MATS) == [], f"書き切ったリードを落とした: {lede}")
+    # 向きの無い " ' は、文末の記号・閉じ括弧のあとでなければ開きの引用符と区別できないので採らない(Sol 監査 r1)
+    for lede in ('出演者は"', "出演者と配信URL'", "各日の出演者と"):
+        check(any("リードが文の途中" in p for p in renderlib.check_output(dict(OK, lede=lede), fb, MATS)), f"途中で終わったリードを通した: {lede}")
     # lint も同じ基準で見る(黙って載せない): 赤にするのは検算が差し戻すようになった号から、それより前は警告
     class Rep:
         def __init__(self):

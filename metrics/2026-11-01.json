@@ -1,0 +1,128 @@
+{
+ "recheck": [
+  {
+   "at": "2026-11-01T02:36:20+09:00",
+   "cap": 60,
+   "parallel": 4,
+   "runs_per_day": 5,
+   "cycle_days": 0.51,
+   "oldest_age_h": 14.0,
+   "targets": 154,
+   "chosen": 60,
+   "tried": 60,
+   "checked": 60,
+   "changed": 36,
+   "elapsed_s": 151,
+   "cycle_days_actual": 0.51
+  }
+ ],
+ "collect": [
+  {
+   "at": "2026-11-01T02:44:03+09:00",
+   "edition": "2026-11-01",
+   "started_at": "2026-11-01T02:00:45+09:00",
+   "trigger": "timer",
+   "watch": {
+    "stats": {
+     "imas-portal": {
+      "found": 12,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-sidem": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-shiny": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-million": {
+      "found": 8,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "lantis-shiny": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "lantis-sidem": {
+      "found": 4,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "columbia-imas": {
+      "found": 352,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "bnam-tours": {
+      "found": 69,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "imasnews765": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     }
+    },
+    "new": 0,
+    "facted": 0,
+    "deferred": 0,
+    "blocked": 0,
+    "unavailable": 0
+   },
+   "per_query": {
+    "explore:765as": 1,
+    "explore:cinderella": 2,
+    "explore:million": 3,
+    "explore:shiny": 3,
+    "explore:sidem": 0,
+    "explore:gakuen": 1,
+    "explore:dsva": 0,
+    "explore:joint-other": 1,
+    "explore:trend": 1,
+    "grok_week_searches": 715,
+    "grok:765as": 0,
+    "grok:cinderella": 13,
+    "grok:million": 18,
+    "grok:shiny": 47,
+    "grok:sidem": 7,
+    "grok:gakuen": 15,
+    "grok:dsva": 7,
+    "grok:joint-other": 13,
+    "grok:trend": 2,
+    "grok_searches:gaku": 17,
+    "grok_searches:joint": 9,
+    "grok_searches:dsva": 6,
+    "grok_searches:765": 5,
+    "grok_searches:cg": 6,
+    "grok_searches:sidem": 6,
+    "grok_searches:shiny": 11,
+    "grok_searches:general": 9,
+    "grok_searches:million": 8
+   },
+   "normalized": 138,
+   "added": 128,
+   "verify": {
+    "confirmed": 101,
+    "unconfirmed": 32,
+    "failed": 4
+   },
+   "duration_s": 2597
+  }
+ ]
+}

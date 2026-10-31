@@ -76,13 +76,6 @@ verified_facts:
 - id: N17
   text: 現物賞品は「引き換え」ページで「配送依頼」を選び、希望賞品と配送情報を入力して手続きする。
   url: https://famkuji.jp/lottery/EAP8aXE4ECMaV6nepYMTgy
-updates:
-- at: '2026-11-01T02:40:29+09:00'
-  kind: 変更
-  text: 販売ページの表示が「くじを引く！」から「このくじは終了しました」に変わりました。
-  source: https://famkuji.jp/lottery/EAP8aXE4ECMaV6nepYMTgy
-  from_at: '2026-10-28T03:20:23+09:00'
-  to_at: '2026-11-01T02:35:31+09:00'
 ---
 FAMくじの販売ページから、スマートフォンまたはパソコンで購入できる。1回880円（税込）、10連セットは8,800円（税込）。販売は2026年10月1日15時に始まり、10月31日23時59分に終了する。 <!-- F2 F3 N1 -->
 

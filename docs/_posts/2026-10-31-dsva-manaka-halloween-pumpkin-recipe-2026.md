@@ -36,13 +36,6 @@ verified_facts:
 - id: N1
   text: 灯里愛夏の公式YouTubeチャンネルに、ハロウィンのかぼちゃ企画の配信ページがあり、2026年10月31日21時開始予定と表示されている。
   url: https://www.youtube.com/watch?v=iVOtp0VZh8g
-updates:
-- at: '2026-11-01T07:53:28+09:00'
-  kind: 変更
-  text: 配信は10月31日21時開始予定でしたが、実際には6時間前に配信されました。
-  source: https://www.youtube.com/watch?v=iVOtp0VZh8g
-  from_at: '2026-10-31T12:35:24+09:00'
-  to_at: '2026-11-01T03:14:04+09:00'
 ---
 配信は10月31日21時開始予定。視聴は[灯里愛夏のYouTube配信ページ](https://www.youtube.com/watch?v=iVOtp0VZh8g)から。 <!-- N1 -->
 

@@ -249,6 +249,17 @@ def _day(at: str) -> str:
         return str(at)[:10]
 
 
+def _at(at: str) -> str:
+    """読んだ時刻(日本時間の日と時分)。ページの「6h ago」「Live in 8 hours」などの相対の表示は、この時刻から数える。"""
+    try:
+        t = datetime.datetime.fromisoformat(str(at))
+    except ValueError:
+        return str(at)[:16]
+    if t.tzinfo is not None:
+        t = t.astimezone(datetime.timezone(datetime.timedelta(hours=9)))
+    return f"{t.month}月{t.day}日{t.hour}時{t.minute:02d}分"
+
+
 def run_session(kind: str, prompt: str, schema_name: str, date: str, name: str, root: Path = ROOT, timeout: float = SESSION_TIMEOUT_SEC):
     """判定・校閲の構造化セッション1本: 書き手は codex(CODEX_WRITE_MODEL)、校閲は claude(REVIEW_MODEL)。正常に終わり、渡した schema に
     合う答えだけを返す(それ以外は None)。CLI の停止は CliStopped、それ以外の異常終了(起動の失敗を含む)は CliFailed で上げる
@@ -300,8 +311,8 @@ class CliFailed(RuntimeError):
 def judge(art: dict, row: dict, diff: str, date: str, prev: dict | None = None, issue: str = "", root: Path = ROOT,
           timeout: float = SESSION_TIMEOUT_SEC):
     """書き手のモデルが変化の種類と更新の文を出す(prompts/source-update.md)。"""
-    prompt = render_prompt("source-update", ARTICLE=f"docs/_posts/{art['id']}.md", URL=row["url"], OLD_AT=_day(row.get("from_at")),
-                           NEW_AT=_day(row.get("to_at")), DIFF=diff)
+    prompt = render_prompt("source-update", ARTICLE=f"docs/_posts/{art['id']}.md", URL=row["url"], OLD_AT=_at(row.get("from_at")),
+                           NEW_AT=_at(row.get("to_at")), DIFF=diff)
     if prev is not None:
         prompt += render_prompt("source-update.retry", KIND=prev.get("kind", ""), TEXT=prev.get("text", ""), ISSUE=issue)
     h = hashlib.sha256(change_key(row).encode()).hexdigest()[:8]
@@ -311,8 +322,8 @@ def judge(art: dict, row: dict, diff: str, date: str, prev: dict | None = None, 
 
 def review(art: dict, row: dict, diff: str, ans: dict, date: str, root: Path = ROOT, timeout: float = SESSION_TIMEOUT_SEC):
     """校閲のモデルが更新の案を検める(prompts/source-update-review.md)。"""
-    prompt = render_prompt("source-update-review", ARTICLE=f"docs/_posts/{art['id']}.md", URL=row["url"], OLD_AT=_day(row.get("from_at")),
-                           NEW_AT=_day(row.get("to_at")), KIND=ans["kind"], TEXT=ans["text"], DIFF=diff)
+    prompt = render_prompt("source-update-review", ARTICLE=f"docs/_posts/{art['id']}.md", URL=row["url"], OLD_AT=_at(row.get("from_at")),
+                           NEW_AT=_at(row.get("to_at")), KIND=ans["kind"], TEXT=ans["text"], DIFF=diff)
     h = hashlib.sha256((change_key(row) + ans["text"]).encode()).hexdigest()[:8]
     return run_session("review", prompt, "source-update-review.schema.json", date, f"source-update-review-{art['slug'][:40]}-{h}", root,
                        timeout)
@@ -357,8 +368,8 @@ def update_candidate(row: dict, arts: list[dict], old: dict, new: dict, today: s
             "source_type": classify_source(row["url"]), "url": row["url"], "found_at": now_jst().isoformat(timespec="seconds"),
             "dedup_key": a["dedup_key"] or f"update-{h}", "verify": "confirmed", "via": "watch", "origin": "watch",
             "published_date": today,
-            "facts": [f"変更後({_day(row.get('to_at'))}に読んだ版): {x}" for x in plus]
-                     + [f"変更前({_day(row.get('from_at'))}に読んだ版): {x}" for x in minus],
+            "facts": [f"変更後({_at(row.get('to_at'))}に読んだ版): {x}" for x in plus]
+                     + [f"変更前({_at(row.get('from_at'))}に読んだ版): {x}" for x in minus],
             "source_change": {"from_at": str(row.get("from_at") or ""), "to_at": str(row.get("to_at") or ""),
                               "articles": [x["id"] for x in arts]},
             "archived_at": page_archive.fetched_at(new)}

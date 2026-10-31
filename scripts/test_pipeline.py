@@ -13645,6 +13645,57 @@ def test_platform_owner_units(tmp: Path):
         cs.ROOT, pipelib.ROOT, pipelib._ST_TABLE, pipelib._ST_KEY, cs.POSTS_ONLY, cs.nico_channel = saved
 
 
+def test_youtube_upcoming_video_owner():
+    """配信前の枠の oEmbed は 200 で author_url も title も返さない(実測 2026-10-31: iVOtp0VZh8g)。成功の空の答えを「投稿者なし」と
+    読むと視聴ページを見ずに終わり、登録済みチャンネルの動画が未確認のまま紙面に載る。視聴ページから投稿者を引いて種別が決まること。"""
+    import contextlib
+    import io
+    import classify_sources as cs
+    vid = "iVOtp0VZh8g"
+    oembed = {"type": "video", "version": "1.0", "provider_name": "YouTube", "html": "<iframe></iframe>"}
+    page = ('<meta name="title" content="【ハロウィン】丸々1個食う。"><script>{"ownerProfileUrl":"http://www.youtube.com/@TomoriManaka"}</script>'
+            '<script>{"canonicalBaseUrl":"/@Jounetu"}</script>')
+    calls: list[str] = []
+
+    class Resp:
+        def __init__(self, body: str):
+            self.body = body.encode("utf-8")
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *a):
+            return False
+
+        def read(self, n=-1):
+            return self.body
+
+    def opener(req, timeout=20, **k):
+        calls.append(req.full_url)
+        return Resp(json.dumps(oembed) if "/oembed?" in req.full_url else page)
+    saved = (cs.polite_urlopen, cs.unknown_videos, cs.source_type_table, cs.add_video_ids)
+    added: dict = {}
+    try:
+        cs.polite_urlopen = opener
+        cs.unknown_videos = lambda date: {vid: f"https://www.youtube.com/watch?v={vid}"}
+        cs.source_type_table = lambda: {"video_channels": {"公式": ["TomoriManaka"]}}
+        cs.add_video_ids = added.update
+        with contextlib.redirect_stdout(io.StringIO()):
+            got = cs.video_author(vid)
+            left, unknown = cs.resolve_videos("2026-10-31", True)
+        check(got == ("TomoriManaka", "【ハロウィン】丸々1個食う。") and any("/watch?v=" in u and "/oembed" not in u for u in calls),
+              f"oEmbed の空の答えで視聴ページへ進まない: {got} {calls}")
+        check(not left and not unknown and added.get(vid, ("",))[0] == "公式", f"登録済みチャンネルの配信前の枠が決まらない: {left} {unknown} {added}")
+        # 投稿者が返れば視聴ページは読まない
+        oembed.update(title="題名", author_url="https://www.youtube.com/@TomoriManaka")
+        calls.clear()
+        with contextlib.redirect_stdout(io.StringIO()):
+            got = cs.video_author(vid)
+        check(got == ("TomoriManaka", "題名") and len(calls) == 1, f"oEmbed で足りるのに視聴ページを読んだ: {got} {calls}")
+    finally:
+        cs.polite_urlopen, cs.unknown_videos, cs.source_type_table, cs.add_video_ids = saved
+
+
 def test_youtube_playlist_owner(tmp: Path):
     """YouTube の再生リストの持ち主(2026-10-17: `youtube.com/playlist?list=…` が出典に載り、持ち主を取るパーサが無かった)。
     単位は list= の ID(`&si=` は含めない)、種別は oEmbed の author_url(持ち主のチャンネル)の種別を写す。偽の取得で確かめる。"""
@@ -21033,6 +21084,7 @@ def main() -> int:
     test_document_id_case(tmp / "dic")
     test_performer_domains(tmp / "pd")
     test_platform_owner_units(tmp / "pou")
+    test_youtube_upcoming_video_owner()
     test_youtube_playlist_owner(tmp / "ytpl")
     test_booth_item_owner(tmp / "booth")
     test_youtube_channel_page_unit(tmp / "ytchan")

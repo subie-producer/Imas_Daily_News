@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "source-update.schema.json",
-  "title": "出典の変更の判定と、発行済み記事に足す時系列の更新(scripts/source_watch.py の判定セッションの答え)",
+  "title": "出典の変更の判定と変化の要約(scripts/source_watch.py の判定セッションの答え。通ったものは出典の更新の素材にする)",
   "type": "object",
   "required": ["kind", "text", "reason"],
   "additionalProperties": false,
@@ -12,7 +12,7 @@
     },
     "text": {
       "type": "string",
-      "description": "記事に足す更新の文(kind が 変更・出典元の訂正・追加 のとき。ほかは空文字)"
+      "description": "変化の要約(変わる前と後の値。kind が 変更・出典元の訂正・追加 のとき。ほかは空文字)"
     },
     "reason": {
       "type": "string",

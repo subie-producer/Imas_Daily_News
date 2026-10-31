@@ -147,7 +147,7 @@
     },
     "updates": {
       "type": "array",
-      "description": "その後の動き: 出典元が告知を変えたことを時系列で積む(scripts/source_watch.py。訂正欄とは別で、こちらの誤りではない。末尾への追記だけ)",
+      "description": "その後の動き: 2026-11-01 まで scripts/source_watch.py が出典元の告知の変化を足していた欄(表示のために残す)。新しい追記はしない(出典の変化は続報の記事にする。lint が止める)。誤った更新は revoked_updates.yml に記録して外せる",
       "items": {
         "type": "object",
         "required": ["at", "kind", "text", "source"],

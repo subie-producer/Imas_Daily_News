@@ -2494,10 +2494,10 @@ def watch_sources(late=lambda: False) -> list[dict]:
     try:
         arts = source_watch.published(today, ROOT)
         source_watch.recheck(today, arts, late, root=ROOT, left=lambda: session_left(source_watch.RECHECK_FETCH_SEC))
-        found, applied = source_watch.process_changes(today, arts, ROOT, late=late,
+        found, adopted = source_watch.process_changes(today, arts, ROOT, late=late,
                                                       left=lambda: session_left(source_watch.SESSION_TIMEOUT_SEC))
-        if found or applied:
-            print(f"出典の変更: 記事に足した更新 {len(applied)}件、出典の更新の素材 {len(found)}件", flush=True)
+        if found or adopted:
+            print(f"出典の変更: この回に素材にした変化 {len(adopted)}件、出典の更新の素材 {len(found)}件", flush=True)
         return found
     except Exception as e:      # noqa: BLE001
         anomaly("collect", f"出典の見回り・変更の扱いが止まった({type(e).__name__}: {str(e)[:200]})。素材の保存は続ける")
@@ -2673,7 +2673,7 @@ def run_collect(args, date: str, branch: str, t0: float) -> int:
     # この原本で照らす(Sol 監査 r2)。版は取得時刻で並べるので、裏取りが読んだ新しい版が基準になる
     kept = ingest_spools(cands)
     vcounts = verify(cands)
-    # 発行済み記事の出典の見回り(読み直して変わっていれば、記事の「その後の動き」と、この号の「出典の更新」の素材にする)
+    # 発行済み記事の出典の見回り(読み直して変わっていれば、この号の「出典の更新」の素材にする。発行済みの記事には書かない)
     # 当番の取り直しでは見回らない・判定しない(取り直しは次の定時工程の前に終える。次の定時収集が扱う)
     updates = [] if args.oncall_rerun else watch_sources(deadline_passed)
     cands += updates

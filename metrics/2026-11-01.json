@@ -124,5 +124,46 @@
    },
    "duration_s": 2597
   }
+ ],
+ "compose": [
+  {
+   "at": "2026-11-01T03:38:42+09:00",
+   "edition": "2026-11-01",
+   "rounds": 4,
+   "approved": true,
+   "lint_green": true,
+   "planned": 51,
+   "written": 44,
+   "roundups": 4,
+   "dropped": 0,
+   "coverage": {
+    "subjects": 400,
+    "covered": 400,
+    "missing": 0,
+    "missing_keys": []
+   },
+   "dropped_by_review": [],
+   "stages_min": {
+    "選定": 3.683253041903178,
+    "選定の拾い直し": 2.5297784090042112,
+    "執筆": 8.325049146016438,
+    "出典の判定": 2.151198474566142,
+    "組版": 0.8937942941983541,
+    "校閲": 1.3710036198298137,
+    "校閲1波": 1.3710036198298137
+   },
+   "target_min": 60,
+   "over_target": false,
+   "aborted": [
+    "sidem-teddys-collection-ii-goods",
+    "shiny-song-3rd-story",
+    "cg-popntoybox-revival-general-lottery-2026",
+    "general-shigure-ui-ittan-aishite-dance-2026",
+    "sidem-high-joker-poppin-planet-2dmv-2026",
+    "sidem-ops-roundup",
+    "shiny-alstroemeria-gotoken-christmas-2026"
+   ],
+   "duration_s": 2277
+  }
  ]
 }

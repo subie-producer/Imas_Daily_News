@@ -1100,7 +1100,7 @@
   "brand": "million",
   "subject": "プラチナスターチューン「夜と、明かりと。」終了3日前",
   "kind": "締切前",
-  "note": "11月7日20:59の終了まであと3日、イベントを走れる",
+  "note": "イベント終了まであと3日。走り切るなら今のうち",
   "reserved_on": "2026-11-01",
   "occurs_on": "2026-11-07",
   "title": "プラチナスターチューン「夜と、明かりと。」開催",
@@ -1129,7 +1129,7 @@
   "brand": "million",
   "subject": "プラチナスターチューン「夜と、明かりと。」終了3日前",
   "kind": "締切前",
-  "note": "11月7日20:59の終了まであと3日、イベントを走れる",
+  "note": "イベント終了まであと3日。走り切るなら今のうち",
   "reserved_on": "2026-11-01",
   "occurs_on": "2026-11-07",
   "title": "プラチナスターチューン「夜と、明かりと。」開催",
@@ -1156,7 +1156,7 @@
   "brand": "million",
   "subject": "プラチナスターチューン「夜と、明かりと。」終了3日前",
   "kind": "締切前",
-  "note": "11月7日20:59の終了まであと3日、イベントを走れる",
+  "note": "イベント終了まであと3日。走り切るなら今のうち",
   "reserved_on": "2026-11-01",
   "occurs_on": "2026-11-07",
   "title": "期間限定イベント「プラチナスターチューン～夜と、明かりと。～」",
@@ -1323,7 +1323,7 @@
   "brand": "million",
   "subject": "プラチナスターチューン「夜と、明かりと。」終了3日前",
   "kind": "締切前",
-  "note": "11月7日20:59の終了まであと3日、イベントを走れる",
+  "note": "イベント終了まであと3日。走り切るなら今のうち",
   "reserved_on": "2026-11-01",
   "occurs_on": "2026-11-07",
   "title": "新曲「夜と、明かりと。」映像の一部公開",
@@ -1341,27 +1341,5 @@
   "src_candidate_id": "202611010230-grok-33",
   "companion_of": "sched-2026-11-04-million-platinum-star-tune-yoru-to-akari-2026-締切前",
   "src_dedup_key": "million-night-and-lights-song-teaser-2026"
- },
- {
-  "id": "sched-2026-11-04-sidem-high-joker-poppin-planet-2dmv-2026-開始",
-  "dedup_key": "sidem-high-joker-poppin-planet-2dmv-2026",
-  "brand": "sidem",
-  "subject": "High×Joker「POPPIN' PLANET」2DMV公開",
-  "kind": "開始",
-  "note": "21:00から2DMVを視聴できる",
-  "reserved_on": "2026-11-01",
-  "occurs_on": "2026-11-04",
-  "title": "High×Joker「POPPIN' PLANET」2DMV公開予定",
-  "url": "https://x.com/SideM_lantis/status/2116145593990980022",
-  "source_type": "準公式",
-  "facts": [
-   "High×Joker「POPPIN' PLANET」の2DMVを2026年11月4日21:00に公開予定と告知された。",
-   "エンゲージメント: 中",
-   "言及アイドル: High×Joker"
-  ],
-  "via": "grok",
-  "verify": "unconfirmed",
-  "event_date": "2026-11-04",
-  "src_candidate_id": "202611010230-grok-82"
  }
 ]

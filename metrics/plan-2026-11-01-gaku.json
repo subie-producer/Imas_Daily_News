@@ -1,0 +1,801 @@
+{
+ "decisions": {
+  "gaku-fumocolle-pc-goods-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/31の記事に価格・仕様・発送時期まで掲載済み"
+  },
+  "gaku-shirube-final-k-arena-drink-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/31『標ファイナル、ドリンクに限定カード』と同じ施策。販売開始は11/6で3日以内でもない"
+  },
+  "eclipse-light-animate-fair-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/31読み取り版の変更は10/31の記事が既に反映済み。新たな変更なし"
+  },
+  "gakumas-live-tour-final-collab-drink-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/31の記事に販売日時・エリア・特典まで掲載済み。開始は11/6でトリガー無し"
+  },
+  "weekend-produce-campaign-2026-11": {
+   "action": "roundup",
+   "angle": "開催中の運営施策:週末プロデュース強化キャンペーンは11/2 4:59終了",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "メモリーレンタル2倍。終了まで1日"
+  },
+  "misuzu-another-idol-gasha-2026": {
+   "action": "roundup",
+   "angle": "開催中の運営施策:秦谷美鈴のアナザーアイドル確定無料1連は11/2 10:59まで",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "終了まで1日"
+  },
+  "tour-final-collab-drink-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "重複",
+   "note": "同じコラボドリンク施策で既報"
+  },
+  "gaku-hatsuboshi-store-saki-poster-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/31の記事と同内容。展示開始は11/6で3日以内でもない"
+  },
+  "gaku-palverse-vol-2": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/31の記事に価格・ラインアップ掲載済み"
+  },
+  "fan-poster-misuzu-tour-final-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "同人・ファン主催",
+   "note": "ファンによる応援ポスター。個人のSNS投稿"
+  },
+  "fan-mao-response-guide-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人の SNS 投稿。culture は general 面のみ"
+  },
+  "fan-agitato-cover-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "同人・ファン主催",
+   "note": "ファンの歌ってみた動画"
+  },
+  "fan-agitato-dance-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "同人・ファン主催",
+   "note": "ファンの踊ってみた動画"
+  },
+  "fan-agitato-mao-animation-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "同人・ファン主催",
+   "note": "ファン制作アニメ"
+  },
+  "fan-agitato-halloween-art-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "同人・ファン主催",
+   "note": "ファンアート"
+  },
+  "gacha-garakuta-road-ameya-2026-live": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/28・10/29の記事で掲載済み。終了は11/6でトリガー無し"
+  },
+  "hif-step4-ameya-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/28・10/29の記事で掲載済み"
+  },
+  "gaku-duet-song-collection-desc-error-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/29の記事で掲載済み"
+  },
+  "gaku-ame-yo-tsubame-kisama-kentei-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "応募は10/28 23:59で終了済み"
+  },
+  "hatsuboshi-radio-2026-10-28": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/29の記事でアーカイブ公開と次回放送を掲載済み"
+  },
+  "radio-guest-amane-yukari-2026-11-04": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/29の記事と同内容。投稿募集は金曜午前で終了済み、放送は11/4でトリガー無し"
+  },
+  "gakumas-4koma-177": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/30の記事で掲載済み"
+  },
+  "gaku-achievement-loading-issue-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/28の記事で掲載済み"
+  },
+  "gaku-ume-another-idol-free-gasha-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/29に終了済み"
+  },
+  "gaku-shirube-final-merch-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/28までの記事で掲載済み。申込は終了、当落発表は11/3で今日ではない"
+  },
+  "gaku-shirube-final-gifts-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/28の記事で掲載済み"
+  },
+  "gakumas-espresto-sugary-prize-2027": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/27・10/28の記事で掲載済み"
+  },
+  "gakumas-amayo-kisama-kentei-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "『11/8まで延長』は二次情報のみ。公式は10/28 23:59終了で、裏付け無し"
+  },
+  "curtain-damashii-new-goods-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/26の記事で掲載済み。予約締切は11/15"
+  },
+  "gaku-rinami-another-idol-free-gacha-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/27に終了済み"
+  },
+  "gaku-jyuo-idol-training-starlight-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/28に終了済み"
+  },
+  "gaku-roar-gacha-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/28に終了済み"
+  },
+  "gaku-amaya-tsubame-kisama-kentei-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "carried。応募は10/28で終了、新事実・トリガー無し"
+  },
+  "gaku-google-play-ranking-tsubame-2026-10-29": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/30の記事で掲載済み"
+  },
+  "gaku-another-idol-26-gamushara-gacha": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/30の記事で掲載済み。終了は11/7でトリガー無し"
+  },
+  "miracle-nanau-gacha-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/30に終了済み"
+  },
+  "gaku-smile-skirt-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/30に終了済み"
+  },
+  "gamushara-rerun-gacha-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/30の記事で掲載済み。終了は11/7でトリガー無し"
+  },
+  "gaku-seinan-another-free-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/31に終了済み"
+  },
+  "gakumas-wednesday-jewels-2026-10-28": {
+   "action": "roundup",
+   "angle": "開催中の運営施策:学マス水曜日のジュエル250個は11/4 4:59まで",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "期限まで3日"
+  },
+  "gaku-endless-dance-tshirt-amaya-2027": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/30の記事で掲載済み"
+  },
+  "gaku-asari-produce-seminar-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/30『あさり先生のゼミ、きょう11時開始』と同じ施策。終了は11/9"
+  },
+  "gaku-lawson-collaboration-2026-autumn": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/21・10/23の記事で掲載済み。開始は11/10"
+  },
+  "gaku-asari-produce-seminar-2026-10": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "重複",
+   "note": "gaku-asari-produce-seminar-2026と同じ施策で既報"
+  },
+  "gaku-gravure-solo-collection-agitato": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/31の記事で掲載済み。予約締切は11/8"
+  },
+  "gaku-gamushara-cheer-outfit-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/31の記事で掲載済み。販売終了は11/7"
+  },
+  "gaku-kotone-endless-dance-graphic-tee": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "ENDLESS DANCE Tシャツは10/26・10/30の記事で掲載済み。出典は個人の投稿"
+  },
+  "gaku-campus-mode-hirase-live-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "声優個人のアイマス外の活動"
+  },
+  "gaku-after-school-namco-2026": {
+   "action": "article",
+   "angle": "ナムコの『学園アイドルマスター After School キャンペーン』が本日11月1日で最終日を迎える",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約。500円投入でTOURSプロモカード、月村手毬の限定フィギュアなど"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "gaku-after-school-namco-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "ナムコの『学園アイドルマスター After School キャンペーン』が本日11月1日で最終日を迎える",
+    "purpose": "期日の知らせ",
+    "lead_score": 60,
+    "dedup_key": "gaku-after-school-namco-2026",
+    "candidate_ids": [
+     "sched-2026-11-01-gaku-after-school-namco-2026-終了",
+     "sched-2026-11-01-gaku-after-school-namco-2026-終了-src1"
+    ]
+   },
+   {
+    "slug": "gaku-ops-roundup",
+    "brand": "gaku",
+    "rank": "roundup",
+    "angle": "開催中の運営施策:週末プロデュース強化キャンペーンは11/2 4:59終了",
+    "lead_score": 0,
+    "dedup_key": "weekend-produce-campaign-2026-11",
+    "candidate_ids": [
+     "202611010230-grok-89",
+     "202611010230-grok-90",
+     "202610300224-grok-45"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "gaku-fumocolle-pc-goods-2026",
+    "reason": "既報",
+    "note": "10/31の記事に価格・仕様・発送時期まで掲載済み"
+   },
+   {
+    "dedup_key": "gaku-shirube-final-k-arena-drink-2026",
+    "reason": "既報",
+    "note": "10/31『標ファイナル、ドリンクに限定カード』と同じ施策。販売開始は11/6で3日以内でもない"
+   },
+   {
+    "dedup_key": "eclipse-light-animate-fair-2026",
+    "reason": "既報",
+    "note": "10/31読み取り版の変更は10/31の記事が既に反映済み。新たな変更なし"
+   },
+   {
+    "dedup_key": "gakumas-live-tour-final-collab-drink-2026",
+    "reason": "既報",
+    "note": "10/31の記事に販売日時・エリア・特典まで掲載済み。開始は11/6でトリガー無し"
+   },
+   {
+    "dedup_key": "tour-final-collab-drink-2026",
+    "reason": "重複",
+    "note": "同じコラボドリンク施策で既報"
+   },
+   {
+    "dedup_key": "gaku-hatsuboshi-store-saki-poster-2026",
+    "reason": "既報",
+    "note": "10/31の記事と同内容。展示開始は11/6で3日以内でもない"
+   },
+   {
+    "dedup_key": "gaku-palverse-vol-2",
+    "reason": "既報",
+    "note": "10/31の記事に価格・ラインアップ掲載済み"
+   },
+   {
+    "dedup_key": "fan-poster-misuzu-tour-final-2026",
+    "reason": "同人・ファン主催",
+    "note": "ファンによる応援ポスター。個人のSNS投稿"
+   },
+   {
+    "dedup_key": "fan-mao-response-guide-2026",
+    "reason": "個人の話題",
+    "note": "個人の SNS 投稿。culture は general 面のみ"
+   },
+   {
+    "dedup_key": "fan-agitato-cover-2026",
+    "reason": "同人・ファン主催",
+    "note": "ファンの歌ってみた動画"
+   },
+   {
+    "dedup_key": "fan-agitato-dance-2026",
+    "reason": "同人・ファン主催",
+    "note": "ファンの踊ってみた動画"
+   },
+   {
+    "dedup_key": "fan-agitato-mao-animation-2026",
+    "reason": "同人・ファン主催",
+    "note": "ファン制作アニメ"
+   },
+   {
+    "dedup_key": "fan-agitato-halloween-art-2026",
+    "reason": "同人・ファン主催",
+    "note": "ファンアート"
+   },
+   {
+    "dedup_key": "gacha-garakuta-road-ameya-2026-live",
+    "reason": "既報",
+    "note": "10/28・10/29の記事で掲載済み。終了は11/6でトリガー無し"
+   },
+   {
+    "dedup_key": "hif-step4-ameya-2026",
+    "reason": "既報",
+    "note": "10/28・10/29の記事で掲載済み"
+   },
+   {
+    "dedup_key": "gaku-duet-song-collection-desc-error-2026",
+    "reason": "既報",
+    "note": "10/29の記事で掲載済み"
+   },
+   {
+    "dedup_key": "gaku-ame-yo-tsubame-kisama-kentei-2026",
+    "reason": "その他",
+    "note": "応募は10/28 23:59で終了済み"
+   },
+   {
+    "dedup_key": "hatsuboshi-radio-2026-10-28",
+    "reason": "既報",
+    "note": "10/29の記事でアーカイブ公開と次回放送を掲載済み"
+   },
+   {
+    "dedup_key": "radio-guest-amane-yukari-2026-11-04",
+    "reason": "既報",
+    "note": "10/29の記事と同内容。投稿募集は金曜午前で終了済み、放送は11/4でトリガー無し"
+   },
+   {
+    "dedup_key": "gakumas-4koma-177",
+    "reason": "既報",
+    "note": "10/30の記事で掲載済み"
+   },
+   {
+    "dedup_key": "gaku-achievement-loading-issue-2026",
+    "reason": "既報",
+    "note": "10/28の記事で掲載済み"
+   },
+   {
+    "dedup_key": "gaku-ume-another-idol-free-gasha-2026",
+    "reason": "既報",
+    "note": "10/29に終了済み"
+   },
+   {
+    "dedup_key": "gaku-shirube-final-merch-2026",
+    "reason": "既報",
+    "note": "10/28までの記事で掲載済み。申込は終了、当落発表は11/3で今日ではない"
+   },
+   {
+    "dedup_key": "gaku-shirube-final-gifts-2026",
+    "reason": "既報",
+    "note": "10/28の記事で掲載済み"
+   },
+   {
+    "dedup_key": "gakumas-espresto-sugary-prize-2027",
+    "reason": "既報",
+    "note": "10/27・10/28の記事で掲載済み"
+   },
+   {
+    "dedup_key": "gakumas-amayo-kisama-kentei-2026",
+    "reason": "出典不足",
+    "note": "『11/8まで延長』は二次情報のみ。公式は10/28 23:59終了で、裏付け無し"
+   },
+   {
+    "dedup_key": "curtain-damashii-new-goods-2026",
+    "reason": "既報",
+    "note": "10/26の記事で掲載済み。予約締切は11/15"
+   },
+   {
+    "dedup_key": "gaku-rinami-another-idol-free-gacha-2026",
+    "reason": "既報",
+    "note": "10/27に終了済み"
+   },
+   {
+    "dedup_key": "gaku-jyuo-idol-training-starlight-2026",
+    "reason": "既報",
+    "note": "10/28に終了済み"
+   },
+   {
+    "dedup_key": "gaku-roar-gacha-2026",
+    "reason": "既報",
+    "note": "10/28に終了済み"
+   },
+   {
+    "dedup_key": "gaku-amaya-tsubame-kisama-kentei-2026",
+    "reason": "出典不足",
+    "note": "carried。応募は10/28で終了、新事実・トリガー無し"
+   },
+   {
+    "dedup_key": "gaku-google-play-ranking-tsubame-2026-10-29",
+    "reason": "既報",
+    "note": "10/30の記事で掲載済み"
+   },
+   {
+    "dedup_key": "gaku-another-idol-26-gamushara-gacha",
+    "reason": "既報",
+    "note": "10/30の記事で掲載済み。終了は11/7でトリガー無し"
+   },
+   {
+    "dedup_key": "miracle-nanau-gacha-2026",
+    "reason": "既報",
+    "note": "10/30に終了済み"
+   },
+   {
+    "dedup_key": "gaku-smile-skirt-2026",
+    "reason": "既報",
+    "note": "10/30に終了済み"
+   },
+   {
+    "dedup_key": "gamushara-rerun-gacha-2026",
+    "reason": "既報",
+    "note": "10/30の記事で掲載済み。終了は11/7でトリガー無し"
+   },
+   {
+    "dedup_key": "gaku-seinan-another-free-2026",
+    "reason": "既報",
+    "note": "10/31に終了済み"
+   },
+   {
+    "dedup_key": "gaku-endless-dance-tshirt-amaya-2027",
+    "reason": "既報",
+    "note": "10/30の記事で掲載済み"
+   },
+   {
+    "dedup_key": "gaku-asari-produce-seminar-2026",
+    "reason": "既報",
+    "note": "10/30『あさり先生のゼミ、きょう11時開始』と同じ施策。終了は11/9"
+   },
+   {
+    "dedup_key": "gaku-lawson-collaboration-2026-autumn",
+    "reason": "既報",
+    "note": "10/21・10/23の記事で掲載済み。開始は11/10"
+   },
+   {
+    "dedup_key": "gaku-asari-produce-seminar-2026-10",
+    "reason": "重複",
+    "note": "gaku-asari-produce-seminar-2026と同じ施策で既報"
+   },
+   {
+    "dedup_key": "gaku-gravure-solo-collection-agitato",
+    "reason": "既報",
+    "note": "10/31の記事で掲載済み。予約締切は11/8"
+   },
+   {
+    "dedup_key": "gaku-gamushara-cheer-outfit-2026",
+    "reason": "既報",
+    "note": "10/31の記事で掲載済み。販売終了は11/7"
+   },
+   {
+    "dedup_key": "gaku-kotone-endless-dance-graphic-tee",
+    "reason": "既報",
+    "note": "ENDLESS DANCE Tシャツは10/26・10/30の記事で掲載済み。出典は個人の投稿"
+   },
+   {
+    "dedup_key": "gaku-campus-mode-hirase-live-2026",
+    "reason": "個人の話題",
+    "note": "声優個人のアイマス外の活動"
+   }
+  ],
+  "cross_brand": []
+ }
+}

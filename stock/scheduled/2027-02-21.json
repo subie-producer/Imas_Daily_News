@@ -1,0 +1,37 @@
+[
+ {
+  "id": "sched-2027-02-21-lisani-tokyo-2027-開幕",
+  "dedup_key": "lisani-tokyo-2027",
+  "brand": "shiny",
+  "subject": "LISANI！TOKYO 2027 SUNDAY STAGE",
+  "kind": "開幕",
+  "note": "TOYOTA ARENA TOKYOでストレイライトが出演する日",
+  "reserved_on": "2026-11-01",
+  "occurs_on": "2027-02-21",
+  "title": "LISANI！TOKYO 2027にストレイライト出演",
+  "url": "https://x.com/shinyc_official/status/2116538432315154919",
+  "source_type": "公式",
+  "facts": [
+   "2027年2月にTOYOTA ARENA TOKYOで開催。",
+   "2/21(日) SUNDAY STAGEにストレイライトが出演決定。",
+   "開催日: 2027年2月20日（土）・2月21日（日）",
+   "2月20日 SATURDAY STAGE: 開場15:00／開演16:00。",
+   "2月21日 SUNDAY STAGE: 開場15:00／開演16:00。",
+   "会場: TOYOTA ARENA TOKYO（〒135-0064 東京都江東区青海一丁目3番1号）。",
+   "全席指定: 13,200円（税込）。",
+   "枚数制限: お一人様1公演につき4枚まで（複数公演申込可能）。",
+   "未就学児入場不可、6歳以上有料。",
+   "チケット最速先行: 2026年11月1日（日）00:00〜11月15日（日）23:59。",
+   "2月21日出演者: アイドルマスター シャイニーカラーズ【ストレイライト】、青木陽菜、いきづらい部！、CHiCO with HoneyWorks、PENGUIN RESEARCH、Poppin'Party、UNiTiUM（UPCOMING ARTIST）。",
+   "会場アクセス（電車）: ゆりかもめ青海駅から徒歩4分、りんかい線東京テレポート駅から徒歩5分。",
+   "リンク: https://www.lisani.jp/live/",
+   "エンゲージメント: 高",
+   "言及アイドル: ストレイライト"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "event_date": "2027-02-21",
+  "deadline": "2026-11-15",
+  "src_candidate_id": "202611010230-grok-43"
+ }
+]

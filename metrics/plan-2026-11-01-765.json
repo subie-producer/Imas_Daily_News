@@ -1,0 +1,122 @@
+{
+ "decisions": {
+  "765-961-ultimate-once-and-for-all-extension-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "出演者・日程・ライトタグ特典・料金は10/30号の本文に既出。新事実なし、先行締切は11/8で3日以内でもない"
+  },
+  "imas-radio-next-2026-11-10": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/28号に出演者・放送日時・アフタートークまで既出。放送は11/10で当日トリガー無し"
+  },
+  "imas-radio-4-hasegawa-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/28号でアーカイブ公開を記事化済み。同じ配信リンクのみ"
+  },
+  "765-961-live-ticket-extension-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "先行を11/8まで延長した件は10/29号で記事化済み。二次情報で新事実なし"
+  },
+  "765-hangetsu-xr-revival-2026": {
+   "action": "article",
+   "angle": "「はんげつであえたら」アソビストア一般会員先行の抽選受付は本日23時59分締切、当落発表は11月14日",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約の締切。申し込める最終日"
+  },
+  "miki-hoshii-future-spotlight-comifuro-2026": {
+   "action": "article",
+   "angle": "星井美希のソロショーケース「THE FUTURE SPOTLIGHT」がインドネシアのICE BSDで本日開催、配信予定はない",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約の開幕。公演当日"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "765-hangetsu-xr-revival-2026",
+    "brand": "765",
+    "rank": "small",
+    "angle": "「はんげつであえたら」アソビストア一般会員先行の抽選受付は本日23時59分締切、当落発表は11月14日",
+    "purpose": "期日の知らせ",
+    "lead_score": 60,
+    "dedup_key": "765-hangetsu-xr-revival-2026",
+    "candidate_ids": [
+     "sched-2026-11-01-765-hangetsu-xr-revival-2026-締切"
+    ]
+   },
+   {
+    "slug": "765-miki-hoshii-future-spotlight-comifuro-2026",
+    "brand": "765",
+    "rank": "small",
+    "angle": "星井美希のソロショーケース「THE FUTURE SPOTLIGHT」がインドネシアのICE BSDで本日開催、配信予定はない",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "miki-hoshii-future-spotlight-comifuro-2026",
+    "candidate_ids": [
+     "sched-2026-11-01-miki-hoshii-future-spotlight-comifuro-2026-開幕",
+     "sched-2026-11-01-miki-hoshii-future-spotlight-comifuro-2026-開幕-src1"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "765-961-ultimate-once-and-for-all-extension-2026",
+    "reason": "既報",
+    "note": "出演者・日程・ライトタグ特典・料金は10/30号の本文に既出。新事実なし、先行締切は11/8で3日以内でもない"
+   },
+   {
+    "dedup_key": "imas-radio-next-2026-11-10",
+    "reason": "既報",
+    "note": "10/28号に出演者・放送日時・アフタートークまで既出。放送は11/10で当日トリガー無し"
+   },
+   {
+    "dedup_key": "imas-radio-4-hasegawa-2026",
+    "reason": "既報",
+    "note": "10/28号でアーカイブ公開を記事化済み。同じ配信リンクのみ"
+   },
+   {
+    "dedup_key": "765-961-live-ticket-extension-2026",
+    "reason": "既報",
+    "note": "先行を11/8まで延長した件は10/29号で記事化済み。二次情報で新事実なし"
+   }
+  ],
+  "cross_brand": []
+ }
+}

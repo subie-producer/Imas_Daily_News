@@ -52,6 +52,7 @@ official_suffixes:
 
 # --- 準公式: 公式レーベル・公式ストア等のグループ/パートナー企業 ---
 semi_official_domains:
+  - sunday-webry.com      # 合議で追加: 小学館の連載サイト。ジムシャニ連載の掲載元、© Shogakukan
   - enza.fun              # 合議で追加: シャニマス生配信を自ら出す公式配信場。バンダイナムコID・FAQ連携
   - asobistore.jp         # 合議で追加: アイマス商品を扱う公式ストア(アソビストア)。運営元の本体で準公式
   - akitashoten.co.jp     # 合議で追加: 週刊少年チャンピオンで学園アイドルマスター連載を掲載する出版社本体
@@ -439,6 +440,7 @@ video_channels:
   当事者:
     - whatsupmcdonalds    # 合議で追加: アイマスコラボの販売元・主催者として公式YouTubeで直接発信
   ファン:
+    - ui_shig             # 合議で追加: 本人の個人チャンネル。自身のオリジナル曲・ダンスカバーを個人で発信
     - 315プロ演奏企画           # 合議で追加: ファンPらが運営する演奏動画・告知の発信。会社や事務所の表示なし
     - kon_kitunebana      # 合議で追加: 個人チャンネル。本人のコスプレ・ライブ動画などの発信
     - VTKazune            # 合議で追加: 個人チャンネル。本人の自己紹介・配信・歌ってみた動画の発信
@@ -459,6 +461,7 @@ video_ids:
   当事者:
     - YUWiY_qt3jM         # 機械で追加: @whatsupmcdonalds「今度いつきみに会えるのかな covered by 如月千早」
   ファン:
+    - 3PisZShL-sA         # 機械で追加: @ui_shig「「一旦愛して♡ / 765プロ」踊ってみた！with 宇宙ち」
     - GVlg5R8_yv4         # 機械で追加: @315プロ演奏企画「「リフレインアトリウム」を弦あそ会で演奏してみた【 #315」
     - sm46944609          # 機械で追加: nicovideo.jp/user/1633964「【もふM@S MV】 「シークレットジュエル ～魅惑の金剛石」
     - lixtC4sChpo         # 機械で追加: @kon_kitunebana「【Cosplay_学園アイドルマスター】仮装狂騒曲組で野外ラ」
@@ -1147,6 +1150,11 @@ x_posts:
 
 # --- リンク元から引き継いだ種別(リンク先1つずつ。キーは pipelib.link_key)。合議がリンク元の告知と関係していると確かめたものだけ(classify_sources.inherit_from_links)。リンク先そのものの種別より強いときだけ効く ---
 link_types:
+  youtube.com/watch?v=m0nu3nQml5A: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/imas_official/status/2116363664580374628(公式)。リンク元の告知したMOIW2025『RELOADING』フル尺の動画
+  youtube.com/watch?v=K_6XYhBmS9g: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/valiv_official/status/2116455151577989220(公式)。リンク元の告知した『仮装狂騒曲』踊ってみた動画そのもの
+  youtube.com/watch?v=-2WKY8ar26k: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/imassc_prism/status/2116372089443663969(公式)。リンク元の告知した3周年記念楽曲『OVERLAY OF HOPES』のMV
+  www.lisani.jp/live/: 公式                     # リンク元から引き継ぎ(合議で関係を確認): https://x.com/shinyc_official/status/2116538432315154919(公式)。LISANI! TOKYO 2027の公式サイトで、リンク元の出演・チケット告知
+  asobiticket2.asobistore.jp/receptions/6e2e6dc9-9c8c-42ca-b546-3af887c236f3: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://x.com/SideM_official/status/2113468428627673260(公式)。リンク元のS席・A席申込ページで、長野公演の先行申込と同じ
   www.fumo-collection.com/collections/gim?sort_by=created-descending: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://x.com/gkmas_official/status/2116082075770220804(公式)。告知の学マス×ふもコレ第二弾と同じ学マス商品の一覧
   shop.asobistore.jp/feature/cg_ml_clash_match: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://x.com/imasml_765PRO/status/2116142716262494617(公式)。告知と同じCLASH M@TCH!!グッズの事前販売ページ
   youtube.com/watch?v=BNAAuViiAaM: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/imas_CGofficial/status/2116141422546211101(公式)。告知と同じ15周年記念楽曲「HOURGLASS」のYouTube動画

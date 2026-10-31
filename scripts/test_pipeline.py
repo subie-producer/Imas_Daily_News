@@ -10032,7 +10032,7 @@ def test_oncall_check_limits_follow_measure(tmp: Path):
     saved_scratch = os.environ.get("IMAS_SCRATCH")
     os.environ["IMAS_SCRATCH"] = str(tmp / "scratch")
     names = ("run_claude", "run_codex", "freeze", "root_clean", "remote_main", "env_fingerprint", "sh", "ONCALL_LIMIT_MIN", "MAX_ROUNDS",
-             "DEADLINE_AT")
+             "DEADLINE_AT", "STAGE_END_AT")
     saved_fns = {n: getattr(oncall, n) for n in names}
     try:
         check(pipelib.check_seconds("selfcheck") == pipelib.CHECK_SECONDS_DEFAULT["selfcheck"], "実測の無いときの既定")
@@ -10144,6 +10144,32 @@ def test_oncall_check_limits_follow_measure(tmp: Path):
         check(not r["approved"] and not audits and any(t.get("before") == "audit" for t in tr)
               and [o["id"] for o in r["kept"]["open"]] == ["review-incomplete"],
               f"走らせ切れない残りで監査を始めた: 監査 {audits} {[t for t in tr if 'time_up' in t]} {r.get('error')} {r['kept'].get('open')}")
+        # 収集の当番: 取り直しの要らない修正は、取り直しの分の締切を越えて監査まで進む(2026-10-29・10-31: 監査の前の時間切れで本線に入らなかった)。
+        # 取り直しが要る修正は、これまでどおり締切で止める
+        for mode, want in (("none", True), ("resume", False)):
+            audits.clear()
+            for _ in range(pipelib.CHECK_SECONDS_KEEP):
+                pipelib.note_check_seconds("selfcheck", 700)
+            oncall.ONCALL_LIMIT_MIN = 150
+            oncall.run_claude = lambda prompt, schema, cwd, timeout=1800, m=mode: {"status": "fixed", "diagnosis": "d", "rerun_mode": m}
+            t_start = saved_time()
+            clock["t"] = t_start
+            oncall.DEADLINE_AT = t_start + 2600        # selfcheck(800 秒)のあとの残り 1800 秒は、監査の検査の分(2320 秒)に足りない
+            oncall.STAGE_END_AT = oncall.DEADLINE_AT + oncall.COLLECT_RERUN_RESERVE_MIN * 60
+            oncall.time.time = lambda: clock["t"]
+
+            def sh_clock2(args, cwd, timeout=600):
+                if any(str(a).endswith("selfcheck.py") for a in args):
+                    clock["t"] += 800
+                return subprocess.CompletedProcess(args, 0, "", "")
+            oncall.sh = sh_clock2
+            try:
+                tr = []
+                oncall.run_rounds("collect", "2026-10-28", "ctx", tmp, "B" * 40, None, "env", tr)
+            finally:
+                oncall.time.time = saved_time
+            check(bool(audits) == want and any(t.get("before") == "audit" for t in tr) != want,
+                  f"収集の当番 rerun_mode={mode}: 監査 {len(audits)}回 {[t for t in tr if 'time_up' in t]}")
     finally:
         for k, v in saved_fns.items():
             setattr(oncall, k, v)
@@ -10187,6 +10213,84 @@ def test_oncall_check_limits_follow_measure(tmp: Path):
     if tp_pid and not gone:
         os.kill(tp_pid, __import__("signal").SIGKILL)
     check(tp_pid and gone, f"selfcheck を止めても回帰テストが残って走り続ける(pid {tp_pid})")
+
+
+def test_collect_classify_deadline(tmp: Path):
+    """合議は収集の締切のあとの猶予まで使えて、それでも見込みに足りなければ始めない(2026-10-29 02:43 は残り 112 秒、10-31 02:44 は
+    55 秒で合議を始めて時間切れになり、判定表を戻して異常を通知した。実測の最大は 193 秒)。
+    - 取引は収集の合議(posts_only でない)の所要を記録する(組版前の posts_only は記録しない)
+    - 締切の残りが 55 秒でも、猶予の分の上限で合議を起動する
+    - 猶予を含めた残りが見込みに足りなければ起動せず、異常として通知しない。締切の無い実行は常に起動する"""
+    import time as _t
+    import types
+    import collect
+    tmp.mkdir(parents=True, exist_ok=True)
+    (tmp / "docs" / "_posts").mkdir(parents=True, exist_ok=True)
+    (tmp / "source_types.yml").write_text("official_domains:\n  - a.example\n", encoding="utf-8")
+    saved_scr = os.environ.get("IMAS_SCRATCH")
+    os.environ["IMAS_SCRATCH"] = str(tmp / "scratch")
+    saved = (pipelib._txn_run, pipelib.ROOT)
+    try:
+        def slow(step, limit):
+            if str(step[1]).endswith("classify_sources.py"):
+                _t.sleep(0.2)
+            return subprocess.CompletedProcess(step, 0, "", "")
+        pipelib.ROOT = tmp
+        pipelib._txn_run = slow
+        pipelib.classify_retag_lint("2026-10-31", posts_only=True, lint=False)
+        check(pipelib.check_seconds("classify") == pipelib.CHECK_SECONDS_DEFAULT["classify"],
+              f"組版前(posts_only)の合議の所要を収集の見込みに記録した: {pipelib.check_seconds('classify')}")
+        ok, why = pipelib.classify_retag_lint("2026-10-31", lint=False)
+        est = pipelib.check_seconds("classify")
+        check(ok and 0.2 <= est < 5, f"収集の合議の所要を記録しない: {ok} {why} 見込み {est}")
+        check(collect.classify_estimate() == 300.0, f"短い実測で見込みが下限を割った: {collect.classify_estimate()}")
+    finally:
+        pipelib._txn_run, pipelib.ROOT = saved
+    calls, notes = [], []
+    names = ("DEADLINE", "run_explores", "normalize", "ingest_spools", "verify", "watch_sources", "merge_into_day_file", "append_metric",
+             "needs_classify", "classify_retag_lint", "notify", "commit_and_push")
+    saved_c = {n: getattr(collect, n) for n in names}
+    saved_prune = collect.page_archive.prune
+    args = types.SimpleNamespace(skip_watch=True, skip_explore=True, skip_grok=True, force_grok=False, no_git=False, oncall_rerun=False)
+    try:
+        collect.run_explores = lambda *a, **k: ([], {})
+        collect.normalize = lambda c: c
+        collect.ingest_spools = lambda c: 0
+        collect.verify = lambda c: {}
+        collect.watch_sources = lambda late=None: []
+        collect.page_archive.prune = lambda: {"removed": 0, "bytes": 0}
+        collect.merge_into_day_file = lambda c, d: 1
+        collect.append_metric = lambda *a, **k: None
+        collect.needs_classify = lambda c: True
+        collect.classify_retag_lint = lambda d, **k: calls.append(k["timeout"]) or (True, "")
+        collect.notify = lambda job, msg, ok=True, require=False: notes.append((ok, msg)) or True
+        collect.commit_and_push = lambda *a, **k: True
+        pipelib.set_quiet(True)
+        try:
+            # (締切までの秒, 合議を起動するか)。猶予は 600 秒で見込みは下限の 300 秒
+            for left, want in ((55, True), (-200, True), (-400, False), (None, True)):
+                calls.clear(); notes.clear()
+                collect.DEADLINE = None if left is None else _t.time() + left
+                collect.run_collect(args, "2026-10-31", "unused", _t.time())
+                bad = [m for ok, m in notes if not ok]
+                check(bool(calls) == want and not bad, f"締切まで {left} 秒で合議の起動が {calls}(期待 {want})・異常の通知 {bad[:1]}")
+                if left == 55:
+                    check(calls and calls[0] >= 300, f"締切まで 55 秒の合議に見込みの分の時間を渡さない: {calls}")
+            pipelib.note_check_seconds("classify", 400)     # 長い実測は見込みに効く
+            calls.clear()
+            collect.DEADLINE = _t.time() - 300
+            collect.run_collect(args, "2026-10-31", "unused", _t.time())
+            check(not calls, f"猶予の残り 300 秒で見込み 400 秒の合議を起動した: {calls}")
+        finally:
+            pipelib.set_quiet(False)
+    finally:
+        for n, v in saved_c.items():
+            setattr(collect, n, v)
+        collect.page_archive.prune = saved_prune
+        if saved_scr is None:
+            os.environ.pop("IMAS_SCRATCH", None)
+        else:
+            os.environ["IMAS_SCRATCH"] = saved_scr
 
 
 def test_classify_retag_without_judge(tmp: Path):
@@ -21160,6 +21264,7 @@ def main() -> int:
     test_derive_write(tmp / "dw")
     test_compose_run_derive(tmp / "crd")
     test_oncall_collect_rerun_killed_classify(tmp / "ock")
+    test_collect_classify_deadline(tmp / "ccf")
     test_failed_rollback_blocks_commit(tmp / "frb")
     test_canonicalize_and_assign_ranks(tmp / "car2")
     test_reassemble_reranks_rewritten(tmp / "rerank")

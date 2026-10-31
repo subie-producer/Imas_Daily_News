@@ -158,6 +158,9 @@ def scratch_root() -> Path:
 CHECK_SECONDS_FILE = "check-seconds.json"
 CHECK_SECONDS_KEEP = 5          # 直近この回数の最大を見積もりにする(重い時間帯の実測も入る。古いものは送り出される)
 CHECK_SECONDS_DEFAULT = {"selfcheck": 1200.0, "test_pipeline": 1200.0, "lint": 120.0}     # 実測が無いとき(2026-10-27 の実測は 9〜17 分・8 秒)
+# 収集の合議(classify_sources.py --apply。候補 + 紙面の未確認)の所要も同じ記録に残す。収集は残り時間がこの見積もりに足りなければ合議を始めない
+# (実測 2026-10-10〜10-31 の54回で最大 193 秒。実測が無いときの 300 秒は、収集の見込みの下限でもある: collect.classify_estimate)
+CHECK_SECONDS_DEFAULT["classify"] = 300.0
 
 
 CHECK_SECONDS_MAX = 24 * 3600.0    # これを超える実測は壊れた記録として読まない
@@ -3572,6 +3575,8 @@ def classify_retag_lint(date: str, posts_only: bool = False, lint_base: str = "o
             r = _txn_run(step, limit)
             if name == "lint" and r.returncode in (0, 1):    # 最後まで走った lint の所要(赤でも走り切っている)
                 note_check_seconds("lint", time.monotonic() - t_step)
+            if name == "合議" and r.returncode == 0 and not posts_only:     # 収集の合議の所要(収集が始める前に残り時間と比べる)
+                note_check_seconds("classify", time.monotonic() - t_step)
             if name == "合議":
                 print(r.stdout[-1200:], flush=True)
             elif name == "付け直し":

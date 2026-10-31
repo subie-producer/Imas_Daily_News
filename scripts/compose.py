@@ -3599,6 +3599,36 @@ def revise_articles(date: str, by_file: dict[str, list[dict]], plan: dict, cands
     return results
 
 
+def contract_issues(date: str, articles: list[dict]) -> dict[str, list[dict]]:
+    """既に書けている稿のうち、いまの出力の形(文末まで書き切ったリード)に合わないものの指摘。形は revise_articles の by_file と同じ。"""
+    by_file: dict[str, list[dict]] = {}
+    for art in articles:
+        f = f"docs/_posts/{date}-{art['slug']}.md"
+        fm = parse_front_matter(ROOT / f) if (ROOT / f).exists() else None
+        why = renderlib.lede_problem((fm or {}).get("lede"))
+        if why:
+            by_file[f] = [{"file": f, "rule_id": "LEDE_END", "issue": why, "quote": str(fm["lede"]).strip(), "repair": "rewrite_claim"}]
+    return by_file
+
+
+def rewrite_contract_breaks(date: str, plan: dict, cands: dict, written: list[dict], aborted: list[str]) -> None:
+    """--reuse-plan は書けている稿を再執筆しないので、出力の形を直す前に書かれた稿は検算を通らないまま残る(2026-10-31: 承認済みの号の
+    組み直しで、切れたリードの記事がそのまま残る。監査指摘)。形に合わない稿だけを執筆側に書き直させる。中身が変わるので、
+    承認を引き継ぐ組み直しでも校閲に回る(carry_targets)。"""
+    by_file = contract_issues(date, written)
+    if not by_file:
+        return
+    print(f"既存の稿の {len(by_file)}本がいまの出力の形に合わない。書き直す: {', '.join(by_file)}", flush=True)
+    revised: dict[str, str] = {}
+    for e in run_in_turn([("既存の稿の書き直し", lambda: revised.update(revise_articles(date, by_file, plan, cands, aborted)))]):
+        anomaly("compose", f"既存の稿の書き直しが失敗: {e}")
+    for f in by_file:
+        slug = Path(f).name[len(date) + 1:].removesuffix(".md")
+        if revised.get(slug) != "fixed":
+            anomaly("compose", f"記事 {slug}: 切れたリードを書き直せなかった({revised.get(slug) or '実行の失敗'})")
+    written[:] = [a for a in written if (ROOT / "docs" / "_posts" / f"{date}-{a['slug']}.md").exists()]
+
+
 def fix_articles(date: str, by_file: dict[str, list[dict]]) -> None:
     """校閲のブロック指摘を、**記事1本につき1セッション**で直させる(並列)。
 
@@ -4330,6 +4360,8 @@ def main() -> int:
     with stage("執筆"):
         written, aborted = write_articles(date, plan, cands, triggers, load_story_facts(),
                                           reuse=args.reuse_plan)
+        if args.reuse_plan and STRUCTURED_WRITE:
+            rewrite_contract_breaks(date, plan, cands, written, aborted)
     outcomes = WRITE_OUTCOMES.get(date) or {}
     n_decl = sum(1 for v in outcomes.values() if v.startswith("見送り"))
     n_drop = len(aborted) - n_decl

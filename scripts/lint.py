@@ -41,8 +41,10 @@ IDOLS = DOCS / "_data" / "idols.json"
 
 # ---- 紙面の定数(REQUIREMENTS.md に由来。変更時は要件書と要同期) -------------
 TITLE_MAX = 45          # 見出し上限(警告)
-# リード文は上限だけ見る(規程9)。本文と同じ理由で、字数のために言葉を足させない
-LEDE_RANGE = (0, 140)
+# リード文は上限だけ見る(規程9)。本文と同じ理由で、字数のために言葉を足させない。上限と文末の検査は執筆の検算と同じ
+# renderlib.lede_problem(上限は renderlib.LEDE_MAX。以前の LEDE_RANGE=(0, 140) と同じ値を1つの定義で持つ)。
+# 赤にするのは、執筆の検算が差し戻すようになった号から(それより前の号は警告)
+LEDE_CONTRACT_FROM = "2026-10-31"
 EXCERPT_MAX = 80        # 社説抜粋の目安(警告)
 # 枠(rank)と本文の長さの対応(編集規程9)。
 #
@@ -110,6 +112,14 @@ class Report:
 
     def notice(self, msg):
         print(f"::notice::{msg}")
+
+
+def check_lede(rep, path, fm: dict) -> None:
+    """リードは上限の字数までの1文で、文末まで書き切る(執筆の検算と同じ renderlib.lede_problem)。執筆の出力の上限は広く取ってあり
+    (黙って切らない)、超えた・切れたリードは検算が差し戻す。それでも紙面に来たものは黙って載せない(LEDE_CONTRACT_FROM からの号は赤)。"""
+    why = lede_problem(fm.get("lede"))
+    if why:
+        (rep.error if str(fm.get("edition") or "") >= LEDE_CONTRACT_FROM else rep.warn)(path, why)
 
 
 def load_schema(name):
@@ -334,7 +344,7 @@ def src_rank(t):
 # 見出し・リード・ダイジェストの行は、テンプレートが**そのまま文字として**出す欄。
 # ここに Markdown 記法が混ざると、読者には `**強調**` がそのまま見える。
 # 本文(Markdown)では正しく太字になるので、混同しやすい。
-from renderlib import markdown_in_plain, strip_notice  # noqa: E402  検算(執筆の答えの検め)と同じ基準を1つの定義で持つ
+from renderlib import lede_problem, markdown_in_plain, strip_notice  # noqa: E402  検算(執筆の答えの検め)と同じ基準を1つの定義で持つ
 
 
 def check_plain_text(rep, path, label, value):
@@ -555,8 +565,7 @@ def main() -> int:
 
         if len(fm["title"]) > TITLE_MAX:
             rep.warn(path, f"見出しが{len(fm['title'])}字(上限目安{TITLE_MAX}字)")
-        if len(fm["lede"]) > LEDE_RANGE[1]:
-            rep.warn(path, f"リード文が{len(fm['lede'])}字(上限{LEDE_RANGE[1]}字)")
+        check_lede(rep, path, fm)
         if fm["corrected"] != bool(fm["corrections"]):
             rep.error(path, "corrected と corrections の有無が矛盾")
         if not body.strip():

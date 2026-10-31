@@ -102,7 +102,7 @@ _watch_governed_writes()
 def article_fm(slug: str = "k", edition: str = "2026-10-03", **kw) -> str:
     """記事の frontmatter(書式 article.schema の必須の欄を満たす最小の形)の YAML 本文。kw で欄を足す・差し替える。"""
     import yaml
-    fm = {"slug": slug, "edition": edition, "brand": "cg", "src": "未確認", "rank": "small", "title": "t", "lede": "l",
+    fm = {"slug": slug, "edition": edition, "brand": "cg", "src": "未確認", "rank": "small", "title": "t", "lede": "l。",
           "sources": [{"label": "l1", "url": "https://a.example/1", "type": "未確認"}], "corrected": False, "corrections": []}
     fm.update(kw)
     return yaml.safe_dump(fm, allow_unicode=True, sort_keys=False)
@@ -165,11 +165,104 @@ MATS = [{"id": "c1", "url": "https://a.example/1", "title": "告知 2026-10-01",
          "facts": ["9月13日開催", "価格3000円"], "unbacked_facts": ["9月20日"]},
         {"id": "c2", "url": "https://b.example/2", "facts": ["出演A"], "deadline": "2026-09-30"},
         {"id": "c3", "url": "https://c.example/3", "facts": ["出演B"]}]
-OK = {"status": "ok", "decline_code": "", "decline_detail": "", "title": "t", "title_fact_ids": ["F1"], "lede": "l",
+OK = {"status": "ok", "decline_code": "", "decline_detail": "", "title": "t", "title_fact_ids": ["F1"], "lede": "l。",
       "lede_fact_ids": ["F1"], "blocks": [{"markdown": "x", "fact_ids": ["F1", "F3", "F4"]}], "tags": ["a", "b"],
       "sources": [{"url": "https://a.example/1", "label": "x"}, {"url": "https://b.example/2", "label": "y"},
                   {"url": "https://c.example/3", "label": "z"}],
       "event_date": "2026-09-13", "new_facts": [], "addressed_issue_ids": []}
+
+
+def test_lede_contract():
+    """リードは上限で切れない: schema の上限は既定の 140 字より余裕を持ち、文末まで書き切っていない答えは検算が差し戻す
+    (2026-10-31: 上限 140 字ちょうどで「…が予定されており、各日の出演者と配信URL」と切れたリードが校閲を抜けて紙面に載った)。"""
+    _, fb = renderlib.materials_with_ids(MATS)
+    cut = "「アイドルマスター シンデレラガールズ 15th ANNIVERSARY PARTY!!!! ～for your ONE～」のDAY1・DAY2公演終了後に、YouTube「アイドルマスターチャンネル」で振り返り生配信「ばくすて！とーく」が予定されており、各日の出演者と配信URL"
+    check(any("リードが文の途中" in p for p in renderlib.check_output(dict(OK, lede=cut), fb, MATS)), "切れたリードが検算を通った")
+    # 依頼の目安(140字)を超えたリードは、schema の上限(240)の内でも検算が差し戻す(黙って載せない)。文末まで書けていても同じ
+    long_ok = cut + "を案内している。"
+    check(len(long_ok) > renderlib.LEDE_MAX
+          and any(f"上限{renderlib.LEDE_MAX}字" in p for p in renderlib.check_output(dict(OK, lede=long_ok), fb, MATS)),
+          f"{renderlib.LEDE_MAX}字を超えたリードが検算を通った({len(long_ok)}字)")
+    at_max = "あ" * (renderlib.LEDE_MAX - 1) + "。"
+    for lede in (at_max, "本日開催！", "公演名は「HOURGLASS」", "公式は“本日開催します。”", '公式は"本日開催します。"',
+                 "公式は'本日開催！'", "【開催決定】", " 本日開催。 ", '公式の告知は"【本日開催】"', "告知は'“本日開催”'",
+                 *(f'告知は"x{end}"' for end in "。．！？!?」』）)”’】》〉］]"), '告知は"\'本日開催。\'"'):
+        check(renderlib.check_output(dict(OK, lede=lede), fb, MATS) == [], f"書き切ったリードを落とした: {lede}")
+    # 向きの無い " ' は、文末の記号・閉じ括弧のあとでなければ開きの引用符と区別できないので採らない(Sol 監査 r1)
+    for lede in ('出演者は"', "出演者と配信URL'", "各日の出演者と"):
+        check(any("リードが文の途中" in p for p in renderlib.check_output(dict(OK, lede=lede), fb, MATS)), f"途中で終わったリードを通した: {lede}")
+    # lint も同じ基準で見る(黙って載せない): 赤にするのは検算が差し戻すようになった号から、それより前は警告
+    class Rep:
+        def __init__(self):
+            self.got = []
+        error = lambda self, path, msg: self.got.append(("error", msg))
+        warn = lambda self, path, msg: self.got.append(("warn", msg))
+    for lede, edition, want in ((cut, lint.LEDE_CONTRACT_FROM, "error"), (long_ok, lint.LEDE_CONTRACT_FROM, "error"),
+                                (long_ok, "2026-10-30", "warn"), (at_max, lint.LEDE_CONTRACT_FROM, None)):
+        rep = Rep()
+        lint.check_lede(rep, "-", {"lede": lede, "edition": edition})
+        check([k for k, _ in rep.got] == ([want] if want else []), f"lint のリードの検査({edition} {len(lede)}字): {rep.got}")
+    props = json.loads((pipelib.ROOT / "schema" / "article-out.schema.json").read_text(encoding="utf-8"))["properties"]
+    check(props["lede"]["maxLength"] >= len(cut) + 60, f"リードの上限が狭い: {props['lede']['maxLength']}")
+    fact = props["new_facts"]["items"]["properties"]["text"]["maxLength"]
+    stored = json.loads((pipelib.ROOT / "schema" / "article.schema.json").read_text(encoding="utf-8"))
+    check(fact == stored["properties"]["verified_facts"]["items"]["properties"]["text"]["maxLength"] == 600,
+          "執筆の事実の上限と記事の verified_facts の上限が揃っていない")
+
+
+def test_reuse_rewrites_cut_lede(tmp: Path):
+    """組み直し(--reuse-plan)は書けている稿を再執筆しないが、切れたリードの稿は書き直しに回す。書き切ったリードの稿には触らない
+    (2026-10-31 監査指摘: 検算は執筆の答えにしか掛からず、承認済みの号の組み直しでは切れたリードが承認ごと残った)。"""
+    date = "2026-10-31"
+    posts = tmp / "docs" / "_posts"
+    posts.mkdir(parents=True)
+    cut = "公演終了後に振り返り生配信が予定されており、各日の出演者と配信URL"
+    head = "---\ntitle: t\nlede: {}\n---\n本文の段落。\n"
+    (posts / f"{date}-cut.md").write_text(head.format(cut), encoding="utf-8")
+    (posts / f"{date}-ok.md").write_text(head.format("公演終了後に生配信がある。"), encoding="utf-8")
+    plan = {"articles": [{"slug": "cut"}, {"slug": "ok"}]}
+    written, seen, notes = list(plan["articles"]), [], []
+    saved = (compose.ROOT, compose.revise_articles, compose.anomaly)
+
+    def fake(date_, by_file, plan_, cands, aborted):
+        seen.append(by_file)
+        if result == "dropped":
+            (posts / f"{date}-cut.md").unlink()
+        return {"cut": result}
+    compose.ROOT, compose.revise_articles, compose.anomaly = tmp, fake, lambda stage, msg: notes.append(msg)
+    try:
+        by_file = compose.contract_issues(date, written)
+        result = "fixed"
+        compose.rewrite_contract_breaks(date, plan, {}, written, [])
+        check(list(seen[0]) == [f"docs/_posts/{date}-cut.md"] and not notes, f"切れた稿だけを書き直しに回していない: {seen} {notes}")
+        result = "kept"
+        compose.rewrite_contract_breaks(date, plan, {}, written, [])
+        check(any("cut" in n and "kept" in n for n in notes), f"書き直せなかったことを申告していない: {notes}")
+        result = "dropped"
+        compose.rewrite_contract_breaks(date, plan, {}, written, [])
+        check([a["slug"] for a in written] == ["ok"], "書き直しで落ちた記事を written に残した")
+        seen.clear()
+        compose.rewrite_contract_breaks(date, plan, {}, written, [])
+        check(seen == [], "直す稿が無いのに書き直しを起動した")
+    finally:
+        compose.ROOT, compose.revise_articles, compose.anomaly = saved
+    # リードを直す答えは、指摘の外の変更に数えられず、検算も通る
+    issue = dict(by_file[f"docs/_posts/{date}-cut.md"][0], issue_id="I1")
+    ans = {"status": "ok", "title": "t", "lede": cut + "を案内している。", "tags": [], "event_date": None, "sources": [],
+           "addressed_issue_ids": ["I1"], "blocks": [{"markdown": "本文の段落。", "fact_ids": []}]}
+    fm = {"title": "t", "lede": cut, "tags": [], "sources": []}
+    probs = compose.revise_check(ans, [issue], fm, "本文の段落。\n")
+    check(not any("リード" in x for x in probs), f"リードの書き直しを指摘の外と数えた: {probs}")
+    src = (pipelib.ROOT / "scripts" / "compose.py").read_text(encoding="utf-8")
+    at = src.index("rewrite_contract_breaks(date, plan, cands, written, aborted)\n    outcomes")
+    check(src.index("written, aborted = write_articles(") < at < src.index("assign_ranks(date, plan, written)\n"),
+          "書き直しが、執筆のあと・枠割りの前に無い")
+    # 揃わなかった記事の報告: X の問いを切らず、ページの応答を書く
+    import source_rescue
+    long_q = "@imasml_theater の投稿で次回ガシャを探す。" * 10
+    text = source_rescue.report_text({"articles": {"a": {"outcome": "揃わない", "tried": [
+        {"page": "https://example.jp/p", "why": "HTTP 429 で読めなかった", "result": "読めなかった"}, {"x": long_q, "posts": []}]}}})
+    check(long_q in text and "HTTP 429 で読めなかった" in text, f"問いの全文・ページの応答が報告に無い:\n{text}")
 
 
 def test_check_output():
@@ -385,20 +478,20 @@ def test_schema_hash_dates():
     mats8 = {"c1": {"id": "c1", "url": "https://a.example/1", "facts": ["商品コード20260920版"], "dedup_key": "k", "title": "t"}}
     out8 = {"reservations": [{"candidate_id": "c1", "date": "2026-09-20", "kind": "締切", "slug": "x", "subject": "s", "note": "n"}],
             "digest": [], "stories": [], "pending_add": [], "pending_remove": []}
-    res8, _ = assemble.validate("2026-09-12", out8, [{"slug": "x", "brand": "765", "candidate_ids": ["c1"], "title": "t", "lede": "l", "rank": "small"}], mats8,
+    res8, _ = assemble.validate("2026-09-12", out8, [{"slug": "x", "brand": "765", "candidate_ids": ["c1"], "title": "t", "lede": "l。", "rank": "small"}], mats8,
                                 {"facts": [], "existing_story": {}, "tomorrow_reservations": [], "pending": [], "subjects": []})
     check(not res8.get("reservations"), "予約検証が8桁数字を根拠にした")
     for hay in ("2026/09/13開催", "2026年09月13日開催"):
         mats0 = {"c1": {"id": "c1", "url": "https://a.example/1", "facts": [hay.replace("13", "20")], "dedup_key": "k", "title": "t"}}
         out0 = {"reservations": [{"candidate_id": "c1", "date": "2026-09-20", "kind": "締切", "slug": "x", "subject": "s", "note": "n"}],
                 "digest": [], "stories": [], "pending_add": [], "pending_remove": []}
-        res0, _ = assemble.validate("2026-09-12", out0, [{"slug": "x", "brand": "765", "candidate_ids": ["c1"], "title": "t", "lede": "l", "rank": "small"}], mats0,
+        res0, _ = assemble.validate("2026-09-12", out0, [{"slug": "x", "brand": "765", "candidate_ids": ["c1"], "title": "t", "lede": "l。", "rank": "small"}], mats0,
                                     {"facts": [], "existing_story": {}, "tomorrow_reservations": [], "pending": [], "subjects": []})
         check([r["date"] for r in res0.get("reservations", [])] == ["2026-09-20"], f"予約検証がゼロ埋め年付き表記を落とした: {hay}")
     mats_r = {"c1": {"id": "c1", "url": "https://a.example/1", "facts": ["2099年9月20日締切"], "dedup_key": "k", "title": "t", "published_date": "2026-09-01"}}
     out_r = {"reservations": [{"candidate_id": "c1", "date": "2026-09-20", "kind": "締切", "slug": "x", "subject": "s", "note": "n"}],
              "digest": [], "stories": [], "pending_add": [], "pending_remove": []}
-    res_r, _ = assemble.validate("2026-09-12", out_r, [{"slug": "x", "brand": "765", "candidate_ids": ["c1"], "title": "t", "lede": "l", "rank": "small"}], mats_r,
+    res_r, _ = assemble.validate("2026-09-12", out_r, [{"slug": "x", "brand": "765", "candidate_ids": ["c1"], "title": "t", "lede": "l。", "rank": "small"}], mats_r,
                                  {"facts": [], "existing_story": {}, "tomorrow_reservations": [], "pending": [], "subjects": []})
     check(not res_r.get("reservations"), "素材が 2099 年の予約を 2026 年で通した")
     _, fb = renderlib.materials_with_ids(MATS)
@@ -433,7 +526,7 @@ def test_schema_hash_dates():
                             {"candidate_id": "c1", "date": "2026-09-20", "kind": "締切", "slug": "x", "subject": "s", "note": "n"}],
            "digest": [], "stories": [], "pending_add": [], "pending_remove": []}
     try:
-        res, notes = assemble.validate("2026-09-12", out, [{"slug": "x", "brand": "765", "candidate_ids": ["c1"], "title": "t", "lede": "l", "rank": "small"}], mats,
+        res, notes = assemble.validate("2026-09-12", out, [{"slug": "x", "brand": "765", "candidate_ids": ["c1"], "title": "t", "lede": "l。", "rank": "small"}], mats,
                                        {"facts": [], "existing_story": {}, "tomorrow_reservations": [], "pending": [], "subjects": []})
         dates = [r["date"] for r in res.get("reservations", [])]
         check("2099-09-20" not in dates and "2026-09-20" in dates, f"予約の年検証: {dates} / {notes[:3]}")
@@ -449,7 +542,7 @@ def test_earliest_date():
 
 
 def test_revise_check():
-    old_fm = {"title": "t", "lede": "l", "tags": ["a", "b"], "event_date": "2026-09-13",
+    old_fm = {"title": "t", "lede": "l。", "tags": ["a", "b"], "event_date": "2026-09-13",
               "sources": [{"url": u["url"]} for u in OK["sources"]]}
     old_body = "価格は三千円である。 <!-- F1 -->\n\n別の段落。 <!-- F3 -->"
     iss = [{"issue_id": "I1", "rule_id": "R1", "repair": "drop_claim", "quote": "価格は三千円である"}]
@@ -1672,7 +1765,7 @@ def test_rule_bench_judges_shape(tmp: Path):
     a_url, b_url = w["materials"][0]["url"], w["materials"][1]["url"]
     # 本番の検算に通る形の答え(形の不合格と規則の不合格を分けて見るため)
     good = {"status": "ok", "decline_code": "", "decline_detail": "", "title": "SideMぱしゃこれA-BOX予約", "title_fact_ids": ["F1"],
-            "lede": "l", "lede_fact_ids": ["F1"], "blocks": [{"markdown": "m", "fact_ids": ["F2", "N1"]}], "tags": ["SideM", "予約"],
+            "lede": "l。", "lede_fact_ids": ["F1"], "blocks": [{"markdown": "m", "fact_ids": ["F2", "N1"]}], "tags": ["SideM", "予約"],
             "new_facts": [{"id": "N1", "text": "8,800円", "url": a_url}], "event_date": None, "addressed_issue_ids": [],
             "sources": [{"url": a_url.rstrip("/"), "label": "アニメイト通販「A-BOX」(2026年10月12日)"}]}
     jw = rule_bench.judge_write
@@ -1906,7 +1999,7 @@ def test_fetch_page_shows_redirect_target(tmp: Path):
     shown = re.findall(r"^転送先 URL: (\S+)$", out.getvalue(), flags=re.M)
     check(rc == 0 and shown == [final], f"転送された行き先の url を出さない: {out.getvalue()[:200]!r}")
     fetched = pipelib.fetched_urls(rec)
-    ans = {"status": "ok", "title": "t", "title_fact_ids": ["N1"], "lede": "l", "lede_fact_ids": ["N1"],
+    ans = {"status": "ok", "title": "t", "title_fact_ids": ["N1"], "lede": "l。", "lede_fact_ids": ["N1"],
            "blocks": [{"markdown": "m", "fact_ids": ["N1"]}], "tags": ["SideM", "POP UP"],
            "new_facts": [{"id": "N1", "text": "整理券", "url": (shown or [""])[0]}],
            "sources": [{"url": (shown or [""])[0], "label": "LivePocket「整理券」"}]}
@@ -2026,7 +2119,7 @@ def test_rule_bench_checks_read_pages(tmp: Path):
     off = cases[names[0]]["expect"]["sources"][0]
     link = re.findall(r"https://\S+", " ".join(f for m in cases[names[1]]["materials"] for f in m["facts"]))[0]
     good = {"status": "ok", "decline_code": "", "decline_detail": "", "title": "ミリシタ、秋のしおりログボ", "title_fact_ids": ["N1"],
-            "lede": "l", "lede_fact_ids": ["N1"], "blocks": [{"markdown": "m", "fact_ids": ["N1", "F2"]}], "tags": ["ミリシタ", "ログインボーナス"],
+            "lede": "l。", "lede_fact_ids": ["N1"], "blocks": [{"markdown": "m", "fact_ids": ["N1", "F2"]}], "tags": ["ミリシタ", "ログインボーナス"],
             "new_facts": [{"id": "N1", "text": "10月20日14:59まで", "url": off}], "event_date": "2026-10-12", "addressed_issue_ids": [],
             "sources": [{"url": off, "label": "アイドルマスター ポータル「秋のしおり集めログインボーナス」(2026年10月12日)"}]}
     saved = (rule_bench.OUT, pipelib.ROOT, compose.ROOT, writer_bench.write_one, writer_bench.run_group, os.environ.get(rule_bench.FIXED_PAGES_ENV))
@@ -3241,7 +3334,7 @@ def test_revise_carries_verified_facts(tmp: Path):
     shop = "https://shop.example/osechi"
     nf = {"id": "N1", "text": "販売期間は10月21日から11月17日まで", "url": shop}
     old = ("---\n" + compose.yaml_dump_keeping_strings({
-        "title": "t", "lede": "l", "tags": ["a", "b"], "event_date": "2026-09-13", "verified_facts": [nf],
+        "title": "t", "lede": "l。", "tags": ["a", "b"], "event_date": "2026-09-13", "verified_facts": [nf],
         "sources": [{"url": shop, "label": "店", "type": "当事者"}]}) + "---\n販売は11月17日まで。 <!-- N1 -->\n")
     p.write_text(old, encoding="utf-8")
     iss = [{"issue_id": "I1", "rule_id": "R5", "repair": "add_source", "quote": "販売は11月17日まで"}]
@@ -3752,7 +3845,7 @@ def test_revise_apply_decline(tmp: Path):
     outcome, msg = compose.revise_apply("2026-09-12", art, p, good, fb, MATS, [])
     check(outcome == "dropped" and not p.exists(), f"理由付き decline で記事が消えない: {outcome} {msg}")
     # 形の検算: HTML コメント・タグ・文字参照・不可視文字・参照リンクを書いた稿は差し戻し(元稿を残す)
-    old = ("---\n" + compose.yaml_dump_keeping_strings({"title": "t", "lede": "l", "tags": ["a", "b"], "event_date": "2026-09-13",
+    old = ("---\n" + compose.yaml_dump_keeping_strings({"title": "t", "lede": "l。", "tags": ["a", "b"], "event_date": "2026-09-13",
                                                          "sources": [{"url": u["url"], "label": "x", "type": "公式"} for u in OK["sources"]]})
            + "---\n価格は三千円である。 <!-- F1 -->\n")
     iss = [{"issue_id": "I1", "rule_id": "R1", "repair": "drop_claim", "quote": "価格は三千円である"}]
@@ -3779,7 +3872,7 @@ def test_revise_apply_decline(tmp: Path):
     check(outcome == "fixed", f"記述を残す判断を機械が落とした: {outcome} {msg}")
     # event_date の無い稿(null)を書き直して日付を埋めても、指摘が event_date に掛かっていなければ元の値(無し)を写して通す
     # (2026-10-03: 「指摘に無い event_date を変えた」で2巡戻され、R1 が直らずブロックで落ちた)
-    old_noev = ("---\n" + compose.yaml_dump_keeping_strings({"title": "t", "lede": "l", "tags": ["a", "b"],
+    old_noev = ("---\n" + compose.yaml_dump_keeping_strings({"title": "t", "lede": "l。", "tags": ["a", "b"],
                                                               "sources": [{"url": u["url"], "label": "x", "type": "公式"} for u in OK["sources"]]})
                 + "---\n価格は三千円である。 <!-- F1 -->\n")
     p.write_text(old_noev, encoding="utf-8")
@@ -3795,7 +3888,7 @@ def test_revise_apply_decline(tmp: Path):
           f"指摘外の event_date が元の値に戻らない: {outcome} {msg}")
     # 指摘の外の段落も変えた稿は、形が正しければ採り、次の巡の校閲に「指摘の外の変更」を確かめさせる(範囲は中身の判断で校閲が見る。
     # 2026-10-10: DAY の区分の誤りを直す組み直しが「指摘に無い段落を変えた」で戻され、締切前日の記事が落ちた)
-    old2 = ("---\n" + compose.yaml_dump_keeping_strings({"title": "t", "lede": "l", "tags": ["a", "b"], "event_date": "2026-09-13",
+    old2 = ("---\n" + compose.yaml_dump_keeping_strings({"title": "t", "lede": "l。", "tags": ["a", "b"], "event_date": "2026-09-13",
                                                           "sources": [{"url": u["url"], "label": "x", "type": "公式"} for u in OK["sources"]]})
             + "---\n価格は三千円である。 <!-- F1 -->\n\n発売は秋である。 <!-- F1 -->\n")
     p.write_text(old2, encoding="utf-8")
@@ -8732,7 +8825,7 @@ def test_rewrites(tmp: Path):
     check(lint.rewrite_record_errors([ok], [], set()) != [], "書き直しの記録の削除を通した")
     old = {"slug": "a", "edition": "2026-10-05", "brand": "gaku", "rank": "small", "candidate_ids": ["c1"], "title": "t",
            "corrections": [{"at": "x"}], "corrected": True}
-    check(lint.rewrite_change_errors(old, {**old, "title": "新", "lede": "l", "rank": "medium"}) == [], "本文と内容の欄の書き直しを止めた")
+    check(lint.rewrite_change_errors(old, {**old, "title": "新", "lede": "l。", "rank": "medium"}) == [], "本文と内容の欄の書き直しを止めた")
     for k, v in (("candidate_ids", []), ("slug", "b"), ("edition", "2026-10-06"), ("brand", "cg"), ("corrected", False), ("extra", 1)):
         check(lint.rewrite_change_errors(old, {**old, k: v}) != [], f"書き直しで {k} を変えられた")
     check(lint.rewrite_change_errors(old, {**old, "corrections": []}) != [], "書き直しで既にある訂正を消せた")
@@ -11002,7 +11095,7 @@ def test_reservation_occurs_on(tmp: Path):
     cid = mp["src_candidate_id"]
     mats = {cid: cand_row(cid, mp["url"], title=mp["title"], brand="gaku", dedup_key=mp["dedup_key"], facts=list(mp["facts"]),
                           event_date=mp["event_date"])}
-    posts = [{"slug": "gaku-mission-pass", "brand": "gaku", "candidate_ids": [cid], "title": "t", "lede": "l", "rank": "small"}]
+    posts = [{"slug": "gaku-mission-pass", "brand": "gaku", "candidate_ids": [cid], "title": "t", "lede": "l。", "rank": "small"}]
     resv = lambda kind, occ, date="2026-09-30": {"slug": "gaku-mission-pass", "candidate_id": cid, "date": date, "occurs_on": occ,
                                                  "kind": kind, "subject": mp["subject"], "note": mp["note"]}
     out = {"digest": [], "stories": [], "pending_add": [], "pending_remove": [],
@@ -14483,7 +14576,7 @@ def test_assemble_interrupted_writes(tmp: Path):
     import builtins
     import io as _io
     D = "2026-10-14"
-    post = {"slug": "x", "brand": "cg", "rank": "lead", "candidate_ids": ["c1"], "title": "催し", "lede": "l"}
+    post = {"slug": "x", "brand": "cg", "rank": "lead", "candidate_ids": ["c1"], "title": "催し", "lede": "l。"}
     mats = {"c1": cand_row("c1", "https://idolmaster-official.jp/news/01_1", dedup_key="event", title="催し",
                            facts=["2026年10月20日に催しを開催"])}
 
@@ -19822,6 +19915,54 @@ def test_storylink_roundup_topic(tmp: Path):
     check(cands["tsolo"]["dedup_key"] == "shiny-solo-topic", f"まとめ記事でない記事の素材の url を記事の話題へ結ばない: {cands['tsolo']['dedup_key']}")
 
 
+def test_assemble_verified_fact_reservation(tmp: Path):
+    """素材に日付が無く、記事が確かめた事実(verified_facts)にだけある締切・終了も続報予約になり、その事実が予約の素材に添わる
+    (2026-10-31: シャニマスの公式投稿に終了日が無く、記事が攻略ページで確かめた 11/27 終了の雛菜ガシャ・11/18 終了のキャスコレの
+    予約を、素材に日付が無いとして差し戻しても捨てた)。"""
+    import assemble
+    d = "2026-10-31"
+    mats = {"g55": cand_row("g55", "https://x.com/imassc_official/status/2116051222365180382", brand="shiny", title="雛菜ガシャ",
+                            facts=["限定S-SSRが新登場"])}
+    n1 = {"id": "N1", "text": "開催期間は2026年10月30日～11月27日11:59まで(予定)。", "url": "https://gameo.jp/imassc/169816"}
+    n2 = {"id": "N2", "text": "スタンプは6個でチケット。", "url": "https://gameo.jp/imassc/169816"}
+    n3 = {"id": "N3", "text": "公式の投稿の補足: 11月27日に終わる。", "url": mats["g55"]["url"]}
+    posts = [{"slug": "hinana", "brand": "shiny", "candidate_ids": ["g55"], "title": "雛菜ガシャ", "lede": "l。", "rank": "small",
+              "_name": f"{d}-hinana.md", "verified_facts": [n1, n2, n3],
+              "sources": [{"label": "攻略ページ「ガシャ開催」", "url": n1["url"]}]}]
+    end = {"slug": "hinana", "candidate_id": "g55", "date": "2026-11-27", "kind": "終了", "subject": "雛菜ガシャ終了", "note": "最終日"}
+    before = dict(end, date="2026-11-24", occurs_on="2026-11-27", kind="締切前", subject="雛菜ガシャ3日前")
+    out = {"digest": [], "stories": [], "pending_add": [], "pending_remove": [], "reservations": [end, before]}
+    inp = {"articles": [], "pending": []}
+    rejected: list = []
+    clean, _ = assemble.validate(d, out, posts, mats, inp, rejected=rejected)
+    check(not rejected and [r["date"] for r in clean["reservations"]] == ["2026-11-27", "2026-11-24"]
+          and clean["reservations"][1].get("occurs_on") == "2026-11-27",
+          f"記事が確かめた事実にある日付の予約を捨てた: {rejected} {clean['reservations']}")
+    # 素材にも記事の事実にも無い日付は、これまでどおり捨てる
+    rejected = []
+    clean2, _ = assemble.validate(d, dict(out, reservations=[dict(end, date="2026-11-28")]), posts, mats, inp, rejected=rejected)
+    check(not clean2["reservations"] and len(rejected) == 1, f"どこにも無い日付の予約を採った: {clean2['reservations']}")
+    # 反映: 日付を確かめた事実が url ごとに予約の素材に添わる(予約はその日の唯一の素材)。日付の無い N2 は写さない
+    root = tmp / "root"
+    (root / "stock" / "scheduled").mkdir(parents=True)
+    entry = {"id": "sched-2026-11-27-k-終了", "dedup_key": "k", "brand": "shiny", "subject": "s", "kind": "終了", "note": "n",
+             "reserved_on": d, **assemble.material_snapshot(mats["g55"]), "src_candidate_id": "g55"}
+    r = clean["reservations"][0]
+    rows = assemble.verified_rows(entry, r, posts[0], mats["g55"], [], d)
+    check(len(rows) == 1 and rows[0]["url"] == n1["url"] and rows[0]["facts"] == [n1["text"]]
+          and rows[0]["companion_of"] == entry["id"] and rows[0]["id"] == entry["id"] + "-src1"
+          and rows[0]["src_candidate_id"] == "g55" and rows[0]["title"] == "攻略ページ「ガシャ開催」",
+          f"確かめた事実が予約の素材に添わらない: {rows}")
+    check(n3["text"] in entry["facts"], f"予約の素材と同じ url の事実が、その素材の facts に足されない: {entry['facts']}")
+    # 素材に日付があれば添えない(素材のスナップショットを増やさない)
+    dated = dict(mats["g55"], facts=["11月27日まで"])
+    check(assemble.verified_rows(dict(entry, facts=["11月27日まで"]), r, posts[0], dated, [], d) == [], "素材に日付があるのに事実を添えた")
+    # 実物の検算: 添えた行は予約の schema を通る
+    import jsonschema
+    schema = json.loads((assemble.ROOT / "schema" / "scheduled.schema.json").read_text(encoding="utf-8"))
+    jsonschema.validate([entry, *rows], schema)
+
+
 def test_assemble_roundup_reservation(tmp: Path):
     """まとめ記事の各項目の締切が続報予約になる(2026-10-24: シャニマスのまとめ記事の「8.5周年プレゼント 10/26 23:59 まで」の
     締切予約を、モデルが日付を持たない素材(セレチケ)に付け、検算が捨てて終えた。10/26 号の素材に公式 X の原本が戻らなかった)。
@@ -19833,7 +19974,7 @@ def test_assemble_roundup_reservation(tmp: Path):
             "g34": cand_row("g34", "https://x.com/imassc_official/status/2113000000000000034", brand="shiny", title="8.5周年ログインプレゼント",
                             facts=["受け取り可能期間は10/26 23:59まで"], deadline="2026-10-26")}
     posts = [{"slug": "shiny-ops-roundup", "brand": "shiny", "candidate_ids": ["g22", "g34"], "title": "シャニマス運営まとめ",
-              "lede": "l", "rank": "roundup", "_name": f"{d}-shiny-ops-roundup.md"}]
+              "lede": "l。", "rank": "roundup", "_name": f"{d}-shiny-ops-roundup.md"}]
     saved = (assemble.ROOT, assemble.run_session, assemble.anomaly)
     asked, anomalies = [], []
     try:
@@ -20975,6 +21116,9 @@ def test_units_bound_memory_and_report_failure(tmp: Path):
 def main() -> int:
     tmp = Path(tempfile.mkdtemp(prefix="imas-test-"))
     test_assemble_run_returns_reservations(tmp / "arrr")
+    test_lede_contract()
+    test_reuse_rewrites_cut_lede(tmp / "rcl")
+    test_assemble_verified_fact_reservation(tmp / "avr")
     test_assemble_roundup_reservation(tmp / "arr")
     test_storylink_roundup_topic(tmp / "srt")
     test_source_rescue_entry(tmp / "sre")

@@ -145,6 +145,57 @@ def source_topic(c: dict | None, cache: dict, depth: int = 0) -> str | None:
     return source_topic(cache[on].get(cid), cache, depth + 1)
 
 
+def material_hay(c: dict) -> str:
+    """素材の中で日付を探す文言(事実・開催日・締切・見出し)。"""
+    return _norm(" ".join(list(c.get("facts") or []) + [str(c.get("event_date") or ""), str(c.get("deadline") or ""),
+                                                       str(c.get("title") or "")]))
+
+
+def article_verified_facts(fm: dict) -> list[dict]:
+    """記事の verified_facts(執筆が読んだページで確かめた事実)のうち、文と url のあるもの。"""
+    return [v for v in fm.get("verified_facts") or [] if isinstance(v, dict) and v.get("text") and v.get("url")]
+
+
+def reservation_dates(r: dict) -> list[str]:
+    """予約の行が指しうる日(予約の日、出来事の日、種別のずれの先)。"""
+    dt = datetime.date.fromisoformat(r["date"])
+    days = [dt] + [dt + datetime.timedelta(days=n) for n in renderlib.RESERVATION_LAG.get(r["kind"], (0,)) if n]
+    return list(dict.fromkeys([d.isoformat() for d in days] + ([r["occurs_on"]] if r.get("occurs_on") else [])))
+
+
+def mentions_any(dates: list[str], hay: str, date: str) -> bool:
+    years = renderlib.years_in(hay + " " + date)
+    return any(renderlib.date_mentioned(d, hay, years) for d in dates)
+
+
+def verified_rows(entry: dict, r: dict, fm: dict, c: dict, companions: list[dict], date: str) -> list[dict]:
+    """予約の素材 c に予約 r の日付が無く、記事の verified_facts にあるとき、その事実を予約に添える(予約はその日の唯一の素材なので、
+    写さないと当日の執筆に日付が届かない)。同じ url の素材があればその facts に足し、無ければ添えの素材を1行足す。戻りは足した行。
+    2026-10-31: 公式の投稿に終了日が無く、記事が攻略ページで確かめた 11/27 終了のガシャの予約を、素材に日付が無いとして捨てていた。"""
+    dates = reservation_dates(r)
+    if mentions_any(dates, material_hay(c), date):
+        return []
+    labels = {s.get("url"): s.get("label") for s in fm.get("sources") or [] if isinstance(s, dict)}
+    by_url = {entry.get("url"): entry} | {r.get("url"): r for r in companions}
+    added: list[dict] = []
+    for v in article_verified_facts(fm):
+        if not mentions_any(dates, _norm(str(v["text"])), date):
+            continue
+        row = by_url.get(v["url"])
+        if row is None:
+            dk = entry.get("src_dedup_key") or source_topic(c, {})
+            row = {"id": f"{entry['id']}-src{len(companions) + len(added) + 1}",
+                   **{k: entry[k] for k in ("dedup_key", "brand", "subject", "kind", "note", "reserved_on", "occurs_on") if k in entry},
+                   **material_snapshot({"title": labels.get(v["url"]) or c.get("title"), "url": v["url"], "via": "verified_fact"}),
+                   "src_candidate_id": entry["src_candidate_id"], "companion_of": entry["id"],
+                   **({"src_dedup_key": dk} if dk else {})}
+            by_url[v["url"]] = row
+            added.append(row)
+        if v["text"] not in row["facts"]:
+            row["facts"].append(v["text"])
+    return added
+
+
 def companion_rows(entry: dict, fm: dict, mats: dict) -> list[dict]:
     """続報予約 entry に添える、予約を付けた記事(frontmatter fm)のほかの素材。記事が出典(sources)にした url の素材だけを、
     予約の素材と同じ url は除いて1素材1行で写す(id は <予約の id>-src<n>、companion_of に予約の id)。予約の欄(話題・種別・
@@ -737,6 +788,7 @@ def validate(date: str, out: dict, posts: list[dict], mats: dict, inp: dict,
     """
     notes: list[str] = []
     slugs = {fm.get("slug") for fm in posts}
+    fm_of = {fm.get("slug"): fm for fm in posts}
     ids_of = {fm.get("slug"): set(fm.get("candidate_ids") or []) for fm in posts}
     brand_of = {fm.get("slug"): fm.get("brand") for fm in posts}
     art_in = {a["slug"]: a for a in inp.get("articles") or []}
@@ -855,8 +907,8 @@ def validate(date: str, out: dict, posts: list[dict], mats: dict, inp: dict,
         if dt.isoformat() <= date or r.get("kind") not in KINDS:
             notes.append(f"reservations: 過去日か種別不正 {r.get('date')}/{r.get('kind')}"); continue
         c = mats[cid]
-        hay = _norm(" ".join(list(c.get("facts") or []) + [str(c.get("event_date") or ""), str(c.get("deadline") or ""),
-                                                           str(c.get("title") or "")]))
+        # 記事が確かめた事実(verified_facts)の日付も根拠にする(反映が予約に添える。verified_rows)
+        hay = material_hay(c) + " " + _norm(" ".join(str(v["text"]) for v in article_verified_facts(fm_of[s])))
         # 予約の日か、予約が指しうる出来事の日(締切前は締切日、06:00 前に終わる締切・終了は翌日。renderlib.RESERVATION_LAG)が
         # 素材にあればよい(出来事の日の答えが外れても、この照合は同じ範囲で掛ける。監査指摘)
         probe = [dt] + [dt + datetime.timedelta(days=n) for n in renderlib.RESERVATION_LAG.get(r["kind"], (0,)) if n]
@@ -1156,7 +1208,9 @@ def apply(date: str, number: int, out: dict, posts: list[dict], mats: dict, dry:
                  **material_snapshot(c), "src_candidate_id": r["candidate_id"],
                  **({"src_dedup_key": src_dk} if src_dk and src_dk != dk else {})}
         # 記事が出典にしたほかの素材も添える(予約はその日の唯一の素材。1つだけ写すと、記事を成り立たせた公式の出典が落ちる)
-        rows += [entry] + companion_rows(entry, fm_of.get(r["slug"]) or {}, mats); files[p] = rows; n_res += 1
+        comps = companion_rows(entry, fm_of.get(r["slug"]) or {}, mats)
+        comps += verified_rows(entry, r, fm_of.get(r["slug"]) or {}, c, comps, date)
+        rows += [entry] + comps; files[p] = rows; n_res += 1
     log.append(f"予約: {n_res} 件")
 
     # 3. pending(この号の足し引きを、いまの pending に当て直す。後の号の足し引きは残す。rebase_pending)

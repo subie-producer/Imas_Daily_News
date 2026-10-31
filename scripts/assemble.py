@@ -36,7 +36,7 @@ import yaml
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import renderlib
-from pipelib import (ROOT, CLAUDE_MODEL, COMPOSE_ARTICLE_MAX_BUDGET_USD, COMPOSE_WAVE, classify_source,
+from pipelib import (ROOT, superseded_reservations, CLAUDE_MODEL, COMPOSE_ARTICLE_MAX_BUDGET_USD, COMPOSE_WAVE, classify_source,
                      anomaly, claude_traced, err_tail, extract_json_array, read_answer, notify, prompt_file, render_prompt,
                      schema_ok, write_checked, align_x_published_date, CliBlocked)
 
@@ -435,8 +435,10 @@ def build_input(date: str, posts: list[dict], mats: dict, stories: list[dict], p
     d = datetime.date.fromisoformat(date)
     tomorrow = (d + datetime.timedelta(days=1)).isoformat()
     tq = SCHEDULED / f"{tomorrow}.json"
+    stale = superseded_reservations(tomorrow, ROOT)     # 日付が出典の更新で書き換えられた予約を「明日」の行にしない
     tomorrow_rows = [{"subject": s.get("subject"), "kind": s.get("kind"), "brand": s.get("brand")}
-                     for s in (json.loads(tq.read_text(encoding="utf-8")) if tq.exists() else [])][:8]
+                     for s in (json.loads(tq.read_text(encoding="utf-8")) if tq.exists() else [])
+                     if s.get("id") not in stale][:8]
     return {"date": date, "articles": arts, "tomorrow_reservations": tomorrow_rows,
             "pending": [{"dedup_key": x.get("dedup_key"), "subject": x.get("subject"), "watch": x.get("watch")}
                         for x in pending]}

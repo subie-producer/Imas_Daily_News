@@ -19658,6 +19658,68 @@ class RescueFakes:
         return False
 
 
+def test_superseded_reservation(tmp: Path):
+    """日付が出典の更新で書き換えられた続報予約(2026-11-01: 11/8 に延長された受付の「本日締切」)は当日の素材にならず、組み直しは
+    その記事を外し、組み直しの結果は外した記事を失ったことに数えない。無関係な変化・書き戻された日付の予約は素材のまま。"""
+    import compose
+    import oncall
+    date = "2026-11-01"
+    page = "https://asobiticket2.asobistore.jp/receptions/abc"
+    (tmp / "candidates").mkdir(parents=True)
+    (tmp / "stock" / "scheduled").mkdir(parents=True)
+    (tmp / "metrics").mkdir()
+    (tmp / "docs" / "_posts").mkdir(parents=True)
+    old, moved = "2026年10月3日(土) 19:00 〜 2026年11月1日(日) 23:59", "2026年10月3日(土) 19:00 〜 2026年11月8日(日) 23:59"
+
+    def change(url, at, before, after):
+        return {"id": f"update-{at}", "url": url, "source_change": {"to_at": f"{at}T23:35:54+09:00", "articles": ["x"]},
+                "facts": [f"変更後(10月29日に読んだ版): {x}" for x in after] + [f"変更前(10月29日に読んだ版): {x}" for x in before]}
+    (tmp / "candidates" / "2026-10-30.json").write_text(json.dumps([
+        change(page, "2026-10-29", [old], [moved]),
+        change("https://example.com/widget", "2026-10-29", ["本日のスケジュール"], ["明日のスケジュール 11月2日"]),
+        change("https://example.com/back", "2026-10-28", [old], [moved]),
+        change("https://example.com/back", "2026-10-29", [moved], [old]),
+    ], ensure_ascii=False), encoding="utf-8")
+
+    def row(i, url, facts, **kw):
+        return {"id": i, "kind": "締切", "reserved_on": "2026-10-05", "url": url, "facts": facts, "title": i, **kw}
+    (tmp / "stock" / "scheduled" / f"{date}.json").write_text(json.dumps([
+        row("via-fact", "https://example.com/portal", [f"受付URLは {page} 。", "受付期間: 11月1日まで"]),
+        row("via-url", page, ["受付期間: 11月1日まで"]),
+        row("via-url-src1", "https://example.com/news", [], companion_of="via-url"),
+        row("widget", "https://example.com/widget", []),
+        row("back", "https://example.com/back", []),
+        row("no-page", "https://example.com/other", []),
+    ], ensure_ascii=False), encoding="utf-8")
+    gone = pipelib.superseded_reservations(date, tmp)
+    check(set(gone) == {"via-fact", "via-url", "via-url-src1"} and "11月8日" in gone["via-fact"], f"書き換えられた予約の見分け: {gone}")
+    (tmp / "metrics" / f"plan-{date}.json").write_text(json.dumps({"articles": [
+        {"slug": "only", "angle": "本日締切", "candidate_ids": ["via-fact"]},
+        {"slug": "mixed", "angle": "別", "candidate_ids": ["c1", "via-url"]},
+        {"slug": "fine", "angle": "別", "candidate_ids": ["no-page"]}]}, ensure_ascii=False), encoding="utf-8")
+    for s in ("only", "mixed", "fine"):
+        (tmp / "docs" / "_posts" / f"{date}-{s}.md").write_text("---\ntitle: t\n---\n", encoding="utf-8")
+    stale = pipelib.superseded_slugs(date, tmp)
+    check(set(stale) == {"only", "mixed"}, f"記事の見分け: {stale}")
+    saved = compose.ROOT
+    compose.ROOT = tmp
+    try:
+        check({r["id"] for r in compose.load_scheduled(date)} == {"widget", "back", "no-page"}, "書き換えられた予約が当日の素材に残った")
+        plan = json.loads((tmp / "metrics" / f"plan-{date}.json").read_text(encoding="utf-8"))
+        check(sorted(compose.withdraw_superseded(date, plan)) == ["mixed", "only"], "組み直しで記事を外していない")
+        check([a["slug"] for a in plan["articles"]] == ["mixed", "fine"] and plan["articles"][0]["candidate_ids"] == ["c1"],
+              f"計画の直し: {plan['articles']}")
+        check(not (tmp / "docs" / "_posts" / f"{date}-only.md").exists() and not (tmp / "docs" / "_posts" / f"{date}-mixed.md").exists()
+              and (tmp / "docs" / "_posts" / f"{date}-fine.md").exists(), "稿の消し方")
+        check(compose.DROP_LOG[date]["only"][2].startswith("NOT_NEWS "), f"外した記録: {compose.DROP_LOG[date]}")
+        check(compose.withdraw_superseded(date, plan) == [], "2回目に外すものがある(冪等でない)")
+        compose.DROP_LOG.pop(date, None)
+    finally:
+        compose.ROOT = saved
+    before = {"only", "mixed", "fine"} - set(stale)
+    check(oncall.recover_outcome(before, {"fine"}, ["fine"])[2] == [], "外した記事を承認済みの紙面から失ったと数えた")
+
+
 def test_source_rescue_entry(tmp: Path):
     """出典を揃える入口(source_rescue): 10/26 号の形で、公式 X の原本と当事者のページを取りに行き、確かめて号の素材に入れ、
     計画のその記事の candidate_ids に足す。冪等。出典に届かないときは、試した出典(URL と応答、X の問いと結果)を書く。"""
@@ -21121,6 +21183,7 @@ def main() -> int:
     test_assemble_verified_fact_reservation(tmp / "avr")
     test_assemble_roundup_reservation(tmp / "arr")
     test_storylink_roundup_topic(tmp / "srt")
+    test_superseded_reservation(tmp / "srv")
     test_source_rescue_entry(tmp / "sre")
     test_oncall_recover_rescues_sources(tmp / "ors")
     test_stray_governed_write_is_caught(tmp / "sgw")

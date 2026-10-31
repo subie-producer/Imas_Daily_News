@@ -86,7 +86,11 @@ def load_scheduled(date: str) -> list[dict]:
     if not p.exists():
         return []
     rows = []
+    gone = pipelib.superseded_reservations(date, ROOT)      # 日付が出典の更新で書き換えられた予約は、当日の素材にしない
     for r in json.loads(p.read_text(encoding="utf-8")):
+        if r.get("id") in gone:
+            print(f"続報予約 {r['id']} は素材にしない: {gone[r['id']]}", flush=True)
+            continue
         row = dict(r)
         row.pop("event_date", None)         # 元の話題の日付は渡さない(下)
         ev = reminder_event_date(r, date)
@@ -619,6 +623,31 @@ def scheduled_as_candidate(s: dict) -> dict | None:
         if k in c and not re.fullmatch(r"\d{4}-\d{2}-\d{2}", str(c[k])):
             c.pop(k)
     return c
+
+
+def withdraw_superseded(date: str, plan: dict) -> list[str]:
+    """保存した計画(--reuse-plan)で、日付が書き換えられた続報予約を素材にした記事を外す。既に書けた稿は再執筆されないので、
+    古い日付の稿が残る(2026-11-01: 11/8 に延長された受付の「本日締切」の記事)。ほかの素材が無い記事は計画からも外し(知らせは
+    書き換わった日付の予約が持つ)、ほかの素材があれば稿だけを消して、その素材で書き直させる。戻りは外した記事。冪等。"""
+    gone = pipelib.superseded_reservations(date, ROOT)
+    out, keep = [], []
+    for a in plan.get("articles") or []:
+        ids = a.get("candidate_ids") or []
+        hit = [i for i in ids if i in gone]
+        if not hit:
+            keep.append(a)
+            continue
+        rest = [i for i in ids if i not in gone]
+        post = ROOT / "docs" / "_posts" / f"{date}-{a['slug']}.md"
+        if rest:
+            a["candidate_ids"] = rest
+            keep.append(a)
+        else:
+            log_drop(date, a["slug"], "予約の日付の変更で見送り", f"NOT_NEWS {gone[hit[0]]}")
+        post.unlink(missing_ok=True)
+        out.append(a["slug"])
+    plan["articles"] = keep
+    return out
 
 
 def attach_companions(plan: dict, cands: dict) -> None:
@@ -4258,6 +4287,9 @@ def main() -> int:
         # 再試行で判断が変わると新しい計画と古い記事が混在した(監査指摘)
         plan = json.loads(plan_saved.read_text(encoding="utf-8"))
         print(f"選定を再利用: {plan_saved.name}({len(plan.get('articles') or [])}本)", flush=True)
+        stale = withdraw_superseded(date, plan)
+        if stale:
+            print(f"続報予約の日付が書き換えられた記事を外した: {', '.join(stale)}", flush=True)
     else:
         # 選定記録は空で始める(この号は選定を始めた、の印)。読んだと書くのは判定を得た主題だけ(拾い直しのあと、下)。
         # 先に全候補を読んだと書くと、選定が起動できず再実行も成功しない号で、選ばれていない素材が次の号へ引き継がれない

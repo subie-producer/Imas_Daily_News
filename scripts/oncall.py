@@ -79,7 +79,7 @@ from pipelib import (COLLECT_ONCALL_MARK, COLLECT_OUTPUTS, ENV, ROOT, classify_t
                      JobLockTimeout, anomaly,
                      job_lock, mark_collect_oncall,
                      next_slot_end, notify, now_jst, partial_output, prompt_file, read_answer, render_prompt, save_raw, schema_error,
-                     schema_ok, settled_drops, source_lacking_drops,
+                     schema_ok, settled_drops, source_lacking_drops, superseded_slugs,
                      tool_path, CLI_BLOCKED_EXIT, CliBlocked, cli_check, oncall_clis_blocked, scratch_dir,
                      ONCALL_HANDED_EXIT, settled_keys_of)
 from pipelib import exit_on_term, run_group   # モデルのセッションは自前のグループで起動し、時間切れ・中断では道具ごと止める
@@ -1660,7 +1660,9 @@ def rerun_stage(stage: str, date: str, edition: str, full: bool, recover: bool =
             limit, extra = 7200, []
             if recover:
                 RECOVER_TRIED = True
-                before, planned = posted_slugs(date), planned_slugs(date)
+                # 日付が書き換えられた続報予約の記事は、組み直しが外す(承認済みでも古い日付の記事は失ったことに数えない)
+                stale = superseded_slugs(date, ROOT)
+                before, planned = posted_slugs(date) - set(stale), [s for s in planned_slugs(date) if s not in stale]
                 backup = backup_edition(date, edition)
             # 出典が足りずに見送った記事は、出典を揃えてから組み直す(控えを取ったあと。組み直しが採られなければ素材ごと控えに戻る)
             rescued = rescue_sources(date, edition, log)

@@ -333,6 +333,101 @@ def source_lacking_drops(date: str, root: Path | None = None) -> dict[str, str]:
     return out
 
 
+# 出典の更新の行(source_watch.update_candidate)
+_CHANGE_LINE = re.compile(r"^変更(前|後)\([^)]*\): (.*)$", re.S)
+_FACT_URL = re.compile(r"https?://[^\s、。,)）」』]+")
+REWRITTEN_LINE_MIN = 0.7    # 同じ行が書き換えられたとみなす変更前後の近さ(期間の行は日付以外が同じ)
+
+
+def _page_changes(first: str, last: str, root: Path) -> dict[str, list[tuple[str, list[str], list[str]]]]:
+    """first〜last の号の素材にある出典の更新(source_change)を、ページの鍵ごとに古い順で返す: {鍵: [(読んだ時刻, 変更前の行, 変更後の行)]}。"""
+    import page_archive
+    out: dict[str, dict[str, tuple[str, list[str], list[str]]]] = {}
+    for p in sorted((root / "candidates").glob("????-??-??.json")):
+        if not first <= p.stem <= last:
+            continue
+        try:
+            rows = json.loads(p.read_text(encoding="utf-8"))
+        except (OSError, ValueError):
+            continue
+        for c in rows if isinstance(rows, list) else []:
+            sc = c.get("source_change") if isinstance(c, dict) else None
+            if not isinstance(sc, dict):
+                continue
+            hits = [m for f in c.get("facts") or [] if (m := _CHANGE_LINE.match(str(f)))]
+            before = [m.group(2) for m in hits if m.group(1) == "前"]
+            after = [m.group(2) for m in hits if m.group(1) == "後"]
+            at = str(sc.get("to_at") or "")
+            # 同じ変化は戻しの素材として複数の号に写る。読んだ時刻で1つにする
+            out.setdefault(page_archive.page_key(c.get("url")), {})[at] = (at, before, after)
+    return {k: [v[t] for t in sorted(v)] for k, v in out.items()}
+
+
+def superseded_reservations(date: str, root: Path | None = None) -> dict[str, str]:
+    """その号の続報予約のうち、指す日付が出典の更新で書き換えられたものの {予約の id: 根拠}。添えの素材(companion_of)も含む。
+    予約は予約した時点の事実の写しで、発行後に受付が延長されても古い日付のまま当日の素材になる(2026-11-01: 11/8 に延長された
+    xR LIVE REVIVAL の先行が「本日締切」の記事になった。延長の記事は別の話題で、予約の出典の 10/3 のお知らせは変わっていない)。
+    コードが決める: 予約の url・facts に書かれた url・添えの素材の url のページについて、予約した日からこの号までの出典の更新に、
+    予約の指す日を含む行が、その日を含まない近い行へ書き換えられた変化があれば、その予約はもう成り立たない。あとの更新がその日を
+    書き戻していれば成り立つ。予約が読めなければ空。"""
+    import difflib
+    import page_archive
+    import renderlib
+    root = root or ROOT
+    p = root / "stock" / "scheduled" / f"{date}.json"
+    try:
+        rows = [r for r in json.loads(p.read_text(encoding="utf-8")) if isinstance(r, dict)] if p.exists() else []
+    except (OSError, ValueError):
+        return {}
+    heads = [r for r in rows if r.get("id") and not r.get("companion_of")]
+    if not heads:
+        return {}
+    first = min(str(r.get("reserved_on") or date) for r in heads)
+    changes = _page_changes(first, date, root)
+    if not changes:
+        return {}
+    out: dict[str, str] = {}
+    for r in heads:
+        mates = [c for c in rows if c.get("companion_of") == r["id"]]
+        urls = {page_archive.page_key(u) for x in [r, *mates]
+                for u in [x.get("url"), *(u for f in x.get("facts") or [] for u in _FACT_URL.findall(str(f)))] if u}
+        lag = renderlib.RESERVATION_LAG.get(r.get("kind"), (0,))[0]
+        day = str(r.get("occurs_on") or (datetime.date.fromisoformat(date) + datetime.timedelta(days=lag)).isoformat())
+        since = str(r.get("reserved_on") or date)
+        why = ""
+        for key in sorted(urls & set(changes)):
+            found = ""
+            for at, before, after in changes[key]:
+                if at[:10] < since:
+                    continue
+                kept = [a for a in after if renderlib.date_mentioned(day, a)]
+                moved = [(b, a) for b in before if renderlib.date_mentioned(day, b) for a in after
+                         if a not in kept and difflib.SequenceMatcher(None, b, a).ratio() >= REWRITTEN_LINE_MIN]
+                if kept:
+                    found = ""
+                elif moved:
+                    found = f"{key} の「{moved[0][0][:80]}」が「{moved[0][1][:80]}」に変わった({at[:10]} に読んだ版)"
+            why = why or found
+        if why:
+            out[r["id"]] = why
+            out.update({c["id"]: why for c in mates if c.get("id")})
+    return out
+
+
+def superseded_slugs(date: str, root: Path | None = None) -> dict[str, str]:
+    """計画の記事のうち、素材にした続報予約の日付が書き換えられたものの {slug: 根拠}。"""
+    root = root or ROOT
+    gone = superseded_reservations(date, root)
+    if not gone:
+        return {}
+    try:
+        plan = json.loads((root / "metrics" / f"plan-{date}.json").read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return {}
+    return {a["slug"]: gone[i] for a in plan.get("articles") or [] if a.get("slug")
+            for i in reversed(a.get("candidate_ids") or []) if i in gone}
+
+
 # --- 当番(oncall)への引き継ぎ -------------------------------------------------
 # 工程が「人間判断が必要」で止まるとき、人へ投げる前に scripts/oncall.py を起動する。
 # 当番(Opus)が診断・修正し、監査(Sol)の敵対的レビューを通ったものだけを取り込んで再実行する。

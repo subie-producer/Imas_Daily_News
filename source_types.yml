@@ -257,6 +257,7 @@ party_paths:
   - item.rakuten.co.jp/f272078-takatsuki        # 高槻市ふるさと納税
 
 party_domains:
+  - k-arena.com           # 合議で追加: 会場の運営者が自ら、ライブツアー記念のコラボドリンク販売を発表
   - store.hands.net       # 合議で追加: ハンズ店舗で催しと販売グッズを告知する小売店のサイト
   - gotoken-shop.jp       # 合議で追加: 特定商取引表示の販売業者は五島軒。アルストロメリアとのコラボ商品の販売元
   - shibuyatsutaya.tsite.jp # 合議で追加: サイト下部のクレジットで運営確認。POP UP会場・グッズ販売元

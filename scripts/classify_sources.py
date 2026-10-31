@@ -1514,10 +1514,13 @@ def video_author(vid: str) -> tuple[str, str]:
         with polite_urlopen(req, timeout=20) as r:
             d = json.loads(r.read(PAGE_READ_BYTES).decode("utf-8"))
         handle = urllib.parse.unquote((d.get("author_url") or "").rstrip("/").rsplit("/", 1)[-1]).removeprefix("@")
-        return handle, str(d.get("title") or "")
+        if handle:
+            return handle, str(d.get("title") or "")
+        print(f"  oEmbed に投稿者が無い {vid}。視聴ページから読む", flush=True)
     except Exception as e:
         print(f"  oEmbed 取得できず {vid}: {type(e).__name__}。視聴ページから読む", flush=True)
     # oEmbed が断続的に失敗する(実測 2026-09-12: Lantis の動画が HTTPError で未確認のまま紙面に載った)。
+    # 配信前の枠は 200 で author_url も title も無い応答を返す(実測 2026-10-31: iVOtp0VZh8g が未確認のまま紙面に載った)。
     # 視聴ページの埋め込み情報(ownerProfileUrl / <link itemprop=name>)から投稿者を取る
     try:
         import urllib.request

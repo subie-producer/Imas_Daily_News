@@ -12,9 +12,9 @@
 2. 変化の扱い(process_changes): 変化の台帳(page_archive.changes)のうち、発行済み記事の出典のページの変化ごとに
    - 判定と文は小さな構造化セッション: 書き手のモデル(prompts/source-update.md)が種類(変更・出典元の訂正・追加・表示の揺れ・記事に
      関係なし)と更新の文を schema で出し、校閲のモデル(prompts/source-update-review.md)が検める(block なら1回だけ直させる)
-   - 事務処理はコード: 記事の frontmatter の updates に {at, kind, text, source, from_at, to_at} を末尾に足す(本文・訂正欄は触らない。
-     append-only の検査は updates の追記だけを通す)。人へ通知する(記事・変更前後・出典のリンク)
-   - 読者に関わる変化は、その号の「出典の更新」の素材(source_change)にもする(続報の記事の材料。選定・執筆が既報と照らして書く)
+   - 判定・校閲が通った(読者に関わる)変化は、その号の「出典の更新」の素材(source_change)にするだけ(続報の記事の材料。選定・執筆が
+     既報と照らして書く)。発行済みの記事には書かない(編集長 2026-11-01「追記ではなく、間違った情報の修正だけ。追記するなら記事を
+     出せ」)。出典元の訂正は、記事が誤った値を載せたままなので、訂正が要ると申告する(anomaly。訂正の手順は当番・人が取る)
 """
 import datetime
 import hashlib
@@ -35,7 +35,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import page_archive
 from pipelib import (CODEX_WRITE_MODEL, ENV, FETCH_RECORD_ENV, REVIEW_MODEL, ROOT, anomaly, append_metric, changed_record, cli_check,
                      classify_source, now_jst, notify, partial_output, prompt_file, read_answer, record_rows, render_prompt,
-                     run_group, save_raw, schema_ok, write_checked)
+                     run_group, save_raw, schema_ok)
 
 RECHECK_DAYS = 60                   # 見回る記事を探す範囲(発行した号の日付から)
 RECHECK_MAX = int(ENV.get("RECHECK_MAX", "60"))           # 1回の見回りで読み直す件数の下限(一巡の日数を守るため自動で上げる)
@@ -44,7 +44,7 @@ RECHECK_PER_SLOT = 15               # 並列1本が1回の見回りで読み直�
 RECHECK_CYCLE_DAYS = 2              # 対象を全部一巡する日数の上限(編集長: 回をまたいで全部回すことを数で保証する)
 RECHECK_BUDGET_SEC = int(ENV.get("RECHECK_BUDGET_SEC", "1200"))   # 1回の見回りの時間の上限
 RECHECK_FETCH_SEC = 180             # 見回りの読み直し1件の待ちの上限(描画を含む)
-UPDATE_KINDS = ("変更", "出典元の訂正", "追加")            # 記事に時系列の更新として足す種類
+UPDATE_KINDS = ("変更", "出典元の訂正", "追加")            # 「出典の更新」の素材にする種類(校閲を通ったもの)
 MAX_TRIES = 3                       # 判定・校閲の答えが読めない変化をやり直す回数(CLI の異常終了・停止は数えない)
 SESSION_TIMEOUT_SEC = 600           # 判定・校閲のセッション1本の待ちの上限(収集の締切の残りでも切る)
 CANDIDATE_DIFF_CHARS = 60000        # 出典の更新の素材に入れる違いの上限の字数(判定に渡す違いと同じ範囲を含む大きさ)
@@ -113,7 +113,7 @@ def published(today: str, root: Path = ROOT, days: int = RECHECK_DAYS) -> list[d
         out.append({"id": p.stem, "path": p, "edition": ed, "slug": slug, "title": str(fm.get("title") or ""),
                     "brand": fm.get("brand"), "dedup_key": plans[ed].get(slug) or next(iter(sorted(keys)), None), "keys": keys,
                     "event_date": str(fm.get("event_date") or ""), "deadlines": sorted({str(c["deadline"]) for c in mats if c.get("deadline")}),
-                    "urls": uniq, "updates": list(fm.get("updates") or [])})
+                    "urls": uniq})
     return out
 
 
@@ -220,7 +220,7 @@ def change_key(row: dict) -> str:
 
 
 def load_state() -> dict:
-    """変化の扱いの状態: marks(記事×ページごとに、記事に反映した版と本文)・tries(記事×ページごとのやり直しの回数)・
+    """変化の扱いの状態: marks(記事×ページごとに、扱い終えた版と本文)・tries(記事×ページごとのやり直しの回数)・
     pending(まだ素材の保存を確かめていない「出典の更新」の素材)。"""
     got = _load_json(handled_path())
     got = got if isinstance(got, dict) else {}
@@ -239,14 +239,6 @@ def affected(row: dict, arts: list[dict]) -> list[dict]:
     """変化したページを出典(sources・verified_facts・素材)にしている記事。"""
     keys = {page_archive.page_key(u) for u in (row.get("url"), row.get("final")) if u}
     return [a for a in arts if any(page_archive.page_key(u) in keys for u in a["urls"])]
-
-
-def _day(at: str) -> str:
-    try:
-        t = datetime.datetime.fromisoformat(str(at))
-        return f"{t.month}月{t.day}日"
-    except ValueError:
-        return str(at)[:10]
 
 
 def _at(at: str) -> str:
@@ -310,7 +302,7 @@ class CliFailed(RuntimeError):
 
 def judge(art: dict, row: dict, diff: str, date: str, prev: dict | None = None, issue: str = "", root: Path = ROOT,
           timeout: float = SESSION_TIMEOUT_SEC):
-    """書き手のモデルが変化の種類と更新の文を出す(prompts/source-update.md)。"""
+    """書き手のモデルが変化の種類と要約を出す(prompts/source-update.md)。"""
     prompt = render_prompt("source-update", ARTICLE=f"docs/_posts/{art['id']}.md", URL=row["url"], OLD_AT=_at(row.get("from_at")),
                            NEW_AT=_at(row.get("to_at")), DIFF=diff)
     if prev is not None:
@@ -321,36 +313,12 @@ def judge(art: dict, row: dict, diff: str, date: str, prev: dict | None = None, 
 
 
 def review(art: dict, row: dict, diff: str, ans: dict, date: str, root: Path = ROOT, timeout: float = SESSION_TIMEOUT_SEC):
-    """校閲のモデルが更新の案を検める(prompts/source-update-review.md)。"""
+    """校閲のモデルが判定と要約の案を検める(prompts/source-update-review.md)。"""
     prompt = render_prompt("source-update-review", ARTICLE=f"docs/_posts/{art['id']}.md", URL=row["url"], OLD_AT=_at(row.get("from_at")),
                            NEW_AT=_at(row.get("to_at")), KIND=ans["kind"], TEXT=ans["text"], DIFF=diff)
     h = hashlib.sha256((change_key(row) + ans["text"]).encode()).hexdigest()[:8]
     return run_session("review", prompt, "source-update-review.schema.json", date, f"source-update-review-{art['slug'][:40]}-{h}", root,
                        timeout)
-
-
-def with_update(text: str, entry: dict) -> str:
-    """記事ファイルの frontmatter の updates の末尾に entry を足した全文(本文と、ほかの欄は1字も変えない)。"""
-    m = FM_RE.match(text)
-    head, body = m.group(1), text[m.end():]
-    fm = yaml.safe_load(head) or {}
-    ups = list(fm.get("updates") or []) + [entry]
-    # 最上位の updates: の塊を外し、末尾に書き直す(ほかの行には触らない)
-    lines, out, skip = head.split("\n"), [], False
-    for ln in lines:
-        if re.match(r"^updates:", ln):
-            skip = True
-            continue
-        if skip and (ln.startswith((" ", "-")) or not ln.strip()):
-            continue
-        skip = False
-        out.append(ln)
-    block = yaml.safe_dump({"updates": ups}, allow_unicode=True, sort_keys=False, width=1000).rstrip("\n")
-    new = "---\n" + "\n".join(out + [block]) + "\n---\n" + body
-    got = yaml.safe_load(FM_RE.match(new).group(1)) or {}
-    if {k: v for k, v in got.items() if k != "updates"} != {k: v for k, v in fm.items() if k != "updates"} or got.get("updates") != ups:
-        raise ValueError("updates の追記で frontmatter のほかの欄が変わった")
-    return new
 
 
 def update_candidate(row: dict, arts: list[dict], old: dict, new: dict, today: str) -> dict:
@@ -384,23 +352,24 @@ SESSION_MIN_SEC = 60        # 判定・校閲のセッションを始めるの�
 
 
 def _mark(new: dict, result: str) -> dict:
-    """記事×ページに反映した版の控え(本文も持つ。原本の置き場の版が上限で消えても、次の変化と比べられる)。"""
+    """記事×ページで扱い終えた版の控え(本文も持つ。原本の置き場の版が上限で消えても、次の変化と比べられる)。"""
     return {"sha": new["sha"], "at": new.get("at"), "text": new.get("text"), "result": result}
 
 
 def process_changes(today: str, arts: list[dict], root: Path = ROOT, judge_fn=judge, review_fn=review,
                     late=lambda: False, left=lambda: SESSION_TIMEOUT_SEC) -> tuple[list[dict], list[dict]]:
-    """出典の変化を扱う。戻りは (この号に足す「出典の更新」の素材(まだ素材の保存を確かめていないものを全部), 足した更新)。
-    見回りの範囲の発行済み記事の出典(X 以外)の全部について、記事×ページごとに「その記事に反映した版(marks。無ければ記事を出した時点に
+    """出典の変化を扱う。戻りは (この号に足す「出典の更新」の素材(まだ素材の保存を確かめていないものを全部), この回に判定・校閲を
+    通って素材にした変化)。発行済みの記事には書かない(編集長 2026-11-01「追記するなら記事を出せ」)。
+    見回りの範囲の発行済み記事の出典(X 以外)の全部について、記事×ページごとに「その記事で扱い終えた版(marks。無ければ記事を出した時点に
     読まれていた版)」から「いまの版(いちばん新しく読んだ版)」への違いを1回だけ判定する(Sol 監査 b1・b2・b4: 台帳の行ごと・ページごとに
     扱うと、やり直しで新しい版から古い版への違いを告知した・元の内容に戻った変化を一部の記事だけ失った・裏取りが先に新しい版を残すと
     変化を黙って失った)。
     判定・校閲が答えなかった記事は進めない(次の回にやり直す。MAX_TRIES 回で諦めて申告)。CLI の停止・CLI の異常終了(起動の失敗を含む)・
     締切による時間切れは数えず、この回は止める(異常終了は申告する。直るまで変化は扱い済みにならない)。
     収集の締切(late)を過ぎた・残り時間(left)が足りなければ、どのセッションも始めない。セッションの待ちは残り時間で切る。
-    素材は記事を書く前に控え(pending)、記事を書いたら反映した版を進める(途中で止まっても、素材を失わず、同じ更新を重ねない)"""
+    素材(pending)と扱い終えた版(marks)は同じ保存で進める(途中で止まっても、素材を失わず、同じ変化を二重に素材にしない)"""
     st = load_state()
-    applied = []
+    adopted = []
     has_time = lambda: not late() and left() >= SESSION_MIN_SEC
     stopped = False
     # 見回りの範囲(発行60日)の外の記事の控えは捨てる
@@ -453,20 +422,17 @@ def process_changes(today: str, arts: list[dict], root: Path = ROOT, judge_fn=ju
                 # 原本の置き場の版が上限で消えていても、控えた本文で比べる(黙って扱い済みにしない。Sol 監査 b3)
                 if m.get("text") is None:
                     st["marks"][k] = _mark(new, "比べる元の版が無い")
-                    anomaly("collect", f"出典の変化を比べる元の版が無く、記事 {art['id']} に反映できない: {url}(いまの版まで扱い済みにした)")
+                    anomaly("collect", f"出典の変化を比べる元の版が無く、記事 {art['id']} について扱えない: {url}(いまの版まで扱い済みにした)")
                     continue
                 old = {"sha": cur, "text": m["text"], "at": m.get("at")}
             row = {"url": url, "final": None, "from_sha": old["sha"], "to_sha": new["sha"],
                    "from_at": page_archive.fetched_at(old), "to_at": str(new.get("at") or "")}
-            if any(u.get("source") == url and u.get("to_at") == row["to_at"] for u in art["updates"] if isinstance(u, dict)):
-                st["marks"][k] = _mark(new, "足し済み")     # 書いたあと止まった回の続き
-                continue
             # 判定には違いの全部を渡す(既定の 8000字で切ると、後ろの方の変化を見ずに「表示の揺れ」で扱い済みにした。Sol 監査 b5)。
             # それでも収まらない大きな違いは、省いたまま扱い済みにせず申告する
             diff = page_archive.diff(old["text"], new["text"], limit=CANDIDATE_DIFF_CHARS)
             if diff.endswith("字を略した)"):      # page_archive.diff が上限で切った印
                 st["marks"][k] = _mark(new, "違いが大きすぎて判定できない")
-                anomaly("collect", f"出典の違いが {CANDIDATE_DIFF_CHARS}字を超え、記事 {art['id']} に反映するか判定できない: {url}")
+                anomaly("collect", f"出典の違いが {CANDIDATE_DIFF_CHARS}字を超え、記事 {art['id']} について判定できない: {url}")
                 continue
             outcome = None
             try:
@@ -498,9 +464,9 @@ def process_changes(today: str, arts: list[dict], root: Path = ROOT, judge_fn=ju
                 st["tries"].pop(k, None)
                 continue
             ans = outcome
-            entry = {"at": now_jst().isoformat(timespec="seconds"), "kind": ans["kind"], "text": ans["text"].strip(),
-                     "source": url, "from_at": row["from_at"], "to_at": row["to_at"]}
-            # 素材を先に控える(このあと止まっても素材は残る。同じ変化なら同じ id)
+            text = ans["text"].strip()
+            # 通った変化は「出典の更新」の素材にするだけ(同じ変化なら同じ id)。素材と扱い終えた版は同じ保存で進める(途中で止まれば
+            # 次の回に同じ変化を判定し直して同じ素材になる。保存できたら同じ変化を二度と素材にしない)
             cand = update_candidate(row, [art], old, new, today)
             if cand["id"] in st["pending"]:
                 arts_of = st["pending"][cand["id"]]["source_change"]["articles"]
@@ -508,25 +474,21 @@ def process_changes(today: str, arts: list[dict], root: Path = ROOT, judge_fn=ju
                     arts_of.append(art["id"])
             else:
                 st["pending"][cand["id"]] = cand
-            save_state(st)
-            try:
-                write_checked(art["path"], with_update(art["path"].read_text(encoding="utf-8"), entry))
-            except Exception as e:      # noqa: BLE001  1本の失敗でほかの記事・収集を止めない(申告する)
-                anomaly("collect", f"記事 {art['id']} に出典の変更による更新を足せない({type(e).__name__}: {str(e)[:160]})")
-                continue
-            art["updates"].append(entry)
+            if ans["kind"] == "出典元の訂正":
+                # 記事は出典元が直す前の誤った値を載せたまま。発行済みの記事を直すのは訂正の手順(corrections)だけで、ここでは書かない
+                # (保存の前に申告する。保存の前に止まれば次の回にもう一度申告する)
+                anomaly("collect", f"記事 {art['id']} の訂正が要る: 出典元が記載を訂正した「{text}」。出典 {url}"
+                                   f"({_at(row['from_at'])} → {_at(row['to_at'])}に読んだ版)。訂正の手順(corrections)で記事の値を直す")
             st["marks"][k] = _mark(new, ans["kind"])
             st["tries"].pop(k, None)
             save_state(st)
-            applied.append({"article": art["id"], "entry": entry, "row": row})
-            notify("collect", f"出典の変更を記事に足した({ans['kind']}): {article_url(art['id'])}\n「{entry['text']}」\n"
-                              f"出典 {url}({_day(row['from_at'])} → {_day(row['to_at'])})\n変わったところ:\n{diff[:600]}")
+            adopted.append({"article": art["id"], "kind": ans["kind"], "text": text, "candidate": cand["id"], "row": row})
     save_state(st)
-    return list(st["pending"].values()), applied
+    return list(st["pending"].values()), adopted
 
 
 def decide(art: dict, row: dict, diff: str, today: str, root: Path, judge_fn, review_fn, has_time, left):
-    """1つの記事×変化の判定と校閲。戻りは 足す答え(dict)/ 足さない理由(str)/ None(答えが読めない)/ "deferred"(時間が無い)。
+    """1つの記事×変化の判定と校閲。戻りは 素材にする答え(dict)/ 素材にしない理由(str)/ None(答えが読めない)/ "deferred"(時間が無い)。
     どのセッションも、始める前に締切と残り時間を確かめる(Sol 監査 b2: 判定のあとで締切を過ぎても校閲を起動した)"""
     timeout = lambda: min(SESSION_TIMEOUT_SEC, left())
     if not has_time():
@@ -556,7 +518,7 @@ def decide(art: dict, row: dict, diff: str, today: str, root: Path, judge_fn, re
         return unread()
     if verdict["verdict"] != "approve" or not ans["text"].strip():
         # 判断の結果(校閲が通さなかった)で、工程の異常ではない。人には知らせる
-        notify("collect", f"出典の変更による更新を校閲が通さず、記事に足さなかった: {article_url(art['id'])} / 出典 {row['url']} / "
+        notify("collect", f"出典の変更を校閲が通さず、出典の更新の素材にしなかった: {article_url(art['id'])} / 出典 {row['url']} / "
                           f"案「{ans['text'][:120]}」/ 指摘 {verdict.get('issue', '')[:200]}")
         return "校閲が通さなかった"
     return ans

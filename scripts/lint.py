@@ -236,22 +236,89 @@ def correction_change_errors(old: dict, new: dict) -> list[str]:
     return errs
 
 
-def update_change_errors(old: dict, new: dict, old_body: str, new_body: str) -> list[str]:
-    """その後の動き(updates)を足した過去の記事の検査: updates の末尾への追記だけ・本文とほかの欄は1字も変えない。
-    出典元が告知を変えたことを記事の中で時系列に積む(編集長 2026-10-26「訂正欄ではない。記事の中で時系列を扱え」)。
+REVOKED_UPDATES = ROOT / "revoked_updates.yml"
+# 発行済みの記事の「その後の動き」(updates)への追記は止めた(編集長 2026-11-01「追記ではなく、間違った情報の修正だけ。追記するなら
+# 記事を出せ」)。この時刻より前に自動の追記(source_watch。最後は 2026-11-01 07:30 の収集)が足した分だけ、まだ main に入っていない
+# 号のブランチの差分として通す。それより後の at の追記は通さない
+UPDATES_APPEND_UNTIL = "2026-11-01T08:00:00+09:00"
+
+
+def _before_append_cutoff(at) -> bool:
+    try:
+        t = datetime.datetime.fromisoformat(str(at))
+        return t.tzinfo is not None and t < datetime.datetime.fromisoformat(UPDATES_APPEND_UNTIL)
+    except ValueError:
+        return False
+
+
+def update_change_errors(old: dict, new: dict, old_body: str, new_body: str, revoked: set[str] = frozenset()) -> list[str]:
+    """その後の動き(updates)だけが変わった過去の記事の検査。通すのは、取り消しの台帳(revoked_updates.yml)に載った at の更新を
+    外したことだけ(残りの更新の順と中身・本文・ほかの欄は1字も変えない)。revoked はこの記事について台帳に載った at の集合。
+    新しい追記は通さない(編集長 2026-11-01「追記するなら記事を出せ」。UPDATES_APPEND_UNTIL より前の自動の追記だけは通す)。
     訂正欄(corrections)はこちらの誤りだけに使うので、ここでは触らせない"""
     errs = []
     o, n = old.get("updates") or [], new.get("updates") or []
-    if n[:len(o)] != o:
-        errs.append("append-only 違反: 既にあるその後の動き(updates)を変えた・消した・並べ替えた(末尾への追記だけ)")
-    if len(n) <= len(o):
-        errs.append("append-only 違反: その後の動き(updates)が増えていない")
+    kept = [u for u in o if not (isinstance(u, dict) and str(u.get("at")) in revoked)]
+    if n[:len(kept)] != kept:
+        errs.append("append-only 違反: 既にあるその後の動き(updates)を変えた・消した・並べ替えた"
+                    "(外せるのは revoked_updates.yml に post・at・reason を載せた更新だけ)")
+    for u in n[len(kept):]:
+        if not (isinstance(u, dict) and _before_append_cutoff(u.get("at"))):
+            errs.append("append-only 違反: その後の動き(updates)への追記は止めた(編集長 2026-11-01「追記するなら記事を出せ」。"
+                        f"出典の変化は続報の記事にする): at {u.get('at') if isinstance(u, dict) else u}")
     for k in sorted((set(old) | set(new)) - {"updates"}):
         if old.get(k) != new.get(k):
-            errs.append(f"append-only 違反: その後の動きの追記で {k} を変えた")
+            errs.append(f"append-only 違反: その後の動きの変更で {k} を変えた")
     # 本文はそのまま比べる(前後の空白の違いも Markdown の字下げを変えうる。末尾の改行の有無だけはならす。Sol 監査 b5)
     if (old_body or "").rstrip("\n") != (new_body or "").rstrip("\n"):
-        errs.append("append-only 違反: その後の動きの追記で本文を変えた")
+        errs.append("append-only 違反: その後の動きの変更で本文を変えた")
+    return errs
+
+
+def load_revoked_updates(text: str | None = None) -> tuple[list[dict], list[str]]:
+    """発行済みの記事から外した、誤った「その後の動き」の記録(取り下げの withdrawn.yml と同じ考え方)。戻りは (記録の並び, 形式の誤り)。
+    1行 = post(docs/_posts のファイル名。拡張子なし)・at(外した更新の at の文字列そのまま。時差つきの ISO 8601)・reason(理由)。
+    どれも空でない文字列。記録は末尾への追記しかできない。形式に誤りがあれば、どの取り消しも通さない"""
+    if text is None:
+        if not REVOKED_UPDATES.exists():
+            return [], []
+        text = REVOKED_UPDATES.read_text(encoding="utf-8")
+    try:
+        rows = yaml.safe_load(text)
+    except yaml.YAMLError as e:
+        return [], [f"YAML として読めない: {e}"]
+    rows = [] if rows is None else rows
+    if not isinstance(rows, list):
+        return [], ["先頭が配列でない"]
+    errs, seen = [], set()
+    for i, r in enumerate(rows):
+        ok = (isinstance(r, dict) and set(r) == {"post", "at", "reason"}
+              and all(isinstance(r[k], str) and r[k].strip() for k in r)
+              and re.fullmatch(r"\d{4}-\d{2}-\d{2}-[a-z0-9][a-z0-9-]*", r["post"]))
+        if ok:
+            try:
+                ok = datetime.datetime.fromisoformat(r["at"]).tzinfo is not None
+            except ValueError:
+                ok = False
+        if not ok:
+            errs.append(f"{i + 1}件目の形式が違う(post・at・reason の3項目、どれも空でない文字列。at は外した更新の at を"
+                        "引用符で囲んだ時差つきの文字列のまま)")
+        elif (r["post"], r["at"]) in seen:
+            errs.append(f"{r['post']} の {r['at']} が二重に記録されている")
+        else:
+            seen.add((r["post"], r["at"]))
+    return rows, errs
+
+
+def revoked_record_errors(old_rows: list, rows: list, removed_now: set[tuple[str, str]]) -> list[str]:
+    """取り消しの記録の差分の検査(基準版の並び → 現行の並び)。記録は末尾への追記だけで、追記した記録はこの差分で実際に外した更新
+    (記事・at)のものに限る(取り下げの記録と同じ。記録を恒久的な許可証にしない)。"""
+    errs = []
+    if rows[:len(old_rows)] != old_rows:
+        errs.append("その後の動きの取り消しの記録が消された・書き換えられた・並べ替えられた(記録は末尾への追記だけ)")
+    for r in rows[len(old_rows):]:
+        if isinstance(r, dict) and (r.get("post"), r.get("at")) not in removed_now:
+            errs.append(f"その後の動きの取り消しの記録 {r.get('post')}(at {r.get('at')})に対応する更新の取り消しが、この差分に無い")
     return errs
 
 
@@ -870,6 +937,9 @@ def main() -> int:
     rows, errs = load_withdrawn()
     for e in errs:
         rep.error(WITHDRAWN, f"取り下げの記録: {e}")
+    rv_rows, rv_errs = load_revoked_updates()
+    for e in rv_errs:
+        rep.error(REVOKED_UPDATES, f"その後の動きの取り消しの記録: {e}")
 
     # -- append-only(基準コミットとの diff) --
     if base:
@@ -898,6 +968,23 @@ def main() -> int:
         for e in rewrite_record_errors(rw_old_rows, rw_rows, modified_now):
             rep.error(REWRITES, e)
         rewritten_now = set() if rw_errs else {r["post"] for r in rw_rows[len(rw_old_rows):] if isinstance(r, dict)}
+        # その後の動きの取り消し(revoked_updates.yml): 記録のある (記事, at) の更新だけ、外すのを通す。形式に誤りがあれば、どれも通さない
+        revoked: dict[str, set[str]] = collections.defaultdict(set)
+        for r in ([] if rv_errs else rv_rows):
+            revoked[r["post"]].add(r["at"])
+        # この差分で実際に外した (記事, at)。試験発行の号の記事も数える(記録の照合は号を問わない)
+        removed_now: set[tuple[str, str]] = set()
+        ats = lambda fm: {str(u.get("at")) for u in (fm or {}).get("updates") or [] if isinstance(u, dict)}
+        for e in diff_entries:
+            if e[0] != "M" or not e[1].startswith("docs/_posts/"):
+                continue
+            r_b = git("show", f"{base}:{e[1]}")
+            m_b = re.match(r"\A---\s*\n(.*?)\n---", r_b.stdout, re.DOTALL) if r_b.returncode == 0 else None
+            try:
+                old_fm = _norm(yaml.safe_load(m_b.group(1))) if m_b else {}
+            except yaml.YAMLError:
+                continue
+            removed_now |= {(Path(e[1]).stem, a) for a in ats(old_fm) - ats(parse_frontmatter(ROOT / e[1])[0])}
         # 号ごとの「この差分で取り下げた記事の slug」と、一面を取り下げた号で立て直した記事の slug
         gone_by_date: dict[str, set[str]] = collections.defaultdict(set)
         for k in deleted_now & withdrawn:
@@ -970,16 +1057,22 @@ def main() -> int:
                                 and {k: v for k, v in a.items() if k != "type"} == {k: v for k, v in b.items() if k != "type"}
                                 for a, b in zip(o_s, n_s)):
                             continue
-                    # 例外: その後の動き(updates)の追記だけ(出典元の変更を時系列で積む。訂正欄・corrected_count は使わない)
+                    # 例外: その後の動き(updates)だけの変更。取り消しの記録に載った更新を外すことだけを通す(追記は止めた。
+                    # 訂正欄・corrected_count は使わない)
                     if p.startswith("docs/_posts/") and diff_keys == {"updates"}:
                         # 本文は区切りの行だけを外して比べる(frontmatter の読み方は本文の先頭の空白まで外し、字下げの変化が届かない。
                         # Sol 監査 b6)
                         raw_body = lambda t: (lambda mm: t[mm.end():] if mm else t)(re.match(r"\A---\n.*?\n---\n", t, re.S))
-                        for e in update_change_errors(old, new_fm, raw_body(r.stdout), raw_body((ROOT / p).read_text(encoding="utf-8"))):
+                        for e in update_change_errors(old, new_fm, raw_body(r.stdout), raw_body((ROOT / p).read_text(encoding="utf-8")),
+                                                      revoked.get(Path(p).stem, set())):
                             rep.error(ROOT / p, e)
                         continue
                     for e in correction_change_errors(old, new_fm):
                         rep.error(ROOT / p, e)
+        r_rv_old = git("show", f"{base}:revoked_updates.yml")
+        rv_old_rows = load_revoked_updates(r_rv_old.stdout)[0] if r_rv_old.returncode == 0 else []
+        for e in revoked_record_errors(rv_old_rows, rv_rows, removed_now):
+            rep.error(REVOKED_UPDATES, e)
 
     print(f"\nlint: {rep.errors} errors, {rep.warnings} warnings "
           f"(posts={len(posts)}, editions={len(editions)}, editorials={len(editorials)})")

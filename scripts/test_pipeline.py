@@ -3554,7 +3554,7 @@ def test_site_maintenance_notice(tmp: Path):
     env_keys = ("FAKE_CODEX_SPEC", "FAKE_FETCH_PAGE", "FAKE_SCRIPTS", "FAKE_MAINTE", "FAKE_STATE", "IMAS_FETCH_PAGES", "PATH")
     saved = (compose.ROOT, pipelib.ROOT, compose.classify_source, compose.storylink.prior_lookup, compose.DEADLINE,
              {k: os.environ.get(k) for k in env_keys}, compose.subprocess.Popen)
-    lint_keys = ("ROOT", "DOCS", "POSTS", "EDITIONS", "EDITORIALS", "CANDIDATES", "IDOLS", "WITHDRAWN", "REWRITES")
+    lint_keys = ("ROOT", "DOCS", "POSTS", "EDITIONS", "EDITORIALS", "CANDIDATES", "IDOLS", "WITHDRAWN", "REWRITES", "REVOKED_UPDATES")
     saved_lint, saved_argv = {k: getattr(lint, k) for k in lint_keys}, sys.argv
     marked = lambda s, d: (posts / f"{d}-{s}.md").read_text(encoding="utf-8").count(renderlib.NOTICE_MARK)
     try:
@@ -3621,6 +3621,7 @@ def test_site_maintenance_notice(tmp: Path):
         lint.POSTS, lint.EDITIONS, lint.EDITORIALS = posts, tmp / "docs" / "_editions", tmp / "docs" / "_editorials"
         lint.CANDIDATES, lint.IDOLS = tmp / "candidates", tmp / "docs" / "_data" / "idols.json"
         lint.WITHDRAWN, lint.REWRITES = tmp / "withdrawn.yml", tmp / "rewrites.yml"
+        lint.REVOKED_UPDATES = tmp / "revoked_updates.yml"
         # lint 全体を通す下準備: 名鑑と、書いた号ごとの号スナップショット(一面は portal。Sol 監査 r3 の later)
         import datetime
         idols = json.loads((repo / "docs" / "_data" / "idols.json").read_text(encoding="utf-8"))
@@ -6328,7 +6329,7 @@ def _collect_repo(tmp: Path) -> Path:
     (root / "source_types.yml").write_text((repo / "source_types.yml").read_text(encoding="utf-8"), encoding="utf-8")
     (root / "candidates" / "2026-10-14.json").write_text("[]\n", encoding="utf-8")
     (root / "stock" / "watch-state.json").write_text("{}\n", encoding="utf-8")
-    # 本番の作業ツリーには発行済みの記事がある(収集の成果の範囲 COLLECT_OUTPUTS に docs/_posts。収集が「その後の動き」を足す)
+    # 本番の作業ツリーには発行済みの記事がある(収集は記事に書かない。収集の成果の範囲 COLLECT_OUTPUTS にも入れない)
     (root / "docs" / "_posts").mkdir(parents=True)
     (root / "docs" / "_posts" / "2026-10-13-k.md").write_text("---\n" + article_fm("k", "2026-10-13") + "---\n本文。\n", encoding="utf-8")
     G("add", "-A")
@@ -13021,7 +13022,7 @@ def test_correction_append_only(tmp: Path):
     for a in (["init", "-q", "-b", "main"], ["config", "user.email", "t@example.com"], ["config", "user.name", "t"],
               ["add", "-A"], ["commit", "-qm", "base"]):
         subprocess.run(["git", *a], cwd=root, capture_output=True, check=True)
-    keys = ("ROOT", "DOCS", "POSTS", "EDITIONS", "EDITORIALS", "CANDIDATES", "IDOLS", "WITHDRAWN", "REWRITES")
+    keys = ("ROOT", "DOCS", "POSTS", "EDITIONS", "EDITORIALS", "CANDIDATES", "IDOLS", "WITHDRAWN", "REWRITES", "REVOKED_UPDATES")
     saved, saved_argv = {k: getattr(lint, k) for k in keys}, sys.argv
 
     def run_lint() -> list[str]:
@@ -13036,6 +13037,7 @@ def test_correction_append_only(tmp: Path):
         lint.POSTS, lint.EDITIONS, lint.EDITORIALS = posts, root / "docs" / "_editions", root / "docs" / "_editorials"
         lint.CANDIDATES, lint.IDOLS = root / "candidates", root / "docs" / "_data" / "idols.json"
         lint.WITHDRAWN, lint.REWRITES = root / "withdrawn.yml", root / "rewrites.yml"
+        lint.REVOKED_UPDATES = root / "revoked_updates.yml"
         write([first, second], "本文(訂正した)。\n")
         ok_lines = run_lint()
         write([{**first, "initial": "書き換え"}, second], "本文(訂正した)。\n")
@@ -20094,13 +20096,13 @@ def yaml_fm(text: str) -> dict:
 
 
 def test_source_watch(tmp: Path):
-    """発行済み記事の出典の見回りと、出典の変更の扱い(編集長 2026-10-26「記事の中で時系列を扱え」「訂正欄ではない」):
+    """発行済み記事の出典の見回りと、出典の変更の扱い(編集長 2026-11-01「追記ではなく、間違った情報の修正だけ。追記するなら記事を出せ」):
     - 見回るのは読者にまだ効く記事(event_date・素材の締切が今日以降、続報予約あり)の出典。一巡が2日を超えない件数まで上限と並列を上げ、
       一巡の日数を記録する。読み残しで超えたら申告する
-    - 変化は、書き手のモデルの判定(種類と文)→校閲のモデル→コードが記事の updates に追記(本文・訂正欄は触らない。冪等)、人へ通知、
-      読者に関わる変化は「出典の更新」の素材(source_change)にする。校閲の block は1回直させる。表示の揺れ・記事に関係なしは足さない
+    - 変化は、書き手のモデルの判定(種類と要約)→校閲のモデル→通ったものを「出典の更新」の素材(source_change)にするだけ(発行済みの
+      記事には書かない。冪等)。校閲の block は1回直させる。表示の揺れ・記事に関係なしは素材にしない。出典元の訂正は訂正が要ると申告する
     - 答えが読めない変化は次の回にやり直し、3回で申告する
-    - append-only の検査は updates の追記だけを通す(本文の書き換え・既存の更新の書き換えは通さない)"""
+    - append-only の検査は updates の新しい追記を通さず、取り消しの台帳に載った更新を外すことだけを通す"""
     import contextlib, datetime, io, math
     import page_archive as pa
     import source_watch as sw
@@ -20194,8 +20196,9 @@ def test_source_watch(tmp: Path):
         pipelib.ROOT = saved_root
     check(stats2["checked"] == 0 and any("一巡しない" in str(a) for a in pipelib.ANOMALIES), f"読み残しで一巡が延びても申告しない: {stats2}")
     pipelib.ANOMALIES.clear()
-    # 変化の扱い: 判定(変更)→校閲(1回目 block → 直した案を approve)→記事の updates に追記・通知・出典の更新の素材
+    # 変化の扱い: 判定(変更)→校閲(1回目 block → 直した案を approve)→出典の更新の素材(記事には書かない・通知しない)
     calls, notes = [], []
+    posts_before = {p.name: p.read_text(encoding="utf-8") for p in posts.glob("*.md")}
 
     def judge_fn(art, row, diff, date, prev=None, issue="", root=None, **k):
         calls.append(("judge", art["slug"], issue))
@@ -20216,15 +20219,12 @@ def test_source_watch(tmp: Path):
     finally:
         sw.notify = saved_n
     after = (posts / f"{ed}-a.md").read_text(encoding="utf-8")
-    fm_b, fm_a = yaml_fm(before), yaml_fm(after)
-    ups = fm_a.get("updates") or []
-    check(len(ups) == 1 and ups[0]["kind"] == "変更" and "11月3日" in ups[0]["text"] and ups[0]["source"] == u1
-          and after.split("\n---\n", 1)[1] == before.split("\n---\n", 1)[1]
-          and {k: v for k, v in fm_a.items() if k != "updates"} == fm_b and not fm_a.get("corrections") and fm_a.get("corrected") is False,
-          f"記事の時系列の更新: {ups} / 本文・ほかの欄が変わった")
-    check(len(applied) == 1 and again[1] == [] and [c["id"] for c in again[0]] == [c["id"] for c in cands]
-          and ("judge", "a", "変わる前と後の値が無い") in calls and notes and "11月3日" in notes[0]
-          and u1 in notes[0], f"校閲の block を直させる・冪等・通知・保存を確かめるまで素材を返し続ける: {calls} {notes[:1]} {again}")
+    check(after == before and {p.name: p.read_text(encoding="utf-8") for p in posts.glob("*.md")} == posts_before,
+          "出典の変化を発行済みの記事に書いた(追記するなら記事を出す。編集長 2026-11-01)")
+    check(len(applied) == 1 and applied[0]["kind"] == "変更" and "11月3日" in applied[0]["text"] and applied[0]["article"] == f"{ed}-a"
+          and applied[0]["candidate"] == cands[0]["id"] and again[1] == [] and [c["id"] for c in again[0]] == [c["id"] for c in cands]
+          and ("judge", "a", "変わる前と後の値が無い") in calls and not notes,
+          f"校閲の block を直させる・冪等・記事に足した旨を通知しない・保存を確かめるまで素材を返し続ける: {calls} {notes[:1]} {again}")
     sw.clear_pending([c["id"] for c in cands])
     check(sw.process_changes(today, sw.published(today, tmp), tmp, judge_fn, review_fn) == ([], []),
           "候補の保存を確かめたあとも出典の更新の素材を返した")
@@ -20233,7 +20233,6 @@ def test_source_watch(tmp: Path):
           and any(f.startswith("変更後") and "11月3日" in f for f in cands[0]["facts"])
           and any(f.startswith("変更前") and "10月30日" in f for f in cands[0]["facts"]) and pipelib.schema_ok(cands[0], cand_schema),
           f"出典の更新の素材: {cands}")
-    pipelib.write_checked(posts / f"{ed}-a.md", after)       # 書式どおり
     # 2度目の変化: 変わる前の版は1度目の変化の後の版(収集時点の版との違いで1度目の変化を重ねて書かない)
     third = "応募締切は11月3日まで延長しました。価格は3000円。出演者に〇〇が加わりました。"
     pa.save(u1, third, via="read", at=(pipelib.now_jst() + datetime.timedelta(hours=1)).isoformat(timespec="seconds"))
@@ -20249,9 +20248,21 @@ def test_source_watch(tmp: Path):
         _, applied2 = sw.process_changes(today, sw.published(today, tmp), tmp, judge2, lambda *a, **k: {"verdict": "approve", "issue": ""})
     finally:
         sw.notify = saved_n
-    ups2 = yaml_fm((posts / f"{ed}-a.md").read_text(encoding="utf-8")).get("updates") or []
-    check(len(applied2) == 1 and len(ups2) == 2 and seen_diffs and "出演者" in seen_diffs[0] and "10月30日" not in seen_diffs[0],
-          f"2度目の変化で1度目の変化を重ねた: {seen_diffs[:1]} {len(ups2)}")
+    check(len(applied2) == 1 and applied2[0]["kind"] == "追加" and seen_diffs and "出演者" in seen_diffs[0] and "10月30日" not in seen_diffs[0],
+          f"2度目の変化で1度目の変化を重ねた: {seen_diffs[:1]} {applied2}")
+    # 出典元の訂正: 記事は誤った値を載せたままなので、訂正が要ると申告する(記事は書き換えない。素材にはする)
+    pa.save(u1, third.replace("〇〇", "△△"), via="read", at=(pipelib.now_jst() + datetime.timedelta(hours=1.5)).isoformat(timespec="seconds"))
+    pipelib.ANOMALIES.clear()
+    fix_text = "出演者の〇〇は△△の誤りでした。"
+    pend_fix, applied_fix = sw.process_changes(
+        today, sw.published(today, tmp), tmp,
+        lambda art, *a, **k: {"kind": "出典元の訂正", "text": fix_text, "reason": "-"} if art["slug"] == "a"
+        else {"kind": "記事に関係なし", "text": "", "reason": "-"}, lambda *a, **k: {"verdict": "approve", "issue": ""})
+    check(len(applied_fix) == 1 and any(f"記事 {ed}-a の訂正が要る" in str(x) and fix_text in str(x) and u1 in str(x) for x in pipelib.ANOMALIES)
+          and any(c["id"] == applied_fix[0]["candidate"] for c in pend_fix),
+          f"出典元の訂正を、訂正が要ると申告しない・素材にしない: {pipelib.ANOMALIES} {applied_fix}")
+    pipelib.ANOMALIES.clear()
+    check({p.name: p.read_text(encoding="utf-8") for p in posts.glob("*.md")} == posts_before, "出典元の訂正で記事を書き換えた")
     # 続報の記事は元の記事を follows に持つ(紙面で互いにリンクする)。同じページの候補に混ぜても source_change を失わない
     tgt = cand_row("old", u1)
     pipelib.merge_candidate_facts(tgt, cands[0])
@@ -20343,33 +20354,35 @@ def test_source_watch(tmp: Path):
         st7 = sw.load_state()
         check(sessions == [("judge", 100)] and app7 == [] and not any(k.endswith("|src.example/news/4") for k in st7["tries"]),
               f"締切を過ぎてから校閲を起動した・時間切れを失敗に数えた: {sessions} {st7['tries']}")
-        # (8) 記事を書く直前に止まっても素材は控えてあり、やり直しで同じ素材のまま記事に足す。書いたあと止まった回は判定し直さない
-        saved_wc = sw.write_checked
+        # (8) 素材と扱い終えた版は同じ保存で進む: その保存の直前に止まったら、次の回に同じ変化を判定し直して同じ素材(同じ id)を1つだけ
+        # 作る。保存できたあとは判定し直さず、同じ変化を二重に素材にしない
+        saved_ss = sw.save_state
         before8 = set(sw.load_state()["pending"])
+
+        def stop_at_adopt(done):
+            if any(c.get("url") == u4 for i, c in done["pending"].items() if i not in before8):
+                raise RuntimeError("素材を保存する直前に止まった")
+            saved_ss(done)
+        n_judge8 = len(seen4)
         try:
-            sw.write_checked = lambda p, t: (_ for _ in ()).throw(RuntimeError("書く直前に止まった"))
-            pend8, app8 = sw.process_changes(today, sw.published(today, tmp), tmp, judge4, approve)
+            sw.save_state = stop_at_adopt
+            sw.process_changes(today, sw.published(today, tmp), tmp, judge4, approve)
+            stopped8 = False
+        except RuntimeError:
+            stopped8 = True
         finally:
-            sw.write_checked = saved_wc
-        ids8 = [c["id"] for c in pend8 if c["url"] == u4 and c["id"] not in before8]
+            sw.save_state = saved_ss
+        st8 = sw.load_state()
         pend8b, app8b = sw.process_changes(today, sw.published(today, tmp), tmp, judge4, approve)
+        ids8 = [c["id"] for c in pend8b if c["url"] == u4 and c["id"] not in before8]
         n_judge = len(seen4)
         pend8c, app8c = sw.process_changes(today, sw.published(today, tmp), tmp, judge4, approve)
-        check(app8 == [] and len(ids8) == 1 and len(app8b) == 1
-              and [c["id"] for c in pend8b if c["url"] == u4 and c["id"] not in before8] == ids8
+        check(stopped8 and not any(i not in before8 for i in st8["pending"]) and len(seen4) - n_judge8 == 2
+              and len(app8b) == 1 and len(ids8) == 1 and ids8 == [app8b[0]["candidate"]]
+              and [c["id"] for c in pend8c if c["url"] == u4 and c["id"] not in before8] == ids8
               and app8c == [] and len(seen4) == n_judge,
-              f"書く直前に止まった変化の素材を失った・重ねた: {ids8} {app8b} {app8c}")
-        # (8d) 記事に書いたあと(反映した版を残す前)に止まった: 記事に同じ変化の更新があれば判定し直さずに版を進める
-        pa.save(u4, "応募締切は10月30日。価格は3000円。E版。", via="read", at=later_at(5.5))
-        ne = pa.latest(u4)
-        dpath = posts / f"{ed}-d.md"
-        dpath.write_text(sw.with_update(dpath.read_text(encoding="utf-8"), {"at": ne["at"], "kind": "変更", "text": "E版になりました。",
-                                                                              "source": u4, "from_at": "x", "to_at": ne["at"]}), encoding="utf-8")
-        n_judge = len(seen4)
-        sw.process_changes(today, sw.published(today, tmp), tmp, judge4, approve)
-        m8 = sw.load_state()["marks"].get(f"{ed}-d|src.example/news/4") or {}
-        check(len(seen4) == n_judge and m8.get("sha") == ne["sha"], f"書いたあと止まった変化を判定し直した: {len(seen4) - n_judge} {m8}")
-        # (9) 同じ出典の記事の一部だけ足せた(d は足し、もう1本は答えなし)あとに元へ戻った: それぞれの記事が反映した版から判定する
+              f"保存の直前に止まった変化の素材を失った・重ねた: {ids8} {app8b} {app8c}")
+        # (9) 同じ出典の記事の一部だけ扱えた(d は素材にし、もう1本は答えなし)あとに元へ戻った: それぞれの記事が扱い終えた版から判定する
         (posts / f"{ed}-e.md").write_text("---\n" + article_fm("e", ed, candidate_ids=["cd"], sources=src(u4)) + "---\n" + body,
                                           encoding="utf-8")
         judged9 = []
@@ -20519,31 +20532,32 @@ def test_source_watch(tmp: Path):
     check(st5["tried"] == 3 and st5["checked"] == 0 and st5["cycle_days_actual"] is None and any("一巡しない" in str(a) for a in pipelib.ANOMALIES),
           f"読めなかった見回りを読み直せたと数えた: {st5}")
     pipelib.ANOMALIES.clear()
-    # (6) 途中で終わった収集の確定に、その後の動きを足した記事も入る(作業ツリーに残さない)
-    # (一時の Git で: 収集の成果の範囲(COLLECT_OUTPUTS)に、その後の動きを足した記事が入り、書式どおりなら戻されずに残る)
-    groot = tmp / "settle"
-    (groot / "docs" / "_posts").mkdir(parents=True)
-    shutil.copytree(tmp / "schema", groot / "schema")
-    gp = groot / "docs" / "_posts" / f"{ed}-a.md"
-    gp.write_text(before, encoding="utf-8")
-    for a in (["init", "-q", "-b", "main"], ["config", "user.email", "t@example.com"], ["config", "user.name", "t"],
-              ["add", "-A"], ["commit", "-qm", "base"]):
-        subprocess.run(["git", *a], cwd=groot, capture_output=True, check=True)
-    gp.write_text(sw.with_update(before, ups[0]), encoding="utf-8")
-    saved_root = pipelib.ROOT
-    try:
-        pipelib.ROOT = groot
-        dropped = pipelib.settle_collect_outputs(groot)
-    finally:
-        pipelib.ROOT = saved_root
-    st6 = subprocess.run(["git", "status", "--porcelain", "--", *pipelib.COLLECT_OUTPUTS], cwd=groot, capture_output=True, text=True).stdout
-    check(not dropped and f"docs/_posts/{ed}-a.md" in st6, f"途中で終わった収集の確定に、その後の動きを足した記事が入らない: {dropped} {st6!r}")
-    # append-only: updates の追記だけを通す
-    ob, nb = before.split("\n---\n", 1)[1], after.split("\n---\n", 1)[1]
-    check(_lint.update_change_errors(fm_b, fm_a, ob, nb) == [], "updates の追記を append-only 違反にした")
-    check(_lint.update_change_errors(fm_b, fm_a, ob, nb + "書き換え") and _lint.update_change_errors(fm_a, dict(fm_a, updates=[]), nb, nb)
-          and _lint.update_change_errors(fm_b, dict(fm_a, title="別"), ob, nb)
-          and _lint.update_change_errors(fm_b, fm_a, ob, "    " + nb), "本文(字下げを含む)・既存の更新・ほかの欄の書き換えを通した")
+    # 見回り・判定の全部を通して、発行済みの記事は1字も変わらない(収集は記事に書かない。収集の成果の範囲にも記事は無い)
+    check(all((posts / n).read_text(encoding="utf-8") == t for n, t in posts_before.items())
+          and not any(str(o).startswith("docs") for o in pipelib.COLLECT_OUTPUTS),
+          "出典の見回り・変化の扱いが発行済みの記事を書き換えた・収集の成果の範囲に記事が入っている")
+    # append-only: その後の動き(updates)の新しい追記は通さない。取り消しの台帳に載った at の更新を外すことだけを通す
+    fm_b = yaml_fm(before)
+    ob = before.split("\n---\n", 1)[1]
+    e1 = {"at": "2026-11-02T03:00:00+09:00", "kind": "変更", "text": "締切が延長されました。", "source": u1, "from_at": "x", "to_at": "y"}
+    e0 = dict(e1, at="2026-10-28T18:37:12+09:00", text="予定どおり配信されました。")
+    e2 = dict(e1, at="2026-10-29T02:40:36+09:00", text="試聴が始まりました。")
+    check(_lint.update_change_errors(fm_b, dict(fm_b, updates=[e1]), ob, ob) != [], "その後の動きの新しい追記を通した")
+    check(_lint.update_change_errors(fm_b, dict(fm_b, updates=[dict(e1, at="2026-11-01T07:54:49+09:00")]), ob, ob) == [],
+          "自動の追記を止める前(UPDATES_APPEND_UNTIL より前)に足した追記を、号のブランチの差分として通さない")
+    with_two = dict(fm_b, updates=[e0, e2])
+    rv = {e0["at"]}
+    check(_lint.update_change_errors(with_two, dict(fm_b, updates=[e2]), ob, ob, rv) == []
+          and _lint.update_change_errors(dict(fm_b, updates=[e0]), fm_b, ob, ob, rv) == [],
+          "取り消しの台帳に載った更新を外すのを通さない(一部・全部)")
+    check(_lint.update_change_errors(with_two, dict(fm_b, updates=[e2]), ob, ob) != []
+          and _lint.update_change_errors(with_two, dict(fm_b, updates=[e0]), ob, ob, rv) != []
+          and _lint.update_change_errors(with_two, dict(fm_b, updates=[dict(e2, text="書き換え")]), ob, ob, rv) != []
+          and _lint.update_change_errors(with_two, dict(fm_b, updates=[e2], title="別"), ob, ob, rv) != []
+          and _lint.update_change_errors(with_two, dict(fm_b, updates=[e2]), ob, ob + "書き換え", rv) != []
+          and _lint.update_change_errors(with_two, dict(fm_b, updates=[e2]), ob, "    " + ob, rv) != []
+          and _lint.update_change_errors(with_two, dict(fm_b, updates=[e2, e1]), ob, ob, rv) != [],
+          "台帳に無い更新の取り消し・残った更新の書き換え・ほかの欄や本文(字下げを含む)の書き換え・取り消しに紛れた追記を通した")
 
 
 def test_article_updates_render(tmp: Path):
@@ -20564,8 +20578,8 @@ def test_article_updates_render(tmp: Path):
     entry = {"at": "2026-10-27T12:00:00+09:00", "kind": "変更", "text": "応募締切が10月30日から11月3日に延長されました。",
              "source": "https://src.example/news/1", "from_at": "2026-10-20T09:00:00+09:00", "to_at": "2026-10-27T11:00:00+09:00"}
     body = "元の本文。 <!-- F1 -->\n"
-    old_text = "---\n" + article_fm("orig", "2026-10-20", layout="article", title="元の記事") + "---\n" + body
-    new_post = sw.with_update(old_text, entry)
+    # 既にある「その後の動き」は描画し続ける(2026-11-01 に追記をやめた前に足した分)
+    new_post = "---\n" + article_fm("orig", "2026-10-20", layout="article", title="元の記事", updates=[entry]) + "---\n" + body
     (site / "_posts" / f"{old_id}.md").write_text(new_post, encoding="utf-8")
     # 続報の記事は本物の組版の経路で作る: 素材の source_change → compose.follows_of → renderlib.render_article(Sol 監査 b1 の later)
     croot = tmp / "croot"
@@ -20599,46 +20613,83 @@ def test_article_updates_render(tmp: Path):
               and re.search(r'href="[^"]*/articles/' + re.escape(old_id) + r'/"', n)
               and f'href="{entry["source"]}"' in o,
               f"その後の動き・続報のリンクが紙面に出ない: rc {r.returncode} {r.stderr[-300:]} {list(pages)}")
-    # append-only の本物の lint(一時の Git): updates の追記は通し、本文の書き換えは止める
+    # append-only の本物の lint(一時の Git): その後の動きの新しい追記は止め、取り消しの台帳(revoked_updates.yml)に載せた更新を
+    # 外すことだけを通す(編集長 2026-11-01「追記ではなく、間違った情報の修正だけ。追記するなら記事を出せ」)
     root = tmp / "lintroot"
     posts = root / "docs" / "_posts"
     posts.mkdir(parents=True)
     shutil.copytree(repo / "schema", root / "schema")
     d = "2026-09-20"
     p = posts / f"{d}-k.md"
-    base_text = "---\n" + article_fm("k", d) + "---\n本文。\n"
-    p.write_text(base_text, encoding="utf-8")
+    wrong = dict(entry, at="2026-10-28T18:37:12+09:00", text="予定どおり配信されました。")
+    later = dict(entry, at="2026-11-02T03:00:00+09:00", text="締切がさらに延長されました。")
+    fm_with = lambda ups: "---\n" + article_fm("k", d, **({"updates": ups} if ups else {})) + "---\n本文。\n"
+    p.write_text(fm_with([wrong, entry]), encoding="utf-8")
+    G = lambda *a: subprocess.run(["git", *a], cwd=root, capture_output=True, check=True)
     for a in (["init", "-q", "-b", "main"], ["config", "user.email", "t@example.com"], ["config", "user.name", "t"],
               ["add", "-A"], ["commit", "-qm", "base"]):
-        subprocess.run(["git", *a], cwd=root, capture_output=True, check=True)
-    keys = ("ROOT", "DOCS", "POSTS", "EDITIONS", "EDITORIALS", "CANDIDATES", "IDOLS", "WITHDRAWN", "REWRITES")
+        G(*a)
+    keys = ("ROOT", "DOCS", "POSTS", "EDITIONS", "EDITORIALS", "CANDIDATES", "IDOLS", "WITHDRAWN", "REWRITES", "REVOKED_UPDATES")
     saved, saved_argv = {k: getattr(lint, k) for k in keys}, sys.argv
+    ledger = root / "revoked_updates.yml"
+    row = lambda at, post=f"{d}-k": f"- post: {post}\n  at: '{at}'\n  reason: 予定どおりの配信を変更とした誤った追記\n"
 
     def run_lint() -> list[str]:
+        """記事の append-only と、取り消しの台帳への error の行(号スナップショットが無いことなど、ほかの検査の行は見ない)。"""
         out = io.StringIO()
         sys.argv = ["lint.py", "--base", "HEAD", "--no-net"]
         with contextlib.redirect_stdout(out), contextlib.redirect_stderr(io.StringIO()):
             lint.main()
-        return [l for l in out.getvalue().splitlines() if l.startswith(f"::error file=docs/_posts/{d}-k.md::append-only")]
+        return [l for l in out.getvalue().splitlines()
+                if l.startswith((f"::error file=docs/_posts/{d}-k.md::append-only", "::error file=revoked_updates.yml::"))]
+    got = {}
     try:
         lint.ROOT, lint.DOCS = root, root / "docs"
         lint.POSTS, lint.EDITIONS, lint.EDITORIALS = posts, root / "docs" / "_editions", root / "docs" / "_editorials"
         lint.CANDIDATES, lint.IDOLS = root / "candidates", root / "docs" / "_data" / "idols.json"
         lint.WITHDRAWN, lint.REWRITES = root / "withdrawn.yml", root / "rewrites.yml"
-        p.write_text(sw.with_update(base_text, entry), encoding="utf-8")
-        ok_lines = run_lint()
-        p.write_text(sw.with_update(base_text, entry).replace("本文。", "書き換えた本文。"), encoding="utf-8")
-        bad_lines = run_lint()
+        lint.REVOKED_UPDATES = ledger
+        p.write_text(fm_with([wrong, entry, later]), encoding="utf-8")
+        got["追記"] = run_lint()
+        p.write_text(fm_with([entry]), encoding="utf-8")
+        got["台帳なしの取り消し"] = run_lint()
+        ledger.write_text(row(wrong["at"]), encoding="utf-8")
+        got["台帳ありの取り消し"] = run_lint()
+        p.write_text(fm_with([entry]).replace("本文。", "書き換えた本文。"), encoding="utf-8")
+        got["取り消しに紛れた本文の書き換え"] = run_lint()
         # 本文の先頭の字下げ(Markdown ではコードの塊になる)を紛れ込ませても止める(Sol 監査 b6)
-        p.write_text(sw.with_update(base_text, entry).replace("\n---\n本文。", "\n---\n    本文。"), encoding="utf-8")
-        indent_lines = run_lint()
+        p.write_text(fm_with([entry]).replace("\n---\n本文。", "\n---\n    本文。"), encoding="utf-8")
+        got["取り消しに紛れた本文の字下げ"] = run_lint()
+        p.write_text(fm_with([dict(entry, text="書き換え")]), encoding="utf-8")
+        got["残った更新の書き換え"] = run_lint()
+        p.write_text(fm_with([entry, later]), encoding="utf-8")
+        got["取り消しに紛れた追記"] = run_lint()
+        # 台帳の形式の誤り(at を引用符で囲まず YAML の日時になった)があれば、どの取り消しも通さない
+        p.write_text(fm_with([entry]), encoding="utf-8")
+        ledger.write_text(row(wrong["at"]).replace(f"'{wrong['at']}'", wrong["at"]), encoding="utf-8")
+        got["形式の誤り"] = run_lint()
+        # 台帳に載せたのに、この差分で外していない
+        ledger.write_text(row(wrong["at"]) + row(entry["at"]), encoding="utf-8")
+        got["外していない記録"] = run_lint()
+        # 台帳の記録は末尾への追記だけ(取り消しを確定したあと記録を消すと止める)
+        ledger.write_text(row(wrong["at"]), encoding="utf-8")
+        G("add", "-A")
+        G("commit", "-qm", "revoke")
+        got["確定後"] = run_lint()
+        ledger.write_text("", encoding="utf-8")
+        got["記録を消した"] = run_lint()
     finally:
         for k, v in saved.items():
             setattr(lint, k, v)
         sys.argv = saved_argv
-    check(ok_lines == [], f"本物の lint がその後の動きの追記を止めた: {ok_lines}")
-    check(bad_lines != [], "本物の lint がその後の動きの追記に紛れた本文の書き換えを通した")
-    check(indent_lines != [], "本物の lint がその後の動きの追記に紛れた本文の先頭の字下げを通した")
+    for case in ("台帳ありの取り消し", "確定後"):
+        check(got[case] == [], f"本物の lint が {case} を止めた: {got[case]}")
+    for case in ("追記", "台帳なしの取り消し", "取り消しに紛れた本文の書き換え", "取り消しに紛れた本文の字下げ", "残った更新の書き換え",
+                 "取り消しに紛れた追記", "形式の誤り", "外していない記録", "記録を消した"):
+        check(got[case] != [], f"本物の lint が {case} を通した")
+    check(any("追記は止めた" in l for l in got["追記"]) and any("形式が違う" in l for l in got["形式の誤り"])
+          and any("この差分に無い" in l for l in got["外していない記録"]) and any("末尾への追記だけ" in l for l in got["記録を消した"]),
+          f"本物の lint の止め方の理由が違う: {got}")
 
 
 def test_source_update_sessions(tmp: Path):

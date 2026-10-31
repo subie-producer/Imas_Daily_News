@@ -137,6 +137,26 @@ def date_mentioned(iso: str, hay: str, years: set[int] | None = None) -> bool:
     return False
 
 
+# リードの文末。上限ちょうどで切れた文を採らない(2026-10-31: 上限 140 字ちょうどで「…各日の出演者と配信URL」と切れたまま校閲を抜けて紙面に載った)
+# 文末の記号か閉じ括弧・閉じ引用符(”’】》〉］] など、閉じる向きが決まる記号)で終わるものは書き切った扱い。向きの無い " ' は開きと
+# 区別できないので、その終端のあとに続くときだけ認める(Sol 監査 r1・r2: 「“本日開催します。”」「"【本日開催】"」を誤って差し戻した)
+LEDE_END = re.compile(r"[。．！？!?」』）)”’】》〉］\]][\"']*$")
+# リードの字数の上限(依頼文 write-article の目安と同じ値。lint も lede_problem で見る)。執筆の出力の schema の上限はこれより広い(240)。
+# 上限ちょうどで codex が黙って切らないように schema は広く取り、超えたリードは検算が差し戻す(黙って載せない・黙って切らない)
+LEDE_MAX = 140
+
+
+def lede_problem(lede) -> str:
+    """リードが文末まで書き切れていない・字数の上限(LEDE_MAX)を超えていれば、その説明(どちらも無ければ空)。
+    執筆の検算(check_output)、既存稿の見直し(compose.contract_issues)、lint が同じこれで見る。"""
+    lede = str(lede or "").strip()
+    if lede and not LEDE_END.search(lede):
+        return f"リードが文の途中で終わっている(…{lede[-12:]})。短くして文末まで書き切る"
+    if len(lede) > LEDE_MAX:
+        return f"リードが{len(lede)}字(上限{LEDE_MAX}字)。長い正式名称は略して、{LEDE_MAX}字までの1文で文末まで書き切る"
+    return ""
+
+
 # 続報予約の種別ごとに、予約が指す出来事の日(occurs_on)が予約の日(予約のファイルの日付 = 記事を出す号)から何日後になりうるか。
 # 先頭が既定。締切前は締切の3日前の号に、06:00 より前に終わる締切・終了は前日の号に予約する(prompts/assemble-ledger.md)。
 # 締切前の4日後は、06:00 より前の締切を前日の号に予約し、その3日前にも予約したとき。ほかの種別はずれない
@@ -427,6 +447,8 @@ def check_output(out: dict, fact_by_id: dict[str, str], materials: list[dict], r
         m = markdown_in_plain(str(out.get(key) or "").strip())
         if m:
             problems.append(f"{label}に Markdown 記法 {m.group(0)!r} がある(この欄は記号がそのまま紙面に出る)")
+    if lede_problem(out.get("lede")):
+        problems.append(lede_problem(out.get("lede")))
     if not out.get("blocks"):
         problems.append("本文が空")
     if not out.get("sources"):

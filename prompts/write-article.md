@@ -67,7 +67,7 @@
 
 ## 7. 出力(JSON。形は schema が決める)
 - status: ok か decline(decline なら以下は空でよい)
-- title(全角換算28字まで)と title_fact_ids、lede(記事の中身を言い切る1文)と lede_fact_ids。title と lede には Markdown 記法(`**` など)を使わない。
+- title(全角換算28字まで)と title_fact_ids、lede(記事の中身を言い切る1文。140字まで。長い正式名称は略して、文末まで書き切る)と lede_fact_ids。title と lede には Markdown 記法(`**` など)を使わない。
   見出しには**どの作品・ブランド・アイドル・催しの話か**が入っていること。「公式X告知」「公式Xが」のように主体を名前で言わない書き方はしない
   (「ミリシタ、名月ログボで計500個」のように名前で書く)
 - blocks: 1 block = 1 段落(block の中に空行を入れない)。中見出しは `## 見出し` だけの block(fact_ids は空)。箇条書きは1行1項目で1 block にまとめてよい

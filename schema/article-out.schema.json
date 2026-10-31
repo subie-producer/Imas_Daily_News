@@ -11,7 +11,7 @@
     "decline_detail": {"type": "string", "maxLength": 300},
     "title": {"type": "string", "maxLength": 45, "description": "見出し(全角換算〜28字目安)。decline なら空"},
     "title_fact_ids": {"type": "array", "items": {"type": "string"}, "description": "見出しの根拠になった素材の事実 id(F1…)"},
-    "lede": {"type": "string", "maxLength": 140, "description": "リード1文。decline なら空"},
+    "lede": {"type": "string", "maxLength": 240, "description": "リード1文(140字まで)。文末まで書き切る。decline なら空"},
     "lede_fact_ids": {"type": "array", "items": {"type": "string"}},
     "blocks": {
       "type": "array",
@@ -32,7 +32,7 @@
         "type": "object", "required": ["id", "text", "url"], "additionalProperties": false,
         "properties": {
           "id": {"type": "string", "pattern": "^N\\d+$"},
-          "text": {"type": "string", "minLength": 1, "maxLength": 300},
+          "text": {"type": "string", "minLength": 1, "maxLength": 600},
           "url": {"type": "string", "minLength": 8}
         }
       }

@@ -1151,6 +1151,7 @@ x_posts:
 
 # --- リンク元から引き継いだ種別(リンク先1つずつ。キーは pipelib.link_key)。合議がリンク元の告知と関係していると確かめたものだけ(classify_sources.inherit_from_links)。リンク先そのものの種別より強いときだけ効く ---
 link_types:
+  youtube.com/watch?v=F4OpPsdXVjk: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/gkmas_official/status/2116092768145535342(公式)。Agitato CD告知の公式投稿で紹介された、収録曲の葛城リーリヤSolo v
   youtube.com/watch?v=m0nu3nQml5A: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/imas_official/status/2116363664580374628(公式)。リンク元の告知したMOIW2025『RELOADING』フル尺の動画
   youtube.com/watch?v=K_6XYhBmS9g: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/valiv_official/status/2116455151577989220(公式)。リンク元の告知した『仮装狂騒曲』踊ってみた動画そのもの
   youtube.com/watch?v=-2WKY8ar26k: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/imassc_prism/status/2116372089443663969(公式)。リンク元の告知した3周年記念楽曲『OVERLAY OF HOPES』のMV

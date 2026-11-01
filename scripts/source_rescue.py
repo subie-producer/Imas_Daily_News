@@ -7,7 +7,7 @@
 「外部」「後続号に戻るかもしれない」で終えた。公式 X・当事者のページは実在し、手での救済(Grok の深掘り → Luna の確かめ →
 verify → 素材への merge → 計画の素材への追加)で3本とも当日号に戻った。その手順を道具にしたもの。
 
-手順(どれも収集の既存の関数。素材の事実はこの道具が作らない):
+手順(どれも収集の既存の関数。素材の事実はこの道具が作らない。公式の投稿の本文を写すだけ。official_post_items):
 1. 当たりの調べ(記事ごと・並列): モデル(定点観測の facts 化と同じ道具立て)が、記事の素材と見送りの理由から、
    公式・当事者・報道のページの URL と、X の原本で確かめる問いを挙げる(prompts/source-rescue.md)
 2. 並列に:
@@ -141,8 +141,39 @@ def answered_posts(text: str, asks: list[dict]) -> list[tuple[str, str, int]]:
     return out
 
 
-def grok_phase(asks_by_slug: dict[str, list[dict]], arts: dict[str, dict], outdir: Path, log: dict) -> list[tuple[str, dict]]:
-    """X の原本の深掘り。戻りは [(slug, Luna が確かめた候補)]。問いごとの結果(見つかった投稿)は log に書く。"""
+def post_body(block: str) -> str:
+    """Grok の書き出しの投稿1件の本文(リポストの「元の投稿:」以降とリンクの欄は含めない)。"""
+    m = re.search(r"(?ms)^\s*-\s*本文\s*[:：][ \t]*\n?(.*?)(?=^\s*-\s*リンク\s*[:：]|^元の投稿\s*[:：]|\Z)", block)
+    return m.group(1).strip() if m else ""
+
+
+def official_post_items(text: str, items: list[dict]) -> list[dict]:
+    """問いに答えた公式・準公式の投稿のうち、確かめ(Luna)が販売ページなどの候補にまとめて、投稿そのものの候補が無いものを、候補にして返す。
+    確かめは「同じ告知は元の告知の url に1件」にまとめ、前の巡の候補と同じなら候補を書かないので、作品の公式が販売元の告知をリポストしても
+    公式の出典が素材に残らない(2026-11-02: @imasml_765PRO のリポストに届いたのに候補は販売ページだけで、R5 の公式が揃わなかった)。
+    items は確かめの候補と記事の素材。投稿がそのどれかの url・リンク元を含むときだけ(同じ話題の投稿と言える)。事実は投稿の本文を写す。"""
+    have = {collect.post_key(it.get("url") or "") for it in items}
+    out = []
+    for b in collect.post_blocks(text):
+        url = collect.post_url(b)
+        if not url or collect.post_key(url) in have or collect.classify_source(url) not in ("公式", "準公式"):
+            continue
+        base = next((it for it in items if any(u and u in b for u in (it.get("url"), it.get("link_from")))), None)
+        lines = [ln.strip() for ln in post_body(b).splitlines() if ln.strip() and not re.fullmatch(r"https?://\S+", ln.strip())]
+        if not base or not lines:
+            continue
+        rt = re.match(r"RT @(\w+):\s*", lines[0])
+        facts = [f"{url.split('/')[3]} が @{rt.group(1)} の投稿をリポストした。"] if rt else []
+        facts += [lines[0][rt.end():] if rt else lines[0], *lines[1:]]
+        out.append({"url": url, "title": base.get("title") or "", "brand": base.get("brand") or "", "dedup_key": base.get("dedup_key") or "",
+                    "facts": [f for f in facts if f], "quote": "", "_via": "grok"})
+    return out
+
+
+def grok_phase(asks_by_slug: dict[str, list[dict]], arts: dict[str, dict], outdir: Path, log: dict,
+               known: list[dict] | None = None) -> list[tuple[str, dict]]:
+    """X の原本の深掘り。戻りは [(slug, Luna が確かめた候補)]。問いごとの結果(見つかった投稿)は log に書く。known は記事の素材。"""
+    pool = list(known or [])     # 公式の投稿が同じ話題かを照らす相手(記事の素材と、ここまでの巡の候補)
     queries = collect.build_prompts()
     deep: dict[str, list[dict]] = {}
     # 問い → slug は、問いの**オブジェクト**で引く(id)。問いの文が同じ2記事を、値の等しさ(.index)で先の記事に寄せない(Sol 監査 r4)。
@@ -169,6 +200,7 @@ def grok_phase(asks_by_slug: dict[str, list[dict]], arts: dict[str, dict], outdi
     def one_round(chosen: dict[str, list[dict]], suffix: str, retry: bool) -> None:
         failed = collect.deep_dive_grok(queries, outdir, chosen, errs, suffix=suffix, retry=retry)
         items, _ = collect.verify_grok_faces([by_key[k] for k in chosen], outdir, suffix=suffix, ledger=ledger)
+        pool.extend(items)
         posts: dict[str, set[str]] = {}       # 投稿 → 答えた問いの記事(同じ投稿が複数の記事の問いに答えることがある)
         for k, asks in chosen.items():
             text = collect.read_written(outdir / f"{k}{suffix}.md")
@@ -180,6 +212,9 @@ def grok_phase(asks_by_slug: dict[str, list[dict]], arts: dict[str, dict], outdi
                 slug = owner[id(asks[n - 1])]
                 posts.setdefault(pk, set()).add(slug)
                 log["asks"][slug][asks[n - 1]["question"]].append(url)
+            added = official_post_items(text, pool)
+            items += added
+            pool.extend(added)
         for it in items:
             it["_via"] = "grok"
             slugs = posts.get(collect.post_key(it["url"])) or posts.get(collect.post_key(it.get("link_from") or ""))
@@ -344,7 +379,8 @@ def rescue(date: str, slugs: list[str], until: float | None = None, dry_run: boo
     pages = {s: [t for t in ts if t["kind"] == "page"] for s, ts in tasks.items()}
     found: list[tuple[str, dict]] = []
     with concurrent.futures.ThreadPoolExecutor(max_workers=len(arts) + 1) as ex:
-        futs = [ex.submit(grok_phase, {s: v for s, v in asks.items() if v}, arts, outdir, log)]
+        known = [mats[i] for s, v in asks.items() if v for i in arts[s].get("candidate_ids") or [] if i in mats]
+        futs = [ex.submit(grok_phase, {s: v for s, v in asks.items() if v}, arts, outdir, log, known)]
         futs += [ex.submit(page_phase, s, v, arts[s].get("brand") or "other", log) for s, v in pages.items() if v]
         for f in futs:
             try:

@@ -309,8 +309,10 @@ def settled_drops(date: str, root: Path | None = None) -> dict[str, str]:
     return out
 
 
-# 出典が足りずに見送った理由コード(renderlib.DECLINE_CODES のうち、出典を揃えれば書ける見送り)
-SOURCE_DECLINE_CODES = ("NO_PRIMARY_SOURCE", "SOURCE_MISMATCH")
+# 出典が足りずに見送った理由コード(renderlib.DECLINE_CODES のうち、出典を揃えれば書ける見送り)と、同じ理由の校閲ブロックの規則
+# (R4 出典の不一致・R5 公式が無い。外れた記事の記録の理由は規則から始まる)。2026-11-02: 公式の投稿があるスクラッチの記事が R5 で
+# 校閲ブロックになり、見送りのコードだけを見ていたので入口を通らずに落ちた
+SOURCE_DECLINE_CODES = ("NO_PRIMARY_SOURCE", "SOURCE_MISMATCH", "R4", "R5")
 
 
 def source_lacking_drops(date: str, root: Path | None = None) -> dict[str, str]:
@@ -3232,6 +3234,8 @@ def extract_periods(text: str, limit: int = 12) -> list[str]:
             for line in (ln.strip(" :：\t") for ln in tail.split("\n")):
                 if not line:
                     continue
+                if line.startswith("を"):   # 「受付期間を…まで延長」は文の途中で「ラベル: 値」ではない(まとめサイトの「最近の投稿」の別の話題の題も拾った)
+                    break
                 if _DATE_RE.search(line):
                     v = re.sub(r"\s+", " ", line)[:80]
                     key = (label, v)

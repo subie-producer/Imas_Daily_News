@@ -1611,7 +1611,7 @@ def resolve_playlists(date: str, apply: bool) -> tuple[list[str], dict[str, tupl
             left.append(f"https://www.{key}: 持ち主のチャンネル(@{handle})が判定表に無い(チャンネルの合議でも決まらなかった)")
             unknown_chans.setdefault(handle, (key, title))
         else:
-            left.append(f"https://www.{key}: 再生リストの持ち主を引けない(oEmbed が返さない。削除・非公開か)")
+            left.append(f"https://www.{key}: 再生リストの持ち主を引けなかった(合議に掛かっていない。oEmbed が返さない・ハンドルが無い。削除・非公開の場合もある)")
     if found and apply:
         add_paths(found, how="機械で追加")
         print(f"  → 再生リスト {len(found)}件を表に追加(持ち主のチャンネルの種別を写した)")
@@ -1809,10 +1809,14 @@ def main() -> int:
         if chans and args.apply:
             add_video_channels(chans)
             print(f"  → チャンネル {len(chans)}件を表に追加")
-            left, _ = resolve_videos(date, True)
+            left, late = resolve_videos(date, True)
+            # 投稿者の取得は断続的に失敗する。引き直しで初めて分かった投稿者のチャンネルは合議に掛けていない
+            asked = {h.lower() for h in unknown_chans}
+            left = [next((f"{x}: 投稿者 @{h} は引き直しで分かった(チャンネルは合議に掛かっていない。次の判定で掛かる)"
+                          for h in late if h.lower() not in asked and x.endswith(f"(@{h})")), x) for x in left]
             left += resolve_playlists(date, True)[0]
-            # チャンネルのページは動画・再生リストの引き直しに出てこない。決まらなかったものは合議の不一致のまま残す
-            left += [x for x in split if any(x.lower().startswith(f"youtube.com/@{h.lower()}:") for h in YT_CHANNELS)]
+            # 引き直しの行は「決まらなかった」ことだけを言う。割れたチャンネルの両モデルの言い分はここで足す
+            left += split
         else:
             left = [x for x in left if not any(f"(@{h})" in x for h in chans)] + split
     split_all += left
@@ -1832,7 +1836,7 @@ def main() -> int:
         if agreed and args.apply:
             add_paths(agreed)
             print(f"  → チャンネル {len(agreed)}件を表に追加")
-            left, _ = resolve_nico(date, True)
+            left = resolve_nico(date, True)[0] + split
         else:
             left = [x for x in left if not any(f"({k})" in x for k in agreed)] + split
     split_all += left
@@ -1862,7 +1866,9 @@ UNRESOLVED = ROOT / "metrics" / "classify-unresolved.json"    # Git 管理外。
 
 
 def save_unresolved(rows: list[str]) -> None:
-    """決まらなかった対象と、両モデルの言い分を残す(キー → 説明)。次の判定で上書き。
+    """決まらなかった対象と、両モデルの言い分を残す(キー → 説明)。次の判定で上書き
+    (組版前の判定はその号の記事しか見ないので、見た対象だけを置き換える。全部を上書きすると他の号の言い分が消え、
+    watch が「合議に掛かっていない」と出す)。
     翌朝の watch が「未確認の出典」を出すとき、どこで割れたかを併記する(編集長: 何の記事のためのリンクか、
     なぜ決まらないのかが無いと人は判断できない)。
     別の行が同じキーに落ちる(BOOTH の商品 → ショップ、動画 → チャンネル、投稿 → アカウント)。後の行で先の理由を
@@ -1882,7 +1888,8 @@ def save_unresolved(rows: list[str]) -> None:
         key = key.strip()
         m = re.fullmatch(r"youtube:([A-Za-z0-9_-]{11})\(@([^)]*)\)", key)
         if m:      # 動画: チャンネルが表に無くて決まらなかった。表に書く単位はチャンネル。動画 ID でも引けるように両方残す
-            rest = rest or "投稿者のチャンネルが判定表に無い(チャンネルの合議でも決まらなかった)"
+            rest = rest or ("投稿者のチャンネルが判定表に無い(チャンネルの合議でも決まらなかった)" if m.group(2) != "?"
+                            else "oEmbed からも視聴ページからも投稿者を引けなかった(合議に掛かっていない)")
             put(f"https://youtube.com/watch?v={m.group(1)}", rest)
             if m.group(2) != "?":
                 put(f"https://youtube.com/@{m.group(2)}", rest)
@@ -1898,7 +1905,7 @@ def save_unresolved(rows: list[str]) -> None:
         put(display_base(key), rest)
     try:
         UNRESOLVED.parent.mkdir(parents=True, exist_ok=True)
-        UNRESOLVED.write_text(json.dumps(out, ensure_ascii=False, indent=1), encoding="utf-8")
+        UNRESOLVED.write_text(json.dumps({**load_unresolved(), **out} if POSTS_ONLY else out, ensure_ascii=False, indent=1), encoding="utf-8")
     except OSError as e:
         print(f"  決まらなかった理由を保存できない({e})", flush=True)
 

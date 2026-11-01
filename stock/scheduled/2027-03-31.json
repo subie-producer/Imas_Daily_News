@@ -36,5 +36,34 @@
   "verify": "confirmed",
   "src_candidate_id": "202607120338-claude-6",
   "deadline": "2027-03-31"
+ },
+ {
+  "id": "sched-2027-03-31-chino-manhole-winter-display-2026-終了",
+  "dedup_key": "chino-manhole-winter-display-2026",
+  "brand": "joint",
+  "subject": "倉本千奈マンホール 屋内展示の最終日",
+  "kind": "終了",
+  "note": "道の駅しかおいで屋内展示を見られる最終日",
+  "reserved_on": "2026-11-02",
+  "occurs_on": "2027-03-31",
+  "title": "倉本千奈マンホールが冬季は屋内展示に",
+  "url": "https://x.com/imas_official/status/2116726925435576466",
+  "source_type": "公式",
+  "facts": [
+   "冬季期間中、倉本千奈マンホールの展示場所が屋内に切り替わる。",
+   "展示場所: 道の駅しかおい 内（北海道河東郡鹿追町東町3丁目2）",
+   "展示期間: 2026年11月2日(月)13時30分頃～2027年3月31日(水)",
+   "リンク: https://idolmaster-official.jp/20th_anniversary/manhole",
+   "エンゲージメント: 中",
+   "言及アイドル: 倉本千奈",
+   "展示場所：道の駅しかおい 内（北海道河東郡鹿追町東町3丁目2）。",
+   "展示期間：2026年11月2日(月)13時30分頃～2027年3月31日(水)。",
+   "冬季期間中は屋内展示に切り替わる。"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "event_date": "2026-11-02",
+  "deadline": "2027-03-31",
+  "src_candidate_id": "202611020220-grok-74"
  }
 ]

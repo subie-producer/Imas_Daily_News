@@ -646,6 +646,7 @@ x_accounts:
     - imasnews765
     - zutapoke
   ファン:
+    - RWibo               # 合議で追加: 個人アカウントの発信。Comic FrontierでのP同士の名刺交換を投稿
     - EinhardP_yukiho     # 合議で追加: 個人アカウントによるグッズ到着の報告
     - vocaloidfan_sp      # 合議で追加: ファン記事。個人またはファンサイトの発信
     - umino_ku            # 合議で追加: 個人がコラボ現地を訪れた際の投稿
@@ -1152,6 +1153,8 @@ x_posts:
 
 # --- リンク元から引き継いだ種別(リンク先1つずつ。キーは pipelib.link_key)。合議がリンク元の告知と関係していると確かめたものだけ(classify_sources.inherit_from_links)。リンク先そのものの種別より強いときだけ効く ---
 link_types:
+  youtube.com/watch?v=1wwAWmYtTkM: 準公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/imas_columbia/status/2116138547790938517(準公式)。告知は「デレパの神曲」試聴公開。リンク先も同曲の動画
+  webstore.asobistore.jp/millionlive-theaterdays: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://x.com/imasml_theater/status/2116772227328737522(公式)。告知の月1回のジュエル増量セットが、リンク先ページにも同セットとして載っている
   youtube.com/watch?v=F4OpPsdXVjk: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/gkmas_official/status/2116092768145535342(公式)。Agitato CD告知の公式投稿で紹介された、収録曲の葛城リーリヤSolo v
   youtube.com/watch?v=m0nu3nQml5A: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/imas_official/status/2116363664580374628(公式)。リンク元の告知したMOIW2025『RELOADING』フル尺の動画
   youtube.com/watch?v=K_6XYhBmS9g: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/valiv_official/status/2116455151577989220(公式)。リンク元の告知した『仮装狂騒曲』踊ってみた動画そのもの

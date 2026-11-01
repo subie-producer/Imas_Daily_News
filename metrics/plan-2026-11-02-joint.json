@@ -1,0 +1,329 @@
+{
+ "decisions": {
+  "clash-match-faq-update-2026": {
+   "action": "article",
+   "angle": "公演Q&Aが更新され、現地物販の実施とフラワースタンド非受付、楽屋花・プレゼントは検討中と判明した。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "dememiri-clash-match-ticket-2027": {
+   "action": "article",
+   "angle": "デレミリ合同ライブの新曲は重永亮介が作詞・作曲・編曲し、島村卯月ら6人が歌唱と判明した。",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "既報は新曲の詳細未記載。作家と歌唱アイドルが新事実。席種は既報なので触れない"
+  },
+  "chino-manhole-winter-display-2026": {
+   "action": "article",
+   "angle": "倉本千奈マンホールが本日13時30分ごろから、冬季は道の駅しかおい内で屋内展示になる。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "展示切替が本日。20周年企画の公式告知"
+  },
+  "deremiri-clash-match-warmup-stream-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "新曲制作・のぼり・特別衣装は11/1号と10/31号で記事化済み"
+  },
+  "demirimi-clash-radio-yoshichizu-2026": {
+   "action": "article",
+   "angle": "よしちづラジオのおたより締切は11月5日23時59分で、あと3日。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(締切前)。公式告知ページからおたよりを送れる"
+  },
+  "tours-second-stage-s2-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/29号で稼働を記事化済み。新事実なし"
+  },
+  "tours-tournament-prelim-entry-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/30号で同内容を記事化済み"
+  },
+  "tours-season-6-all-songs-first-place-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "個人のX投稿のみで未確認"
+  },
+  "765-961-ultimate-once-and-for-all-extension-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "延長は10/29号、ライトタグ詳細は10/30号で既報。締切11/8は3日以内でなく、本日のトリガーなし"
+  },
+  "tours-rhythm-live-recording-pstage-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/27号と同内容"
+  },
+  "tours-halloween-commu-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "期間は既報。コミュ終了11/6は4日先でトリガー外"
+  },
+  "tours-producers-station-nakano-panels-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/28・10/29号で記事化済み"
+  },
+  "tomori-manaka-birthday-live-2026-guest-seki-hiromi": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "二次情報のまとめブログのみで未確認。共同主催の根拠も無い"
+  },
+  "tours-s2-card-read-error-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/31号で記事化済み。修正完了などの新情報なし"
+  },
+  "cg-million-clashmatch-goods-2027": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/31号『グッズ、受注は11月15日まで』と同じ施策。締切も3日以内でない"
+  },
+  "tours-s2-cardlist-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "ウィッチナイトパーティーは10/29号で既報。カードリスト紹介のみ"
+  },
+  "deremiri-stream-post-campaign-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/29・10/30号で記事化済み。応募は10/30に終了"
+  },
+  "tours-thanks-background-photo-trend-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿のみ。culture はgeneral面だけ"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "joint-clash-match-faq-update-2026",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "公演Q&Aが更新され、現地物販の実施とフラワースタンド非受付、楽屋花・プレゼントは検討中と判明した。",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "clash-match-faq-update-2026",
+    "candidate_ids": [
+     "202611011833-explore-21"
+    ]
+   },
+   {
+    "slug": "joint-dememiri-clash-match-ticket-2027",
+    "brand": "joint",
+    "rank": "medium",
+    "angle": "デレミリ合同ライブの新曲は重永亮介が作詞・作曲・編曲し、島村卯月ら6人が歌唱と判明した。",
+    "purpose": "新情報",
+    "lead_score": 60,
+    "dedup_key": "dememiri-clash-match-ticket-2027",
+    "candidate_ids": [
+     "202611012333-explore-3"
+    ]
+   },
+   {
+    "slug": "joint-chino-manhole-winter-display-2026",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "倉本千奈マンホールが本日13時30分ごろから、冬季は道の駅しかおい内で屋内展示になる。",
+    "purpose": "期日の知らせ",
+    "lead_score": 15,
+    "dedup_key": "chino-manhole-winter-display-2026",
+    "candidate_ids": [
+     "202611020220-grok-74"
+    ]
+   },
+   {
+    "slug": "joint-demirimi-clash-radio-yoshichizu-2026",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "よしちづラジオのおたより締切は11月5日23時59分で、あと3日。",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "demirimi-clash-radio-yoshichizu-2026",
+    "candidate_ids": [
+     "202611020220-grok-93",
+     "202610310225-grok-102",
+     "sched-2026-11-02-demirimi-clash-radio-yoshichizu-2026-締切前"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "deremiri-clash-match-warmup-stream-2026",
+    "reason": "既報",
+    "note": "新曲制作・のぼり・特別衣装は11/1号と10/31号で記事化済み"
+   },
+   {
+    "dedup_key": "tours-second-stage-s2-2026",
+    "reason": "既報",
+    "note": "10/29号で稼働を記事化済み。新事実なし"
+   },
+   {
+    "dedup_key": "tours-tournament-prelim-entry-2026",
+    "reason": "既報",
+    "note": "10/30号で同内容を記事化済み"
+   },
+   {
+    "dedup_key": "tours-season-6-all-songs-first-place-2026",
+    "reason": "出典不足",
+    "note": "個人のX投稿のみで未確認"
+   },
+   {
+    "dedup_key": "765-961-ultimate-once-and-for-all-extension-2026",
+    "reason": "既報",
+    "note": "延長は10/29号、ライトタグ詳細は10/30号で既報。締切11/8は3日以内でなく、本日のトリガーなし"
+   },
+   {
+    "dedup_key": "tours-rhythm-live-recording-pstage-2026",
+    "reason": "既報",
+    "note": "10/27号と同内容"
+   },
+   {
+    "dedup_key": "tours-halloween-commu-2026",
+    "reason": "既報",
+    "note": "期間は既報。コミュ終了11/6は4日先でトリガー外"
+   },
+   {
+    "dedup_key": "tours-producers-station-nakano-panels-2026",
+    "reason": "既報",
+    "note": "10/28・10/29号で記事化済み"
+   },
+   {
+    "dedup_key": "tomori-manaka-birthday-live-2026-guest-seki-hiromi",
+    "reason": "出典不足",
+    "note": "二次情報のまとめブログのみで未確認。共同主催の根拠も無い"
+   },
+   {
+    "dedup_key": "tours-s2-card-read-error-2026",
+    "reason": "既報",
+    "note": "10/31号で記事化済み。修正完了などの新情報なし"
+   },
+   {
+    "dedup_key": "cg-million-clashmatch-goods-2027",
+    "reason": "既報",
+    "note": "10/31号『グッズ、受注は11月15日まで』と同じ施策。締切も3日以内でない"
+   },
+   {
+    "dedup_key": "tours-s2-cardlist-2026",
+    "reason": "既報",
+    "note": "ウィッチナイトパーティーは10/29号で既報。カードリスト紹介のみ"
+   },
+   {
+    "dedup_key": "deremiri-stream-post-campaign-2026",
+    "reason": "既報",
+    "note": "10/29・10/30号で記事化済み。応募は10/30に終了"
+   },
+   {
+    "dedup_key": "tours-thanks-background-photo-trend-2026",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿のみ。culture はgeneral面だけ"
+   }
+  ],
+  "cross_brand": []
+ }
+}

@@ -1,0 +1,912 @@
+{
+ "decisions": {
+  "cg-asuka-fujiwara-world-heritage-collab-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10-31の記事と同内容。新事実・トリガーなし"
+  },
+  "arisu-seaside-memory-plum-figure-2027": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10-31の記事に価格・仕様とも掲載済み"
+  },
+  "starlight-dining-chinese-maid-plush-2027": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10-31の記事と同内容。締切11/9は3日以内でない"
+  },
+  "cg-15th-anniversary-song-hourglass-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10-31の試聴開始の記事と同内容"
+  },
+  "cg-10th-memorial-starlight-stage-bd-2027": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-10th-memorial-live-bluray-kanagawa-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じBlu-ray BOXの予約"
+  },
+  "cg-popn-toybox-revival-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-01に「トイボ」受付11月8日までを記事化済み。締切は6日先"
+  },
+  "cg-yukimi-fan-art-2026-11-01-a": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "ファン創作はgeneral面のculture対象"
+  },
+  "cg-yukimi-fan-art-2026-11-01-b": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "ファン創作はgeneral面のculture対象"
+  },
+  "cg-yukimi-fan-art-2026-11-01-c": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "ファン創作はgeneral面のculture対象"
+  },
+  "cg-yukimi-fan-art-2026-11-01-d": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "ファン創作はgeneral面のculture対象"
+  },
+  "cg-ranko-fan-art-2026-11-01": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "AIファンイラスト。general面のculture対象"
+  },
+  "cg-karen-fan-art-2026-11-01": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "ファン創作はgeneral面のculture対象"
+  },
+  "cg-hajime-month-start-2026-11": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "個人のSNS投稿。general面のculture対象"
+  },
+  "cg-rin-fan-art-2026-11-01": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "AIファンイラスト。general面のculture対象"
+  },
+  "cg-sweet-melty-whip-after-sale-2026": {
+   "action": "article",
+   "angle": "Sweet Melty Whip POP UP SHOPが11月1日で終了し、会場商品の事後通販がMEDICOS ONLINE SHOPで本日11月2日から17日まで受注される。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "受注開始が今日。事後通販は既報になし"
+  },
+  "cg-sana-fan-art-2026-11-01": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "ファン創作はgeneral面のculture対象"
+  },
+  "cg-hajime-month-start-visit-2026-11": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人の聖地巡礼投稿。general面のculture対象"
+  },
+  "deresute-ssr-scout-challenge-2026-11": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-01のデレステ11月企画の記事に掲載済み"
+  },
+  "deresute-special-gacha-set-2026-11": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-01のデレステ11月企画の記事に掲載済み"
+  },
+  "fan-reaction-manaka-hiromi-rakuen-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人の感想投稿"
+  },
+  "derepa-no-kamikyoku-preview-2026": {
+   "action": "article",
+   "angle": "CD「でれぱ 拾年の宴＆デレパの神曲」収録の「デレパの神曲」の試聴が公開され、作詞は原紗友里・青木瑠璃子、作曲・編曲は滝澤俊輔と判明した。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "試聴公開は未報。CD(11/25発売、予約11/18まで)は10-08既報"
+  },
+  "deresute-10th-tour-final-bluray": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-10th-memorial-live-bluray-kanagawa-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じBlu-ray BOX"
+  },
+  "cg-memory-pict-8-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "memory-pict-8th-january-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じMemory Pict.第8弾の受注"
+  },
+  "cg-15th-anniversary-party-bakusute-talk-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10-31の記事と同内容。開催は11/28"
+  },
+  "cg-mayu-necklace-bound-to-you-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10-30の記事と同内容。締切11/30は先"
+  },
+  "tsukimiya-miyabi-birthday-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10-30に記事化済み。誕生日は過ぎている"
+  },
+  "cinderella-last-order-hub-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10-28の記事と同内容。開始は11/20"
+  },
+  "cinderella-sega-lucky-kuji-vol1-cute": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10-20に記事化済み。締切12/4は先"
+  },
+  "cinderella-fes-blanc-2026-10": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "10月31日に終了済み"
+  },
+  "cinderella-girls-hourglass-2026": {
+   "action": "article",
+   "angle": "HOURGLASS初公開回のCINDERELLA PARTY!第623回のタイムシフトは、11月4日23時59分まで(あと2日)で、予約なしならニコニコプレミアム登録が必要。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "締切が2日後でトリガーあり。32・35を統合"
+  },
+  "cg-astromeda-popup-akihabara-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "11月1日に終了済み"
+  },
+  "fumika-birthday-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿で誕生日も過ぎている"
+  },
+  "cg-cinderella-party-10th-cd-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cinderella-girls-hourglass-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ第623回の放送"
+  },
+  "cinderella-silky-sparkling-sapporo-2026": {
+   "action": "article",
+   "angle": "さっぽろテレビ塔のシンデレラガールズコラボは明日11月3日(祝)までで、特設会場の販売は10〜18時、売切れグッズは配送受注できる。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "終了が明日でトリガーあり"
+  },
+  "cg-sega-lucky-kuji-vol-1-cute-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "重複",
+   "note": "cinderella-sega-lucky-kuji-vol1-cuteと同じ。10-20既報"
+  },
+  "cg-hourglass-first-play-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cinderella-girls-hourglass-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "初公開回の告知。source_changeは新事実なし"
+  },
+  "manaka-birthday-live-guest-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "他ブランド催しへのゲスト出演で、10/28に終了済み"
+  },
+  "cinderella-popup-shop-after-sales-2026": {
+   "action": "article",
+   "angle": "有楽町マルイPOP UP SHOPの事後通販(THEキャラ)の注文は11月5日23時59分で締切、あと3日。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約。締切3日前"
+  },
+  "answer-dere-ster-mv-upload-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "同人・ファン主催",
+   "note": "ファン制作MVの投稿"
+  },
+  "cg-rose-tea-parlor-2026-shinsaibashi": {
+   "action": "article",
+   "angle": "Rose Tea Parlorコラボカフェ心斎橋店は11月4日が最終日(あと2日)で、当日は昼の部①(12:30〜14:00)のみの営業。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "終了が2日後でトリガーあり。40の来店投稿は別に不採用"
+  },
+  "rose-tea-parlor-fan-visit-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人の来店投稿"
+  },
+  "cinderella-astromeda-popup-akihabara-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "重複",
+   "note": "cg-astromeda-popup-akihabara-2026と同じ。11/1に終了済み"
+  },
+  "cg-villains-night-yunika-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "10月31日限りの放映で終了済み"
+  },
+  "cg-fan-frilled-square-screenshot-2026-10-31": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "個人のスクリーンショット投稿。general面のculture対象"
+  },
+  "cg-fan-miyabi-art-2026-10-30": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "同人・ファン主催",
+   "note": "ファンアート"
+  },
+  "cg-fan-halloween-post-2026-10-31": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿"
+  },
+  "cg-fan-makino-halloween-2026-10-31": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿"
+  },
+  "dememiri-costume-fanart-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "同人・ファン主催",
+   "note": "ファンアート"
+  },
+  "cg-10th-memorial-live-bluray-kanagawa-2026": {
+   "action": "article",
+   "angle": "10th MEMORIAL LIVE STARLIGHT STAGEのBlu-ray BOX(2027年3月24日発売)は、アソビストア限定特装版が税込44,300円と判明した。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 45,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "10-31の記事にない特装版価格が新事実。4・21を統合"
+  },
+  "memory-pict-8th-january-2026": {
+   "action": "article",
+   "angle": "Memory Pict.第8弾(神崎蘭子・的場梨沙)の受注期間は11月15日までと判明した。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "受注期限は10-31の記事にない新事実。22を統合"
+  },
+  "cg-sweet-melty-whip-popup-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "11月1日に終了済み。事後通販はcg-sweet-melty-whip-after-sale-2026で記事化"
+  },
+  "kbooks-cg-akihabara-stock-2026-10": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "店舗の入荷案内で未確認"
+  },
+  "deresute-platinum-challenge-pass-2026-11": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-01のデレステ11月企画の記事に掲載済み"
+  },
+  "deresute-gacha-schedule-2026-11": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-01のデレステ11月企画の記事に掲載済み"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "cg-sweet-melty-whip-after-sale-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "Sweet Melty Whip POP UP SHOPが11月1日で終了し、会場商品の事後通販がMEDICOS ONLINE SHOPで本日11月2日から17日まで受注される。",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "cg-sweet-melty-whip-after-sale-2026",
+    "candidate_ids": [
+     "202611020220-grok-28"
+    ]
+   },
+   {
+    "slug": "cg-derepa-no-kamikyoku-preview-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "CD「でれぱ 拾年の宴＆デレパの神曲」収録の「デレパの神曲」の試聴が公開され、作詞は原紗友里・青木瑠璃子、作曲・編曲は滝澤俊輔と判明した。",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "derepa-no-kamikyoku-preview-2026",
+    "candidate_ids": [
+     "202611020220-grok-83"
+    ]
+   },
+   {
+    "slug": "cg-cinderella-girls-hourglass-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "HOURGLASS初公開回のCINDERELLA PARTY!第623回のタイムシフトは、11月4日23時59分まで(あと2日)で、予約なしならニコニコプレミアム登録が必要。",
+    "purpose": "期日の知らせ",
+    "lead_score": 15,
+    "dedup_key": "cinderella-girls-hourglass-2026",
+    "candidate_ids": [
+     "202610260732-explore-4",
+     "202610270222-grok-56",
+     "202610271834-explore-7"
+    ]
+   },
+   {
+    "slug": "cg-cinderella-silky-sparkling-sapporo-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "さっぽろテレビ塔のシンデレラガールズコラボは明日11月3日(祝)までで、特設会場の販売は10〜18時、売切れグッズは配送受注できる。",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "cinderella-silky-sparkling-sapporo-2026",
+    "candidate_ids": [
+     "202610270222-grok-59"
+    ]
+   },
+   {
+    "slug": "cg-cinderella-popup-shop-after-sales-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "有楽町マルイPOP UP SHOPの事後通販(THEキャラ)の注文は11月5日23時59分で締切、あと3日。",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "cinderella-popup-shop-after-sales-2026",
+    "candidate_ids": [
+     "202610290225-grok-17",
+     "sched-2026-11-02-cinderella-popup-shop-after-sales-2026-締切前"
+    ]
+   },
+   {
+    "slug": "cg-rose-tea-parlor-2026-shinsaibashi",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "Rose Tea Parlorコラボカフェ心斎橋店は11月4日が最終日(あと2日)で、当日は昼の部①(12:30〜14:00)のみの営業。",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "cg-rose-tea-parlor-2026-shinsaibashi",
+    "candidate_ids": [
+     "202610290225-grok-19"
+    ]
+   },
+   {
+    "slug": "cg-10th-memorial-live-bluray-kanagawa-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "10th MEMORIAL LIVE STARLIGHT STAGEのBlu-ray BOX(2027年3月24日発売)は、アソビストア限定特装版が税込44,300円と判明した。",
+    "purpose": "新情報",
+    "lead_score": 45,
+    "dedup_key": "cg-10th-memorial-live-bluray-kanagawa-2026",
+    "candidate_ids": [
+     "202610312333-explore-0",
+     "202611020220-grok-17",
+     "202611020220-grok-84"
+    ]
+   },
+   {
+    "slug": "cg-memory-pict-8th-january-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "Memory Pict.第8弾(神崎蘭子・的場梨沙)の受注期間は11月15日までと判明した。",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "memory-pict-8th-january-2026",
+    "candidate_ids": [
+     "202611010230-grok-12",
+     "202611020220-grok-90"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "cg-asuka-fujiwara-world-heritage-collab-2026",
+    "reason": "既報",
+    "note": "10-31の記事と同内容。新事実・トリガーなし"
+   },
+   {
+    "dedup_key": "arisu-seaside-memory-plum-figure-2027",
+    "reason": "既報",
+    "note": "10-31の記事に価格・仕様とも掲載済み"
+   },
+   {
+    "dedup_key": "starlight-dining-chinese-maid-plush-2027",
+    "reason": "既報",
+    "note": "10-31の記事と同内容。締切11/9は3日以内でない"
+   },
+   {
+    "dedup_key": "cg-15th-anniversary-song-hourglass-2026",
+    "reason": "既報",
+    "note": "10-31の試聴開始の記事と同内容"
+   },
+   {
+    "dedup_key": "cg-popn-toybox-revival-2026",
+    "reason": "既報",
+    "note": "11-01に「トイボ」受付11月8日までを記事化済み。締切は6日先"
+   },
+   {
+    "dedup_key": "cg-yukimi-fan-art-2026-11-01-a",
+    "reason": "面違い",
+    "note": "ファン創作はgeneral面のculture対象"
+   },
+   {
+    "dedup_key": "cg-yukimi-fan-art-2026-11-01-b",
+    "reason": "面違い",
+    "note": "ファン創作はgeneral面のculture対象"
+   },
+   {
+    "dedup_key": "cg-yukimi-fan-art-2026-11-01-c",
+    "reason": "面違い",
+    "note": "ファン創作はgeneral面のculture対象"
+   },
+   {
+    "dedup_key": "cg-yukimi-fan-art-2026-11-01-d",
+    "reason": "面違い",
+    "note": "ファン創作はgeneral面のculture対象"
+   },
+   {
+    "dedup_key": "cg-ranko-fan-art-2026-11-01",
+    "reason": "面違い",
+    "note": "AIファンイラスト。general面のculture対象"
+   },
+   {
+    "dedup_key": "cg-karen-fan-art-2026-11-01",
+    "reason": "面違い",
+    "note": "ファン創作はgeneral面のculture対象"
+   },
+   {
+    "dedup_key": "cg-hajime-month-start-2026-11",
+    "reason": "面違い",
+    "note": "個人のSNS投稿。general面のculture対象"
+   },
+   {
+    "dedup_key": "cg-rin-fan-art-2026-11-01",
+    "reason": "面違い",
+    "note": "AIファンイラスト。general面のculture対象"
+   },
+   {
+    "dedup_key": "cg-sana-fan-art-2026-11-01",
+    "reason": "面違い",
+    "note": "ファン創作はgeneral面のculture対象"
+   },
+   {
+    "dedup_key": "cg-hajime-month-start-visit-2026-11",
+    "reason": "個人の話題",
+    "note": "個人の聖地巡礼投稿。general面のculture対象"
+   },
+   {
+    "dedup_key": "deresute-ssr-scout-challenge-2026-11",
+    "reason": "既報",
+    "note": "11-01のデレステ11月企画の記事に掲載済み"
+   },
+   {
+    "dedup_key": "deresute-special-gacha-set-2026-11",
+    "reason": "既報",
+    "note": "11-01のデレステ11月企画の記事に掲載済み"
+   },
+   {
+    "dedup_key": "fan-reaction-manaka-hiromi-rakuen-2026",
+    "reason": "個人の話題",
+    "note": "個人の感想投稿"
+   },
+   {
+    "dedup_key": "cg-15th-anniversary-party-bakusute-talk-2026",
+    "reason": "既報",
+    "note": "10-31の記事と同内容。開催は11/28"
+   },
+   {
+    "dedup_key": "cg-mayu-necklace-bound-to-you-2026",
+    "reason": "既報",
+    "note": "10-30の記事と同内容。締切11/30は先"
+   },
+   {
+    "dedup_key": "tsukimiya-miyabi-birthday-2026",
+    "reason": "既報",
+    "note": "10-30に記事化済み。誕生日は過ぎている"
+   },
+   {
+    "dedup_key": "cinderella-last-order-hub-2026",
+    "reason": "既報",
+    "note": "10-28の記事と同内容。開始は11/20"
+   },
+   {
+    "dedup_key": "cinderella-sega-lucky-kuji-vol1-cute",
+    "reason": "既報",
+    "note": "10-20に記事化済み。締切12/4は先"
+   },
+   {
+    "dedup_key": "cinderella-fes-blanc-2026-10",
+    "reason": "その他",
+    "note": "10月31日に終了済み"
+   },
+   {
+    "dedup_key": "cg-astromeda-popup-akihabara-2026",
+    "reason": "その他",
+    "note": "11月1日に終了済み"
+   },
+   {
+    "dedup_key": "fumika-birthday-2026",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿で誕生日も過ぎている"
+   },
+   {
+    "dedup_key": "cg-sega-lucky-kuji-vol-1-cute-2026",
+    "reason": "重複",
+    "note": "cinderella-sega-lucky-kuji-vol1-cuteと同じ。10-20既報"
+   },
+   {
+    "dedup_key": "manaka-birthday-live-guest-2026",
+    "reason": "面違い",
+    "note": "他ブランド催しへのゲスト出演で、10/28に終了済み"
+   },
+   {
+    "dedup_key": "answer-dere-ster-mv-upload-2026",
+    "reason": "同人・ファン主催",
+    "note": "ファン制作MVの投稿"
+   },
+   {
+    "dedup_key": "rose-tea-parlor-fan-visit-2026",
+    "reason": "個人の話題",
+    "note": "個人の来店投稿"
+   },
+   {
+    "dedup_key": "cinderella-astromeda-popup-akihabara-2026",
+    "reason": "重複",
+    "note": "cg-astromeda-popup-akihabara-2026と同じ。11/1に終了済み"
+   },
+   {
+    "dedup_key": "cg-villains-night-yunika-2026",
+    "reason": "その他",
+    "note": "10月31日限りの放映で終了済み"
+   },
+   {
+    "dedup_key": "cg-fan-frilled-square-screenshot-2026-10-31",
+    "reason": "面違い",
+    "note": "個人のスクリーンショット投稿。general面のculture対象"
+   },
+   {
+    "dedup_key": "cg-fan-miyabi-art-2026-10-30",
+    "reason": "同人・ファン主催",
+    "note": "ファンアート"
+   },
+   {
+    "dedup_key": "cg-fan-halloween-post-2026-10-31",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿"
+   },
+   {
+    "dedup_key": "cg-fan-makino-halloween-2026-10-31",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿"
+   },
+   {
+    "dedup_key": "dememiri-costume-fanart-2026",
+    "reason": "同人・ファン主催",
+    "note": "ファンアート"
+   },
+   {
+    "dedup_key": "cg-sweet-melty-whip-popup-2026",
+    "reason": "その他",
+    "note": "11月1日に終了済み。事後通販はcg-sweet-melty-whip-after-sale-2026で記事化"
+   },
+   {
+    "dedup_key": "kbooks-cg-akihabara-stock-2026-10",
+    "reason": "出典不足",
+    "note": "店舗の入荷案内で未確認"
+   },
+   {
+    "dedup_key": "deresute-platinum-challenge-pass-2026-11",
+    "reason": "既報",
+    "note": "11-01のデレステ11月企画の記事に掲載済み"
+   },
+   {
+    "dedup_key": "deresute-gacha-schedule-2026-11",
+    "reason": "既報",
+    "note": "11-01のデレステ11月企画の記事に掲載済み"
+   }
+  ],
+  "cross_brand": []
+ }
+}

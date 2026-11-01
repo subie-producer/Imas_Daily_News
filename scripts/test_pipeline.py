@@ -13740,6 +13740,93 @@ def test_platform_owner_units(tmp: Path):
         cs.ROOT, pipelib.ROOT, pipelib._ST_TABLE, pipelib._ST_KEY, cs.POSTS_ONLY, cs.nico_channel = saved
 
 
+def test_unresolved_reason_matches_what_ran():
+    """決まらなかった理由は、実際に通った経路を言う(保管指摘 54bc346aea)。投稿者を引けなかった動画・再生リストは「合議でも決まらなかった」
+    にしない。引き直しで初めて分かった投稿者も同じ。割れたチャンネルの言い分は他のチャンネルが決まっても残す。組版前の判定は他の号の記録を消さない。"""
+    import contextlib
+    import io
+    import classify_sources as cs
+    names = ("inherit_from_links", "unknown_targets", "resolve_x_posts", "unknown_videos", "unknown_nico", "unknown_playlists", "video_author",
+             "source_type_table", "consensus", "add_video_channels", "add_video_ids", "add_paths", "resolve_playlists", "resolve_nico",
+             "resolve_booth_items", "resolve_short_links", "site_profile", "UNRESOLVED", "POSTS_ONLY", "YT_CHANNELS")
+    saved, argv = {n: getattr(cs, n) for n in names}, sys.argv
+    tmp = Path(tempfile.mkdtemp())
+    try:
+        cs.UNRESOLVED, cs.POSTS_ONLY = tmp / "classify-unresolved.json", None
+        cs.video_author = lambda vid: ("", "")
+        cs.save_unresolved(["youtube:iVOtp0VZh8g(@?)", "youtube:AAAAAAAAAAA(@Foo)"])
+        rec = cs.load_unresolved()
+        none = rec.get("https://youtube.com/watch?v=iVOtp0VZh8g", "")
+        check("投稿者を引けなかった" in none and "合議に掛かっていない" in none and "判定表に無い" not in none and "合議でも" not in none,
+              f"投稿者を引けなかった動画の理由が判定表未登録・合議不成立と同じ: {none}")
+        check("合議でも決まらなかった" in rec.get("https://youtube.com/@Foo", ""), f"チャンネルが表に無い動画の理由が変わった: {rec}")
+        # 組版前(POSTS_ONLY)は見た対象だけを置き換え、他の号の言い分を残す。全体の判定は上書きする
+        cs.save_unresolved(["old.example: 演者「a」 / ファン「b」", "same.example: 公式「c」 / ファン「d」"])
+        cs.POSTS_ONLY = "2026-11-01"
+        cs.save_unresolved(["same.example: 準公式「e」 / ファン「f」"])
+        rec = cs.load_unresolved()
+        check("演者「a」" in rec.get("https://old.example", "") and "準公式「e」" in rec.get("https://same.example", "")
+              and "公式「c」" not in rec["https://same.example"], f"組版前の判定が他の号の理由を消した・古い理由が残った: {rec}")
+        cs.POSTS_ONLY = None
+        cs.save_unresolved(["same.example: 準公式「e」 / ファン「f」"])
+        check(list(cs.load_unresolved()) == ["https://same.example"], f"全体の判定が古い記録を残した: {cs.load_unresolved()}")
+        # 再生リストの持ち主を引けない
+        cs.resolve_playlists = saved["resolve_playlists"]
+        cs.unknown_playlists = lambda date: {"youtube.com/playlist?list=PLx": "https://www.youtube.com/playlist?list=PLx"}
+        saved_owner = cs.playlist_owner
+        cs.playlist_owner = lambda key: ("", "")
+        cs.source_type_table = lambda: {"video_channels": {"公式": ["known"]}}
+        try:
+            with contextlib.redirect_stdout(io.StringIO()):
+                left, _ = cs.resolve_playlists("2026-11-01", True)
+        finally:
+            cs.playlist_owner = saved_owner
+        check(len(left) == 1 and "合議に掛かっていない" in left[0], f"持ち主を引けない再生リストの理由: {left}")
+        # 投稿者の取得は1回目と2回目で変わりうる。ch-b が1回目は取れず、引き直しで初めて分かる。ch-c は合議が割れた。ch-a は一致
+        table = {"公式": []}
+        cs.source_type_table = lambda: {"video_channels": table}
+        authors = {"AAAAAAAAAAA": ["ch-a"], "BBBBBBBBBBB": ["", "ch-b"], "CCCCCCCCCCC": ["ch-c"]}
+        cs.video_author = lambda vid: ((authors[vid].pop(0) if len(authors[vid]) > 1 else authors[vid][0]), "題名")
+        cs.unknown_videos = lambda date: {k: "u" for k in authors}
+        cs.inherit_from_links = lambda *a: []
+        cs.unknown_targets = lambda date: ({}, {}, {})
+        cs.resolve_x_posts = lambda apply: None
+        cs.unknown_nico = lambda date: {"lv1": "https://live.nicovideo.jp/watch/lv1", "lv2": "https://live.nicovideo.jp/watch/lv2"}
+        cs.unknown_playlists = lambda date: {}
+        cs.YT_CHANNELS = {}
+        cs.resolve_playlists = lambda date, apply: ([], {})
+        cs.site_profile = lambda *a, **k: "材料"
+        cs.add_video_ids = lambda found: None
+        cs.add_video_channels = lambda chans: table["公式"].extend(chans)
+        cs.resolve_booth_items = lambda apply: []
+        cs.resolve_short_links = lambda apply, date: []
+        decided: list = []
+
+        def nico(date, apply):
+            two = [("nicovideo:lv2(ch.nicovideo.jp/two)")]
+            return (two if decided else ["nicovideo:lv1(ch.nicovideo.jp/one)"] + two), ({} if decided else {"ch.nicovideo.jp/one": ("lv1", "t", "u"), "ch.nicovideo.jp/two": ("lv2", "t", "u")})
+        cs.resolve_nico = nico
+        cs.add_paths = lambda agreed, **k: decided.append(agreed)
+
+        def consensus(make, keys, **k):
+            make(keys)
+            if keys[0].startswith("youtube.com/"):
+                return {"youtube.com/@ch-a": ("公式", "w")}, ["youtube.com/@ch-c: 演者「言い分c」 / ファン「g」"]
+            return {"ch.nicovideo.jp/one": ("公式", "w")}, ["ch.nicovideo.jp/two: 演者「言い分n」 / ファン「g」"]
+        cs.consensus = consensus
+        sys.argv = ["classify_sources.py", "--date", "2026-11-01", "--apply"]
+        with contextlib.redirect_stdout(io.StringIO()):
+            code = cs.main()
+        rec = cs.load_unresolved()
+        late = rec.get("https://youtube.com/@ch-b", "")
+        check(code == 0 and "合議に掛かっていない" in late and "合議でも" not in late, f"引き直しで分かった投稿者を合議済みと記録した: {rec}")
+        check("言い分c" in rec.get("https://youtube.com/@ch-c", ""), f"他のチャンネルが決まると、割れたチャンネルの言い分が消える: {rec}")
+        check("言い分n" in rec.get("https://ch.nicovideo.jp/two", ""), f"他のチャンネルが決まると、割れたニコニコのチャンネルの言い分が消える: {rec}")
+    finally:
+        cs.__dict__.update(saved)
+        sys.argv = argv
+
+
 def test_youtube_upcoming_video_owner():
     """配信前の枠の oEmbed は 200 で author_url も title も返さない(実測 2026-10-31: iVOtp0VZh8g)。成功の空の答えを「投稿者なし」と
     読むと視聴ページを見ずに終わり、登録済みチャンネルの動画が未確認のまま紙面に載る。視聴ページから投稿者を引いて種別が決まること。"""
@@ -21280,6 +21367,7 @@ def main() -> int:
     test_performer_domains(tmp / "pd")
     test_platform_owner_units(tmp / "pou")
     test_youtube_upcoming_video_owner()
+    test_unresolved_reason_matches_what_ran()
     test_youtube_playlist_owner(tmp / "ytpl")
     test_booth_item_owner(tmp / "booth")
     test_youtube_channel_page_unit(tmp / "ytchan")

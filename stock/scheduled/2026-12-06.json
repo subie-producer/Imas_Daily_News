@@ -191,12 +191,12 @@
   "src_candidate_id": "202610271834-watch-2"
  },
  {
-  "id": "sched-2026-12-06-sidem-knick-knacks-vol-2-2026-終了",
+  "id": "sched-2026-12-06-sidem-knick-knacks-vol-2-2026-千秋楽",
   "dedup_key": "sidem-knick-knacks-vol-2-2026",
   "brand": "sidem",
   "subject": "SideM knick-knacks Vol.2 開催最終日",
-  "kind": "終了",
-  "note": "開催期間の最終日、グッズを購入できる最後の日",
+  "kind": "千秋楽",
+  "note": "最終日まで販売グッズを購入できる",
   "reserved_on": "2026-11-02",
   "occurs_on": "2026-12-06",
   "title": "SideM knick-knacks Vol.2の販売グッズと購入特典を公開",
@@ -236,12 +236,12 @@
   "src_candidate_id": "202611011232-explore-6"
  },
  {
-  "id": "sched-2026-12-06-sidem-knick-knacks-vol-2-2026-終了-src1",
+  "id": "sched-2026-12-06-sidem-knick-knacks-vol-2-2026-千秋楽-src1",
   "dedup_key": "sidem-knick-knacks-vol-2-2026",
   "brand": "sidem",
   "subject": "SideM knick-knacks Vol.2 開催最終日",
-  "kind": "終了",
-  "note": "開催期間の最終日、グッズを購入できる最後の日",
+  "kind": "千秋楽",
+  "note": "最終日まで販売グッズを購入できる",
   "reserved_on": "2026-11-02",
   "occurs_on": "2026-12-06",
   "title": "SideM「Knick-Knacks Vol.2」グッズ公開",
@@ -286,16 +286,16 @@
   "verify": "confirmed",
   "link_from": "https://sidematome.xxxblog.jp/",
   "src_candidate_id": "202610270732-explore-2",
-  "companion_of": "sched-2026-12-06-sidem-knick-knacks-vol-2-2026-終了",
+  "companion_of": "sched-2026-12-06-sidem-knick-knacks-vol-2-2026-千秋楽",
   "src_dedup_key": "sidem-knick-knacks-vol-2-2026"
  },
  {
-  "id": "sched-2026-12-06-sidem-knick-knacks-vol-2-2026-終了-src2",
+  "id": "sched-2026-12-06-sidem-knick-knacks-vol-2-2026-千秋楽-src2",
   "dedup_key": "sidem-knick-knacks-vol-2-2026",
   "brand": "sidem",
   "subject": "SideM knick-knacks Vol.2 開催最終日",
-  "kind": "終了",
-  "note": "開催期間の最終日、グッズを購入できる最後の日",
+  "kind": "千秋楽",
+  "note": "最終日まで販売グッズを購入できる",
   "reserved_on": "2026-11-02",
   "occurs_on": "2026-12-06",
   "title": "ハンズで「SideM knick-knacks Vol.2」開催、販売グッズを公開",
@@ -320,16 +320,16 @@
   "event_date": "2026-11-13",
   "deadline": "2026-12-06",
   "src_candidate_id": "202610310733-explore-11",
-  "companion_of": "sched-2026-12-06-sidem-knick-knacks-vol-2-2026-終了",
+  "companion_of": "sched-2026-12-06-sidem-knick-knacks-vol-2-2026-千秋楽",
   "src_dedup_key": "sidem-knick-knacks-vol-2-2026"
  },
  {
-  "id": "sched-2026-12-06-sidem-knick-knacks-vol-2-2026-終了-src3",
+  "id": "sched-2026-12-06-sidem-knick-knacks-vol-2-2026-千秋楽-src3",
   "dedup_key": "sidem-knick-knacks-vol-2-2026",
   "brand": "sidem",
   "subject": "SideM knick-knacks Vol.2 開催最終日",
-  "kind": "終了",
-  "note": "開催期間の最終日、グッズを購入できる最後の日",
+  "kind": "千秋楽",
+  "note": "最終日まで販売グッズを購入できる",
   "reserved_on": "2026-11-02",
   "occurs_on": "2026-12-06",
   "title": "SideM knick-knacks Vol.2ポップアップストア",
@@ -351,7 +351,7 @@
   "deadline": "2026-12-06",
   "link_from": "https://x.com/imas_official/status/2114960296993526063",
   "src_candidate_id": "202610300224-grok-82",
-  "companion_of": "sched-2026-12-06-sidem-knick-knacks-vol-2-2026-終了",
+  "companion_of": "sched-2026-12-06-sidem-knick-knacks-vol-2-2026-千秋楽",
   "src_dedup_key": "sidem-knick-knacks-vol2-2026"
  }
 ]

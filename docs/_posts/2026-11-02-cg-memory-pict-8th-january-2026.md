@@ -23,6 +23,9 @@ sources:
 - label: アイドルマスター ポータル「【シンデレラ】グッズシリーズ「Memory Pict.」第8弾:｡･:* 本日より8th Pict.（神崎蘭子・的場梨沙）が受注開始です！」(2026-10-30)
   url: https://idolmaster-official.jp/news/01_20171
   type: 公式
+- label: ASOBI STORE「THE IDOLM@STER CINDERELLAGIRLS Memory Pict.」(2026-11-02)
+  url: https://shop.asobistore.jp/feature/cg_mp
+  type: 公式
 event_date: "2026-11-15"
 title_fact_ids:
 - F2
@@ -33,13 +36,13 @@ lede_fact_ids:
 verified_facts:
 - id: N1
   text: 公式オーロラ缶バッジ【神崎蘭子】は500円（税込）。
-  url: https://idolmaster-official.jp/news/01_20171
+  url: https://shop.asobistore.jp/feature/cg_mp
 - id: N2
   text: 公式B2タペストリー【神崎蘭子】は5,000円（税込）。
-  url: https://idolmaster-official.jp/news/01_20171
+  url: https://shop.asobistore.jp/feature/cg_mp
 - id: N3
   text: 公式キャラファイングラフ【神崎蘭子】は16,000円（税込）。
-  url: https://idolmaster-official.jp/news/01_20171
+  url: https://shop.asobistore.jp/feature/cg_mp
 - id: N4
   text: 公式メモリーピクトBOX【神崎蘭子】は5,900円（税込）。グッズの購入・決済はASOBI STOREにログインして行い、配送料は注文ごとに発生する。
   url: https://idolmaster-official.jp/news/01_20171
@@ -53,8 +56,6 @@ verified_facts:
   text: 神崎蘭子と的場梨沙が着物姿で登場する。
   url: https://idolmaster-official.jp/news/01_20171
 ---
-## 受注期間
-
 「Memory Pict.」8th Pict. Januaryの受注期間は2026年10月30日から11月15日まで。購入・決済はASOBI STOREにログインして行う。配送料は注文ごとにかかる。 <!-- F2 N4 -->
 
 ## 商品ラインナップ

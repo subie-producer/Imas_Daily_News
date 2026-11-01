@@ -2,7 +2,7 @@
 slug: cg-memory-pict-november-order
 edition: 2026-08-29
 brand: cg
-src: 準公式
+src: 公式
 rank: small
 corrected: false
 corrections: []
@@ -16,7 +16,7 @@ sources:
     type: 公式
   - label: "ASOBI STORE特設サイト"
     url: "https://shop.asobistore.jp/feature/cg_mp"
-    type: 準公式
+    type: 公式
   - label: "シンデレラガールズ公式ニュース一覧"
     url: "https://cinderellagirls.idolmaster-official.jp/news/"
     type: 公式

@@ -2,7 +2,7 @@
 slug: cg-memorypict-6th-kohimura-yoda-deadline-2026-09-10
 edition: 2026-09-10
 brand: cg
-src: 準公式
+src: 公式
 rank: small
 corrected: false
 corrections: []
@@ -21,7 +21,7 @@ sources:
   type: 公式
   label: Memory Pict. November（小日向美穂 / 依田芳乃）
 - url: https://shop.asobistore.jp/feature/cg_mp
-  type: 準公式
+  type: 公式
   label: Memory Pict. 特集ページ(ASOBI STORE)
 event_date: 2026-09-13
 ---

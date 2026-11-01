@@ -29,7 +29,13 @@ sources:
 - label: LivePocket「レトラ BIRTHDAY ONLINE LIVE 2026 のチケット情報」
   url: https://livepocket.jp/e/va-liv_letora_bd2026
   type: 公式
-event_date: "2026-11-04"
+- label: レトラ BIRTHDAY ONLINE LIVE 2026 現地ライブビューイング（限定グッズ付き）先行抽選二次受付(2026-10-29)
+  url: https://idolmaster-official.jp/news/01_20233
+  type: 公式
+- label: 【レトラ BIRTHDAY ONLINE LIVE 2026】限定グッズ付き現地ライブビューイングチケット 先行抽選二次受付（本日締切）(2026-10-30)
+  url: https://idolmaster-official.jp/news/01_20187
+  type: 公式
+event_date: "2026-11-11"
 follows:
 - 2026-10-09-dsva-va-liv-letora-birthday-2026
 - 2026-10-11-dsva-va-liv-letora-birthday-2026

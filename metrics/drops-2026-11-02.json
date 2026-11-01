@@ -9,5 +9,44 @@
    "202610290732-explore-6",
    "202610290225-grok-89"
   ]
+ },
+ "general-comifuro-producer-card-exchange-2026": {
+  "title": "Comic FrontierでP同士の名刺交換広がる",
+  "stage": "書き直しで見送り",
+  "why": "NOT_NEWS 記事の中核が、未確認のファン投稿1件に基づくComic Frontierでのファン同士の名刺交換であり、同人イベント自体を記事化しているため公開しない。指摘の催しの日付は2026-11-01。",
+  "candidate_ids": [
+   "202611020220-grok-16",
+   "202611020220-grok-50",
+   "202610300224-grok-15",
+   "202610290225-grok-41",
+   "202610290225-grok-42",
+   "202610310733-explore-0",
+   "202611010230-grok-72"
+  ]
+ },
+ "sidem-high-joker-poppin-planet-2dmv-2026": {
+  "title": "High×Joker「POPPIN' PLANET」2DMV、11月4日公開",
+  "stage": "書き直しで見送り",
+  "why": "NOT_NEWS 既報の2DMV公開日時の再掲で、新しい事実や掲載のトリガーがないため。",
+  "candidate_ids": [
+   "202610310225-grok-82"
+  ]
+ },
+ "sidem-legenders-refrain-atrium-ensemble-2026": {
+  "title": "Legenders「リフレインアトリウム」弦楽アンサンブル公開",
+  "stage": "書き直しで見送り",
+  "why": "NOT_NEWS ファン主催の演奏企画による動画で、発行日時点に新たな発表・発生も確認できないため、記事を取り下げます。",
+  "candidate_ids": [
+   "202610270222-grok-36"
+  ]
+ },
+ "shiny-alstroemeria-gotoken-christmas-2026": {
+  "title": "アルストロメリアのオードブル、早期予約は15日まで",
+  "stage": "書き直しで見送り",
+  "why": "NO_PRIMARY_SOURCE 公式・準公式のアイマス発表、またはこのコラボの公式発表を報じた報道を確認できませんでした。指摘の要件を満たす出典がないため、記事を見送ります。",
+  "candidate_ids": [
+   "202610302337-explore-31",
+   "202610310510-grok-0"
+  ]
  }
 }

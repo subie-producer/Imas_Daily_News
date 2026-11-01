@@ -26,7 +26,7 @@ sources:
 - label: Googleフォーム「ヴイアライベントのここが良い！アンケート」
   url: https://docs.google.com/forms/d/e/1FAIpQLScDedjs1kcT9aYXTj7axsb4ZpoxGcHxvYWaLOxTYzIZdvPiwA/viewform?usp=send_form
   type: 公式
-- label: "ヴイアラ公式チャンネル「【新情報あり】ヴイアラ3rdLIVE＆MEETING開催記念特番【 #ヴイアラ 】"
+- label: "ヴイアラ公式チャンネル「【新情報あり】ヴイアラ3rdLIVE＆MEETING開催記念特番【 #ヴイアラ 】」"
   url: https://www.youtube.com/live/WottZLGjB9o
   type: 公式
 event_date: "2026-11-02"

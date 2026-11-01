@@ -2,7 +2,7 @@
 slug: cg-memory-pict-november-goods
 edition: 2026-09-02
 brand: cg
-src: 準公式
+src: 公式
 rank: small
 corrected: false
 corrections: []
@@ -16,7 +16,7 @@ tags:
 sources:
   - url: https://shop.asobistore.jp/feature/cg_mp
     label: ASOBI STORE特集ページ
-    type: 準公式
+    type: 公式
 ---
 
 ASOBI STOREは、「THE IDOLM@STER CINDERELLA GIRLS Memory Pict. November」のグッズを受注販売している。

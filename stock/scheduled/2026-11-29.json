@@ -1142,5 +1142,48 @@
   "verify": "confirmed",
   "event_date": "2026-10-28",
   "src_candidate_id": "202610312333-explore-15"
+ },
+ {
+  "id": "sched-2026-11-29-315-fitness-renaissance-2026-終了",
+  "dedup_key": "315-fitness-renaissance-2026",
+  "brand": "sidem",
+  "subject": "315 Fitness Project in RENAISSANCE 開催最終日",
+  "kind": "終了",
+  "note": "開催最終日。対象店舗で等身大スタンディを見に行ける最後の日",
+  "reserved_on": "2026-11-02",
+  "occurs_on": "2026-11-29",
+  "title": "315 Fitness Project館内装飾とアンバサダースタンディ",
+  "url": "https://x.com/renaissance_IP/status/2116757127142514707",
+  "source_type": "当事者",
+  "facts": [
+   "「315 Fitness Project in RENAISSANCE」期間中、ルネサンス館内がコラボ仕様となり、アイドル等身大パネルやのぼりを設置。",
+   "全国49店舗のうち3店舗限定でアンバサダー5名のスタンディを設置。",
+   "リンク: https://t.co/QDBSyi9HMx",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "unconfirmed",
+  "src_candidate_id": "202611020220-grok-98"
+ },
+ {
+  "id": "sched-2026-11-29-315-fitness-renaissance-2026-終了-src1",
+  "dedup_key": "315-fitness-renaissance-2026",
+  "brand": "sidem",
+  "subject": "315 Fitness Project in RENAISSANCE 開催最終日",
+  "kind": "終了",
+  "note": "開催最終日。対象店舗で等身大スタンディを見に行ける最後の日",
+  "reserved_on": "2026-11-02",
+  "occurs_on": "2026-11-29",
+  "title": "株式会社ルネサンス「スポーツクラブ ルネサンスで会える「アイドルマスター SideM」コラボキャンペーンを開催」(2026-09-17)",
+  "url": "https://prtimes.jp/main/html/rd/p/000000458.000027019.html",
+  "source_type": "当事者",
+  "facts": [
+   "「315 Fitness Project in RENAISSANCE―からだも、こころも、315更新！」の開催期間は2026年10月22日～11月29日。"
+  ],
+  "via": "verified_fact",
+  "verify": "unconfirmed",
+  "src_candidate_id": "202611020220-grok-98",
+  "companion_of": "sched-2026-11-29-315-fitness-renaissance-2026-終了",
+  "src_dedup_key": "315-fitness-renaissance-2026"
  }
 ]

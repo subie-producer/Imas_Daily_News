@@ -1,0 +1,203 @@
+{
+ "recheck": [
+  {
+   "at": "2026-11-02T02:24:53+09:00",
+   "cap": 60,
+   "parallel": 4,
+   "runs_per_day": 5,
+   "cycle_days": 0.53,
+   "oldest_age_h": 18.8,
+   "targets": 160,
+   "chosen": 60,
+   "tried": 60,
+   "checked": 60,
+   "changed": 34,
+   "elapsed_s": 111,
+   "cycle_days_actual": 0.53
+  }
+ ],
+ "collect": [
+  {
+   "at": "2026-11-02T02:44:08+09:00",
+   "edition": "2026-11-02",
+   "started_at": "2026-11-02T02:00:45+09:00",
+   "trigger": "timer",
+   "watch": {
+    "stats": {
+     "imas-portal": {
+      "found": 12,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-sidem": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-shiny": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-million": {
+      "found": 8,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "lantis-shiny": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "lantis-sidem": {
+      "found": 4,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "columbia-imas": {
+      "found": 352,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "bnam-tours": {
+      "found": 69,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "imasnews765": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     }
+    },
+    "new": 0,
+    "facted": 0,
+    "deferred": 0,
+    "blocked": 0,
+    "unavailable": 0
+   },
+   "per_query": {
+    "explore:765as": 0,
+    "explore:cinderella": 0,
+    "explore:million": 3,
+    "explore:shiny": 1,
+    "explore:sidem": 0,
+    "explore:gakuen": 8,
+    "explore:dsva": 1,
+    "explore:joint-other": 0,
+    "explore:trend": 2,
+    "grok:765as": 1,
+    "grok:cinderella": 23,
+    "grok:million": 17,
+    "grok:shiny": 5,
+    "grok:sidem": 4,
+    "grok:gakuen": 8,
+    "grok:dsva": 6,
+    "grok:joint-other": 6,
+    "grok:trend": 15,
+    "grok_searches:cg": 5,
+    "grok_searches:shiny": 8,
+    "grok_searches:dsva": 6,
+    "grok_searches:gaku": 5,
+    "grok_searches:million": 11,
+    "grok_searches:general": 9,
+    "grok_searches:sidem": 5,
+    "grok_searches:765": 5,
+    "grok_searches:joint": 5
+   },
+   "normalized": 102,
+   "added": 76,
+   "verify": {
+    "confirmed": 57,
+    "unconfirmed": 40,
+    "failed": 3
+   },
+   "duration_s": 2602
+  }
+ ],
+ "compose": [
+  {
+   "at": "2026-11-02T03:40:55+09:00",
+   "edition": "2026-11-02",
+   "rounds": 5,
+   "approved": true,
+   "lint_green": true,
+   "planned": 38,
+   "written": 32,
+   "roundups": 1,
+   "dropped": 0,
+   "coverage": {
+    "subjects": 401,
+    "covered": 401,
+    "missing": 0,
+    "missing_keys": []
+   },
+   "dropped_by_review": [
+    "million-scratch-second-2026"
+   ],
+   "stages_min": {
+    "選定": 2.7047405799229938,
+    "選定の拾い直し": 1.4518188198407491,
+    "執筆": 5.441558531920115,
+    "出典の判定": 2.8465347290039062,
+    "組版": 1.154503059387207,
+    "校閲": 0.8835014224052429,
+    "校閲1波": 0.8835014224052429
+   },
+   "target_min": 60,
+   "over_target": false,
+   "aborted": [
+    "gaku-amayo-tsubame-kisama-kentei-2026",
+    "general-comifuro-producer-card-exchange-2026",
+    "sidem-high-joker-poppin-planet-2dmv-2026",
+    "sidem-legenders-refrain-atrium-ensemble-2026",
+    "shiny-alstroemeria-gotoken-christmas-2026"
+   ],
+   "duration_s": 2455
+  },
+  {
+   "at": "2026-11-02T04:40:33+09:00",
+   "edition": "2026-11-02",
+   "rounds": 4,
+   "approved": true,
+   "lint_green": true,
+   "planned": 38,
+   "written": 33,
+   "roundups": 1,
+   "dropped": 0,
+   "coverage": {
+    "subjects": 401,
+    "covered": 401,
+    "missing": 0,
+    "missing_keys": []
+   },
+   "dropped_by_review": [],
+   "stages_min": {
+    "執筆": 0.7862597147623698,
+    "出典の判定": 0.1709731618563334,
+    "組版": 0.8108778119087219,
+    "校閲": 1.4473581949869792,
+    "校閲1波": 1.4473581949869792
+   },
+   "target_min": 60,
+   "over_target": false,
+   "aborted": [
+    "gaku-amayo-tsubame-kisama-kentei-2026",
+    "sidem-legenders-refrain-atrium-ensemble-2026",
+    "million-scratch-second-2026",
+    "sidem-high-joker-poppin-planet-2dmv-2026",
+    "shiny-alstroemeria-gotoken-christmas-2026"
+   ],
+   "duration_s": 679
+  }
+ ]
+}

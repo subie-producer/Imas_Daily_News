@@ -1,0 +1,106 @@
+{
+ "decisions": {
+  "miki-future-spotlight-comifuro-2026-wrapup": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "miki-solo-showcase-comifuro-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ公演の終了報告。来場へのお礼だけで新しい事実が無い。"
+  },
+  "miki-solo-showcase-comifuro-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/1に「星井美希の海外ソロ公演、きょうICE BSDで開催」で記事化済み。今回は終了の投稿とお礼だけで新事実もトリガーも無い。"
+  },
+  "765-961-live-ticket-extension-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/29「先行締切を11月8日に延長」で記事化済み。新事実なし。締切11/8は3日以内ではない。"
+  },
+  "xr-live-revival-asobistore-general-advance-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/30「受付を11月8日まで延長」で価格・日程・条件まで記事化済み。新事実なし。締切11/8は3日以内ではない。"
+  },
+  "tours-symphony-release-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/29「SYMPHONY配信開始」で歌唱・作詞作曲編曲まで記事化済み。新事実なし。"
+  },
+  "imas-radio-4-hasegawa-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/27と10/28に放送告知とアーカイブ公開を記事化済み。新事実もトリガーも無い。"
+  }
+ },
+ "plan": {
+  "articles": [],
+  "dropped": [
+   {
+    "dedup_key": "miki-solo-showcase-comifuro-2026",
+    "reason": "既報",
+    "note": "11/1に「星井美希の海外ソロ公演、きょうICE BSDで開催」で記事化済み。今回は終了の投稿とお礼だけで新事実もトリガーも無い。"
+   },
+   {
+    "dedup_key": "765-961-live-ticket-extension-2026",
+    "reason": "既報",
+    "note": "10/29「先行締切を11月8日に延長」で記事化済み。新事実なし。締切11/8は3日以内ではない。"
+   },
+   {
+    "dedup_key": "xr-live-revival-asobistore-general-advance-2026",
+    "reason": "既報",
+    "note": "10/30「受付を11月8日まで延長」で価格・日程・条件まで記事化済み。新事実なし。締切11/8は3日以内ではない。"
+   },
+   {
+    "dedup_key": "tours-symphony-release-2026",
+    "reason": "既報",
+    "note": "10/29「SYMPHONY配信開始」で歌唱・作詞作曲編曲まで記事化済み。新事実なし。"
+   },
+   {
+    "dedup_key": "imas-radio-4-hasegawa-2026",
+    "reason": "既報",
+    "note": "10/27と10/28に放送告知とアーカイブ公開を記事化済み。新事実もトリガーも無い。"
+   },
+   {
+    "dedup_key": "miki-future-spotlight-comifuro-2026-wrapup",
+    "reason": "既報",
+    "note": "不採用の主題 miki-solo-showcase-comifuro-2026 へ統合: 11/1に「星井美希の海外ソロ公演、きょうICE BSDで開催」で記事化済み。今回は終了の投稿とお礼だけで新事実もトリガーも無い。"
+   }
+  ],
+  "cross_brand": []
+ }
+}

@@ -133,6 +133,7 @@ discovery_only_domains:
 # --- 二次情報: 他所の発表を写して伝えている情報源(規程2.5) ---
 # 法人運営か個人運営かは問わない。自ら取材・発表していないものはここ。
 secondary_domains:
+  - xitter.cf             # 合議で追加: X閲覧用の非公式フロントエンド。公式Xの投稿を写して表示する媒体
   - gamehack.jp           # 合議で追加: 運営者情報で企業発表を発信する媒体と明記。記事は他社発表の転載
   - bestcalendar.jp       # 合議で追加: 編集部署名の記事で、ハチバンの受注販売発表を言い換えて伝えている
   - teapawt.net           # 合議で追加: 中継先が公式でも、サイト自体は第三者の中継。相手の根拠は中継先の話
@@ -470,6 +471,7 @@ video_ids:
     - sm18526341          # 機械で追加: nicovideo.jp/user/17835786「iM@S 6th Anniversary Live - キラ」
     - LSkzNm3AzHk         # 機械で追加: @TogawaNonoha「〖 世界のアソビ大全51 〗遊び…？いいえ、ののは vs ま」
   公式:
+    - I_EuyjX03zY         # 機械で追加: @imas-official「ゲーム【ミリシタ】高山 紗代子 スペシャル動画【アイドルマス」
     - iVOtp0VZh8g         # 機械で追加: @TomoriManaka「【ハロウィン】苦手なカボチャ、丸々1個食う。【灯里愛夏 / 」
     - MW86O8bUrtE         # 機械で追加: @imas-official「【学マス】雨夜 燕「H.I.F編」シナリオ告知PV【アイドル」
     - _JOkvtePIm4         # 機械で追加: @TomoriManaka「#4【BIOHAZARD RE:2】クレア編スタート！初見で」
@@ -644,6 +646,7 @@ x_accounts:
     - imasnews765
     - zutapoke
   ファン:
+    - RWibo               # 合議で追加: 個人アカウントの発信。Comic FrontierでのP同士の名刺交換を投稿
     - EinhardP_yukiho     # 合議で追加: 個人アカウントによるグッズ到着の報告
     - vocaloidfan_sp      # 合議で追加: ファン記事。個人またはファンサイトの発信
     - umino_ku            # 合議で追加: 個人がコラボ現地を訪れた際の投稿
@@ -964,6 +967,7 @@ x_accounts:
     - procinen1
     - yutaleP
   当事者:
+    - dmm_scratch         # 合議で追加: DMMスクラッチの公式X。一般の販売サービスとしてライセンス商品を売る販売元
     - gotokenhanbai       # 合議で追加: 五島軒の販売・コラボ先の公式発信。アイマス公式ではない
     - pmoa_plum           # 合議で追加: フィギュアメーカーPLUMの製品進捗の一次発信
     - animegame_kt        # 合議で追加: カラオケ事業者。シャニマスとのコラボ会場の告知
@@ -1150,6 +1154,10 @@ x_posts:
 
 # --- リンク元から引き継いだ種別(リンク先1つずつ。キーは pipelib.link_key)。合議がリンク元の告知と関係していると確かめたものだけ(classify_sources.inherit_from_links)。リンク先そのものの種別より強いときだけ効く ---
 link_types:
+  shop.asobistore.jp/feature/cg_mp: 公式        # リンク元から引き継ぎ(合議で関係を確認): https://x.com/imas_CGofficial/status/2092810113442894092(公式)。Memory Pict.6th Pict.の受注告知。リンク先は同じ販売特集ペー
+  youtube.com/watch?v=1wwAWmYtTkM: 準公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/imas_columbia/status/2116138547790938517(準公式)。告知は「デレパの神曲」試聴公開。リンク先も同曲の動画
+  webstore.asobistore.jp/millionlive-theaterdays: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://x.com/imasml_theater/status/2116772227328737522(公式)。告知の月1回のジュエル増量セットが、リンク先ページにも同セットとして載っている
+  youtube.com/watch?v=F4OpPsdXVjk: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/gkmas_official/status/2116092768145535342(公式)。Agitato CD告知の公式投稿で紹介された、収録曲の葛城リーリヤSolo v
   youtube.com/watch?v=m0nu3nQml5A: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/imas_official/status/2116363664580374628(公式)。リンク元の告知したMOIW2025『RELOADING』フル尺の動画
   youtube.com/watch?v=K_6XYhBmS9g: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/valiv_official/status/2116455151577989220(公式)。リンク元の告知した『仮装狂騒曲』踊ってみた動画そのもの
   youtube.com/watch?v=-2WKY8ar26k: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/imassc_prism/status/2116372089443663969(公式)。リンク元の告知した3周年記念楽曲『OVERLAY OF HOPES』のMV

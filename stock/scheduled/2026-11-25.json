@@ -858,5 +858,51 @@
   "event_date": "2027-07-24",
   "deadline": "2026-11-08",
   "src_candidate_id": "202610291232-explore-1"
+ },
+ {
+  "id": "sched-2026-11-25-derepa-no-kamikyoku-preview-2026-発売",
+  "dedup_key": "derepa-no-kamikyoku-preview-2026",
+  "brand": "cg",
+  "subject": "CINDERELLA PARTY! M@STER ～でれぱ 拾年の宴＆デレパの神曲～ 発売",
+  "kind": "発売",
+  "note": "CDが発売され、「デレパの神曲」をDISC1 Tr.04で聴ける",
+  "reserved_on": "2026-11-02",
+  "occurs_on": "2026-11-25",
+  "title": "「デレパの神曲」試聴公開",
+  "url": "https://x.com/imas_columbia/status/2116138547790938517",
+  "source_type": "準公式",
+  "facts": [
+   "「デレパの神曲」の試聴が公開された。",
+   "作詞：原紗友里・青木瑠璃子。",
+   "作曲・編曲：滝澤俊輔 (TRYTONELABO)。",
+   "歌：原紗友里＆青木瑠璃子 from CINDERELLA PARTY!",
+   "YouTube: https://www.youtube.com/watch?v=1wwAWmYtTkM&feature=youtu.be",
+   "リンク: https://www.youtube.com/watch?v=1wwAWmYtTkM&feature=youtu.be",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "unconfirmed",
+  "src_candidate_id": "202611020220-grok-83"
+ },
+ {
+  "id": "sched-2026-11-25-derepa-no-kamikyoku-preview-2026-発売-src1",
+  "dedup_key": "derepa-no-kamikyoku-preview-2026",
+  "brand": "cg",
+  "subject": "CINDERELLA PARTY! M@STER ～でれぱ 拾年の宴＆デレパの神曲～ 発売",
+  "kind": "発売",
+  "note": "CDが発売され、「デレパの神曲」をDISC1 Tr.04で聴ける",
+  "reserved_on": "2026-11-02",
+  "occurs_on": "2026-11-25",
+  "title": "日本コロムビア「シンデレラガールズの15周年記念曲「HOURGLASS」の試聴開始！そして、『THE IDOLM@STER CINDERELLA GIRLS 10th MEMORIAL LIVE STARLIGHT STAGE』を収録したBlu-ray BOXが2027年3月24日に発売決定！本日より予約開始！さらに、「CINDERELLA PARTY！」のCD第5弾『THE IDOLM@STER",
+  "url": "https://columbia.jp/idolmaster/imasnews/261030.html",
+  "source_type": "準公式",
+  "facts": [
+   "『THE IDOLM@STER CINDERELLA PARTY! M@STER ～でれぱ 拾年の宴＆デレパの神曲～』は2026年11月25日発売。"
+  ],
+  "via": "verified_fact",
+  "verify": "unconfirmed",
+  "src_candidate_id": "202611020220-grok-83",
+  "companion_of": "sched-2026-11-25-derepa-no-kamikyoku-preview-2026-発売",
+  "src_dedup_key": "derepa-no-kamikyoku-preview-2026"
  }
 ]

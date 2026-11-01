@@ -1691,5 +1691,41 @@
   "src_candidate_id": "sched-2026-11-01-cg-popntoybox-revival-general-lottery-2026-締切",
   "companion_of": "sched-2026-11-05-cg-popntoybox-revival-general-lottery-2026-締切前",
   "src_dedup_key": "cg-popntoybox-revival-general-lottery-2026"
+ },
+ {
+  "id": "sched-2026-11-05-million-radio-2026-10-29-終了",
+  "dedup_key": "million-radio-2026-10-29",
+  "brand": "million",
+  "subject": "MillionRADIO 10/29放送 タイムシフト公開終了",
+  "kind": "終了",
+  "note": "23:59まで1回だけタイムシフト視聴できる最終日",
+  "reserved_on": "2026-11-02",
+  "occurs_on": "2026-11-05",
+  "title": "ミリオンラジオ 10/29放送(タイムシフト公開中)",
+  "url": "https://live.nicovideo.jp/watch/lv351338553",
+  "source_type": "準公式",
+  "facts": [
+   "放送: 2026/10/29(木) 21:00開始 (40分)",
+   "番組名: THE IDOLM@STER MillionRADIO",
+   "定例: 毎週木曜日 THE IDOLM@STER MillionRADIO／21:00～21:30",
+   "タイムシフト: 2026/11/5(木) 23:59 まで公開",
+   "タイムシフト: 本番組は、タイムシフト公開期間中に1回のみ、放送終了後に視聴することができます。",
+   "タイムシフト: タイムシフトの視聴を開始してから、「番組の長さ＋24時間」(90分の番組であれば25時間30分)以内であれば、中断しても再視聴が可能です。",
+   "タイムシフト: タイムシフト公開期間を過ぎると「番組の長さ＋24時間」内であっても番組を見ることができなくなります。",
+   "タイムシフト: 事前にタイムシフト予約をしていない場合、視聴にはニコニコプレミアム登録が必要です",
+   "応援メール募集: million_radio@bnml.jp",
+   "提供: 株式会社バンダイナムコミュージックライブ",
+   "視聴: 本番組は日本国内でのみ視聴できます。",
+   "エンゲージメント: 中",
+   "チャンネル: 「アイドルマスター ミリオンラジオ！」チャンネルも同時オープン",
+   "チャンネル: 本チャンネルでは「チャンネル会員限定・おまけ生放送」や、番組制作の舞台裏、そして「アイドルマスター ミリオンライブ！」に関するさまざまな情報などをお届けします。",
+   "チャンネルURL: https://ch.nicovideo.jp/MillionRADIO",
+   "エンゲージメント: 低"
+  ],
+  "via": "explore",
+  "verify": "unconfirmed",
+  "event_date": "2026-10-29",
+  "deadline": "2026-11-05",
+  "src_candidate_id": "sched-2026-11-02-million-radio-2026-10-29-締切前"
  }
 ]

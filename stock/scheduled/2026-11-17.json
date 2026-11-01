@@ -383,5 +383,31 @@
   "deadline": "2026-11-03",
   "link_from": "https://x.com/SideM_official/status/2116455147044057318",
   "src_candidate_id": "202611010230-grok-134"
+ },
+ {
+  "id": "sched-2026-11-17-cg-sweet-melty-whip-after-sale-2026-締切",
+  "dedup_key": "cg-sweet-melty-whip-after-sale-2026",
+  "brand": "cg",
+  "subject": "Sweet Melty Whip事後通販 受注締切",
+  "kind": "締切",
+  "note": "MEDICOS ONLINE SHOPで事後通販を注文できる最終日",
+  "reserved_on": "2026-11-02",
+  "occurs_on": "2026-11-17",
+  "title": "『Sweet Melty Whip』POP UP SHOP終了と事後通販",
+  "url": "https://x.com/medicos_et_02/status/2116862835082817857",
+  "source_type": "当事者",
+  "facts": [
+   "『アイドルマスター シンデレラガールズ』POP UP SHOP ~Sweet Melty Whip~は2026年11月1日をもって開催終了。",
+   "会場販売商品は事後通販を予定。",
+   "受注期間: 2026年11月2日(月)～11月17日(火)。",
+   "販売場所: MEDICOS ONLINE SHOP。",
+   "リンク: https://t.co/Su0jmRZbIB",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "unconfirmed",
+  "event_date": "2026-11-01",
+  "deadline": "2026-11-17",
+  "src_candidate_id": "202611020220-grok-28"
  }
 ]

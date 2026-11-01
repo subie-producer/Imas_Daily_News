@@ -1,0 +1,162 @@
+{
+ "decisions": {
+  "comifuro-producer-card-exchange-2026": {
+   "action": "article",
+   "angle": "インドネシアのComic Frontierで、プロデューサー同士が40人以上と名刺を交換したという界隈の盛り上がり。",
+   "purpose": "新情報",
+   "rank": "culture",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "個人投稿1件のみで出典は未確認。特定個人を主役にせず界隈の現象として扱う。"
+  },
+  "idolmaster-portal-maintenance-release-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10-31の記事に同じ停止機能の一覧が載っており、新しい事実も当日のトリガーも無い。"
+  },
+  "fan-yukiho-mami-pc-panel-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "同じ3件の投稿を10-30の記事にしている。"
+  },
+  "imas-birthdays-2026-10-27": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10-27の記事と同じ内容。"
+  },
+  "portal-emergency-maintenance-ended-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10-27の記事と同じ内容で、後の10-31の記事にも含まれる。"
+  },
+  "765-961-idol-ultimate-2027-ticket": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "この出典の10月28日締切は延長されて過ぎている。延長後の締切11月8日は6日先でトリガー外。"
+  },
+  "tours-sidem-contribution-debate-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "個人投稿1件のファン間の議論で、出典は未確認。争いになり得る話題。"
+  },
+  "bandainamco-am-co-jp-32": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10-01の大会告知と10-30の予選エントリー開始の記事が既にある。予選開始は11月12日で、まだ3日以内ではない。"
+  },
+  "akai-sekai-cover-video-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "アイマス外のカバー動画で、個人投稿1件のみ。"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "general-comifuro-producer-card-exchange-2026",
+    "brand": "general",
+    "rank": "culture",
+    "angle": "インドネシアのComic Frontierで、プロデューサー同士が40人以上と名刺を交換したという界隈の盛り上がり。",
+    "purpose": "新情報",
+    "lead_score": 5,
+    "dedup_key": "comifuro-producer-card-exchange-2026",
+    "candidate_ids": [
+     "202611020220-grok-16"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "idolmaster-portal-maintenance-release-2026",
+    "reason": "既報",
+    "note": "10-31の記事に同じ停止機能の一覧が載っており、新しい事実も当日のトリガーも無い。"
+   },
+   {
+    "dedup_key": "fan-yukiho-mami-pc-panel-2026",
+    "reason": "既報",
+    "note": "同じ3件の投稿を10-30の記事にしている。"
+   },
+   {
+    "dedup_key": "imas-birthdays-2026-10-27",
+    "reason": "既報",
+    "note": "10-27の記事と同じ内容。"
+   },
+   {
+    "dedup_key": "portal-emergency-maintenance-ended-2026",
+    "reason": "既報",
+    "note": "10-27の記事と同じ内容で、後の10-31の記事にも含まれる。"
+   },
+   {
+    "dedup_key": "765-961-idol-ultimate-2027-ticket",
+    "reason": "既報",
+    "note": "この出典の10月28日締切は延長されて過ぎている。延長後の締切11月8日は6日先でトリガー外。"
+   },
+   {
+    "dedup_key": "tours-sidem-contribution-debate-2026",
+    "reason": "その他",
+    "note": "個人投稿1件のファン間の議論で、出典は未確認。争いになり得る話題。"
+   },
+   {
+    "dedup_key": "bandainamco-am-co-jp-32",
+    "reason": "既報",
+    "note": "10-01の大会告知と10-30の予選エントリー開始の記事が既にある。予選開始は11月12日で、まだ3日以内ではない。"
+   },
+   {
+    "dedup_key": "akai-sekai-cover-video-2026",
+    "reason": "面違い",
+    "note": "アイマス外のカバー動画で、個人投稿1件のみ。"
+   }
+  ],
+  "cross_brand": []
+ }
+}

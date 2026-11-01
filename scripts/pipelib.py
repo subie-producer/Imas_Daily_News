@@ -157,7 +157,7 @@ def scratch_root() -> Path:
 # 走らせた側(selfcheck.py・当番)が終わるたびに秒を足す。置き場は使い捨ての置き場の直下(毎日の selfcheck で更新され、片付けで消えたら既定)
 CHECK_SECONDS_FILE = "check-seconds.json"
 CHECK_SECONDS_KEEP = 5          # 直近この回数の最大を見積もりにする(重い時間帯の実測も入る。古いものは送り出される)
-CHECK_SECONDS_DEFAULT = {"selfcheck": 1200.0, "test_pipeline": 1200.0, "lint": 120.0}     # 実測が無いとき(2026-10-27 の実測は 9〜17 分・8 秒)
+CHECK_SECONDS_DEFAULT = {"selfcheck": 1200.0, "test_pipeline": 1200.0, "lint": 120.0, "classify": 200.0}     # 実測が無いとき(2026-10-27 の実測は 9〜17 分・8 秒。classify は判定表の更新で 2026-10-24〜30 に 70〜190 秒)
 
 
 CHECK_SECONDS_MAX = 24 * 3600.0    # これを超える実測は壊れた記録として読まない
@@ -3573,6 +3573,8 @@ def classify_retag_lint(date: str, posts_only: bool = False, lint_base: str = "o
                 note_check_seconds("lint", time.monotonic() - t_step)
             if name == "合議":
                 print(r.stdout[-1200:], flush=True)
+                if r.returncode == 0 and not posts_only:    # 収集の合議の所要(収集が締切の手前に残す分: collect.classify_reserve)
+                    note_check_seconds("classify", time.monotonic() - t_step)
             elif name == "付け直し":
                 tail = (r.stdout or "").strip().splitlines()[-1:] if r.stdout else []
                 print("紙面の種別付け直し: " + (tail[0] if tail else f"exit {r.returncode}"), flush=True)

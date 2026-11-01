@@ -1647,6 +1647,124 @@ def test_lost_post_notified_once(tmp: Path):
           f"複数の面で残った同じ投稿の喪失を、所属の面を併記して1度だけ通知しない: {notes}")
 
 
+def test_collect_reserves_classify_time(tmp: Path):
+    """出典の見回りの判定が収集の締切まで使い切らず、判定表の更新(合議)の分を締切の手前に残す
+    (2026-10-29 から 02:00 の収集で、見回りが 02:44 まで使い切り、合議が 51〜60 秒で時間切れになって判定表が戻っていた)。"""
+    import contextlib
+    import io
+    import types
+    import collect
+    import pipelib
+    import source_watch
+    import time as _time
+    tmp.mkdir(parents=True, exist_ok=True)
+    saved_c = {k: getattr(collect, k) for k in ("DEADLINE", "check_seconds", "STATE_PATH", "notify", "run_explores", "merge_into_day_file",
+                                                "append_metric", "needs_classify", "watch_sources", "verify", "ingest_spools")}
+    saved_s = {k: getattr(source_watch, k) for k in ("published", "recheck", "process_changes")}
+    try:
+        collect.check_seconds = lambda name: 200.0
+        check(collect.classify_reserve() == 400.0, f"合議の実測の2倍を残さない: {collect.classify_reserve()}")
+        collect.check_seconds = lambda name: 20.0
+        check(collect.classify_reserve() == collect.CLASSIFY_RESERVE_MIN_SEC, "実測が短い回が続いても下限を残す")
+        collect.check_seconds = lambda name: 5000.0
+        check(collect.classify_reserve() == collect.CLASSIFY_RESERVE_MAX_SEC, "残す秒数が合議の待ちの上限を超えた")
+        # 02:44 の再現: 締切まで残り 350 秒、残す分 400 秒なら、見回りの判定は1本も始めない。実際の process_changes の判定で確かめる
+        collect.DEADLINE = _time.time() + 350
+        check(not collect.deadline_passed(), "締切の前なのに過ぎたとした")
+        check(collect.deadline_passed(400) and collect.session_left(600, 400) == 0, "残す分の手前で止まらない")
+        seen: dict = {}
+        source_watch.published = lambda today, root: []
+        source_watch.recheck = lambda today, arts, late, root=None, left=None: seen.update(fetch=left())
+        source_watch.process_changes = lambda today, arts, root, late=None, left=None: (seen.update(session=left(), late=late()), ([], []))[1]
+        collect.watch_sources(lambda: collect.deadline_passed(400), 400)
+        check(seen == {"fetch": 0.0, "session": 0.0, "late": True}, f"見回りが、残す分まで待ち時間に使う: {seen}")
+        # 残す分を引いても余っていれば、余りの分だけ待つ
+        collect.DEADLINE = _time.time() + 1000
+        seen.clear()
+        collect.watch_sources(lambda: collect.deadline_passed(400), 400)
+        check(0 < seen["session"] <= 600 and 0 < seen["fetch"] <= source_watch.RECHECK_FETCH_SEC and seen["late"] is False,
+              f"見回りの待ちが、残す分を引いた残りでない: {seen}")
+        # 定時の収集の本体が、残す分を見回りへ渡す
+        got: list = []
+        collect.watch_sources = lambda late, reserve=0: (got.append((late(), reserve)), [])[1]
+        collect.check_seconds = lambda name: 200.0
+        collect.DEADLINE = _time.time() + 300
+        collect.run_explores = lambda skip_e, skip_g: ([], {})
+        collect.merge_into_day_file = lambda cs, day: 0
+        collect.append_metric = lambda *a, **k: None
+        collect.needs_classify = lambda cs: False
+        collect.notify = lambda *a, **k: True
+        collect.ingest_spools = lambda cs: 0
+        collect.verify = lambda cs: {}
+        args = types.SimpleNamespace(skip_watch=True, skip_explore=True, skip_grok=True, force_grok=False, no_git=True, oncall_rerun=False)
+        with contextlib.redirect_stdout(io.StringIO()):
+            collect.run_collect(args, "2026-11-02", "unused", _time.time())
+        check(got == [(True, 400.0)], f"定時の収集が、見回りに合議の分を残させない: {got}")
+    finally:
+        for k, v in saved_c.items():
+            setattr(collect, k, v)
+        for k, v in saved_s.items():
+            setattr(source_watch, k, v)
+    # 収集の合議の所要だけを実測に足す(組版の紙面だけの合議・失敗した合議は足さない)
+    notes: list = []
+    saved_p = (pipelib.note_check_seconds, pipelib._txn_run, pipelib.ROOT)
+    (tmp / "docs" / "_posts").mkdir(parents=True)
+    (tmp / "source_types.yml").write_text("official_domains:\n  - a.example\n", encoding="utf-8")
+    try:
+        pipelib.note_check_seconds = lambda name, sec: notes.append(name)
+        pipelib.ROOT = tmp
+        for rc, kw, want in ((0, {}, ["classify"]), (1, {}, []), (0, {"posts_only": True}, [])):
+            notes.clear()
+            pipelib._txn_run = lambda step, limit: subprocess.CompletedProcess(step, rc, "", "")
+            with contextlib.redirect_stdout(io.StringIO()):
+                pipelib.classify_retag_lint("2026-11-02", lint=False, **kw)
+            check(notes == want, f"合議の実測の足し方 rc={rc} {kw}: {notes}")
+    finally:
+        pipelib.note_check_seconds, pipelib._txn_run, pipelib.ROOT = saved_p
+
+
+def test_lost_post_read_by_watch(tmp: Path):
+    """リンク先を定点観測が読み終えた投稿は、確かめで候補にならなくても失ったと通知しない(2026-11-02: @imasnews765 の投稿3件。
+    リンク先の imasnews765.com は定点観測の巡回先で、10-30 に読み終え、話題は候補・記事に入っていた)。読み終えていなければ名指しする。"""
+    import contextlib
+    import io
+    import collect
+    tmp.mkdir(parents=True, exist_ok=True)
+    state = tmp / "watch-state.json"
+    state.write_text(json.dumps({"imasnews765": ["https://imasnews765.com/?p=1", "https://imasnews765.com/?p=2", "https://imasnews765.com/?p=3"],
+                                 "_pending": [{"url": "https://imasnews765.com/?p=2"}], "_given_up": [{"url": "https://imasnews765.com/?p=3"}],
+                                 "_unreadable": {}}), encoding="utf-8")
+    block = lambda i, link: f"### {i}\n- url: https://x.com/imasnews765/status/{i}\n- 本文:\n題 {link}\n- リンク:\n  - {link}"
+    notes: list = []
+    saved = collect.notify, collect.STATE_PATH
+    try:
+        collect.notify = lambda job, msg, ok=True, require=False: notes.append(msg) or True
+        collect.STATE_PATH = state
+        ledger = collect.lost_posts_ledger()
+        ledger["lost"]["trend"] = [(block(11, "https://imasnews765.com/?p=1"), "結果に無い")]
+        out = io.StringIO()
+        with contextlib.redirect_stdout(out):
+            collect.report_lost_posts(ledger)
+        check(not notes and "status/11" in out.getvalue(), f"定点観測が読み終えた投稿を失ったと通知した・記録しない: {notes}")
+        # 読み終えていない・未処理の列・諦めた列・リンクの無い投稿・崩れた候補は失ったまま
+        ledger = collect.lost_posts_ledger()
+        ledger["lost"]["trend"] = [(block(12, "https://imasnews765.com/?p=9"), "結果に無い"), (block(13, "https://imasnews765.com/?p=2"), "結果に無い"),
+                                   (block(14, "https://imasnews765.com/?p=3"), "結果に無い"), ("### 15\n- url: https://x.com/imasnews765/status/15\n- 本文:\n題", "結果に無い"),
+                                   (block(16, "https://imasnews765.com/?p=1"), "候補の形が崩れていた")]
+        ledger["broken"].add(collect.post_key("https://x.com/imasnews765/status/16"))
+        collect.report_lost_posts(ledger)
+        check(len(notes) == 1 and all(f"status/{i}" in notes[0] for i in (12, 13, 14, 15, 16)), f"読み終えていない投稿の喪失を名指ししない: {notes}")
+        # 既読が読めなければ、失ったとして名指しする(確かめられないものを済みにしない)
+        notes.clear()
+        state.write_text("{", encoding="utf-8")
+        ledger = collect.lost_posts_ledger()
+        ledger["lost"]["trend"] = [(block(11, "https://imasnews765.com/?p=1"), "結果に無い")]
+        collect.report_lost_posts(ledger)
+        check(len(notes) == 1, f"既読が読めないのに失っていないとした: {notes}")
+    finally:
+        collect.notify, collect.STATE_PATH = saved
+
+
 def test_official_topic_accepts_press():
     """公式が告知するはずの話題でも、報道があれば書く。執筆の出典の規則・見送りの理由コード・校閲の R5 が同じ基準(公式・準公式・報道)。
     2026-10-13: ゲーム内のお知らせだけのログボを、電ファミの報道があるのに見送った。編集長「信頼できるソースを無視すんな」。
@@ -21332,6 +21450,8 @@ def main() -> int:
     test_grok_verify_keeps_new_announcement_separate()
     test_restore_chained_reservation_facts(tmp / "rcf")
     test_lost_post_notified_once(tmp / "lpn")
+    test_collect_reserves_classify_time(tmp / "crc")
+    test_lost_post_read_by_watch(tmp / "lprw")
     test_grok_verify_keeps_what_it_counts(tmp / "gvk")
     test_grok_deep_retry(tmp / "gdr")
     test_review_failed_changed_article(tmp / "rfc")

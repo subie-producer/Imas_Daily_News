@@ -41,7 +41,7 @@ import yaml
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from pipelib import (ENV, ROOT, COLLECT_MODEL, CODEX_WRITE_MODEL, EXPLORE_MODEL,
-                     EXPLORE_MAX_BUDGET_USD, JST, JobLockTimeout, job_lock, prompt_file, clean_url, append_metric, classify_source,
+                     EXPLORE_MAX_BUDGET_USD, JST, JobLockTimeout, job_lock, prompt_file, clean_url, append_metric, check_seconds, classify_source,
                      extract_periods, decode_html, html_to_text, loads_strict, needs_render, partial_output, quote_on_page, read_for_raw, reap, save_raw, schema_ok,
                      RenderFailed, browser_only, render_page, candidate_misplaced, maintenance_http_error, maintenance_redirect, RENDER_FINAL, RENDER_STATUS,
                      merge_candidate_facts,
@@ -160,14 +160,14 @@ def run_record() -> dict:
     return {k: RUN[k] for k in ("started_at", "trigger") if k in RUN}
 
 
-def deadline_passed() -> bool:
-    """収集の締切を過ぎたか。過ぎたら新しいセッション(やり直し・深掘りも)を起動しない。"""
-    return bool(DEADLINE) and time.time() >= DEADLINE
+def deadline_passed(reserve: float = 0) -> bool:
+    """収集の締切(reserve を渡せば、その秒数だけ手前)を過ぎたか。過ぎたら新しいセッション(やり直し・深掘りも)を起動しない。"""
+    return bool(DEADLINE) and time.time() >= DEADLINE - reserve
 
 
-def session_left(cap: float) -> float:
-    """セッションに待たせてよい秒数。収集の締切を越えない(過ぎていれば 0 = 待たずに止める)。"""
-    return cap if not DEADLINE else max(0.0, min(cap, DEADLINE - time.time()))
+def session_left(cap: float, reserve: float = 0) -> float:
+    """セッションに待たせてよい秒数。収集の締切(reserve を渡せば、その秒数だけ手前)を越えない(過ぎていれば 0 = 待たずに止める)。"""
+    return cap if not DEADLINE else max(0.0, min(cap, DEADLINE - reserve - time.time()))
 X_HOSTS = ("x.com", "twitter.com")
 
 # 候補1件のスキーマと編集規程。標準出力に吐かせる場合(Claude)とファイルに書かせる場合
@@ -1501,12 +1501,29 @@ def take_pending_posts(outdir: Path, keys: list[str]) -> list[Path]:
     return taken
 
 
+def watch_read_urls() -> set[str]:
+    """定点観測が読み終えたページの URL(既読のうち、未処理の列と諦めた列にあるものを除く)。既読が読めなければ空"""
+    try:
+        state = json.loads(STATE_PATH.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return set()
+    if not isinstance(state, dict):
+        return set()
+    unread = {it.get("url") for k in ("_pending", "_given_up") for it in state.get(k) or [] if isinstance(it, dict)}
+    return {u for k, v in state.items() if not k.startswith("_") and isinstance(v, list) for u in v if isinstance(u, str)} - unread
+
+
 def report_lost_posts(ledger: dict) -> None:
     """最後の段まで確かめ終えて、どの段でも済まなかった投稿だけを、まとめて1度、投稿ごとに1行で名指しする。
     途中の段で残っても、後の段(深掘りの確かめ)で済んだ投稿は失っていない。同じ投稿が複数の段で残っても、
     複数の面で残っても(面どうしで同じアカウントを検索するので、同じ投稿が複数の面に書き出される)1行にし、所属の面を併記する
     (面ごとに数えると、同じ投稿の喪失を面の数だけ通知した。監査指摘 lost-post-cross-face)。"""
     rows: dict[str, list] = {}  # 投稿 → [表示, 面の並び, 理由の並び](最初に現れた順)
+    # 投稿のリンク先を定点観測が読み終えていれば、投稿の事実は定点観測の素材の経路に入っている(失っていない)。
+    # ただし崩れた候補の中身(broken)は定点観測の経路に無いので、失ったと名指しする
+    read = watch_read_urls() if ledger["lost"] else set()
+    broken = ledger.get("broken") or set()
+    covered: list[str] = []
     # 済んだ投稿は失っていない。ただし崩れた候補を候補にしなかった投稿(broken)は、ほかの段で済んでもその中身が戻らない
     done = ledger["settled"] - (ledger.get("broken") or set())
     # 後の段(深掘りの確かめ)で確かめ役の CLI が認証切れ・利用上限で止まった面は、まだ確かめ終えていない: 残った投稿を失ったと
@@ -1520,10 +1537,17 @@ def report_lost_posts(ledger: dict) -> None:
             u = post_url(b)
             if u and post_key(u) in done:
                 continue
+            links = [x for _, ls in post_links(b) for x in ls]
+            if links and post_key(u) not in broken and set(links) <= read:
+                if u not in covered:
+                    covered.append(u)
+                continue
             row = rows.setdefault(post_key(u) or b, [u or "(投稿に分けられない書き出し) " + b[:80], [], []])
             for lst, v in ((row[1], key), (row[2], why)):
                 if v not in lst:
                     lst.append(v)
+    if covered:
+        print(f"grok: 候補にならなかった投稿 {len(covered)}件は、リンク先を定点観測が読み終えているので失っていない: {', '.join(covered[:10])}", flush=True)
     strays: dict[str, list] = {}    # 候補の url → 面の並び
     for key, u in ledger.get("stray") or []:
         if key not in strays.setdefault(u, []):
@@ -2485,17 +2509,29 @@ def verify(cands: list[dict]) -> dict:
     return counts
 
 
-def watch_sources(late=lambda: False) -> list[dict]:
+CLASSIFY_RESERVE_MIN_SEC = 300      # 収集の締切の手前で判定表の更新(合議)に残す秒数の下限
+CLASSIFY_RESERVE_MAX_SEC = 1800     # 同じく上限(合議そのものの待ちの上限 classify_then_retag と同じ)
+
+
+def classify_reserve() -> float:
+    """収集の締切の手前で、判定表の更新(合議)に残す秒数。合議の実測の最大の2倍(実測 2026-10-24〜30 の 02:00 の収集は 70〜190 秒)。
+    出典の見回りは順番待ちの判定を、締切まで全部に使い切る。合議はそのあとに始まるので、残さないと毎回切られて戻る
+    (2026-10-29 から 02:00 の収集の合議が 51〜60 秒で時間切れになり、その号の未知の出典が判定されないまま組版へ渡った)"""
+    return float(min(CLASSIFY_RESERVE_MAX_SEC, max(CLASSIFY_RESERVE_MIN_SEC, 2 * check_seconds("classify"))))
+
+
+def watch_sources(late=lambda: False, reserve: float = 0) -> list[dict]:
     """発行済み記事の出典の見回りと、出典の変更の扱い(source_watch)。戻りはこの号に足す「出典の更新」の素材(まだ候補の保存を
     確かめていないもの。保存できたら run_collect が clear_pending で外す)。収集の締切(late)を過ぎたら新しく始めず、判定・校閲の待ちも
-    締切の残りで切る。失敗しても収集(素材の保存)は止めない(異常として申告する)"""
+    締切の残りで切る。reserve は締切の手前で後の段に残す秒数(late も同じ手前の時刻で返す)。
+    失敗しても収集(素材の保存)は止めない(異常として申告する)"""
     import source_watch
     today = now_jst().date().isoformat()
     try:
         arts = source_watch.published(today, ROOT)
-        source_watch.recheck(today, arts, late, root=ROOT, left=lambda: session_left(source_watch.RECHECK_FETCH_SEC))
+        source_watch.recheck(today, arts, late, root=ROOT, left=lambda: session_left(source_watch.RECHECK_FETCH_SEC, reserve))
         found, adopted = source_watch.process_changes(today, arts, ROOT, late=late,
-                                                      left=lambda: session_left(source_watch.SESSION_TIMEOUT_SEC))
+                                                      left=lambda: session_left(source_watch.SESSION_TIMEOUT_SEC, reserve))
         if found or adopted:
             print(f"出典の変更: この回に素材にした変化 {len(adopted)}件、出典の更新の素材 {len(found)}件", flush=True)
         return found
@@ -2675,7 +2711,9 @@ def run_collect(args, date: str, branch: str, t0: float) -> int:
     vcounts = verify(cands)
     # 発行済み記事の出典の見回り(読み直して変わっていれば、この号の「出典の更新」の素材にする。発行済みの記事には書かない)
     # 当番の取り直しでは見回らない・判定しない(取り直しは次の定時工程の前に終える。次の定時収集が扱う)
-    updates = [] if args.oncall_rerun else watch_sources(deadline_passed)
+    # 判定は順番待ちを締切まで使い切るので、後の判定表の更新(合議)の分を締切の手前に残す。残らなかった判定は次の回が続ける
+    reserve = classify_reserve()
+    updates = [] if args.oncall_rerun else watch_sources(lambda: deadline_passed(reserve), reserve)
     cands += updates
     # 置き場の古いものを片付ける
     try:

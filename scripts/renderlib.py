@@ -111,6 +111,32 @@ def years_in(text: str) -> set[int]:
     return {int(y) for y in re.findall(r"(?<!\d)(20\d{2})(?!\d)", (text or "").translate(_ZEN))}
 
 
+# 月を省いて続けた日付(「2027年2月27日(土)・28日(日)」「11月27日(金)〜30日(月)」「2/27(土)・28(日)」)。
+# 「10日後」「3日間」のような数は日付にしない。「/」の書き方は続きに曜日か「日」が要る(「11/7・8人」を日付にしない)
+_WD = r"(?:\s*[(（][^()（）\d]{1,5}[)）])"
+_DAY_SEP = r"\s*[・、,，&＆と~～〜\-]\s*"
+_DAY_TAIL = r"日(?![間目後前以])"
+_DAY_RUNS = (re.compile(rf"(?<!\d)((?:20\d{{2}}\s*年\s*)?\d{{1,2}}\s*月\s*)(\d{{1,2}})\s*日{_WD}?"
+                        rf"((?:{_DAY_SEP}\d{{1,2}}\s*{_DAY_TAIL}{_WD}?)+)"),
+             re.compile(rf"(?<![\d/])((?:20\d{{2}}/)?\d{{1,2}}/)(\d{{1,2}}){_WD}"
+                        rf"((?:{_DAY_SEP}\d{{1,2}}(?:{_WD}|{_DAY_TAIL}{_WD}?))+)"))
+
+
+def day_run_dates(hay: str) -> list[str]:
+    """月を省いて続けた日付の、省かない書き方(「2027年2月27日(土)・28日(日)」→「2027年2月28日」)。年は先頭の日付の年のまま。
+    続きの日は前の日より大きいものだけ(「10月30日〜2日」は10月2日ではない)。"""
+    out = []
+    for run, end in zip(_DAY_RUNS, ("日", "")):
+        for m in run.finditer(hay):
+            head, prev = re.sub(r"\s", "", m.group(1)), int(m.group(2))
+            for d in map(int, re.findall(rf"{_DAY_SEP}(\d{{1,2}})", m.group(3))):
+                if d <= prev:
+                    break
+                out.append(f"{head}{d}{end}")
+                prev = d
+    return out
+
+
 def date_mentioned(iso: str, hay: str, years: set[int] | None = None) -> bool:
     """その日付の書き方のどれかが文言に**日付として**現れるか。数字の境界を見る
     (「9/1」が「9/13」の一部として当たらないように)。年なしの表記(9月13日)は、その年が
@@ -121,6 +147,7 @@ def date_mentioned(iso: str, hay: str, years: set[int] | None = None) -> bool:
     except ValueError:
         return False
     hay = (hay or "").translate(_ZEN)        # 全角の数字・記号(１０/１)も日付として見る
+    hay = " ".join([hay, *day_run_dates(hay)])   # 2026-11-02: 「2月27日(土)・28日(日)」の28日を素材に無いとして千秋楽の予約を捨てた
     year_ok = years is None or y in years
     # 年付きの日付(2099年9月13日 / 2099/9/13 …)の月日部分を、年なし表記の照合対象から外す
     # (別の年の日付を号の年の「9月13日」として拾わない。監査指摘)

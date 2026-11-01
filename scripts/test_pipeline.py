@@ -20004,6 +20004,97 @@ def test_storylink_roundup_topic(tmp: Path):
     check(cands["tsolo"]["dedup_key"] == "shiny-solo-topic", f"まとめ記事でない記事の素材の url を記事の話題へ結ばない: {cands['tsolo']['dedup_key']}")
 
 
+def test_date_day_runs():
+    """月を省いて続けた日付(「2027年2月27日(土)・28日(日)」)の後ろの日も素材の日付として見る(2026-11-02: 千秋楽の予約を素材に無いとして
+    差し戻しても捨てた)。数・別の年・戻る日付は日付にしない。"""
+    import assemble
+    y27, m = {2026, 2027}, renderlib.date_mentioned
+    for iso, hay, want in [("2027-02-28", "公演は2027年2月27日（土）・28日（日）、会場は愛知県・IGアリーナ。", True),
+                           ("2027-02-28", "２０２７年２月２７日（土）、２８日（日）", True),
+                           ("2027-03-22", "東京公演は2027年3月21日(日・祝)・22日(月・祝)に開催", True),
+                           ("2026-10-25", "10月23日・24日・25日は事前整理券を発行", True),
+                           ("2026-11-30", "11月27日(金)〜30日(月)限定", True),
+                           ("2026-11-28", "11月27日(金)〜30日(月)限定", False),
+                           ("2027-02-28", "2/27(土)・28(日)に開催", True),
+                           ("2027-03-22", "2026年3月21日・22日に開催", False),
+                           ("2026-10-02", "10月30日〜2日", False),
+                           ("2027-01-10", "1月5日、10日後に発表", False),
+                           ("2026-11-08", "11/7・8人まで", False),
+                           ("2027-02-28", "2月27日に開催。28日に発表", False)]:
+        check(m(iso, hay, y27) is want, f"月を省いた日付の照合: {iso} / {hay}: {not want}")
+    d = "2026-11-02"
+    mats = {"c1": cand_row("c1", "https://idolmaster-official.jp/news/01_20183", brand="joint", title="合同ライブ",
+                           facts=["公演は2027年2月27日（土）・28日（日）、会場は愛知県・IGアリーナ。"])}
+    posts = [{"slug": "clash", "brand": "joint", "candidate_ids": ["c1"], "title": "t", "lede": "l。", "rank": "small", "_name": f"{d}-clash.md"}]
+    r = {"slug": "clash", "candidate_id": "c1", "date": "2027-02-28", "kind": "千秋楽", "subject": "愛知公演2日目", "note": "n"}
+    rejected: list = []
+    clean, _ = assemble.validate(d, {"digest": [], "stories": [], "pending_add": [], "pending_remove": [], "reservations": [r]}, posts, mats,
+                                 {"articles": [], "pending": []}, rejected=rejected)
+    check(not rejected and len(clean["reservations"]) == 1, f"月を省いた千秋楽の日の予約を捨てた: {rejected}")
+
+
+def test_periods_skip_sentences():
+    """「受付期間を…まで延長」は「ラベル: 値」ではない(2026-11-02: まとめサイトの「最近の投稿」の別の話題の題を期間として拾い、
+    検定の受付が 11/8 まで延長と素材に入った)。ラベルと値の形はこれまでどおり取る。"""
+    side = "最近の投稿\n別の催し ASOBI STOREのメンテナンスに伴い受付期間を 【2026年11月8日(日)23:59】まで延長\n"
+    check(pipelib.extract_periods(side) == [], f"文の途中のラベルを期間にした: {pipelib.extract_periods(side)}")
+    check(pipelib.extract_periods("受付期間: 2026年10月7日(水)12:00～11月1日(日)23:59\n受注期間\n11月15日まで")
+          == ["受付期間: 2026年10月7日(水)12:00～11月1日(日)23:59", "受注期間: 11月15日まで"], "ラベルと値の形を落とした")
+
+
+def test_review_blocked_source_drops(tmp: Path):
+    """校閲の R4・R5 で落ちた記事も出典を揃える入口の対象(2026-11-02: 公式のリポストがあるスクラッチの記事が R5 で落ち、入口を通らなかった)。
+    ほかの規則・紙面に載った記事は対象にしない。"""
+    (tmp / "metrics").mkdir(parents=True, exist_ok=True)
+    (tmp / "docs" / "_posts").mkdir(parents=True, exist_ok=True)
+    d = "2026-11-02"
+    drops = {"a": {"stage": "校閲ブロック", "why": "R5 R5 が未解消。公式が無い"}, "b": {"stage": "校閲ブロック", "why": "R4 別の話題のページ"},
+             "c": {"stage": "校閲ブロック", "why": "R1 出典にない事実"}, "e": {"stage": "書き直しで見送り", "why": "NOT_NEWS 既報"},
+             "f": {"stage": "校閲ブロック", "why": "R5 載った"}}
+    (tmp / "metrics" / f"drops-{d}.json").write_text(json.dumps(drops, ensure_ascii=False), encoding="utf-8")
+    (tmp / "docs" / "_posts" / f"{d}-f.md").write_text("x", encoding="utf-8")
+    got = sorted(pipelib.source_lacking_drops(d, tmp))
+    check(got == ["a", "b"], f"校閲の出典不足の取り出し: {got}")
+
+
+def test_source_rescue_keeps_official_repost():
+    """確かめが販売ページの候補にまとめても、問いに答えた公式の投稿は候補に残す(2026-11-02: @imasml_765PRO のリポストに届いたのに
+    素材は販売ページだけで、R5 の公式が揃わなかった)。話題と認めていない投稿・公式でない投稿・既に候補の投稿は足さない。"""
+    import source_rescue
+    page = "https://scratch.dmm.com/kuji/MILLIONLIVE2/"
+    orig = "https://x.com/dmm_scratch/status/2114643200879083533"
+    def post(url, body, link):
+        return f"### 1\n- url: {url}\n- 問い: 1\n- 投稿者: 公式\n- 投稿日時: 2026-10-26\n- 本文:\n{body}\n- リンク:\n  - {link}\n"
+    rt = "https://x.com/imasml_765PRO/status/2114644006894481573"
+    text = post(rt, f"RT @dmm_scratch: スクラッチ第二弾の発売が決定\n{page}\n11月2日 18:00から発売開始！\n元の投稿: {orig}\n元の本文:\n同じ文", page)
+    item = {"url": page, "link_from": orig, "title": "スクラッチ第二弾", "brand": "million", "dedup_key": "million-scratch", "facts": ["x"]}
+    got = source_rescue.official_post_items(text, [item])
+    check(len(got) == 1 and got[0]["url"] == rt and got[0]["dedup_key"] == "million-scratch" and got[0]["_via"] == "grok"
+          and got[0]["facts"] == ["imasml_765PRO が @dmm_scratch の投稿をリポストした。", "スクラッチ第二弾の発売が決定", "11月2日 18:00から発売開始！"],
+          f"公式のリポストが候補に残らない: {got}")
+    check(source_rescue.official_post_items(text, [item, *got]) == [], "候補のある投稿を重ねた")
+    check(source_rescue.official_post_items(text, [dict(item, url="https://example.com/x", link_from="")]) == [], "話題と認めていない投稿を足した")
+    check(source_rescue.official_post_items(post(orig, "発売決定", page), [item]) == [], "公式でない投稿を足した")
+    # 確かめが候補を書かなかった巡でも、記事の素材の url を含む投稿は残す(実データ: 2巡目の確かめの候補が0件で、リポストを取りこぼした)
+    with RescueFakes(Path(tempfile.mkdtemp())) as fakes:
+        fakes.deep = lambda queries, outdir, chosen, errs, suffix="-deep", retry=False: (
+            [(outdir / f"{k}{suffix}.md").write_text(text, encoding="utf-8") for k in chosen], set())[1]
+        fakes.luna = lambda queries, outdir, suffix="", ledger=None: ([], {})
+        import collect
+        collect.deep_dive_grok, collect.verify_grok_faces = fakes.deep, fakes.luna
+        log: dict = {}
+        found = source_rescue.grok_phase({"s": [{"question": "公式の投稿", "why": "w"}]}, {"s": {"brand": "million"}},
+                                         Path(tempfile.mkdtemp()), log, [item])
+    check([(s, i["url"]) for s, i in found] == [("s", rt)], f"確かめが候補を書かない巡で公式の投稿を落とした: {found}")
+    c = collect_normalized(got)
+    check(c["source_type"] == "公式" and c["published_date"] == "2026-10-26", f"足した候補の種別・掲載日: {c}")
+
+
+def collect_normalized(items: list[dict]) -> dict:
+    import collect
+    return collect.normalize(items)[0]
+
+
 def test_assemble_verified_fact_reservation(tmp: Path):
     """素材に日付が無く、記事が確かめた事実(verified_facts)にだけある締切・終了も続報予約になり、その事実が予約の素材に添わる
     (2026-10-31: シャニマスの公式投稿に終了日が無く、記事が攻略ページで確かめた 11/27 終了の雛菜ガシャ・11/18 終了のキャスコレの
@@ -21256,6 +21347,10 @@ def main() -> int:
     test_assemble_run_returns_reservations(tmp / "arrr")
     test_lede_contract()
     test_reuse_rewrites_cut_lede(tmp / "rcl")
+    test_date_day_runs()
+    test_periods_skip_sentences()
+    test_review_blocked_source_drops(tmp / "rbs")
+    test_source_rescue_keeps_official_repost()
     test_assemble_verified_fact_reservation(tmp / "avr")
     test_assemble_roundup_reservation(tmp / "arr")
     test_storylink_roundup_topic(tmp / "srt")

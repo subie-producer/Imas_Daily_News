@@ -37,7 +37,7 @@ import urllib.request
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from pipelib import (PAGE_READ_BYTES, RENDER_FINAL, RENDER_STATUS, RenderFailed, browser_only, extract_periods, html_to_text, http_status,
+from pipelib import (PAGE_READ_BYTES, RENDER_FINAL, RENDER_STATUS, RenderFailed, browser_only, classify_source, extract_periods, html_to_text, http_status,
                      maintenance_http_error, maintenance_redirect, maintenance_screen, needs_render, note_fetched, polite_urlopen, render_page)
 import page_archive
 
@@ -260,6 +260,12 @@ def emit(url: str, final: str | None, text: str, chars: int, note: str | None = 
     # 読んでいない url を書く(2026-10-23: t.co の行き先 …_whanm_1023 を …_whanm_10231023 と書き、差し戻しても直らず記事が落ちた)
     if final and final != url:
         print(f"転送先 URL: {final}")
+    # 判定表の種別を見せる。見せないと、書き手は足した出典が校閲の R5(公式・準公式・報道)に数えられるか分からない
+    # (2026-11-03: R5 に当事者のプレスリリース・二次情報の媒体を足して、書き手は対応した稿を返し、指摘が残った)
+    try:
+        print(f"出典の種別: {classify_source(final or url)}")
+    except SystemExit:      # 判定表を読めなくても、本文は読ませる(種別は検算と校閲が判定表で決める)
+        print("出典の種別: 不明(判定表を読めない)")
     if note:
         print(note)
     if periods:

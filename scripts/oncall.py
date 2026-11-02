@@ -413,6 +413,7 @@ BACKLOG_MARGIN_MIN = SLOT_MARGIN_MIN   # 次の定時工程の何分前に終え
 BACKLOG_MIN_WINDOW_MIN = 60  # これより短い枠なら始めない(取り込みの分を残して1往復も回らない)
 BACKLOG_MERGE_RESERVE_MIN = 15   # 往復を終えてから、取り込み・後始末に残す時間
 COLLECT_RERUN_RESERVE_MIN = 20   # 収集の当番: 往復を終えてから、取り込みと定点観測の取り直しに残す時間
+COLLECT_NORERUN_RESERVE_MIN = 5  # 収集の当番: 取り直しの要らない修正(rerun_mode が none)は、往復を終えてから取り込みの分だけ残す
 COLLECT_MIN_WINDOW_MIN = 30      # 収集の当番: ロックを取れた時点でこれだけ無ければ直して取り直す時間が無い(往復10分+取り直し20分)
 CLEANUP_RESERVE_SEC = 300        # 収集の当番: 取り直しを打ち切ってから、後始末(素材の確定・push・通知)に残す秒数
 # 収集の当番が、取り直しまで含めて終えるべき時刻(epoch 秒。呼び出し側の収集が --end-at で固定して渡す)
@@ -1039,6 +1040,17 @@ def outside_touched(rnd: int, base: str, env_before: str, transcript: list[dict]
     return False
 
 
+def rounds_end(stage: str, fix: dict) -> float:
+    """往復を終える時刻。収集の当番の締切(DEADLINE_AT)は定点観測の取り直しの分を残す時刻で、02:00 の収集の当番(02:46 開始。締切 03:15)は
+    修正のセッションと selfcheck のあとに監査の検査の分(約 17 分)が残らず、監査が始まらない(2026-10-29・10-31 の修正は監査の前の時間切れで
+    本線に入らず、同じ失敗が 11-01 にまた起きた)。取り直しの要らない修正(rerun_mode が none)は、取り込みの分だけ残して使える
+    (組版は印の end_at + 5 分まで待つ)"""
+    end = DEADLINE_AT or float("inf")
+    if stage == "collect" and STAGE_END_AT and (fix or {}).get("rerun_mode") == "none":
+        return max(end, STAGE_END_AT - COLLECT_NORERUN_RESERVE_MIN * 60)
+    return end
+
+
 def run_rounds(stage: str, date: str, context: str, wt: Path, base: str, wip: dict | None,
                env_before: str, transcript: list[dict]) -> dict:
     """当番の修正 → 監査、の往復。指摘が無くなる(approve で must_fix が空)まで回す。
@@ -1051,11 +1063,11 @@ def run_rounds(stage: str, date: str, context: str, wt: Path, base: str, wip: di
     - 例外はここで受けて `error` に入れる(呼び出し側の共通の終了処理が state を保存できるように)
     """
     schemas = ROOT / "schema"
-    deadline = min(time.time() + ONCALL_LIMIT_MIN * 60, DEADLINE_AT or float("inf"))
-    left = lambda: int(deadline - time.time())
+    limit_at = time.time() + ONCALL_LIMIT_MIN * 60
     objections: list[dict] | None = None
     integ: dict | None = None
     fix: dict = {}
+    left = lambda: int(min(limit_at, rounds_end(stage, fix)) - time.time())     # fix は往復で置き換わるので、そのつど読む
     head, diff, changed = base, "", []
     kept = {"head": base, "fix": {}, "open": []}
     res = {"approved": False, "error": ""}

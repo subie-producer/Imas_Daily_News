@@ -578,9 +578,9 @@
   "id": "sched-2026-11-09-valiv-aikatsu-nodojiman-2026-開始",
   "dedup_key": "valiv-aikatsu-nodojiman-2026",
   "brand": "dsva",
-  "subject": "アイカツ！のどじまんにヴイアラ3名が出演",
+  "subject": "アイカツ！のどじまん(ヴイアラ3名ゲスト)",
   "kind": "開始",
-  "note": "20時からアイカツアカデミー！公式CHでヴイアラ3名のゲスト出演を視聴できる",
+  "note": "20時からアイカツアカデミー！公式CHで配信を視聴できる",
   "reserved_on": "2026-11-03",
   "occurs_on": "2026-11-09",
   "title": "ヴイアラ3名が「アイカツ！のどじまん」にゲスト出演",
@@ -599,5 +599,52 @@
   "verify": "unconfirmed",
   "event_date": "2026-11-09",
   "src_candidate_id": "202611030222-grok-32"
+ },
+ {
+  "id": "sched-2026-11-09-gaku-contest-season-55-2026-締切",
+  "dedup_key": "gaku-contest-season-55-2026",
+  "brand": "gaku",
+  "subject": "コンテストシーズン55",
+  "kind": "締切",
+  "note": "素材記載の期限日、コンテストシーズン55の状況を公式で確認できる",
+  "reserved_on": "2026-11-03",
+  "occurs_on": "2026-11-09",
+  "title": "コンテストシーズン55開催",
+  "url": "https://teapawt.net/gkmas_official?filter=posts",
+  "source_type": "二次情報",
+  "facts": [
+   "学園アイドルマスター公式アカウントがコンテストシーズン55の開催を告知した。",
+   "エンゲージメント: 中",
+   "アナザーアイドルアップデート記念として、SSRアナザーアイドル確定ガシャが告知された。",
+   "雨夜燕のシーズン限定アナザーアイドルのいずれかが確定で手に入る無料1連ガシャ。",
+   "ガシャ開催時期：11/4 (水) 10:59まで（予定）",
+   "言及アイドル: 雨夜 燕"
+  ],
+  "via": "explore",
+  "verify": "unconfirmed",
+  "deadline": "2026-11-09",
+  "src_candidate_id": "202611021835-explore-12"
+ },
+ {
+  "id": "sched-2026-11-09-gaku-contest-season-55-2026-締切-src1",
+  "dedup_key": "gaku-contest-season-55-2026",
+  "brand": "gaku",
+  "subject": "コンテストシーズン55",
+  "kind": "締切",
+  "note": "素材記載の期限日、コンテストシーズン55の状況を公式で確認できる",
+  "reserved_on": "2026-11-03",
+  "occurs_on": "2026-11-09",
+  "title": "コンテストシーズン55開催",
+  "url": "https://x.com/gkmas_official/status/2117089564464480662",
+  "source_type": "公式",
+  "facts": [
+   "コンテストシーズン55の開催が告知された。",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202611030222-grok-27",
+  "companion_of": "sched-2026-11-09-gaku-contest-season-55-2026-締切",
+  "src_dedup_key": "gaku-contest-season-55"
  }
 ]

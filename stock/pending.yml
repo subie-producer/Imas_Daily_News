@@ -363,6 +363,7 @@
   subject: 初星フェス vol.6 開催終了日
   watch: 10月28日11時開始(予定)の初星フェス vol.6の終了日時(判明次第 triggers へ)
   added_on: '2026-10-28'
+  removed_on: '2026-11-03'
 - dedup_key: shiny-kawaii-season-chibigurumi-2026
   brand: shiny
   subject: 'シャニマス #KAWAII♡しーずん ちびぐるみ vol.1・vol.2'
@@ -399,5 +400,5 @@
 - dedup_key: tours-emergency-maintenance-2026-11-02
   brand: joint
   subject: ツアマス ALL.Net緊急メンテナンスの終了時刻
-  watch: メンテナンス終了時刻と、オンラインモード・マイページの再開(公式が改めて告知。判明次第 triggers へ)
+  watch: メンテナンス終了時刻、オンラインモードとマイページの再開状況(公式告知。判明次第 triggers へ)
   added_on: '2026-11-03'

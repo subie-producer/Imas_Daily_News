@@ -1968,6 +1968,31 @@ def test_rule_bench_judges_shape(tmp: Path):
     check(not wrong, f"事例の固定の本文が、そのままの中身で返らない: {wrong[:3]}")
 
 
+def test_fetch_page_shows_source_type():
+    """fetch_page.py は判定表の種別を出す。校閲は種別で R5 を決めるので、書き手に見えないと、R5 に当事者・二次情報を足して「対応した」と返す
+    (2026-11-03: THEキャラの事後通販に prtimes、次に premium.gamepedia.jp を足し、指摘が2巡残った)。転送されたら行き先の種別。依頼文は同じ語で指す。"""
+    import contextlib
+    import io
+    import fetch_page
+
+    def shown(url, final=None):
+        out = io.StringIO()
+        with contextlib.redirect_stdout(out):
+            fetch_page.emit(url, final, "本文", 100)
+        return re.findall(r"^出典の種別: (\S+)$", out.getvalue(), flags=re.M)
+    check(shown("https://prtimes.jp/main/html/rd/p/000001125.000069812.html") == ["当事者"], "当事者の種別を出さない")
+    check(shown("https://premium.gamepedia.jp/hobby/archives/280792") == ["二次情報"], "二次情報の種別を出さない")
+    check(shown("https://t.co/abc", "https://idolmaster-official.jp/news/01_20225") == ["公式"], "転送先の種別を出さない")
+    root = pipelib.ROOT
+    try:
+        pipelib.ROOT = Path("/nonexistent-imas-root")
+        check(shown("https://example.com/") == ["不明(判定表を読めない)"], "判定表が読めないと本文まで読めなくなる")
+    finally:
+        pipelib.ROOT = root
+    revise = (Path(__file__).resolve().parent.parent / "prompts" / "revise-article.md").read_text(encoding="utf-8")
+    check("`出典の種別:`" in revise and "NO_PRIMARY_SOURCE" in revise, "書き直しの依頼文が R5 に足す出典の種別と、届かないときの見送りを指していない")
+
+
 def test_fetch_page_shows_redirect_target(tmp: Path):
     """fetch_page.py は転送された(短縮 URL など)ときに行き先の url を出す。出さないと執筆は行き先を本文から推して組み立て、読んでいない url を
     書く(2026-10-23: t.co の行き先 …_whanm_1023 を …_whanm_10231023 と書き、差し戻しても直らず SideM の POP UP 記事が落ちた)。
@@ -20050,11 +20075,13 @@ def test_review_blocked_source_drops(tmp: Path):
     d = "2026-11-02"
     drops = {"a": {"stage": "校閲ブロック", "why": "R5 R5 が未解消。公式が無い"}, "b": {"stage": "校閲ブロック", "why": "R4 別の話題のページ"},
              "c": {"stage": "校閲ブロック", "why": "R1 出典にない事実"}, "e": {"stage": "書き直しで見送り", "why": "NOT_NEWS 既報"},
-             "f": {"stage": "校閲ブロック", "why": "R5 載った"}}
+             "f": {"stage": "校閲ブロック", "why": "R5 載った"},
+             "g": {"stage": "執筆で見送り", "why": "NOT_NEWS 有効な購入期間を確認できず"}}
     (tmp / "metrics" / f"drops-{d}.json").write_text(json.dumps(drops, ensure_ascii=False), encoding="utf-8")
     (tmp / "docs" / "_posts" / f"{d}-f.md").write_text("x", encoding="utf-8")
     got = sorted(pipelib.source_lacking_drops(d, tmp))
-    check(got == ["a", "b"], f"校閲の出典不足の取り出し: {got}")
+    # g: 執筆の NOT_NEWS は素材の外に告知があるかもしれない(2026-11-03: 公式がリポストした Teddy's Collection II の事後通販)。e: 書き直しの NOT_NEWS は通さない
+    check(got == ["a", "b", "g"], f"校閲の出典不足の取り出し: {got}")
 
 
 def test_source_rescue_keeps_official_repost():
@@ -21572,6 +21599,7 @@ def main() -> int:
     test_collect_handover_deadline(tmp / "chd")
     test_rule_bench_checks_read_pages(tmp / "rbp")
     test_bench_tools_check_read_pages(tmp / "btr")
+    test_fetch_page_shows_source_type()
     test_fetch_page_shows_redirect_target(tmp / "fpr")
     test_draft_key_ignores_portal_notice(tmp / "dkn")
     test_page_archive_store(tmp / "pas")

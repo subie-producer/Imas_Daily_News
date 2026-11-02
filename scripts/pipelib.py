@@ -313,10 +313,14 @@ def settled_drops(date: str, root: Path | None = None) -> dict[str, str]:
 # (R4 出典の不一致・R5 公式が無い。外れた記事の記録の理由は規則から始まる)。2026-11-02: 公式の投稿があるスクラッチの記事が R5 で
 # 校閲ブロックになり、見送りのコードだけを見ていたので入口を通らずに落ちた
 SOURCE_DECLINE_CODES = ("NO_PRIMARY_SOURCE", "SOURCE_MISMATCH", "R4", "R5")
+# 執筆の NOT_NEWS も入口を通す。書き手は渡された素材と読めたページだけで「新しいことが無い」と判断する(X の原本は開けない)。2026-11-03: Teddy's
+# Collection II を「有効な購入期間を確認できない」で見送ったが、公式がリポストした事後通販の告知が素材に無かっただけで、入口は届いた。
+# 校閲の R10・書き直しの NOT_NEWS は、紙面の既報と照らした判断なので通さない(既報の再掲は出典を足しても戻らない)
+SOURCE_DECLINE_AT = {"NOT_NEWS": "執筆で見送り"}
 
 
 def source_lacking_drops(date: str, root: Path | None = None) -> dict[str, str]:
-    """その号で出典が足りずに見送った記事(metrics/drops-<日付>.json の理由が SOURCE_DECLINE_CODES で始まり、紙面に無いもの)の
+    """その号で出典が足りずに見送った記事(metrics/drops-<日付>.json の理由が SOURCE_DECLINE_CODES か、段が合う SOURCE_DECLINE_AT で始まり、紙面に無いもの)の
     {slug: 理由}。組み直しの前に出典を揃える入口(scripts/source_rescue.py)の対象(2026-10-26: 当番が「外部」で閉じ、
     当日 23:59 締切のプレゼントを戻さなかった)。記録が無い・読めないときは空。"""
     root = root or ROOT
@@ -329,7 +333,9 @@ def source_lacking_drops(date: str, root: Path | None = None) -> dict[str, str]:
     out = {}
     for slug, r in (rows if isinstance(rows, dict) else {}).items():
         why = str(r.get("why") or "").strip() if isinstance(r, dict) else ""
-        if (why.split(" ", 1)[0].rstrip(":") in SOURCE_DECLINE_CODES and slug not in settled
+        code = why.split(" ", 1)[0].rstrip(":")
+        if ((code in SOURCE_DECLINE_CODES or (code in SOURCE_DECLINE_AT and r.get("stage") == SOURCE_DECLINE_AT[code]))
+                and slug not in settled
                 and not (root / "docs" / "_posts" / f"{date}-{slug}.md").exists()):
             out[slug] = why
     return out

@@ -14,6 +14,21 @@
    "changed": 35,
    "elapsed_s": 103,
    "cycle_days_actual": 0.59
+  },
+  {
+   "at": "2026-11-03T07:34:10+09:00",
+   "cap": 60,
+   "parallel": 4,
+   "runs_per_day": 5,
+   "cycle_days": 0.65,
+   "oldest_age_h": 12.9,
+   "targets": 196,
+   "chosen": 60,
+   "tried": 60,
+   "checked": 60,
+   "changed": 33,
+   "elapsed_s": 95,
+   "cycle_days_actual": 0.65
   }
  ],
  "collect": [
@@ -123,6 +138,94 @@
     "failed": 3
    },
    "duration_s": 2511
+  },
+  {
+   "at": "2026-11-03T07:54:02+09:00",
+   "edition": "2026-11-04",
+   "started_at": "2026-11-03T07:30:45+09:00",
+   "trigger": "timer",
+   "watch": {
+    "stats": {
+     "imas-portal": {
+      "found": 12,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-sidem": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-shiny": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-million": {
+      "found": 8,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "lantis-shiny": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "lantis-sidem": {
+      "found": 4,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "columbia-imas": {
+      "found": 352,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "bnam-tours": {
+      "found": 69,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "imasnews765": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     }
+    },
+    "new": 0,
+    "facted": 0,
+    "deferred": 0,
+    "blocked": 0,
+    "unavailable": 0
+   },
+   "per_query": {
+    "explore:765as": 0,
+    "explore:cinderella": 0,
+    "explore:million": 0,
+    "explore:shiny": 1,
+    "explore:sidem": 0,
+    "explore:gakuen": 0,
+    "explore:dsva": 1,
+    "explore:joint-other": 0,
+    "explore:trend": 1
+   },
+   "normalized": 6,
+   "added": 5,
+   "verify": {
+    "confirmed": 1,
+    "unconfirmed": 2,
+    "failed": 0
+   },
+   "duration_s": 1396
   }
  ],
  "compose": [

@@ -1,0 +1,58 @@
+{
+ "decisions": {
+  "xr-live-revival-asobistore-general-advance-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11月8日までの延長・日程・料金は10/30号の本文にある。新しい事実なし。締切の11月8日は3日以内ではなくトリガーなし。"
+  },
+  "imas-radio-4-hasegawa-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "放送終了とアーカイブ公開は10/28号で記事化済み。出演者・URLとも新しい事実なし。"
+  },
+  "765-961-live-ticket-extension-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "先行締切の11月8日延長は10/29号(合同面)で記事化済み。出典は二次情報で新事実なし。締切まで5日でトリガーなし。"
+  }
+ },
+ "plan": {
+  "articles": [],
+  "dropped": [
+   {
+    "dedup_key": "xr-live-revival-asobistore-general-advance-2026",
+    "reason": "既報",
+    "note": "11月8日までの延長・日程・料金は10/30号の本文にある。新しい事実なし。締切の11月8日は3日以内ではなくトリガーなし。"
+   },
+   {
+    "dedup_key": "imas-radio-4-hasegawa-2026",
+    "reason": "既報",
+    "note": "放送終了とアーカイブ公開は10/28号で記事化済み。出演者・URLとも新しい事実なし。"
+   },
+   {
+    "dedup_key": "765-961-live-ticket-extension-2026",
+    "reason": "既報",
+    "note": "先行締切の11月8日延長は10/29号(合同面)で記事化済み。出典は二次情報で新事実なし。締切まで5日でトリガーなし。"
+   }
+  ],
+  "cross_brand": []
+ }
+}

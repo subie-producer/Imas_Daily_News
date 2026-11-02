@@ -396,3 +396,8 @@
   watch: 「近日開催」とされたガシャの開催開始日・期間(判明次第 triggers へ)
   added_on: '2026-10-31'
   removed_on: '2026-11-01'
+- dedup_key: tours-emergency-maintenance-2026-11-02
+  brand: joint
+  subject: ツアマス ALL.Net緊急メンテナンスの終了時刻
+  watch: メンテナンス終了時刻と、オンラインモード・マイページの再開(公式が改めて告知。判明次第 triggers へ)
+  added_on: '2026-11-03'

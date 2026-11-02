@@ -876,5 +876,82 @@
   "src_candidate_id": "202610300224-grok-82",
   "companion_of": "sched-2026-11-06-sidem-knick-knacks-vol-2-2026-締切",
   "src_dedup_key": "sidem-knick-knacks-vol2-2026"
+ },
+ {
+  "id": "sched-2026-11-06-cinderella-yokohama-cosmoworld-2026-結果",
+  "dedup_key": "cinderella-yokohama-cosmoworld-2026",
+  "brand": "cg",
+  "subject": "コスモワールド物販 事前抽選の結果発表",
+  "kind": "結果",
+  "note": "17時から順次、抽選結果を確認できる",
+  "reserved_on": "2026-11-03",
+  "occurs_on": "2026-11-06",
+  "title": "よこはまコスモワールド・YOKOHAMA AIR CABIN 2026コラボ(シンデレラガールズ)",
+  "url": "https://idolmaster-official.jp/news/01_20269",
+  "source_type": "公式",
+  "facts": [
+   "開催期間：2026年11月13日(金)～12月9日(水) ※期間内休園日を除く",
+   "開催場所：よこはまコスモワールド・YOKOHAMA AIR CABIN",
+   "本日20時より11月13日(金)・11月14日(土)の物販会場の事前抽選を開始",
+   "物販会場の事前抽選の対象日: 11月13日(金)・11月14日(土)",
+   "グッズ、キッチンカーメニュー、スタンプラリー、撮り下ろしボイス、カーニバルゲームなどのコラボ内容",
+   "今回のために撮り下ろしたボイスがある",
+   "混雑状況により物販入場制限を行う場合がある",
+   "詳細情報は特設サイトで確認",
+   "特設サイト: https://www.the-chara.com/blog/?p=123566",
+   "公式X: https://x.com/thechara_201 (本文中に https://x.com/thechara_2014 の表記もある)",
+   "エンゲージメント: 中"
+  ],
+  "via": "watch",
+  "verify": "confirmed",
+  "event_date": "2026-11-13",
+  "deadline": "2026-12-09",
+  "src_candidate_id": "202611021835-watch-0"
+ },
+ {
+  "id": "sched-2026-11-06-cinderella-yokohama-cosmoworld-2026-結果-src1",
+  "dedup_key": "cinderella-yokohama-cosmoworld-2026",
+  "brand": "cg",
+  "subject": "コスモワールド物販 事前抽選の結果発表",
+  "kind": "結果",
+  "note": "17時から順次、抽選結果を確認できる",
+  "reserved_on": "2026-11-03",
+  "occurs_on": "2026-11-06",
+  "title": "ザ・キャラ「アイドルマスター シンデレラガールズ×よこはまコスモワールド・YOKOHAMA AIR CABIN 2026」(2026-11-02)",
+  "url": "https://www.the-chara.com/blog/?p=123566",
+  "source_type": "公式",
+  "facts": [
+   "事前抽選の申込期間は2026年11月2日20:00～11月5日23:59。結果発表は11月6日17:00より順次。"
+  ],
+  "via": "verified_fact",
+  "verify": "unconfirmed",
+  "src_candidate_id": "202611021835-watch-0",
+  "companion_of": "sched-2026-11-06-cinderella-yokohama-cosmoworld-2026-結果",
+  "src_dedup_key": "cinderella-yokohama-cosmoworld-2026"
+ },
+ {
+  "id": "sched-2026-11-06-tomori-first-drinking-stream-2026-開始",
+  "dedup_key": "tomori-first-drinking-stream-2026",
+  "brand": "dsva",
+  "subject": "灯里愛夏の初飲酒配信",
+  "kind": "開始",
+  "note": "22時からYouTubeで灯里愛夏の初飲酒配信を視聴できる",
+  "reserved_on": "2026-11-03",
+  "occurs_on": "2026-11-06",
+  "title": "灯里愛夏の初飲酒配信",
+  "url": "https://x.com/TomoriManaka/status/2117280767319708040",
+  "source_type": "公式",
+  "facts": [
+   "灯里愛夏が初めてのお酒を飲む配信を告知した。",
+   "配信日時: 11月6日(金)22時から",
+   "配信先: YouTube: https://www.youtube.com/live/0Cu-EyL0F1g",
+   "リンク: https://www.youtube.com/live/0Cu-EyL0F1g",
+   "エンゲージメント: 中",
+   "言及アイドル: 灯里愛夏"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "event_date": "2026-11-06",
+  "src_candidate_id": "202611030222-grok-36"
  }
 ]

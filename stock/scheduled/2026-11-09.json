@@ -573,5 +573,31 @@
   "src_candidate_id": "202610300224-grok-82",
   "companion_of": "sched-2026-11-09-sidem-knick-knacks-vol-2-2026-結果",
   "src_dedup_key": "sidem-knick-knacks-vol2-2026"
+ },
+ {
+  "id": "sched-2026-11-09-valiv-aikatsu-nodojiman-2026-開始",
+  "dedup_key": "valiv-aikatsu-nodojiman-2026",
+  "brand": "dsva",
+  "subject": "アイカツ！のどじまんにヴイアラ3名が出演",
+  "kind": "開始",
+  "note": "20時からアイカツアカデミー！公式CHでヴイアラ3名のゲスト出演を視聴できる",
+  "reserved_on": "2026-11-03",
+  "occurs_on": "2026-11-09",
+  "title": "ヴイアラ3名が「アイカツ！のどじまん」にゲスト出演",
+  "url": "https://x.com/aikatsu_acad/status/2117208505929117800",
+  "source_type": "当事者",
+  "facts": [
+   "『アイカツ！のどじまん』の配信が決定した。",
+   "配信日時: 2026年11月9日(月)20:00から",
+   "配信先: アイカツアカデミー！公式CH",
+   "ゲスト: ヴイアラ（灯里愛夏・上水流宇宙・レトラ）",
+   "アイカツ！シリーズの曲を中心に歌う。",
+   "エンゲージメント: 高",
+   "言及アイドル: 灯里愛夏、上水流宇宙、レトラ"
+  ],
+  "via": "grok",
+  "verify": "unconfirmed",
+  "event_date": "2026-11-09",
+  "src_candidate_id": "202611030222-grok-32"
  }
 ]

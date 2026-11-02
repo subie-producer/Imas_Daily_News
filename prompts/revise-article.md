@@ -7,6 +7,7 @@
   - 消す(`drop_claim`)。段落が空になるなら段落ごと消す
   - 一次情報(または、公式の発表・ゲーム内のお知らせを報じた報道。告知文を引用していなくてよい)を `python3 scripts/fetch_page.py <url>` で読んで正しいと確かめ、残す。new_facts に読んだ url と事実を書き、根拠の id を付ける
 - `add_source`: 足りない出典を sources に加える。素材にある url か、fetch_page.py で読んで確かめた一次情報・報道の url(後者は new_facts にも書く)。指摘に url があれば、それを fetch_page.py で読んで加える
+  R5 の指摘に足す出典は、fetch_page.py の出力の `出典の種別:` が 公式・準公式・報道 のページか、種別が 公式・準公式 の素材の url。当事者・二次情報を足しても R5 は解消しない。届かなければ status を decline にし、decline_code を NO_PRIMARY_SOURCE にして、試したページを decline_detail に書く
 - `drop_source`: 食い違う弱い出典を sources から外し、記事は強い出典に合わせる
 - `drop_article`: 記事として成立しないなら、status を decline にして decline_code と decline_detail を書く
 - ページは fetch_page.py で読む。Web 検索はページを探すのに使い、検索結果や fetch_page.py 以外の手段で読んだ内容は根拠にしない。

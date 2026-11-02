@@ -1,0 +1,745 @@
+{
+ "articles": [
+  {
+   "brand": "shiny",
+   "rank": "small",
+   "angle": "アルストロメリア×五島軒のクリスマスオードブル(29,700円)は11月30日23時59分まで予約でき、11月15日までの早期予約は全国送料無料",
+   "purpose": "新情報",
+   "lead_score": 0,
+   "dedup_key": "shiny-alstroemeria-gotoken-xmas-2026"
+  },
+  {
+   "brand": "shiny",
+   "rank": "small",
+   "angle": "バンダイナムコ主催の「#シャニソン3周年アート」X投稿キャンペーンは11月8日23:59まで、ゲーム内スクリーンショットで応募できる",
+   "purpose": "新情報",
+   "lead_score": 0,
+   "dedup_key": "shinycolors-3rd-anniv-art-campaign-2026"
+  },
+  {
+   "brand": "shiny",
+   "rank": "small",
+   "angle": "FAMくじ『シャイニーカラーズ』vol.2の当選賞品の引き換え締切は今日11月3日23:59",
+   "purpose": "期日の知らせ",
+   "lead_score": 0,
+   "dedup_key": "shiny-fam-kuji-vol-2-2026"
+  }
+ ],
+ "merge_into": [],
+ "dropped": [
+  {
+   "dedup_key": "shiny-cutie-finder-step-up-2026",
+   "brand": "shiny",
+   "reason": "既報",
+   "note": "前の号までに記事化済みで、新しい事実も当日のトリガーも無い"
+  },
+  {
+   "dedup_key": "shiny-kiriko-pickup-2026",
+   "brand": "shiny",
+   "reason": "重複",
+   "note": "反射する星々、その先へ(霧子・愛依)と同一施策"
+  },
+  {
+   "dedup_key": "shiny-hachiban-ramen-collab-2026",
+   "brand": "shiny",
+   "reason": "既報",
+   "note": "前の号までに記事化済みで、新しい事実も当日のトリガーも無い"
+  },
+  {
+   "dedup_key": "shiny-beam-creator-feature-2026",
+   "brand": "shiny",
+   "reason": "既報",
+   "note": "前の号までに記事化済みで、新しい事実も当日のトリガーも無い"
+  },
+  {
+   "dedup_key": "shiny-3rd-art-fan-screenshot-posts-2026",
+   "brand": "shiny",
+   "reason": "その他",
+   "note": "ファン投稿は単体で記事にしない"
+  },
+  {
+   "dedup_key": "shiny-song-for-prism-mei-izumi-pickup-2026-11",
+   "brand": "shiny",
+   "reason": "重複",
+   "note": "同上"
+  },
+  {
+   "dedup_key": "shiny-song-for-prism-kiriko-yukoku-pickup-2026-11",
+   "brand": "shiny",
+   "reason": "重複",
+   "note": "同上"
+  },
+  {
+   "dedup_key": "shiny-song-for-prism-3rd-login-bonus-2026",
+   "brand": "shiny",
+   "reason": "既報",
+   "note": "前の号までに記事化済みで、新しい事実も当日のトリガーも無い"
+  },
+  {
+   "dedup_key": "shiny-song-for-prism-im-a-cutie-finder-rerun-2026-11",
+   "brand": "shiny",
+   "reason": "既報",
+   "note": "前の号までに記事化済みで、新しい事実も当日のトリガーも無い"
+  },
+  {
+   "dedup_key": "shiny-song-for-prism-3rd-select-ticket-packs-2026",
+   "brand": "shiny",
+   "reason": "その他",
+   "note": "単体では記事にならない定常運営(この拾い直しでは roundup を作らない)"
+  },
+  {
+   "dedup_key": "mamimi-pinup-gasha-2026",
+   "brand": "shiny",
+   "reason": "既報",
+   "note": "前の号までに記事化済みで、新しい事実も当日のトリガーも無い"
+  },
+  {
+   "dedup_key": "shiny-sweets-paradise-cafe-fan-visit-2026-11",
+   "brand": "shiny",
+   "reason": "その他",
+   "note": "ファン投稿は単体で記事にしない"
+  },
+  {
+   "dedup_key": "shiny-style-collection-vol2-order-extension-2026",
+   "brand": "shiny",
+   "reason": "既報",
+   "note": "前の号までに記事化済みで、新しい事実も当日のトリガーも無い"
+  },
+  {
+   "dedup_key": "shiny-tsutaya-yujo-fumetsu-popup-2026",
+   "brand": "shiny",
+   "reason": "既報",
+   "note": "前の号までに記事化済みで、新しい事実も当日のトリガーも無い"
+  },
+  {
+   "dedup_key": "shiny-alstromeria-christmas-oeuvre-2026",
+   "brand": "shiny",
+   "reason": "重複",
+   "note": "→五島軒クリスマスオードブル"
+  },
+  {
+   "dedup_key": "shiny-web4koma-664-2026",
+   "brand": "shiny",
+   "reason": "重複",
+   "note": "→キャスコレ(19)と同一"
+  },
+  {
+   "dedup_key": "shiny-alstroemeria-gotoken-christmas-2026",
+   "brand": "shiny",
+   "reason": "重複",
+   "note": "同上"
+  },
+  {
+   "dedup_key": "casting-love-forms-2026",
+   "brand": "shiny",
+   "reason": "既報",
+   "note": "前の号までに記事化済みで、新しい事実も当日のトリガーも無い"
+  },
+  {
+   "dedup_key": "shiny-alstroemeria-beam-2dmv-2026",
+   "brand": "shiny",
+   "reason": "既報",
+   "note": "前の号までに記事化済みで、新しい事実も当日のトリガーも無い"
+  },
+  {
+   "dedup_key": "hinana-stamp-gasha-2026",
+   "brand": "shiny",
+   "reason": "既報",
+   "note": "前の号までに記事化済みで、新しい事実も当日のトリガーも無い"
+  },
+  {
+   "dedup_key": "shiny-yakuimouto-nichika-step-up-gacha-2026",
+   "brand": "shiny",
+   "reason": "重複",
+   "note": "→にちかステップアップ(34)と同一"
+  },
+  {
+   "dedup_key": "mamimi-piece-pack-2026",
+   "brand": "shiny",
+   "reason": "その他",
+   "note": "単体では記事にならない定常運営(この拾い直しでは roundup を作らない)"
+  },
+  {
+   "dedup_key": "halloween-login-2026",
+   "brand": "shiny",
+   "reason": "既報",
+   "note": "前の号までに記事化済みで、新しい事実も当日のトリガーも無い"
+  },
+  {
+   "dedup_key": "shiny-style-collection-2026",
+   "brand": "shiny",
+   "reason": "その他",
+   "note": "受注は11/1終了"
+  },
+  {
+   "dedup_key": "song3-story-ep8-2026",
+   "brand": "shiny",
+   "reason": "既報",
+   "note": "前の号までに記事化済みで、新しい事実も当日のトリガーも無い"
+  },
+  {
+   "dedup_key": "paracolle-ticket-pack-2026",
+   "brand": "shiny",
+   "reason": "その他",
+   "note": "単体では記事にならない定常運営(この拾い直しでは roundup を作らない)"
+  },
+  {
+   "dedup_key": "cast-hazuki-pack-2026",
+   "brand": "shiny",
+   "reason": "その他",
+   "note": "単体では記事にならない定常運営(この拾い直しでは roundup を作らない)"
+  },
+  {
+   "dedup_key": "lv6-package-2026",
+   "brand": "shiny",
+   "reason": "その他",
+   "note": "単体では記事にならない定常運営(この拾い直しでは roundup を作らない)"
+  },
+  {
+   "dedup_key": "shiny-nichika-package",
+   "brand": "shiny",
+   "reason": "既報",
+   "note": "前の号までに記事化済みで、新しい事実も当日のトリガーも無い"
+  },
+  {
+   "dedup_key": "hinana-piece-pack-2026",
+   "brand": "shiny",
+   "reason": "その他",
+   "note": "単体では記事にならない定常運営(この拾い直しでは roundup を作らない)"
+  },
+  {
+   "dedup_key": "nagugu-song-2026",
+   "brand": "shiny",
+   "reason": "既報",
+   "note": "前の号までに記事化済みで、新しい事実も当日のトリガーも無い"
+  },
+  {
+   "dedup_key": "masters-fes-nov-2026",
+   "brand": "shiny",
+   "reason": "既報",
+   "note": "前の号までに記事化済みで、新しい事実も当日のトリガーも無い"
+  },
+  {
+   "dedup_key": "nichika-whisper-gasha-2026",
+   "brand": "shiny",
+   "reason": "既報",
+   "note": "前の号までに記事化済みで、新しい事実も当日のトリガーも無い"
+  },
+  {
+   "dedup_key": "theme-voice-gasha-2026",
+   "brand": "shiny",
+   "reason": "その他",
+   "note": "単体では記事にならない定常運営(この拾い直しでは roundup を作らない)"
+  },
+  {
+   "dedup_key": "noctchill-stepup-2026",
+   "brand": "shiny",
+   "reason": "既報",
+   "note": "前の号までに記事化済みで、新しい事実も当日のトリガーも無い"
+  },
+  {
+   "dedup_key": "hatenifurerunonara-2026",
+   "brand": "shiny",
+   "reason": "既報",
+   "note": "前の号までに記事化済みで、新しい事実も当日のトリガーも無い"
+  },
+  {
+   "dedup_key": "anniv-free-gasha-4-2026",
+   "brand": "shiny",
+   "reason": "その他",
+   "note": "単体では記事にならない定常運営(この拾い直しでは roundup を作らない)"
+  },
+  {
+   "dedup_key": "anniv-campaign-4-2026",
+   "brand": "shiny",
+   "reason": "既報",
+   "note": "前の号までに記事化済みで、新しい事実も当日のトリガーも無い"
+  },
+  {
+   "dedup_key": "283-stage-costume-2026",
+   "brand": "shiny",
+   "reason": "既報",
+   "note": "前の号までに記事化済みで、新しい事実も当日のトリガーも無い"
+  },
+  {
+   "dedup_key": "fescoin-shop-2026",
+   "brand": "shiny",
+   "reason": "既報",
+   "note": "前の号までに記事化済みで、新しい事実も当日のトリガーも無い"
+  },
+  {
+   "dedup_key": "song-gasha-category-2026",
+   "brand": "shiny",
+   "reason": "既報",
+   "note": "前の号までに記事化済みで、新しい事実も当日のトリガーも無い"
+  },
+  {
+   "dedup_key": "refrac7ions-rerun-2026",
+   "brand": "shiny",
+   "reason": "既報",
+   "note": "前の号までに記事化済みで、新しい事実も当日のトリガーも無い"
+  },
+  {
+   "dedup_key": "song3-break-2026",
+   "brand": "shiny",
+   "reason": "その他",
+   "note": "単体では記事にならない定常運営(この拾い直しでは roundup を作らない)"
+  },
+  {
+   "dedup_key": "song-anniv-call-rerun-2026",
+   "brand": "shiny",
+   "reason": "その他",
+   "note": "単体では記事にならない定常運営(この拾い直しでは roundup を作らない)"
+  },
+  {
+   "dedup_key": "song3-ranking-total-2026",
+   "brand": "shiny",
+   "reason": "既報",
+   "note": "前の号までに記事化済みで、新しい事実も当日のトリガーも無い"
+  },
+  {
+   "dedup_key": "song3-ranking-idol-2026",
+   "brand": "shiny",
+   "reason": "その他",
+   "note": "単体では記事にならない定常運営(この拾い直しでは roundup を作らない)"
+  },
+  {
+   "dedup_key": "song3-ranking-box-2026",
+   "brand": "shiny",
+   "reason": "その他",
+   "note": "単体では記事にならない定常運営(この拾い直しでは roundup を作らない)"
+  },
+  {
+   "dedup_key": "song3-costume-hitohira-2026",
+   "brand": "shiny",
+   "reason": "既報",
+   "note": "前の号までに記事化済みで、新しい事実も当日のトリガーも無い"
+  },
+  {
+   "dedup_key": "song-overlay-hopes-2026",
+   "brand": "shiny",
+   "reason": "既報",
+   "note": "前の号までに記事化済みで、新しい事実も当日のトリガーも無い"
+  },
+  {
+   "dedup_key": "song3-live-event-2026",
+   "brand": "shiny",
+   "reason": "既報",
+   "note": "前の号までに記事化済みで、新しい事実も当日のトリガーも無い"
+  },
+  {
+   "dedup_key": "song-pickup-kiriko-mei-2026",
+   "brand": "shiny",
+   "reason": "既報",
+   "note": "前の号までに記事化済みで、新しい事実も当日のトリガーも無い"
+  },
+  {
+   "dedup_key": "shiny-song-for-prism-ver-2-19-1",
+   "brand": "shiny",
+   "reason": "既報",
+   "note": "前の号までに記事化済みで、新しい事実も当日のトリガーも無い"
+  },
+  {
+   "dedup_key": "shiny-hachiban-ramen-set-2026",
+   "brand": "shiny",
+   "reason": "既報",
+   "note": "前の号までに記事化済みで、新しい事実も当日のトリガーも無い"
+  },
+  {
+   "dedup_key": "shiny-hachiban-box-ramen-set-2026",
+   "brand": "shiny",
+   "reason": "既報",
+   "note": "前の号までに記事化済みで、新しい事実も当日のトリガーも無い"
+  },
+  {
+   "dedup_key": "shiny-kawaii-season-chibiguru-2027",
+   "brand": "shiny",
+   "reason": "既報",
+   "note": "前の号までに記事化済みで、新しい事実も当日のトリガーも無い"
+  },
+  {
+   "dedup_key": "shiny-birthday-support-birth-day-madoka-2026",
+   "brand": "shiny",
+   "reason": "既報",
+   "note": "前の号までに記事化済みで、新しい事実も当日のトリガーも無い"
+  },
+  {
+   "dedup_key": "shiny-hachiban-ramen-collab-set-2026",
+   "brand": "shiny",
+   "reason": "既報",
+   "note": "前の号までに記事化済みで、新しい事実も当日のトリガーも無い"
+  },
+  {
+   "dedup_key": "shiny-shinyradio-password-outage-2026",
+   "brand": "shiny",
+   "reason": "既報",
+   "note": "前の号までに記事化済みで、新しい事実も当日のトリガーも無い"
+  },
+  {
+   "dedup_key": "shiny-mattari-habataki-radio-november-2026",
+   "brand": "shiny",
+   "reason": "既報",
+   "note": "前の号までに記事化済みで、新しい事実も当日のトリガーも無い"
+  },
+  {
+   "dedup_key": "shiny-song-madoka-birthday-gacha-2026",
+   "brand": "shiny",
+   "reason": "既報",
+   "note": "前の号までに記事化済みで、新しい事実も当日のトリガーも無い"
+  },
+  {
+   "dedup_key": "shiny-hate-ni-fureru-no-nara-2026",
+   "brand": "shiny",
+   "reason": "既報",
+   "note": "前の号までに記事化済みで、新しい事実も当日のトリガーも無い"
+  },
+  {
+   "dedup_key": "shiny-maintenance-2026-10-30",
+   "brand": "shiny",
+   "reason": "既報",
+   "note": "前の号までに記事化済みで、新しい事実も当日のトリガーも無い"
+  },
+  {
+   "dedup_key": "shiny-hachiban-collab-set-2026",
+   "brand": "shiny",
+   "reason": "既報",
+   "note": "前の号までに記事化済みで、新しい事実も当日のトリガーも無い"
+  },
+  {
+   "dedup_key": "shiny-8-5-anniversary-login-2026",
+   "brand": "shiny",
+   "reason": "既報",
+   "note": "前の号までに記事化済みで、新しい事実も当日のトリガーも無い"
+  },
+  {
+   "dedup_key": "shiny-song-for-prism-third-anniversary-event-2026",
+   "brand": "shiny",
+   "reason": "既報",
+   "note": "前の号までに記事化済みで、新しい事実も当日のトリガーも無い"
+  },
+  {
+   "dedup_key": "shiny-madoka-birthday-2026",
+   "brand": "shiny",
+   "reason": "既報",
+   "note": "前の号までに記事化済みで、新しい事実も当日のトリガーも無い"
+  },
+  {
+   "dedup_key": "shiny-song-3rd-anniversary-story-episode-4-2026",
+   "brand": "shiny",
+   "reason": "既報",
+   "note": "前の号までに記事化済みで、新しい事実も当日のトリガーも無い"
+  },
+  {
+   "dedup_key": "shinyson-pickup-poison-madoka-2026",
+   "brand": "shiny",
+   "reason": "既報",
+   "note": "前の号までに記事化済みで、新しい事実も当日のトリガーも無い"
+  },
+  {
+   "dedup_key": "shiny-song-shiny-competition-2026",
+   "brand": "shiny",
+   "reason": "既報",
+   "note": "前の号までに記事化済みで、新しい事実も当日のトリガーも無い"
+  },
+  {
+   "dedup_key": "shiny-chikusei-collab-conclusion-2026",
+   "brand": "shiny",
+   "reason": "既報",
+   "note": "前の号までに記事化済みで、新しい事実も当日のトリガーも無い"
+  },
+  {
+   "dedup_key": "shiny-8ban-ramen-collab-2026",
+   "brand": "shiny",
+   "reason": "既報",
+   "note": "前の号までに記事化済みで、新しい事実も当日のトリガーも無い"
+  },
+  {
+   "dedup_key": "shiny-yunel-live-rolyu-act2-act3-2026",
+   "brand": "shiny",
+   "reason": "既報",
+   "note": "前の号までに記事化済みで、新しい事実も当日のトリガーも無い"
+  },
+  {
+   "dedup_key": "shiny-akihabara-lottery-stock-2026-10-27",
+   "brand": "shiny",
+   "reason": "既報",
+   "note": "前の号までに記事化済みで、新しい事実も当日のトリガーも無い"
+  },
+  {
+   "dedup_key": "shiny-kawaii-season-chibigurumi-2026",
+   "brand": "shiny",
+   "reason": "既報",
+   "note": "前の号までに記事化済みで、新しい事実も当日のトリガーも無い"
+  },
+  {
+   "dedup_key": "shiny-283-pop-up-egai-eikou-2026",
+   "brand": "shiny",
+   "reason": "既報",
+   "note": "前の号までに記事化済みで、新しい事実も当日のトリガーも無い"
+  },
+  {
+   "dedup_key": "shiny-coherent-light-scattering-28-part2",
+   "brand": "shiny",
+   "reason": "既報",
+   "note": "前の号までに記事化済みで、新しい事実も当日のトリガーも無い"
+  },
+  {
+   "dedup_key": "shiny-pickup-madoka",
+   "brand": "shiny",
+   "reason": "既報",
+   "note": "前の号までに記事化済みで、新しい事実も当日のトリガーも無い"
+  },
+  {
+   "dedup_key": "shiny-3rd-anniversary-story",
+   "brand": "shiny",
+   "reason": "既報",
+   "note": "前の号までに記事化済みで、新しい事実も当日のトリガーも無い"
+  },
+  {
+   "dedup_key": "shiny-countdown-login-bonus",
+   "brand": "shiny",
+   "reason": "既報",
+   "note": "前の号までに記事化済みで、新しい事実も当日のトリガーも無い"
+  },
+  {
+   "dedup_key": "shiny-hbt-kokoro-advice",
+   "brand": "shiny",
+   "reason": "既報",
+   "note": "前の号までに記事化済みで、新しい事実も当日のトリガーも無い"
+  },
+  {
+   "dedup_key": "shiny-hbt-oct-broadcast-completed",
+   "brand": "shiny",
+   "reason": "既報",
+   "note": "前の号までに記事化済みで、新しい事実も当日のトリガーも無い"
+  },
+  {
+   "dedup_key": "shiny-hbt-oct-broadcast",
+   "brand": "shiny",
+   "reason": "既報",
+   "note": "前の号までに記事化済みで、新しい事実も当日のトリガーも無い"
+  },
+  {
+   "dedup_key": "shiny-hachiban-collab-set",
+   "brand": "shiny",
+   "reason": "既報",
+   "note": "前の号までに記事化済みで、新しい事実も当日のトリガーも無い"
+  },
+  {
+   "dedup_key": "comifuro-producer-card-exchange-2026",
+   "brand": "shiny",
+   "reason": "その他",
+   "note": "ファン投稿は単体で記事にしない"
+  },
+  {
+   "dedup_key": "shiny-sweets-paradise-cafe-2026",
+   "brand": "shiny",
+   "reason": "既報",
+   "note": "前の号までに記事化済みで、新しい事実も当日のトリガーも無い"
+  },
+  {
+   "dedup_key": "shiny-song-for-prism-3rd-anniversary-story-episode-7",
+   "brand": "shiny",
+   "reason": "既報",
+   "note": "前の号までに記事化済みで、新しい事実も当日のトリガーも無い"
+  },
+  {
+   "dedup_key": "shiny-new-idol-gacha-package-ending-2026",
+   "brand": "shiny",
+   "reason": "その他",
+   "note": "10/28時点の終了予告で期限も不明"
+  },
+  {
+   "dedup_key": "shiny-gacha-package-ending-2026",
+   "brand": "shiny",
+   "reason": "その他",
+   "note": "同左"
+  },
+  {
+   "dedup_key": "alstroemeria-beam-digital-release-2026",
+   "brand": "shiny",
+   "reason": "既報",
+   "note": "前の号までに記事化済みで、新しい事実も当日のトリガーも無い"
+  },
+  {
+   "dedup_key": "shiny-karaoke-tetsujin-concept-room-2026",
+   "brand": "shiny",
+   "reason": "既報",
+   "note": "前の号までに記事化済みで、新しい事実も当日のトリガーも無い"
+  },
+  {
+   "dedup_key": "shiny-alstromeria-gotoken-christmas-2026",
+   "brand": "shiny",
+   "reason": "重複",
+   "note": "同上"
+  },
+  {
+   "dedup_key": "shiny-tsutaya-hokukura-yujo-fumetsu-2026",
+   "brand": "shiny",
+   "reason": "重複",
+   "note": "→友情不滅宣言POP UP(15)と同一"
+  },
+  {
+   "dedup_key": "shiny-higanshu-yu-neru-japanese-oriental-spa-2026",
+   "brand": "shiny",
+   "reason": "既報",
+   "note": "前の号までに記事化済みで、新しい事実も当日のトリガーも無い"
+  },
+  {
+   "dedup_key": "shiny-jimushiny-episode-23-5-2026",
+   "brand": "shiny",
+   "reason": "既報",
+   "note": "前の号までに記事化済みで、新しい事実も当日のトリガーも無い"
+  },
+  {
+   "dedup_key": "shiny-song-3rd-limited-guaranteed-gasha",
+   "brand": "shiny",
+   "reason": "その他",
+   "note": "単体では記事にならない定常運営(この拾い直しでは roundup を作らない)"
+  },
+  {
+   "dedup_key": "shiny-song-3rd-jewel-sale",
+   "brand": "shiny",
+   "reason": "その他",
+   "note": "単体では記事にならない定常運営(この拾い直しでは roundup を作らない)"
+  },
+  {
+   "dedup_key": "shiny-song-autumn-login-pass",
+   "brand": "shiny",
+   "reason": "その他",
+   "note": "単体では記事にならない定常運営(この拾い直しでは roundup を作らない)"
+  },
+  {
+   "dedup_key": "shiny-song-level-max-pack",
+   "brand": "shiny",
+   "reason": "その他",
+   "note": "単体では記事にならない定常運営(この拾い直しでは roundup を作らない)"
+  },
+  {
+   "dedup_key": "shiny-song-gasha-ticket-pack",
+   "brand": "shiny",
+   "reason": "その他",
+   "note": "単体では記事にならない定常運営(この拾い直しでは roundup を作らない)"
+  },
+  {
+   "dedup_key": "shiny-song-hat-packs",
+   "brand": "shiny",
+   "reason": "その他",
+   "note": "単体では記事にならない定常運営(この拾い直しでは roundup を作らない)"
+  },
+  {
+   "dedup_key": "shiny-song-pajama-de",
+   "brand": "shiny",
+   "reason": "その他",
+   "note": "単体では記事にならない定常運営(この拾い直しでは roundup を作らない)"
+  },
+  {
+   "dedup_key": "shiny-song-innocent-sailor",
+   "brand": "shiny",
+   "reason": "その他",
+   "note": "単体では記事にならない定常運営(この拾い直しでは roundup を作らない)"
+  },
+  {
+   "dedup_key": "shiny-song-iqu-gasha-ticket",
+   "brand": "shiny",
+   "reason": "その他",
+   "note": "単体では記事にならない定常運営(この拾い直しでは roundup を作らない)"
+  },
+  {
+   "dedup_key": "shiny-song-cutie-finder-photo-frames",
+   "brand": "shiny",
+   "reason": "その他",
+   "note": "単体では記事にならない定常運営(この拾い直しでは roundup を作らない)"
+  },
+  {
+   "dedup_key": "shiny-song-season-37-pass",
+   "brand": "shiny",
+   "reason": "その他",
+   "note": "単体では記事にならない定常運営(この拾い直しでは roundup を作らない)"
+  },
+  {
+   "dedup_key": "shiny-song-jewel-g",
+   "brand": "shiny",
+   "reason": "その他",
+   "note": "単体では記事にならない定常運営(この拾い直しでは roundup を作らない)"
+  },
+  {
+   "dedup_key": "shiny-song-new-gasha-stepup",
+   "brand": "shiny",
+   "reason": "重複",
+   "note": "同上"
+  },
+  {
+   "dedup_key": "shiny-song-anniversary-phone-rerun",
+   "brand": "shiny",
+   "reason": "その他",
+   "note": "単体では記事にならない定常運営(この拾い直しでは roundup を作らない)"
+  },
+  {
+   "dedup_key": "shiny-song-3rd-story",
+   "brand": "shiny",
+   "reason": "既報",
+   "note": "前の号までに記事化済みで、新しい事実も当日のトリガーも無い"
+  },
+  {
+   "dedup_key": "shiny-mei-package",
+   "brand": "shiny",
+   "reason": "その他",
+   "note": "単体では記事にならない定常運営(この拾い直しでは roundup を作らない)"
+  },
+  {
+   "dedup_key": "shiny-tenka-package",
+   "brand": "shiny",
+   "reason": "その他",
+   "note": "単体では記事にならない定常運営(この拾い直しでは roundup を作らない)"
+  },
+  {
+   "dedup_key": "shiny-mei-cast-gasha",
+   "brand": "shiny",
+   "reason": "その他",
+   "note": "単体では記事にならない定常運営(この拾い直しでは roundup を作らない)"
+  },
+  {
+   "dedup_key": "shiny-style-collection-vol2",
+   "brand": "shiny",
+   "reason": "その他",
+   "note": "受注は11/1終了"
+  },
+  {
+   "dedup_key": "shiny-style-collection-collect-book",
+   "brand": "shiny",
+   "reason": "その他",
+   "note": "受注は11/1終了"
+  },
+  {
+   "dedup_key": "shiny-style-collection-card-case",
+   "brand": "shiny",
+   "reason": "その他",
+   "note": "受注は11/1終了"
+  },
+  {
+   "dedup_key": "shiny-song-iqu-jewel-sale",
+   "brand": "shiny",
+   "reason": "その他",
+   "note": "単体では記事にならない定常運営(この拾い直しでは roundup を作らない)"
+  },
+  {
+   "dedup_key": "shiny-3rd-anniversary-missions-2026",
+   "brand": "shiny",
+   "reason": "その他",
+   "note": "単体では記事にならない定常運営(この拾い直しでは roundup を作らない)"
+  },
+  {
+   "dedup_key": "shiny-overlay-of-hopes-3dmv-2026",
+   "brand": "shiny",
+   "reason": "既報",
+   "note": "前の号までに記事化済みで、新しい事実も当日のトリガーも無い"
+  },
+  {
+   "dedup_key": "8ban-ramen-shinycolors-2026",
+   "brand": "shiny",
+   "reason": "既報",
+   "note": "前の号までに記事化済みで、新しい事実も当日のトリガーも無い"
+  }
+ ]
+}

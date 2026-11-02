@@ -1,0 +1,722 @@
+{
+ "decisions": {
+  "million-platinum-star-tune-night-lights-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/1新曲映像の記事に報酬・期間・折り返しまで掲載済み。終了11/7は4日先でトリガー無し"
+  },
+  "million-scratch-second-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/27に11月2日発売を記事化済み。新事実なし、期限は12/2"
+  },
+  "mirishita-premium-pass-dx-2026-11": {
+   "action": "article",
+   "angle": "ミリシタのショップで11月30日23時59分まで「プレミアムパスDX」「DX+」を販売中",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "トパーズ・アイグラ特典は既報。DX販売のみ新規"
+  },
+  "million-guinness-record-event-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/31『ギネス記念イベントで100人に認定証』と同じ催し"
+  },
+  "million-off-time-voice-series-4-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/27ボイスドラマ発売で掲載済み。販売期限11/23は先"
+  },
+  "million-second-hair-style-glasses-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/1運営情報まとめに掲載済み。終了11/9は6日先"
+  },
+  "million-special-solo-records-guinness-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/31にギネス記念イベントとして記事化済み"
+  },
+  "million-12th-bluray-order-extension-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/31に受注11/12まで記事化済み。締切は9日先"
+  },
+  "million-radio-2026-10-29": {
+   "action": "article",
+   "angle": "10月29日放送のMillionRADIOのタイムシフト公開は11月5日23時59分まで、あと2日",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "終了が3日以内に迫るトリガー。視聴条件は既報の再掲"
+  },
+  "cyber-planet-popup-osaka-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/31に大阪11/7開幕を記事化済み。開幕は4日先"
+  },
+  "million-ova-onkyo-audio-goods-2026": {
+   "action": "article",
+   "angle": "OVA関連の宮尾美也・天空橋朋花・徳川まつりモデルの録り下ろしボイス入りワイヤレスイヤホンと充電器の受注が11月13日15時まで",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "既報なし。受注締切11/13を伝える"
+  },
+  "arisa-halloween-ai-art-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿"
+  },
+  "million-theater-talk-party-vol-68-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/27〜10/30に記事化済み。交換期限11/9は6日先"
+  },
+  "million-revival-fes-2026-10": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10月31日に終了済み"
+  },
+  "hinata-sobetsu-apple-visitors-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "10/11開催済みの町の祭りの現地記事。新情報なし"
+  },
+  "million-rio-song-addition-bug-fix-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/28に修正を記事化済み"
+  },
+  "million-fes-masterpiece-set-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "復刻フェスは終了済み"
+  },
+  "million-off-time-voice-vol4-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/27に記事化済み"
+  },
+  "million-idol-grand-prix-rio-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/27に記事化済み"
+  },
+  "million-platinum-star-tiara-happy-pease-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "販売は10/27に終了済み"
+  },
+  "million-event-item-exchange-additions-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/27に記事化済み"
+  },
+  "million-revival-fes-rewards-2026-10": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "復刻フェスは終了済み"
+  },
+  "million-princess-a-la-mode-purchase-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/27に記事化済み"
+  },
+  "million-off-time-voice-vol4-bundle-campaign-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "vol.4は10/27に記事化済み"
+  },
+  "hinata-sobetsu-connection-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "町と声優個人をつなぐ紹介記事。発表・開催情報なし"
+  },
+  "elena-birthday-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/26の誕生日企画は記事化済みで終了済み"
+  },
+  "million-weekend-harlequin-video-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "莉緒のアイグラ追加と同じ施策で10/27に記事化済み"
+  },
+  "million-invisible-light-cd-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/28に発売日として記事化済み"
+  },
+  "idol-grand-prix-october-flash-gp-medal-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10月分は10/31で期限切れ"
+  },
+  "ittan-aishite-dance-video-2026-10": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "同人・ファン主催",
+   "note": "ファン制作動画"
+  },
+  "million-live-fan-video-thieves-2026-10": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "同人・ファン主催",
+   "note": "ファン制作動画"
+  },
+  "million-tsubasa-figure-asobi-reservation-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/31に記事化済み。締切12/8は先"
+  },
+  "million-topaz-happy-price-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/1運営情報まとめに掲載済み"
+  },
+  "million-premium-notes-voices-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/1運営情報まとめに掲載済み"
+  },
+  "million-idol-grand-prix-november-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/1運営情報まとめに掲載済み"
+  },
+  "million-second-hairstyle-mybrand-glasses-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/1運営情報まとめに掲載済み"
+  },
+  "million-sagamihara-park-fan-visit-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人の現地訪問投稿"
+  },
+  "million-chibi-kotoha-fan-art-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "ファン創作はgeneral面のculture扱い"
+  },
+  "sayoko-special-video": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/2に記事化済み"
+  },
+  "million-off-time-voice-makoto-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "vol.4は10/27に記事化済み"
+  },
+  "million-second-hairstyle-my-brand-glasses-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/1運営情報まとめに掲載済み"
+  },
+  "million-elena-monster-dragon-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/1運営情報まとめに掲載済み"
+  },
+  "million-november-jewel-bonus-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/2に記事化済み"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "million-mirishita-premium-pass-dx-2026-11",
+    "brand": "million",
+    "rank": "small",
+    "angle": "ミリシタのショップで11月30日23時59分まで「プレミアムパスDX」「DX+」を販売中",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "mirishita-premium-pass-dx-2026-11",
+    "candidate_ids": [
+     "202611021835-explore-4"
+    ]
+   },
+   {
+    "slug": "million-radio-2026-10-29",
+    "brand": "million",
+    "rank": "small",
+    "angle": "10月29日放送のMillionRADIOのタイムシフト公開は11月5日23時59分まで、あと2日",
+    "purpose": "期日の知らせ",
+    "lead_score": 10,
+    "dedup_key": "million-radio-2026-10-29",
+    "candidate_ids": [
+     "202610310225-grok-33",
+     "202610310225-grok-34",
+     "202610300505-explore-0"
+    ]
+   },
+   {
+    "slug": "million-ova-onkyo-audio-goods-2026",
+    "brand": "million",
+    "rank": "medium",
+    "angle": "OVA関連の宮尾美也・天空橋朋花・徳川まつりモデルの録り下ろしボイス入りワイヤレスイヤホンと充電器の受注が11月13日15時まで",
+    "purpose": "新情報",
+    "lead_score": 30,
+    "dedup_key": "million-ova-onkyo-audio-goods-2026",
+    "candidate_ids": [
+     "202610310225-grok-37"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "million-platinum-star-tune-night-lights-2026",
+    "reason": "既報",
+    "note": "11/1新曲映像の記事に報酬・期間・折り返しまで掲載済み。終了11/7は4日先でトリガー無し"
+   },
+   {
+    "dedup_key": "million-scratch-second-2026",
+    "reason": "既報",
+    "note": "10/27に11月2日発売を記事化済み。新事実なし、期限は12/2"
+   },
+   {
+    "dedup_key": "million-guinness-record-event-2026",
+    "reason": "既報",
+    "note": "10/31『ギネス記念イベントで100人に認定証』と同じ催し"
+   },
+   {
+    "dedup_key": "million-off-time-voice-series-4-2026",
+    "reason": "既報",
+    "note": "10/27ボイスドラマ発売で掲載済み。販売期限11/23は先"
+   },
+   {
+    "dedup_key": "million-second-hair-style-glasses-2026",
+    "reason": "既報",
+    "note": "11/1運営情報まとめに掲載済み。終了11/9は6日先"
+   },
+   {
+    "dedup_key": "million-special-solo-records-guinness-2026",
+    "reason": "既報",
+    "note": "10/31にギネス記念イベントとして記事化済み"
+   },
+   {
+    "dedup_key": "million-12th-bluray-order-extension-2026",
+    "reason": "既報",
+    "note": "10/31に受注11/12まで記事化済み。締切は9日先"
+   },
+   {
+    "dedup_key": "cyber-planet-popup-osaka-2026",
+    "reason": "既報",
+    "note": "10/31に大阪11/7開幕を記事化済み。開幕は4日先"
+   },
+   {
+    "dedup_key": "arisa-halloween-ai-art-2026",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿"
+   },
+   {
+    "dedup_key": "million-theater-talk-party-vol-68-2026",
+    "reason": "既報",
+    "note": "10/27〜10/30に記事化済み。交換期限11/9は6日先"
+   },
+   {
+    "dedup_key": "million-revival-fes-2026-10",
+    "reason": "既報",
+    "note": "10月31日に終了済み"
+   },
+   {
+    "dedup_key": "hinata-sobetsu-apple-visitors-2026",
+    "reason": "その他",
+    "note": "10/11開催済みの町の祭りの現地記事。新情報なし"
+   },
+   {
+    "dedup_key": "million-rio-song-addition-bug-fix-2026",
+    "reason": "既報",
+    "note": "10/28に修正を記事化済み"
+   },
+   {
+    "dedup_key": "million-fes-masterpiece-set-2026",
+    "reason": "既報",
+    "note": "復刻フェスは終了済み"
+   },
+   {
+    "dedup_key": "million-off-time-voice-vol4-2026",
+    "reason": "既報",
+    "note": "10/27に記事化済み"
+   },
+   {
+    "dedup_key": "million-idol-grand-prix-rio-2026",
+    "reason": "既報",
+    "note": "10/27に記事化済み"
+   },
+   {
+    "dedup_key": "million-platinum-star-tiara-happy-pease-2026",
+    "reason": "既報",
+    "note": "販売は10/27に終了済み"
+   },
+   {
+    "dedup_key": "million-event-item-exchange-additions-2026",
+    "reason": "既報",
+    "note": "10/27に記事化済み"
+   },
+   {
+    "dedup_key": "million-revival-fes-rewards-2026-10",
+    "reason": "既報",
+    "note": "復刻フェスは終了済み"
+   },
+   {
+    "dedup_key": "million-princess-a-la-mode-purchase-2026",
+    "reason": "既報",
+    "note": "10/27に記事化済み"
+   },
+   {
+    "dedup_key": "million-off-time-voice-vol4-bundle-campaign-2026",
+    "reason": "既報",
+    "note": "vol.4は10/27に記事化済み"
+   },
+   {
+    "dedup_key": "hinata-sobetsu-connection-2026",
+    "reason": "その他",
+    "note": "町と声優個人をつなぐ紹介記事。発表・開催情報なし"
+   },
+   {
+    "dedup_key": "elena-birthday-2026",
+    "reason": "既報",
+    "note": "10/26の誕生日企画は記事化済みで終了済み"
+   },
+   {
+    "dedup_key": "million-weekend-harlequin-video-2026",
+    "reason": "既報",
+    "note": "莉緒のアイグラ追加と同じ施策で10/27に記事化済み"
+   },
+   {
+    "dedup_key": "million-invisible-light-cd-2026",
+    "reason": "既報",
+    "note": "10/28に発売日として記事化済み"
+   },
+   {
+    "dedup_key": "idol-grand-prix-october-flash-gp-medal-2026",
+    "reason": "既報",
+    "note": "10月分は10/31で期限切れ"
+   },
+   {
+    "dedup_key": "ittan-aishite-dance-video-2026-10",
+    "reason": "同人・ファン主催",
+    "note": "ファン制作動画"
+   },
+   {
+    "dedup_key": "million-live-fan-video-thieves-2026-10",
+    "reason": "同人・ファン主催",
+    "note": "ファン制作動画"
+   },
+   {
+    "dedup_key": "million-tsubasa-figure-asobi-reservation-2026",
+    "reason": "既報",
+    "note": "10/31に記事化済み。締切12/8は先"
+   },
+   {
+    "dedup_key": "million-topaz-happy-price-2026",
+    "reason": "既報",
+    "note": "11/1運営情報まとめに掲載済み"
+   },
+   {
+    "dedup_key": "million-premium-notes-voices-2026",
+    "reason": "既報",
+    "note": "11/1運営情報まとめに掲載済み"
+   },
+   {
+    "dedup_key": "million-idol-grand-prix-november-2026",
+    "reason": "既報",
+    "note": "11/1運営情報まとめに掲載済み"
+   },
+   {
+    "dedup_key": "million-second-hairstyle-mybrand-glasses-2026",
+    "reason": "既報",
+    "note": "11/1運営情報まとめに掲載済み"
+   },
+   {
+    "dedup_key": "million-sagamihara-park-fan-visit-2026",
+    "reason": "個人の話題",
+    "note": "個人の現地訪問投稿"
+   },
+   {
+    "dedup_key": "million-chibi-kotoha-fan-art-2026",
+    "reason": "面違い",
+    "note": "ファン創作はgeneral面のculture扱い"
+   },
+   {
+    "dedup_key": "sayoko-special-video",
+    "reason": "既報",
+    "note": "11/2に記事化済み"
+   },
+   {
+    "dedup_key": "million-off-time-voice-makoto-2026",
+    "reason": "既報",
+    "note": "vol.4は10/27に記事化済み"
+   },
+   {
+    "dedup_key": "million-second-hairstyle-my-brand-glasses-2026",
+    "reason": "既報",
+    "note": "11/1運営情報まとめに掲載済み"
+   },
+   {
+    "dedup_key": "million-elena-monster-dragon-2026",
+    "reason": "既報",
+    "note": "11/1運営情報まとめに掲載済み"
+   },
+   {
+    "dedup_key": "million-november-jewel-bonus-2026",
+    "reason": "既報",
+    "note": "11/2に記事化済み"
+   }
+  ],
+  "cross_brand": []
+ }
+}

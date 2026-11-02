@@ -1,0 +1,1063 @@
+{
+ "decisions": {
+  "gakumas-suntory-oolong-towel-set-2026": {
+   "action": "article",
+   "angle": "サントリー烏龍茶24本とオリジナルタオル(全13種から選択)のセットが4,480円で、11月22日23:59まで注文受付",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公式発表。反響記事(gakumasu-suntory-oolong-towel-2026)を統合"
+  },
+  "gaku-mission-pass-2026-11": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/2号の本文と同内容"
+  },
+  "eclipse-light-animate-fair-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "出典の変更は商品欄の並び・最終更新日の表示の差で、締切や特典の変更ではない"
+  },
+  "gaku-contest-season-55-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-contest-season-55",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じコンテストシーズン55の告知"
+  },
+  "gaku-shirube-final-merch-2026": {
+   "action": "article",
+   "angle": "「標」ファイナル物販整理券の当落が今日13時から発表。あわせて公式が缶バッジ(GO MY WAY!! ver./A・B BOX)の会場販売取り止めを告知",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 70,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "当日トリガー+出典変更(販売取り止め)。shirube-final-venue-merch-ticket-2026を統合"
+  },
+  "gaku-chiisana-yabou-3m-views-2026": {
+   "action": "article",
+   "angle": "「小さな野望」のMVが300万再生を突破し、公式が謝意を伝えた",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-contest-season-55": {
+   "action": "article",
+   "angle": "コンテストシーズン55の開催が公式から告知された",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公式Xの告知。月例イベント1件のみで roundup 条件に満たない"
+  },
+  "gaku-amayo-tsubame-another-idol-free-gacha-2026": {
+   "action": "article",
+   "angle": "雨夜燕のSSRアナザーアイドル確定無料1連ガシャが始まり、11月4日10:59まで引ける",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公式X。終了が3日以内"
+  },
+  "gaku-gravure-solo-collection-agitato": {
+   "action": "article",
+   "angle": "Gravure Solo Collection Vol.2「Agitato」の公式投稿で、花海佑芽のソロ歌唱ver.がMVの一部で公開された",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "既報はリーリヤのソロ一部公開。佑芽分が新しい事実。価格・特典・予約11/8までは既報"
+  },
+  "fan-amayo-tsubame-agitato-cosplay-2026-11": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿。ファン創作は general 面の culture"
+  },
+  "fan-gaku-cheering-ads-yokohama-visit-2026-11-03": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人の予定の投稿"
+  },
+  "gakumasu-suntory-oolong-towel-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gakumas-suntory-oolong-towel-set-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ商品の二次情報"
+  },
+  "gakumas-live-tour-final-collab-drink-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/31号に全情報あり。新事実・当日トリガーなし"
+  },
+  "gaku-asari-produce-seminar-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "終了は11/9で3日以内ではない"
+  },
+  "gaku-lawson-collaboration-2026-autumn": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/23号と同内容"
+  },
+  "gaku-fumocolle-pc-goods-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/31号に価格・商品とも掲載済み"
+  },
+  "hatsuboshi-radio-2026-10-28": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/29号と同内容"
+  },
+  "gaku-hatsuboshi-store-saki-poster-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/31号と同内容。展示開始は11/6"
+  },
+  "gaku-palverse-vol-2": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/31号と同内容"
+  },
+  "gaku-gamushara-cheer-outfit-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "終了11/7は3日以内でない"
+  },
+  "gaku-kotone-endless-dance-graphic-tee": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "カーテン魂の一覧(10/26号)・燕Tシャツ(10/30号)で既報。個人投稿が出典"
+  },
+  "gaku-campus-mode-hirase-live-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "声優個人のアイマス外ライブの話。10/25の過去の出来事"
+  },
+  "imas-birthdays-2026-10-27": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "終了済み(10/27)かつ10/27号で既報"
+  },
+  "gakumas-espresto-sugary-prize-2027": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/27・10/28号で既報"
+  },
+  "imas-radio-next-2026-11-10": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/28号と同内容"
+  },
+  "gaku-ume-another-idol-free-gasha-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/29に終了済み"
+  },
+  "hif-step4-ameya-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/28・10/29号で既報"
+  },
+  "gaku-shirube-final-gifts-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/28号と同内容"
+  },
+  "gaku-jyuo-idol-training-starlight-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/28に終了済み、10/27号で既報"
+  },
+  "gaku-roar-gacha-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/28に終了済み"
+  },
+  "gacha-garakuta-road-ameya-2026-live": {
+   "action": "article",
+   "angle": "【ガラクタロード】雨夜燕ガシャ(SSR1.5倍)の終了まであと3日、11月6日10:59まで",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(締切前)。期間は既報だが当日トリガーあり"
+  },
+  "gaku-achievement-loading-issue-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/28号と同内容、修正の発表なし"
+  },
+  "curtain-damashii-new-goods-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/26号で全商品・価格・締切(11/15)を掲載済み"
+  },
+  "gaku-rinami-another-idol-free-gacha-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/27に終了済み"
+  },
+  "gaku-duet-song-collection-desc-error-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/29号と同内容"
+  },
+  "gaku-ame-yo-tsubame-kisama-kentei-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gakumas-amayo-kisama-kentei-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ貴様ぁ!検定。公式LPの景品・応募方法を統合"
+  },
+  "radio-guest-amane-yukari-2026-11-04": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/29号で既報。放送は明日で当日トリガーなし"
+  },
+  "gakumas-4koma-177": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/30号と同内容"
+  },
+  "gakumas-amayo-kisama-kentei-2026": {
+   "action": "article",
+   "angle": "雨夜燕「貴様ぁ!検定」の受付期間が11月8日23:59まで延長された(認定証カードホルダー10名プレゼント、#雨夜燕貴様検定)",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "延長は二次情報(imasnews765)のみ。公式LPの期限は10/28。出典の確認は校閲で"
+  },
+  "gaku-amaya-tsubame-kisama-kentei-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gakumas-amayo-kisama-kentei-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ検定の二次情報"
+  },
+  "gaku-google-play-ranking-tsubame-2026-10-29": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/30号と同内容"
+  },
+  "gaku-another-idol-26-gamushara-gacha": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "終了11/7は3日以内でない"
+  },
+  "miracle-nanau-gacha-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/30に終了済み"
+  },
+  "gaku-smile-skirt-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/30に終了済み"
+  },
+  "gamushara-rerun-gacha-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/30号で既報、終了11/7は3日以内でない"
+  },
+  "gaku-seinan-another-free-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/31に終了済み"
+  },
+  "gaku-jewel-wednesday-2026-10-28": {
+   "action": "article",
+   "angle": "今週分のジュエル250個の配布が明朝11月4日4:59に終わる、受け取れる最終日",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(締切・終了)の2件を1記事に"
+  },
+  "gaku-endless-dance-tshirt-amaya-2027": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/30号と同内容"
+  },
+  "gaku-shirube-final-k-arena-drink-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/31号のコラボドリンク記事と同内容"
+  },
+  "misuzu-another-idol-gasha-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/2に終了済み、11/2号で既報"
+  },
+  "tour-final-collab-drink-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/31号のコラボドリンク記事と同じ施策"
+  },
+  "fan-poster-misuzu-tour-final-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "同人・ファン主催",
+   "note": "ファン有志の応援ポスター"
+  },
+  "fan-mao-response-guide-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "ファン創作は general 面の culture で扱う"
+  },
+  "fan-agitato-cover-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "ファン創作は general 面の culture で扱う"
+  },
+  "fan-agitato-dance-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "ファン創作は general 面の culture で扱う"
+  },
+  "fan-agitato-mao-animation-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "ファン創作は general 面の culture で扱う"
+  },
+  "fan-agitato-halloween-art-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "ファン創作は general 面の culture で扱う"
+  },
+  "gaku-fanart-2026-11-02": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "ファン創作は general 面の culture で扱う"
+  },
+  "gaku-cosplay-kotone-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "コスプレは general 面の culture で扱う"
+  },
+  "gaku-toda-bookstore-kuji-2026-11-02": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "一書店の個別の値引き告知"
+  },
+  "gaku-rivalove2-hiroshima-soldout-2026-11-01": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "一店舗の在庫状況の投稿"
+  },
+  "shirube-final-venue-merch-ticket-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-shirube-final-merch-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ整理券当落発表(続報予約)"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "gaku-gakumas-suntory-oolong-towel-set-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "サントリー烏龍茶24本とオリジナルタオル(全13種から選択)のセットが4,480円で、11月22日23:59まで注文受付",
+    "purpose": "新情報",
+    "lead_score": 25,
+    "dedup_key": "gakumas-suntory-oolong-towel-set-2026",
+    "candidate_ids": [
+     "202611021233-watch-1",
+     "202611030222-explore-5",
+     "202611030222-grok-43"
+    ]
+   },
+   {
+    "slug": "gaku-shirube-final-merch-2026",
+    "brand": "gaku",
+    "rank": "medium",
+    "angle": "「標」ファイナル物販整理券の当落が今日13時から発表。あわせて公式が缶バッジ(GO MY WAY!! ver./A・B BOX)の会場販売取り止めを告知",
+    "purpose": "新情報",
+    "lead_score": 70,
+    "dedup_key": "gaku-shirube-final-merch-2026",
+    "candidate_ids": [
+     "update-1410f0e3c922",
+     "202610280221-grok-36",
+     "sched-2026-11-03-gaku-shirube-final-merch-2026-結果",
+     "sched-2026-11-03-shirube-final-venue-merch-ticket-2026-結果"
+    ]
+   },
+   {
+    "slug": "gaku-chiisana-yabou-3m-views-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "「小さな野望」のMVが300万再生を突破し、公式が謝意を伝えた",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "gaku-chiisana-yabou-3m-views-2026",
+    "candidate_ids": [
+     "202611030222-grok-25"
+    ]
+   },
+   {
+    "slug": "gaku-contest-season-55",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "コンテストシーズン55の開催が公式から告知された",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "gaku-contest-season-55",
+    "candidate_ids": [
+     "202611030222-grok-27",
+     "202611021835-explore-12"
+    ]
+   },
+   {
+    "slug": "gaku-amayo-tsubame-another-idol-free-gacha-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "雨夜燕のSSRアナザーアイドル確定無料1連ガシャが始まり、11月4日10:59まで引ける",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "gaku-amayo-tsubame-another-idol-free-gacha-2026",
+    "candidate_ids": [
+     "202611030222-grok-28"
+    ]
+   },
+   {
+    "slug": "gaku-gravure-solo-collection-agitato",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "Gravure Solo Collection Vol.2「Agitato」の公式投稿で、花海佑芽のソロ歌唱ver.がMVの一部で公開された",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "gaku-gravure-solo-collection-agitato",
+    "candidate_ids": [
+     "202611030222-grok-29",
+     "202610310225-grok-89",
+     "202611011833-explore-18",
+     "202611020220-grok-56"
+    ]
+   },
+   {
+    "slug": "gaku-gacha-garakuta-road-ameya-2026-live",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "【ガラクタロード】雨夜燕ガシャ(SSR1.5倍)の終了まであと3日、11月6日10:59まで",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "gacha-garakuta-road-ameya-2026-live",
+    "candidate_ids": [
+     "202610280221-grok-42",
+     "202610280732-explore-3",
+     "202610281834-explore-8",
+     "202610290225-grok-60",
+     "202610300224-grok-46",
+     "sched-2026-11-03-gacha-garakuta-road-ameya-2026-live-締切前",
+     "sched-2026-11-03-gacha-garakuta-road-ameya-2026-live-締切前-src1"
+    ]
+   },
+   {
+    "slug": "gaku-gakumas-amayo-kisama-kentei-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "雨夜燕「貴様ぁ!検定」の受付期間が11月8日23:59まで延長された(認定証カードホルダー10名プレゼント、#雨夜燕貴様検定)",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "gakumas-amayo-kisama-kentei-2026",
+    "candidate_ids": [
+     "202610290225-grok-89",
+     "202610282333-watch-3",
+     "202610290225-explore-6",
+     "202610290732-explore-6"
+    ]
+   },
+   {
+    "slug": "gaku-jewel-wednesday-2026-10-28",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "今週分のジュエル250個の配布が明朝11月4日4:59に終わる、受け取れる最終日",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "gaku-jewel-wednesday-2026-10-28",
+    "candidate_ids": [
+     "202610300224-grok-45",
+     "sched-2026-11-03-gaku-jewel-wednesday-2026-10-28-締切",
+     "sched-2026-11-03-gaku-jewel-wednesday-2026-10-28-終了",
+     "sched-2026-11-03-gaku-jewel-wednesday-2026-10-28-終了-src1",
+     "sched-2026-11-03-gaku-jewel-wednesday-2026-10-28-終了-src2"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "gaku-mission-pass-2026-11",
+    "reason": "既報",
+    "note": "11/2号の本文と同内容"
+   },
+   {
+    "dedup_key": "eclipse-light-animate-fair-2026",
+    "reason": "既報",
+    "note": "出典の変更は商品欄の並び・最終更新日の表示の差で、締切や特典の変更ではない"
+   },
+   {
+    "dedup_key": "fan-amayo-tsubame-agitato-cosplay-2026-11",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿。ファン創作は general 面の culture"
+   },
+   {
+    "dedup_key": "fan-gaku-cheering-ads-yokohama-visit-2026-11-03",
+    "reason": "個人の話題",
+    "note": "個人の予定の投稿"
+   },
+   {
+    "dedup_key": "gakumas-live-tour-final-collab-drink-2026",
+    "reason": "既報",
+    "note": "10/31号に全情報あり。新事実・当日トリガーなし"
+   },
+   {
+    "dedup_key": "gaku-asari-produce-seminar-2026",
+    "reason": "既報",
+    "note": "終了は11/9で3日以内ではない"
+   },
+   {
+    "dedup_key": "gaku-lawson-collaboration-2026-autumn",
+    "reason": "既報",
+    "note": "10/23号と同内容"
+   },
+   {
+    "dedup_key": "gaku-fumocolle-pc-goods-2026",
+    "reason": "既報",
+    "note": "10/31号に価格・商品とも掲載済み"
+   },
+   {
+    "dedup_key": "hatsuboshi-radio-2026-10-28",
+    "reason": "既報",
+    "note": "10/29号と同内容"
+   },
+   {
+    "dedup_key": "gaku-hatsuboshi-store-saki-poster-2026",
+    "reason": "既報",
+    "note": "10/31号と同内容。展示開始は11/6"
+   },
+   {
+    "dedup_key": "gaku-palverse-vol-2",
+    "reason": "既報",
+    "note": "10/31号と同内容"
+   },
+   {
+    "dedup_key": "gaku-gamushara-cheer-outfit-2026",
+    "reason": "既報",
+    "note": "終了11/7は3日以内でない"
+   },
+   {
+    "dedup_key": "gaku-kotone-endless-dance-graphic-tee",
+    "reason": "既報",
+    "note": "カーテン魂の一覧(10/26号)・燕Tシャツ(10/30号)で既報。個人投稿が出典"
+   },
+   {
+    "dedup_key": "gaku-campus-mode-hirase-live-2026",
+    "reason": "個人の話題",
+    "note": "声優個人のアイマス外ライブの話。10/25の過去の出来事"
+   },
+   {
+    "dedup_key": "imas-birthdays-2026-10-27",
+    "reason": "その他",
+    "note": "終了済み(10/27)かつ10/27号で既報"
+   },
+   {
+    "dedup_key": "gakumas-espresto-sugary-prize-2027",
+    "reason": "既報",
+    "note": "10/27・10/28号で既報"
+   },
+   {
+    "dedup_key": "imas-radio-next-2026-11-10",
+    "reason": "既報",
+    "note": "10/28号と同内容"
+   },
+   {
+    "dedup_key": "gaku-ume-another-idol-free-gasha-2026",
+    "reason": "既報",
+    "note": "10/29に終了済み"
+   },
+   {
+    "dedup_key": "hif-step4-ameya-2026",
+    "reason": "既報",
+    "note": "10/28・10/29号で既報"
+   },
+   {
+    "dedup_key": "gaku-shirube-final-gifts-2026",
+    "reason": "既報",
+    "note": "10/28号と同内容"
+   },
+   {
+    "dedup_key": "gaku-jyuo-idol-training-starlight-2026",
+    "reason": "既報",
+    "note": "10/28に終了済み、10/27号で既報"
+   },
+   {
+    "dedup_key": "gaku-roar-gacha-2026",
+    "reason": "既報",
+    "note": "10/28に終了済み"
+   },
+   {
+    "dedup_key": "gaku-achievement-loading-issue-2026",
+    "reason": "既報",
+    "note": "10/28号と同内容、修正の発表なし"
+   },
+   {
+    "dedup_key": "curtain-damashii-new-goods-2026",
+    "reason": "既報",
+    "note": "10/26号で全商品・価格・締切(11/15)を掲載済み"
+   },
+   {
+    "dedup_key": "gaku-rinami-another-idol-free-gacha-2026",
+    "reason": "既報",
+    "note": "10/27に終了済み"
+   },
+   {
+    "dedup_key": "gaku-duet-song-collection-desc-error-2026",
+    "reason": "既報",
+    "note": "10/29号と同内容"
+   },
+   {
+    "dedup_key": "radio-guest-amane-yukari-2026-11-04",
+    "reason": "既報",
+    "note": "10/29号で既報。放送は明日で当日トリガーなし"
+   },
+   {
+    "dedup_key": "gakumas-4koma-177",
+    "reason": "既報",
+    "note": "10/30号と同内容"
+   },
+   {
+    "dedup_key": "gaku-google-play-ranking-tsubame-2026-10-29",
+    "reason": "既報",
+    "note": "10/30号と同内容"
+   },
+   {
+    "dedup_key": "gaku-another-idol-26-gamushara-gacha",
+    "reason": "既報",
+    "note": "終了11/7は3日以内でない"
+   },
+   {
+    "dedup_key": "miracle-nanau-gacha-2026",
+    "reason": "既報",
+    "note": "10/30に終了済み"
+   },
+   {
+    "dedup_key": "gaku-smile-skirt-2026",
+    "reason": "既報",
+    "note": "10/30に終了済み"
+   },
+   {
+    "dedup_key": "gamushara-rerun-gacha-2026",
+    "reason": "既報",
+    "note": "10/30号で既報、終了11/7は3日以内でない"
+   },
+   {
+    "dedup_key": "gaku-seinan-another-free-2026",
+    "reason": "既報",
+    "note": "10/31に終了済み"
+   },
+   {
+    "dedup_key": "gaku-endless-dance-tshirt-amaya-2027",
+    "reason": "既報",
+    "note": "10/30号と同内容"
+   },
+   {
+    "dedup_key": "gaku-shirube-final-k-arena-drink-2026",
+    "reason": "既報",
+    "note": "10/31号のコラボドリンク記事と同内容"
+   },
+   {
+    "dedup_key": "misuzu-another-idol-gasha-2026",
+    "reason": "既報",
+    "note": "11/2に終了済み、11/2号で既報"
+   },
+   {
+    "dedup_key": "tour-final-collab-drink-2026",
+    "reason": "既報",
+    "note": "10/31号のコラボドリンク記事と同じ施策"
+   },
+   {
+    "dedup_key": "fan-poster-misuzu-tour-final-2026",
+    "reason": "同人・ファン主催",
+    "note": "ファン有志の応援ポスター"
+   },
+   {
+    "dedup_key": "fan-mao-response-guide-2026",
+    "reason": "面違い",
+    "note": "ファン創作は general 面の culture で扱う"
+   },
+   {
+    "dedup_key": "fan-agitato-cover-2026",
+    "reason": "面違い",
+    "note": "ファン創作は general 面の culture で扱う"
+   },
+   {
+    "dedup_key": "fan-agitato-dance-2026",
+    "reason": "面違い",
+    "note": "ファン創作は general 面の culture で扱う"
+   },
+   {
+    "dedup_key": "fan-agitato-mao-animation-2026",
+    "reason": "面違い",
+    "note": "ファン創作は general 面の culture で扱う"
+   },
+   {
+    "dedup_key": "fan-agitato-halloween-art-2026",
+    "reason": "面違い",
+    "note": "ファン創作は general 面の culture で扱う"
+   },
+   {
+    "dedup_key": "gaku-fanart-2026-11-02",
+    "reason": "面違い",
+    "note": "ファン創作は general 面の culture で扱う"
+   },
+   {
+    "dedup_key": "gaku-cosplay-kotone-2026",
+    "reason": "面違い",
+    "note": "コスプレは general 面の culture で扱う"
+   },
+   {
+    "dedup_key": "gaku-toda-bookstore-kuji-2026-11-02",
+    "reason": "その他",
+    "note": "一書店の個別の値引き告知"
+   },
+   {
+    "dedup_key": "gaku-rivalove2-hiroshima-soldout-2026-11-01",
+    "reason": "その他",
+    "note": "一店舗の在庫状況の投稿"
+   }
+  ],
+  "cross_brand": []
+ }
+}

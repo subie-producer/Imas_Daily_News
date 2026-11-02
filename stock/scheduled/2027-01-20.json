@@ -328,5 +328,33 @@
   "deadline": "2027-01-20",
   "link_from": "https://imas-navi.pages.dev/",
   "src_candidate_id": "202610311835-explore-18"
+ },
+ {
+  "id": "sched-2027-01-20-gaku-gravure-solo-collection-vol-2-agitato-発売",
+  "dedup_key": "gaku-gravure-solo-collection-vol-2-agitato",
+  "brand": "gaku",
+  "subject": "「Agitato」Gravure Solo Collection Vol.2 発売",
+  "kind": "発売",
+  "note": "CDの発売予定日。店頭・通販で購入できる",
+  "reserved_on": "2026-11-03",
+  "occurs_on": "2027-01-20",
+  "title": "Gravure Solo Collection Vol.2「Agitato」予約受付中",
+  "url": "https://x.com/gkmas_official/status/2116817531994607812",
+  "source_type": "公式",
+  "facts": [
+   "Gravure Solo Collection Vol.2「Agitato」の予約を受付中。",
+   "発売日：2027/1/20。",
+   "CD限定でアイドル13人のソロ歌唱Full ver.を収録。",
+   "投稿では花海佑芽のソロ歌唱ver.をMVに載せて一部公開。",
+   "YouTube: https://www.youtube.com/shorts/7EWTerAxXK8",
+   "リンク: https://www.youtube.com/shorts/7EWTerAxXK8",
+   "リンク: https://lnk.to/TPMjsn",
+   "エンゲージメント: 中",
+   "言及アイドル: 花海佑芽"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "event_date": "2027-01-20",
+  "src_candidate_id": "202611030222-grok-29"
  }
 ]

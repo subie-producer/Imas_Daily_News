@@ -960,5 +960,36 @@
   "src_candidate_id": "202610300224-grok-82",
   "companion_of": "sched-2026-11-13-sidem-knick-knacks-vol-2-2026-開幕",
   "src_dedup_key": "sidem-knick-knacks-vol2-2026"
+ },
+ {
+  "id": "sched-2026-11-13-cinderella-yokohama-cosmoworld-2026-開幕",
+  "dedup_key": "cinderella-yokohama-cosmoworld-2026",
+  "brand": "cg",
+  "subject": "シンデレラ×コスモワールド コラボ開幕・物販会場",
+  "kind": "開幕",
+  "note": "コラボ開幕日で、物販会場(事前抽選制)に入場できる",
+  "reserved_on": "2026-11-03",
+  "occurs_on": "2026-11-13",
+  "title": "よこはまコスモワールド・YOKOHAMA AIR CABIN 2026コラボ(シンデレラガールズ)",
+  "url": "https://idolmaster-official.jp/news/01_20269",
+  "source_type": "公式",
+  "facts": [
+   "開催期間：2026年11月13日(金)～12月9日(水) ※期間内休園日を除く",
+   "開催場所：よこはまコスモワールド・YOKOHAMA AIR CABIN",
+   "本日20時より11月13日(金)・11月14日(土)の物販会場の事前抽選を開始",
+   "物販会場の事前抽選の対象日: 11月13日(金)・11月14日(土)",
+   "グッズ、キッチンカーメニュー、スタンプラリー、撮り下ろしボイス、カーニバルゲームなどのコラボ内容",
+   "今回のために撮り下ろしたボイスがある",
+   "混雑状況により物販入場制限を行う場合がある",
+   "詳細情報は特設サイトで確認",
+   "特設サイト: https://www.the-chara.com/blog/?p=123566",
+   "公式X: https://x.com/thechara_201 (本文中に https://x.com/thechara_2014 の表記もある)",
+   "エンゲージメント: 中"
+  ],
+  "via": "watch",
+  "verify": "confirmed",
+  "event_date": "2026-11-13",
+  "deadline": "2026-12-09",
+  "src_candidate_id": "202611021835-watch-0"
  }
 ]

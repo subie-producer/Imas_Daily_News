@@ -18,6 +18,9 @@ sources:
 - label: SMILE BASE CAFE「『アイドルマスター シンデレラガールズ』Rose Tea Parlor」(2026-10-28)
   url: https://smilebase.co.jp/event/13003/
   type: 当事者
+- label: 【シンデレラ】『アイドルマスター シンデレラガールズ』Rose Tea Parlor コラボカフェ開催決定！ご予約は9月7日(月)19時から♪(2026-09-04)
+  url: https://idolmaster-official.jp/news/01_19811
+  type: 公式
 event_date: "2026-11-04"
 title_fact_ids:
 - N1

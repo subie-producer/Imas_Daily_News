@@ -30,5 +30,21 @@
   "candidate_ids": [
    "202611021835-explore-4"
   ]
+ },
+ "million-ova-onkyo-audio-goods-2026": {
+  "title": "ミリオンOVAグッズ、受注は11月13日まで",
+  "stage": "書き直しで見送り",
+  "why": "NOT_NEWS 既報の受注期間・商品情報の再掲が中心で、発行日時点の新しい発表や出来事がありません。",
+  "candidate_ids": [
+   "202610310225-grok-37"
+  ]
+ },
+ "sidem-legenders-refrain-atrium-ensemble-2026": {
+  "title": "SideM「リフレインアトリウム」弦楽アンサンブル公開",
+  "stage": "書き直しで見送り",
+  "why": "NOT_NEWS 記事の中核はファン主催の演奏企画による動画公開で、発行日時点の新しい発表・出来事もありません。紙面には掲載しません。",
+  "candidate_ids": [
+   "202610270222-grok-36"
+  ]
  }
 }

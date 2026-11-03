@@ -2672,10 +2672,11 @@ def classify_then_retag(date: str) -> tuple[bool, str]:
     """判定表の更新 → 紙面の種別付け直し → lint の取引(classify_retag_lint)。合議の失敗で戻したら、いまの判定表・判定のコードで決まる
     付け直しまで戻るので、合議を飛ばして付け直し → lint だけを掛け直す(2026-10-27 Sol 監査。組版の出典の判定と同じ)。
     戻りは合議の取引の (成否, 理由)。掛け直しが「戻せない」で終わったら、その理由を返す"""
-    # 合議は、失敗したあとの付け直し・lint の分(RETAG_RESERVE_SEC)を残して切る(合議が締切まで使うと、付け直しが1秒で落ちて記事ごと戻った)
-    ok, why = classify_retag_lint(date, timeout=max(1, int(session_left(1800, RETAG_RESERVE_SEC))))
+    # 取引のどの段(合議・付け直し・lint)も収集の締切(DEADLINE)を越えて待たない。合議は、失敗したあとの付け直し・lint の分
+    # (RETAG_RESERVE_SEC)を残して切る(合議が締切まで使うと、付け直しが1秒で落ちて記事ごと戻った)
+    ok, why = classify_retag_lint(date, timeout=max(1, int(session_left(1800, RETAG_RESERVE_SEC))), deadline=DEADLINE)
     if not ok and "戻せない" not in why:
-        ok_rt, why_rt = classify_retag_lint(date, timeout=max(1, int(session_left(600))), judge=False)
+        ok_rt, why_rt = classify_retag_lint(date, timeout=max(1, int(session_left(600))), judge=False, deadline=DEADLINE)
         if not ok_rt and "戻せない" in why_rt:
             return ok, why_rt
         # 通知が結果と食い違わないよう、付け直しの結果を理由に足す(Sol 監査 r2)。通知は理由を 500 字で切るので、元の理由を先に短くする(r3)

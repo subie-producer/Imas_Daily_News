@@ -10298,7 +10298,7 @@ def test_classify_retag_without_judge(tmp: Path):
     # 組版・収集: 合議の失敗のあと、合議なしの付け直しを掛け直す
     calls = []
 
-    def fake(date, posts_only=False, lint_base="origin/main", timeout=1800, lint=True, require_parsers=False, judge=True):
+    def fake(date, posts_only=False, lint_base="origin/main", timeout=1800, lint=True, require_parsers=False, judge=True, deadline=None):
         calls.append(judge)
         return (False, "合議 exit 1: 割れた") if judge else (True, "")
     saved_c = (compose.classify_retag_lint, compose.notify, compose.run_lint, compose.escalate, compose.commit_and_push)
@@ -21529,11 +21529,35 @@ def test_collect_stage_order(tmp: Path):
         # 2. 判定表の合議は、失敗したあとの付け直し・lint の分(RETAG_RESERVE_SEC)を残して切る
         got: list = []
         collect.classify_then_retag = saved["classify_then_retag"]
-        collect.classify_retag_lint = lambda date, timeout, judge=True: (got.append((judge, timeout)), (False, "合議の時間切れ"))[1]
+        collect.classify_retag_lint = lambda date, timeout, judge=True, deadline=None: (got.append((judge, timeout, deadline)),
+                                                                                        (False, "合議の時間切れ"))[1]
         collect.DEADLINE = time.time() + 300
         collect.classify_then_retag("2026-11-05")
         check(len(got) == 2 and abs(got[0][1] - (300 - collect.RETAG_RESERVE_SEC)) <= 2 and got[1][0] is False
               and got[1][1] >= collect.RETAG_RESERVE_SEC - 2, f"合議が付け直し・lint の時間を残さない: {got}")
+        check(all(g[2] == collect.DEADLINE for g in got), f"判定表の取引に収集の締切を渡さない: {got}")
+        # 取引の中の付け直し・lint も締切を越えて待たない(Sol 監査 r1: timeout は合議にしか効かず、付け直し 600秒・lint 600秒以上を使えた)
+        (tmp / "root" / "docs" / "_posts").mkdir(parents=True, exist_ok=True)
+        (tmp / "root" / "source_types.yml").write_text("official_domains:\n  - a.example\n", encoding="utf-8")
+        limits: list = []
+        saved_t = (pipelib._txn_run, pipelib.ROOT, os.environ.get("IMAS_SCRATCH"))
+        try:
+            pipelib.ROOT = tmp / "root"
+            os.environ["IMAS_SCRATCH"] = str(tmp / "scratch")
+            pipelib._txn_run = lambda step, limit: (limits.append((Path(str(step[1])).name, limit))
+                                                    or subprocess.CompletedProcess(step, 0, "", ""))
+            ok, why = pipelib.classify_retag_lint("2026-11-05", timeout=1800, deadline=time.time() + 50)
+            check(ok and [n for n, _ in limits] == ["classify_sources.py", "retag_sources.py", "lint.py"]
+                  and all(lim <= 50 for _, lim in limits), f"取引の段が締切を越えて待てる: {ok} {why} {limits}")
+            limits.clear()
+            ok, why = pipelib.classify_retag_lint("2026-11-05", judge=False, deadline=time.time() - 1)
+            check(not ok and not limits and "締切" in why, f"締切を過ぎてから取引の段を始めた: {ok} {why} {limits}")
+        finally:
+            pipelib._txn_run, pipelib.ROOT = saved_t[:2]
+            if saved_t[2] is None:
+                os.environ.pop("IMAS_SCRATCH", None)
+            else:
+                os.environ["IMAS_SCRATCH"] = saved_t[2]
     finally:
         pipelib.set_quiet(False)
         for k, v in saved.items():

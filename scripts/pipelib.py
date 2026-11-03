@@ -3533,7 +3533,8 @@ def _restore(snap: dict[str, bytes | None], new_under: Path | None = None) -> st
 
 
 def classify_retag_lint(date: str, posts_only: bool = False, lint_base: str = "origin/main",
-                        timeout: int = 1800, lint: bool = True, require_parsers: bool = False, judge: bool = True) -> tuple[bool, str]:
+                        timeout: int = 1800, lint: bool = True, require_parsers: bool = False, judge: bool = True,
+                        deadline: float | None = None) -> tuple[bool, str]:
     """判定表の更新(合議)→ 紙面の種別付け直し(→ lint)を**1つの取引**にする。
     judge=False は合議を飛ばし、いまの判定表(とコードの判定)で付け直すだけ(合議が失敗して戻したあとに使う。2026-10-27 Sol 監査:
     判定のコードの修正で既知のチャンネルが公式になった記事が、合議の失敗で付け直しごと戻り、lint が赤のまま組版へ進んだ)。
@@ -3547,6 +3548,8 @@ def classify_retag_lint(date: str, posts_only: bool = False, lint_base: str = "o
     開始時へ戻し、受けた中断はそのあとで元の扱いへ送り直す(2026-10-14 監査指摘: 表を書いた後・付け直しの前に親へ SIGTERM・SIGINT が
     来ると戻さずに終わり、出典の lint が赤く、次の工程の checkout も「未コミットの変更」で止まった)。開始時の中身は控え
     (TXN_JOURNAL)にも書き、親が SIGKILL などで後始末できずに死んでも、次の取引・次の工程の checkout が戻す(recover_classify_txn)。
+    deadline(epoch 秒)を渡すと、どの段もその時刻を越えて待たない(各段の開始時の残りで切り、残りが無ければ始めずに取引の失敗として
+    戻す)。収集が締切までに終えるため(2026-11-04 Sol 監査: timeout は合議にしか効かず、付け直し・lint が締切を越えた)。
     """
     back = recover_classify_txn()
     if back:
@@ -3585,6 +3588,12 @@ def classify_retag_lint(date: str, posts_only: bool = False, lint_base: str = "o
         for name, step, limit in steps:
             if _TXN["signum"] is not None:
                 break
+            if deadline is not None:
+                left = deadline - time.time()
+                if left < 1:
+                    why = f"締切を過ぎたので{name}を始めない(判定表と記事は開始時へ戻す)"
+                    break
+                limit = min(limit, max(1, int(left)))
             t_step = time.monotonic()
             r = _txn_run(step, limit)
             if name == "lint" and r.returncode in (0, 1):    # 最後まで走った lint の所要(赤でも走り切っている)

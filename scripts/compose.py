@@ -401,14 +401,17 @@ def record_candidates_read(date: str, cands: dict, hidden: set | frozenset = fro
     """選定に掛けた候補ファイルの候補を、id → URL・読んだ facts の識別で記録する(選定し直すたびに上書き。--reuse-plan では書かない)。
     選定を始めるときは cands を空で呼び、空の記録にする(選定を始めた号の印。次の号はこの号のファイルを遡る)。
     件数ではなく事実そのものを記録する: 次の号が同じページを拾い直していても、読んだ後に足された事実は次の号の候補に無いことがある。
-    hidden(前の号から引き継いだ未読の事実のうち、選定インデックスの件数上限で切れて選定に渡らなかったもの。write_plan_index が返す)は
-    読んだことにしない: 記録すれば次の号へも引き継がれず、どの号の選定にも掛からない(監査指摘 late-facts-hidden-by-plan-index)。
+    hidden(前の号から引き継いだ未読の事実のうち、選定インデックスの件数上限で切れて選定に渡らなかったもの。write_plan_index が返す
+    (候補 id, 事実の識別) の組)は、その候補についてだけ読んだことにしない: 記録すれば次の号へも引き継がれず、どの号の選定にも掛からない
+    (監査指摘 late-facts-hidden-by-plan-index)。事実の識別だけで外すと、同じ文の事実(「エンゲージメント: 中」等)を持つ全候補で
+    未読のまま残り、次の号が毎号それらの候補を丸ごと写し直した(2026-11-04: 候補 625件のうち 563件が前の号からの写しで、
+    回数の上限を超えて落ち続けた素材が上限の印も無しに選定へ戻り、7本が同じ理由でまた外れた)。
     unjudged(判定を得られなかった主題の dedup_key。coverage_gaps の missing_keys)の候補も読んだことにしない(次の号が引き継ぐ)。"""
     p = ROOT / "candidates" / f"{date}.json"
     file_ids = {c["id"] for c in json.loads(p.read_text(encoding="utf-8")) if c.get("id")} if p.exists() else set()
     read_record_path(date).write_text(json.dumps(
         {"read": {i: {"url": cands[i].get("url"),
-                      "facts": [k for k in (fact_key(f) for f in cands[i].get("facts") or []) if k not in hidden]}
+                      "facts": [k for k in (fact_key(f) for f in cands[i].get("facts") or []) if (i, k) not in hidden]}
                   for i in sorted(cands) if i in file_ids and cands[i].get("dedup_key") not in unjudged}},
         ensure_ascii=False, indent=0) + "\n", encoding="utf-8")
 
@@ -442,9 +445,12 @@ def _late_facts(date: str):
                 yield prev, c, unread, never_read
 
 
-def late_fact_keys(date: str) -> set[str]:
-    """前の号から引き継ぐ未読の事実の識別(選定インデックスで先に並べ、切れた分は選定記録に入れない)。"""
-    return {fact_key(f) for _, _, unread, _ in _late_facts(date) for f in unread}
+def late_fact_keys(date: str) -> set[tuple[str, str]]:
+    """前の号から引き継ぐ未読の事実の識別(選定インデックスで先に並べ、切れた分は選定記録に入れない)。候補ごと:
+    (候補 id, 事実の識別) と (候補の URL, 事実の識別)。引き継ぎは同じ id のまま写すか、この号の同じ URL(無ければ同じ id)の候補へ
+    足すので、どちらかで当たる。事実の識別だけにすると、ある候補で未読の文と同じ文を持つ別の候補の事実まで未読に数える。"""
+    return {(ident, fact_key(f)) for _, c, unread, _ in _late_facts(date) for f in unread
+            for ident in (c["id"], c.get("url")) if ident}
 
 
 def carry_late_candidates(date: str) -> list[str]:
@@ -753,12 +759,12 @@ def write_plan_index(date: str, cands: dict, blocklist: dict,
     dedup_key で束ねて主題単位にし、facts は先頭数件・各短縮で渡す。
     late(前の号から引き継いだ未読の事実の識別。late_fact_keys)は先に並べる: 引き継ぎは候補の末尾へ足すので、
     そのままでは件数上限で切れて選定に渡らない(監査指摘 late-facts-hidden-by-plan-index)。それでも上限で切れた late の
-    識別を3つ目の値で返し、選定記録はそれを読んだことにしない(次の号がまた引き継ぐ)。
+    (候補 id, 識別)を3つ目の値で返し、選定記録はそれを読んだことにしない(次の号がまた引き継ぐ)。
     late は文字数で短縮せず全文で渡す: 選定記録は全文の識別で読んだと残すので、PLAN_FACT_CHARS 以降にある新情報
     (長い一覧の後半への追記など)が見えないまま読了になり、次の号へも渡らない(監査指摘 late-facts-hidden-by-char-limit)。
     """
     subjects: dict[str, dict] = {}
-    pool: dict[str, list] = {}  # 主題 → (短縮した事実, 事実の識別)。候補の順
+    pool: dict[str, list] = {}  # 主題 → (短縮した事実, 候補 id, 事実の識別, 引き継いだ未読か)。候補の順
     for c in cands.values():
         dk = c.get("dedup_key")
         if not dk or c.get("verify") == "failed" or dk in blocklist:
@@ -793,7 +799,8 @@ def write_plan_index(date: str, cands: dict, blocklist: dict,
             s["source_change"] = "発行済みの記事 " + "・".join(map(str, sc["articles"][:3])) + " の出典が変わった"
         for f in c.get("facts", []):
             k = fact_key(f)
-            pool.setdefault(dk, []).append((f if k in late else f[:PLAN_FACT_CHARS], k))
+            is_late = (c.get("id"), k) in late or (c.get("url"), k) in late
+            pool.setdefault(dk, []).append((f if is_late else f[:PLAN_FACT_CHARS], c.get("id"), k, is_late))
     # 既報の照合はコードがする(選定のモデルに約1万行の台帳を読ませない。読み切れず、同じ知らせを新規として通していた)。
     # 候補の dedup_key は storylink.link で、同じ一次情報の過去の記事の話題につなぎ直してある
     # 既報は台帳の要約(1記事1〜4件)ではなく、過去の記事が**読者に出した本文**で渡す(要約で渡したら、価格・店舗を「新しい事実」と
@@ -804,11 +811,11 @@ def write_plan_index(date: str, cands: dict, blocklist: dict,
     # (主題ごとに写すと、発表の多い催しの主題が並ぶ面で索引が膨らむ。本数で切ると、発表が重なるにつれ古い発表の記事が
     # 押し出されて同じことが起きる。監査指摘 related-prior-evicts-known-cast)
     prior = storylink.prior_lookup(date, ROOT)
-    hidden: set[str] = set()
+    hidden: set[tuple[str, str]] = set()
     for s in subjects.values():
-        items = sorted(pool.get(s["dedup_key"], []), key=lambda t: t[1] not in late)
-        s["facts"] = list(dict.fromkeys(t for t, _ in items))[:PLAN_FACTS_PER_SUBJECT]
-        hidden |= {k for t, k in items if k in late and t not in s["facts"]}
+        items = sorted(pool.get(s["dedup_key"], []), key=lambda t: not t[3])
+        s["facts"] = list(dict.fromkeys(t for t, _, _, _ in items))[:PLAN_FACTS_PER_SUBJECT]
+        hidden |= {(cid, k) for t, cid, k, is_late in items if is_late and t not in s["facts"]}
         keys = storylink.prior_keys(cands[i] for i in s["ids"])
         rows = prior(keys, s["urls"], events=False)
         if rows:

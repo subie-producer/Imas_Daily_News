@@ -21546,6 +21546,30 @@ def test_collect_stage_order(tmp: Path):
         check(not opened and counts == {"confirmed": 0, "unconfirmed": 2, "failed": 0}
               and cs[0].get("archived_at", "").startswith("2026-11-04T01:00") and "締切" in cs[1].get("verify_note", ""),
               f"前段の締切のあとに裏取りを始めた・時間切れで落とした: {opened} {counts} {[(c['verify'], c.get('verify_note')) for c in cs]}")
+        # 締切の前に始めた裏取りも、少しずつ届いて終わらない応答は1件の所要(VERIFY_FETCH_SEC)で見切る(Sol 監査 r3)。途中までの本文で
+        # 写しを照らして取り違え(failed)にしない
+        class Drip:
+            status, headers = 200, types.SimpleNamespace(get_content_charset=lambda: "utf-8")
+            __enter__ = lambda self: self
+            __exit__ = lambda self, *a: False
+            geturl = lambda self: "https://audit.example/drip"
+
+            def read(self, n=-1):
+                time.sleep(3)       # 本物なら 15秒未満の間隔で1字ずつ届き続ける応答
+                return b"<p>" + quote.encode() + b"</p>"
+        cs = [cand("https://audit.example/drip")]
+        saved_v = (collect.polite_urlopen, collect.VERIFY_FETCH_SEC)
+        try:
+            collect.polite_urlopen = lambda req, **k: Drip()
+            collect.VERIFY_FETCH_SEC = 0.3
+            collect.DEADLINE = time.time() + 3600
+            t0 = time.time()
+            counts = saved["verify"](cs)
+            spent = time.time() - t0
+        finally:
+            collect.polite_urlopen, collect.VERIFY_FETCH_SEC = saved_v
+        check(spent < 2 and counts == {"confirmed": 0, "unconfirmed": 1, "failed": 0} and "終わらない" in cs[0].get("verify_note", ""),
+              f"終わらない応答の裏取りを見切らない・落とした: {spent:.1f}秒 {counts} {cs[0].get('verify_note')}")
         # 3. 判定表の合議は、失敗したあとの付け直し・lint の分(RETAG_RESERVE_SEC)を残して切る
         got: list = []
         collect.classify_then_retag = saved["classify_then_retag"]

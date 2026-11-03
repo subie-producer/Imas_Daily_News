@@ -247,6 +247,45 @@ def watch_get(url: str, timeout: float) -> tuple[bytes, str | None]:
     return box["v"]
 
 
+# 裏取りの取得1件(接続・ヘッダー・本文)の所要の上限(秒。締切のある回だけ)。始めた裏取りは前段の締切で切らないが、少しずつ届く応答で
+# 必須段の予約(REQUIRED_RESERVE_SEC)を食わないよう、1件の所要で見切る(2026-11-04 Sol 監査 r3)。裏取りは1件ずつなので、締切の
+# 直前に始めた1件の所要は、取得のこの上限と描画(1回 30秒・429 の待ちは締切まで)を足しても予約に収まる
+VERIFY_FETCH_SEC = 60
+
+
+class VerifyFetchTimeout(TimeoutError):
+    """裏取りの取得が VERIFY_FETCH_SEC で終わらなかった(今は確かめられないだけ。URL の取り違えにしない)。"""
+
+
+def verify_fetch(req) -> tuple[int, bytes, str | None, str]:
+    """裏取りの取得: (状態コード, 本文(PAGE_READ_BYTES まで。4xx・5xx は空), 文字コード, 最終 URL)。HTTPError はそのまま上げる。
+    締切のある回は別スレッドで取り、VERIFY_FETCH_SEC で見切って VerifyFetchTimeout を上げる(見切ったスレッドは socket の待ち時間で
+    終わり、何も書かない: watch_get と同じ)。締切が無ければこのスレッドで取る"""
+    def get() -> tuple[int, bytes, str | None, str]:
+        # 間隔をあけ、429 は Retry-After を守って取り直す。429 の待ちは収集の締切を越えない
+        with polite_urlopen(req, timeout=15, wait_deadline=DEADLINE) as res:
+            st = int(getattr(res, "status", None) or 200)
+            return st, (res.read(PAGE_READ_BYTES) if st < 400 else b""), res.headers.get_content_charset(), res.geturl()
+    if not DEADLINE:
+        return get()
+    import threading
+    box: dict = {}
+
+    def run():
+        try:
+            box["v"] = get()
+        except BaseException as e:      # noqa: BLE001  呼び出し側へ渡す
+            box["e"] = e
+    t = threading.Thread(target=run, daemon=True)
+    t.start()
+    t.join(VERIFY_FETCH_SEC)
+    if t.is_alive():
+        raise VerifyFetchTimeout(f"出典の取得が {VERIFY_FETCH_SEC}秒で終わらない")
+    if "e" in box:
+        raise box["e"]
+    return box["v"]
+
+
 class PageTooLarge(ValueError):
     """応答が読み取りの上限(PAGE_READ_BYTES)を越えた。切った本文を正常に読めたものとして扱わない(一覧なら読めなかった回として
     既読を進めず次回やり直し、本文なら原本にせずセッションの fetch_page.py に任せる。Sol 監査 WT r1 の later)"""
@@ -2361,13 +2400,21 @@ def verify(cands: list[dict]) -> dict:
                         c["render_error"] = why[:300]
                         counts[c["verify"]] += 1
                         continue
-                    res = None
+                    st = 200
                     ok, body, cs, final = True, html.encode("utf-8", "replace"), "utf-8", RENDER_FINAL.get(c["url"]) or c["url"]
                 else:
                     req = urllib.request.Request(c["url"], headers={"User-Agent": UA})
                     try:
-                        # 間隔をあけ、429 は Retry-After を守って取り直す。429 の待ちは収集の締切を越えない(裏取り自体は締切で切らない)
-                        opened = polite_urlopen(req, timeout=15, wait_deadline=DEADLINE)
+                        # 取得1件の所要は VERIFY_FETCH_SEC で見切る(締切のある回)。429 の待ちは収集の締切を越えない
+                        st, body, cs, final = verify_fetch(req)
+                    except VerifyFetchTimeout as e:
+                        # 少しずつ届く応答で終わらない: 今は確かめられないだけ(途中までの本文で写しを照らして取り違えにしない)。
+                        # 収集時点の原本があれば照らす
+                        if not archived_check(c, str(e), base=priors.get(c["url"]) or {}):
+                            c["verify"] = "unconfirmed"
+                            c["verify_note"] = f"{e}ため、facts を本文で確かめられない"[:300]
+                        counts[c["verify"]] += 1
+                        continue
                     except urllib.error.HTTPError as e:
                         # 取り直しの上限を超えても 429 なら、今は確かめられないだけ(URL の取り違えではない。failed にしない)
                         if e.code == 429:
@@ -2384,11 +2431,7 @@ def verify(cands: list[dict]) -> dict:
                         note_archived(c, priors.get(c["url"]))
                         counts["unconfirmed"] += 1
                         continue
-                    with opened as res:
-                        ok = res.status < 400
-                        body = res.read(PAGE_READ_BYTES) if ok else b""
-                        cs = res.headers.get_content_charset()
-                        final = res.geturl()
+                    ok = st < 400
                 # メンテナンス画面へ転送されたら、案内は出典の本文ではない。写しが無いのは URL の取り違えではなく、今は確かめられないだけ
                 # (failed にすると、メンテナンスのあいだに集めた公式の候補を使えなくする)
                 if ok and maintenance_redirect(c["url"], final):
@@ -2410,7 +2453,7 @@ def verify(cands: list[dict]) -> dict:
                     prior = priors.get(c["url"])
                     # 残す本文(描画できたら描画の本文)と、その状態コード
                     best = {"text": text, "html": body, "rendered": pre,
-                            "status": (RENDER_STATUS.get(c["url"]) or 200) if pre else (res.status if res else 200)}
+                            "status": (RENDER_STATUS.get(c["url"]) or 200) if pre else st}
 
                     def render() -> str | None:
                         # 描画して読み直した本文(描画できない・メンテナンス画面へ転送されたら None。案内を本文として照らさない)。

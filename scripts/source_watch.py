@@ -34,8 +34,8 @@ import yaml
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import page_archive
 from pipelib import (CODEX_WRITE_MODEL, ENV, FETCH_RECORD_ENV, REVIEW_MODEL, ROOT, anomaly, append_metric, changed_record, cli_check,
-                     classify_source, now_jst, notify, partial_output, prompt_file, read_answer, record_rows, render_prompt,
-                     run_group, save_raw, schema_ok)
+                     classify_source, next_slot_is, now_jst, notify, partial_output, prompt_file, read_answer, record_rows, render_prompt,
+                     run_group, save_raw, schema_ok, timer_times)
 
 RECHECK_DAYS = 60                   # 見回る記事を探す範囲(発行した号の日付から)
 RECHECK_MAX = int(ENV.get("RECHECK_MAX", "60"))           # 1回の見回りで読み直す件数の下限(一巡の日数を守るため自動で上げる)
@@ -59,6 +59,17 @@ def collect_runs_per_day(root: Path = ROOT) -> int:
     except OSError:
         n = 0
     return n or 5
+
+
+def watch_runs_per_day(root: Path = ROOT) -> int:
+    """見回りをする収集の1日の回数: 収集の回のうち、次の定時工程が組版でない回(組版直前の 02:00 は見回らない: collect.watch_this_run)。
+    定時の時刻が読めなければ、収集の回数から組版直前の1回を引いた数(多めに数えると1回の上限が下がり、一巡が延びる)"""
+    d = root / "ops" / "systemd"
+    try:
+        n = sum(1 for h, m in timer_times("collect", d) if not next_slot_is("compose", datetime.datetime(2000, 1, 1, h, m), d))
+    except (OSError, ValueError):
+        n = collect_runs_per_day(root) - 1
+    return max(1, n)
 
 
 def _is_x(url: str) -> bool:
@@ -164,7 +175,7 @@ def recheck(today: str, arts: list[dict], deadline_passed=lambda: False, root: P
     """見回る: 計画の分を fetch_page.py で読み直す(変われば原本の置き場の台帳に残る)。時間の上限・収集の締切を過ぎたら新しく始めない。
     一巡の日数を記録し(metrics の recheck)、上限を超えたら(読み残しで一巡が延びる・最後に確かめたのが一巡の日数より前)異常として申告する。
     戻りは記録した数字。fetch(url, record) を渡せば読み直しを差し替える(テスト)"""
-    plan = recheck_plan(active(arts, today, root), now_jst(), collect_runs_per_day(root))
+    plan = recheck_plan(active(arts, today, root), now_jst(), watch_runs_per_day(root))
     rec = root / "metrics" / "work" / today / "recheck" / f"{time.time_ns()}-{os.getpid()}.jsonl"     # 回ごとに別の記録
     rec.parent.mkdir(parents=True, exist_ok=True)
     t0 = time.time()
@@ -522,6 +533,11 @@ def decide(art: dict, row: dict, diff: str, today: str, root: Path, judge_fn, re
                           f"案「{ans['text'][:120]}」/ 指摘 {verdict.get('issue', '')[:200]}")
         return "校閲が通さなかった"
     return ans
+
+
+def pending_candidates() -> list[dict]:
+    """まだ素材の保存を確かめていない「出典の更新」の素材(前の回の見回りが作り、保存の前に止まったもの)。セッションを起動しない。"""
+    return list(load_state()["pending"].values())
 
 
 def clear_pending(ids) -> None:

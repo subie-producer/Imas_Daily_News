@@ -189,5 +189,31 @@
   "event_date": "2026-12-04",
   "deadline": "2026-11-05",
   "src_candidate_id": "202610302337-watch-19"
+ },
+ {
+  "id": "sched-2026-12-04-deremiri-radio-announcements-2026-開始",
+  "dedup_key": "deremiri-radio-announcements-2026",
+  "brand": "joint",
+  "subject": "第2回「よしちづラジオ」プレミア公開",
+  "kind": "開始",
+  "note": "20時から第2回がプレミア公開され視聴できる",
+  "reserved_on": "2026-11-04",
+  "occurs_on": "2026-12-04",
+  "title": "デレミリ合同ラジオ第2回と第1回配信日を発表",
+  "url": "https://idolmaster-official.jp/news/01_20223",
+  "source_type": "公式",
+  "facts": [
+   "合同ライブ関連企画の第2回は「よしちづラジオ」。",
+   "第1回「フレあかラジオ」の配信日情報も公開された。",
+   "「よしちづラジオ」ではアイドルへのおたよりを募集中。",
+   "エンゲージメント: 中",
+   "エンゲージメント: 低",
+   "第2回「よしちづラジオ」は2026年12月4日（金）20時からプレミア公開予定。"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "deadline": "2026-11-05",
+  "link_from": "https://x.com/imas_official/status/2116128746352836732",
+  "src_candidate_id": "202611010230-grok-113"
  }
 ]

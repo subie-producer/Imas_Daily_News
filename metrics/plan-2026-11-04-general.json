@@ -1,0 +1,170 @@
+{
+ "decisions": {
+  "tosakyodai-boss-subordinate-acrylic-stand": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "アイマスと無関係の商品。未確認の個人投稿のみ"
+  },
+  "comifuro-producer-card-exchange-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "踊ってみた動画は11/1号、名刺交換は11/2号で既報。新事実・当日の期日なし"
+  },
+  "tours-symphony-release-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/29号で配信開始を記事化済み。新事実なし"
+  },
+  "fan-yukiho-mami-pc-panel-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/30号のファン報告記事で既報。新たな素材なし"
+  },
+  "portal-emergency-maintenance-ended-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/27号で緊急メンテ終了を記事化済み"
+  },
+  "imas-birthdays-2026-10-27": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/27号で記事化済み。誕生日は終了済み"
+  },
+  "765-961-idol-ultimate-2027-ticket": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "延長後の締切11/8は4日先で当日のトリガーに当たらず、素材のfactsは10/28締切の旧情報のみ"
+  },
+  "tours-sidem-contribution-debate-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "ファン間の議論の未確認投稿。係争になり得る話題で事実も乏しい"
+  },
+  "idolmaster-portal-maintenance-release-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/31号で利用できない機能の一覧まで記事化済み"
+  },
+  "akai-sekai-cover-video-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "同人・ファン主催",
+   "note": "未確認の個人投稿。出演者もアイマス外の配信者で、公式の知らせではない"
+  }
+ },
+ "plan": {
+  "articles": [],
+  "dropped": [
+   {
+    "dedup_key": "tosakyodai-boss-subordinate-acrylic-stand",
+    "reason": "面違い",
+    "note": "アイマスと無関係の商品。未確認の個人投稿のみ"
+   },
+   {
+    "dedup_key": "comifuro-producer-card-exchange-2026",
+    "reason": "既報",
+    "note": "踊ってみた動画は11/1号、名刺交換は11/2号で既報。新事実・当日の期日なし"
+   },
+   {
+    "dedup_key": "tours-symphony-release-2026",
+    "reason": "既報",
+    "note": "10/29号で配信開始を記事化済み。新事実なし"
+   },
+   {
+    "dedup_key": "fan-yukiho-mami-pc-panel-2026",
+    "reason": "既報",
+    "note": "10/30号のファン報告記事で既報。新たな素材なし"
+   },
+   {
+    "dedup_key": "portal-emergency-maintenance-ended-2026",
+    "reason": "既報",
+    "note": "10/27号で緊急メンテ終了を記事化済み"
+   },
+   {
+    "dedup_key": "imas-birthdays-2026-10-27",
+    "reason": "既報",
+    "note": "10/27号で記事化済み。誕生日は終了済み"
+   },
+   {
+    "dedup_key": "765-961-idol-ultimate-2027-ticket",
+    "reason": "既報",
+    "note": "延長後の締切11/8は4日先で当日のトリガーに当たらず、素材のfactsは10/28締切の旧情報のみ"
+   },
+   {
+    "dedup_key": "tours-sidem-contribution-debate-2026",
+    "reason": "その他",
+    "note": "ファン間の議論の未確認投稿。係争になり得る話題で事実も乏しい"
+   },
+   {
+    "dedup_key": "idolmaster-portal-maintenance-release-2026",
+    "reason": "既報",
+    "note": "10/31号で利用できない機能の一覧まで記事化済み"
+   },
+   {
+    "dedup_key": "akai-sekai-cover-video-2026",
+    "reason": "同人・ファン主催",
+    "note": "未確認の個人投稿。出演者もアイマス外の配信者で、公式の知らせではない"
+   }
+  ],
+  "cross_brand": []
+ }
+}

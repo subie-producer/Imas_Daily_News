@@ -2189,5 +2189,29 @@
   "src_candidate_id": "202610292334-watch-0",
   "companion_of": "sched-2026-11-11-letora-birthday-lv-general-2026-締切",
   "src_dedup_key": "valiv-letora-birthday-2026-liveviewing"
+ },
+ {
+  "id": "sched-2026-11-11-shiny-song-autumn-login-pass-締切",
+  "dedup_key": "shiny-song-autumn-login-pass",
+  "brand": "shiny",
+  "subject": "シャニソン「秋色が重なる空」ログインボーナスパス 販売最終日",
+  "kind": "締切",
+  "note": "11:59の販売終了までパスを購入できる最終日",
+  "reserved_on": "2026-11-04",
+  "occurs_on": "2026-11-11",
+  "title": "シャニソン「秋色が重なる空」ログインボーナスパス",
+  "url": "https://x.com/imassc_prism/status/2116367556135026797",
+  "source_type": "公式",
+  "facts": [
+   "無償プリズムジュエル×2750を獲得。",
+   "3周年記念ひとひらガシャチケット×5を獲得。",
+   "シーズンメダル×25を獲得。",
+   "15日間の有効期間内に11日間ログインが必要。",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "deadline": "2026-11-11",
+  "src_candidate_id": "202611010230-grok-47"
  }
 ]

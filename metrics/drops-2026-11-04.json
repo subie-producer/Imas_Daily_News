@@ -1,0 +1,78 @@
+{
+ "gaku-gakumas-amayo-kisama-kentei-2026": {
+  "title": "雨夜燕の「貴様ぁ!検定」の受付が11月8日23時59分まで延長され、結果ポストで10名にカードホルダーが当たる",
+  "stage": "執筆で見送り",
+  "why": "SOURCE_MISMATCH 受付延長後の締切を示す素材は二次情報のみで、公式キャンペーンページでは受付期間が2026年10月28日23時59分までと記載されており、11月8日への延長を確認できませんでした。記事の軸となる締切が出典間で食い違うため見送ります。",
+  "candidate_ids": [
+   "202610290225-grok-89",
+   "202610282333-watch-3",
+   "202610290225-explore-6",
+   "202610290732-explore-6"
+  ]
+ },
+ "sidem-legenders-refrain-atrium-ensemble-2026": {
+  "title": "LegendersのCDデビュー10周年を記念し、弦楽器による「リフレインアトリウム」のアンサンブル動画がYouTubeとニコニコ動画で公開された",
+  "stage": "執筆で見送り",
+  "why": "NOT_NEWS 動画は2026年10月26日に公開されており、11月4日号で新しく起きた出来事や今後の予定として書ける事実がありません。",
+  "candidate_ids": [
+   "202610270222-grok-36"
+  ]
+ },
+ "sidem-monthly-theme-song-12-cafe-parade": {
+  "title": "「MONTHLY THEME SONG 12 Café Parade」が発売され、CD特典ストーリーのシリアルコードと初回生産特典のブロマイドが付く",
+  "stage": "執筆で見送り",
+  "why": "NOT_NEWS 発売と封入シリアルコード、初回生産特典のブロマイドは既報済みで、2026-11-04時点で新たに起きたことや今後の期日は確認できません。",
+  "candidate_ids": [
+   "202610290508-grok-0-r3",
+   "202610290225-grok-50",
+   "202610290508-explore-1-r1",
+   "202610310225-grok-81",
+   "202611040418-explore-0-r1",
+   "202611040418-explore-1",
+   "202611040418-explore-2"
+  ]
+ },
+ "sidem-beam-subscription-2026": {
+  "title": "SideM楽曲「BEAM」がサブスクで配信開始され、各プレイリストに追加された",
+  "stage": "執筆で見送り",
+  "why": "SOURCE_MISMATCH 素材は「BEAM」をSideM楽曲としているが、準公式の告知では「アイドルマスター シャイニーカラーズ」のアルストロメリア楽曲として2026年10月30日に配信開始したと確認できた。SideMの配信開始という記事の中核を確認できないため見送",
+  "candidate_ids": [
+   "202610300224-grok-26"
+  ]
+ },
+ "gaku-letora-birthday-live-2026-lv-advance": {
+  "title": "レトラ誕生日ライブLV、一般先着は本日正午開始",
+  "stage": "書き直しで見送り",
+  "why": "OTHER 同じ公式告知に基づくレトラ誕生日ライブLV一般先着の記事は、ブランドが合致する dsva-letora-birthday-lv-general-2026 を残す指摘に従い、本記事を紙面から除外します。digest の参照先は残る記事の slug に更新してください。",
+  "candidate_ids": [
+   "202610300224-grok-63"
+  ],
+  "settled": {
+   "rule": "P1",
+   "dup_of": [
+    "dsva-letora-birthday-lv-general-2026"
+   ]
+  }
+ },
+ "million-ova-onkyo-audio-goods-2026": {
+  "title": "ミリオンOVAイヤホン、受注は11月13日まで",
+  "stage": "書き直しで見送り",
+  "why": "NOT_NEWS 校閲指摘I1・I2のとおり、本稿の中核は既報の受注期間と商品内容の再掲で、本日発生した新しい出来事や3日以内に迫った締切がありません。記事を掲載対象から外します。",
+  "candidate_ids": [
+   "202610310225-grok-37"
+  ]
+ },
+ "sidem-teddys-collection-ii-goods": {
+  "title": "SideM「Teddy's Collection II」に新商品3種",
+  "stage": "書き直しで見送り",
+  "why": "NOT_NEWS 中核の商品情報は過去号で既報で、新しい事実や当日のトリガーも確認できないため、記事として見送ります。予約期間に関する記述と「新たに掲載」の表現も削除対象です。",
+  "candidate_ids": [
+   "202610300224-grok-22",
+   "202610300224-grok-23",
+   "202611010510-explore-0",
+   "202611010510-explore-1-r1",
+   "202611010510-explore-2",
+   "202611010230-grok-135"
+  ]
+ }
+}

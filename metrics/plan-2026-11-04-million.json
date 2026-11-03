@@ -1,0 +1,794 @@
+{
+ "decisions": {
+  "million-dmm-scratch-secret-jewel-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "scratch-secondと同一商品。10-27号に期間・価格・賞品が既報で新事実なし"
+  },
+  "million-scratch-second-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10-27号に全内容既報。販売開始は11/2で当日トリガー無し、終了は12/2"
+  },
+  "million-off-time-voice-series-konomi-2026": {
+   "action": "article",
+   "angle": "Off Time Voice Series(真・このみセット)の販売期限は11月23日23時59分、ミリシタ内で試聴でき2セット購入で琴葉の音声が付く",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "販売期限11/23と試聴可は既報に無い新事実。makoto・bonus・bundleを統合"
+  },
+  "million-off-time-voice-purchase-bonus-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-off-time-voice-series-konomi-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "fan-million-vivid-color-mv-2026-11": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "同人・ファン主催",
+   "note": "ファン制作MVの個人投稿"
+  },
+  "million-special-solo-records-guinness-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10-31号に出演者・内容とも既報"
+  },
+  "million-platinum-star-tune-night-lights-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-platinum-star-tune-yoru-to-akari-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "million-12th-bluray-order-extension-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10-31号に既報。締切11/12は8日先でトリガー無し"
+  },
+  "million-topaz-happy-price-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-01号に既報"
+  },
+  "million-premium-notes-voices-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-01号に既報"
+  },
+  "million-idol-grand-prix-november-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-01号に既報"
+  },
+  "million-second-hairstyle-mybrand-glasses-2026": {
+   "action": "article",
+   "angle": "セカンドヘアスタイルガシャ～myブランド編 with glasses～は11月9日14時59分まで、律子・紗代子のSSRが出現率UP中",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "終了日時は11-01号本文に無い新事実。他2件を統合"
+  },
+  "cyber-planet-popup-osaka-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10-31号に全内容既報。開幕11/7は今日ではない"
+  },
+  "million-sagamihara-park-fan-visit-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿。ファン面向け"
+  },
+  "million-chibi-kotoha-fan-art-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "同人・ファン主催",
+   "note": "個人のファン制作"
+  },
+  "million-invisible-light-cd-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10-28号『INVISIBLE LIGHT本日発売』で既報"
+  },
+  "million-revival-fes-2026-10": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/31に終了済み"
+  },
+  "idol-grand-prix-october-flash-gp-medal-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/31期限で終了済み"
+  },
+  "million-rio-song-addition-bug-fix-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10-28号に既報"
+  },
+  "fes-limited-masterpiece-set-2026-10": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "復刻フェス終了済み"
+  },
+  "million-theater-talk-party-vol-68-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/30終了済み"
+  },
+  "ittan-aishite-dance-video-2026-10": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "同人・ファン主催",
+   "note": "ファン制作の踊ってみた動画"
+  },
+  "million-live-fan-video-thieves-2026-10": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "同人・ファン主催",
+   "note": "個人投稿のファン動画"
+  },
+  "million-idol-grand-prix-rio-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10-27号に既報、不具合も修正済み"
+  },
+  "million-off-time-voice-vol4-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10-27号にポータル再生予定まで既報"
+  },
+  "million-princess-a-la-mode-purchase-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10-27号に既報"
+  },
+  "million-platinum-star-tiara-happy-pease-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/27 14:59に販売終了済み"
+  },
+  "million-event-item-exchange-additions-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10-27号に既報"
+  },
+  "elena-birthday-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/26の誕生日企画で10-26号に既報、終了済み"
+  },
+  "hinata-sobetsu-local-connection-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "二次情報のブログ紹介のみで新事実なし。地域×ファンの話題はgeneral面向け"
+  },
+  "million-weekend-harlequin-video-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10-27号に莉緒編とPVが既報"
+  },
+  "hinata-sobetsu-apple-visitors-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "10/11の終了済み催しの現地レポート。ファンの動きはgeneral面向け"
+  },
+  "million-revival-fes-rewards-2026-10": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "復刻フェス終了済み、報酬も既報"
+  },
+  "million-off-time-voice-vol4-bundle-campaign-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-off-time-voice-series-konomi-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "million-tsubasa-figure-asobi-reservation-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10-31号に既報。締切12/8は先"
+  },
+  "million-radio-2026-10-29": {
+   "action": "article",
+   "angle": "10月29日放送のミリオンラジオのタイムシフト視聴は明日11月5日23時59分まで",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "締切が明日で当日トリガーあり"
+  },
+  "million-ova-onkyo-audio-goods-2026": {
+   "action": "article",
+   "angle": "OVA『いつか、真ん中で』関連のワイヤレスイヤホン(美也・朋花・まつりモデル)と充電器の受注が11月13日15時まで",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "新規情報で既報なし。年表記なしのため校閲で確認"
+  },
+  "arisa-halloween-ai-art-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のAIイラスト投稿"
+  },
+  "sayoko-special-video": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-02号に既報"
+  },
+  "million-idol-grand-prix-november-gift-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-01号の運営情報まとめに既報、新事実なし"
+  },
+  "million-off-time-voice-makoto-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-off-time-voice-series-konomi-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "million-second-hairstyle-my-brand-glasses-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-second-hairstyle-mybrand-glasses-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "million-elena-monster-dragon-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-01号・11-02号に既報"
+  },
+  "million-november-jewel-bonus-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-02号に既報"
+  },
+  "million-guinness-record-event-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10-31号に既報の同一イベント"
+  },
+  "million-second-hair-style-glasses-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-second-hairstyle-mybrand-glasses-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "million-platinum-star-tune-yoru-to-akari-2026": {
+   "action": "article",
+   "angle": "「夜と、明かりと。」は本日15時に折り返し、イベント曲で最大4倍消費に。11月7日20時59分の終了まであと3日",
+   "purpose": "期日の知らせ",
+   "rank": "large",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(締切前)。night-lightsを統合"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "million-off-time-voice-series-konomi-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "Off Time Voice Series(真・このみセット)の販売期限は11月23日23時59分、ミリシタ内で試聴でき2セット購入で琴葉の音声が付く",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "million-off-time-voice-series-konomi-2026",
+    "candidate_ids": [
+     "202611040222-grok-9",
+     "202611040222-grok-10",
+     "202610280221-grok-23",
+     "202611020220-grok-33"
+    ]
+   },
+   {
+    "slug": "million-second-hairstyle-mybrand-glasses-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "セカンドヘアスタイルガシャ～myブランド編 with glasses～は11月9日14時59分まで、律子・紗代子のSSRが出現率UP中",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "million-second-hairstyle-mybrand-glasses-2026",
+    "candidate_ids": [
+     "202611010230-grok-37",
+     "202611020220-grok-35",
+     "202611030222-grok-11"
+    ]
+   },
+   {
+    "slug": "million-radio-2026-10-29",
+    "brand": "million",
+    "rank": "small",
+    "angle": "10月29日放送のミリオンラジオのタイムシフト視聴は明日11月5日23時59分まで",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "million-radio-2026-10-29",
+    "candidate_ids": [
+     "202610300505-explore-0",
+     "202610310225-grok-33",
+     "202610310225-grok-34"
+    ]
+   },
+   {
+    "slug": "million-ova-onkyo-audio-goods-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "OVA『いつか、真ん中で』関連のワイヤレスイヤホン(美也・朋花・まつりモデル)と充電器の受注が11月13日15時まで",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "million-ova-onkyo-audio-goods-2026",
+    "candidate_ids": [
+     "202610310225-grok-37"
+    ]
+   },
+   {
+    "slug": "million-platinum-star-tune-yoru-to-akari-2026",
+    "brand": "million",
+    "rank": "large",
+    "angle": "「夜と、明かりと。」は本日15時に折り返し、イベント曲で最大4倍消費に。11月7日20時59分の終了まであと3日",
+    "purpose": "期日の知らせ",
+    "lead_score": 60,
+    "dedup_key": "million-platinum-star-tune-yoru-to-akari-2026",
+    "candidate_ids": [
+     "sched-2026-11-04-million-platinum-star-tune-yoru-to-akari-2026-締切前",
+     "sched-2026-11-04-million-platinum-star-tune-yoru-to-akari-2026-締切前-src1",
+     "sched-2026-11-04-million-platinum-star-tune-yoru-to-akari-2026-締切前-src2",
+     "sched-2026-11-04-million-platinum-star-tune-yoru-to-akari-2026-締切前-src3",
+     "202610311835-watch-0",
+     "202611010230-explore-3",
+     "202611010230-explore-4",
+     "202611010230-explore-5",
+     "202611010230-grok-29",
+     "202611010230-grok-30",
+     "202611010230-grok-31",
+     "202611010230-grok-32",
+     "202611010230-grok-33",
+     "202611010230-grok-34",
+     "202611010230-grok-35",
+     "202611010230-grok-36",
+     "202610291832-explore-2",
+     "202610300224-grok-12",
+     "202610300224-grok-13",
+     "202610310225-grok-35"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "million-dmm-scratch-secret-jewel-2026",
+    "reason": "既報",
+    "note": "scratch-secondと同一商品。10-27号に期間・価格・賞品が既報で新事実なし"
+   },
+   {
+    "dedup_key": "million-scratch-second-2026",
+    "reason": "既報",
+    "note": "10-27号に全内容既報。販売開始は11/2で当日トリガー無し、終了は12/2"
+   },
+   {
+    "dedup_key": "fan-million-vivid-color-mv-2026-11",
+    "reason": "同人・ファン主催",
+    "note": "ファン制作MVの個人投稿"
+   },
+   {
+    "dedup_key": "million-special-solo-records-guinness-2026",
+    "reason": "既報",
+    "note": "10-31号に出演者・内容とも既報"
+   },
+   {
+    "dedup_key": "million-12th-bluray-order-extension-2026",
+    "reason": "既報",
+    "note": "10-31号に既報。締切11/12は8日先でトリガー無し"
+   },
+   {
+    "dedup_key": "million-topaz-happy-price-2026",
+    "reason": "既報",
+    "note": "11-01号に既報"
+   },
+   {
+    "dedup_key": "million-premium-notes-voices-2026",
+    "reason": "既報",
+    "note": "11-01号に既報"
+   },
+   {
+    "dedup_key": "million-idol-grand-prix-november-2026",
+    "reason": "既報",
+    "note": "11-01号に既報"
+   },
+   {
+    "dedup_key": "cyber-planet-popup-osaka-2026",
+    "reason": "既報",
+    "note": "10-31号に全内容既報。開幕11/7は今日ではない"
+   },
+   {
+    "dedup_key": "million-sagamihara-park-fan-visit-2026",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿。ファン面向け"
+   },
+   {
+    "dedup_key": "million-chibi-kotoha-fan-art-2026",
+    "reason": "同人・ファン主催",
+    "note": "個人のファン制作"
+   },
+   {
+    "dedup_key": "million-invisible-light-cd-2026",
+    "reason": "既報",
+    "note": "10-28号『INVISIBLE LIGHT本日発売』で既報"
+   },
+   {
+    "dedup_key": "million-revival-fes-2026-10",
+    "reason": "既報",
+    "note": "10/31に終了済み"
+   },
+   {
+    "dedup_key": "idol-grand-prix-october-flash-gp-medal-2026",
+    "reason": "既報",
+    "note": "10/31期限で終了済み"
+   },
+   {
+    "dedup_key": "million-rio-song-addition-bug-fix-2026",
+    "reason": "既報",
+    "note": "10-28号に既報"
+   },
+   {
+    "dedup_key": "fes-limited-masterpiece-set-2026-10",
+    "reason": "既報",
+    "note": "復刻フェス終了済み"
+   },
+   {
+    "dedup_key": "million-theater-talk-party-vol-68-2026",
+    "reason": "既報",
+    "note": "10/30終了済み"
+   },
+   {
+    "dedup_key": "ittan-aishite-dance-video-2026-10",
+    "reason": "同人・ファン主催",
+    "note": "ファン制作の踊ってみた動画"
+   },
+   {
+    "dedup_key": "million-live-fan-video-thieves-2026-10",
+    "reason": "同人・ファン主催",
+    "note": "個人投稿のファン動画"
+   },
+   {
+    "dedup_key": "million-idol-grand-prix-rio-2026",
+    "reason": "既報",
+    "note": "10-27号に既報、不具合も修正済み"
+   },
+   {
+    "dedup_key": "million-off-time-voice-vol4-2026",
+    "reason": "既報",
+    "note": "10-27号にポータル再生予定まで既報"
+   },
+   {
+    "dedup_key": "million-princess-a-la-mode-purchase-2026",
+    "reason": "既報",
+    "note": "10-27号に既報"
+   },
+   {
+    "dedup_key": "million-platinum-star-tiara-happy-pease-2026",
+    "reason": "既報",
+    "note": "10/27 14:59に販売終了済み"
+   },
+   {
+    "dedup_key": "million-event-item-exchange-additions-2026",
+    "reason": "既報",
+    "note": "10-27号に既報"
+   },
+   {
+    "dedup_key": "elena-birthday-2026",
+    "reason": "既報",
+    "note": "10/26の誕生日企画で10-26号に既報、終了済み"
+   },
+   {
+    "dedup_key": "hinata-sobetsu-local-connection-2026",
+    "reason": "出典不足",
+    "note": "二次情報のブログ紹介のみで新事実なし。地域×ファンの話題はgeneral面向け"
+   },
+   {
+    "dedup_key": "million-weekend-harlequin-video-2026",
+    "reason": "既報",
+    "note": "10-27号に莉緒編とPVが既報"
+   },
+   {
+    "dedup_key": "hinata-sobetsu-apple-visitors-2026",
+    "reason": "その他",
+    "note": "10/11の終了済み催しの現地レポート。ファンの動きはgeneral面向け"
+   },
+   {
+    "dedup_key": "million-revival-fes-rewards-2026-10",
+    "reason": "既報",
+    "note": "復刻フェス終了済み、報酬も既報"
+   },
+   {
+    "dedup_key": "million-tsubasa-figure-asobi-reservation-2026",
+    "reason": "既報",
+    "note": "10-31号に既報。締切12/8は先"
+   },
+   {
+    "dedup_key": "arisa-halloween-ai-art-2026",
+    "reason": "個人の話題",
+    "note": "個人のAIイラスト投稿"
+   },
+   {
+    "dedup_key": "sayoko-special-video",
+    "reason": "既報",
+    "note": "11-02号に既報"
+   },
+   {
+    "dedup_key": "million-idol-grand-prix-november-gift-2026",
+    "reason": "既報",
+    "note": "11-01号の運営情報まとめに既報、新事実なし"
+   },
+   {
+    "dedup_key": "million-elena-monster-dragon-2026",
+    "reason": "既報",
+    "note": "11-01号・11-02号に既報"
+   },
+   {
+    "dedup_key": "million-november-jewel-bonus-2026",
+    "reason": "既報",
+    "note": "11-02号に既報"
+   },
+   {
+    "dedup_key": "million-guinness-record-event-2026",
+    "reason": "既報",
+    "note": "10-31号に既報の同一イベント"
+   }
+  ],
+  "cross_brand": []
+ }
+}

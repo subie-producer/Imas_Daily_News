@@ -1,0 +1,449 @@
+{
+ "decisions": {
+  "dememiri-clash-match-ticket-2027": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "出典ページのニュース一覧の入れ替わりのみで、新曲記事の内容に関わる変更は無い"
+  },
+  "tours-allnet-service-suspension-2026": {
+   "action": "article",
+   "angle": "ALL.Net停止でツアマスはオフラインも含めプレイ不可に。再開時期は未定で、連続ログインやハロウィン企画への影響は検討中",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "emergency-maintenance(オンライン・マイページ停止)を統合"
+  },
+  "tours-card-restock-2026-11-03": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "中古店の通販入荷告知(未確認)"
+  },
+  "xr-live-revival-asobistore-general-advance-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11月8日までの延長は10-30号で報じ済み。締切まで4日でトリガー無し"
+  },
+  "starlight-dining-chinese-maid-plush-2027": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10-31号で受注11月9日まで報じ済み。締切は4日後"
+  },
+  "bandainamco-am-co-jp-32": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10-01号で大会概要を報じ済み。予選開始は11月12日"
+  },
+  "cg-million-clashmatch-goods-2027": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10-31号で受注11月15日まで報じ済み"
+  },
+  "deremiri-clash-match-warmup-stream-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "アーカイブ公開・のぼり企画は11-01号で報じ済み"
+  },
+  "tours-s2-cardlist-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-03号で報じ済み"
+  },
+  "demirimi-clash-radio-yoshichizu-2026": {
+   "action": "article",
+   "angle": "よしちづラジオのおたより締切は明日11月5日23時59分",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "deremiri-stream-post-campaign-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "配信中限定の投稿企画で10月30日に終了済み"
+  },
+  "tours-s2-card-read-error-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10-31号で不具合と回避方法を報じ済み"
+  },
+  "tours-halloween-community-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "tours-halloween-commu-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "tours-thanks-background-photo-trend-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "個人の投稿のみ。未確認"
+  },
+  "tomori-manaka-birthday-live-2026-guest-seki-hiromi": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "他ブランドのゲスト出演で共同主催ではない。二次情報"
+  },
+  "tours-rhythm-live-recording-pstage-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10-27号で報じ済み"
+  },
+  "tours-producers-station-nakano-panels-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10-28・10-29号で報じ済み"
+  },
+  "tours-second-stage-s2-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10-29号で稼働を報じ済み"
+  },
+  "tours-tournament-prelim-entry-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10-30号で報じ済み"
+  },
+  "tours-season-6-all-songs-first-place-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人の投稿のみ"
+  },
+  "clash-match-faq-update-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-02号で報じ済み"
+  },
+  "chino-manhole-winter-display-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-02号で報じ済み。学マス単独の話題"
+  },
+  "deremiri-clash-match-buzz-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "二次情報の検索ページの反応のみ"
+  },
+  "tours-emergency-maintenance-2026-11-02": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "tours-allnet-service-suspension-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じALL.Net停止の件"
+  },
+  "starlit-season-ps4-sale-2026": {
+   "action": "article",
+   "angle": "スタマスPS4版デジタルデラックスのセールは本日23時59分まで、PS Storeで4,125円",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約: 最終日"
+  },
+  "tours-halloween-commu-2026": {
+   "action": "article",
+   "angle": "ツアマスのハロウィンログボは11月7日23時59分まで、終了3日前",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約: 締切前。コミュ再生は6日25時59分まで。ALL.Net停止の影響に触れる"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "joint-tours-allnet-service-suspension-2026",
+    "brand": "joint",
+    "rank": "medium",
+    "angle": "ALL.Net停止でツアマスはオフラインも含めプレイ不可に。再開時期は未定で、連続ログインやハロウィン企画への影響は検討中",
+    "purpose": "新情報",
+    "lead_score": 60,
+    "dedup_key": "tours-allnet-service-suspension-2026",
+    "candidate_ids": [
+     "202611040222-grok-37",
+     "202611030222-grok-41",
+     "202611030222-grok-42"
+    ]
+   },
+   {
+    "slug": "joint-demirimi-clash-radio-yoshichizu-2026",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "よしちづラジオのおたより締切は明日11月5日23時59分",
+    "purpose": "期日の知らせ",
+    "lead_score": 10,
+    "dedup_key": "demirimi-clash-radio-yoshichizu-2026",
+    "candidate_ids": [
+     "202611010230-grok-113",
+     "202610310225-grok-102"
+    ]
+   },
+   {
+    "slug": "joint-starlit-season-ps4-sale-2026",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "スタマスPS4版デジタルデラックスのセールは本日23時59分まで、PS Storeで4,125円",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "starlit-season-ps4-sale-2026",
+    "candidate_ids": [
+     "sched-2026-11-04-starlit-season-ps4-sale-2026-締切"
+    ]
+   },
+   {
+    "slug": "joint-tours-halloween-commu-2026",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "ツアマスのハロウィンログボは11月7日23時59分まで、終了3日前",
+    "purpose": "期日の知らせ",
+    "lead_score": 10,
+    "dedup_key": "tours-halloween-commu-2026",
+    "candidate_ids": [
+     "sched-2026-11-04-tours-halloween-commu-2026-締切前",
+     "202611010230-grok-119"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "dememiri-clash-match-ticket-2027",
+    "reason": "その他",
+    "note": "出典ページのニュース一覧の入れ替わりのみで、新曲記事の内容に関わる変更は無い"
+   },
+   {
+    "dedup_key": "tours-card-restock-2026-11-03",
+    "reason": "出典不足",
+    "note": "中古店の通販入荷告知(未確認)"
+   },
+   {
+    "dedup_key": "xr-live-revival-asobistore-general-advance-2026",
+    "reason": "既報",
+    "note": "11月8日までの延長は10-30号で報じ済み。締切まで4日でトリガー無し"
+   },
+   {
+    "dedup_key": "starlight-dining-chinese-maid-plush-2027",
+    "reason": "既報",
+    "note": "10-31号で受注11月9日まで報じ済み。締切は4日後"
+   },
+   {
+    "dedup_key": "bandainamco-am-co-jp-32",
+    "reason": "既報",
+    "note": "10-01号で大会概要を報じ済み。予選開始は11月12日"
+   },
+   {
+    "dedup_key": "cg-million-clashmatch-goods-2027",
+    "reason": "既報",
+    "note": "10-31号で受注11月15日まで報じ済み"
+   },
+   {
+    "dedup_key": "deremiri-clash-match-warmup-stream-2026",
+    "reason": "既報",
+    "note": "アーカイブ公開・のぼり企画は11-01号で報じ済み"
+   },
+   {
+    "dedup_key": "tours-s2-cardlist-2026",
+    "reason": "既報",
+    "note": "11-03号で報じ済み"
+   },
+   {
+    "dedup_key": "deremiri-stream-post-campaign-2026",
+    "reason": "その他",
+    "note": "配信中限定の投稿企画で10月30日に終了済み"
+   },
+   {
+    "dedup_key": "tours-s2-card-read-error-2026",
+    "reason": "既報",
+    "note": "10-31号で不具合と回避方法を報じ済み"
+   },
+   {
+    "dedup_key": "tours-thanks-background-photo-trend-2026",
+    "reason": "その他",
+    "note": "個人の投稿のみ。未確認"
+   },
+   {
+    "dedup_key": "tomori-manaka-birthday-live-2026-guest-seki-hiromi",
+    "reason": "面違い",
+    "note": "他ブランドのゲスト出演で共同主催ではない。二次情報"
+   },
+   {
+    "dedup_key": "tours-rhythm-live-recording-pstage-2026",
+    "reason": "既報",
+    "note": "10-27号で報じ済み"
+   },
+   {
+    "dedup_key": "tours-producers-station-nakano-panels-2026",
+    "reason": "既報",
+    "note": "10-28・10-29号で報じ済み"
+   },
+   {
+    "dedup_key": "tours-second-stage-s2-2026",
+    "reason": "既報",
+    "note": "10-29号で稼働を報じ済み"
+   },
+   {
+    "dedup_key": "tours-tournament-prelim-entry-2026",
+    "reason": "既報",
+    "note": "10-30号で報じ済み"
+   },
+   {
+    "dedup_key": "tours-season-6-all-songs-first-place-2026",
+    "reason": "個人の話題",
+    "note": "個人の投稿のみ"
+   },
+   {
+    "dedup_key": "clash-match-faq-update-2026",
+    "reason": "既報",
+    "note": "11-02号で報じ済み"
+   },
+   {
+    "dedup_key": "chino-manhole-winter-display-2026",
+    "reason": "既報",
+    "note": "11-02号で報じ済み。学マス単独の話題"
+   },
+   {
+    "dedup_key": "deremiri-clash-match-buzz-2026",
+    "reason": "その他",
+    "note": "二次情報の検索ページの反応のみ"
+   }
+  ],
+  "cross_brand": []
+ }
+}

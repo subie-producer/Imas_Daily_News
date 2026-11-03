@@ -1,0 +1,205 @@
+{
+ "recheck": [
+  {
+   "at": "2026-11-04T02:25:58+09:00",
+   "cap": 60,
+   "parallel": 4,
+   "runs_per_day": 5,
+   "cycle_days": 0.63,
+   "oldest_age_h": 18.8,
+   "targets": 188,
+   "chosen": 60,
+   "tried": 60,
+   "checked": 60,
+   "changed": 42,
+   "elapsed_s": 117,
+   "cycle_days_actual": 0.63
+  }
+ ],
+ "collect": [
+  {
+   "at": "2026-11-04T02:44:15+09:00",
+   "edition": "2026-11-04",
+   "started_at": "2026-11-04T02:00:45+09:00",
+   "trigger": "timer",
+   "watch": {
+    "stats": {
+     "imas-portal": {
+      "found": 12,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-sidem": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-shiny": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-million": {
+      "found": 8,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "lantis-shiny": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "lantis-sidem": {
+      "found": 4,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "columbia-imas": {
+      "found": 352,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "bnam-tours": {
+      "found": 69,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "imasnews765": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     }
+    },
+    "new": 0,
+    "facted": 0,
+    "deferred": 0,
+    "blocked": 0,
+    "unavailable": 0
+   },
+   "per_query": {
+    "explore:765as": 0,
+    "explore:cinderella": 2,
+    "explore:million": 0,
+    "explore:shiny": 1,
+    "explore:sidem": 0,
+    "explore:gakuen": 1,
+    "explore:dsva": 1,
+    "explore:joint-other": 0,
+    "explore:trend": 0,
+    "grok_week_searches": 789,
+    "grok:765as": 1,
+    "grok:cinderella": 3,
+    "grok:million": 4,
+    "grok:shiny": 11,
+    "grok:sidem": 1,
+    "grok:gakuen": 4,
+    "grok:dsva": 10,
+    "grok:joint-other": 5,
+    "grok:trend": 9,
+    "grok_searches:joint": 12,
+    "grok_searches:765": 10,
+    "grok_searches:million": 5,
+    "grok_searches:gaku": 11,
+    "grok_searches:shiny": 6,
+    "grok_searches:general": 9,
+    "grok_searches:dsva": 7,
+    "grok_searches:cg": 5,
+    "grok_searches:sidem": 8
+   },
+   "normalized": 54,
+   "added": 43,
+   "verify": {
+    "confirmed": 42,
+    "unconfirmed": 10,
+    "failed": 1
+   },
+   "duration_s": 2609
+  }
+ ],
+ "compose": [
+  {
+   "at": "2026-11-04T03:37:12+09:00",
+   "edition": "2026-11-04",
+   "rounds": 3,
+   "approved": true,
+   "lint_green": true,
+   "planned": 41,
+   "written": 34,
+   "roundups": 1,
+   "dropped": 0,
+   "coverage": {
+    "subjects": 452,
+    "covered": 452,
+    "missing": 0,
+    "missing_keys": []
+   },
+   "dropped_by_review": [],
+   "stages_min": {
+    "選定": 4.028606692949931,
+    "選定の拾い直し": 1.6739566167195639,
+    "執筆": 6.535037807623545,
+    "出典の判定": 1.0371659715970358,
+    "組版": 1.2111024419466654,
+    "校閲": 0.9258268753687541,
+    "校閲1波": 0.9258268753687541
+   },
+   "target_min": 60,
+   "over_target": false,
+   "aborted": [
+    "gaku-gakumas-amayo-kisama-kentei-2026",
+    "sidem-legenders-refrain-atrium-ensemble-2026",
+    "sidem-monthly-theme-song-12-cafe-parade",
+    "sidem-teddys-collection-ii-goods",
+    "sidem-beam-subscription-2026",
+    "million-ova-onkyo-audio-goods-2026",
+    "gaku-letora-birthday-live-2026-lv-advance"
+   ],
+   "duration_s": 2186
+  },
+  {
+   "at": "2026-11-04T04:28:55+09:00",
+   "edition": "2026-11-04",
+   "rounds": 3,
+   "approved": true,
+   "lint_green": true,
+   "planned": 41,
+   "written": 34,
+   "roundups": 1,
+   "dropped": 0,
+   "coverage": {
+    "subjects": 453,
+    "covered": 453,
+    "missing": 0,
+    "missing_keys": []
+   },
+   "dropped_by_review": [],
+   "stages_min": {
+    "執筆": 0.9347299019495646,
+    "出典の判定": 0.17601782083511353,
+    "組版": 1.0142234484354655,
+    "校閲": 1.1270148277282714,
+    "校閲1波": 1.1270148277282714
+   },
+   "target_min": 60,
+   "over_target": false,
+   "aborted": [
+    "gaku-gakumas-amayo-kisama-kentei-2026",
+    "sidem-legenders-refrain-atrium-ensemble-2026",
+    "sidem-monthly-theme-song-12-cafe-parade",
+    "sidem-beam-subscription-2026",
+    "million-ova-onkyo-audio-goods-2026",
+    "sidem-teddys-collection-ii-goods"
+   ],
+   "duration_s": 580
+  }
+ ]
+}

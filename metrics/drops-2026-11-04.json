@@ -49,5 +49,27 @@
   "candidate_ids": [
    "202610300224-grok-26"
   ]
+ },
+ "million-ova-onkyo-audio-goods-2026": {
+  "title": "ミリオンOVAイヤホン、受注は11月13日まで",
+  "stage": "書き直しで見送り",
+  "why": "NOT_NEWS I1・I2の指摘を受け、記事を見送り。受注期間、実機展示、商品情報は既報の内容で、2026年11月4日時点の新しい発表・発生事実は素材から確認できない。締切も発行日から3日以内ではない。",
+  "candidate_ids": [
+   "202610310225-grok-37"
+  ]
+ },
+ "gaku-letora-birthday-live-2026-lv-advance": {
+  "title": "レトラ誕生日ライブLV、一般先着は本日正午開始",
+  "stage": "書き直しで見送り",
+  "why": "OTHER 同じ公式告知に基づくレトラ誕生日ライブLV一般先着の記事は、ブランドが合致する dsva-letora-birthday-lv-general-2026 を残す指摘に従い、本記事を紙面から除外します。digest の参照先は残る記事の slug に更新してください。",
+  "candidate_ids": [
+   "202610300224-grok-63"
+  ],
+  "settled": {
+   "rule": "P1",
+   "dup_of": [
+    "dsva-letora-birthday-lv-general-2026"
+   ]
+  }
  }
 }

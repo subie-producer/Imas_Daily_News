@@ -18665,7 +18665,8 @@ def test_http429_retry(tmp: Path):
                 return subprocess.CompletedProcess(argv, 75, "", "RENDER_FAILED: HTTP 429 url=- retry-after=1\n")
             return subprocess.CompletedProcess(argv, 0, "<html>" + "描画した本文。" * 100 + "</html>", "")
         pipelib.run_group = render_429_then_ok
-        collect.DEADLINE = _time.time() - 1
+        # 締切の直前に始めた裏取り(締切を過ぎてからは新しく始めない: test_collect_stage_order)。描画は切らず、429 の待ちは締切で切る
+        collect.DEADLINE = _time.time() + 0.2
         t0 = _time.time()
         cands = [cand_row("vr1", "http://verify-render.example/frame-1", via="watch")]
         try:

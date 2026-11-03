@@ -21446,6 +21446,7 @@ def test_collect_stage_order(tmp: Path):
     log: list = []
     seen: dict = {}
     commits = {"fail_at": None, "n": 0}
+    saved_p = (list(pipelib.ANOMALIES), pipelib._ESCALATED)     # 確定の失敗の通知(異常の台帳)を後のテストへ漏らさない
     upd = lambda i: {"id": f"update-{i}", "url": f"https://audit.example/upd-{i}", "title": f"出典の更新 {i}"}
 
     def stage(name, ret):
@@ -21537,6 +21538,8 @@ def test_collect_stage_order(tmp: Path):
         pipelib.set_quiet(False)
         for k, v in saved.items():
             setattr(collect, k, v)
+        pipelib.ANOMALIES[:] = saved_p[0]
+        pipelib._ESCALATED = saved_p[1]
         if saved_env is None:
             os.environ.pop("IMAS_PAGE_ARCHIVE", None)
         else:

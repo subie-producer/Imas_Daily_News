@@ -754,47 +754,5 @@
   "src_candidate_id": "update-d1c063591fad",
   "companion_of": "sched-2026-11-28-cinderella-athome-xr-live-apple-of-my-ai-結果",
   "src_dedup_key": "cg-xr-live-apple-of-my-ai-2027"
- },
- {
-  "id": "sched-2026-11-28-shiny-song-season-37-pass-締切",
-  "dedup_key": "shiny-song-season-37-pass",
-  "brand": "shiny",
-  "subject": "シャニソン シーズン37「カスタプーラの風」シーズンパス",
-  "kind": "締切",
-  "note": "23時59分が販売最終日時。この日までにシーズンパスを購入できる",
-  "reserved_on": "2026-11-04",
-  "occurs_on": "2026-11-28",
-  "title": "シャニソン シーズン37「カスタプーラの風」シーズンパス",
-  "url": "https://x.com/imassc_prism/status/2116368814262870372",
-  "source_type": "公式",
-  "facts": [
-   "シーズン37「カスタプーラの風」のシーズンパスを販売。",
-   "ASOBI STOREで購入するとプリズムジュエル×250と虹の結晶×15がおまけ。",
-   "エンゲージメント: 中"
-  ],
-  "via": "grok",
-  "verify": "confirmed",
-  "src_candidate_id": "202611010230-grok-55"
- },
- {
-  "id": "sched-2026-11-28-shiny-song-season-37-pass-締切-src1",
-  "dedup_key": "shiny-song-season-37-pass",
-  "brand": "shiny",
-  "subject": "シャニソン シーズン37「カスタプーラの風」シーズンパス",
-  "kind": "締切",
-  "note": "23時59分が販売最終日時。この日までにシーズンパスを購入できる",
-  "reserved_on": "2026-11-04",
-  "occurs_on": "2026-11-28",
-  "title": "ASOBI STORE「アイドルマスター シャイニーカラーズ Song for Prism ｜ WEB STORE」",
-  "url": "https://webstore.asobistore.jp/shinycolors-song-for-prism",
-  "source_type": "公式",
-  "facts": [
-   "ASOBI STOREのWEB STOREで販売する「シーズンパス：シーズン37『カスタプーラの風』」は1,960円。商品説明は「シーズン37『カスタプーラの風』のプレミアム報酬解放+シーズンメダル75個」、おまけは無償プリズムジュエル250個と虹の結晶15個。販売期限は2026年11月28日23時59分59秒（UTC+09:00）。ゲーム内で購入済みの場合は重複購入できず、返品・交換不可。DMM GAMES版を含む全プラットフォームで効果を発揮する。"
-  ],
-  "via": "verified_fact",
-  "verify": "unconfirmed",
-  "src_candidate_id": "202611010230-grok-55",
-  "companion_of": "sched-2026-11-28-shiny-song-season-37-pass-締切",
-  "src_dedup_key": "shiny-song-season-37-pass"
  }
 ]

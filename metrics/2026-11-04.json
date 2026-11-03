@@ -124,5 +124,46 @@
    },
    "duration_s": 2609
   }
+ ],
+ "compose": [
+  {
+   "at": "2026-11-04T03:37:12+09:00",
+   "edition": "2026-11-04",
+   "rounds": 3,
+   "approved": true,
+   "lint_green": true,
+   "planned": 41,
+   "written": 34,
+   "roundups": 1,
+   "dropped": 0,
+   "coverage": {
+    "subjects": 452,
+    "covered": 452,
+    "missing": 0,
+    "missing_keys": []
+   },
+   "dropped_by_review": [],
+   "stages_min": {
+    "選定": 4.028606692949931,
+    "選定の拾い直し": 1.6739566167195639,
+    "執筆": 6.535037807623545,
+    "出典の判定": 1.0371659715970358,
+    "組版": 1.2111024419466654,
+    "校閲": 0.9258268753687541,
+    "校閲1波": 0.9258268753687541
+   },
+   "target_min": 60,
+   "over_target": false,
+   "aborted": [
+    "gaku-gakumas-amayo-kisama-kentei-2026",
+    "sidem-legenders-refrain-atrium-ensemble-2026",
+    "sidem-monthly-theme-song-12-cafe-parade",
+    "sidem-teddys-collection-ii-goods",
+    "sidem-beam-subscription-2026",
+    "million-ova-onkyo-audio-goods-2026",
+    "gaku-letora-birthday-live-2026-lv-advance"
+   ],
+   "duration_s": 2186
+  }
  ]
 }

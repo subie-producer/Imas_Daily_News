@@ -402,3 +402,8 @@
   subject: ツアマス ALL.Net緊急メンテナンスの終了
   watch: メンテナンス終了時刻・オンラインモードとマイページの再開(公式が「あらためて知らせる」とした各コンテンツの再開状況)
   added_on: '2026-11-03'
+- dedup_key: tours-allnet-service-suspension-2026
+  brand: joint
+  subject: ツアマス ALL.Net停止によるプレイ不可の再開
+  watch: プレイ再開時期と、連続ログイン日数・期間限定コミュ・ログボへの対応の発表
+  added_on: '2026-11-04'

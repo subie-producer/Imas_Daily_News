@@ -6305,8 +6305,10 @@ def test_collect_oncall_rerun_exit(tmp: Path):
         sys.argv = list(argv)
         check(collect.main() == 1, "拾い直しで読めないバッチが残ったのに成功(0)で終えた")
         # 実行記録に開始と起動のされ方を載せる。取り直しは定時の回の代わりにならない(組版の collect_slot_gaps が見分ける)
-        check(len(metrics) == 1 and metrics[0][1].get("trigger") == "oncall" and isinstance(metrics[0][1].get("started_at"), str)
-              and metrics[0][1].get("edition") == "2026-09-13", f"実行記録に開始・起動のされ方(当番の取り直し)が無い: {metrics}")
+        # (必須段の所要の記録 collect_required は別の種類。実行記録は collect の1件)
+        runs = [m for m in metrics if m[0] == "collect"]
+        check(len(runs) == 1 and runs[0][1].get("trigger") == "oncall" and isinstance(runs[0][1].get("started_at"), str)
+              and runs[0][1].get("edition") == "2026-09-13", f"実行記録に開始・起動のされ方(当番の取り直し)が無い: {metrics}")
         saved_inv = os.environ.get("INVOCATION_ID")
         try:
             os.environ["INVOCATION_ID"] = "test"

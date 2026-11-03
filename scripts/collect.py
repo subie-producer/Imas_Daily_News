@@ -312,7 +312,8 @@ def fetch_rendered(url: str, timeout: int = 30, limit: float | None = None, wait
 def watch_limit(cap: float) -> float | None:
     """定点観測の取得(一覧・本文・描画)に待ってよい秒数。収集の締切が無ければ None(各取得の既定の上限だけ)。
     締切を過ぎたあとに描画を始めて、組版へ引き渡す時刻を越えない(監査指摘 2026-10-14: 締切後に新着48件の描画を起動した)。
-    裏取り(verify)は締切で切らない(描画できずに写しを照合できないと、正しい候補を取り違えとして使えなくする)"""
+    裏取り(verify)の取得・描画は途中で切らない(描画できずに写しを照合できないと、正しい候補を取り違えとして使えなくする)。
+    締切を過ぎたら新しい候補の読み直しを始めないだけ(verify)"""
     return session_left(cap) if DEADLINE else None
 
 
@@ -2328,6 +2329,13 @@ def verify(cands: list[dict]) -> dict:
                 continue
             if is_x(c["url"]):
                 c["verify"] = "confirmed" if (c["via"] == "grok" and c["source_type"] == "公式") else "unconfirmed"
+            elif deadline_passed():
+                # 前段の締切(収集の締切から必須段の見込みを引いた時刻: stage_deadline)を過ぎたら、新しく読み直さない(必須段の時間を
+                # 食わない。2026-11-04 Sol 監査 r2)。始めた読み直しは途中で切らない(取得 15秒・描画の上限で終わり、予約に収まる。途中で切ると
+                # 写しを照合できず、正しい候補を取り違えとして落とす)。時間切れだけでは failed にせず、収集時点の原本があれば照らす
+                if not archived_check(c, "収集の締切で裏取りを打ち切った", base=priors.get(c["url"]) or {}):
+                    c["verify"] = "unconfirmed"
+                    c["verify_note"] = "収集の締切で裏取りを打ち切り、出典を読み直していない(facts を本文で確かめていない)"
             else:
                 # 素の取得に 429 を返すサイト(browser_only)は urllib で叩かず、描画した本文で照合する(2026-10-26 編集長
                 # 「429を出すようなアクセスはするな。Chromeを使え。」)。描画できなければ、今は確かめられないだけ(メンテナンスと同じ扱い)

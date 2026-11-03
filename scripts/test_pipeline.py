@@ -21526,7 +21526,26 @@ def test_collect_stage_order(tmp: Path):
         sw.save_state({"marks": {}, "tries": {}, "pending": {"update-p4": upd("p4")}})
         code, out = run((2, 0), fail_at=1)
         check(code == 1 and [c["id"] for c in sw.pending_candidates()] == ["update-p4"], "確定できなかった回に控えの素材を外した")
-        # 2. 判定表の合議は、失敗したあとの付け直し・lint の分(RETAG_RESERVE_SEC)を残して切る
+        # 2. 裏取りは前段の締切を過ぎたら新しく読み直さない(Sol 監査 r2)。時間切れだけで failed にせず、収集時点の原本があれば照らす
+        import page_archive as pa
+        quote = "新しいアクリルスタンドを11月3日から受注販売します。価格は3000円です。"
+        pa.save("https://audit.example/kept", "公式の本文。" + quote, via="read", at="2026-11-04T01:00:00+09:00")
+        cand = lambda u: {"url": u, "title": "告知", "via": "explore", "source_type": "公式", "brand": "cg",
+                          "facts": ["価格は3000円"], "quotes": [quote]}
+        cs = [cand("https://audit.example/kept"), cand("https://audit.example/none")]
+        opened: list = []
+        saved_v = (collect.polite_urlopen, collect.rendered_or_note)
+        try:
+            collect.polite_urlopen = lambda req, **k: opened.append(getattr(req, "full_url", req)) or (_ for _ in ()).throw(OSError("通信しない"))
+            collect.rendered_or_note = lambda u, **k: opened.append(u) or ("", "通信しない")
+            collect.DEADLINE = time.time() - 1
+            counts = saved["verify"](cs)
+        finally:
+            collect.polite_urlopen, collect.rendered_or_note = saved_v
+        check(not opened and counts == {"confirmed": 0, "unconfirmed": 2, "failed": 0}
+              and cs[0].get("archived_at", "").startswith("2026-11-04T01:00") and "締切" in cs[1].get("verify_note", ""),
+              f"前段の締切のあとに裏取りを始めた・時間切れで落とした: {opened} {counts} {[(c['verify'], c.get('verify_note')) for c in cs]}")
+        # 3. 判定表の合議は、失敗したあとの付け直し・lint の分(RETAG_RESERVE_SEC)を残して切る
         got: list = []
         collect.classify_then_retag = saved["classify_then_retag"]
         collect.classify_retag_lint = lambda date, timeout, judge=True, deadline=None: (got.append((judge, timeout, deadline)),

@@ -21413,6 +21413,134 @@ def test_units_bound_memory_and_report_failure(tmp: Path):
     check(handed == ["watch"], f"当番に渡したことを走行の記録に残さない(通知の unit が当番を重ねる): {handed}")
 
 
+def test_collect_stage_order(tmp: Path):
+    """収集の段の順と時間の予約(編集長 2026-11-04「そもそも時間制限のかけ方が悪いんじゃねーの？」。02:00 の回で発行済み記事の出典の
+    見回りが17分を使い、判定表の更新が締切の残り142秒で時間切れになった。10/29〜11/04 の6回):
+    1. 号に要る段(素材の集め・裏取り・保存・判定表の更新〜付け直し〜lint・commit)が先、出典の見回りは commit のあとの最後
+    2. 前段は、締切から必須段の見込み(REQUIRED_RESERVE_SEC)を引いた締切で切る。必須段・見回りは締切そのもの(延ばさない)まで
+    3. 組版直前の回(02:00)は見回らない。一巡の日数は残りの回で数える(watch_runs_per_day)
+    4. 見回りの「出典の更新」の素材は、確定(commit)できるまで控え(pending)に残り、次の回に1度だけ保存される"""
+    import contextlib
+    import datetime as _dt
+    import io
+    import time
+    import types
+    import collect
+    import source_watch as sw
+    tmp.mkdir(parents=True, exist_ok=True)
+    # 3. 定時の時刻(本物の timer の定義): 次の定時工程が組版なのは 02:00 の収集だけ。見回る回は1日4回で、一巡は2日に収まる
+    at = lambda h, m: _dt.datetime(2026, 11, 4, h, m, 30, tzinfo=pipelib.JST)
+    before = {hm: pipelib.next_slot_is("compose", at(*hm)) for hm in pipelib.timer_times("collect")}
+    check(before == {(2, 0): True, (7, 30): False, (12, 30): False, (18, 30): False, (23, 30): False},
+          f"組版直前の収集の見分けが違う: {before}")
+    check(sw.watch_runs_per_day(pipelib.ROOT) == 4, f"見回る回の数が違う: {sw.watch_runs_per_day(pipelib.ROOT)}")
+    plan = sw.recheck_plan([{"urls": []}], at(7, 30), sw.watch_runs_per_day(pipelib.ROOT))
+    check(plan["runs_per_day"] == 4, f"見回りの計画が組版直前の回も数えた: {plan['runs_per_day']}")
+    saved_env = os.environ.get("IMAS_PAGE_ARCHIVE")
+    os.environ["IMAS_PAGE_ARCHIVE"] = str(tmp / "pages")
+    names = ("DEADLINE", "DEADLINE_HARD", "run_watch", "run_explores", "normalize", "ingest_spools", "verify", "merge_into_day_file",
+             "append_metric", "needs_classify", "classify_then_retag", "commit_collect", "watch_sources", "now_jst", "classify_retag_lint")
+    saved = {k: getattr(collect, k) for k in names}
+    log: list = []
+    seen: dict = {}
+    commits = {"fail_at": None, "n": 0}
+    upd = lambda i: {"id": f"update-{i}", "url": f"https://audit.example/upd-{i}", "title": f"出典の更新 {i}"}
+
+    def stage(name, ret):
+        def f(*a, **k):
+            log.append(name)
+            seen[name] = collect.DEADLINE
+            return ret(*a) if callable(ret) else ret
+        return f
+
+    def merge(cs, day):
+        log.append(("merge", sorted(c["id"] for c in cs if c.get("id", "").startswith("update-"))))
+        return len(cs)
+
+    def commit(branch, msg):
+        commits["n"] += 1
+        log.append("commit")
+        return commits["n"] != commits["fail_at"]
+
+    def watch(late=lambda: False):
+        """見回りの偽物: process_changes と同じく、通った変化を控え(pending)に入れてから、控えの全部を返す"""
+        log.append("watch_sources")
+        seen["watch_sources"] = collect.DEADLINE
+        st = sw.load_state()
+        for c in seen.pop("new_updates", []):
+            st["pending"][c["id"]] = c
+        sw.save_state(st)
+        return sw.pending_candidates()
+
+    def run(hm, fail_at=None, new=()):
+        log.clear()
+        seen.clear()
+        seen["new_updates"] = list(new)
+        commits.update(fail_at=fail_at, n=0)
+        collect.now_jst = lambda: at(*hm)
+        collect.DEADLINE = collect.DEADLINE_HARD = time.time() + 3600
+        args = types.SimpleNamespace(skip_watch=False, skip_explore=False, skip_grok=True, force_grok=False, no_git=False, oncall_rerun=False)
+        out = io.StringIO()
+        with contextlib.redirect_stdout(out):
+            code = collect.run_collect(args, "2026-11-05", "edition/2026-11-05", time.time())
+        return code, out.getvalue()
+    try:
+        collect.run_watch = stage("run_watch", ([], {"stats": {}}))
+        collect.run_explores = stage("run_explores", ([{"url": "https://audit.example/new", "title": "新着"}], {}))
+        collect.normalize = lambda x: list(x)
+        collect.ingest_spools = lambda cs: 0
+        collect.verify = stage("verify", {"confirmed": 1, "unconfirmed": 0, "failed": 0})
+        collect.merge_into_day_file = merge
+        collect.append_metric = lambda kind, data: log.append(("metric", kind))
+        collect.needs_classify = lambda cs: True
+        collect.classify_then_retag = stage("classify", (True, ""))
+        collect.commit_collect = commit
+        collect.watch_sources = watch
+        pipelib.set_quiet(True)
+        sw.save_state({"marks": {}, "tries": {}, "pending": {"update-p1": upd("p1")}})    # 前の回が確定の前に止まった素材
+        # 1・2. 07:30 の回: 号に要る段を先に確定し、見回りは最後。前段は予約を残した締切、必須段・見回りは締切そのもの
+        code, out = run((7, 30), new=[upd("p2")])
+        hard = collect.DEADLINE_HARD
+        order = [x if isinstance(x, str) else x[0] if x[0] == "merge" else f"metric:{x[1]}" for x in log]
+        want = ["run_watch", "run_explores", "verify", "merge", "metric:collect", "classify", "metric:collect_required", "commit",
+                "watch_sources", "merge", "commit"]
+        check(code == 0 and order == want, f"収集の段の順が違う(見回りは号に要る段の確定のあと): {code} {order}")
+        check(all(abs(seen[k] - (hard - collect.REQUIRED_RESERVE_SEC)) < 1 for k in ("run_watch", "run_explores", "verify")),
+              f"前段が必須段の見込みを残した締切で切られていない: {[(k, seen[k] and int(hard - seen[k])) for k in ('run_watch', 'run_explores', 'verify')]}")
+        check(seen["classify"] == hard and seen["watch_sources"] == hard, "必須段・見回りに収集の締切そのものを渡さない")
+        merges = [x[1] for x in log if isinstance(x, tuple) and x[0] == "merge"]
+        check(merges == [["update-p1"], ["update-p2"]] and sw.pending_candidates() == [],
+              f"出典の更新の素材を失った・二重に保存した: {merges} 控え {[c['id'] for c in sw.pending_candidates()]}")
+        # 4. 見回りのあとの確定に失敗: 素材は控えに残り(非0で終える)、次の回(02:00。見回らない)の必須段が1度だけ保存して外す
+        code, out = run((7, 30), fail_at=2, new=[upd("p3")])
+        check(code == 1 and [c["id"] for c in sw.pending_candidates()] == ["update-p3"],
+              f"確定できなかった見回りの素材を控えから外した: {code} {[c['id'] for c in sw.pending_candidates()]}")
+        code, out = run((2, 0))
+        merges = [x[1] for x in log if isinstance(x, tuple) and x[0] == "merge"]
+        check(code == 0 and "watch_sources" not in log and merges == [["update-p3"]] and sw.pending_candidates() == []
+              and "組版の直前の回" in out, f"02:00 の回が見回った・控えの素材を保存しない: {code} {log} {out[-300:]!r}")
+        # 号の素材の確定に失敗したら、控えは外さない
+        sw.save_state({"marks": {}, "tries": {}, "pending": {"update-p4": upd("p4")}})
+        code, out = run((2, 0), fail_at=1)
+        check(code == 1 and [c["id"] for c in sw.pending_candidates()] == ["update-p4"], "確定できなかった回に控えの素材を外した")
+        # 2. 判定表の合議は、失敗したあとの付け直し・lint の分(RETAG_RESERVE_SEC)を残して切る
+        got: list = []
+        collect.classify_then_retag = saved["classify_then_retag"]
+        collect.classify_retag_lint = lambda date, timeout, judge=True: (got.append((judge, timeout)), (False, "合議の時間切れ"))[1]
+        collect.DEADLINE = time.time() + 300
+        collect.classify_then_retag("2026-11-05")
+        check(len(got) == 2 and abs(got[0][1] - (300 - collect.RETAG_RESERVE_SEC)) <= 2 and got[1][0] is False
+              and got[1][1] >= collect.RETAG_RESERVE_SEC - 2, f"合議が付け直し・lint の時間を残さない: {got}")
+    finally:
+        pipelib.set_quiet(False)
+        for k, v in saved.items():
+            setattr(collect, k, v)
+        if saved_env is None:
+            os.environ.pop("IMAS_PAGE_ARCHIVE", None)
+        else:
+            os.environ["IMAS_PAGE_ARCHIVE"] = saved_env
+
+
 def main() -> int:
     tmp = Path(tempfile.mkdtemp(prefix="imas-test-"))
     test_assemble_run_returns_reservations(tmp / "arrr")
@@ -21448,6 +21576,7 @@ def main() -> int:
     test_oncall_judged_not_rejudged(tmp / "ojn")
     test_http503_not_whywhy(tmp / "h503")
     test_http503_collect_run(tmp / "h503c")
+    test_collect_stage_order(tmp / "cso")
     test_http429_retry(tmp / "h429")
     test_oncall_recover_keeps_handed_exit(tmp / "orh")
     test_cli_block_detect_and_post(tmp / "cbd")

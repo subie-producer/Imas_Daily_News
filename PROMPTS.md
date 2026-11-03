@@ -30,7 +30,7 @@
 | assemble-ledger.returned | 検算で採らなかった続報予約を、その記事だけ理由を添えて答え直させる追記(`assemble.return_reservations`。1回) | Claude sonnet | assemble-ledger と同じ |
 | collect-rules / collect-item | 収集の共通部品(何を書いてよいか / 候補1件の形) | — | — |
 | grok-collect | X の検索だけ・面ごと(`collect.write_grok_prompt`) | Grok | 見つけた投稿の全文(ファイル) |
-| grok-verify | 投稿を読みリンク先を開いて確かめ、候補と「X の原本でしか分からない問い」にする(`collect.verify_grok_faces`) | Codex luna | items.json / posts.json(投稿ごとの結果)/ deep.json |
+| grok-verify | 投稿を読みリンク先を開いて確かめ、候補と「X の原本でしか分からない問い」にする(`collect.verify_grok_faces`) | Codex luna | 最後の答え1つ `{items, posts(投稿ごとの結果), deep}`(`schema/grok-verify.schema.json`) |
 | grok-deep | X の原本の深掘り。予算の範囲の問いだけ(`collect.deep_dive_grok`) | Grok | 見つけた原本の投稿(ファイル) |
 | explore | Web の探索・面ごと(`collect.run_explores`) | Codex luna | 候補 JSON |
 | watch-facts | 定点観測の新着の facts 化(`collect.run_watch`) | Claude haiku | 新着ページごとの結果(extracted / none / unreadable)と候補 JSON |
@@ -295,6 +295,9 @@
 - grok-verify は投稿の日付を日本時間の行で読む(2026-10-21): Grok は `投稿日時` を GMT で書く(Tue, 20 Oct 2026 15:00:03 GMT)。10/21 0:00 JST の
   ミリシタ公式「本日は二階堂千鶴さんの誕生日です」を、確かめ役が「2026年10月20日は誕生日」の事実・event_date 10/20・掲載日 10/20 にし、紙面に
   「10月20日の千鶴の誕生日」が出た。コードが投稿 ID から復元した日本時間の行を足し(collect.with_jst_post_time)、依頼文はその行で日付を決めさせる
+- grok-verify の答えを最後の答え1つにする(2026-11-04): 候補・投稿の結果・原本の問いを3つのファイルに書かせていたら、sidem 面の確かめ直しで
+  確かめ役が同じ中身を `{"items": [], "posts": [...], "deep": []}` として最後の答えに出し、ファイルを書かずに終えた。コードは読めず、
+  原本の問いの喪失と投稿1件の喪失を人に通知した。受け口を最後の答え(`--output-last-message`)1つにして `--output-schema` で縛る
 - Grok の書き出しの形を固定する(2026-10-06): 依頼文の見本と、投稿への付け直し・投稿ごとの突き合わせのコードが読む形(`- url:` で始まる塊)を揃える
 - grok-collect の公式アカウントは上限まで返ったら遡る(2026-10-10): `x_keyword_search` は1回に10件までしか返さない(limit に大きい値を
   渡しても10件。実測)。「1回だけ」と縛っていたので、忙しい日は古い投稿を落とした(学マス公式の 10/8 19:00〜10/9 11:30 のうち3件は

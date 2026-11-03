@@ -129,8 +129,13 @@ GROK_EFFORT = ENV.get("GROK_EFFORT", "medium")
 # 使い方そのものが原因だったとみている(いずれも実測に基づく)。
 STATE_PATH = ROOT / "stock" / "watch-state.json"
 UA = "Mozilla/5.0 (compatible; ImasNewsCollect/1.0)"
-# 収集のモデル・道具のセッションを打ち切る絶対時刻(epoch 秒。collect_deadline で main が起動時に決める)。None なら締切なし
+# 収集のモデル・道具のセッションを打ち切る絶対時刻(epoch 秒。main が起動時に、収集の終わり CLOSE から判定の取り置きを引いて決める)。None なら締切なし
 DEADLINE: float | None = None
+# 収集の終わり(collect_deadline)。締切 DEADLINE から終わりまでは、未知の出典の判定の取引(合議 → 付け直し → lint)の取り置き。
+# 締切と終わりが同じだったころ、02:00 の収集は出典の見回りの判定・校閲が締切まで使い、合議に 44 秒しか残らず時間切れで戻した
+# (2026-11-04。02:00 の回は毎晩 02:45:05 に同じ形で終わっていた)。合議の実測は付け直し・lint を含めて 10 秒〜2 分
+CLOSE: float | None = None
+CLASSIFY_RESERVE_SEC = 300
 # 定点観測の facts 化を、収集の締切で始めなかった・打ち切った(claude_exec の戻り。読めなかった None とは別で、回数に数えない)
 DEADLINE_CUT = object()
 
@@ -168,6 +173,17 @@ def deadline_passed() -> bool:
 def session_left(cap: float) -> float:
     """セッションに待たせてよい秒数。収集の締切を越えない(過ぎていれば 0 = 待たずに止める)。"""
     return cap if not DEADLINE else max(0.0, min(cap, DEADLINE - time.time()))
+
+
+def close_left(cap: float) -> float:
+    """収集の終わり(CLOSE)までの秒数を cap で切ったもの。判定の取引が使う(収集の締切 DEADLINE のあとの取り置き)。"""
+    return cap if not CLOSE else max(0.0, min(cap, CLOSE - time.time()))
+
+
+def collect_window(oncall_rerun: bool) -> tuple[float | None, float | None]:
+    """(収集の締切 DEADLINE, 収集の終わり CLOSE)。締切は終わりから判定の取り置き(CLASSIFY_RESERVE_SEC)を引いたもの。"""
+    close = collect_deadline(oncall_rerun)
+    return (close - CLASSIFY_RESERVE_SEC if close else None), close
 X_HOSTS = ("x.com", "twitter.com")
 
 # 候補1件のスキーマと編集規程。標準出力に吐かせる場合(Claude)とファイルに書かせる場合
@@ -1072,7 +1088,7 @@ def ingest_spools(cands: list[dict]) -> int:
     return n
 
 
-def explore_argv(short: str) -> list[str]:
+def explore_argv(short: str, answer: Path | None = None, schema: str = "") -> list[str]:
     """探索(Luna / codex)の起動引数。`short` は prompt_file が返す短い指示(素材はファイル側)。
 
     `-s read-only` では通信も遮断される(実測: 名前解決に失敗し fetch_page.py が
@@ -1080,11 +1096,13 @@ def explore_argv(short: str) -> list[str]:
     workspace-write 用の設定なので、通信を使う以上 workspace-write で走らせる。
     ただし cwd は `explore_workdir()` が作るリポジトリ外のディレクトリなので、
     書き込めるのはそこと一時ファイルの置き場(TMPDIR)に限られ、リポジトリには手が届かない。
+    answer を渡すと、最後の答えを schema(schema/ の名前)で縛って answer に書かせる(答えの受け口を1つにする)。
     """
+    out = (["--output-schema", str(ROOT / "schema" / schema), "--output-last-message", str(answer)] if answer else [])
     return ["codex", "exec", "-m", EXPLORE_MODEL, "-s", "workspace-write",
             # cwd が git リポジトリでないため、codex の作業前確認を外す
             "--skip-git-repo-check",
-            "-c", "sandbox_workspace_write.network_access=true", short]
+            "-c", "sandbox_workspace_write.network_access=true", *out, short]
 
 
 def claude_exec(prompt: str, timeout: int = 300, what: str = "定点観測の facts 化", kind: str = "watch"):
@@ -1225,13 +1243,17 @@ def wait_session(proc, deadline: float) -> bool:
     return not finish_group(proc, max(0, deadline - time.time()))[2]
 
 
-def read_json_list(p: Path) -> list | None:
-    """セッションが書いた JSON 配列を読む。無い・読めない・配列でない・同じキーが2回ある(後の値で黙って上書きされる)なら None。"""
+VERIFY_ANSWER = "answer.json"      # X の投稿の確かめ役の最後の答え(codex の --output-last-message。作業ディレクトリの中)
+
+
+def read_verify_answer(p: Path) -> dict:
+    """確かめ役の最後の答え {items, posts, deep} を読む。欄ごとに、配列ならその配列、無い・配列でないなら入れない
+    (呼び手は欄が無いことを「読めない」として扱う)。答えが無い・読めない・object でない・同じキーが2回あるなら {}。"""
     try:
         v = loads_strict(p.read_text(encoding="utf-8", errors="replace"))
     except (OSError, ValueError):
-        return None
-    return v if isinstance(v, list) else None
+        return {}
+    return {k: v[k] for k in ("items", "posts", "deep") if isinstance(v.get(k), list)} if isinstance(v, dict) else {}
 
 
 GOOD_SOURCE_TYPES = ("公式", "準公式", "当事者", "報道")
@@ -1328,11 +1350,11 @@ def verify_grok_faces(queries: list[dict], outdir: Path, suffix: str = "",
                       ledger: dict | None = None) -> tuple[list[dict], dict[str, list[dict]]]:
     """Grok が書き出した X の投稿(<key><suffix>.md)を、面ごとに Luna が読み、リンク先を開いて確かめて候補にする(並列)。
     戻りは (候補, 面 → X の原本でしか確かめられない問い)。「なし」だけの面・ファイルの無い面は飛ばす。
-    投稿ごとの結果(posts.json)と入力の投稿を突き合わせ、結果の無い投稿だけで1回やり直す(suffix に -again)。
+    投稿ごとの結果(答えの posts)と入力の投稿を突き合わせ、結果の無い投稿だけで1回やり直す(suffix に -again)。
     2回とも残った投稿と、済んだ投稿は ledger(lost_posts_ledger)に記録する。ledger を渡されなければこの段の結果を最終として
     喪失を通知し、渡されたら通知は呼び手が最後の段(深掘りの確かめ)のあとで report_lost_posts で1度だけ出す
     (深掘りの前に通知すると、深掘りで済んだ投稿を失ったと言い、深掘りでも読めない投稿は二度通知した。当番の指摘 11fc3de74b)。
-    深掘りの確かめ(suffix に -deep)の問い(deep.json)は使わないので、読まず、読めなくても通知しない。
+    深掘りの確かめ(suffix に -deep)の問い(答えの deep)は使わないので、読まず、読めなくても通知しない。
     Luna は探索と同じくリポジトリ外の作業ディレクトリで走る(ページの中身に指示が仕込まれていても、リポジトリに手が届かない)。"""
     own = ledger is None
     if own:
@@ -1357,14 +1379,17 @@ def verify_grok_faces(queries: list[dict], outdir: Path, suffix: str = "",
             wd = explore_workdir(f"verify-{q['key']}{suffix}")
             (wd / "x-posts.md").write_text(text + "\n", encoding="utf-8")
             if not deadline_passed():
-                prompt = render_prompt("grok-verify", INPUT=wd / "x-posts.md", OUT=wd / "items.json", DEEP=wd / "deep.json", POSTS=wd / "posts.json",
+                prompt = render_prompt("grok-verify", INPUT=wd / "x-posts.md",
                                        BRAND=q["brand"], TOPIC=q["topic"], TODAY=now_jst().strftime("%Y-%m-%d"),
                                        RULES=COLLECT_RULES, ITEM=COLLECT_ITEM)
                 short = prompt_file(edition_date(), f"grok-verify-{q['key']}{suffix}", prompt, base=wd)
                 # 進行ログ(標準出力・エラー)は作業ディレクトリのファイルで受け、生の出力に残す(ファイルを書かずに終わった回の原因を追うため)
                 with open(wd / "session.log", "w", encoding="utf-8") as lf:
                     if not deadline_passed():       # 準備のあいだに締切を過ぎることもあるので、起動の直前にも確かめる
-                        jobs.append((q, wd, text, start_group(explore_argv(short), cwd=wd, stdout=lf, stderr=subprocess.STDOUT)))
+                        # 答えは最後の答え1つ(schema で縛る)で受ける。ファイルに書かせていたころ、確かめ役が最後の答えに書いて
+                        # ファイルを書かずに終わり、候補・投稿の結果・原本の問いを全部失った(2026-11-04 02:20 の sidem 面 -again)
+                        jobs.append((q, wd, text, start_group(explore_argv(short, wd / VERIFY_ANSWER, "grok-verify.schema.json"),
+                                                             cwd=wd, stdout=lf, stderr=subprocess.STDOUT)))
                         continue
             jobs.append((q, wd, text, None))
         for q, wd, text, p in jobs:
@@ -1379,7 +1404,7 @@ def verify_grok_faces(queries: list[dict], outdir: Path, suffix: str = "",
         # 何より先に、Luna が書いたものを生の出力として残す(このあとの処理で止まっても原因を追えるように)
         save_raw(edition_date(), f"grok-verify-{q['key']}{suffix}", "", "収集の締切を過ぎたので起動しなかった" if late else "",
                  None if late else p.returncode,
-                 files={n: read_for_raw(wd / n) for n in ("x-posts.md", "items.json", "posts.json", "deep.json", "session.log")})
+                 files={n: read_for_raw(wd / n) for n in ("x-posts.md", VERIFY_ANSWER, "session.log")})
         # 認証切れ・利用上限で答えなかった面は、投稿の確かめの失敗(やり直し・喪失の異常)に数えない(投稿は済み。当番に回さない)
         if not late and cli_check("codex", "collect", f"{now_jst():%H:%M} の収集 X の投稿の確かめ {q['key']} 面{suffix}",
                                   p.returncode if in_time else None, read_for_raw(wd / "session.log") or ""):
@@ -1388,14 +1413,15 @@ def verify_grok_faces(queries: list[dict], outdir: Path, suffix: str = "",
             shutil.rmtree(wd, ignore_errors=True)
             continue
         # 時間切れ・異常終了のセッションが書いたファイルは答えにしない(全投稿を未処理としてやり直し・異常へ。監査指摘)
-        got = read_json_list(wd / "items.json") if in_time and p.returncode == 0 else None
+        ans = read_verify_answer(wd / VERIFY_ANSWER) if in_time and p.returncode == 0 else {}
+        got = ans.get("items")
         # 終わり方(通知・記録用)。異常終了を「締切内に終わった」と書くと、原因(落ちた)が見えない
         ended = ("収集の締切を過ぎて起動しなかった" if late else "時間切れ" if not in_time
                  else (f"異常終了(exit {p.returncode})" if p.returncode else "締切内に終わった"))
         # 投稿1件ずつの結果を、入力の投稿と突き合わせる。結果の無い・読めなかった投稿を黙って捨てない
         # (2026-10-06 の洗い出しで判明: 候補の配列だけを受けていたので、Luna が開けなかった・飛ばした投稿が記録なしに消えた。
         #  定点観測で新着を失ったのと同じ型)。候補そのものが読めなければ「候補にした」の申告も当てにならないので、全投稿が残り
-        left = (post_blocks(text) or [text]) if got is None else unaccounted_posts(text, read_json_list(wd / "posts.json"), got)
+        left = (post_blocks(text) or [text]) if got is None else unaccounted_posts(text, ans.get("posts"), got)
         # 候補にするのは、投稿を済みと数えるのと同じ判定(candidate_usable)を通ったものだけ。崩れた候補を欄を落として候補にしながら
         # 投稿は未処理と数えると、候補にした投稿を「失った」と通知する(2026-10-22 02:39 の gakuen 面)。崩れた候補の元の投稿は
         # 未処理として確かめ直し(-again)へ回り、どの投稿にも結び付かない崩れた候補は、確かめ直せないのでここで名指しする
@@ -1419,13 +1445,13 @@ def verify_grok_faces(queries: list[dict], outdir: Path, suffix: str = "",
                 (b, f"候補の形が崩れていた、{ended}" if post_key(post_url(b)) in tied else why) for b in left)
             # 崩れて候補にしなかった候補の中身は、ほかの段でこの投稿が済んでいても戻らない(その段の答えにしか無い)。済みで消さない
             ledger.setdefault("broken", set()).update(k for k in map(post_key, map(post_url, left)) if k in tied)
-        raw_asks = read_json_list(wd / "deep.json") if in_time and p.returncode == 0 else None
+        raw_asks = ans.get("deep")
         # 候補の一覧も読めなかった回は、全投稿を -again でもう1回確かめるので、問いもそこで出し直される(失っていない)。
         # 以前はここでも「深掘りの機会を失う」と通知していた(2026-10-21 02:19 の sidem 面: /tmp が満杯で Luna が exit 101 で
         # 落ちたが、-again が問いを書き、深掘りも回っていた)
         if raw_asks is None and wants_deep and not (got is None and not final):
             # 「問いなし([])」と「書けなかった」を分ける。原本の確かめを黙って失わない(監査指摘 r116)
-            notify("collect", f"Grok の {q['key']} 面: X の原本でしか確かめられない問い(deep.json)が読めない"
+            notify("collect", f"Grok の {q['key']} 面: X の原本でしか確かめられない問い(答えの deep)が読めない"
                               f"({ended})。深掘りの機会を失う", ok=False)
         asks = [a for a in (raw_asks or []) if schema_ok(a, DEEP_ASK_SCHEMA) and a["question"].strip()]
         if wants_deep and raw_asks is not None and len(asks) < len(raw_asks):
@@ -1623,7 +1649,7 @@ def dedupe_posts(text: str) -> str:
 
 def unaccounted_posts(text: str, results, written: list) -> list[str]:
     """投稿の塊のうち、Luna の結果が済んでいないもの(読めなかった・結果に無い・形が崩れた)。
-    済んだとみなすのは none と、**実際に書かれた候補**(written = items.json の中身)を指す extracted だけ(「候補にした」と
+    済んだとみなすのは none と、**実際に書かれた候補**(written = 答えの items)を指す extracted だけ(「候補にした」と
     言って候補を書いていない投稿を済みにしない。監査指摘)。結果の一覧そのものが読めなければ、全部の投稿が未処理。
     書き出しが投稿に分けられない(形が崩れた)なら、書き出し全体を1つの未処理にする(黙って0件にしない。監査指摘)。"""
     # 後段(normalize)で捨てられる形・事実の無い候補は「書かれた候補」に数えない(判定は candidate_usable で共有。監査指摘)
@@ -2612,8 +2638,8 @@ def main() -> int:
     # 試験実行(--no-git)では Discord へ通知しない。本物の警報と見分けが付かなくなる
     set_quiet(args.no_git)
     # 収集の締切は**排他を待つ前**に決める(待った分だけ延ばさない)
-    global DEADLINE
-    DEADLINE = collect_deadline(args.oncall_rerun)
+    global DEADLINE, CLOSE
+    DEADLINE, CLOSE = collect_window(args.oncall_rerun)
     # 実行記録の開始と起動のされ方(組版が、定時の回ごとに記録があるかを検める: pipelib.collect_slot_gaps)
     RUN.update(started_at=now_jst().isoformat(timespec="seconds"), trigger=run_trigger(args.oncall_rerun), recorded=False)
     exit_on_term()      # SIGTERM でも、起動したセッションを子孫ごと止めてから終わる(既定の SIGTERM は後始末を走らせない)
@@ -2647,9 +2673,9 @@ def classify_then_retag(date: str) -> tuple[bool, str]:
     """判定表の更新 → 紙面の種別付け直し → lint の取引(classify_retag_lint)。合議の失敗で戻したら、いまの判定表・判定のコードで決まる
     付け直しまで戻るので、合議を飛ばして付け直し → lint だけを掛け直す(2026-10-27 Sol 監査。組版の出典の判定と同じ)。
     戻りは合議の取引の (成否, 理由)。掛け直しが「戻せない」で終わったら、その理由を返す"""
-    ok, why = classify_retag_lint(date, timeout=max(1, int(session_left(1800))))
+    ok, why = classify_retag_lint(date, timeout=max(1, int(close_left(1800))))
     if not ok and "戻せない" not in why:
-        ok_rt, why_rt = classify_retag_lint(date, timeout=max(1, int(session_left(600))), judge=False)
+        ok_rt, why_rt = classify_retag_lint(date, timeout=max(1, int(close_left(600))), judge=False)
         if not ok_rt and "戻せない" in why_rt:
             return ok, why_rt
         # 通知が結果と食い違わないよう、付け直しの結果を理由に足す(Sol 監査 r2)。通知は理由を 500 字で切るので、元の理由を先に短くする(r3)
@@ -2716,9 +2742,10 @@ def run_collect(args, date: str, branch: str, t0: float) -> int:
         # 当番の取り直しでは判定表の取引(合議。単独で最大30分)をしない。取り直しは次の定時工程の前に終えて、
         # 素材を commit するのが先(監査指摘)。未知の出典の判定は次の定時収集で行う
         print("当番の取り直しのため、未知の出典の判定は次の定時収集で行う", flush=True)
-    elif needs_classify(cands) and deadline_passed():
-        # 収集の締切を過ぎたら合議を始めない(組版の開始を妨げない)。素材の commit を先にし、判定は次の定時収集で行う
-        print("収集の締切を過ぎたので、未知の出典の判定は次の定時収集で行う", flush=True)
+    elif needs_classify(cands) and CLOSE and close_left(1) <= 0:
+        # 収集の終わりを過ぎたら合議を始めない(組版の開始を妨げない)。素材の commit を先にし、判定は次の定時収集で行う。
+        # 締切(DEADLINE)から終わりまでは合議の取り置きなので、締切を過ぎていても始める
+        print("収集の終わりを過ぎたので、未知の出典の判定は次の定時収集で行う", flush=True)
     elif needs_classify(cands):
         # **未知のドメインは合議で振り分ける。**表を人が育てるまで待つと、
         # 会場・チケット販売・自治体が未確認のまま紙面に載る。

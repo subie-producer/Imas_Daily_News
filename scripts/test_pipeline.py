@@ -50,6 +50,15 @@ WRITE_PASSTHROUGH = {
 }
 
 
+
+def _verify_part(d, key: str, text: str) -> None:
+    """X の投稿の確かめ役の代役が、最後の答え(collect.VERIFY_ANSWER)の欄 key に text(JSON)を足す。"""
+    import collect
+    a = Path(d) / collect.VERIFY_ANSWER
+    cur = json.loads(a.read_text(encoding="utf-8")) if a.exists() else {}
+    cur[key] = json.loads(text)
+    a.write_text(json.dumps(cur, ensure_ascii=False), encoding="utf-8")
+
 def _watch_governed_writes() -> None:
     """書く口は全部見張る: open(書く・足す・作るの mode)・Path.open・Path.write_text/write_bytes(内部で io.open)・
     os.replace/os.rename の行き先(監査指摘: write_text/write_bytes だけを見ていて、open("w") の迂回を見逃した)。"""
@@ -1340,10 +1349,10 @@ def test_grok_deep_retry(tmp: Path):
         def fake_popen(args, cwd=None, **kw):
             wd = Path(cwd)
             urls = re.findall(r"(?m)^- url:\s*(\S+)", (wd / "x-posts.md").read_text(encoding="utf-8"))
-            (wd / "items.json").write_text("[]", encoding="utf-8")
-            (wd / "posts.json").write_text(json.dumps([{"url": u, "status": "none", "item": ""} for u in urls]), encoding="utf-8")
+            _verify_part(wd, "items", "[]")
+            _verify_part(wd, "posts", json.dumps([{"url": u, "status": "none", "item": ""} for u in urls]))
             if "-deep" not in wd.name:
-                (wd / "deep.json").write_text(json.dumps([{"question": "元の告知", "why": "共有の文面だけ"}]), encoding="utf-8")
+                _verify_part(wd, "deep", json.dumps([{"question": "元の告知", "why": "共有の文面だけ"}]))
             return P()
 
         def basic(queries, outdir, errs):
@@ -1425,18 +1434,18 @@ def test_grok_verify_keeps_what_it_counts(tmp: Path):
             # 候補は (元の投稿, 書く要素) の組。要素は dict でないこともある(崩れた答え)
             answer = again if "-again" in wd.name else first
             if answer is None:      # 何も答えない(候補も投稿ごとの結果も空)
-                for n in ("items.json", "posts.json", "deep.json"):
-                    (wd / n).write_text("[]", encoding="utf-8")
+                for n in ("items", "posts", "deep"):
+                    _verify_part(wd, n, "[]")
                 return VP()
             its = [(p, x) for p, x in answer if any(p == collect.post_url(b) for b in collect.post_blocks(text))]
-            (wd / "items.json").write_text(json.dumps([x for _, x in its], ensure_ascii=False), encoding="utf-8")
+            _verify_part(wd, "items", json.dumps([x for _, x in its], ensure_ascii=False))
             res = {}
             for p, x in its:
                 if isinstance(x, dict):
                     res.setdefault(p, x["url"])
-            (wd / "posts.json").write_text(json.dumps([{"url": collect.post_url(b), "status": "extracted" if collect.post_url(b) in res else "none",
-                                                        "item": res.get(collect.post_url(b), "")} for b in collect.post_blocks(text)]), encoding="utf-8")
-            (wd / "deep.json").write_text("[]", encoding="utf-8")
+            _verify_part(wd, "posts", json.dumps([{"url": collect.post_url(b), "status": "extracted" if collect.post_url(b) in res else "none",
+                                                        "item": res.get(collect.post_url(b), "")} for b in collect.post_blocks(text)]))
+            _verify_part(wd, "deep", "[]")
             return VP()
         names = ("prompt_file", "save_raw", "explore_workdir", "notify")
         saved = {n: getattr(collect, n) for n in names}
@@ -1523,10 +1532,10 @@ def test_lost_post_notified_once(tmp: Path):
             urls = re.findall(r"(?m)^(?:- )?url:\s*(\S+)", (wd / "x-posts.md").read_text(encoding="utf-8"))
             deep_pass = "-deep" in wd.name
             st = (lambda u: deep_status if "status/9" in u else "none") if deep_pass else (lambda u: "unreadable" if "status/9" in u else "none")
-            (wd / "items.json").write_text("[]", encoding="utf-8")
-            (wd / "posts.json").write_text(json.dumps([{"url": u, "status": st(u), "item": ""} for u in urls]), encoding="utf-8")
+            _verify_part(wd, "items", "[]")
+            _verify_part(wd, "posts", json.dumps([{"url": u, "status": st(u), "item": ""} for u in urls]))
             if not deep_pass:
-                (wd / "deep.json").write_text(json.dumps([{"question": "元の投稿", "why": "引用だけ"}]), encoding="utf-8")
+                _verify_part(wd, "deep", json.dumps([{"question": "元の投稿", "why": "引用だけ"}]))
             return P()
         def basic(queries, outdir, errs):
             (outdir / "cg.md").write_text(f"### 1\n{first}\n\n### 2\n- url: https://x.com/a/status/2\n- 本文: 雑談\n", encoding="utf-8")
@@ -1558,7 +1567,7 @@ def test_lost_post_notified_once(tmp: Path):
     lost = [m for m in notes if "status/9" in m]
     check(len(lost) == 1 and lost[0].count("https://x.com/a/status/9") == 1 and "status/2" not in lost[0],
           f"深掘りでも読めない投稿の喪失を、最終結果で1度だけ通知しない: {notes}")
-    check(not any("deep.json" in m for m in notes), f"使わない深掘りの確かめの問いが読めないことを通知した: {notes}")
+    check(not any("答えの deep" in m for m in notes), f"使わない深掘りの確かめの問いが読めないことを通知した: {notes}")
     notes = run("none")
     check(not any("status/9" in m for m in notes), f"深掘りで済んだ投稿を失ったと通知した: {notes}")
     # 同じ投稿が段によって別の形の url で書かれる(2026-10-17: 返信先として x.com/i/status/<ID> で書き出され、深掘りでは
@@ -1607,8 +1616,8 @@ def test_lost_post_notified_once(tmp: Path):
                 res.append({"url": u, "status": "extracted", "item": u})
             else:
                 res.append({"url": u, "status": "unreadable", "item": ""})
-        (wd / "items.json").write_text(json.dumps(its, ensure_ascii=False), encoding="utf-8")
-        (wd / "posts.json").write_text(json.dumps(res), encoding="utf-8")
+        _verify_part(wd, "items", json.dumps(its, ensure_ascii=False))
+        _verify_part(wd, "posts", json.dumps(res))
         return VP()
     vnames = ("prompt_file", "save_raw", "explore_workdir")
     vsaved = {n: getattr(collect, n) for n in vnames}
@@ -5229,9 +5238,9 @@ def test_x_post_date_is_jst(tmp: Path):
         def kill(self): pass
     def fake_popen(args, cwd=None, **kw):
         inputs[re.sub(r"^explore-|-[^-]+$", "", Path(cwd).name)] = (Path(cwd) / "x-posts.md").read_text(encoding="utf-8")
-        (Path(cwd) / "items.json").write_text("[]", encoding="utf-8")
-        (Path(cwd) / "posts.json").write_text("[]", encoding="utf-8")
-        (Path(cwd) / "deep.json").write_text("[]", encoding="utf-8")
+        _verify_part(Path(cwd), "items", "[]")
+        _verify_part(Path(cwd), "posts", "[]")
+        _verify_part(Path(cwd), "deep", "[]")
         return P()
     saved = (collect.subprocess.Popen, collect.notify, collect.prompt_file, collect.save_raw)
     try:
@@ -5281,7 +5290,7 @@ def test_x_post_date_is_jst(tmp: Path):
         collect.ROOT = saved
     check([c.get("published_date") for c in json.loads(day.read_text(encoding="utf-8"))] == ["2026-10-21", "2026-10-19"],
           f"再収集の書き込みで、保存済みの X の投稿の掲載日が揃わない: {day.read_text(encoding='utf-8')[:300]}")
-    check(collect.JST_POST_TIME in collect.render_prompt("grok-verify", INPUT="i", OUT="o", DEEP="d", POSTS="p", BRAND="b",
+    check(collect.JST_POST_TIME in collect.render_prompt("grok-verify", INPUT="i", BRAND="b",
                                                                    TOPIC="t", TODAY="2026-10-21", RULES="", ITEM=""),
           "grok-verify の依頼文が、コードの足す行の名前で日付を指していない")
 
@@ -7044,10 +7053,10 @@ def test_grok_roles(tmp: Path):
     def fake_popen(args, cwd=None, **kw):
         started.append(Path(cwd).name)
         if "sidem" in Path(cwd).name:
-            (Path(cwd) / "items.json").write_text(json.dumps([{"url": "https://x.com/a/status/1", "brand": "sidem", "facts": ["f"]}]), encoding="utf-8")
-            (Path(cwd) / "posts.json").write_text(json.dumps([{"url": "https://x.com/a/status/1", "status": "extracted",
-                                                              "item": "https://x.com/a/status/1"}]), encoding="utf-8")
-            (Path(cwd) / "deep.json").write_text(json.dumps([{"question": "元の告知", "why": "引用だけ"}]), encoding="utf-8")
+            _verify_part(Path(cwd), "items", json.dumps([{"url": "https://x.com/a/status/1", "brand": "sidem", "facts": ["f"]}]))
+            _verify_part(Path(cwd), "posts", json.dumps([{"url": "https://x.com/a/status/1", "status": "extracted",
+                                                              "item": "https://x.com/a/status/1"}]))
+            _verify_part(Path(cwd), "deep", json.dumps([{"question": "元の告知", "why": "引用だけ"}]))
         return P()
     saved = (collect.subprocess.Popen, collect.notify, collect.prompt_file)
     try:
@@ -7063,7 +7072,7 @@ def test_grok_roles(tmp: Path):
     check([x["url"] for x in items] == ["https://x.com/a/status/1"] and deep == {"sidem": [{"question": "元の告知", "why": "引用だけ"}]},
           f"候補と問い: {items} {deep}")
     check(any(not ok and "shiny" in m and "items" not in m for m, ok in notes), f"結果の読めない面を異常にしない: {notes}")
-    check(any(not ok and "shiny" in m and "deep.json" in m for m, ok in notes) and not any("sidem" in m for m, ok in notes),
+    check(any(not ok and "shiny" in m and "答えの deep" in m for m, ok in notes) and not any("sidem" in m for m, ok in notes),
           f"問いの書き出しが読めない面を異常にしない(読めた面は異常にしない): {notes}")
     # 週の使用は、利用者のすべての Grok セッション(別のクローン・手での利用を含む)から数える(監査指摘 r116)
     home = tmp / "home2"
@@ -7118,12 +7127,11 @@ def test_verify_crash_reasks_deep(tmp: Path):
             again = "-again" in Path(cwd).name
             ok = (again and mode in ("recover", "again_nodeep")) or (not again and mode == "nodeep")
             # 落ちる回も正しい形のファイルを書いてから exit 101 で終える(異常終了の答えは、形が正しくても採らない)
-            (Path(cwd) / "items.json").write_text(json.dumps([{"url": "https://x.com/a/status/1", "brand": "sidem", "facts": ["f"]}]),
-                                                  encoding="utf-8")
-            (Path(cwd) / "posts.json").write_text(json.dumps([{"url": "https://x.com/a/status/1", "status": "extracted",
-                                                               "item": "https://x.com/a/status/1"}]), encoding="utf-8")
+            _verify_part(Path(cwd), "items", json.dumps([{"url": "https://x.com/a/status/1", "brand": "sidem", "facts": ["f"]}]))
+            _verify_part(Path(cwd), "posts", json.dumps([{"url": "https://x.com/a/status/1", "status": "extracted",
+                                                               "item": "https://x.com/a/status/1"}]))
             if not ok or mode == "recover":
-                (Path(cwd) / "deep.json").write_text(json.dumps(ask), encoding="utf-8")
+                _verify_part(Path(cwd), "deep", json.dumps(ask))
             return P(0 if ok else 101)      # 101: 落ちた(/tmp が満杯で exit 101)
         saved = (collect.subprocess.Popen, collect.notify, collect.prompt_file, collect.save_raw)
         try:
@@ -7134,7 +7142,7 @@ def test_verify_crash_reasks_deep(tmp: Path):
             return collect.verify_grok_faces([{"key": "sidem", "brand": "sidem", "topic": "t"}], out)
         finally:
             collect.subprocess.Popen, collect.notify, collect.prompt_file, collect.save_raw = saved
-    lost = lambda mode: [m for c, m, ok in notes if c == mode and not ok and "deep.json" in m]
+    lost = lambda mode: [m for c, m, ok in notes if c == mode and not ok and "答えの deep" in m]
     items, deep = run("recover")
     check(deep == {"sidem": ask} and len(items) == 1, f"落ちた面を確かめ直した問い・候補を使わない: {items} {deep}")
     check(not [m for c, m, ok in notes if c == "recover" and not ok], f"確かめ直して問いが出たのに、深掘りの機会を失ったと通知した: {notes}")
@@ -7166,10 +7174,10 @@ def test_empty_answer_is_not_done(tmp: Path):
         def communicate(self, timeout=None): return None, None
     def fake_popen(args, cwd=None, **kw):
         inputs[re.sub(r"^explore-|-[^-]+$", "", Path(cwd).name)] = (Path(cwd) / "x-posts.md").read_text(encoding="utf-8")
-        (Path(cwd) / "items.json").write_text(json.dumps([{"url": "https://x.com/a/status/1", "brand": "cg", "facts": ["f"]}]), encoding="utf-8")
-        (Path(cwd) / "posts.json").write_text(json.dumps([{"url": "https://x.com/a/status/1", "status": "extracted", "item": "https://x.com/a/status/1"},
-                                                          {"url": "https://x.com/b/status/2", "status": "unreadable", "item": ""}]), encoding="utf-8")
-        (Path(cwd) / "deep.json").write_text("[]", encoding="utf-8")
+        _verify_part(Path(cwd), "items", json.dumps([{"url": "https://x.com/a/status/1", "brand": "cg", "facts": ["f"]}]))
+        _verify_part(Path(cwd), "posts", json.dumps([{"url": "https://x.com/a/status/1", "status": "extracted", "item": "https://x.com/a/status/1"},
+                                                          {"url": "https://x.com/b/status/2", "status": "unreadable", "item": ""}]))
+        _verify_part(Path(cwd), "deep", "[]")
         return P()
     saved = (collect.subprocess.Popen, collect.notify, collect.prompt_file, collect.save_raw)
     try:
@@ -7183,7 +7191,7 @@ def test_empty_answer_is_not_done(tmp: Path):
     check(sorted(inputs) == ["verify-cg", "verify-cg-again"] and "status/2" in inputs["verify-cg-again"]
           and "status/1" not in inputs["verify-cg-again"], f"結果の無い投稿だけでやり直さない: {inputs}")
     check(any(not ok and "https://x.com/b/status/2" in m and "1件" in m for m, ok in notes), f"2回とも残った投稿を名指ししない: {notes}")
-    check([n for n, _ in raws] == ["grok-verify-cg", "grok-verify-cg-again"] and "posts.json" in raws[0][1],
+    check([n for n, _ in raws] == ["grok-verify-cg", "grok-verify-cg-again"] and collect.VERIFY_ANSWER in raws[0][1],
           f"作業ディレクトリを消す前に生の出力を残さない: {raws}")
     one = "- url: https://x.com/a/status/1\n"
     check(collect.unaccounted_posts(one, None, []) == ["- url: https://x.com/a/status/1"],
@@ -7544,8 +7552,8 @@ def test_accept_only_normal_and_schema(tmp: Path):
     finally:
         oncall.run_group, oncall.prompt_file, oncall.save_raw = saved
     # 16巡目: 重複キーは入口ごとに読めない答え / 真偽値の番号 / 日付の形 / item の契約 / 前置きの投稿 / Grok の書きかけ
-    (tmp / "dup.json").write_text('[{"url": "u", "status": "unreadable", "status": "none", "item": ""}]', encoding="utf-8")
-    check(collect.read_json_list(tmp / "dup.json") is None, "重複キーのファイルを読んだ")
+    (tmp / "dup.json").write_text('{"items": [], "posts": [{"url": "u", "status": "unreadable", "status": "none", "item": ""}], "deep": []}', encoding="utf-8")
+    check(collect.read_verify_answer(tmp / "dup.json") == {}, "重複キーの答えを読んだ")
     check(oncall.parse_json('{"verdict": "reject", "verdict": "approve"}') is None, "重複キーの監査の答えを読んだ")
     check(collect.watch_page_results([{"page": True, "status": "none", "items": []}], 1) == {}, "真偽値の番号でページを既読にした")
     check(collect.watch_page_results(pipelib.extract_json_array_strict('[{"page":1,"status":"unreadable","status":"none","items":[]}]'), 1) == {},
@@ -7829,11 +7837,11 @@ def test_grok_repoint_uses_each_face_posts(tmp: Path):
     def fake_popen(args, cwd=None, **kw):
         items = ([{"url": "https://www.youtube.com/shorts/YvB9Lkq5aOs", "brand": "dsva", "facts": ["クライヤ"]}]
                  if "dsva" in Path(cwd).name else [])
-        (Path(cwd) / "items.json").write_text(json.dumps(items), encoding="utf-8")
-        (Path(cwd) / "deep.json").write_text("[]", encoding="utf-8")
+        _verify_part(Path(cwd), "items", json.dumps(items))
+        _verify_part(Path(cwd), "deep", "[]")
         urls = re.findall(r"(?m)^- url:\s*(\S+)", (Path(cwd) / "x-posts.md").read_text(encoding="utf-8"))
-        (Path(cwd) / "posts.json").write_text(json.dumps([{"url": u, "status": "extracted" if items else "none",
-                                                          "item": items[0]["url"] if items else ""} for u in urls]), encoding="utf-8")
+        _verify_part(Path(cwd), "posts", json.dumps([{"url": u, "status": "extracted" if items else "none",
+                                                          "item": items[0]["url"] if items else ""} for u in urls]))
         return P()
     saved = (collect.subprocess.Popen, collect.notify, collect.prompt_file, collect.classify_source)
     try:
@@ -7933,9 +7941,9 @@ def test_grok_official_paging_follows_prompt(tmp: Path):
             else:                       # 確かめ(Luna): 渡された投稿を全部「事実なし」で済ませる
                 urls = re.findall(r"(?m)^- url:\s*(\S+)", (Path(cwd) / "x-posts.md").read_text(encoding="utf-8"))
                 given.extend(urls)
-                (Path(cwd) / "items.json").write_text("[]", encoding="utf-8")
-                (Path(cwd) / "deep.json").write_text("[]", encoding="utf-8")
-                (Path(cwd) / "posts.json").write_text(json.dumps([{"url": u, "status": "none", "item": ""} for u in urls]), encoding="utf-8")
+                _verify_part(Path(cwd), "items", "[]")
+                _verify_part(Path(cwd), "deep", "[]")
+                _verify_part(Path(cwd), "posts", json.dumps([{"url": u, "status": "none", "item": ""} for u in urls]))
 
         def communicate(self, timeout=None): return "", ""
         def wait(self, timeout=None): return 0
@@ -16401,9 +16409,9 @@ def test_cli_blocked_paths_r2(tmp: Path):
             # 戻った次の収集(Grok は回さない回): 読み直しの列の投稿を確かめ直し、列を空にする
             seen = tmp / "verify-input.txt"
             (bindir / "codex").write_text(
-                f"#!{sys.executable}\nimport pathlib\n"
+                f"#!{sys.executable}\nimport pathlib, sys\n"
                 f"pathlib.Path({str(seen)!r}).write_text(pathlib.Path('x-posts.md').read_text(encoding='utf-8'), encoding='utf-8')\n"
-                "for n in ('items.json', 'posts.json', 'deep.json'):\n    pathlib.Path(n).write_text('[]')\n", encoding="utf-8")
+                "pathlib.Path(sys.argv[sys.argv.index('--output-last-message') + 1]).write_text('{\"items\": [], \"posts\": [], \"deep\": []}')\n", encoding="utf-8")
             pipelib.CLI_BLOCKED.clear()
             collect.run_explores(skip_explore=True, skip_grok=True)
             left = [p.name for p in (root / collect.GROK_PENDING).iterdir()]
@@ -16609,8 +16617,9 @@ def test_cli_blocked_r5(tmp: Path):
         f"if '-deep' in pp.name:\n    sys.stderr.write({GROK_LIMIT!r})\n    sys.exit(1)\n"
         f"pp.with_name(pp.name.removeprefix('prompt-')).write_text({post!r}, encoding='utf-8')\n", encoding="utf-8")
     (bindir / "codex").write_text(
-        f"#!{sys.executable}\nimport json, pathlib\npathlib.Path('items.json').write_text('[]')\npathlib.Path('posts.json').write_text('[]')\n"
-        "pathlib.Path('deep.json').write_text(json.dumps([{'question': '返信先の公演日を確かめる'}]))\n", encoding="utf-8")
+        f"#!{sys.executable}\nimport json, pathlib, sys\n"
+        "pathlib.Path(sys.argv[sys.argv.index('--output-last-message') + 1]).write_text(json.dumps("
+        "{'items': [], 'posts': [], 'deep': [{'question': '返信先の公演日を確かめる', 'why': ''}]}))\n", encoding="utf-8")
     for n in ("grok", "codex"):
         (bindir / n).chmod(0o755)
     notes = []
@@ -16687,9 +16696,9 @@ def test_cli_blocked_r6(tmp: Path):
         (bindir / "grok").chmod(0o755)
         seen = tmp / "verify-input.txt"
         (bindir / "codex").write_text(          # 確かめ役は動く(この回のうちに確かめる)。読んだ投稿を控え、結果は空
-            f"#!{sys.executable}\nimport pathlib\n"
+            f"#!{sys.executable}\nimport pathlib, sys\n"
             f"pathlib.Path({str(seen)!r}).open('a', encoding='utf-8').write(pathlib.Path('x-posts.md').read_text(encoding='utf-8'))\n"
-            "for n in ('items.json', 'posts.json', 'deep.json'):\n    pathlib.Path(n).write_text('[]')\n", encoding="utf-8")
+            "pathlib.Path(sys.argv[sys.argv.index('--output-last-message') + 1]).write_text('{\"items\": [], \"posts\": [], \"deep\": []}')\n", encoding="utf-8")
         (bindir / "codex").chmod(0o755)
         shutil.copy(Path(__file__).resolve().parent.parent / "source_types.yml", tmp / "source_types.yml")
         saved = (collect.ROOT, pipelib.ROOT, collect.build_prompts, collect.grok_search_counts, collect.notify)
@@ -16862,10 +16871,10 @@ def test_cli_blocked_r9(tmp: Path):
             encoding="utf-8")
         seen = root / "verify-input.txt"
         (bindir / "codex").write_text(          # 確かめ役は動き、投稿ごとに「事実なし」と答える
-            f"#!{sys.executable}\nimport json, re\nfrom pathlib import Path\ntext = Path('x-posts.md').read_text()\n"
+            f"#!{sys.executable}\nimport json, re, sys\nfrom pathlib import Path\ntext = Path('x-posts.md').read_text()\n"
             f"Path({str(seen)!r}).open('a').write(text)\n"
-            "for n in ('items.json', 'deep.json'):\n    Path(n).write_text('[]')\n"
-            "Path('posts.json').write_text(json.dumps([{'url': u, 'status': 'none', 'item': ''} for u in re.findall(r'- url: (\\S+)', text)]))\n",
+            "Path(sys.argv[sys.argv.index('--output-last-message') + 1]).write_text(json.dumps({'items': [], 'deep': [], "
+            "'posts': [{'url': u, 'status': 'none', 'item': ''} for u in re.findall(r'- url: (\\S+)', text)]}))\n",
             encoding="utf-8")
         for n in ("grok", "codex"):
             (bindir / n).chmod(0o755)
@@ -21613,12 +21622,80 @@ def main() -> int:
     test_selfcheck_stops_stuck_tests(tmp / "sst")
     test_unit_failed_reaches_human(tmp / "ufh")
     test_units_bound_memory_and_report_failure(tmp / "ubm")
+    test_collect_verify_answer_and_classify_reserve(tmp / "cvacr")
     check(not STRAY_WRITES, "書式で決めたファイルを write_checked を通さずに書いた本番のコード(書く前に書式で検めること): "
           + "; ".join(sorted(set(STRAY_WRITES))[:10]))
     for f in FAILS:
         print(f"  [FAIL] {f}")
     print(f"test_pipeline: {len(FAILS)} failures")
     return 1 if FAILS else 0
+
+
+def test_collect_verify_answer_and_classify_reserve(tmp: Path):
+    """2026-11-04 02:00 の収集の当番。
+    1. X の投稿の確かめ役が答えをファイルに書かず最後の答えに出した(sidem 面 -again): 答えの受け口を最後の答え1つ(schema で縛る)にする。
+       最後の答え(--output-last-message)だけを書く確かめ役から、候補・投稿の結果・原本の問いを読み、喪失を通知しない
+    2. 出典の見回りが収集の締切まで使い、未知の出典の判定(合議)に 44 秒しか残らず時間切れで戻した: 締切から収集の終わりまでを判定に取り置く"""
+    import collect, pipelib
+    import time
+    tmp.mkdir(parents=True, exist_ok=True)
+    out = tmp / "g"
+    out.mkdir()
+    url = "https://x.com/aoichigo03/status/2117634514679918706"
+    (out / "sidem.md").write_text(f"### 21\n- url: {url}\n- 本文: 担当アイドルいる\n", encoding="utf-8")
+    incident = {"items": [], "posts": [{"url": url, "status": "none", "item": ""}], "deep": []}
+    schema_text = (Path(collect.ROOT) / "schema" / "grok-verify.schema.json").read_text(encoding="utf-8")
+    check(pipelib.schema_ok(incident, schema_text), "当日の確かめ役の答えが grok-verify の schema に合わない")
+    argvs, notes, written = [], [], []
+    class P:
+        pid = 0
+        returncode = 0
+        def wait(self, timeout=None): return 0
+        def poll(self): return 0
+        def communicate(self, timeout=None): return None, None
+    def fake_popen(args, cwd=None, **kw):
+        argvs.append(list(args))
+        # 確かめ役は作業ディレクトリにファイルを書かず、最後の答えだけを返す(codex が --output-last-message に写す)
+        Path(args[args.index("--output-last-message") + 1]).write_text(json.dumps(incident),
+                                                                        encoding="utf-8")
+        written.append(sorted(x.name for x in Path(cwd).iterdir()))
+        return P()
+    saved = (collect.subprocess.Popen, collect.notify, collect.prompt_file, collect.save_raw)
+    try:
+        collect.subprocess.Popen = fake_popen
+        collect.notify = lambda job, msg, ok=True, require=False: notes.append((msg, ok)) or True
+        collect.prompt_file = lambda date, name, prompt, base=None: "p"
+        collect.save_raw = lambda *a, **kw: None
+        items, deep = collect.verify_grok_faces([{"key": "sidem", "brand": "sidem", "topic": "t"}], out)
+    finally:
+        collect.subprocess.Popen, collect.notify, collect.prompt_file, collect.save_raw = saved
+    check(len(argvs) == 1, f"最後の答えに書いた結果を読まずに確かめ直した: {len(argvs)}回")
+    check(argvs and "--output-schema" in argvs[0]
+          and Path(argvs[0][argvs[0].index("--output-schema") + 1]) == Path(collect.ROOT) / "schema" / "grok-verify.schema.json",
+          f"確かめ役の答えを schema で縛らない: {argvs[:1]}")
+    check(items == [] and deep == {} and not [m for m, ok in notes if not ok],
+          f"最後の答えに書いた結果を読めず、問い・投稿の喪失を通知した: {items} {deep} {notes}")
+    prompt = (Path(collect.ROOT) / "prompts" / "grok-verify.md").read_text(encoding="utf-8")
+    check("{OUT}" not in prompt and "{POSTS}" not in prompt and "{DEEP}" not in prompt and "最後の答え" in prompt,
+          "確かめ役の依頼文がまだファイルに書かせている")
+
+    # 2. 判定の取り置き
+    saved2 = (collect.collect_deadline, collect.classify_retag_lint, collect.DEADLINE, collect.CLOSE)
+    try:
+        collect.collect_deadline = lambda oncall_rerun, now=None: 10_000.0
+        check(collect.collect_window(False) == (10_000.0 - collect.CLASSIFY_RESERVE_SEC, 10_000.0) and collect.CLASSIFY_RESERVE_SEC >= 120,
+              f"収集の締切が判定の取り置きを残さない: {collect.collect_window(False)}")
+        collect.collect_deadline = lambda oncall_rerun, now=None: None
+        check(collect.collect_window(True) == (None, None), "締切の無い収集に締切を付けた")
+        timeouts = []
+        collect.classify_retag_lint = lambda date, **k: (timeouts.append(k["timeout"]), (True, ""))[1]
+        # 収集の締切(見回りなどが使う)を過ぎていても、終わりまでの取り置きで合議を走らせる
+        collect.DEADLINE, collect.CLOSE = time.time() - 1, time.time() + 240
+        collect.classify_then_retag("2026-11-04")
+        check(timeouts and timeouts[0] >= 200, f"合議の時間を収集の締切で切った(取り置きを使わない): {timeouts}")
+        check(collect.deadline_passed() and collect.close_left(1) > 0, "締切と終わりの区別が付かない")
+    finally:
+        collect.collect_deadline, collect.classify_retag_lint, collect.DEADLINE, collect.CLOSE = saved2
 
 
 def _own_archive(fn):

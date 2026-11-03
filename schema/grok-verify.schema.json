@@ -1,0 +1,151 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "grok-verify.schema.json",
+  "title": "X の投稿の確かめ(scripts/collect.py の verify_grok_faces が起動する確かめ役の最後の答え。items=候補 / posts=投稿1件ずつの結果 / deep=X の原本でしか確かめられない問い)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "items",
+    "posts",
+    "deep"
+  ],
+  "properties": {
+    "items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "title",
+          "brand",
+          "kind",
+          "url",
+          "link_from",
+          "event_date",
+          "published_date",
+          "deadline",
+          "facts",
+          "quote",
+          "dedup_key",
+          "engagement",
+          "mentioned_idols"
+        ],
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "brand": {
+            "enum": [
+              "general",
+              "765",
+              "cg",
+              "million",
+              "shiny",
+              "sidem",
+              "gaku",
+              "dsva",
+              "joint",
+              "other"
+            ]
+          },
+          "kind": {
+            "enum": [
+              "official",
+              "semi",
+              "party",
+              "media",
+              "fan",
+              "trend"
+            ]
+          },
+          "url": {
+            "type": "string"
+          },
+          "link_from": {
+            "type": "string"
+          },
+          "event_date": {
+            "type": "string"
+          },
+          "published_date": {
+            "type": "string"
+          },
+          "deadline": {
+            "type": "string"
+          },
+          "facts": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "quote": {
+            "type": "string"
+          },
+          "dedup_key": {
+            "type": "string"
+          },
+          "engagement": {
+            "enum": [
+              "高",
+              "中",
+              "低"
+            ]
+          },
+          "mentioned_idols": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "posts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "url",
+          "status",
+          "item"
+        ],
+        "properties": {
+          "url": {
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "extracted",
+              "none",
+              "unreadable"
+            ]
+          },
+          "item": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "deep": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "question",
+          "why"
+        ],
+        "properties": {
+          "question": {
+            "type": "string"
+          },
+          "why": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

@@ -260,6 +260,8 @@ party_paths:
   - item.rakuten.co.jp/f272078-takatsuki        # 高槻市ふるさと納税
 
 party_domains:
+  - cocollabo.net         # 合議で追加: 特商法表示の販売社名。複数作品のコラボグッズを販売する通販
+  - cocollabo.lol         # 合議で追加: 特商法表示の販売社名。複数作品のコラボグッズを販売する通販
   - segafave.co.jp        # 合議で追加: ALL.Net運営会社の告知。IM作品の運営・販売先として当事者
   - k-arena.com           # 合議で追加: 会場の運営者が自ら、ライブツアー記念のコラボドリンク販売を発表
   - store.hands.net       # 合議で追加: ハンズ店舗で催しと販売グッズを告知する小売店のサイト
@@ -1157,6 +1159,7 @@ x_posts:
 
 # --- リンク元から引き継いだ種別(リンク先1つずつ。キーは pipelib.link_key)。合議がリンク元の告知と関係していると確かめたものだけ(classify_sources.inherit_from_links)。リンク先そのものの種別より強いときだけ効く ---
 link_types:
+  www.mwt.co.jp/kokunai/chiiki/localtour/welcome-to-naha2026/: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://idolmaster-official.jp/news/01_20281(公式)。同じ那覇コラボの特設サイト。リンク元の告知もこのサイトを案内
   youtube.com/watch?v=id5FJcyLmVg: 準公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/SideM_lantis/status/2117572496899617094(準公式)。リンク先の動画名がHigh×Joker「POPPIN' PLANET」2DMVで
   xp.bandainamco-am.co.jp/important_20261102/index.html: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://x.com/TOURS_imas/status/2117222016013230484(公式)。ALL.Net停止の経緯と対象タイトル(TOURS含む)を案内する同件のお知らせ
   youtube.com/watch?v=uD1qfCwTDtA: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/valiv_official/status/2117179931369124020(公式)。上水流宇宙としぐれういのコラボ動画。告知と一致

@@ -32,6 +32,9 @@ sources:
 - label: 出典元表記「PROJECT IM@S vα-liv 3rdLIVE ＆ MEETING QONNECT AS ONE」
   url: https://asobiticket2.asobistore.jp/receptions/a911b189-ae4a-4bc6-9f15-729201d4ff7c
   type: 公式
+- label: 出典元表記「ヴイアラ3rdLIVE東京公演スペシャルゲスト発表」(2026-11-03)
+  url: https://x.com/valiv_official/status/2117593844644819114
+  type: 公式
 event_date: "2026-11-14"
 title_fact_ids:
 - F1
@@ -82,9 +85,6 @@ verified_facts:
 - id: N13
   text: 東京公演の現地チケット料金は、PRODUCER MEETING限定グッズ付き13,800円（税込）、通常8,600円（税込）、3rdLIVE限定グッズ付き15,000円（税込）、通常9,800円（税込）。3公演通し券は限定グッズ付き43,800円（税込）で、PRODUCER MEETINGと3rdLIVE Day1・Day2に参加できる。
   url: https://asobiticket2.asobistore.jp/receptions/a911b189-ae4a-4bc6-9f15-729201d4ff7c
-- id: N14
-  text: 限定グッズ付きチケットの特典はおすわりぬいぐるみ。
-  url: https://asobiticket2.asobistore.jp/receptions/a911b189-ae4a-4bc6-9f15-729201d4ff7c
 - id: N15
   text: 税込手数料はシステム利用料が1枚220円、決済サービス料が1枚550円。決済方法はクレジットカード、コンビニエンスストア、ペイジー。
   url: https://asobiticket2.asobistore.jp/receptions/a911b189-ae4a-4bc6-9f15-729201d4ff7c
@@ -115,6 +115,6 @@ verified_facts:
 - 2027年3月22日：同会場「3rdLIVE Day2」は開場15時30分・開演16時30分。限定グッズ付き現地チケット15,000円、通常現地チケット9,800円。
 - 東京3公演通し券は限定グッズ付きで43,800円。PRODUCER MEETINGと3rdLIVE Day1・Day2に参加できる。 <!-- N11 N12 N13 -->
 
-限定グッズ付きチケットにはおすわりぬいぐるみが付く。チケット代のほか、税込でシステム利用料が1枚220円、決済サービス料が1枚550円かかる。決済方法はクレジットカード、コンビニエンスストア、ペイジー。 <!-- F10 N14 N15 -->
+限定グッズ付きチケットにはおすわりぬいぐるみが付く。チケット代のほか、税込でシステム利用料が1枚220円、決済サービス料が1枚550円かかる。決済方法はクレジットカード、コンビニエンスストア、ペイジー。 <!-- F10 N15 -->
 
 チケットはデジタル方式で、各公演の3日前15時から発券・分配できる。公演当日は申込者・同行者それぞれのスマートフォンまたはタブレットにチケットを表示して入場する。 <!-- N16 N17 -->

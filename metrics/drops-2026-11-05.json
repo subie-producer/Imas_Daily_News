@@ -18,5 +18,70 @@
    "202610270222-grok-39",
    "202610270404-grok-0-r1"
   ]
+ },
+ "million-ova-onkyo-audio-goods-2026": {
+  "title": "ミリオンOVAイヤホン、美也の録り下ろしボイス搭載",
+  "stage": "書き直しで見送り",
+  "why": "NOT_NEWS 校閲指摘I1・I2のとおり、記事の中心は既報の受注期間と商品内容の再掲で、2026年11月5日時点の新しい発表・出来事や掲載のきっかけを確認できません。掲載を見送ります。",
+  "candidate_ids": [
+   "202610310225-grok-37"
+  ]
+ },
+ "shiny-hyakkiyako-pop-up-after-sales-2026": {
+  "title": "シャニマス百鬼夜行通販、本日23時59分締切",
+  "stage": "書き直しで見送り",
+  "why": "NO_PRIMARY_SOURCE 公式ポータルの開催告知（https://idolmaster-official.jp/news/01_19707）を fetch_page.py で確認しましたが、掲載内容は POP UP SHOP の開催告知のみで、事後通販には触れていません。事後通販を告知する公式・準公式の出典、",
+  "candidate_ids": [
+   "sched-2026-11-05-shiny-hyakkiyako-pop-up-after-sales-2026-締切"
+  ]
+ },
+ "sidem-legenders-refrain-atrium-ensemble-2026": {
+  "title": "SideM「リフレインアトリウム」弦楽合奏動画",
+  "stage": "書き直しで見送り",
+  "why": "NOT_NEWS 2026年10月26日に公開されたファン主催の演奏動画の紹介で、2026年11月5日号の発行時点に新たに起きた、または発表された事実が記事の中核にありません。指摘I1・I2に基づき記事を取り下げます。",
+  "candidate_ids": [
+   "202610270222-grok-36"
+  ]
+ },
+ "cg-popntoybox-revival-general-lottery-2026": {
+  "title": "シンデレラガールズ「トイボ」抽選は11月8日まで",
+  "stage": "書き直しで見送り",
+  "why": "OTHER 校閲指摘I1に従い、同じ一般会員先行の締切延長を扱う記事との重複のため、本記事を取り下げます。",
+  "candidate_ids": [
+   "sched-2026-11-05-cg-popntoybox-revival-general-lottery-2026-締切前",
+   "sched-2026-11-05-cg-popntoybox-revival-general-lottery-2026-締切前-src1",
+   "202611020220-grok-19"
+  ],
+  "settled": {
+   "rule": "P1",
+   "dup_of": [
+    "joint-xr-live-revival-2026-presale-extension"
+   ]
+  }
+ },
+ "gaku-gkmas-misuzu-garakuta-present-2026": {
+  "title": "学マス美鈴ガシャ、6日11時開始",
+  "stage": "書き直しで見送り",
+  "why": "NOT_NEWS 校閲指摘I1のとおり、ガシャ開催期間は既報と同じで新しい事実がなく、プレゼントキャンペーンも発行時点ですでに終了しているため、記事として成立しません。",
+  "candidate_ids": [
+   "202611041835-watch-2",
+   "202611050230-grok-56"
+  ]
+ },
+ "gaku-kitamura-gakuen-new-year-cards-2027": {
+  "title": "学マス年賀状、11月4日から受付開始",
+  "stage": "書き直しで見送り",
+  "why": "NO_PRIMARY_SOURCE R5を満たす公式・準公式の告知、または公式発表を報じた報道を確認できませんでした。学園アイドルマスター公式X（https://x.com/gkmas_official）はfetch_page.pyで読みましたが、現行ページに年賀状告知はありませんでした。告知を含むteapawtの投稿",
+  "candidate_ids": [
+   "202611050230-grok-78"
+  ]
+ },
+ "million-kyomaf-after-sales-2026": {
+  "title": "ミリオンライブ京まふ通販、11月18日まで",
+  "stage": "書き直しで見送り",
+  "why": "NO_PRIMARY_SOURCE R5を満たす出典を確認できませんでした。公式告知 https://idolmaster-official.jp/news/01_20059 は2026年10月10日～22日の店頭販売についての案内で、事後通販の期間や対象商品は記載されていません。素材のTHEキャラ オンラインストアは",
+  "candidate_ids": [
+   "202611050230-grok-16"
+  ]
  }
 }

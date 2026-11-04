@@ -32,11 +32,11 @@ lede_fact_ids:
 - F2
 - F6
 verified_facts:
+- id: N2
+  text: 動画ページには楽曲「トキメキは赤くて甘い (GAME Version)」が付いている。
+  url: https://www.youtube.com/shorts/Ri6YYFLUi1o
 - id: N1
   text: 動画ページのタイトルは「11/5 辻野あかりさん Happy Birthday‼」。
   url: https://www.youtube.com/shorts/Ri6YYFLUi1o
-- id: N2
-  text: 動画ページには「あかりんご、おめでとう！」と表示され、楽曲「トキメキは赤くて甘い (GAME Version)」が付いている。
-  url: https://www.youtube.com/shorts/Ri6YYFLUi1o
 ---
-ムービーはYouTube Shortsで視聴できる。動画ページには「あかりんご、おめでとう！」のメッセージが表示され、楽曲「トキメキは赤くて甘い (GAME Version)」が付いている。 <!-- F2 F3 N1 N2 -->
+ムービーはYouTube Shortsで視聴できる。動画ページのタイトルは「11/5 辻野あかりさん Happy Birthday‼」で、楽曲「トキメキは赤くて甘い (GAME Version)」が付いている。 <!-- F2 F3 N1 N2 -->

@@ -146,9 +146,13 @@ def recheck_plan(arts: list[dict], now: datetime.datetime, runs: int) -> dict:
     """見回りの計画: 対象(原本のある出典のページ。同じページは1つ)、1回の上限(一巡が RECHECK_CYCLE_DAYS 日に収まる件数まで上げる)、
     並列、最後に確かめたのが古い順に選んだ今回の分、見込みの一巡の日数。"""
     seen, targets = set(), []
+    since: dict[str, str] = {}      # ページが見回りの対象に入った日(それを出典にする記事のいちばん早い号の日付)
     for a in arts:
         for u in a["urls"]:
             k = page_archive.page_key(u)
+            ed = str(a.get("edition") or "")
+            if ed and (k not in since or ed < since[k]):
+                since[k] = ed
             if k in seen:
                 continue
             seen.add(k)
@@ -161,11 +165,19 @@ def recheck_plan(arts: list[dict], now: datetime.datetime, runs: int) -> dict:
     parallel = max(RECHECK_PARALLEL, math.ceil(cap / RECHECK_PER_SLOT))
     order = sorted(targets, key=lambda u: (last_checked(u), u))
     chosen = order[:cap]
-    oldest = last_checked(order[0]) if order else ""
-    try:
-        age_h = (now - datetime.datetime.fromisoformat(oldest)).total_seconds() / 3600 if oldest else 0.0
-    except ValueError:
-        age_h = 0.0
+
+    def age(u: str) -> float:
+        # 見回りが確かめていない時間は、最後に読んだ時刻と、対象に入った時刻(号の日付の 0時)の遅いほうから数える。
+        # 収集が読んだ数日後に記事が出て対象に入ったページを、対象になる前の日数ぶん「見回りが読み残した」と数えない
+        try:
+            t = [datetime.datetime.fromisoformat(x) for x in (last_checked(u),) if x]
+            ed = since.get(page_archive.page_key(u))
+            if ed:
+                t.append(datetime.datetime.fromisoformat(ed).replace(tzinfo=now.tzinfo))
+        except ValueError:
+            return 0.0
+        return (now - max(t)).total_seconds() / 3600 if t else 0.0
+    age_h = max((age(u) for u in order), default=0.0)
     return {"targets": targets, "chosen": chosen, "cap": cap, "parallel": parallel, "runs_per_day": runs,
             "cycle_days": round(len(targets) / max(1, cap * runs), 2), "oldest_age_h": round(age_h, 1)}
 

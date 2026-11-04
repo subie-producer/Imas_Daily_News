@@ -20561,6 +20561,17 @@ def test_source_watch(tmp: Path):
           and plan["parallel"] >= math.ceil(plan["cap"] / sw.RECHECK_PER_SLOT) and len(plan["chosen"]) == plan["cap"],
           f"対象が多いときに上限・並列を上げない: {({k: plan[k] for k in ('cap', 'parallel', 'cycle_days')})}")
     check(sw.collect_runs_per_day(tmp) == 5, "収集の1日の回数を timer から数えない")
+    # 当番 2026-11-06: 収集が5日前に読み、今日の号の記事で初めて出典になったページを「見回りが5日読み残した」と数えない。
+    # 対象のままずっと読まれていないページは従来どおり古いと数える
+    now = pipelib.now_jst()
+    old_at = (now - datetime.timedelta(hours=125)).isoformat(timespec="seconds")
+    pa.save("https://late.example/new", "n", via="collect", at=old_at)
+    pa.save("https://late.example/kept", "k", via="collect", at=old_at)
+    fresh = sw.recheck_plan([{"edition": now.date().isoformat(), "urls": ["https://late.example/new"]}], now, 4)
+    stale = sw.recheck_plan([{"edition": (now.date() - datetime.timedelta(days=6)).isoformat(), "urls": ["https://late.example/kept"]},
+                             {"edition": now.date().isoformat(), "urls": ["https://late.example/kept"]}], now, 4)
+    check(fresh["oldest_age_h"] <= 24 and 124 <= stale["oldest_age_h"] <= 126,
+          f"見回りの対象に入る前の日数を読み残しに数える/対象のまま古いページを見逃す: {fresh['oldest_age_h']} {stale['oldest_age_h']}")
     # 見回り: 本物の fetch_page.py(通信だけ差し替え)が変化を台帳に残す
     new_text = "応募締切は11月3日まで延長しました。価格は3000円。"
     import threading

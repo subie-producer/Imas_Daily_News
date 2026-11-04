@@ -43,6 +43,9 @@ from pipelib import (CLI_BLOCKED_EXIT, CliBlocked, exit_on_term, now_jst, render
 
 MAX_PAGES = 4               # 記事1本で読むページの上限(当たりの調べの答え)
 MAX_ASKS = 2                # 記事1本で X の原本を探す問いの上限
+# 裏取りの鮮度の窓(日)。入口が揃えるのは計画済みの記事(締切・開始の当日の記事など)の出典で、告知の原本は収集の新着の窓
+# (collect.STALE_DAYS)より前に出ているのが当然。窓は前年の同じ時期の告知(365日前)を通さない幅にする
+RESCUE_STALE_DAYS = 180
 PLAN_TIMEOUT = 600          # 当たりの調べのセッションの上限(秒)
 VERIFY_RESERVE_SEC = 360    # 締切のうち、正規化・裏取り・素材への書き込みに残す秒数(裏取り1件の待ち VERIFY_ONE_MAX が入る)
 VERIFY_ONE_MAX = 300        # 候補1件の裏取りに掛かりうる待ち(秒。取得 15 秒 + 描画 90 秒 × 3 回 + 余裕)。これが残っていなければ始めない
@@ -141,35 +144,6 @@ def answered_posts(text: str, asks: list[dict]) -> list[tuple[str, str, int]]:
     return out
 
 
-def post_body(block: str) -> str:
-    """Grok の書き出しの投稿1件の本文(リポストの「元の投稿:」以降とリンクの欄は含めない)。"""
-    m = re.search(r"(?ms)^\s*-\s*本文\s*[:：][ \t]*\n?(.*?)(?=^\s*-\s*リンク\s*[:：]|^元の投稿\s*[:：]|\Z)", block)
-    return m.group(1).strip() if m else ""
-
-
-def official_post_items(text: str, items: list[dict]) -> list[dict]:
-    """問いに答えた公式・準公式の投稿のうち、確かめ(Luna)が販売ページなどの候補にまとめて、投稿そのものの候補が無いものを、候補にして返す。
-    確かめは「同じ告知は元の告知の url に1件」にまとめ、前の巡の候補と同じなら候補を書かないので、作品の公式が販売元の告知をリポストしても
-    公式の出典が素材に残らない(2026-11-02: @imasml_765PRO のリポストに届いたのに候補は販売ページだけで、R5 の公式が揃わなかった)。
-    items は確かめの候補と記事の素材。投稿がそのどれかの url・リンク元を含むときだけ(同じ話題の投稿と言える)。事実は投稿の本文を写す。"""
-    have = {collect.post_key(it.get("url") or "") for it in items}
-    out = []
-    for b in collect.post_blocks(text):
-        url = collect.post_url(b)
-        if not url or collect.post_key(url) in have or collect.classify_source(url) not in ("公式", "準公式"):
-            continue
-        base = next((it for it in items if any(u and u in b for u in (it.get("url"), it.get("link_from")))), None)
-        lines = [ln.strip() for ln in post_body(b).splitlines() if ln.strip() and not re.fullmatch(r"https?://\S+", ln.strip())]
-        if not base or not lines:
-            continue
-        rt = re.match(r"RT @(\w+):\s*", lines[0])
-        facts = [f"{url.split('/')[3]} が @{rt.group(1)} の投稿をリポストした。"] if rt else []
-        facts += [lines[0][rt.end():] if rt else lines[0], *lines[1:]]
-        out.append({"url": url, "title": base.get("title") or "", "brand": base.get("brand") or "", "dedup_key": base.get("dedup_key") or "",
-                    "facts": [f for f in facts if f], "quote": "", "_via": "grok"})
-    return out
-
-
 def grok_phase(asks_by_slug: dict[str, list[dict]], arts: dict[str, dict], outdir: Path, log: dict,
                known: list[dict] | None = None) -> list[tuple[str, dict]]:
     """X の原本の深掘り。戻りは [(slug, Luna が確かめた候補)]。問いごとの結果(見つかった投稿)は log に書く。known は記事の素材。"""
@@ -212,7 +186,7 @@ def grok_phase(asks_by_slug: dict[str, list[dict]], arts: dict[str, dict], outdi
                 slug = owner[id(asks[n - 1])]
                 posts.setdefault(pk, set()).add(slug)
                 log["asks"][slug][asks[n - 1]["question"]].append(url)
-            added = official_post_items(text, pool)
+            added = collect.official_post_items(text, pool)
             items += added
             pool.extend(added)
         for it in items:
@@ -288,7 +262,7 @@ def verify_until(cands: list[dict], until: float | None) -> None:
             if until is not None and time.time() + VERIFY_ONE_MAX > until:
                 return
             mine = json.loads(json.dumps(c, ensure_ascii=False))
-            collect.verify([mine])
+            collect.verify([mine], stale_days=RESCUE_STALE_DAYS)
             done[i] = mine
     threads = [threading.Thread(target=one, args=(i, c), daemon=True) for i, c in enumerate(cands)]
     for t in threads:

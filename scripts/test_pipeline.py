@@ -19849,7 +19849,7 @@ class RescueFakes:
         collect.grok_week_usage = lambda now_ts=None: 100
         collect.grok_search_counts = lambda since: {}
         collect.report_lost_posts = lambda ledger: None
-        collect.check_stale = lambda c: None
+        collect.check_stale = lambda c, days=None: None
         collect.rendered_or_note = lambda url, limit=None, wait_deadline=None: ("", "テストでは描画しない")
         collect.notify = lambda *a, **k: True
         collect.build_prompts = lambda: yaml.safe_load((pipelib.PROMPTS / "queries.yml").read_text(encoding="utf-8"))
@@ -20214,6 +20214,47 @@ def test_source_rescue_keeps_official_repost():
 def collect_normalized(items: list[dict]) -> dict:
     import collect
     return collect.normalize(items)[0]
+
+
+def test_source_rescue_backs_planned_deadline_with_old_official_post():
+    """出典を揃える入口は、計画済みの記事(当日 23:59 締切)の告知の原本が収集の新着の窓より前に出ていても出典にする
+    (2026-11-05: シャニマス百鬼夜行の事後通販は 10/21 に告知され 11/5 締切。入口は @shinyc_official のリポストに届いたが、
+    素材(プレスリリース)の url と照らして話題と認めず、裏取りも 14日の鮮度切れで落とし、記事は公式の出典が無いまま外れた)。
+    素材の facts に書かれた url を貼った公式の投稿は同じ話題として候補にし、入口の裏取りは前年の告知を通さない窓で鮮度を見る。"""
+    import collect
+    import datetime as dt
+    import source_rescue
+    shop = "https://www.the-chara.com/view/search?search_category=ct4923"
+    item = {"url": "https://prtimes.jp/main/html/rd/p/000001128.000069812.html", "title": "「百鬼夜行 POP UP SHOP」事後通販開始",
+            "brand": "shiny", "dedup_key": "shiny-hyakkiyako-pop-up-after-sales-2026", "source_type": "当事者",
+            "facts": ["注文受付期間: 2026年10月21日(水)18:00～11月5日(木)23:59", f"通販サイトはTHEキャラ（{shop}）。"]}
+    today = collect.now_jst().date()
+
+    def status_of(days_ago: int) -> str:
+        t = dt.datetime.combine(today - dt.timedelta(days=days_ago), dt.time(19, 35), tzinfo=dt.timezone(dt.timedelta(hours=9)))
+        return f"https://x.com/shinyc_official/status/{(int(t.timestamp() * 1000) - 1288834974657) << 22}"
+    rt = status_of(15)
+    text = (f"### 1\n- url: {rt}\n- 問い: 2\n- 投稿者: 公式\n- 投稿日時: x\n- 本文:\nRT @thechara_2014: 事後通販を開始いたします\n"
+            f"📅 10/21(水)18:00～11/5(木)23:59\nこちらから➡️{shop}\n元の投稿: https://x.com/thechara_2014/status/2112831271554482306\n"
+            f"- リンク:\n  - {shop}\n")
+    check(source_rescue.fact_urls(item) == [shop], f"facts の url の取り出し: {source_rescue.fact_urls(item)}")
+    got = source_rescue.official_post_items(text, [item])
+    check(len(got) == 1 and got[0]["url"] == rt and got[0]["dedup_key"] == item["dedup_key"],
+          f"素材の facts の url を貼った公式のリポストを候補にしない: {got}")
+    check(source_rescue.official_post_items(text, [dict(item, facts=["注文受付期間: 11月5日まで"])]) == [],
+          "素材のどの url も含まない投稿を同じ話題とした")
+    c = collect.normalize(got)
+    check(len(c) == 1 and c[0]["source_type"] == "公式", f"足した候補の種別: {c}")
+    # 収集(新着)の裏取りは 14日の窓で落とす。入口の裏取り(verify_until)は落とさない。前年の告知は入口でも落とす
+    new = json.loads(json.dumps(c))
+    collect.verify(new)
+    check(new[0]["verify"] == "failed" and "古い" in new[0]["verify_note"], f"収集の鮮度の窓が変わった: {new[0]}")
+    res = json.loads(json.dumps(c))
+    source_rescue.verify_until(res, None)
+    check(res[0]["verify"] == "confirmed", f"入口が計画済みの記事の告知の原本を鮮度切れで落とした: {res[0]}")
+    old = collect.normalize(source_rescue.official_post_items(text.replace(rt, status_of(370)), [item]))
+    source_rescue.verify_until(old, None)
+    check(old[0]["verify"] == "failed", f"入口が前年の告知を通した: {old[0]}")
 
 
 def test_assemble_verified_fact_reservation(tmp: Path):
@@ -21697,6 +21738,7 @@ def main() -> int:
     test_periods_skip_sentences()
     test_review_blocked_source_drops(tmp / "rbs")
     test_source_rescue_keeps_official_repost()
+    test_source_rescue_backs_planned_deadline_with_old_official_post()
     test_assemble_verified_fact_reservation(tmp / "avr")
     test_assemble_roundup_reservation(tmp / "arr")
     test_storylink_roundup_topic(tmp / "srt")

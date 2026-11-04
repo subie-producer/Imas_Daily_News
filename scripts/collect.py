@@ -2340,20 +2340,22 @@ def with_jst_post_time(text: str) -> str:
     return "\n".join(out)
 
 
-def check_stale(c: dict) -> str | None:
-    """鮮度切れなら理由を返す。X は Snowflake、それ以外は自己申告の published_date で判定。"""
+def check_stale(c: dict, days: int = STALE_DAYS) -> str | None:
+    """鮮度切れなら理由を返す。X は Snowflake、それ以外は自己申告の published_date で判定。
+    days は収集の新着の窓(STALE_DAYS)。計画済みの記事の出典を揃える入口(source_rescue)は、告知の原本が窓より前に出ているのが
+    当然なので(締切の当日の記事の告知は受付開始の日に出ている)、広い窓を渡す"""
     today = now_jst().date()
     posted = x_status_date(c["url"]) if is_x(c["url"]) else None
-    if posted and (today - posted).days > STALE_DAYS:
+    if posted and (today - posted).days > days:
         return f"Xポストが古い(投稿日 {posted.isoformat()})。過去の告知を新報として扱わない"
     pub = c.get("published_date")
-    if pub and (today - datetime.date.fromisoformat(pub)).days > STALE_DAYS:
+    if pub and (today - datetime.date.fromisoformat(pub)).days > days:
         return f"掲載日 {pub} が古い。過去の告知を新報として扱わない"
     return None
 
 
-def verify(cands: list[dict]) -> dict:
-    """候補の裏取り。鮮度切れは種別を問わず failed。
+def verify(cands: list[dict], stale_days: int = STALE_DAYS) -> dict:
+    """候補の裏取り。鮮度切れ(stale_days より古い。check_stale)は種別を問わず failed。
 
     以前 `confirmed` は「URL が生きている」だけを意味していた。名前が実態より
     強く、lint の側も「捏造の検査は collect の verify が担う」と書いて手を抜いていた。
@@ -2377,7 +2379,7 @@ def verify(cands: list[dict]) -> dict:
             except Exception:       # noqa: BLE001
                 priors[c["url"]] = None
         try:
-            stale = check_stale(c)
+            stale = check_stale(c, stale_days)
             if stale:
                 c["verify"] = "failed"
                 c["verify_note"] = stale

@@ -260,6 +260,7 @@ party_paths:
   - item.rakuten.co.jp/f272078-takatsuki        # 高槻市ふるさと納税
 
 party_domains:
+  - nenga.kitamura.jp     # 合議で追加: 学園アイマスとコラボした年賀状を販売する企業サイト。販売元
   - cocollabo.net         # 合議で追加: 特商法表示の販売社名。複数作品のコラボグッズを販売する通販
   - cocollabo.lol         # 合議で追加: 特商法表示の販売社名。複数作品のコラボグッズを販売する通販
   - segafave.co.jp        # 合議で追加: ALL.Net運営会社の告知。IM作品の運営・販売先として当事者
@@ -645,11 +646,19 @@ x_accounts:
     - famitsu
     - GamerNeJp
   二次情報:
+    - imas_goodscheck     # 合議で追加: 公式グッズ発売発表を伝達するグッズ情報アカウント
     - TCGsupplyNavi       # 合議で追加: TCG情報サイト。商品情報を集約・発信
     - gkmas_GR            # 合議で追加: 雑誌情報を伝達、独自取材なし
     - imasnews765
     - zutapoke
   ファン:
+    - takuyatosa1         # 合議で追加: 個人の発信。MCは運営でも作品の演者でもなく、当事者ではない
+    - shigrenium          # 合議で追加: 個人が「DIAMOND JOKER」の踊ってみた動画を投稿
+    - mario_producer      # 合議で追加: 961プロファンが対バン会場でのグッズ交流を希望
+    - illumiraitya        # 合議で追加: 個人がシャニソン3周年記念のアートを投稿
+    - hanshinMarin        # 合議で追加: 個人がシャニマスコラボカフェへの来訪を投稿
+    - arowana_sub         # 合議で追加: 個人が「POPPIN' PLANET」2DMVへの反応を投稿
+    - SunSummer_169       # 合議で追加: 個人が名刺持参のツアーファイナル参加を投稿
     - RWibo               # 合議で追加: 個人アカウントの発信。Comic FrontierでのP同士の名刺交換を投稿
     - EinhardP_yukiho     # 合議で追加: 個人アカウントによるグッズ到着の報告
     - vocaloidfan_sp      # 合議で追加: ファン記事。個人またはファンサイトの発信
@@ -971,6 +980,9 @@ x_accounts:
     - procinen1
     - yutaleP
   当事者:
+    - akiko_lawson        # 合議で追加: ローソンの『学園アイドルマスター』キャンペーン(コラボ先)
+    - Neowing_Hobby2      # 合議で追加: ホビーショップの販売元として「たぴぴょん」グッズ予約を告知
+    - DesignNagatomo      # 合議で追加: 「POPPIN' PLANET」映像の制作担当(グラフィック・リリック)
     - aikatsu_acad        # 合議で追加: 他作品(アイカツ!)の公式。ヴイアラ出演のコラボ告知の発信元
     - dmm_scratch         # 合議で追加: DMMスクラッチの公式X。一般の販売サービスとしてライセンス商品を売る販売元
     - gotokenhanbai       # 合議で追加: 五島軒の販売・コラボ先の公式発信。アイマス公式ではない

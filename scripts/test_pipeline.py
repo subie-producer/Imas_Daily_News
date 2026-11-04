@@ -1504,6 +1504,53 @@ def test_grok_verify_keeps_what_it_counts(tmp: Path):
     check(not notes, f"深掘りで事実なしの投稿を失ったと通知した: {notes}")
 
 
+def test_lost_post_hidden_not_notified(tmp: Path):
+    """誰にも公開されていない X の投稿(鍵のかかったアカウント・削除済み)は、深掘りまで読めなくても「失った」と通知しない
+    (当番 2026-11-05 collect: shiny 面の引用元 x.com/i/status/2118024523262099512 は鍵のかかったアカウントで、
+    X の oEmbed は 403「not authorized to see this status」。確かめ役は unreadable と答えるしかなく、喪失として当番を呼んだ)。
+    公開の投稿・確かめられない応答(5xx・通信の失敗)・崩れた候補の投稿は、従来どおり名指しする。"""
+    import collect, io, urllib.error
+    asked = []
+    def fake_open(req, timeout=None):
+        u = req.full_url if hasattr(req, "full_url") else req
+        asked.append(u)
+        pid = re.search(r"status%2F(\d+)", u).group(1)
+        if pid == "1":
+            raise urllib.error.HTTPError(u, 403, "Forbidden", {}, io.BytesIO(
+                b'{"error":"Sorry, you are not authorized to see this status.","request":"/oembed"}'))
+        if pid == "2":
+            raise urllib.error.HTTPError(u, 404, "Not Found", {}, io.BytesIO(b"<html></html>"))
+        if pid == "3":
+            raise urllib.error.HTTPError(u, 503, "Unavailable", {}, io.BytesIO(b""))
+        if pid == "6":
+            raise urllib.error.HTTPError(u, 403, "Forbidden", {}, io.BytesIO(b"blocked"))
+        class R:
+            def __enter__(self): return self
+            def __exit__(self, *a): return False
+            def read(self, n=-1): return b'{"author_url":"https://x.com/a"}'
+        return R()
+    notes = []
+    blk = lambda u: f"### n\n- url: {u}\n- 本文: (取得できず)"
+    lost = [(blk("https://x.com/i/status/1"), "結果に無い"), (blk("https://x.com/a/status/2"), "結果に無い"),
+            (blk("https://x.com/a/status/3"), "結果に無い"), (blk("https://x.com/a/status/4"), "結果に無い"),
+            (blk("https://x.com/a/status/5"), "候補の形が崩れていた"), (blk("https://x.com/a/status/6"), "結果に無い")]
+    saved = (collect.notify, pipelib.urllib.request.urlopen)
+    try:
+        collect.notify = lambda job, msg, ok=True, require=False: notes.append(msg) or True
+        pipelib.urllib.request.urlopen = fake_open
+        collect.report_lost_posts({"lost": {"shiny": lost, "cg": [(blk("https://x.com/b/status/1"), "結果に無い")]},
+                                   "settled": set(), "blocked": set(), "broken": {"x:5"}})
+    finally:
+        collect.notify, pipelib.urllib.request.urlopen = saved
+    msg = "\n".join(notes)
+    check(len(notes) == 1 and "status/1" not in msg and "status/2" not in msg,
+          f"鍵のかかったアカウント・削除済みの投稿を「失った」と通知した: {notes}")
+    check(all(f"status/{i}" in msg for i in (3, 4, 5, 6)),
+          f"公開・確かめられない・崩れた候補の投稿を名指ししない: {notes}")
+    check(sum("status%2F1" in u for u in asked) == 1 and not any("status%2F5" in u for u in asked),
+          f"同じ投稿を2度問い合わせた・崩れた候補の投稿まで問い合わせた: {asked}")
+
+
 def test_lost_post_notified_once(tmp: Path):
     """X の投稿の喪失は、深掘りの確かめまで終えた最終結果で、投稿ごとに1度だけ通知する(当番の指摘 11fc3de74b。
     実測 2026-10-07: 通常の確かめで読めなかった投稿を深掘り前に通知し、深掘りでも読めずにもう一度通知した)。
@@ -21727,6 +21774,7 @@ def main() -> int:
     test_grok_verify_keeps_new_announcement_separate()
     test_restore_chained_reservation_facts(tmp / "rcf")
     test_lost_post_notified_once(tmp / "lpn")
+    test_lost_post_hidden_not_notified(tmp / "lph")
     test_grok_verify_keeps_what_it_counts(tmp / "gvk")
     test_grok_deep_retry(tmp / "gdr")
     test_review_failed_changed_article(tmp / "rfc")

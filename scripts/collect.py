@@ -49,7 +49,7 @@ from pipelib import (ENV, ROOT, COLLECT_MODEL, CODEX_WRITE_MODEL, EXPLORE_MODEL,
                      anomaly, anomaly_shape, http_status, whywhy_exempt_status, checkout_edition_branch, classify_retag_lint, collect_oncall_end, commit_and_push, diagnose_anomalies,
                      edition_date, mark_collect_oncall, write_checked, write_atomic, COLLECT_OUTPUTS, settle_collect_outputs,
                      extract_json_array, git, notify, notify_crash, now_jst, prompt_part, render_prompt,
-                     X_ANON_POST, x_post_author, x_status_time, align_x_published_date,
+                     X_ANON_POST, x_post_author, x_post_hidden, x_status_time, align_x_published_date,
                      CLI_BLOCKED, CLI_BLOCKED_EXIT, CLI_STOPPED, CliBlocked, cli_blocked_reason, cli_check, grok_session_reasons,
                      scratch_dir, link_key, polite_urlopen)
 from storylink import url_key
@@ -1585,11 +1585,23 @@ def report_lost_posts(ledger: dict) -> None:
         left = [b for b, _ in ledger["lost"].pop(key) if not (post_url(b) and post_key(post_url(b)) in done)]
         if left:
             keep_pending_posts(key, "\n\n".join(left))
+    hidden: dict[str, str] = {}     # 投稿の鍵 → 誰にも公開されていない理由(""=公開・確かめられない)
     for key in sorted(ledger["lost"]):
         for b, why in ledger["lost"][key]:
             u = post_url(b)
             if u and post_key(u) in done:
                 continue
+            # 鍵のかかったアカウント・削除済みの投稿は、誰にも本文が読めない(失う X の動きが無い)。確かめ役は unreadable と
+            # 答えるしかなく、深掘りでも読めない(2026-11-05 の shiny 面: 引用元が鍵のかかったアカウント)。X に確かめて記録だけ残す。
+            # ただし崩れた候補を候補にしなかった投稿(broken)は、確かめ役が読めた投稿なので名指しする
+            k = post_key(u) if u else ""
+            if k.startswith("x:") and k not in (ledger.get("broken") or set()):
+                if k not in hidden:
+                    hidden[k] = x_post_hidden(k.removeprefix("x:"))
+                    if hidden[k]:
+                        print(f"grok: {u}(面: {key})は{hidden[k]}で、誰にも本文が読めない(失った X の動きではない)", flush=True)
+                if hidden[k]:
+                    continue
             row = rows.setdefault(post_key(u) or b, [u or "(投稿に分けられない書き出し) " + b[:80], [], []])
             for lst, v in ((row[1], key), (row[2], why)):
                 if v not in lst:

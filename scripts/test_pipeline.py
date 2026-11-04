@@ -6305,8 +6305,10 @@ def test_collect_oncall_rerun_exit(tmp: Path):
         sys.argv = list(argv)
         check(collect.main() == 1, "拾い直しで読めないバッチが残ったのに成功(0)で終えた")
         # 実行記録に開始と起動のされ方を載せる。取り直しは定時の回の代わりにならない(組版の collect_slot_gaps が見分ける)
-        check(len(metrics) == 1 and metrics[0][1].get("trigger") == "oncall" and isinstance(metrics[0][1].get("started_at"), str)
-              and metrics[0][1].get("edition") == "2026-09-13", f"実行記録に開始・起動のされ方(当番の取り直し)が無い: {metrics}")
+        # (必須段の所要の記録 collect_required は別の種類。実行記録は collect の1件)
+        runs = [m for m in metrics if m[0] == "collect"]
+        check(len(runs) == 1 and runs[0][1].get("trigger") == "oncall" and isinstance(runs[0][1].get("started_at"), str)
+              and runs[0][1].get("edition") == "2026-09-13", f"実行記録に開始・起動のされ方(当番の取り直し)が無い: {metrics}")
         saved_inv = os.environ.get("INVOCATION_ID")
         try:
             os.environ["INVOCATION_ID"] = "test"
@@ -10296,7 +10298,7 @@ def test_classify_retag_without_judge(tmp: Path):
     # 組版・収集: 合議の失敗のあと、合議なしの付け直しを掛け直す
     calls = []
 
-    def fake(date, posts_only=False, lint_base="origin/main", timeout=1800, lint=True, require_parsers=False, judge=True):
+    def fake(date, posts_only=False, lint_base="origin/main", timeout=1800, lint=True, require_parsers=False, judge=True, deadline=None):
         calls.append(judge)
         return (False, "合議 exit 1: 割れた") if judge else (True, "")
     saved_c = (compose.classify_retag_lint, compose.notify, compose.run_lint, compose.escalate, compose.commit_and_push)
@@ -18663,7 +18665,8 @@ def test_http429_retry(tmp: Path):
                 return subprocess.CompletedProcess(argv, 75, "", "RENDER_FAILED: HTTP 429 url=- retry-after=1\n")
             return subprocess.CompletedProcess(argv, 0, "<html>" + "描画した本文。" * 100 + "</html>", "")
         pipelib.run_group = render_429_then_ok
-        collect.DEADLINE = _time.time() - 1
+        # 締切の直前に始めた裏取り(締切を過ぎてからは新しく始めない: test_collect_stage_order)。描画は切らず、429 の待ちは締切で切る
+        collect.DEADLINE = _time.time() + 0.2
         t0 = _time.time()
         cands = [cand_row("vr1", "http://verify-render.example/frame-1", via="watch")]
         try:
@@ -21413,6 +21416,231 @@ def test_units_bound_memory_and_report_failure(tmp: Path):
     check(handed == ["watch"], f"当番に渡したことを走行の記録に残さない(通知の unit が当番を重ねる): {handed}")
 
 
+def test_collect_stage_order(tmp: Path):
+    """収集の段の順と時間の予約(編集長 2026-11-04「そもそも時間制限のかけ方が悪いんじゃねーの？」。02:00 の回で発行済み記事の出典の
+    見回りが17分を使い、判定表の更新が締切の残り142秒で時間切れになった。10/29〜11/04 の6回):
+    1. 号に要る段(素材の集め・裏取り・保存・判定表の更新〜付け直し〜lint・commit)が先、出典の見回りは commit のあとの最後
+    2. 前段は、締切から必須段の見込み(REQUIRED_RESERVE_SEC)を引いた締切で切る。必須段・見回りは締切そのもの(延ばさない)まで
+    3. 組版直前の回(02:00)は見回らない。一巡の日数は残りの回で数える(watch_runs_per_day)
+    4. 見回りの「出典の更新」の素材は、確定(commit)できるまで控え(pending)に残り、次の回に1度だけ保存される"""
+    import contextlib
+    import datetime as _dt
+    import io
+    import time
+    import types
+    import collect
+    import source_watch as sw
+    tmp.mkdir(parents=True, exist_ok=True)
+    # 3. 定時の時刻(本物の timer の定義): 次の定時工程が組版なのは 02:00 の収集だけ。見回る回は1日4回で、一巡は2日に収まる
+    at = lambda h, m: _dt.datetime(2026, 11, 4, h, m, 30, tzinfo=pipelib.JST)
+    before = {hm: pipelib.next_slot_is("compose", at(*hm)) for hm in pipelib.timer_times("collect")}
+    check(before == {(2, 0): True, (7, 30): False, (12, 30): False, (18, 30): False, (23, 30): False},
+          f"組版直前の収集の見分けが違う: {before}")
+    check(sw.watch_runs_per_day(pipelib.ROOT) == 4, f"見回る回の数が違う: {sw.watch_runs_per_day(pipelib.ROOT)}")
+    plan = sw.recheck_plan([{"urls": []}], at(7, 30), sw.watch_runs_per_day(pipelib.ROOT))
+    check(plan["runs_per_day"] == 4, f"見回りの計画が組版直前の回も数えた: {plan['runs_per_day']}")
+    saved_env = os.environ.get("IMAS_PAGE_ARCHIVE")
+    os.environ["IMAS_PAGE_ARCHIVE"] = str(tmp / "pages")
+    names = ("DEADLINE", "DEADLINE_HARD", "run_watch", "run_explores", "normalize", "ingest_spools", "verify", "merge_into_day_file",
+             "append_metric", "needs_classify", "classify_then_retag", "commit_collect", "watch_sources", "now_jst", "classify_retag_lint")
+    saved = {k: getattr(collect, k) for k in names}
+    log: list = []
+    seen: dict = {}
+    commits = {"fail_at": None, "n": 0}
+    saved_p = (list(pipelib.ANOMALIES), pipelib._ESCALATED)     # 確定の失敗の通知(異常の台帳)を後のテストへ漏らさない
+    upd = lambda i: {"id": f"update-{i}", "url": f"https://audit.example/upd-{i}", "title": f"出典の更新 {i}"}
+
+    def stage(name, ret):
+        def f(*a, **k):
+            log.append(name)
+            seen[name] = collect.DEADLINE
+            return ret(*a) if callable(ret) else ret
+        return f
+
+    def merge(cs, day):
+        log.append(("merge", sorted(c["id"] for c in cs if c.get("id", "").startswith("update-"))))
+        return len(cs)
+
+    def commit(branch, msg):
+        commits["n"] += 1
+        log.append("commit")
+        return commits["n"] != commits["fail_at"]
+
+    def watch(late=lambda: False):
+        """見回りの偽物: process_changes と同じく、通った変化を控え(pending)に入れてから、控えの全部を返す"""
+        log.append("watch_sources")
+        seen["watch_sources"] = collect.DEADLINE
+        st = sw.load_state()
+        for c in seen.pop("new_updates", []):
+            st["pending"][c["id"]] = c
+        sw.save_state(st)
+        return sw.pending_candidates()
+
+    def run(hm, fail_at=None, new=()):
+        log.clear()
+        seen.clear()
+        seen["new_updates"] = list(new)
+        commits.update(fail_at=fail_at, n=0)
+        collect.now_jst = lambda: at(*hm)
+        collect.DEADLINE = collect.DEADLINE_HARD = time.time() + 3600
+        args = types.SimpleNamespace(skip_watch=False, skip_explore=False, skip_grok=True, force_grok=False, no_git=False, oncall_rerun=False)
+        out = io.StringIO()
+        with contextlib.redirect_stdout(out):
+            code = collect.run_collect(args, "2026-11-05", "edition/2026-11-05", time.time())
+        return code, out.getvalue()
+    try:
+        collect.run_watch = stage("run_watch", ([], {"stats": {}}))
+        collect.run_explores = stage("run_explores", ([{"url": "https://audit.example/new", "title": "新着"}], {}))
+        collect.normalize = lambda x: list(x)
+        collect.ingest_spools = lambda cs: 0
+        collect.verify = stage("verify", {"confirmed": 1, "unconfirmed": 0, "failed": 0})
+        collect.merge_into_day_file = merge
+        collect.append_metric = lambda kind, data: log.append(("metric", kind))
+        collect.needs_classify = lambda cs: True
+        collect.classify_then_retag = stage("classify", (True, ""))
+        collect.commit_collect = commit
+        collect.watch_sources = watch
+        pipelib.set_quiet(True)
+        sw.save_state({"marks": {}, "tries": {}, "pending": {"update-p1": upd("p1")}})    # 前の回が確定の前に止まった素材
+        # 1・2. 07:30 の回: 号に要る段を先に確定し、見回りは最後。前段は予約を残した締切、必須段・見回りは締切そのもの
+        code, out = run((7, 30), new=[upd("p2")])
+        hard = collect.DEADLINE_HARD
+        order = [x if isinstance(x, str) else x[0] if x[0] == "merge" else f"metric:{x[1]}" for x in log]
+        want = ["run_watch", "run_explores", "verify", "merge", "metric:collect", "classify", "metric:collect_required", "commit",
+                "watch_sources", "merge", "commit"]
+        check(code == 0 and order == want, f"収集の段の順が違う(見回りは号に要る段の確定のあと): {code} {order}")
+        check(all(abs(seen[k] - (hard - collect.REQUIRED_RESERVE_SEC)) < 1 for k in ("run_watch", "run_explores", "verify")),
+              f"前段が必須段の見込みを残した締切で切られていない: {[(k, seen[k] and int(hard - seen[k])) for k in ('run_watch', 'run_explores', 'verify')]}")
+        check(seen["classify"] == hard and seen["watch_sources"] == hard, "必須段・見回りに収集の締切そのものを渡さない")
+        merges = [x[1] for x in log if isinstance(x, tuple) and x[0] == "merge"]
+        check(merges == [["update-p1"], ["update-p2"]] and sw.pending_candidates() == [],
+              f"出典の更新の素材を失った・二重に保存した: {merges} 控え {[c['id'] for c in sw.pending_candidates()]}")
+        # 4. 見回りのあとの確定に失敗: 素材は控えに残り(非0で終える)、次の回(02:00。見回らない)の必須段が1度だけ保存して外す
+        code, out = run((7, 30), fail_at=2, new=[upd("p3")])
+        check(code == 1 and [c["id"] for c in sw.pending_candidates()] == ["update-p3"],
+              f"確定できなかった見回りの素材を控えから外した: {code} {[c['id'] for c in sw.pending_candidates()]}")
+        code, out = run((2, 0))
+        merges = [x[1] for x in log if isinstance(x, tuple) and x[0] == "merge"]
+        check(code == 0 and "watch_sources" not in log and merges == [["update-p3"]] and sw.pending_candidates() == []
+              and "組版の直前の回" in out, f"02:00 の回が見回った・控えの素材を保存しない: {code} {log} {out[-300:]!r}")
+        # 号の素材の確定に失敗したら、控えは外さない
+        sw.save_state({"marks": {}, "tries": {}, "pending": {"update-p4": upd("p4")}})
+        code, out = run((2, 0), fail_at=1)
+        check(code == 1 and [c["id"] for c in sw.pending_candidates()] == ["update-p4"], "確定できなかった回に控えの素材を外した")
+        # 2. 裏取りは前段の締切を過ぎたら新しく読み直さない(Sol 監査 r2)。時間切れだけで failed にせず、収集時点の原本があれば照らす
+        import page_archive as pa
+        quote = "新しいアクリルスタンドを11月3日から受注販売します。価格は3000円です。"
+        pa.save("https://audit.example/kept", "公式の本文。" + quote, via="read", at="2026-11-04T01:00:00+09:00")
+        cand = lambda u: {"url": u, "title": "告知", "via": "explore", "source_type": "公式", "brand": "cg",
+                          "facts": ["価格は3000円"], "quotes": [quote]}
+        cs = [cand("https://audit.example/kept"), cand("https://audit.example/none")]
+        opened: list = []
+        saved_v = (collect.polite_urlopen, collect.rendered_or_note)
+        try:
+            collect.polite_urlopen = lambda req, **k: opened.append(getattr(req, "full_url", req)) or (_ for _ in ()).throw(OSError("通信しない"))
+            collect.rendered_or_note = lambda u, **k: opened.append(u) or ("", "通信しない")
+            collect.DEADLINE = time.time() - 1
+            counts = saved["verify"](cs)
+        finally:
+            collect.polite_urlopen, collect.rendered_or_note = saved_v
+        check(not opened and counts == {"confirmed": 0, "unconfirmed": 2, "failed": 0}
+              and cs[0].get("archived_at", "").startswith("2026-11-04T01:00") and "締切" in cs[1].get("verify_note", ""),
+              f"前段の締切のあとに裏取りを始めた・時間切れで落とした: {opened} {counts} {[(c['verify'], c.get('verify_note')) for c in cs]}")
+        # 締切の前に始めた裏取りも、少しずつ届いて終わらない応答は1件の所要(VERIFY_FETCH_SEC)で見切る(Sol 監査 r3)。途中までの本文で
+        # 写しを照らして取り違え(failed)にしない
+        class Drip:
+            status, headers = 200, types.SimpleNamespace(get_content_charset=lambda: "utf-8")
+            __enter__ = lambda self: self
+            __exit__ = lambda self, *a: False
+            geturl = lambda self: "https://audit.example/drip"
+
+            def read(self, n=-1):
+                time.sleep(3)       # 本物なら 15秒未満の間隔で1字ずつ届き続ける応答
+                return b"<p>" + quote.encode() + b"</p>"
+        cs = [cand("https://audit.example/drip")]
+        saved_v = (collect.polite_urlopen, collect.VERIFY_FETCH_SEC)
+        try:
+            collect.polite_urlopen = lambda req, **k: Drip()
+            collect.VERIFY_FETCH_SEC = 0.3
+            collect.DEADLINE = time.time() + 3600
+            t0 = time.time()
+            counts = saved["verify"](cs)
+            spent = time.time() - t0
+        finally:
+            collect.polite_urlopen, collect.VERIFY_FETCH_SEC = saved_v
+        check(spent < 2 and counts == {"confirmed": 0, "unconfirmed": 1, "failed": 0} and "終わらない" in cs[0].get("verify_note", ""),
+              f"終わらない応答の裏取りを見切らない・落とした: {spent:.1f}秒 {counts} {cs[0].get('verify_note')}")
+        # 5xx の本文(メンテナンスの画面かの判定に読む)が少しずつ届くときも、同じ見切りの内で済ませる(Sol 監査 r4)
+        import email.message
+        import urllib.error
+
+        class SlowBody:
+            def read(self, n=-1):
+                time.sleep(3)
+                return "<p>ただいまメンテナンス中です</p>".encode()
+
+            def close(self):
+                pass
+
+        def slow_503(req, **k):
+            raise urllib.error.HTTPError("https://audit.example/slow503", 503, "busy", email.message.Message(), SlowBody())
+        cs = [cand("https://audit.example/slow503")]
+        saved_v = (collect.polite_urlopen, collect.VERIFY_FETCH_SEC)
+        try:
+            collect.polite_urlopen = slow_503
+            collect.VERIFY_FETCH_SEC = 0.3
+            collect.DEADLINE = time.time() + 3600
+            t0 = time.time()
+            counts = saved["verify"](cs)
+            spent = time.time() - t0
+        finally:
+            collect.polite_urlopen, collect.VERIFY_FETCH_SEC = saved_v
+        check(spent < 2 and counts == {"confirmed": 0, "unconfirmed": 1, "failed": 0},
+              f"5xx の本文の受信を見切らない・落とした: {spent:.1f}秒 {counts} {cs[0].get('verify_note')}")
+        # 3. 判定表の合議は、失敗したあとの付け直し・lint の分(RETAG_RESERVE_SEC)を残して切る
+        got: list = []
+        collect.classify_then_retag = saved["classify_then_retag"]
+        collect.classify_retag_lint = lambda date, timeout, judge=True, deadline=None: (got.append((judge, timeout, deadline)),
+                                                                                        (False, "合議の時間切れ"))[1]
+        collect.DEADLINE = time.time() + 300
+        collect.classify_then_retag("2026-11-05")
+        check(len(got) == 2 and abs(got[0][1] - (300 - collect.RETAG_RESERVE_SEC)) <= 2 and got[1][0] is False
+              and got[1][1] >= collect.RETAG_RESERVE_SEC - 2, f"合議が付け直し・lint の時間を残さない: {got}")
+        check(all(g[2] == collect.DEADLINE for g in got), f"判定表の取引に収集の締切を渡さない: {got}")
+        # 取引の中の付け直し・lint も締切を越えて待たない(Sol 監査 r1: timeout は合議にしか効かず、付け直し 600秒・lint 600秒以上を使えた)
+        (tmp / "root" / "docs" / "_posts").mkdir(parents=True, exist_ok=True)
+        (tmp / "root" / "source_types.yml").write_text("official_domains:\n  - a.example\n", encoding="utf-8")
+        limits: list = []
+        saved_t = (pipelib._txn_run, pipelib.ROOT, os.environ.get("IMAS_SCRATCH"))
+        try:
+            pipelib.ROOT = tmp / "root"
+            os.environ["IMAS_SCRATCH"] = str(tmp / "scratch")
+            pipelib._txn_run = lambda step, limit: (limits.append((Path(str(step[1])).name, limit))
+                                                    or subprocess.CompletedProcess(step, 0, "", ""))
+            ok, why = pipelib.classify_retag_lint("2026-11-05", timeout=1800, deadline=time.time() + 50)
+            check(ok and [n for n, _ in limits] == ["classify_sources.py", "retag_sources.py", "lint.py"]
+                  and all(lim <= 50 for _, lim in limits), f"取引の段が締切を越えて待てる: {ok} {why} {limits}")
+            limits.clear()
+            ok, why = pipelib.classify_retag_lint("2026-11-05", judge=False, deadline=time.time() - 1)
+            check(not ok and not limits and "締切" in why, f"締切を過ぎてから取引の段を始めた: {ok} {why} {limits}")
+        finally:
+            pipelib._txn_run, pipelib.ROOT = saved_t[:2]
+            if saved_t[2] is None:
+                os.environ.pop("IMAS_SCRATCH", None)
+            else:
+                os.environ["IMAS_SCRATCH"] = saved_t[2]
+    finally:
+        pipelib.set_quiet(False)
+        for k, v in saved.items():
+            setattr(collect, k, v)
+        pipelib.ANOMALIES[:] = saved_p[0]
+        pipelib._ESCALATED = saved_p[1]
+        if saved_env is None:
+            os.environ.pop("IMAS_PAGE_ARCHIVE", None)
+        else:
+            os.environ["IMAS_PAGE_ARCHIVE"] = saved_env
+
+
 def main() -> int:
     tmp = Path(tempfile.mkdtemp(prefix="imas-test-"))
     test_assemble_run_returns_reservations(tmp / "arrr")
@@ -21448,6 +21676,7 @@ def main() -> int:
     test_oncall_judged_not_rejudged(tmp / "ojn")
     test_http503_not_whywhy(tmp / "h503")
     test_http503_collect_run(tmp / "h503c")
+    test_collect_stage_order(tmp / "cso")
     test_http429_retry(tmp / "h429")
     test_oncall_recover_keeps_handed_exit(tmp / "orh")
     test_cli_block_detect_and_post(tmp / "cbd")

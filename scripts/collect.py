@@ -55,7 +55,7 @@ from pipelib import (ENV, ROOT, COLLECT_MODEL, CODEX_WRITE_MODEL, EXPLORE_MODEL,
 from storylink import url_key
 import page_archive
 # モデル・道具のセッションの起動と回収(自前のプロセスグループ。時間切れ・中断では子孫まで止める)
-from pipelib import PAGE_READ_BYTES, STOPPING, exit_on_term, finish_group, next_slot_end, run_group, start_group, stop_groups
+from pipelib import PAGE_READ_BYTES, STOPPING, exit_on_term, finish_group, next_slot_end, next_slot_is, run_group, start_group, stop_groups
 
 
 def page_key(url) -> str | None:
@@ -129,8 +129,17 @@ GROK_EFFORT = ENV.get("GROK_EFFORT", "medium")
 # 使い方そのものが原因だったとみている(いずれも実測に基づく)。
 STATE_PATH = ROOT / "stock" / "watch-state.json"
 UA = "Mozilla/5.0 (compatible; ImasNewsCollect/1.0)"
-# 収集のモデル・道具のセッションを打ち切る絶対時刻(epoch 秒。collect_deadline で main が起動時に決める)。None なら締切なし
+# 収集の締切(epoch 秒。collect_deadline で main が起動時に決める。02:00 の回なら 02:45)。None なら締切なし。延ばさない
+DEADLINE_HARD: float | None = None
+# いまの段のモデル・道具のセッションを打ち切る絶対時刻(stage_deadline で段ごとに決める)。None なら締切なし
 DEADLINE: float | None = None
+# 素材の集め・裏取り(前段)に使わせない、後ろの必須段(判定表の更新〜紙面の種別の付け直し〜lint・commit)の見込みの時間(秒)。
+# 実測(2026-10-01〜11-04 の定時の収集。素材の保存のあと〜終了): 最長 215秒(10/07 02:00)、02:00 の回は 109〜215秒。
+# 締切の残りが 136〜163秒だった回に、判定表の更新が時間切れになった(10/29〜11/04 の6回)。最長の3倍弱を固定で予約する。
+# 所要は metrics の collect_required に回ごとに残す(見直しはその記録で)
+REQUIRED_RESERVE_SEC = 600
+# 判定表の更新(合議)に使わせない、合議が失敗したあとの付け直し・lint の時間(秒。実測 約20秒: 11/01 02:45)
+RETAG_RESERVE_SEC = 120
 # 定点観測の facts 化を、収集の締切で始めなかった・打ち切った(claude_exec の戻り。読めなかった None とは別で、回数に数えない)
 DEADLINE_CUT = object()
 
@@ -165,9 +174,25 @@ def deadline_passed() -> bool:
     return bool(DEADLINE) and time.time() >= DEADLINE
 
 
-def session_left(cap: float) -> float:
-    """セッションに待たせてよい秒数。収集の締切を越えない(過ぎていれば 0 = 待たずに止める)。"""
-    return cap if not DEADLINE else max(0.0, min(cap, DEADLINE - time.time()))
+def session_left(cap: float, reserve: float = 0.0) -> float:
+    """セッションに待たせてよい秒数。いまの段の締切から reserve 秒を残す(過ぎていれば 0 = 待たずに止める)。"""
+    return cap if not DEADLINE else max(0.0, min(cap, DEADLINE - reserve - time.time()))
+
+
+def stage_deadline(reserve: float) -> None:
+    """いまの段の締切を、収集の締切から後ろの必須段の見込み(reserve 秒)を引いた時刻にする(締切が無ければ無いまま)。
+    前段は reserve を食えない。必須段は reserve=0 で収集の締切まで使う(編集長 2026-11-04「そもそも時間制限のかけ方が悪いんじゃねーの？」)"""
+    global DEADLINE
+    DEADLINE = DEADLINE_HARD - reserve if DEADLINE_HARD else None
+
+
+def watch_this_run(now: datetime.datetime | None = None) -> bool:
+    """この回で発行済み記事の出典の見回り(recheck・process_changes)をするか。締切のある定時の回のうち、次の定時工程が組版の回
+    (02:00。組版直前)はしない(見回りは号に要らない後回しの段。一巡の日数は残りの回で守る: source_watch.watch_runs_per_day)。
+    締切の無い実行(手で回した)はする"""
+    if not DEADLINE_HARD:
+        return True
+    return not next_slot_is("compose", now or now_jst())
 X_HOSTS = ("x.com", "twitter.com")
 
 # 候補1件のスキーマと編集規程。標準出力に吐かせる場合(Claude)とファイルに書かせる場合
@@ -217,6 +242,50 @@ def watch_get(url: str, timeout: float) -> tuple[bytes, str | None]:
     t.join(max(0.0, DEADLINE - time.time()))
     if t.is_alive():
         raise TimeoutError("収集の締切を過ぎたので受信を打ち切った")
+    if "e" in box:
+        raise box["e"]
+    return box["v"]
+
+
+# 裏取りの取得1件(接続・ヘッダー・本文)の所要の上限(秒。締切のある回だけ)。始めた裏取りは前段の締切で切らないが、少しずつ届く応答で
+# 必須段の予約(REQUIRED_RESERVE_SEC)を食わないよう、1件の所要で見切る(2026-11-04 Sol 監査 r3)。裏取りは1件ずつなので、締切の
+# 直前に始めた1件の所要は、取得のこの上限と描画(1回 30秒・429 の待ちは締切まで)を足しても予約に収まる
+VERIFY_FETCH_SEC = 60
+
+
+class VerifyFetchTimeout(TimeoutError):
+    """裏取りの取得が VERIFY_FETCH_SEC で終わらなかった(今は確かめられないだけ。URL の取り違えにしない)。"""
+
+
+def verify_fetch(req) -> tuple[int, bytes, str | None, str]:
+    """裏取りの取得: (状態コード, 本文(PAGE_READ_BYTES まで。4xx・5xx は空), 文字コード, 最終 URL)。HTTPError はそのまま上げ、
+    5xx ならメンテナンスの画面か(本文を読んで判定)を例外の maintenance に付ける(本文の受信も見切りの内で済ませる。Sol 監査 r4)。
+    締切のある回は別スレッドで取り、VERIFY_FETCH_SEC で見切って VerifyFetchTimeout を上げる(見切ったスレッドは socket の待ち時間で
+    終わり、何も書かない: watch_get と同じ)。締切が無ければこのスレッドで取る"""
+    def get() -> tuple[int, bytes, str | None, str]:
+        # 間隔をあけ、429 は Retry-After を守って取り直す。429 の待ちは収集の締切を越えない
+        try:
+            with polite_urlopen(req, timeout=15, wait_deadline=DEADLINE) as res:
+                st = int(getattr(res, "status", None) or 200)
+                return st, (res.read(PAGE_READ_BYTES) if st < 400 else b""), res.headers.get_content_charset(), res.geturl()
+        except urllib.error.HTTPError as e:
+            e.maintenance = maintenance_http_error(e)      # 本文を読むので1回だけ(呼び出し側は読み直さない)
+            raise
+    if not DEADLINE:
+        return get()
+    import threading
+    box: dict = {}
+
+    def run():
+        try:
+            box["v"] = get()
+        except BaseException as e:      # noqa: BLE001  呼び出し側へ渡す
+            box["e"] = e
+    t = threading.Thread(target=run, daemon=True)
+    t.start()
+    t.join(VERIFY_FETCH_SEC)
+    if t.is_alive():
+        raise VerifyFetchTimeout(f"出典の取得が {VERIFY_FETCH_SEC}秒で終わらない")
     if "e" in box:
         raise box["e"]
     return box["v"]
@@ -287,7 +356,8 @@ def fetch_rendered(url: str, timeout: int = 30, limit: float | None = None, wait
 def watch_limit(cap: float) -> float | None:
     """定点観測の取得(一覧・本文・描画)に待ってよい秒数。収集の締切が無ければ None(各取得の既定の上限だけ)。
     締切を過ぎたあとに描画を始めて、組版へ引き渡す時刻を越えない(監査指摘 2026-10-14: 締切後に新着48件の描画を起動した)。
-    裏取り(verify)は締切で切らない(描画できずに写しを照合できないと、正しい候補を取り違えとして使えなくする)"""
+    裏取り(verify)の取得・描画は途中で切らない(描画できずに写しを照合できないと、正しい候補を取り違えとして使えなくする)。
+    締切を過ぎたら新しい候補の読み直しを始めないだけ(verify)"""
     return session_left(cap) if DEADLINE else None
 
 
@@ -2303,6 +2373,13 @@ def verify(cands: list[dict]) -> dict:
                 continue
             if is_x(c["url"]):
                 c["verify"] = "confirmed" if (c["via"] == "grok" and c["source_type"] == "公式") else "unconfirmed"
+            elif deadline_passed():
+                # 前段の締切(収集の締切から必須段の見込みを引いた時刻: stage_deadline)を過ぎたら、新しく読み直さない(必須段の時間を
+                # 食わない。2026-11-04 Sol 監査 r2)。始めた読み直しは途中で切らない(取得 15秒・描画の上限で終わり、予約に収まる。途中で切ると
+                # 写しを照合できず、正しい候補を取り違えとして落とす)。時間切れだけでは failed にせず、収集時点の原本があれば照らす
+                if not archived_check(c, "収集の締切で裏取りを打ち切った", base=priors.get(c["url"]) or {}):
+                    c["verify"] = "unconfirmed"
+                    c["verify_note"] = "収集の締切で裏取りを打ち切り、出典を読み直していない(facts を本文で確かめていない)"
             else:
                 # 素の取得に 429 を返すサイト(browser_only)は urllib で叩かず、描画した本文で照合する(2026-10-26 編集長
                 # 「429を出すようなアクセスはするな。Chromeを使え。」)。描画できなければ、今は確かめられないだけ(メンテナンスと同じ扱い)
@@ -2328,13 +2405,21 @@ def verify(cands: list[dict]) -> dict:
                         c["render_error"] = why[:300]
                         counts[c["verify"]] += 1
                         continue
-                    res = None
+                    st = 200
                     ok, body, cs, final = True, html.encode("utf-8", "replace"), "utf-8", RENDER_FINAL.get(c["url"]) or c["url"]
                 else:
                     req = urllib.request.Request(c["url"], headers={"User-Agent": UA})
                     try:
-                        # 間隔をあけ、429 は Retry-After を守って取り直す。429 の待ちは収集の締切を越えない(裏取り自体は締切で切らない)
-                        opened = polite_urlopen(req, timeout=15, wait_deadline=DEADLINE)
+                        # 取得1件の所要は VERIFY_FETCH_SEC で見切る(締切のある回)。429 の待ちは収集の締切を越えない
+                        st, body, cs, final = verify_fetch(req)
+                    except VerifyFetchTimeout as e:
+                        # 少しずつ届く応答で終わらない: 今は確かめられないだけ(途中までの本文で写しを照らして取り違えにしない)。
+                        # 収集時点の原本があれば照らす
+                        if not archived_check(c, str(e), base=priors.get(c["url"]) or {}):
+                            c["verify"] = "unconfirmed"
+                            c["verify_note"] = f"{e}ため、facts を本文で確かめられない"[:300]
+                        counts[c["verify"]] += 1
+                        continue
                     except urllib.error.HTTPError as e:
                         # 取り直しの上限を超えても 429 なら、今は確かめられないだけ(URL の取り違えではない。failed にしない)
                         if e.code == 429:
@@ -2344,18 +2429,14 @@ def verify(cands: list[dict]) -> dict:
                             continue
                         # 転送せずに 5xx でメンテナンスの画面を返すサイト(2026-10-23: ランティスの 503)も、今は確かめられないだけ。
                         # 404・メンテナンスの表示の無い 5xx は従来どおり取得できない(failed)
-                        if not maintenance_http_error(e):
+                        if not getattr(e, "maintenance", False):     # verify_fetch が見切りの内で判定した
                             raise
                         c["verify"] = "unconfirmed"
                         c["verify_note"] = f"出典がメンテナンス中(HTTP {e.code} でメンテナンスの画面)で、facts を本文で確かめられない"
                         note_archived(c, priors.get(c["url"]))
                         counts["unconfirmed"] += 1
                         continue
-                    with opened as res:
-                        ok = res.status < 400
-                        body = res.read(PAGE_READ_BYTES) if ok else b""
-                        cs = res.headers.get_content_charset()
-                        final = res.geturl()
+                    ok = st < 400
                 # メンテナンス画面へ転送されたら、案内は出典の本文ではない。写しが無いのは URL の取り違えではなく、今は確かめられないだけ
                 # (failed にすると、メンテナンスのあいだに集めた公式の候補を使えなくする)
                 if ok and maintenance_redirect(c["url"], final):
@@ -2377,7 +2458,7 @@ def verify(cands: list[dict]) -> dict:
                     prior = priors.get(c["url"])
                     # 残す本文(描画できたら描画の本文)と、その状態コード
                     best = {"text": text, "html": body, "rendered": pre,
-                            "status": (RENDER_STATUS.get(c["url"]) or 200) if pre else (res.status if res else 200)}
+                            "status": (RENDER_STATUS.get(c["url"]) or 200) if pre else st}
 
                     def render() -> str | None:
                         # 描画して読み直した本文(描画できない・メンテナンス画面へ転送されたら None。案内を本文として照らさない)。
@@ -2486,8 +2567,8 @@ def verify(cands: list[dict]) -> dict:
 
 
 def watch_sources(late=lambda: False) -> list[dict]:
-    """発行済み記事の出典の見回りと、出典の変更の扱い(source_watch)。戻りはこの号に足す「出典の更新」の素材(まだ候補の保存を
-    確かめていないもの。保存できたら run_collect が clear_pending で外す)。収集の締切(late)を過ぎたら新しく始めず、判定・校閲の待ちも
+    """発行済み記事の出典の見回りと、出典の変更の扱い(source_watch)。収集の最後の段(watch_tail)が呼ぶ。戻りはこの号に足す「出典の
+    更新」の素材(まだ候補の保存を確かめていないもの。確定できたら clear_updates が控えから外す)。収集の締切(late)を過ぎたら新しく始めず、判定・校閲の待ちも
     締切の残りで切る。失敗しても収集(素材の保存)は止めない(異常として申告する)"""
     import source_watch
     today = now_jst().date().isoformat()
@@ -2612,8 +2693,8 @@ def main() -> int:
     # 試験実行(--no-git)では Discord へ通知しない。本物の警報と見分けが付かなくなる
     set_quiet(args.no_git)
     # 収集の締切は**排他を待つ前**に決める(待った分だけ延ばさない)
-    global DEADLINE
-    DEADLINE = collect_deadline(args.oncall_rerun)
+    global DEADLINE, DEADLINE_HARD
+    DEADLINE = DEADLINE_HARD = collect_deadline(args.oncall_rerun)
     # 実行記録の開始と起動のされ方(組版が、定時の回ごとに記録があるかを検める: pipelib.collect_slot_gaps)
     RUN.update(started_at=now_jst().isoformat(timespec="seconds"), trigger=run_trigger(args.oncall_rerun), recorded=False)
     exit_on_term()      # SIGTERM でも、起動したセッションを子孫ごと止めてから終わる(既定の SIGTERM は後始末を走らせない)
@@ -2647,14 +2728,63 @@ def classify_then_retag(date: str) -> tuple[bool, str]:
     """判定表の更新 → 紙面の種別付け直し → lint の取引(classify_retag_lint)。合議の失敗で戻したら、いまの判定表・判定のコードで決まる
     付け直しまで戻るので、合議を飛ばして付け直し → lint だけを掛け直す(2026-10-27 Sol 監査。組版の出典の判定と同じ)。
     戻りは合議の取引の (成否, 理由)。掛け直しが「戻せない」で終わったら、その理由を返す"""
-    ok, why = classify_retag_lint(date, timeout=max(1, int(session_left(1800))))
+    # 取引のどの段(合議・付け直し・lint)も収集の締切(DEADLINE)を越えて待たない。合議は、失敗したあとの付け直し・lint の分
+    # (RETAG_RESERVE_SEC)を残して切る(合議が締切まで使うと、付け直しが1秒で落ちて記事ごと戻った)
+    ok, why = classify_retag_lint(date, timeout=max(1, int(session_left(1800, RETAG_RESERVE_SEC))), deadline=DEADLINE)
     if not ok and "戻せない" not in why:
-        ok_rt, why_rt = classify_retag_lint(date, timeout=max(1, int(session_left(600))), judge=False)
+        ok_rt, why_rt = classify_retag_lint(date, timeout=max(1, int(session_left(600))), judge=False, deadline=DEADLINE)
         if not ok_rt and "戻せない" in why_rt:
             return ok, why_rt
         # 通知が結果と食い違わないよう、付け直しの結果を理由に足す(Sol 監査 r2)。通知は理由を 500 字で切るので、元の理由を先に短くする(r3)
         why = f"{why[:240]}。" + ("合議なしの付け直し・lint は済ませた" if ok_rt else f"合議なしの付け直しも失敗し記事も戻した({why_rt[:200]})")
     return ok, why
+
+
+def pending_updates() -> list[dict]:
+    """前の回の見回りが作り、保存を確かめる前に止まった「出典の更新」の素材(source_watch の pending)。読めなければ空(次の回にまた読む)。"""
+    try:
+        import source_watch
+        return source_watch.pending_candidates()
+    except Exception as e:      # noqa: BLE001  控えを読めなくても素材の保存は止めない(控えは消えずに残る)
+        print(f"出典の更新の素材の控えを読めない({type(e).__name__}: {e})", flush=True)
+        return []
+
+
+def clear_updates(updates: list[dict]) -> None:
+    """号の候補に保存して確定(commit・push)できた「出典の更新」の素材を、控え(pending)から外す。確定の前に止まれば控えに残り、
+    次の回にまた保存する(Sol 監査 b1)。同じ素材は同じ id・同じ URL なので、二度保存しても候補は1つ(merge_into_day_file が URL で合わせる)"""
+    if not updates:
+        return
+    try:
+        import source_watch
+        source_watch.clear_pending([c["id"] for c in updates])
+    except Exception as e:      # noqa: BLE001  外せなくても次の回に同じ URL の候補へ混ぜるだけ(重複しない)
+        print(f"出典の更新の素材の控えを外せない({type(e).__name__}: {e})", flush=True)
+
+
+def commit_collect(branch: str, message: str) -> bool:
+    """収集の成果を commit・push する。確定の途中では SIGTERM で中断しない(受けたら確定のあとで終える)。戻りはリモートに載ったか。"""
+    _TERM["defer"] = True
+    pushed = commit_and_push(branch, message, "collect")
+    _TERM["defer"] = False    # 確定のあと(通知など)の SIGTERM は、すぐ受けて終える(飲み込まない。監査指摘)
+    if _TERM["got"]:
+        raise Terminated()
+    return pushed
+
+
+def watch_tail(no_git: bool, date: str, branch: str) -> bool:
+    """収集の最後の段: 発行済み記事の出典の見回り(recheck・process_changes)。号に要る段を確定したあとに、収集の締切までの残り時間だけで
+    回す(新しく始めない・待ちを残りで切るのは watch_sources)。作った「出典の更新」の素材はこの号の候補に保存して commit する。
+    確定の前に止まった素材は控え(pending)に残り、次の回の必須段が保存する(pending_updates)。戻りは確定できたか"""
+    found = watch_sources(deadline_passed)
+    added = merge_into_day_file(found, date) if found else 0
+    # 見回りの記録(metrics)も確定する。素材が無くても commit する(作業ツリーを汚したまま終えない)
+    if not no_git and not commit_collect(branch, f"collect {now_jst().strftime('%H:%M')}: 出典の見回り(出典の更新の素材 +{added}件)"):
+        notify("collect", f"{date}: 出典の見回りのあと commit/push できなかった(号の素材は確定済み。出典の更新の素材 {len(found)}件は"
+                          f"控えに残し、次の回に保存する)。作業ツリーを確かめること", ok=False)
+        return False
+    clear_updates(found)
+    return True
 
 
 def run_collect(args, date: str, branch: str, t0: float) -> int:
@@ -2666,6 +2796,11 @@ def run_collect(args, date: str, branch: str, t0: float) -> int:
     if skip_grok and not args.skip_grok:
         print(f"Grok は今回スキップ(GROK_HOURS={GROK_HOURS or '毎回'} の対象時刻ではない)", flush=True)
 
+    # 段の順と時間(編集長 2026-11-04「そもそも時間制限のかけ方が悪いんじゃねーの？」): 号に要る段(素材の集め・裏取り・保存・
+    # 出典の種別の判定・紙面の付け直し・lint・commit)を先に、後回しでよい発行済み記事の出典の見回り(watch_tail)を最後に、残り時間だけで回す。
+    # 前段(素材の集め・裏取り)は、後ろの必須段の見込み(REQUIRED_RESERVE_SEC)を残した締切で切る(締切そのものは延ばさない)
+    watch_now = not args.oncall_rerun and watch_this_run()
+    stage_deadline(REQUIRED_RESERVE_SEC)
     watch_cands, watch_info = ([], {"skipped": True}) if args.skip_watch else run_watch(claude_exec, args.oncall_rerun)
     explore_items, per_query = run_explores(args.skip_explore, skip_grok)
     cands = normalize(watch_cands + explore_items)
@@ -2673,9 +2808,11 @@ def run_collect(args, date: str, branch: str, t0: float) -> int:
     # この原本で照らす(Sol 監査 r2)。版は取得時刻で並べるので、裏取りが読んだ新しい版が基準になる
     kept = ingest_spools(cands)
     vcounts = verify(cands)
-    # 発行済み記事の出典の見回り(読み直して変わっていれば、この号の「出典の更新」の素材にする。発行済みの記事には書かない)
-    # 当番の取り直しでは見回らない・判定しない(取り直しは次の定時工程の前に終える。次の定時収集が扱う)
-    updates = [] if args.oncall_rerun else watch_sources(deadline_passed)
+    stage_deadline(0)       # ここからは必須段: 収集の締切まで使う
+    required_at = time.time()
+    # 前の回の見回りが作って、保存の前に止まった「出典の更新」の素材(pending)を、この回の素材と一緒に保存する(セッションは起動しない)。
+    # この回の見回りの分は、commit のあと watch_tail が保存する。当番の取り直しでは扱わない(次の定時収集が扱う)
+    updates = [] if args.oncall_rerun else pending_updates()
     cands += updates
     # 置き場の古いものを片付ける
     try:
@@ -2684,13 +2821,6 @@ def run_collect(args, date: str, branch: str, t0: float) -> int:
     except Exception as e:      # noqa: BLE001  片付けの失敗で収集を止めない
         print(f"原本の置き場を片付けられない({type(e).__name__}: {e})", flush=True)
     added = merge_into_day_file(cands, date)
-    if updates:
-        # 「出典の更新」の素材は、候補の保存を確かめてから返す列から外す(保存に失敗・中断したら次の回にまた返る。Sol 監査 b1)
-        try:
-            import source_watch
-            source_watch.clear_pending([c["id"] for c in updates])
-        except Exception as e:      # noqa: BLE001  外せなくても次の回に同じ URL の候補へ混ぜるだけ(重複しない)
-            print(f"出典の更新の素材の控えを外せない({type(e).__name__}: {e})", flush=True)
     # candidates が保存できてから、定点観測の既読を確定する(同じ成功境界。監査指摘)
     watch_state = (watch_info.get("stats") or {}).pop("_state", None) if isinstance(watch_info, dict) else None
     if watch_state is not None:
@@ -2739,16 +2869,21 @@ def run_collect(args, date: str, branch: str, t0: float) -> int:
                 else:
                     notify("collect", f"{date}: 判定表の更新〜紙面の付け直し〜lint で失敗({why[:500]})。判定表は"
                                       f"戻した(候補は残す)。次回の収集で再試行する", ok=False)
-    if not args.no_git:
-        _TERM["defer"] = True     # 確定の途中では SIGTERM で中断しない(受けたら確定のあとで終える)
-        pushed = commit_and_push(branch, f"collect {now_jst().strftime('%H:%M')}: +{added}件", "collect")
-        _TERM["defer"] = False    # 確定のあと(通知など)の SIGTERM は、すぐ受けて終える(飲み込まない。監査指摘)
-        if _TERM["got"]:
-            raise Terminated()
-        if not pushed:
-            # 永続化できなかった収集は「無かった」のと同じ。成功として終わらない(監査指摘: fail-open)
-            notify("collect", f"{date}: 候補を commit/push できなかった。作業ツリーを確かめること", ok=False)
+    # 必須段の所要の記録(予約 REQUIRED_RESERVE_SEC の見直しに使う。commit の前に積んで素材と一緒に確定する)
+    append_metric("collect_required", {"edition": date, **run_record(), "reserve_s": REQUIRED_RESERVE_SEC,
+                                       "left_s": int(DEADLINE_HARD - required_at) if DEADLINE_HARD else None,
+                                       "elapsed_s": int(time.time() - required_at)})
+    if not args.no_git and not commit_collect(branch, f"collect {now_jst().strftime('%H:%M')}: +{added}件"):
+        # 永続化できなかった収集は「無かった」のと同じ。成功として終わらない(監査指摘: fail-open)
+        notify("collect", f"{date}: 候補を commit/push できなかった。作業ツリーを確かめること", ok=False)
+        return 1
+    clear_updates(updates)
+    # 号に要る段を確定したあとで、発行済み記事の出典を見回る(残り時間だけ。組版直前の回はしない)
+    if watch_now:
+        if not watch_tail(args.no_git, date, branch):
             return 1
+    elif not args.oncall_rerun:
+        print("組版の直前の回のため、発行済み記事の出典の見回りはしない(次の回が扱う)", flush=True)
     # 新規0件の警報は「定時実行が空振りした」ことを知らせるためのもの。
     # 収集系統を手で止めた実行(--skip-*)では0件が当たり前なので鳴らさない
     # (鳴らすと本物の空振りと区別がつかず、警報として役に立たなくなる)

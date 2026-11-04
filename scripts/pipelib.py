@@ -446,10 +446,18 @@ def timer_times(name: str, timer_dir: Path | None = None) -> tuple[tuple[int, in
     return tuple(sorted(set(times)))
 
 
-def scheduled_times() -> tuple[tuple[int, int], ...]:
+def scheduled_times(timer_dir: Path | None = None) -> tuple[tuple[int, int], ...]:
     """工程の排他を取る定時工程の開始(時, 分)。01:30 道具の更新 / 収集 / 03:00 組版 / 06:00 発行(09:00 の watch は排他を取らない)。
     時刻は timer の定義から読む(2026-10-26: 定時の時刻をコードと timer の2か所に持っていた)。使うときに読む(取り込んだだけでは読まない)"""
-    return tuple(sorted({t for name in ("update", "collect", "compose", "release") for t in timer_times(name)}))
+    return tuple(sorted({t for name in ("update", "collect", "compose", "release") for t in timer_times(name, timer_dir)}))
+
+
+def next_slot_is(name: str, now: datetime.datetime, timer_dir: Path | None = None) -> bool:
+    """now(の時・分)のあとの最初の定時工程(scheduled_times。日をまたいで巡る)が name の工程か。02:00 の収集なら次は 03:00 の組版。"""
+    times = scheduled_times(timer_dir)
+    cur = (now.hour, now.minute)
+    nxt = next((t for t in times if t > cur), times[0])
+    return nxt in timer_times(name, timer_dir)
 SLOT_MARGIN_MIN = 15             # 次の定時工程の何分前に工程の排他を手放すか
 # 組版は、収集の当番(落とした新着の取り直し)が動いていれば、開始をこの分だけ待つ。組版の締切は 06:00 の8分前なので、
 # 03:40 に始めても実測の所要(40〜60分)と当番の立て直しの余裕は残る。その間に取り直して、落とした新着をその号の選定に間に合わせる
@@ -3525,7 +3533,8 @@ def _restore(snap: dict[str, bytes | None], new_under: Path | None = None) -> st
 
 
 def classify_retag_lint(date: str, posts_only: bool = False, lint_base: str = "origin/main",
-                        timeout: int = 1800, lint: bool = True, require_parsers: bool = False, judge: bool = True) -> tuple[bool, str]:
+                        timeout: int = 1800, lint: bool = True, require_parsers: bool = False, judge: bool = True,
+                        deadline: float | None = None) -> tuple[bool, str]:
     """判定表の更新(合議)→ 紙面の種別付け直し(→ lint)を**1つの取引**にする。
     judge=False は合議を飛ばし、いまの判定表(とコードの判定)で付け直すだけ(合議が失敗して戻したあとに使う。2026-10-27 Sol 監査:
     判定のコードの修正で既知のチャンネルが公式になった記事が、合議の失敗で付け直しごと戻り、lint が赤のまま組版へ進んだ)。
@@ -3539,6 +3548,8 @@ def classify_retag_lint(date: str, posts_only: bool = False, lint_base: str = "o
     開始時へ戻し、受けた中断はそのあとで元の扱いへ送り直す(2026-10-14 監査指摘: 表を書いた後・付け直しの前に親へ SIGTERM・SIGINT が
     来ると戻さずに終わり、出典の lint が赤く、次の工程の checkout も「未コミットの変更」で止まった)。開始時の中身は控え
     (TXN_JOURNAL)にも書き、親が SIGKILL などで後始末できずに死んでも、次の取引・次の工程の checkout が戻す(recover_classify_txn)。
+    deadline(epoch 秒)を渡すと、どの段もその時刻を越えて待たない(各段の開始時の残りで切り、残りが無ければ始めずに取引の失敗として
+    戻す)。収集が締切までに終えるため(2026-11-04 Sol 監査: timeout は合議にしか効かず、付け直し・lint が締切を越えた)。
     """
     back = recover_classify_txn()
     if back:
@@ -3577,6 +3588,12 @@ def classify_retag_lint(date: str, posts_only: bool = False, lint_base: str = "o
         for name, step, limit in steps:
             if _TXN["signum"] is not None:
                 break
+            if deadline is not None:
+                left = deadline - time.time()
+                if left < 1:
+                    why = f"締切を過ぎたので{name}を始めない(判定表と記事は開始時へ戻す)"
+                    break
+                limit = min(limit, max(1, int(left)))
             t_step = time.monotonic()
             r = _txn_run(step, limit)
             if name == "lint" and r.returncode in (0, 1):    # 最後まで走った lint の所要(赤でも走り切っている)

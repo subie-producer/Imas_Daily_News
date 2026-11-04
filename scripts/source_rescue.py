@@ -144,42 +144,6 @@ def answered_posts(text: str, asks: list[dict]) -> list[tuple[str, str, int]]:
     return out
 
 
-def post_body(block: str) -> str:
-    """Grok の書き出しの投稿1件の本文(リポストの「元の投稿:」以降とリンクの欄は含めない)。"""
-    m = re.search(r"(?ms)^\s*-\s*本文\s*[:：][ \t]*\n?(.*?)(?=^\s*-\s*リンク\s*[:：]|^元の投稿\s*[:：]|\Z)", block)
-    return m.group(1).strip() if m else ""
-
-
-def fact_urls(item: dict) -> list[str]:
-    """素材の facts に書かれた url(「通販サイトはTHEキャラ(https://…)」)。括弧・句読点で切る。"""
-    return re.findall(r"https?://[^\s()（）「」『』、。,]+", " ".join(map(str, item.get("facts") or [])))
-
-
-def official_post_items(text: str, items: list[dict]) -> list[dict]:
-    """問いに答えた公式・準公式の投稿のうち、確かめ(Luna)が販売ページなどの候補にまとめて、投稿そのものの候補が無いものを、候補にして返す。
-    確かめは「同じ告知は元の告知の url に1件」にまとめ、前の巡の候補と同じなら候補を書かないので、作品の公式が販売元の告知をリポストしても
-    公式の出典が素材に残らない(2026-11-02: @imasml_765PRO のリポストに届いたのに候補は販売ページだけで、R5 の公式が揃わなかった)。
-    items は確かめの候補と記事の素材。投稿がそのどれかの url・リンク元・facts に書かれた url を含むときだけ(同じ話題の投稿と言える。
-    2026-11-05: 素材(プレスリリース)の facts が通販ページの url を書き、公式のリポストもその通販ページを貼っていたのに、素材の url
-    だけで照らして公式のリポストを候補にしなかった)。事実は投稿の本文を写す。"""
-    have = {collect.post_key(it.get("url") or "") for it in items}
-    out = []
-    for b in collect.post_blocks(text):
-        url = collect.post_url(b)
-        if not url or collect.post_key(url) in have or collect.classify_source(url) not in ("公式", "準公式"):
-            continue
-        base = next((it for it in items if any(u and u in b for u in (it.get("url"), it.get("link_from"), *fact_urls(it)))), None)
-        lines = [ln.strip() for ln in post_body(b).splitlines() if ln.strip() and not re.fullmatch(r"https?://\S+", ln.strip())]
-        if not base or not lines:
-            continue
-        rt = re.match(r"RT @(\w+):\s*", lines[0])
-        facts = [f"{url.split('/')[3]} が @{rt.group(1)} の投稿をリポストした。"] if rt else []
-        facts += [lines[0][rt.end():] if rt else lines[0], *lines[1:]]
-        out.append({"url": url, "title": base.get("title") or "", "brand": base.get("brand") or "", "dedup_key": base.get("dedup_key") or "",
-                    "facts": [f for f in facts if f], "quote": "", "_via": "grok"})
-    return out
-
-
 def grok_phase(asks_by_slug: dict[str, list[dict]], arts: dict[str, dict], outdir: Path, log: dict,
                known: list[dict] | None = None) -> list[tuple[str, dict]]:
     """X の原本の深掘り。戻りは [(slug, Luna が確かめた候補)]。問いごとの結果(見つかった投稿)は log に書く。known は記事の素材。"""
@@ -222,7 +186,7 @@ def grok_phase(asks_by_slug: dict[str, list[dict]], arts: dict[str, dict], outdi
                 slug = owner[id(asks[n - 1])]
                 posts.setdefault(pk, set()).add(slug)
                 log["asks"][slug][asks[n - 1]["question"]].append(url)
-            added = official_post_items(text, pool)
+            added = collect.official_post_items(text, pool)
             items += added
             pool.extend(added)
         for it in items:

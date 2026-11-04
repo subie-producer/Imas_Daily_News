@@ -20181,7 +20181,7 @@ def test_review_blocked_source_drops(tmp: Path):
 def test_source_rescue_keeps_official_repost():
     """確かめが販売ページの候補にまとめても、問いに答えた公式の投稿は候補に残す(2026-11-02: @imasml_765PRO のリポストに届いたのに
     素材は販売ページだけで、R5 の公式が揃わなかった)。話題と認めていない投稿・公式でない投稿・既に候補の投稿は足さない。"""
-    import source_rescue
+    import collect, source_rescue
     page = "https://scratch.dmm.com/kuji/MILLIONLIVE2/"
     orig = "https://x.com/dmm_scratch/status/2114643200879083533"
     def post(url, body, link):
@@ -20189,13 +20189,13 @@ def test_source_rescue_keeps_official_repost():
     rt = "https://x.com/imasml_765PRO/status/2114644006894481573"
     text = post(rt, f"RT @dmm_scratch: スクラッチ第二弾の発売が決定\n{page}\n11月2日 18:00から発売開始！\n元の投稿: {orig}\n元の本文:\n同じ文", page)
     item = {"url": page, "link_from": orig, "title": "スクラッチ第二弾", "brand": "million", "dedup_key": "million-scratch", "facts": ["x"]}
-    got = source_rescue.official_post_items(text, [item])
+    got = collect.official_post_items(text, [item])
     check(len(got) == 1 and got[0]["url"] == rt and got[0]["dedup_key"] == "million-scratch" and got[0]["_via"] == "grok"
           and got[0]["facts"] == ["imasml_765PRO が @dmm_scratch の投稿をリポストした。", "スクラッチ第二弾の発売が決定", "11月2日 18:00から発売開始！"],
           f"公式のリポストが候補に残らない: {got}")
-    check(source_rescue.official_post_items(text, [item, *got]) == [], "候補のある投稿を重ねた")
-    check(source_rescue.official_post_items(text, [dict(item, url="https://example.com/x", link_from="")]) == [], "話題と認めていない投稿を足した")
-    check(source_rescue.official_post_items(post(orig, "発売決定", page), [item]) == [], "公式でない投稿を足した")
+    check(collect.official_post_items(text, [item, *got]) == [], "候補のある投稿を重ねた")
+    check(collect.official_post_items(text, [dict(item, url="https://example.com/x", link_from="")]) == [], "話題と認めていない投稿を足した")
+    check(collect.official_post_items(post(orig, "発売決定", page), [item]) == [], "公式でない投稿を足した")
     # 確かめが候補を書かなかった巡でも、記事の素材の url を含む投稿は残す(実データ: 2巡目の確かめの候補が0件で、リポストを取りこぼした)
     with RescueFakes(Path(tempfile.mkdtemp())) as fakes:
         fakes.deep = lambda queries, outdir, chosen, errs, suffix="-deep", retry=False: (
@@ -20237,11 +20237,11 @@ def test_source_rescue_backs_planned_deadline_with_old_official_post():
     text = (f"### 1\n- url: {rt}\n- 問い: 2\n- 投稿者: 公式\n- 投稿日時: x\n- 本文:\nRT @thechara_2014: 事後通販を開始いたします\n"
             f"📅 10/21(水)18:00～11/5(木)23:59\nこちらから➡️{shop}\n元の投稿: https://x.com/thechara_2014/status/2112831271554482306\n"
             f"- リンク:\n  - {shop}\n")
-    check(source_rescue.fact_urls(item) == [shop], f"facts の url の取り出し: {source_rescue.fact_urls(item)}")
-    got = source_rescue.official_post_items(text, [item])
+    check(collect.fact_urls(item) == [shop], f"facts の url の取り出し: {collect.fact_urls(item)}")
+    got = collect.official_post_items(text, [item])
     check(len(got) == 1 and got[0]["url"] == rt and got[0]["dedup_key"] == item["dedup_key"],
           f"素材の facts の url を貼った公式のリポストを候補にしない: {got}")
-    check(source_rescue.official_post_items(text, [dict(item, facts=["注文受付期間: 11月5日まで"])]) == [],
+    check(collect.official_post_items(text, [dict(item, facts=["注文受付期間: 11月5日まで"])]) == [],
           "素材のどの url も含まない投稿を同じ話題とした")
     c = collect.normalize(got)
     check(len(c) == 1 and c[0]["source_type"] == "公式", f"足した候補の種別: {c}")
@@ -20252,9 +20252,82 @@ def test_source_rescue_backs_planned_deadline_with_old_official_post():
     res = json.loads(json.dumps(c))
     source_rescue.verify_until(res, None)
     check(res[0]["verify"] == "confirmed", f"入口が計画済みの記事の告知の原本を鮮度切れで落とした: {res[0]}")
-    old = collect.normalize(source_rescue.official_post_items(text.replace(rt, status_of(370)), [item]))
+    old = collect.normalize(collect.official_post_items(text.replace(rt, status_of(370)), [item]))
     source_rescue.verify_until(old, None)
     check(old[0]["verify"] == "failed", f"入口が前年の告知を通した: {old[0]}")
+
+
+def test_collect_keeps_official_repost_folded_into_vendor(tmp: Path):
+    """通常の収集でも、確かめが販売元のページ・元の投稿にまとめた公式のリポストを公式の出典の候補として残す(2026-11-05: 02:30 の収集で
+    @gkmas_official がキタムラの年賀状の告知をリポストした投稿(本文は途中で切れ、リンク無し)を確かめが none にし、深掘りで見つけた
+    @camera_kitamura の元の投稿を販売ページの候補にしたが、公式のリポストは素材に残らず、記事は R5 で外れた)。
+    偽の grok・codex を本物の子プロセスとして run_explores を通す。"""
+    from unittest.mock import patch
+    import collect
+    src = Path(__file__).resolve().parent.parent / "source_types.yml"
+    root, bindir = tmp / "repo", tmp / "bin"
+    root.mkdir(parents=True)
+    bindir.mkdir()
+    shutil.copy(src, root / "source_types.yml")
+    head = "／\n 【学園アイドルマスター×カメラのキタムラ】\n 「あなたに届く年賀状」 本日より予約受付開始‼️🎍\n＼\n \n プロデューサーの皆様に年賀状のお知らせです🌸\n"
+    rt = "https://x.com/gkmas_official/status/2117801613561922009"
+    orig = "https://x.com/camera_kitamura/status/2117799136460517685"
+    page = "https://nenga.kitamura.jp/sp/the_idolmaster/"
+    face = f"### 9\n- url: {rt}\n- 投稿者: 学マス【公式】 (@gkmas_official)\n- 本文:\nRT @camera_kitamura: {head} 年賀状には各アイド…\n- リンク: なし\n"
+    deep = (f"### 1\n- url: {orig}\n- 問い: 1\n- 投稿者: カメラのキタムラ【公式】 (@camera_kitamura)\n- 本文:\n{head} 年賀状には各アイドルからの"
+            f"一言メッセージ入り💌\nhttps://t.co/4ULr8MBidx\n- リンク:\n  - https://t.co/4ULr8MBidx\n")
+    (bindir / "grok").write_text(
+        f"#!{sys.executable}\nimport pathlib, sys\npp = pathlib.Path(sys.argv[sys.argv.index('--prompt-file') + 1])\n"
+        f"pp.with_name(pp.name.removeprefix('prompt-')).write_text({deep!r} if '-deep' in pp.name else {face!r}, encoding='utf-8')\n",
+        encoding="utf-8")
+    face_out = (json.dumps([]), json.dumps([{"url": rt, "status": "none", "item": ""}]),
+                json.dumps([{"question": "キタムラの年賀状の告知の元の投稿", "why": "リポストで本文が切れている"}]))
+    deep_out = (json.dumps([{"url": page, "link_from": orig, "title": "学マス×キタムラ『あなたに届く年賀状』", "brand": "gaku",
+                             "dedup_key": "kitamura-gakuen-new-year-cards-2027", "facts": ["予約受付開始"]}]),
+                json.dumps([{"url": orig, "status": "extracted", "item": page}]), "[]")
+    (bindir / "codex").write_text(
+        f"#!{sys.executable}\nimport os, pathlib\nout = {deep_out!r} if '-deep' in pathlib.Path(os.getcwd()).name else {face_out!r}\n"
+        "for n, t in zip(('items.json', 'posts.json', 'deep.json'), out):\n    pathlib.Path(n).write_text(t)\n", encoding="utf-8")
+    for n in ("grok", "codex"):
+        (bindir / n).chmod(0o755)
+    notes = []
+    qs = [{"key": "gakuen", "brand": "gaku", "topic": "t", "accounts": []}]
+    with cli_posts(), patch.dict(os.environ, PATH=f"{bindir}{os.pathsep}{os.environ['PATH']}"), \
+            patch.object(collect, "ROOT", root), patch.object(pipelib, "ROOT", root), \
+            patch.object(collect, "build_prompts", lambda: qs), patch.object(collect, "grok_week_usage", lambda: 0), \
+            patch.object(collect, "grok_search_counts", lambda *a: {}), \
+            patch.object(collect, "notify", lambda job, msg, ok=True, require=False: notes.append((msg, ok)) or True):
+        items, _ = collect.run_explores(True, False)
+    off = [i for i in items if i["url"] == rt]
+    check([i["url"] for i in items] == [page, rt] and off[0]["dedup_key"] == "kitamura-gakuen-new-year-cards-2027"
+          and off[0]["facts"][:2] == ["gkmas_official が @camera_kitamura の投稿をリポストした。", "／"],
+          f"確かめが元の投稿にまとめた公式のリポストが素材に残らない: {items}")
+    c = collect.normalize(off)
+    check(len(c) == 1 and c[0]["source_type"] == "公式", f"残した公式のリポストの種別: {c}")
+    # 元の投稿の本文と頭が合わない・別のアカウントの投稿・切れた本文が短すぎるときは、同じ話題と認めない
+    item = json.loads(deep_out[0])[0]
+    check(collect.official_post_items(face + "\n" + deep.replace("プロデューサーの皆様", "皆様"), [item]) == [], "本文の頭が違う投稿を元の投稿とした")
+    check(collect.official_post_items(face + "\n" + deep.replace("@camera_kitamura", "@x").replace("camera_kitamura/", "other/"),
+                                      [dict(item, link_from="https://x.com/other/status/2117799136460517685")]) == [],
+          "リポストされたアカウントと違う投稿を元の投稿とした")
+    short = face.replace(f"{head} 年賀状には各アイド…", "／ 【学マス】…")
+    check(collect.official_post_items(short + "\n" + deep, [item]) == [], "短い切れた本文で元の投稿を決めた")
+    # Grok を回さない回の読み直しの列でも同じ(公式の投稿が貼った販売ページに、確かめが候補をまとめた)
+    pend = root / collect.GROK_PENDING
+    pend.mkdir(parents=True, exist_ok=True)
+    page = "https://www.the-chara.com/view/search?search_category=ct4940"     # 当事者の販売ページ(確かめがここにまとめる)
+    (pend / "gakuen.md").write_text(f"### 1\n- url: {rt}\n- 本文:\n年賀状の予約受付を開始しました\n{page}\n- リンク:\n  - {page}\n", encoding="utf-8")
+    one = (json.dumps([dict(json.loads(deep_out[0])[0], url=page, link_from="")]), json.dumps([{"url": rt, "status": "extracted", "item": page}]), "[]")
+    (bindir / "codex").write_text(
+        f"#!{sys.executable}\nimport pathlib\nfor n, t in zip(('items.json', 'posts.json', 'deep.json'), {one!r}):\n"
+        "    pathlib.Path(n).write_text(t)\n", encoding="utf-8")
+    with cli_posts(), patch.dict(os.environ, PATH=f"{bindir}{os.pathsep}{os.environ['PATH']}"), \
+            patch.object(collect, "ROOT", root), patch.object(pipelib, "ROOT", root), \
+            patch.object(collect, "build_prompts", lambda: qs), \
+            patch.object(collect, "notify", lambda job, msg, ok=True, require=False: notes.append((msg, ok)) or True):
+        items, _ = collect.run_explores(True, True)
+    check([i["url"] for i in items] == [page, rt] and items[1]["facts"] == ["年賀状の予約受付を開始しました"],
+          f"読み直しの列で、販売ページにまとめた公式の投稿が素材に残らない: {items}")
 
 
 def test_assemble_verified_fact_reservation(tmp: Path):
@@ -21739,6 +21812,7 @@ def main() -> int:
     test_review_blocked_source_drops(tmp / "rbs")
     test_source_rescue_keeps_official_repost()
     test_source_rescue_backs_planned_deadline_with_old_official_post()
+    test_collect_keeps_official_repost_folded_into_vendor(tmp / "ckor")
     test_assemble_verified_fact_reservation(tmp / "avr")
     test_assemble_roundup_reservation(tmp / "arr")
     test_storylink_roundup_topic(tmp / "srt")

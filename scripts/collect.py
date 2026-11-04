@@ -1670,6 +1670,81 @@ def post_url(block: str) -> str:
     return m.group(1) if m else ""
 
 
+def post_body(block: str) -> str:
+    """Grok の書き出しの投稿1件の本文(リポストの「元の投稿:」以降とリンクの欄は含めない)。"""
+    m = re.search(r"(?ms)^\s*-\s*本文\s*[:：][ \t]*\n?(.*?)(?=^\s*-\s*リンク\s*[:：]|^元の投稿\s*[:：]|\Z)", block)
+    return m.group(1).strip() if m else ""
+
+
+def fact_urls(item: dict) -> list[str]:
+    """素材の facts に書かれた url(「通販サイトはTHEキャラ(https://…)」)。括弧・句読点で切る。"""
+    return re.findall(r"https?://[^\s()（）「」『』、。,]+", " ".join(map(str, item.get("facts") or [])))
+
+
+RT_HEAD = re.compile(r"RT @(\w+):\s*")
+RT_MIN_PREFIX = 20          # リポストの本文(途中で切れている)を元の投稿の本文の頭と照らすときの最短の長さ(字。空白を除く)
+
+
+def rt_origin(block: str, blocks: list[str]) -> str:
+    """リポストの投稿の、元の投稿の url。元の投稿の url が書かれていなければ、同じ収集の書き出し(blocks)から、リポストされた
+    アカウントの投稿で、本文の頭がリポストの本文(「…」で切れている)と一致するものを探す。見つからなければ空文字。"""
+    lines = post_body(block)
+    rt = RT_HEAD.match(lines)
+    if not rt:
+        return ""
+    m = re.search(r"(?m)^元の投稿\s*[:：]\s*(https?://\S+)", block)
+    if m:
+        return m.group(1)
+    head = re.sub(r"\s+", "", lines[rt.end():]).rstrip("…").removesuffix("...")
+    if len(head) < RT_MIN_PREFIX:
+        return ""
+    acct = rt.group(1).lower()
+    for b in blocks:
+        u = post_url(b)
+        m = re.match(r"https?://(?:www\.)?(?:x|twitter)\.com/(\w+)/status/\d+", u or "")
+        if m and m.group(1).lower() == acct and re.sub(r"\s+", "", post_body(b)).startswith(head):
+            return u
+    return ""
+
+
+def official_post_items(text: str, items: list[dict]) -> list[dict]:
+    """書き出しの公式・準公式の投稿のうち、確かめ(Luna)が販売ページなどの候補にまとめて、投稿そのものの候補が無いものを、候補にして返す。
+    確かめは「同じ告知は元の告知の url に1件」にまとめ、前の巡の候補と同じなら候補を書かないので、作品の公式が販売元の告知をリポストしても
+    公式の出典が素材に残らない(2026-11-02: @imasml_765PRO のリポストに届いたのに候補は販売ページだけで、R5 の公式が揃わなかった)。
+    通常の収集(run_explores の Grok の段の最後)と出典を揃える入口(source_rescue)の両方が通す(2026-11-05: 収集で @gkmas_official の
+    キタムラの年賀状のリポストを確かめが none にし、元の投稿を深掘りで見つけて販売ページの候補にしたが、公式のリポストは素材に残らず、
+    記事は R5 で外れた)。
+    items は確かめの候補(入口では記事の素材も)。投稿がそのどれかの url・リンク元・facts に書かれた url を含むとき、またはリポストの
+    元の投稿(rt_origin)がそのどれかの url・リンク元のときだけ(同じ話題の投稿と言える。2026-11-05: 素材(プレスリリース)の facts が
+    通販ページの url を書き、公式のリポストもその通販ページを貼っていたのに、素材の url だけで照らして公式のリポストを候補にしなかった)。
+    事実は投稿の本文を写す。"""
+    have = {post_key(it.get("url") or "") for it in items}
+    blocks = post_blocks(text)
+    out = []
+    for b in blocks:
+        url = post_url(b)
+        if not url or post_key(url) in have or classify_source(url) not in ("公式", "準公式"):
+            continue
+        hay = b + "\n" + rt_origin(b, blocks)
+        base = next((it for it in items if any(u and u in hay for u in (it.get("url"), it.get("link_from"), *fact_urls(it)))), None)
+        lines = [ln.strip() for ln in post_body(b).splitlines() if ln.strip() and not re.fullmatch(r"https?://\S+", ln.strip())]
+        if not base or not lines:
+            continue
+        rt = RT_HEAD.match(lines[0])
+        facts = [f"{url.split('/')[3]} が @{rt.group(1)} の投稿をリポストした。"] if rt else []
+        facts += [lines[0][rt.end():] if rt else lines[0], *lines[1:]]
+        out.append({"url": url, "title": base.get("title") or "", "brand": base.get("brand") or "", "dedup_key": base.get("dedup_key") or "",
+                    "facts": [f for f in facts if f], "quote": "", "_via": "grok"})
+        have.add(post_key(url))
+    return out
+
+
+def grok_written(outdir: Path, keys: list[str]) -> str:
+    """この収集で Grok が書き出した投稿(面の調べ・深掘り・投げ直し)を1つの書き出しにまとめる。確かめ直し(-again)は面の調べの一部なので読まない。"""
+    return "\n\n".join(t for k in keys for s in ("", "-deep", "-deep2")
+                        for t in [read_written(outdir / f"{k}{s}.md").strip()] if t)
+
+
 def post_key(url: str) -> str:
     """投稿の同一性を比べる鍵。X の投稿は status ID(同じ投稿が x.com/i/status/<ID> と x.com/<アカウント>/status/<ID> の
     どちらの形でも書かれる)、それ以外は url そのもの。url の文字列で比べると、深掘りで原本の形の url で済んだ投稿を
@@ -2020,6 +2095,8 @@ def run_explores(skip_explore: bool, skip_grok: bool) -> tuple[list[dict], dict]
                                           + ", ".join(f"{k}({grok_errs.get(k, '')[:120]})" for k in lost2), ok=False)
                     more, _ = verify_grok_faces([q for q in queries if q["key"] in chosen2], outdir, suffix="-deep2", ledger=ledger)
                     got += more
+        # 確かめが販売元のページ・元の投稿にまとめた公式のリポスト・告知を、公式の出典として残す(深掘りの書き出しも照らす)
+        got += official_post_items(grok_written(outdir, [q["key"] for q in queries]), got)
         report_lost_posts(ledger)
         for t in taken:     # 読み直しの列は確かめ終えたら消す(止まった面は確かめ役が列に足し直している)
             t.unlink(missing_ok=True)
@@ -2074,6 +2151,7 @@ def run_explores(skip_explore: bool, skip_grok: bool) -> tuple[list[dict], dict]
         taken = take_pending_posts(outdir, keys)
         ledger = lost_posts_ledger()
         got, _ = verify_grok_faces([q for q in queries if q["key"] in keys], outdir, suffix="", ledger=ledger)
+        got += official_post_items(grok_written(outdir, keys), got)
         report_lost_posts(ledger)
         for t in taken:
             t.unlink(missing_ok=True)

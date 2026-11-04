@@ -4160,6 +4160,36 @@ def x_post_author(post_id: str, fetch=None) -> str:
     return handle
 
 
+def x_post_hidden(post_id: str) -> str:
+    """X の投稿が誰にも公開されていないなら、その理由(鍵のかかったアカウント / 削除済み)。公開されている・確かめられないなら ""。
+    X の oEmbed は、鍵のかかったアカウントの投稿に 403「not authorized to see this status」、無い投稿に 404 を返す
+    (公開の投稿は同じ問い合わせで 200。2026-11-05 の shiny 面: 引用元が鍵のかかったアカウントで、本文が誰にも読めなかった)。"""
+    import urllib.error
+    import urllib.parse
+    import urllib.request
+    q = urllib.parse.urlencode({"url": f"https://x.com/i/status/{post_id}", "omit_script": "1"})
+    req = urllib.request.Request(f"https://publish.twitter.com/oembed?{q}",
+                                 headers={"User-Agent": "Mozilla/5.0 (compatible; ImasNews/1.0)"})
+    try:
+        with polite_urlopen(req, timeout=20) as r:
+            r.read(PAGE_READ_BYTES)
+        return ""
+    except urllib.error.HTTPError as e:
+        try:
+            body = e.read(PAGE_READ_BYTES).decode("utf-8", errors="replace")
+        except Exception:
+            body = ""
+        if e.code == 403 and "not authorized to see this status" in body:
+            return "鍵のかかったアカウントの投稿"
+        if e.code == 404:
+            return "削除済みの投稿"
+        print(f"X の投稿の公開を確かめられない: {post_id} HTTP {e.code}", flush=True)
+        return ""
+    except Exception as e:
+        print(f"X の投稿の公開を確かめられない: {post_id} {type(e).__name__}: {str(e)[:120]}", flush=True)
+        return ""
+
+
 def classify_source(url: str) -> str:
     """出典 URL の種別。リンク先そのものの種別(own_source_type)と、リンク元から引き継いだ種別(判定表 link_types。
     合議がリンク元の告知と関係していると確かめたものだけが載る)の**強いほう**(編集長 2026-10-21: 公式の投稿・ページから

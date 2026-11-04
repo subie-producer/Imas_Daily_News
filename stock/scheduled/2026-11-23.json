@@ -466,5 +466,41 @@
   "src_candidate_id": "202611020220-grok-33",
   "companion_of": "sched-2026-11-23-million-off-time-voice-series-konomi-2026-締切",
   "src_dedup_key": "million-off-time-voice-makoto-2026"
+ },
+ {
+  "id": "sched-2026-11-23-cg-15th-party-resale-2026-締切",
+  "dedup_key": "cg-15th-party-resale-2026",
+  "brand": "cg",
+  "subject": "シンデレラ15周年公演 公式リセール受付締切",
+  "kind": "締切",
+  "note": "9時59分まで公式リセールに申し込める最終日",
+  "reserved_on": "2026-11-05",
+  "occurs_on": "2026-11-23",
+  "title": "シンデレラガールズ15周年記念イベントの公式リセール情報を更新",
+  "url": "https://idolmaster-official.jp/live_event/cg_15th_for_your_one/",
+  "source_type": "公式",
+  "facts": [
+   "2026年11月4日、「Ticket」を更新した。",
+   "リセールは「ASOBI TICKET 公式リセール」のシステムを使用する。",
+   "11月28日(土)公演の受付URLは https://asobiticket2.asobistore.jp/receptions/d9c0888d-0868-4fd9-aede-a05ef1a87e2e 。",
+   "11月29日(日)公演の受付URLは https://asobiticket2.asobistore.jp/receptions/203a03a6-56ca-4c39-b121-1ed44b332e83 。公演日時ごとにチケット購入受付のURLが異なる。",
+   "受付期間: 2026年11月7日(土)15:00～2026年11月23日(月･祝)9:59",
+   "同日で複数の席種に申し込むと複数当選する場合があるため、希望する席種のみ申し込むよう案内している。",
+   "リセールは抽選制で、出品時期による実害・不公平は生じないと案内している。",
+   "すでにチケットを持ちリセール出品を希望する場合は、「マイページ＞チケット申込履歴」から、出品する公演の申込詳細ページで手続きする。",
+   "購入希望者がいない場合、リセール出品が成立しない場合がある。",
+   "リセール抽選中（毎日10:00～抽選終了まで）は、チケット購入・出品の申し込みおよびキャンセルができない。",
+   "2026年11月21日(土)00:00以降の支払いはクレジットカードのみ。",
+   "エンゲージメント: 中",
+   "「THE IDOLM@STER CINDERELLA GIRLS 15th ANNIVERSARY PARTY!!!! ~ for your ONE ~」のチケット情報が2026年11月4日に更新された。",
+   "公式リセールはASOBI TICKET公式リセールのシステムを使用する。",
+   "公式リセールは、購入後にやむを得ない理由で参加できなくなった人のチケットを、譲りたい人と購入したい人の間で定価で仲介する。",
+   "受付URLは2026年11月28日公演分と11月29日公演分で異なる。",
+   "エンゲージメント: 高"
+  ],
+  "via": "explore",
+  "verify": "confirmed",
+  "deadline": "2026-11-23",
+  "src_candidate_id": "202611042334-explore-12"
  }
 ]

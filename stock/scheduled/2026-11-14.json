@@ -1255,5 +1255,82 @@
   "src_candidate_id": "sched-2026-11-03-sidem-fantastic-battle-fes-nagano-sp-2026-締切-src1",
   "companion_of": "sched-2026-11-14-sidem-fantastic-battle-fes-nagano-sp-2026-締切前",
   "src_dedup_key": "sidem-fantastic-battle-fes-nagano-sa-2026"
+ },
+ {
+  "id": "sched-2026-11-14-valiv-2nd-live-premiere-2026-開始",
+  "dedup_key": "valiv-2nd-live-premiere-2026",
+  "brand": "dsva",
+  "subject": "ヴイアラ2ndLIVE限定プレミア公開",
+  "kind": "開始",
+  "note": "14時からヴイアラ2ndLIVEを視聴できる",
+  "reserved_on": "2026-11-05",
+  "occurs_on": "2026-11-14",
+  "title": "ヴイアラ2ndLIVE限定プレミア公開",
+  "url": "https://x.com/valiv_official/status/2117590414429712437",
+  "source_type": "公式",
+  "facts": [
+   "ヴイアラ2ndLIVEを限定プレミア公開する。",
+   "限定プレミア公開開始: 2026年11月14日(土)14:00。",
+   "公開終了: 2026年11月15日(日)23:59。",
+   "告知投稿では3rdLIVE現地チケット最速先行申込を案内し、申込期限は2026年11月15日(日)23:59まで。",
+   "リンク: https://t.co/dVaE8WMfgp",
+   "エンゲージメント: 中",
+   "言及アイドル: 灯里愛夏、上水流宇宙、レトラ"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "event_date": "2026-11-14",
+  "deadline": "2026-11-15",
+  "src_candidate_id": "202611050230-grok-39"
+ },
+ {
+  "id": "sched-2026-11-14-valiv-2nd-live-premiere-2026-開始-src1",
+  "dedup_key": "valiv-2nd-live-premiere-2026",
+  "brand": "dsva",
+  "subject": "ヴイアラ2ndLIVE限定プレミア公開",
+  "kind": "開始",
+  "note": "14時からヴイアラ2ndLIVEを視聴できる",
+  "reserved_on": "2026-11-05",
+  "occurs_on": "2026-11-14",
+  "title": "ヴイアラ3rdLIVE東京公演スペシャルゲスト発表",
+  "url": "https://x.com/valiv_official/status/2117593844644819114",
+  "source_type": "公式",
+  "facts": [
+   "東京公演: 2027年3月21日、プロデューサーミーティング。",
+   "スペシャルゲストとしてアイカツアカデミー！より姫乃みえる、真未夢メエ、和央パリン、凛堂たいむが出演。",
+   "現地チケット最速先行申込のグッズ付きチケット特典はおすわりぬいぐるみ。",
+   "現地チケット最速先行申込期限: 2026年11月15日(日)23:59。",
+   "リンク: https://t.co/dVaE8WMfgp",
+   "エンゲージメント: 高",
+   "言及アイドル: 灯里愛夏、上水流宇宙、レトラ"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "event_date": "2027-03-21",
+  "deadline": "2026-11-15",
+  "src_candidate_id": "202611050230-grok-40",
+  "companion_of": "sched-2026-11-14-valiv-2nd-live-premiere-2026-開始",
+  "src_dedup_key": "valiv-3rd-tokyo-aikatsu-academy-guests-2027"
+ },
+ {
+  "id": "sched-2026-11-14-cosmo-ace8-mission24-26-report-2026-開始",
+  "dedup_key": "cosmo-ace8-mission24-26-report-2026",
+  "brand": "dsva",
+  "subject": "上水流宇宙「ACE8」最終回の配信",
+  "kind": "開始",
+  "note": "夜、ACE8の最終回配信を視聴できる",
+  "reserved_on": "2026-11-05",
+  "occurs_on": "2026-11-14",
+  "title": "上水流宇宙「ACE8」配信の進行報告",
+  "url": "https://x.com/KamizuruCosmo/status/2118008843812864173",
+  "source_type": "公式",
+  "facts": [
+   "上水流宇宙はACE8 Mission24〜Mission26を配信したと報告。",
+   "本人の投稿で、次回が最終回であり11月14日夜に配信すると告知した。",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202611050230-grok-44"
  }
 ]

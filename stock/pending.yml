@@ -402,3 +402,18 @@
   subject: ツアマス ALL.Net緊急メンテナンスの終了
   watch: メンテナンス終了時刻・オンラインモードとマイページの再開(公式が「あらためて知らせる」とした各コンテンツの再開状況)
   added_on: '2026-11-03'
+- dedup_key: gaku-amayo-tsubame-training-acrylic-stand-2027
+  brand: gaku
+  subject: 雨夜燕(トレーニング服)特大アクリルスタンド
+  watch: 2027年2月末までとされた正式な発売日(判明次第 triggers へ)
+  added_on: '2026-11-05'
+- dedup_key: gaku-kotone-endless-dance-graphic-tee
+  brand: gaku
+  subject: 藤田ことね「ENDLESS DANCE」グラフィックTシャツ
+  watch: 2027年2月末までとされた正式な発売日(判明次第 triggers へ)
+  added_on: '2026-11-05'
+- dedup_key: million-tapiyon-plush
+  brand: million
+  subject: ミリオン「たぴぴょん」ぬいぐるみ
+  watch: 2027年5月上旬とされた正式な発売日(判明次第 triggers へ)
+  added_on: '2026-11-05'

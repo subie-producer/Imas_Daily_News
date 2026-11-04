@@ -754,5 +754,83 @@
   "src_candidate_id": "update-d1c063591fad",
   "companion_of": "sched-2026-11-28-cinderella-athome-xr-live-apple-of-my-ai-結果",
   "src_dedup_key": "cg-xr-live-apple-of-my-ai-2027"
+ },
+ {
+  "id": "sched-2026-11-28-valiv-2nd-live-premiere-2026-結果",
+  "dedup_key": "valiv-2nd-live-premiere-2026",
+  "brand": "dsva",
+  "subject": "ヴイアラ3rdLIVE先行 抽選結果発表",
+  "kind": "結果",
+  "note": "13時から先行の抽選結果を確認できる",
+  "reserved_on": "2026-11-05",
+  "occurs_on": "2026-11-28",
+  "title": "ヴイアラ2ndLIVE限定プレミア公開",
+  "url": "https://x.com/valiv_official/status/2117590414429712437",
+  "source_type": "公式",
+  "facts": [
+   "ヴイアラ2ndLIVEを限定プレミア公開する。",
+   "限定プレミア公開開始: 2026年11月14日(土)14:00。",
+   "公開終了: 2026年11月15日(日)23:59。",
+   "告知投稿では3rdLIVE現地チケット最速先行申込を案内し、申込期限は2026年11月15日(日)23:59まで。",
+   "リンク: https://t.co/dVaE8WMfgp",
+   "エンゲージメント: 中",
+   "言及アイドル: 灯里愛夏、上水流宇宙、レトラ"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "event_date": "2026-11-14",
+  "deadline": "2026-11-15",
+  "src_candidate_id": "202611050230-grok-39"
+ },
+ {
+  "id": "sched-2026-11-28-valiv-2nd-live-premiere-2026-結果-src1",
+  "dedup_key": "valiv-2nd-live-premiere-2026",
+  "brand": "dsva",
+  "subject": "ヴイアラ3rdLIVE先行 抽選結果発表",
+  "kind": "結果",
+  "note": "13時から先行の抽選結果を確認できる",
+  "reserved_on": "2026-11-05",
+  "occurs_on": "2026-11-28",
+  "title": "ヴイアラ3rdLIVE東京公演スペシャルゲスト発表",
+  "url": "https://x.com/valiv_official/status/2117593844644819114",
+  "source_type": "公式",
+  "facts": [
+   "東京公演: 2027年3月21日、プロデューサーミーティング。",
+   "スペシャルゲストとしてアイカツアカデミー！より姫乃みえる、真未夢メエ、和央パリン、凛堂たいむが出演。",
+   "現地チケット最速先行申込のグッズ付きチケット特典はおすわりぬいぐるみ。",
+   "現地チケット最速先行申込期限: 2026年11月15日(日)23:59。",
+   "リンク: https://t.co/dVaE8WMfgp",
+   "エンゲージメント: 高",
+   "言及アイドル: 灯里愛夏、上水流宇宙、レトラ"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "event_date": "2027-03-21",
+  "deadline": "2026-11-15",
+  "src_candidate_id": "202611050230-grok-40",
+  "companion_of": "sched-2026-11-28-valiv-2nd-live-premiere-2026-結果",
+  "src_dedup_key": "valiv-3rd-tokyo-aikatsu-academy-guests-2027"
+ },
+ {
+  "id": "sched-2026-11-28-valiv-2nd-live-premiere-2026-結果-src2",
+  "dedup_key": "valiv-2nd-live-premiere-2026",
+  "brand": "dsva",
+  "subject": "ヴイアラ3rdLIVE先行 抽選結果発表",
+  "kind": "結果",
+  "note": "13時から先行の抽選結果を確認できる",
+  "reserved_on": "2026-11-05",
+  "occurs_on": "2026-11-28",
+  "title": "出典元表記「PROJECT IM@S vα-liv 3rdLIVE ＆ MEETING QONNECT AS ONE」",
+  "url": "https://asobiticket2.asobistore.jp/receptions/a911b189-ae4a-4bc6-9f15-729201d4ff7c",
+  "source_type": "公式",
+  "facts": [
+   "抽選結果発表は2026年11月28日(土)13:00。",
+   "当選者の入金期間は2026年11月28日(土)13:00〜12月2日(水)23:59。申込から当落発表までの間にアソビストア会員を退会すると抽選対象外となる。"
+  ],
+  "via": "verified_fact",
+  "verify": "unconfirmed",
+  "src_candidate_id": "202611050230-grok-39",
+  "companion_of": "sched-2026-11-28-valiv-2nd-live-premiere-2026-結果",
+  "src_dedup_key": "valiv-2nd-live-premiere-2026"
  }
 ]

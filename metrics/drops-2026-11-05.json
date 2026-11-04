@@ -1,0 +1,64 @@
+{
+ "gaku-gakumas-amayo-kisama-kentei-2026": {
+  "title": "雨夜燕の「貴様ぁ！検定」の受付が11月8日23時59分まで延長、結果投稿で10名に認定証カードホルダー",
+  "stage": "執筆で見送り",
+  "why": "SOURCE_MISMATCH 受付延長が記事の軸ですが、公式キャンペーンページは期間を2026年10月28日23時59分までと記載しており、11月8日までの延長を確認できませんでした。",
+  "candidate_ids": [
+   "202610290225-grok-89",
+   "202610290732-explore-6",
+   "202610291232-explore-9",
+   "202610300224-grok-42"
+  ]
+ },
+ "sidem-cho-retroseparty-goods-2026": {
+  "title": "「超!!レトローズパーティ」のグッズにミニスカーフ全3種(880円)とレトローズリングライト全5種(1,100円)",
+  "stage": "執筆で見送り",
+  "why": "NOT_NEWS ミニスカーフの種類・価格とレトローズリングライトの種類・価格は、いずれも既報と同じ内容です。新たに起きたことや未報の事実を確認できませんでした。",
+  "candidate_ids": [
+   "202610270222-grok-39",
+   "202610270404-grok-0-r1",
+   "202611050447-grok-0-r1",
+   "202611050447-explore-1-r1"
+  ]
+ },
+ "cg-popntoybox-revival-general-lottery-2026": {
+  "title": "シンデレラガールズ「トイボ」抽選は11月8日まで",
+  "stage": "書き直しで見送り",
+  "why": "OTHER 校閲指摘I1に従い、同じ一般会員先行の締切延長を扱う記事との重複のため、本記事を取り下げます。",
+  "candidate_ids": [
+   "sched-2026-11-05-cg-popntoybox-revival-general-lottery-2026-締切前",
+   "sched-2026-11-05-cg-popntoybox-revival-general-lottery-2026-締切前-src1",
+   "202611020220-grok-19"
+  ],
+  "settled": {
+   "rule": "P1",
+   "dup_of": [
+    "joint-xr-live-revival-2026-presale-extension"
+   ]
+  }
+ },
+ "million-kyomaf-after-sales-2026": {
+  "title": "京まふ2026ミリオンライブ POP UP SHOPの事後通販が11月4日18時から18日23時59分まで、101点を取り扱い",
+  "stage": "執筆で見送り",
+  "why": "SOURCE_MISMATCH 京まふ2026ミリオンライブPOP UP SHOP事後通販の中心となる通販期間（11月4日18時～18日23時59分）を、読み直した出典本文で確認できませんでした。ページには商品一覧と101点の掲載はありますが、通販期間の記載がありません。",
+  "candidate_ids": [
+   "202611050230-grok-16"
+  ]
+ },
+ "million-ova-onkyo-audio-goods-2026": {
+  "title": "ミリオンライブOVAイヤホン、11月13日受注締切",
+  "stage": "書き直しで見送り",
+  "why": "NOT_NEWS 校閲指摘I1・I2のとおり、記事は既報の受注期間・商品内容の再掲で、発行日時点の新しい発表や出来事を確認できないため掲載を見送ります。",
+  "candidate_ids": [
+   "202610310225-grok-37"
+  ]
+ },
+ "sidem-legenders-refrain-atrium-ensemble-2026": {
+  "title": "SideM「リフレインアトリウム」弦楽合奏動画",
+  "stage": "書き直しで見送り",
+  "why": "NOT_NEWS 指摘I1・I2に従い、ファン主催の演奏企画による動画紹介であり、2026-11-05時点に新たに起きた事実を中核にできないため、記事を組みません。",
+  "candidate_ids": [
+   "202610270222-grok-36"
+  ]
+ }
+}

@@ -904,5 +904,43 @@
   "src_candidate_id": "202611020220-grok-83",
   "companion_of": "sched-2026-11-25-derepa-no-kamikyoku-preview-2026-発売",
   "src_dedup_key": "derepa-no-kamikyoku-preview-2026"
+ },
+ {
+  "id": "sched-2026-11-25-imas-mor-424-2026-その他",
+  "dedup_key": "imas-mor-424-2026",
+  "brand": "765",
+  "subject": "アイマスMOR424 放送",
+  "kind": "その他",
+  "note": "白戸佑輔さんがゲストのMOR424放送を聴ける",
+  "reserved_on": "2026-11-05",
+  "occurs_on": "2026-11-25",
+  "title": "アイマスMOR424 白戸佑輔さんゲスト出演・メール募集",
+  "url": "https://x.com/imas_musicradio/status/2117980685810258386",
+  "source_type": "準公式",
+  "facts": [
+   "アイマスMOR424は11月25日放送。",
+   "作詞家・作曲家の白戸佑輔さんをゲストに迎える。",
+   "白戸さん宛のメールは11月12日までに送るよう案内している。",
+   "メール送付先: https://krs.bz/columbia/m/morform",
+   "白戸佑輔さんは765AS、ミリオン、SideM、スタマスの曲を手掛けている。",
+   "白戸佑輔さんは、若林さんがCVを務める秋月律子のソロ曲『Discord Area』の作曲と編曲を担当している。",
+   "エンゲージメント: 中",
+   "言及アイドル: 秋月律子",
+   "作詞家・作曲家の白戸佑輔さんがゲスト出演する。",
+   "白戸さん宛てのメールは https://krs.bz/columbia/m/morform で受け付ける。",
+   "メール受付期限は11月12日。",
+   "リンク: https://krs.bz/columbia/m/morform",
+   "ゲストは作詞家・作曲家の白戸佑輔さん。",
+   "白戸さん宛のメールを2026年11月12日まで募集。",
+   "メールフォーム: https://krs.bz/columbia/m/morform",
+   "メールフォームページでは、メッセージが番組内や関連商品等で使用される場合があると案内されている。",
+   "エンゲージメント: 低"
+  ],
+  "via": "grok",
+  "verify": "unconfirmed",
+  "event_date": "2026-11-25",
+  "deadline": "2026-11-12",
+  "link_from": "https://x.com/harunamiP/status/2117987505643692102",
+  "src_candidate_id": "202611050230-grok-9"
  }
 ]

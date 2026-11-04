@@ -1,0 +1,147 @@
+{
+ "decisions": {
+  "765-961-idol-ultimate-2026": {
+   "action": "cross_brand",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "joint-765-961-xr-lighttag-2027",
+   "reason": "",
+   "note": "765×961共同主催の現地チケット受付(11/8 23:59締切)。合同面が同じ先行締切を記事化済み"
+  },
+  "x-com-5": {
+   "action": "article",
+   "angle": "アイマスMOR424(11月25日放送)に作詞家・作曲家の白戸佑輔さんがゲスト出演し、白戸さん宛のメールを11月12日まで募集している。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "過去のMOR記事は419回の別件。新ゲスト・メール募集は新しい事実。verify未確認のため出典は執筆・校閲で確認"
+  },
+  "famitsu-40th-fes-cover-clearfile-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "KADOKAWA Game Linkage主催のファミ通イベント。春香は配布クリアファイルの例示に挙がるだけで、アイマス主催の話題ではない"
+  },
+  "765-961-live-ticket-extension-2026": {
+   "action": "cross_brand",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "joint-765-961-xr-lighttag-2027",
+   "reason": "",
+   "note": "先行受付延長(11/8 23:59)は既報(10/29)で、合同面が締切前の記事を立てている"
+  },
+  "xr-live-revival-asobistore-general-advance-2026": {
+   "action": "cross_brand",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "joint-xr-live-revival-2026-presale-extension",
+   "reason": "",
+   "note": "xR LIVE REVIVALのアソビストア先行(11/8締切)。合同面が同じ施策を記事化済み"
+  },
+  "tours-symphony-release-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/29「ツアマス曲『SYMPHONY』配信開始」で同内容を報じ済み。新しい事実も当日のトリガーも無い"
+  },
+  "imas-radio-4-hasegawa-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/28「IM＠S RADIO長谷川明子回、アーカイブ公開」で本編・アフタートークのリンクと出演者まで報じ済み"
+  },
+  "765-961-idol-ultimate-once-and-for-all-2027": {
+   "action": "cross_brand",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "joint-765-961-xr-lighttag-2027",
+   "reason": "",
+   "note": "続報予約(締切3日前)だが、765×961共同主催で合同面が同じ締切の記事を立てている。ライトタグ特典も同記事に含まれる"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "765-x-com-5",
+    "brand": "765",
+    "rank": "small",
+    "angle": "アイマスMOR424(11月25日放送)に作詞家・作曲家の白戸佑輔さんがゲスト出演し、白戸さん宛のメールを11月12日まで募集している。",
+    "purpose": "新情報",
+    "lead_score": 30,
+    "dedup_key": "x-com-5",
+    "candidate_ids": [
+     "202611050230-grok-9"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "famitsu-40th-fes-cover-clearfile-2026",
+    "reason": "面違い",
+    "note": "KADOKAWA Game Linkage主催のファミ通イベント。春香は配布クリアファイルの例示に挙がるだけで、アイマス主催の話題ではない"
+   },
+   {
+    "dedup_key": "tours-symphony-release-2026",
+    "reason": "既報",
+    "note": "10/29「ツアマス曲『SYMPHONY』配信開始」で同内容を報じ済み。新しい事実も当日のトリガーも無い"
+   },
+   {
+    "dedup_key": "imas-radio-4-hasegawa-2026",
+    "reason": "既報",
+    "note": "10/28「IM＠S RADIO長谷川明子回、アーカイブ公開」で本編・アフタートークのリンクと出演者まで報じ済み"
+   }
+  ],
+  "cross_brand": [
+   {
+    "slug": "joint-765-961-xr-lighttag-2027",
+    "dedup_key": "765-961-idol-ultimate-2026",
+    "note": "765×961共同主催の現地チケット受付(11/8 23:59締切)。合同面が同じ先行締切を記事化済み"
+   },
+   {
+    "slug": "joint-765-961-xr-lighttag-2027",
+    "dedup_key": "765-961-live-ticket-extension-2026",
+    "note": "先行受付延長(11/8 23:59)は既報(10/29)で、合同面が締切前の記事を立てている"
+   },
+   {
+    "slug": "joint-xr-live-revival-2026-presale-extension",
+    "dedup_key": "xr-live-revival-asobistore-general-advance-2026",
+    "note": "xR LIVE REVIVALのアソビストア先行(11/8締切)。合同面が同じ施策を記事化済み"
+   },
+   {
+    "slug": "joint-765-961-xr-lighttag-2027",
+    "dedup_key": "765-961-idol-ultimate-once-and-for-all-2027",
+    "note": "続報予約(締切3日前)だが、765×961共同主催で合同面が同じ締切の記事を立てている。ライトタグ特典も同記事に含まれる"
+   }
+  ]
+ }
+}

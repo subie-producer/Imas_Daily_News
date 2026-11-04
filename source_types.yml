@@ -260,6 +260,10 @@ party_paths:
   - item.rakuten.co.jp/f272078-takatsuki        # 高槻市ふるさと納税
 
 party_domains:
+  - f-ice.jp              # 合議で追加: 学マスなどのサイクルウェアの販売代理・ライセンス商品を売る会社
+  - nenga.kitamura.jp     # 合議で追加: 学園アイマスとコラボした年賀状を販売する企業サイト。販売元
+  - cocollabo.net         # 合議で追加: 特商法表示の販売社名。複数作品のコラボグッズを販売する通販
+  - cocollabo.lol         # 合議で追加: 特商法表示の販売社名。複数作品のコラボグッズを販売する通販
   - segafave.co.jp        # 合議で追加: ALL.Net運営会社の告知。IM作品の運営・販売先として当事者
   - k-arena.com           # 合議で追加: 会場の運営者が自ら、ライブツアー記念のコラボドリンク販売を発表
   - store.hands.net       # 合議で追加: ハンズ店舗で催しと販売グッズを告知する小売店のサイト
@@ -643,11 +647,20 @@ x_accounts:
     - famitsu
     - GamerNeJp
   二次情報:
+    - imas_goodscheck     # 合議で追加: 公式グッズ発売発表を伝達するグッズ情報アカウント
     - TCGsupplyNavi       # 合議で追加: TCG情報サイト。商品情報を集約・発信
     - gkmas_GR            # 合議で追加: 雑誌情報を伝達、独自取材なし
     - imasnews765
     - zutapoke
   ファン:
+    - 6y_d1               # 合議で追加: 個人アカウント。シャニマスやヴイアラのファン交流と創作を発信
+    - takuyatosa1         # 合議で追加: 個人の発信。MCは運営でも作品の演者でもなく、当事者ではない
+    - shigrenium          # 合議で追加: 個人が「DIAMOND JOKER」の踊ってみた動画を投稿
+    - mario_producer      # 合議で追加: 961プロファンが対バン会場でのグッズ交流を希望
+    - illumiraitya        # 合議で追加: 個人がシャニソン3周年記念のアートを投稿
+    - hanshinMarin        # 合議で追加: 個人がシャニマスコラボカフェへの来訪を投稿
+    - arowana_sub         # 合議で追加: 個人が「POPPIN' PLANET」2DMVへの反応を投稿
+    - SunSummer_169       # 合議で追加: 個人が名刺持参のツアーファイナル参加を投稿
     - RWibo               # 合議で追加: 個人アカウントの発信。Comic FrontierでのP同士の名刺交換を投稿
     - EinhardP_yukiho     # 合議で追加: 個人アカウントによるグッズ到着の報告
     - vocaloidfan_sp      # 合議で追加: ファン記事。個人またはファンサイトの発信
@@ -969,6 +982,9 @@ x_accounts:
     - procinen1
     - yutaleP
   当事者:
+    - akiko_lawson        # 合議で追加: ローソンの『学園アイドルマスター』キャンペーン(コラボ先)
+    - Neowing_Hobby2      # 合議で追加: ホビーショップの販売元として「たぴぴょん」グッズ予約を告知
+    - DesignNagatomo      # 合議で追加: 「POPPIN' PLANET」映像の制作担当(グラフィック・リリック)
     - aikatsu_acad        # 合議で追加: 他作品(アイカツ!)の公式。ヴイアラ出演のコラボ告知の発信元
     - dmm_scratch         # 合議で追加: DMMスクラッチの公式X。一般の販売サービスとしてライセンス商品を売る販売元
     - gotokenhanbai       # 合議で追加: 五島軒の販売・コラボ先の公式発信。アイマス公式ではない
@@ -1157,6 +1173,12 @@ x_posts:
 
 # --- リンク元から引き継いだ種別(リンク先1つずつ。キーは pipelib.link_key)。合議がリンク元の告知と関係していると確かめたものだけ(classify_sources.inherit_from_links)。リンク先そのものの種別より強いときだけ効く ---
 link_types:
+  youtube.com/watch?v=poj4YNDJ6HY: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/valiv_official/status/2117905151424114909(公式)。『Stranger Things 踊ってみた with 愛夏』で、告知の動画と同
+  youtube.com/watch?v=kGYw2sS49c0: ファン         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/shigrenium/status/2118022141128094136(ファン)。『DIAMOND JOKER』踊ってみた動画で、告知の動画と同じ
+  youtube.com/watch?v=Ri6YYFLUi1o: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/imas_ch/status/2117995288468332797(公式)。辻野あかりの誕生日お祝いムービーで、告知の動画そのもの
+  lnk.to/HighJoker_2DMV: 準公式                   # リンク元から引き継ぎ(合議で関係を確認): https://x.com/SideM_lantis/status/2117949989645422707(準公式)。同曲『POPPIN' PLANET』の配信・DL先で、告知の2DMVと同じ作品
+  forms.cloud.microsoft/pages/responsepage.aspx?id=q7kiOCyrIE-ozavmrJhsN7Xo70AL1htBl0YLyOneN9FUMEJWV0lXWktTUlBFMEtOSzlGU1ZJWlRSNS4u: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://x.com/imas_CGofficial/status/2117904685826802098(公式)。おたより募集フォームで、リンク元の告知と同じ『よしちづラジオ』の応募先
+  www.mwt.co.jp/kokunai/chiiki/localtour/welcome-to-naha2026/: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://idolmaster-official.jp/news/01_20281(公式)。同じ那覇コラボの特設サイト。リンク元の告知もこのサイトを案内
   youtube.com/watch?v=id5FJcyLmVg: 準公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/SideM_lantis/status/2117572496899617094(準公式)。リンク先の動画名がHigh×Joker「POPPIN' PLANET」2DMVで
   xp.bandainamco-am.co.jp/important_20261102/index.html: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://x.com/TOURS_imas/status/2117222016013230484(公式)。ALL.Net停止の経緯と対象タイトル(TOURS含む)を案内する同件のお知らせ
   youtube.com/watch?v=uD1qfCwTDtA: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/valiv_official/status/2117179931369124020(公式)。上水流宇宙としぐれういのコラボ動画。告知と一致

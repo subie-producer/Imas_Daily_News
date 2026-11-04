@@ -1,0 +1,209 @@
+{
+ "decisions": {
+  "diamond-joker-dance-cover-2026-11": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "comifuro-producer-card-exchange-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ファン創作(踊ってみた)。culture記事に統合"
+  },
+  "961-fan-goods-meetup-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "comifuro-producer-card-exchange-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "界隈の盛り上がり。culture記事に統合"
+  },
+  "comifuro-producer-card-exchange-2026": {
+   "action": "article",
+   "angle": "ファンの盛り上がり:シャニマスライブ会場での私服コーデ、風野灯織の魔女イラスト、DIAMOND JOKER踊ってみた、961プログッズ交流の希望",
+   "purpose": "新情報",
+   "rank": "culture",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "名刺交換は既報(11/2)なので新しい細片を中心に。個人を主役にしない"
+  },
+  "idolmaster-portal-maintenance-release-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/31号の記事に同じ内容。新事実なし"
+  },
+  "fan-yukiho-mami-pc-panel-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/30号のファン報告記事と同じ内容"
+  },
+  "imas-birthdays-2026-10-27": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/27号に同内容の記事。過去の誕生日"
+  },
+  "portal-emergency-maintenance-ended-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/27号に同内容の記事"
+  },
+  "765-961-idol-ultimate-2027-ticket": {
+   "action": "cross_brand",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "joint-765-961-xr-lighttag-2027",
+   "reason": "",
+   "note": "765×961共同の公演。先行締切は合同面の記事が扱う"
+  },
+  "tours-sidem-contribution-debate-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "ファン間の議論・出典が個人投稿のみで事実の発表ではない"
+  },
+  "bandainamco-am-co-jp-32": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/01・10/30号に同内容。予選開始は11/12で当日トリガーなし"
+  },
+  "akai-sekai-cover-video-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "出演者はアイマス外のVTuber中心で、個人投稿のみ"
+  },
+  "tosakyodai-boss-subordinate-acrylic-stand": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "アイマスと無関係の個人クリエイター商品"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "general-comifuro-producer-card-exchange-2026",
+    "brand": "general",
+    "rank": "culture",
+    "angle": "ファンの盛り上がり:シャニマスライブ会場での私服コーデ、風野灯織の魔女イラスト、DIAMOND JOKER踊ってみた、961プログッズ交流の希望",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "comifuro-producer-card-exchange-2026",
+    "candidate_ids": [
+     "202611020220-grok-16",
+     "202611020220-grok-50",
+     "202610300224-grok-15",
+     "202610290225-grok-41",
+     "202610290225-grok-42",
+     "202610310733-explore-0",
+     "202611010230-grok-72",
+     "202611050230-grok-45",
+     "202611050230-grok-49"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "idolmaster-portal-maintenance-release-2026",
+    "reason": "既報",
+    "note": "10/31号の記事に同じ内容。新事実なし"
+   },
+   {
+    "dedup_key": "fan-yukiho-mami-pc-panel-2026",
+    "reason": "既報",
+    "note": "10/30号のファン報告記事と同じ内容"
+   },
+   {
+    "dedup_key": "imas-birthdays-2026-10-27",
+    "reason": "既報",
+    "note": "10/27号に同内容の記事。過去の誕生日"
+   },
+   {
+    "dedup_key": "portal-emergency-maintenance-ended-2026",
+    "reason": "既報",
+    "note": "10/27号に同内容の記事"
+   },
+   {
+    "dedup_key": "tours-sidem-contribution-debate-2026",
+    "reason": "その他",
+    "note": "ファン間の議論・出典が個人投稿のみで事実の発表ではない"
+   },
+   {
+    "dedup_key": "bandainamco-am-co-jp-32",
+    "reason": "既報",
+    "note": "10/01・10/30号に同内容。予選開始は11/12で当日トリガーなし"
+   },
+   {
+    "dedup_key": "akai-sekai-cover-video-2026",
+    "reason": "面違い",
+    "note": "出演者はアイマス外のVTuber中心で、個人投稿のみ"
+   },
+   {
+    "dedup_key": "tosakyodai-boss-subordinate-acrylic-stand",
+    "reason": "面違い",
+    "note": "アイマスと無関係の個人クリエイター商品"
+   }
+  ],
+  "cross_brand": [
+   {
+    "slug": "joint-765-961-xr-lighttag-2027",
+    "dedup_key": "765-961-idol-ultimate-2027-ticket",
+    "note": "765×961共同の公演。先行締切は合同面の記事が扱う"
+   }
+  ]
+ }
+}

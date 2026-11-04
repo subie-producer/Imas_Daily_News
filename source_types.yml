@@ -260,6 +260,7 @@ party_paths:
   - item.rakuten.co.jp/f272078-takatsuki        # 高槻市ふるさと納税
 
 party_domains:
+  - f-ice.jp              # 合議で追加: 学マスなどのサイクルウェアの販売代理・ライセンス商品を売る会社
   - nenga.kitamura.jp     # 合議で追加: 学園アイマスとコラボした年賀状を販売する企業サイト。販売元
   - cocollabo.net         # 合議で追加: 特商法表示の販売社名。複数作品のコラボグッズを販売する通販
   - cocollabo.lol         # 合議で追加: 特商法表示の販売社名。複数作品のコラボグッズを販売する通販
@@ -652,6 +653,7 @@ x_accounts:
     - imasnews765
     - zutapoke
   ファン:
+    - 6y_d1               # 合議で追加: 個人アカウント。シャニマスやヴイアラのファン交流と創作を発信
     - takuyatosa1         # 合議で追加: 個人の発信。MCは運営でも作品の演者でもなく、当事者ではない
     - shigrenium          # 合議で追加: 個人が「DIAMOND JOKER」の踊ってみた動画を投稿
     - mario_producer      # 合議で追加: 961プロファンが対バン会場でのグッズ交流を希望
@@ -1171,6 +1173,11 @@ x_posts:
 
 # --- リンク元から引き継いだ種別(リンク先1つずつ。キーは pipelib.link_key)。合議がリンク元の告知と関係していると確かめたものだけ(classify_sources.inherit_from_links)。リンク先そのものの種別より強いときだけ効く ---
 link_types:
+  youtube.com/watch?v=poj4YNDJ6HY: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/valiv_official/status/2117905151424114909(公式)。『Stranger Things 踊ってみた with 愛夏』で、告知の動画と同
+  youtube.com/watch?v=kGYw2sS49c0: ファン         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/shigrenium/status/2118022141128094136(ファン)。『DIAMOND JOKER』踊ってみた動画で、告知の動画と同じ
+  youtube.com/watch?v=Ri6YYFLUi1o: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/imas_ch/status/2117995288468332797(公式)。辻野あかりの誕生日お祝いムービーで、告知の動画そのもの
+  lnk.to/HighJoker_2DMV: 準公式                   # リンク元から引き継ぎ(合議で関係を確認): https://x.com/SideM_lantis/status/2117949989645422707(準公式)。同曲『POPPIN' PLANET』の配信・DL先で、告知の2DMVと同じ作品
+  forms.cloud.microsoft/pages/responsepage.aspx?id=q7kiOCyrIE-ozavmrJhsN7Xo70AL1htBl0YLyOneN9FUMEJWV0lXWktTUlBFMEtOSzlGU1ZJWlRSNS4u: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://x.com/imas_CGofficial/status/2117904685826802098(公式)。おたより募集フォームで、リンク元の告知と同じ『よしちづラジオ』の応募先
   www.mwt.co.jp/kokunai/chiiki/localtour/welcome-to-naha2026/: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://idolmaster-official.jp/news/01_20281(公式)。同じ那覇コラボの特設サイト。リンク元の告知もこのサイトを案内
   youtube.com/watch?v=id5FJcyLmVg: 準公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/SideM_lantis/status/2117572496899617094(準公式)。リンク先の動画名がHigh×Joker「POPPIN' PLANET」2DMVで
   xp.bandainamco-am.co.jp/important_20261102/index.html: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://x.com/TOURS_imas/status/2117222016013230484(公式)。ALL.Net停止の経緯と対象タイトル(TOURS含む)を案内する同件のお知らせ

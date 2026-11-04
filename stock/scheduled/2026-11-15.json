@@ -2333,5 +2333,32 @@
   "deadline": "2026-11-15",
   "link_from": "https://x.com/valiv_official/status/2117599273189769461",
   "src_candidate_id": "202611032334-watch-0"
+ },
+ {
+  "id": "sched-2026-11-15-valiv-2nd-live-premiere-2026-締切",
+  "dedup_key": "valiv-2nd-live-premiere-2026",
+  "brand": "dsva",
+  "subject": "ヴイアラ最速先行申込締切・2ndLIVE公開終了",
+  "kind": "締切",
+  "note": "23時59分まで最速先行に申し込め、2ndLIVE限定公開も見られる最終日",
+  "reserved_on": "2026-11-05",
+  "occurs_on": "2026-11-15",
+  "title": "ヴイアラ2ndLIVE限定プレミア公開",
+  "url": "https://x.com/valiv_official/status/2117590414429712437",
+  "source_type": "公式",
+  "facts": [
+   "ヴイアラ2ndLIVEを限定プレミア公開する。",
+   "限定プレミア公開開始: 2026年11月14日(土)14:00。",
+   "公開終了: 2026年11月15日(日)23:59。",
+   "告知投稿では3rdLIVE現地チケット最速先行申込を案内し、申込期限は2026年11月15日(日)23:59まで。",
+   "リンク: https://t.co/dVaE8WMfgp",
+   "エンゲージメント: 中",
+   "言及アイドル: 灯里愛夏、上水流宇宙、レトラ"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "event_date": "2026-11-14",
+  "deadline": "2026-11-15",
+  "src_candidate_id": "202611050230-grok-39"
  }
 ]

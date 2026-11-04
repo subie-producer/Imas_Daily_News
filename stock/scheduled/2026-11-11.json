@@ -2213,5 +2213,57 @@
   "verify": "confirmed",
   "deadline": "2026-11-11",
   "src_candidate_id": "202611010230-grok-47"
+ },
+ {
+  "id": "sched-2026-11-11-gaku-radio-shirube-final-review-2026-開始",
+  "dedup_key": "gaku-radio-shirube-final-review-2026",
+  "brand": "gaku",
+  "subject": "放送部 標ファイナル感想回の放送",
+  "kind": "開始",
+  "note": "長月あおいさん・小鹿なおさん・松田彩音さん出演の感想回を聴ける",
+  "reserved_on": "2026-11-05",
+  "occurs_on": "2026-11-11",
+  "title": "初星学園放送部 11月11日放送回でLIVE TOUR -標-ファイナル感想回",
+  "url": "https://x.com/gkmas_official/status/2117962566135918911",
+  "source_type": "公式",
+  "facts": [
+   "2026年11月11日(水)の初星学園放送部はLIVE TOUR -標-ファイナル公演の感想回。",
+   "ゲストは長月あおいさん(花海 咲季役)。",
+   "ゲストは小鹿なおさん(月村 手毬役)。",
+   "ゲストは松田彩音さん(花海 佑芽役)。",
+   "おたより受付は11月10日(火)12:00まで。",
+   "おたより投稿フォーム: https://idolmaster-official.jp/gakuen/gakuenradio/contact/",
+   "リンク: https://t.co/MZC4lxTN1O",
+   "エンゲージメント: 中",
+   "言及アイドル: 花海 咲季、月村 手毬、花海 佑芽"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "event_date": "2026-11-11",
+  "deadline": "2026-11-10",
+  "src_candidate_id": "202611050230-grok-34"
+ },
+ {
+  "id": "sched-2026-11-11-sidem-aji-project-story-episode-2-2026-開始",
+  "dedup_key": "sidem-aji-project-story-episode-2-2026",
+  "brand": "sidem",
+  "subject": "『－AJIプロジェクト－』ストーリー第2話「密着・スパイシー！？」公開",
+  "kind": "開始",
+  "note": "第2話を読める",
+  "reserved_on": "2026-11-05",
+  "occurs_on": "2026-11-11",
+  "title": "『－AJIプロジェクト－』ストーリー第2話公開予定",
+  "url": "https://x.com/SideM_official/status/2117892856572694620",
+  "source_type": "公式",
+  "facts": [
+   "新CDシリーズと連動した『－AJIプロジェクト－』ストーリーを2026-11-11に公開予定。",
+   "第2話タイトル: 『密着・スパイシー！？』。",
+   "投稿に第2話のあらすじが案内されている。",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "event_date": "2026-11-11",
+  "src_candidate_id": "202611050230-grok-31"
  }
 ]

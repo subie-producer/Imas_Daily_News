@@ -21570,6 +21570,33 @@ def test_collect_stage_order(tmp: Path):
             collect.polite_urlopen, collect.VERIFY_FETCH_SEC = saved_v
         check(spent < 2 and counts == {"confirmed": 0, "unconfirmed": 1, "failed": 0} and "終わらない" in cs[0].get("verify_note", ""),
               f"終わらない応答の裏取りを見切らない・落とした: {spent:.1f}秒 {counts} {cs[0].get('verify_note')}")
+        # 5xx の本文(メンテナンスの画面かの判定に読む)が少しずつ届くときも、同じ見切りの内で済ませる(Sol 監査 r4)
+        import email.message
+        import urllib.error
+
+        class SlowBody:
+            def read(self, n=-1):
+                time.sleep(3)
+                return "<p>ただいまメンテナンス中です</p>".encode()
+
+            def close(self):
+                pass
+
+        def slow_503(req, **k):
+            raise urllib.error.HTTPError("https://audit.example/slow503", 503, "busy", email.message.Message(), SlowBody())
+        cs = [cand("https://audit.example/slow503")]
+        saved_v = (collect.polite_urlopen, collect.VERIFY_FETCH_SEC)
+        try:
+            collect.polite_urlopen = slow_503
+            collect.VERIFY_FETCH_SEC = 0.3
+            collect.DEADLINE = time.time() + 3600
+            t0 = time.time()
+            counts = saved["verify"](cs)
+            spent = time.time() - t0
+        finally:
+            collect.polite_urlopen, collect.VERIFY_FETCH_SEC = saved_v
+        check(spent < 2 and counts == {"confirmed": 0, "unconfirmed": 1, "failed": 0},
+              f"5xx の本文の受信を見切らない・落とした: {spent:.1f}秒 {counts} {cs[0].get('verify_note')}")
         # 3. 判定表の合議は、失敗したあとの付け直し・lint の分(RETAG_RESERVE_SEC)を残して切る
         got: list = []
         collect.classify_then_retag = saved["classify_then_retag"]

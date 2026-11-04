@@ -258,14 +258,19 @@ class VerifyFetchTimeout(TimeoutError):
 
 
 def verify_fetch(req) -> tuple[int, bytes, str | None, str]:
-    """裏取りの取得: (状態コード, 本文(PAGE_READ_BYTES まで。4xx・5xx は空), 文字コード, 最終 URL)。HTTPError はそのまま上げる。
+    """裏取りの取得: (状態コード, 本文(PAGE_READ_BYTES まで。4xx・5xx は空), 文字コード, 最終 URL)。HTTPError はそのまま上げ、
+    5xx ならメンテナンスの画面か(本文を読んで判定)を例外の maintenance に付ける(本文の受信も見切りの内で済ませる。Sol 監査 r4)。
     締切のある回は別スレッドで取り、VERIFY_FETCH_SEC で見切って VerifyFetchTimeout を上げる(見切ったスレッドは socket の待ち時間で
     終わり、何も書かない: watch_get と同じ)。締切が無ければこのスレッドで取る"""
     def get() -> tuple[int, bytes, str | None, str]:
         # 間隔をあけ、429 は Retry-After を守って取り直す。429 の待ちは収集の締切を越えない
-        with polite_urlopen(req, timeout=15, wait_deadline=DEADLINE) as res:
-            st = int(getattr(res, "status", None) or 200)
-            return st, (res.read(PAGE_READ_BYTES) if st < 400 else b""), res.headers.get_content_charset(), res.geturl()
+        try:
+            with polite_urlopen(req, timeout=15, wait_deadline=DEADLINE) as res:
+                st = int(getattr(res, "status", None) or 200)
+                return st, (res.read(PAGE_READ_BYTES) if st < 400 else b""), res.headers.get_content_charset(), res.geturl()
+        except urllib.error.HTTPError as e:
+            e.maintenance = maintenance_http_error(e)      # 本文を読むので1回だけ(呼び出し側は読み直さない)
+            raise
     if not DEADLINE:
         return get()
     import threading
@@ -2424,7 +2429,7 @@ def verify(cands: list[dict]) -> dict:
                             continue
                         # 転送せずに 5xx でメンテナンスの画面を返すサイト(2026-10-23: ランティスの 503)も、今は確かめられないだけ。
                         # 404・メンテナンスの表示の無い 5xx は従来どおり取得できない(failed)
-                        if not maintenance_http_error(e):
+                        if not getattr(e, "maintenance", False):     # verify_fetch が見切りの内で判定した
                             raise
                         c["verify"] = "unconfirmed"
                         c["verify_note"] = f"出典がメンテナンス中(HTTP {e.code} でメンテナンスの画面)で、facts を本文で確かめられない"

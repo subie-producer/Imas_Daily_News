@@ -2338,9 +2338,9 @@
   "id": "sched-2026-11-15-valiv-2nd-live-premiere-2026-締切",
   "dedup_key": "valiv-2nd-live-premiere-2026",
   "brand": "dsva",
-  "subject": "ヴイアラ最速先行申込締切・2ndLIVE公開終了",
+  "subject": "ヴイアラ3rdLIVE最速先行・2ndLIVE限定公開",
   "kind": "締切",
-  "note": "23時59分まで最速先行に申し込め、2ndLIVE限定公開も見られる最終日",
+  "note": "23時59分まで最速先行に申し込め、2ndLIVEを視聴できる最終日",
   "reserved_on": "2026-11-05",
   "occurs_on": "2026-11-15",
   "title": "ヴイアラ2ndLIVE限定プレミア公開",
@@ -2360,5 +2360,34 @@
   "event_date": "2026-11-14",
   "deadline": "2026-11-15",
   "src_candidate_id": "202611050230-grok-39"
+ },
+ {
+  "id": "sched-2026-11-15-valiv-2nd-live-premiere-2026-締切-src1",
+  "dedup_key": "valiv-2nd-live-premiere-2026",
+  "brand": "dsva",
+  "subject": "ヴイアラ3rdLIVE最速先行・2ndLIVE限定公開",
+  "kind": "締切",
+  "note": "23時59分まで最速先行に申し込め、2ndLIVEを視聴できる最終日",
+  "reserved_on": "2026-11-05",
+  "occurs_on": "2026-11-15",
+  "title": "ヴイアラ3rdLIVE東京公演スペシャルゲスト発表",
+  "url": "https://x.com/valiv_official/status/2117593844644819114",
+  "source_type": "公式",
+  "facts": [
+   "東京公演: 2027年3月21日、プロデューサーミーティング。",
+   "スペシャルゲストとしてアイカツアカデミー！より姫乃みえる、真未夢メエ、和央パリン、凛堂たいむが出演。",
+   "現地チケット最速先行申込のグッズ付きチケット特典はおすわりぬいぐるみ。",
+   "現地チケット最速先行申込期限: 2026年11月15日(日)23:59。",
+   "リンク: https://t.co/dVaE8WMfgp",
+   "エンゲージメント: 高",
+   "言及アイドル: 灯里愛夏、上水流宇宙、レトラ"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "event_date": "2027-03-21",
+  "deadline": "2026-11-15",
+  "src_candidate_id": "202611050230-grok-40",
+  "companion_of": "sched-2026-11-15-valiv-2nd-live-premiere-2026-締切",
+  "src_dedup_key": "valiv-3rd-tokyo-aikatsu-academy-guests-2027"
  }
 ]

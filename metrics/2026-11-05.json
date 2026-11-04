@@ -118,5 +118,48 @@
    "left_s": 846,
    "elapsed_s": 106
   }
+ ],
+ "compose": [
+  {
+   "at": "2026-11-05T03:40:55+09:00",
+   "edition": "2026-11-05",
+   "rounds": 4,
+   "approved": true,
+   "lint_green": true,
+   "planned": 47,
+   "written": 38,
+   "roundups": 1,
+   "dropped": 0,
+   "coverage": {
+    "subjects": 512,
+    "covered": 512,
+    "missing": 0,
+    "missing_keys": []
+   },
+   "dropped_by_review": [],
+   "stages_min": {
+    "選定": 3.3883044123649597,
+    "選定の拾い直し": 1.0981165846188863,
+    "執筆": 10.307428793112438,
+    "出典の判定": 1.6293881098429361,
+    "組版": 1.0953477382659913,
+    "校閲": 0.9118962287902832,
+    "校閲1波": 0.9118962287902832
+   },
+   "target_min": 60,
+   "over_target": false,
+   "aborted": [
+    "gaku-gakumas-amayo-kisama-kentei-2026",
+    "sidem-cho-retroseparty-goods-2026",
+    "million-ova-onkyo-audio-goods-2026",
+    "shiny-hyakkiyako-pop-up-after-sales-2026",
+    "sidem-legenders-refrain-atrium-ensemble-2026",
+    "cg-popntoybox-revival-general-lottery-2026",
+    "gaku-gkmas-misuzu-garakuta-present-2026",
+    "gaku-kitamura-gakuen-new-year-cards-2027",
+    "million-kyomaf-after-sales-2026"
+   ],
+   "duration_s": 2409
+  }
  ]
 }

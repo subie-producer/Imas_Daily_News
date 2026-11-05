@@ -19975,13 +19975,18 @@ def test_source_rescue_entry(tmp: Path):
               and all(any("x" in t for t in rep["articles"][s]["tried"]) for s in two),
               f"同じ文の問いの答えを、片方の記事へ寄せた(同じ投稿 {same_post}): {p6[two[0]]} / {p6[two[1]]} {rep['articles']}")
     # 始めた裏取りが締切を越えて長引いても(描画・本文の受信)、締切で待つのをやめ、裏取りしていない候補にする(Sol 監査 r2)
-    import collect
+    # 偽物は本物(collect.verify)と同じ引数を受ける。引数が合わずにスレッドが即座に落ちても合格する、では締切の検査にならない
+    import collect, inspect
     saved = (collect.verify, source_rescue.VERIFY_ONE_MAX)
+    started: list[str] = []
     try:
-        def slow(cands):
+        def slow(cands, stale_days=collect.STALE_DAYS):
+            started.extend(c["url"] for c in cands)
             time.sleep(3)
             for c in cands:
                 c["verify"] = "confirmed"
+        check(list(inspect.signature(slow).parameters) == list(inspect.signature(saved[0]).parameters),
+              f"裏取りの偽物の引数が本物と違う: {inspect.signature(slow)} / {inspect.signature(saved[0])}")
         collect.verify, source_rescue.VERIFY_ONE_MAX = slow, 0
         cs = [{"url": "https://a.example/1"}, {"url": "https://a.example/2"}]
         t0 = time.time()
@@ -19989,10 +19994,25 @@ def test_source_rescue_entry(tmp: Path):
         took = time.time() - t0
     finally:
         collect.verify, source_rescue.VERIFY_ONE_MAX = saved
-    check(took < 2 and all(c["verify_note"] == source_rescue.VERIFY_LATE_NOTE and c["verify"] == "unconfirmed" for c in cs),
-          f"締切を越えた裏取りを待った・採った: {took:.1f}秒 {cs}")
+    check(sorted(started) == ["https://a.example/1", "https://a.example/2"], f"裏取りを始めないまま締切の検査を通した: {started}")
+    check(0.8 <= took < 2 and all(c["verify_note"] == source_rescue.VERIFY_LATE_NOTE and c["verify"] == "unconfirmed" for c in cs),
+          f"締切を越えた裏取りを締切まで待たなかった・締切を越えて待った・採った: {took:.1f}秒 {cs}")
     time.sleep(2.5)     # 捨てた裏取りが終わっても、候補を書き換えない
     check(all(c["verify"] == "unconfirmed" for c in cs), f"締切のあとに終わった裏取りが候補を書き換えた: {cs}")
+    # 締切までに例外で終わった裏取りは、締切越えの印(VERIFY_LATE_NOTE)に化けさせず、呼び手へ上げる
+    try:
+        def broken(cands, stale_days=collect.STALE_DAYS):
+            raise RuntimeError("裏取りの欠陥")
+        collect.verify, source_rescue.VERIFY_ONE_MAX = broken, 0
+        cs = [{"url": "https://a.example/3"}]
+        try:
+            source_rescue.verify_until(cs, time.time() + 1)
+            raised = None
+        except RuntimeError as e:
+            raised = e
+    finally:
+        collect.verify, source_rescue.VERIFY_ONE_MAX = saved
+    check(raised is not None and "verify_note" not in cs[0], f"裏取りの例外を締切越えとして隠した: {raised!r} {cs}")
 
 
 def test_oncall_recover_rescues_sources(tmp: Path):

@@ -251,24 +251,33 @@ def verify_until(cands: list[dict], until: float | None) -> None:
     - 締切までに終わらなかった裏取りは待たずに捨てる(写しの裏取りは複製で行い、終わったものだけを採る。描画・本文の受信が
       締切を越えて長引いても、入口は締切で先へ進む。Sol 監査 r2: 描画の待ちの上限は1回90秒で、本文の受信にも総時間の上限が無い)
     どちらも、裏取りしていない候補として VERIFY_LATE_NOTE を付ける(写しの不一致とはしない。素材にも計画にも入れない)。
-    裏取りのスレッドはデーモンにし、捨てた裏取りが工程の終わりを引き延ばさない(残った描画の子は呼び手の当番が刈り取る)。"""
+    裏取りのスレッドはデーモンにし、捨てた裏取りが工程の終わりを引き延ばさない(残った描画の子は呼び手の当番が刈り取る)。
+    締切までに例外で終わった裏取りは、締切越えの印にせず、その例外を呼び手へ上げる(欠陥を「間に合わなかった」に化けさせない)。"""
     if not cands:
         return
     gate = threading.Semaphore(VERIFY_PARALLEL)
     done: dict[int, dict] = {}
+    errs: dict[int, BaseException] = {}
 
     def one(i: int, c: dict) -> None:
         with gate:
             if until is not None and time.time() + VERIFY_ONE_MAX > until:
                 return
             mine = json.loads(json.dumps(c, ensure_ascii=False))
-            collect.verify([mine], stale_days=RESCUE_STALE_DAYS)
+            try:
+                collect.verify([mine], stale_days=RESCUE_STALE_DAYS)
+            except BaseException as e:      # noqa: BLE001  呼び出し側へ渡す(締切に間に合わなかったことにしない)
+                errs[i] = e
+                return
             done[i] = mine
     threads = [threading.Thread(target=one, args=(i, c), daemon=True) for i, c in enumerate(cands)]
     for t in threads:
         t.start()
     for t in threads:
         t.join(None if until is None else max(0.0, until - time.time()))
+    failed = dict(errs)  # 締切までに例外で終わった裏取り: 裏取りの欠陥なので、締切越えの印で隠さずに上げる
+    if failed:
+        raise next(iter(failed.values()))
     got = dict(done)     # 締切の時点で終わっていた裏取りだけ(このあと終わったものは採らない)
     for i, c in enumerate(cands):
         if i in got:

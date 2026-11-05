@@ -21863,6 +21863,8 @@ def test_x_survey_streams_faces(tmp: Path):
     faces = ["a", "b", "c", "d", "slow"]
     qs = [{"key": k, "brand": k, "topic": "t", "accounts": []} for k in faces]
     ev: list = []           # (時刻, 出来事, 面)
+    ask_faces = {"verify-a", "verify-b"}    # X の原本でしか確かめられない問いを挙げる確かめ
+    slow_verify: dict = {}                  # 確かめの作業ディレクトリ名 → 終わるまでの秒
     running = {"grok": 0, "max": 0}
     lock = threading.Lock()
 
@@ -21894,7 +21896,11 @@ def test_x_survey_streams_faces(tmp: Path):
             if self.killed:
                 return "", ""
             if self.face == "slow":
-                _t.sleep(min(timeout or 0, 5))
+                end = _t.time() + min(timeout if timeout is not None else 5, 5)
+                while _t.time() < end and not self.killed:
+                    _t.sleep(0.02)
+                if self.killed:
+                    return "", ""
                 raise subprocess.TimeoutExpired("grok", timeout)
             _t.sleep(0.2)
             self.returncode = 0
@@ -21918,16 +21924,20 @@ def test_x_survey_streams_faces(tmp: Path):
 
         def __init__(self, cwd):
             wd = Path(cwd)
+            self.name = wd.name
             ev.append((_t.time(), "verify", wd.name))
             text = (wd / "x-posts.md").read_text(encoding="utf-8")
             urls = [collect.post_url(b) for b in collect.post_blocks(text)]
             face = wd.name.removeprefix("verify-").split("-")[0]
             (wd / "items.json").write_text(json.dumps([dict(base, url=u, brand=face) for u in urls]), encoding="utf-8")
             (wd / "posts.json").write_text(json.dumps([{"url": u, "status": "extracted", "item": u} for u in urls]), encoding="utf-8")
-            asks = [{"question": "元の告知", "why": "共有の文面だけ"}] if wd.name in ("verify-a", "verify-b") else []
+            asks = [{"question": "元の告知", "why": "共有の文面だけ"}] if wd.name in ask_faces else []
             (wd / "deep.json").write_text(json.dumps(asks), encoding="utf-8")
 
         def communicate(self, timeout=None):
+            if self.name in slow_verify:        # 確かめに時間の掛かる面(深掘りの見込みを残した時刻を越える)
+                _t.sleep(slow_verify[self.name])
+                ev.append((_t.time(), "verify-end", self.name))
             return "", ""
 
         def kill(self):
@@ -21940,7 +21950,8 @@ def test_x_survey_streams_faces(tmp: Path):
             return 0
 
     names = ("ROOT", "build_prompts", "notify", "prompt_file", "save_raw", "explore_workdir", "grok_session_error", "grok_week_usage",
-             "grok_search_counts", "GROK_WAVE", "GROK_TIMEOUT", "X_VERIFY_SEC", "X_DEEP_SEC", "X_DEEP_VERIFY_SEC", "DEADLINE")
+             "grok_search_counts", "GROK_WAVE", "GROK_TIMEOUT", "X_VERIFY_SEC", "X_DEEP_SEC", "X_DEEP_VERIFY_SEC", "X_DEEP_GRACE_SEC",
+             "DEADLINE", "grok_basic")
     saved = {n: getattr(collect, n) for n in names}
     saved_popen, saved_proot = collect.subprocess.Popen, pipelib.ROOT
     notes: list = []
@@ -21958,7 +21969,7 @@ def test_x_survey_streams_faces(tmp: Path):
         collect.grok_week_usage = lambda *a: usage.append(1) or int(collect.GROK_WEEKLY_SEARCHES * collect.GROK_DEEP_SHARE) - 2
         collect.subprocess.Popen = lambda args, cwd=None, **kw: Grok(args) if args[0] == "grok" else Luna(cwd)
         collect.GROK_WAVE, collect.GROK_TIMEOUT = 2, 100
-        collect.X_VERIFY_SEC, collect.X_DEEP_SEC, collect.X_DEEP_VERIFY_SEC = 1.0, 1.0, 0.3
+        collect.X_VERIFY_SEC, collect.X_DEEP_SEC, collect.X_DEEP_VERIFY_SEC, collect.X_DEEP_GRACE_SEC = 1.0, 1.0, 0.3, 0.1
         t0 = _t.time()
         collect.DEADLINE = t0 + 4.0     # Grok の調べは t0+2.0 で切る。深掘りは t0+3.0 までに確かめ終えた面の問いで
         items, per = collect.run_explores(True, False)
@@ -22000,7 +22011,50 @@ def test_x_survey_streams_faces(tmp: Path):
         check(not items and "status/5" in pend and any("status/5" in n and "読み直しの列" in n for n in notes)
               and not any("失う" in n for n in notes),
               f"締切で確かめられなかった投稿を読み直しの列に残さない・失ったと言った: {pend!r} {notes}")
+        # 6. 確かめの遅い面は、深掘りの見込みを残した時刻までしか待たない: 確かめ終えた面の問いで深掘りし、遅い面の確かめは
+        #    前段の締切まで走らせて候補を拾う(その面の問いは深掘りに間に合わないと名指しする)
+        ev.clear()
+        notes.clear()
+        ask_faces.clear()
+        ask_faces.update({"verify-a", "verify-d"})
+        slow_verify["verify-d"] = 1.5
+        collect.X_VERIFY_SEC, collect.X_DEEP_SEC = 0.5, 1.5
+        t0 = _t.time()
+        collect.DEADLINE = t0 + 3.0     # Grok の調べは t0+1.0 で切る。確かめを待つのは t0+1.4 まで
+        items, _ = collect.run_explores(True, False)
+        got = {it["url"] for it in items if it.get("_via") == "grok"}
+        dives = [(t, f) for t, e, f in ev if e == "grok" and f.endswith("-deep")]
+        end_d = next((t for t, e, f in ev if e == "verify-end" and f == "verify-d"), None)
+        check([f for _, f in dives] == ["a-deep"] and end_d is not None and dives[0][0] < end_d
+              and f"https://x.com/off/status/{sum(map(ord, 'd')) * 10}" in got
+              and any("深掘りしなかった" in n and "d" in n.split("面:")[-1] for n in notes),
+              f"遅い確かめを待ち切らずに深掘りした・遅い面の候補を拾わない・問いを名指ししない: {[(round(t - t0, 2), f) for t, f in dives]} "
+              f"{end_d and round(end_d - t0, 2)} {sorted(got)} {notes}")
+        slow_verify.clear()
+        # 7. 途中の例外では、走っている調べ(ほかの面の Grok)も止め、担当が終わってから例外を上げる(あとでファイルを書かない)
+        ev.clear()
+        orig_basic = saved["grok_basic"]
+
+        def basic(qs_, outdir, errs):
+            if qs_[0]["key"] == "a":
+                _t.sleep(0.3)
+                raise RuntimeError("調べの途中の例外")
+            return orig_basic(qs_, outdir, errs)
+        collect.grok_basic = basic
+        collect.DEADLINE = _t.time() + 100
+        od = root / "abort"
+        od.mkdir()
+        raised = None
+        try:
+            collect.x_survey([qs[0], qs[4]], od, {}, collect.lost_posts_ledger(), {})
+        except RuntimeError as e:
+            raised = e
+        n_ev = len(ev)
+        _t.sleep(0.3)
+        check(raised is not None and running["grok"] == 0 and len(ev) == n_ev,
+              f"例外のあとも調べのセッション・担当が残った: {raised!r} 走っている Grok {running['grok']} {ev[n_ev:]}")
     finally:
+        pipelib.STOPPING.clear()    # 例外の後始末(stop_groups)が立てた「終えるところ」を、後のテストのために戻す
         for n, v in saved.items():
             setattr(collect, n, v)
         collect.subprocess.Popen, pipelib.ROOT = saved_popen, saved_proot

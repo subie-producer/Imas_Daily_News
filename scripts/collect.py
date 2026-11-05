@@ -958,10 +958,19 @@ def run_grok_prompts(targets: list[tuple[dict, Path]], errs: dict, cut: float | 
             for f in [ex.submit(run_grok_session, q, pp, errs, failed, limit) for q, pp in targets]:
                 f.result()
         except BaseException:
-            # 中断(SIGTERM・例外)では、まだ起動していない面を取り消す(走っているセッションは各担当の finally と STOPPING が止める)
-            ex.shutdown(wait=False, cancel_futures=True)
+            abort_workers(ex)
             raise
     return failed
+
+
+def abort_workers(*pools) -> None:
+    """X の調査の担当(スレッド)の中断の後始末: 走っているセッションを子孫ごと全部止めて以後の起動を断り(stop_groups()。SIGTERM の
+    後始末 _on_sigterm と同じ)、まだ始めていない担当を取り消し、走っている担当が終わるまで待つ。例外で抜けたあとに、残った担当が
+    検索・確かめを続けて、収集の後始末(settle_interrupted)の確定と並んでファイルを書かない(Sol 監査 r1: 取り消すだけでは、走って
+    いる担当のセッションが残り、例外のあとにファイルを書いた)。収集はこのあと例外で終わる"""
+    stop_groups()
+    for ex in pools:
+        ex.shutdown(wait=True, cancel_futures=True)
 
 
 def run_grok_session(q: dict, pp: Path, errs: dict, failed: set, limit: float | None) -> None:
@@ -2069,9 +2078,7 @@ def x_survey(queries: list[dict], outdir: Path, grok_errs: dict, ledger: dict, p
                               f"{sum(len(v) for v in missed.values())}件を深掘りしなかった面: {', '.join(sorted(missed))}"
                               "(深掘りの機会を失う)", ok=False)
     except BaseException:
-        # 中断(SIGTERM・例外)では、まだ始めていない調べ・確かめを取り消す(走っているセッションは各担当の finally と STOPPING が止める)
-        gx.shutdown(wait=False, cancel_futures=True)
-        vx.shutdown(wait=False, cancel_futures=True)
+        abort_workers(gx, vx)
         raise
     gx.shutdown()
     vx.shutdown()

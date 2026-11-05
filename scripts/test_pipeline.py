@@ -8042,7 +8042,7 @@ def test_grok_deep_format_matches_parser():
         saved = collect.run_grok_prompts
         try:
             sent = []
-            collect.run_grok_prompts = lambda targets, errs: sent.extend(pp.read_text(encoding="utf-8") for _, pp in targets) or set()
+            collect.run_grok_prompts = lambda targets, errs, cut=None: sent.extend(pp.read_text(encoding="utf-8") for _, pp in targets) or set()
             qs = [{"key": "sidem", "brand": "sidem", "topic": "t", "accounts": ["SideM_official"]}]
             collect.deep_dive_grok(qs, Path(td), {"sidem": asks[:1]}, {}, suffix="-deep2", retry=True)
             collect.deep_dive_grok(qs, Path(td), {"sidem": asks[:1]}, {})
@@ -15811,9 +15811,11 @@ def test_collect_handover_deadline(tmp: Path):
         collect.DEADLINE = None
         subprocess.Popen = lambda *a, **k: launched.append(a) or GP()
         targets = [({"key": f"f{i}"}, tmp / f"prompt-f{i}.md") for i in range(3)]
+        t_all = _t.time()
         failed = collect.run_grok_prompts(targets, {})
-        check(failed == {"f0", "f1", "f2"} and sum(waits) <= 0.45,
-              f"Grok の1波の待ちが面ごとに足し算になった(待った秒 {waits}。上限は GROK_TIMEOUT 0.3 秒)")
+        t_all = _t.time() - t_all
+        check(failed == {"f0", "f1", "f2"} and max(waits) <= 0.35 and t_all <= 0.6,
+              f"Grok の待ちが面ごとに足し算になった(待った秒 {waits}・全体 {t_all:.2f}秒。上限は GROK_TIMEOUT 0.3 秒)")
         # 収集の締切が先なら、そこまでしか待たない
         waits.clear()
         collect.GROK_TIMEOUT = 100
@@ -15827,27 +15829,35 @@ def test_collect_handover_deadline(tmp: Path):
         failed = collect.run_grok_prompts(targets, errs)
         check(not launched and failed == {"f0", "f1", "f2"} and all("締切" in errs.get(k, "") for k in failed),
               f"Grok: 締切後に面を起動した・理由を残さない(起動 {len(launched)}本 / {errs})")
-        # 波の途中で締切を過ぎたら、同じ波の残りの面も起動しない(1本目の起動に時間が掛かった)
+        # 走っている面の途中で締切を過ぎたら、次の面を起動しない(1本終わるたびに次を起動する直前に確かめる。1本目の起動に時間が掛かった)
         def slow_first(*a, **k):
             launched.append(a)
             if len(launched) == 1:
                 _t.sleep(0.2)
             return GP()
         subprocess.Popen = slow_first
+        collect.GROK_WAVE = 1
         collect.DEADLINE = _t.time() + 0.15
         errs = {}
         failed = collect.run_grok_prompts(targets, errs)
+        collect.GROK_WAVE = 3
         check(len(launched) == 1 and failed == {"f0", "f1", "f2"} and all("締切" in errs.get(k, "") for k in ("f1", "f2")),
-              f"Grok: 波の途中で締切を過ぎたのに、同じ波の残りの面を起動した(起動 {len(launched)}本 / {errs})")
+              f"Grok: 締切を過ぎたのに、次の面を起動した(起動 {len(launched)}本 / {errs})")
         launched.clear()
         subprocess.Popen = lambda *a, **k: launched.append(a) or GP()
         collect.DEADLINE = _t.time() - 1
         od = tmp / "grok"
         od.mkdir(exist_ok=True)
         (od / "cg.md").write_text("### 1\n- url: https://x.com/a/status/9\n- 本文: 告知\n", encoding="utf-8")
-        items, _ = collect.verify_grok_faces([{"key": "cg", "brand": "cg", "topic": "t"}], od)
-        check(not launched and not items and any("status/9" in m and "締切" in m for m in notes),
-              f"確かめ: 締切後に起動した・失う投稿を理由付きで名指ししない(起動 {len(launched)}本 / {notes[-1:]})")
+        saved_root = collect.ROOT
+        try:
+            collect.ROOT = tmp      # 締切で確かめられなかった投稿の読み直しの列(ROOT の下)を、テストの置き場に
+            items, _ = collect.verify_grok_faces([{"key": "cg", "brand": "cg", "topic": "t"}], od)
+        finally:
+            collect.ROOT = saved_root
+        check(not launched and not items and any("status/9" in m and "締切" in m for m in notes)
+              and "status/9" in collect.read_written(tmp / collect.GROK_PENDING / "cg.md"),
+              f"確かめ: 締切後に起動した・確かめられない投稿を読み直しの列に残して名指ししない(起動 {len(launched)}本 / {notes[-1:]})")
         items, per = collect.run_explores(False, True)
         check(not launched and per and all(k.startswith("explore_failed:") for k in per),
               f"探索: 締切後に起動した・取得の失敗として残さない(起動 {len(launched)}本 / {per})")
@@ -21833,6 +21843,223 @@ def test_collect_stage_order(tmp: Path):
             os.environ["IMAS_PAGE_ARCHIVE"] = saved_env
 
 
+def test_x_survey_streams_faces(tmp: Path):
+    """X の調査は面ごとに流す(2026-11-06 02:00: 3波目の trend 面が前段の締切まで終わらず、全9面の確かめ・深掘りが起動されないまま、
+    調べ終えていた8面の X の投稿も全部失った)。実際の run_explores・grok_basic・run_grok_prompts・verify_grok_faces を通し、
+    Grok と確かめ役(Luna)のセッションだけを偽物にする(時間は秒を縮めて同じ比で):
+    1. 調べの終わった面は、遅い面の調べを待たずにすぐ確かめる(確かめの起動が遅い面の調べの終わりより前)。Grok は同時に GROK_WAVE 本まで
+    2. 遅い面の Grok は、前段の締切から確かめと深掘りの見込み(X_VERIFY_SEC + X_DEEP_SEC)を引いた時刻で切り、途中までの書き出しを確かめる
+    3. 終わった面の候補は全部残り、深掘りは週の予算(直近7日の使用から)の範囲で、深掘りの見込みを残した時刻までに確かめ終えた面の問いを調べる
+    4. 深掘りの見込み(X_DEEP_SEC)が前段の締切まで残っていなければ深掘りを始めない(週の使用も読まない)
+    5. 前段の締切を過ぎて確かめを始められなかった投稿は、失ったことにせず読み直しの列へ回し、名指しする"""
+    import threading
+    import time as _t
+    import collect
+    root = tmp / "repo"
+    root.mkdir(parents=True, exist_ok=True)
+    shutil.copy(Path(__file__).resolve().parent.parent / "source_types.yml", root / "source_types.yml")
+    base = {"title": "t", "kind": "official", "event_date": "", "published_date": "2026-11-05", "deadline": "",
+            "facts": ["事実"], "quote": "q", "dedup_key": "k", "engagement": "中", "mentioned_idols": []}
+    faces = ["a", "b", "c", "d", "slow"]
+    qs = [{"key": k, "brand": k, "topic": "t", "accounts": []} for k in faces]
+    ev: list = []           # (時刻, 出来事, 面)
+    ask_faces = {"verify-a", "verify-b"}    # X の原本でしか確かめられない問いを挙げる確かめ
+    slow_verify: dict = {}                  # 確かめの作業ディレクトリ名 → 終わるまでの秒
+    running = {"grok": 0, "max": 0}
+    lock = threading.Lock()
+
+    class Grok:
+        """Grok の偽物。slow 面は1件書いてから終わらない(止められるまで)。ほかの面は 0.2秒で書き終える"""
+        pid, returncode = _NO_PID, None
+
+        def __init__(self, args):
+            pp = Path(args[args.index("--prompt-file") + 1])
+            self.out = pp.with_name(pp.name.removeprefix("prompt-"))
+            self.face = self.out.stem
+            self.killed = False
+            with lock:
+                running["grok"] += 1
+                running["max"] = max(running["max"], running["grok"])
+            ev.append((_t.time(), "grok", self.face))
+            n = sum(map(ord, self.face)) * 10
+            if self.face.endswith("-deep"):
+                self.out.write_text(f"### 1\n- url: https://x.com/off/status/{n}\n- 問い: 1\n- 本文: 元の告知\n", encoding="utf-8")
+            else:
+                self.out.write_text(f"### 1\n- url: https://x.com/off/status/{n}\n- 本文: 告知\n", encoding="utf-8")
+
+        def _done(self):
+            with lock:
+                running["grok"] -= 1
+            ev.append((_t.time(), "grok-end", self.face))
+
+        def communicate(self, timeout=None):
+            if self.killed:
+                return "", ""
+            if self.face == "slow":
+                end = _t.time() + min(timeout if timeout is not None else 5, 5)
+                while _t.time() < end and not self.killed:
+                    _t.sleep(0.02)
+                if self.killed:
+                    return "", ""
+                raise subprocess.TimeoutExpired("grok", timeout)
+            _t.sleep(0.2)
+            self.returncode = 0
+            self._done()
+            return "", ""
+
+        def kill(self):
+            if not self.killed and self.returncode is None:
+                self._done()
+            self.killed, self.returncode = True, -9
+
+        def poll(self):
+            return self.returncode
+
+        def wait(self, timeout=None):
+            return self.returncode
+
+    class Luna:
+        """確かめ役の偽物: 投稿ごとに候補を1件書く。基本の調べの確かめ(a・b 面)は X の原本でしか確かめられない問いを1つ挙げる"""
+        pid, returncode = _NO_PID, 0
+
+        def __init__(self, cwd):
+            wd = Path(cwd)
+            self.name = wd.name
+            ev.append((_t.time(), "verify", wd.name))
+            text = (wd / "x-posts.md").read_text(encoding="utf-8")
+            urls = [collect.post_url(b) for b in collect.post_blocks(text)]
+            face = wd.name.removeprefix("verify-").split("-")[0]
+            (wd / "items.json").write_text(json.dumps([dict(base, url=u, brand=face) for u in urls]), encoding="utf-8")
+            (wd / "posts.json").write_text(json.dumps([{"url": u, "status": "extracted", "item": u} for u in urls]), encoding="utf-8")
+            asks = [{"question": "元の告知", "why": "共有の文面だけ"}] if wd.name in ask_faces else []
+            (wd / "deep.json").write_text(json.dumps(asks), encoding="utf-8")
+
+        def communicate(self, timeout=None):
+            if self.name in slow_verify:        # 確かめに時間の掛かる面(深掘りの見込みを残した時刻を越える)
+                _t.sleep(slow_verify[self.name])
+                ev.append((_t.time(), "verify-end", self.name))
+            return "", ""
+
+        def kill(self):
+            pass
+
+        def poll(self):
+            return 0
+
+        def wait(self, timeout=None):
+            return 0
+
+    names = ("ROOT", "build_prompts", "notify", "prompt_file", "save_raw", "explore_workdir", "grok_session_error", "grok_week_usage",
+             "grok_search_counts", "GROK_WAVE", "GROK_TIMEOUT", "X_VERIFY_SEC", "X_DEEP_SEC", "X_DEEP_VERIFY_SEC", "X_DEEP_GRACE_SEC",
+             "DEADLINE", "grok_basic")
+    saved = {n: getattr(collect, n) for n in names}
+    saved_popen, saved_proot = collect.subprocess.Popen, pipelib.ROOT
+    notes: list = []
+    usage: list = []
+    try:
+        collect.ROOT = pipelib.ROOT = root
+        collect.build_prompts = lambda: qs
+        collect.notify = lambda job, msg, ok=True, require=False: notes.append(msg) or True
+        collect.prompt_file = lambda date, name, prompt, base=None: "p"
+        collect.save_raw = lambda *a, **kw: None
+        collect.explore_workdir = lambda key: (root / "wd" / key).mkdir(parents=True, exist_ok=True) or root / "wd" / key
+        collect.grok_session_error = lambda *a: ""
+        collect.grok_search_counts = lambda since: {}
+        # 週の予算: 深掘りに使える残りは2回(問い1つ)。a・b の2問のうち1問だけを調べる
+        collect.grok_week_usage = lambda *a: usage.append(1) or int(collect.GROK_WEEKLY_SEARCHES * collect.GROK_DEEP_SHARE) - 2
+        collect.subprocess.Popen = lambda args, cwd=None, **kw: Grok(args) if args[0] == "grok" else Luna(cwd)
+        collect.GROK_WAVE, collect.GROK_TIMEOUT = 2, 100
+        collect.X_VERIFY_SEC, collect.X_DEEP_SEC, collect.X_DEEP_VERIFY_SEC, collect.X_DEEP_GRACE_SEC = 1.0, 1.0, 0.3, 0.1
+        t0 = _t.time()
+        collect.DEADLINE = t0 + 4.0     # Grok の調べは t0+2.0 で切る。深掘りは t0+3.0 までに確かめ終えた面の問いで
+        items, per = collect.run_explores(True, False)
+        got = {it["url"] for it in items if it.get("_via") == "grok"}
+        end_slow = next((t for t, e, f in ev if e == "grok-end" and f == "slow"), None)
+        verified = {f: t for t, e, f in reversed(ev) if e == "verify"}
+        # 1. 終わった面は遅い面を待たずに確かめる。Grok は同時に GROK_WAVE 本まで
+        check(end_slow is not None and all(verified.get(f"verify-{k}", 1e18) < end_slow for k in "abcd"),
+              f"調べの終わった面の確かめが、遅い面の調べの終わりを待った: {[(e, f, round(t - t0, 2)) for t, e, f in ev]}")
+        check(running["max"] <= 2, f"Grok を GROK_WAVE より多く同時に走らせた: {running['max']}")
+        # 2. 遅い面は、前段の締切から確かめ・深掘りの見込みを引いた時刻で切る(前段の締切までは待たない)
+        check(end_slow is not None and abs(end_slow - (t0 + 2.0)) < 0.5,
+              f"遅い面の Grok を確かめ・深掘りの見込みを残した時刻で切らない: {end_slow and round(end_slow - t0, 2)}")
+        # 3. 終わった面の候補も、遅い面の途中までの書き出しも残る。深掘りは予算の範囲(1問)だけ
+        want = {f"https://x.com/off/status/{sum(map(ord, k)) * 10}" for k in faces}
+        dives = [f for _, e, f in ev if e == "grok" and f.endswith("-deep")]
+        check(want <= got, f"X の調べの候補を失った: {sorted(want - got)}")
+        check(len(dives) == 1 and dives[0] in ("a-deep", "b-deep") and f"https://x.com/off/status/{sum(map(ord, dives[0])) * 10}" in got,
+              f"深掘りが予算の範囲・その確かめになっていない: {dives}")
+        check(not any("読み直しの列" in n or "深掘りしなかった" in n for n in notes),
+              f"締切の内に終わる確かめ・深掘りを締切切れにした: {notes}")
+        # 4. 深掘りの見込みが残っていなければ始めない(週の使用も読まない)
+        ev.clear()
+        usage.clear()
+        notes.clear()
+        collect.DEADLINE = _t.time() + 0.5
+        out = collect.grok_deep_phase(qs, root / "candidates" / ".grok", {"a": [{"question": "q", "why": "w"}]}, {},
+                                      collect.lost_posts_ledger(), {})
+        check(out == [] and not ev and not usage and any("深掘り" in n and "a" in n for n in notes),
+              f"深掘りの見込みが残らないのに深掘りを始めた・名指ししない: {ev} {usage} {notes}")
+        # 5. 前段の締切を過ぎて確かめを始められなかった投稿は、読み直しの列へ(失ったと言わない)
+        notes.clear()
+        od = root / "late"
+        od.mkdir()
+        (od / "c.md").write_text("### 1\n- url: https://x.com/a/status/5\n- 本文: 告知\n", encoding="utf-8")
+        collect.DEADLINE = _t.time() - 1
+        items, _ = collect.verify_grok_faces([qs[2]], od)
+        pend = collect.read_written(root / collect.GROK_PENDING / "c.md")
+        check(not items and "status/5" in pend and any("status/5" in n and "読み直しの列" in n for n in notes)
+              and not any("失う" in n for n in notes),
+              f"締切で確かめられなかった投稿を読み直しの列に残さない・失ったと言った: {pend!r} {notes}")
+        # 6. 確かめの遅い面は、深掘りの見込みを残した時刻までしか待たない: 確かめ終えた面の問いで深掘りし、遅い面の確かめは
+        #    前段の締切まで走らせて候補を拾う(その面の問いは深掘りに間に合わないと名指しする)
+        ev.clear()
+        notes.clear()
+        ask_faces.clear()
+        ask_faces.update({"verify-a", "verify-d"})
+        slow_verify["verify-d"] = 1.5
+        collect.X_VERIFY_SEC, collect.X_DEEP_SEC = 0.5, 1.5
+        t0 = _t.time()
+        collect.DEADLINE = t0 + 3.0     # Grok の調べは t0+1.0 で切る。確かめを待つのは t0+1.4 まで
+        items, _ = collect.run_explores(True, False)
+        got = {it["url"] for it in items if it.get("_via") == "grok"}
+        dives = [(t, f) for t, e, f in ev if e == "grok" and f.endswith("-deep")]
+        end_d = next((t for t, e, f in ev if e == "verify-end" and f == "verify-d"), None)
+        check([f for _, f in dives] == ["a-deep"] and end_d is not None and dives[0][0] < end_d
+              and f"https://x.com/off/status/{sum(map(ord, 'd')) * 10}" in got
+              and any("深掘りしなかった" in n and "d" in n.split("面:")[-1] for n in notes),
+              f"遅い確かめを待ち切らずに深掘りした・遅い面の候補を拾わない・問いを名指ししない: {[(round(t - t0, 2), f) for t, f in dives]} "
+              f"{end_d and round(end_d - t0, 2)} {sorted(got)} {notes}")
+        slow_verify.clear()
+        # 7. 途中の例外では、走っている調べ(ほかの面の Grok)も止め、担当が終わってから例外を上げる(あとでファイルを書かない)
+        ev.clear()
+        orig_basic = saved["grok_basic"]
+
+        def basic(qs_, outdir, errs):
+            if qs_[0]["key"] == "a":
+                _t.sleep(0.3)
+                raise RuntimeError("調べの途中の例外")
+            return orig_basic(qs_, outdir, errs)
+        collect.grok_basic = basic
+        collect.DEADLINE = _t.time() + 100
+        od = root / "abort"
+        od.mkdir()
+        raised = None
+        try:
+            collect.x_survey([qs[0], qs[4]], od, {}, collect.lost_posts_ledger(), {})
+        except RuntimeError as e:
+            raised = e
+        n_ev = len(ev)
+        _t.sleep(0.3)
+        check(raised is not None and running["grok"] == 0 and len(ev) == n_ev,
+              f"例外のあとも調べのセッション・担当が残った: {raised!r} 走っている Grok {running['grok']} {ev[n_ev:]}")
+    finally:
+        pipelib.STOPPING.clear()    # 例外の後始末(stop_groups)が立てた「終えるところ」を、後のテストのために戻す
+        for n, v in saved.items():
+            setattr(collect, n, v)
+        collect.subprocess.Popen, pipelib.ROOT = saved_popen, saved_proot
+
+
 def main() -> int:
     tmp = Path(tempfile.mkdtemp(prefix="imas-test-"))
     test_assemble_run_returns_reservations(tmp / "arrr")
@@ -21871,6 +22098,7 @@ def main() -> int:
     test_http503_not_whywhy(tmp / "h503")
     test_http503_collect_run(tmp / "h503c")
     test_collect_stage_order(tmp / "cso")
+    test_x_survey_streams_faces(tmp / "xss")
     test_http429_retry(tmp / "h429")
     test_oncall_recover_keeps_handed_exit(tmp / "orh")
     test_cli_block_detect_and_post(tmp / "cbd")

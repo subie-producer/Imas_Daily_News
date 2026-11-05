@@ -116,8 +116,24 @@ GROK_WEEKLY_SEARCHES = int(ENV.get("GROK_WEEKLY_SEARCHES", "1100"))
 GROK_DEEP_SHARE = float(ENV.get("GROK_DEEP_SHARE", "0.8"))
 # 1回の収集で深掘りに使う検索の上限(問い1つにつき2回まで)
 GROK_DEEP_MAX = int(ENV.get("GROK_DEEP_MAX", "24"))
-# 面別セッションの同時実行数。多すぎると X 側で絞られるおそれがあるので控えめに置く
+# 面別セッションの同時実行数。多すぎると X 側で絞られるおそれがあるので控えめに置く。波(全部終わるまで次を起動しない)ではなく、
+# 1本終わるたびに次の面を起動する(同時に走るのはいつもこの数まで。遅い1面が、同じ波のほかの面のあとの面を待たせない)
 GROK_WAVE = int(ENV.get("GROK_WAVE", "3"))
+# X の調査の中の時間の予約(秒。締切のある回だけ)。面の Grok の調べ(やり直しも)は、前段の締切から「確かめ+深掘り」の見込みを
+# 引いた時刻で切り、終わった面の確かめ(Luna)は前段の締切まで走らせる(2026-11-06 02:00: 3波目の trend 面が前段の締切 02:35 まで
+# 終わらず、全面の確かめ・深掘りが起動されないまま、終わっていた8面の X の調べも全部失った)。値は 2026-10-10〜11-05 の 02:00 の回の
+# 生の出力(metrics/work/<日付>/raw の書き出しの時刻)から:
+# - X_VERIFY_SEC: 面の確かめ+確かめ直し。9面を同時に確かめて最後の面が終わるまで 130〜562秒(中央 213秒・27回中21回が 300秒以内)。
+#   1面だけなら9面の最も遅い面より短い。見込みを超えても確かめは切らない(深掘りの時間が減るだけ)
+# - X_DEEP_SEC: 深掘り1巡(Grok の深掘り+その確かめ)。31〜433秒(21回中17回が 240秒以内)。これだけ残っていなければ深掘りを始めない
+#   (途中で切れる深掘りは、週の検索枠を使って答えを残さない)
+# - X_DEEP_VERIFY_SEC: 深掘りの確かめ。12〜60秒。深掘りの Grok はこれを残して切る
+X_VERIFY_SEC = int(ENV.get("X_VERIFY_SEC", "300"))
+X_DEEP_SEC = int(ENV.get("X_DEEP_SEC", "240"))
+X_DEEP_VERIFY_SEC = int(ENV.get("X_DEEP_VERIFY_SEC", "60"))
+# 確かめを待つのを、深掘りを始める条件(X_DEEP_SEC が残っている)より何秒前で切るか(待ちの戻りと記録の合流の分。ちょうどで切ると、
+# 数ミリ秒の遅れで深掘りを始めずに終える)
+X_DEEP_GRACE_SEC = 5
 # 推論の深さ。既定は high で走っており、消費の最大費目が reasoning だった
 # (1回の収集で 1.59MB。tool_result 495KB・assistant 120KB を大きく上回る)。
 # 収集は「調べて写す」作業で深い推論を要さないため medium に落とす。
@@ -134,10 +150,12 @@ DEADLINE_HARD: float | None = None
 # いまの段のモデル・道具のセッションを打ち切る絶対時刻(stage_deadline で段ごとに決める)。None なら締切なし
 DEADLINE: float | None = None
 # 素材の集め・裏取り(前段)に使わせない、後ろの必須段(判定表の更新〜紙面の種別の付け直し〜lint・commit)の見込みの時間(秒)。
-# 実測(2026-10-01〜11-04 の定時の収集。素材の保存のあと〜終了): 最長 215秒(10/07 02:00)、02:00 の回は 109〜215秒。
-# 締切の残りが 136〜163秒だった回に、判定表の更新が時間切れになった(10/29〜11/04 の6回)。最長の3倍弱を固定で予約する。
-# 所要は metrics の collect_required に回ごとに残す(見直しはその記録で)
-REQUIRED_RESERVE_SEC = 600
+# 実測(2026-10-01〜11-04 の定時の収集。素材の保存のあと〜終了): 最長 215秒(10/07 02:00)、02:00 の回は 109〜215秒
+# (11/05 02:00 は collect_required で 106秒)。締切の残りが 136〜163秒だった回に、判定表の更新が時間切れになった(10/29〜11/04 の6回。
+# 合議に使えたのは付け直しの予約を引いた 16〜43秒)。最長の約2倍を固定で予約する(合議に使えるのは、付け直しの RETAG_RESERVE_SEC と
+# 保存の分を引いた 4分半ほど)。11/04〜11/05 は 600秒(最長の3倍弱)にしていたが、前段の X の調査の余裕を食い、11/06 02:00 に
+# X の調べを全部失った(GROK_WAVE の下の X_VERIFY_SEC)。所要は metrics の collect_required に回ごとに残す(見直しはその記録で)
+REQUIRED_RESERVE_SEC = 420
 # 判定表の更新(合議)に使わせない、合議が失敗したあとの付け直し・lint の時間(秒。実測 約20秒: 11/01 02:45)
 RETAG_RESERVE_SEC = 120
 # 定点観測の facts 化を、収集の締切で始めなかった・打ち切った(claude_exec の戻り。読めなかった None とは別で、回数に数えない)
@@ -177,6 +195,16 @@ def deadline_passed() -> bool:
 def session_left(cap: float, reserve: float = 0.0) -> float:
     """セッションに待たせてよい秒数。いまの段の締切から reserve 秒を残す(過ぎていれば 0 = 待たずに止める)。"""
     return cap if not DEADLINE else max(0.0, min(cap, DEADLINE - reserve - time.time()))
+
+
+def x_cut(reserve: float) -> float | None:
+    """X の調査の中の締切: いまの段の締切から reserve 秒(あとに続く確かめ・深掘りの見込み)を残した時刻。締切が無ければ None。"""
+    return DEADLINE - reserve if DEADLINE else None
+
+
+def x_time_for(need: float) -> bool:
+    """いまの段の締切まで need 秒以上残っているか(締切が無ければ常に残っている)。"""
+    return not DEADLINE or DEADLINE - time.time() >= need
 
 
 def stage_deadline(reserve: float) -> None:
@@ -874,8 +902,10 @@ def grok_wrote(outdir: Path, q: dict) -> bool:
 
 
 def run_grok_faces(queries: list[dict], outdir: Path, errs: dict, retry: bool = False) -> set[str]:
-    """面ごとに Grok の基本の調べ(X の検索だけ)を走らせる。戻りは正常に終わらなかった面。"""
-    return run_grok_prompts([(q, write_grok_prompt(outdir, q, retry=retry)) for q in queries], errs)
+    """面ごとに Grok の基本の調べ(X の検索だけ)を走らせる。戻りは正常に終わらなかった面。
+    いまの段の締切から、確かめと深掘りの見込み(X_VERIFY_SEC + X_DEEP_SEC)を残した時刻で切る(やり直しも同じ)。"""
+    return run_grok_prompts([(q, write_grok_prompt(outdir, q, retry=retry)) for q in queries], errs,
+                            cut=x_cut(X_VERIFY_SEC + X_DEEP_SEC))
 
 
 def grok_basic(queries: list[dict], outdir: Path, grok_errs: dict) -> list[str]:
@@ -915,89 +945,92 @@ def grok_basic(queries: list[dict], outdir: Path, grok_errs: dict) -> list[str]:
     return still
 
 
-def run_grok_prompts(targets: list[tuple[dict, Path]], errs: dict) -> set[str]:
-    """Grok のセッションを GROK_WAVE 本ずつ走らせる。手数では縛らない(時間 GROK_TIMEOUT だけ)。エラー出力は errs に残す。
-    戻りは、正常に終わらなかった(時間切れ・非0終了)面のキー(書き出しの有無では判定しない。監査指摘)。"""
+def run_grok_prompts(targets: list[tuple[dict, Path]], errs: dict, cut: float | None = None) -> set[str]:
+    """Grok のセッションを、同時に GROK_WAVE 本まで、1本終わるたびに次を起動して走らせる(波で区切らない: 遅い1本が、まだ
+    起動していない面を待たせない)。手数では縛らない(時間 GROK_TIMEOUT だけ)。cut(絶対時刻。無ければいまの段の締切)を過ぎたら
+    起動せず、走っているセッションも cut で切る。エラー出力は errs に残す。
+    戻りは、正常に終わらなかった(時間切れ・非0終了・起動しなかった)面のキー(書き出しの有無では判定しない。監査指摘)。"""
+    from concurrent.futures import ThreadPoolExecutor
+    limit = cut if cut is not None else DEADLINE
     failed: set[str] = set()
-    for i in range(0, len(targets), GROK_WAVE):
-        if "grok" in CLI_BLOCKED:
-            # この収集で既に認証切れ・利用上限を見た: 残りの面は起動しない(同じ理由で止まるだけ。投稿は済み)
-            for q, _ in targets[i:]:
-                errs[q["key"]] = f"{GROK_BLOCKED_MARK}: この収集で既に止まっている"
-            break
-        wave = targets[i:i + GROK_WAVE]
-        if deadline_passed():
-            # 収集の締切を過ぎたら、残りの面を起動しない(組版の開始を妨げない)。正常に終わらなかった面として、やり直し・名指しの異常へ
-            for q, _ in wave:
-                errs[q["key"]] = "収集の締切を過ぎたので起動しなかった"
-                failed.add(q["key"])
-            continue
-        # **締切は起動時に絶対時刻で決め、残り時間で回収する。**1本ずつ GROK_TIMEOUT を与え直すと、応答しない面が並ぶほど
-        # 待ちが足し算になる(3本で 3×GROK_TIMEOUT。監査指摘 2026-10-14)。収集の締切も越えない
-        wave_end = time.time() + session_left(GROK_TIMEOUT)
-        wave_started = time.time()     # この波のセッションの記録だけを、この試行の失敗理由として読む(grok_session_reasons)
-        procs, finished = [], []
+    with ThreadPoolExecutor(max_workers=max(1, GROK_WAVE)) as ex:
         try:
-            for q, pp in wave:
-                if deadline_passed():
-                    # 波の途中で収集の締切を過ぎたら、残りの面も起動しない(起動の直前に確かめる)
-                    errs[q["key"]] = "収集の締切を過ぎたので起動しなかった"
-                    failed.add(q["key"])
-                    continue
-                procs.append((q, start_group(
-                    ["grok", "--prompt-file", str(pp), "--always-approve",
-                     "--cwd", str(ROOT), "--reasoning-effort", GROK_EFFORT],
-                    cwd=ROOT, stdout=subprocess.DEVNULL), pp))
-            for q, pr, pp in procs:
-                # 時間切れは子も落とし、それまでのエラー出力を上限つきで回収する
-                _, err, timed_out = finish_group(pr, max(0, wave_end - time.time()))
-                finished.append((q, pr, pp, err, timed_out))
-        finally:
-            stop_groups([pr for _, pr, _ in procs])
-        for q, pr, pp, err, timed_out in finished:
-            if timed_out:
-                errs[q["key"]] = f"時間切れ: {(err or '').strip()[-300:]}"
-                print(f"grok: {q['key']} 面がタイムアウト(そこまでの記録は残る)", flush=True)
-            elif pr.returncode or (err or "").strip():
-                errs[q["key"]] = f"exit {pr.returncode}: {(err or '').strip()[-300:]}"
-            else:
-                errs.pop(q["key"], None)     # errs は最後の試みの状態(やり直しで直った面の古いエラーを残さない。監査指摘)
-            out = pp.with_name(pp.name.removeprefix("prompt-"))
-            # エラー出力の全文と、この試みの書き出しを、基本の調べ・やり直し・深掘りの別に残す(要約は末尾 300 字だけ。
-            # 書き出しは次の試み・次の収集で消える。監査指摘)。経過は Grok のセッション記録に残る
-            save_raw(edition_date(), f"grok-{pp.stem}", "", err or "", pr.returncode, files={out.name: read_for_raw(out)})
-            # 認証切れ・利用上限(Grok は API に拒まれても終了コード 0 で、理由はセッション記録にだけ残る)は、面の調べの失敗に
-            # 数えない(やり直さない・異常にしない。投稿は済み)。印を errs に残し、呼び側が grok_blocked で見分ける
-            # 書き出しがあっても、この試行のセッション記録は必ず読む(途中まで書いてから利用上限で止まり、終了 0 で終わることがある。
-            # 依頼文は見つけた投稿を先に書かせる。監査指摘 r8)。止まっていれば答えたことにしない
-            reasons = "" if timed_out else grok_session_reasons(ROOT, wave_started, str(out))
-            stopped = not timed_out and cli_blocked_reason("grok", err or "", reasons) is not None
-            answered = not timed_out and pr.returncode == 0 and bool(read_written(out).strip()) and not stopped
-            blk = cli_check("grok", "collect", f"{now_jst():%H:%M} の収集 X の調べ {pp.stem.removeprefix('prompt-')} 面",
-                            None if timed_out else pr.returncode, err or "", reasons, answered=answered)
-            if blk:
-                errs[q["key"]] = f"{GROK_BLOCKED_MARK}: {blk.get('detail', '')}"
-            if timed_out or pr.returncode != 0 or blk:
-                # 止まった試行の書き出しも途中のもの(退けて、keep_blocked_partials が読み直しの列へ回す)
-                failed.add(q["key"])
-                # 時間切れ・異常終了の回が書いた書き出し(一部の投稿だけ・途中の「なし」)は答えにしない。試みごとに別の
-                # <名前>.partial-<n>.md に退けて、面の書き出しが無い状態にする(基本の調べは「書けなかった面」としてやり直し・異常へ、
-                # 深掘りは下で異常へ。非空のファイルを完了とみなして残りの検索を黙って失わない。やり直しが初回の途中出力を
-                # 上書きしない。監査指摘)。退けられなければ、その面の異常として残して他の面を続ける
-                if out.exists():
-                    n = 1
-                    while out.with_suffix(f".partial-{n}.md").exists():
-                        n += 1
-                    try:
-                        out.replace(out.with_suffix(f".partial-{n}.md"))
-                    except OSError as e:
-                        # 退けられなければ、この収集の間はその書きかけを「完了」と読まない(STUCK_OUTPUTS に中身を控える。
-                        # やり直しが新しく書かずに正常終了しても、古い書きかけで完了にしない。監査指摘)
-                        STUCK_OUTPUTS[out] = read_written(out)
-                        errs[q["key"]] = f"書きかけを退けられない({type(e).__name__}): " + errs.get(q["key"], "")
-            elif out in STUCK_OUTPUTS and read_written(out) != STUCK_OUTPUTS[out]:
-                STUCK_OUTPUTS.pop(out)      # 正常に終わった試みが新しく書いた: 完了した書き出し
+            for f in [ex.submit(run_grok_session, q, pp, errs, failed, limit) for q, pp in targets]:
+                f.result()
+        except BaseException:
+            # 中断(SIGTERM・例外)では、まだ起動していない面を取り消す(走っているセッションは各担当の finally と STOPPING が止める)
+            ex.shutdown(wait=False, cancel_futures=True)
+            raise
     return failed
+
+
+def run_grok_session(q: dict, pp: Path, errs: dict, failed: set, limit: float | None) -> None:
+    """Grok のセッション1本(run_grok_prompts の担当1つ)。limit(絶対時刻。None なら無し)を過ぎていれば起動しない。"""
+    if "grok" in CLI_BLOCKED:
+        # この収集で既に認証切れ・利用上限を見た: 起動しない(同じ理由で止まるだけ。投稿は済み)
+        errs[q["key"]] = f"{GROK_BLOCKED_MARK}: この収集で既に止まっている"
+        return
+    if limit is not None and time.time() >= limit:
+        # X の調べの締切(いまの段の締切から、あとの確かめ・深掘りの見込みを残した時刻)を過ぎたら起動しない(起動の直前に確かめる)。
+        # 正常に終わらなかった面として、やり直し・途中までの書き出し・名指しの異常へ
+        errs[q["key"]] = "X の調べの締切(確かめ・深掘りの時間を残した時刻)を過ぎたので起動しなかった"
+        failed.add(q["key"])
+        return
+    # **締切は起動時に絶対時刻で決め、残り時間で回収する。**応答しない面が並んでも待ちは足し算にならない(監査指摘 2026-10-14)
+    end = time.time() + GROK_TIMEOUT
+    if limit is not None:
+        end = min(end, limit)
+    started = time.time()     # このセッションの記録だけを、この試行の失敗理由として読む(grok_session_reasons。書き出し先でも絞る)
+    pr = start_group(["grok", "--prompt-file", str(pp), "--always-approve",
+                      "--cwd", str(ROOT), "--reasoning-effort", GROK_EFFORT],
+                     cwd=ROOT, stdout=subprocess.DEVNULL)
+    try:
+        # 時間切れは子も落とし、それまでのエラー出力を上限つきで回収する
+        _, err, timed_out = finish_group(pr, max(0, end - time.time()))
+    finally:
+        stop_groups([pr])
+    if timed_out:
+        errs[q["key"]] = f"時間切れ: {(err or '').strip()[-300:]}"
+        print(f"grok: {q['key']} 面がタイムアウト(そこまでの記録は残る)", flush=True)
+    elif pr.returncode or (err or "").strip():
+        errs[q["key"]] = f"exit {pr.returncode}: {(err or '').strip()[-300:]}"
+    else:
+        errs.pop(q["key"], None)     # errs は最後の試みの状態(やり直しで直った面の古いエラーを残さない。監査指摘)
+    out = pp.with_name(pp.name.removeprefix("prompt-"))
+    # エラー出力の全文と、この試みの書き出しを、基本の調べ・やり直し・深掘りの別に残す(要約は末尾 300 字だけ。
+    # 書き出しは次の試み・次の収集で消える。監査指摘)。経過は Grok のセッション記録に残る
+    save_raw(edition_date(), f"grok-{pp.stem}", "", err or "", pr.returncode, files={out.name: read_for_raw(out)})
+    # 認証切れ・利用上限(Grok は API に拒まれても終了コード 0 で、理由はセッション記録にだけ残る)は、面の調べの失敗に
+    # 数えない(やり直さない・異常にしない。投稿は済み)。印を errs に残し、呼び側が grok_blocked で見分ける
+    # 書き出しがあっても、この試行のセッション記録は必ず読む(途中まで書いてから利用上限で止まり、終了 0 で終わることがある。
+    # 依頼文は見つけた投稿を先に書かせる。監査指摘 r8)。止まっていれば答えたことにしない
+    reasons = "" if timed_out else grok_session_reasons(ROOT, started, str(out))
+    stopped = not timed_out and cli_blocked_reason("grok", err or "", reasons) is not None
+    answered = not timed_out and pr.returncode == 0 and bool(read_written(out).strip()) and not stopped
+    blk = cli_check("grok", "collect", f"{now_jst():%H:%M} の収集 X の調べ {pp.stem.removeprefix('prompt-')} 面",
+                    None if timed_out else pr.returncode, err or "", reasons, answered=answered)
+    if blk:
+        errs[q["key"]] = f"{GROK_BLOCKED_MARK}: {blk.get('detail', '')}"
+    if timed_out or pr.returncode != 0 or blk:
+        # 止まった試行の書き出しも途中のもの(退けて、keep_blocked_partials が読み直しの列へ回す)
+        failed.add(q["key"])
+        # 時間切れ・異常終了の回が書いた書き出し(一部の投稿だけ・途中の「なし」)は答えにしない。試みごとに別の
+        # <名前>.partial-<n>.md に退けて、面の書き出しが無い状態にする(基本の調べは「書けなかった面」としてやり直し・異常へ、
+        # 深掘りは下で異常へ。非空のファイルを完了とみなして残りの検索を黙って失わない。やり直しが初回の途中出力を
+        # 上書きしない。監査指摘)。退けられなければ、その面の異常として残して他の面を続ける
+        if out.exists():
+            n = 1
+            while out.with_suffix(f".partial-{n}.md").exists():
+                n += 1
+            try:
+                out.replace(out.with_suffix(f".partial-{n}.md"))
+            except OSError as e:
+                # 退けられなければ、この収集の間はその書きかけを「完了」と読まない(STUCK_OUTPUTS に中身を控える。
+                # やり直しが新しく書かずに正常終了しても、古い書きかけで完了にしない。監査指摘)
+                STUCK_OUTPUTS[out] = read_written(out)
+                errs[q["key"]] = f"書きかけを退けられない({type(e).__name__}): " + errs.get(q["key"], "")
+    elif out in STUCK_OUTPUTS and read_written(out) != STUCK_OUTPUTS[out]:
+        STUCK_OUTPUTS.pop(out)      # 正常に終わった試みが新しく書いた: 完了した書き出し
 
 
 def grok_search_counts(since_ts: float) -> dict[str, int]:
@@ -1450,6 +1483,14 @@ def verify_grok_faces(queries: list[dict], outdir: Path, suffix: str = "",
         save_raw(edition_date(), f"grok-verify-{q['key']}{suffix}", "", "収集の締切を過ぎたので起動しなかった" if late else "",
                  None if late else p.returncode,
                  files={n: read_for_raw(wd / n) for n in ("x-posts.md", "items.json", "posts.json", "deep.json", "session.log")})
+        if late:
+            # 締切で確かめを始められなかった投稿は、失ったことにせず読み直しの列へ(次の収集が確かめる。Grok の検索はやり直さない)。
+            # 2026-11-06 02:00: 締切を過ぎて確かめを起動できず、調べ終えていた8面の投稿を「失う」と通知して捨てた。
+            # 名指しは report_lost_posts が最後に1度(どの面の何件を次の収集へ回したか)
+            ledger.setdefault("late", {}).setdefault(q["key"], []).extend(post_blocks(text) or [text])
+            keep_pending_posts(q["key"], text)
+            shutil.rmtree(wd, ignore_errors=True)
+            continue
         # 認証切れ・利用上限で答えなかった面は、投稿の確かめの失敗(やり直し・喪失の異常)に数えない(投稿は済み。当番に回さない)
         if not late and cli_check("codex", "collect", f"{now_jst():%H:%M} の収集 X の投稿の確かめ {q['key']} 面{suffix}",
                                   p.returncode if in_time else None, read_for_raw(wd / "session.log") or ""):
@@ -1523,8 +1564,20 @@ def lost_posts_ledger() -> dict:
     / blocked: 確かめ役の CLI が認証切れ・利用上限で答えなかった面(投稿は読み直しの列 GROK_PENDING へ)
     / broken: 形の崩れた候補を候補にしないまま確かめ直しでも直らなかった投稿の鍵(ほかの段で済んでいても、その中身は失っている)
     / stray: [(面, 候補の url)] どの投稿にも結び付かない崩れた候補(確かめ直せない。投稿ではないので読み直しの列にも入れない)
-    / tied: (面, 段) → 崩れた候補のために確かめ直しへ回した投稿の鍵(確かめ直しの段へ引き継ぐ)。"""
-    return {"lost": {}, "settled": set(), "blocked": set(), "broken": set(), "stray": [], "tied": {}}
+    / tied: (面, 段) → 崩れた候補のために確かめ直しへ回した投稿の鍵(確かめ直しの段へ引き継ぐ)
+    / late: 面 → [前段の締切を過ぎて確かめを始められず、読み直しの列へ回した投稿の塊]。"""
+    return {"lost": {}, "settled": set(), "blocked": set(), "broken": set(), "stray": [], "tied": {}, "late": {}}
+
+
+def merge_ledger(into: dict, part: dict) -> None:
+    """面ごとに別々に確かめた記録(lost_posts_ledger)を1つにまとめる(面の流れは並列に走るので、記録は面ごとに分けて持つ)。"""
+    for k in ("lost", "late"):
+        for face, rows in (part.get(k) or {}).items():
+            into.setdefault(k, {}).setdefault(face, []).extend(rows)
+    for k in ("settled", "blocked", "broken"):
+        into.setdefault(k, set()).update(part.get(k) or ())
+    into.setdefault("stray", []).extend(part.get("stray") or [])
+    into.setdefault("tied", {}).update(part.get("tied") or {})
 
 
 # 確かめ役(Luna)が認証切れ・利用上限で答えなかった面の X の投稿(読み直しの列。Git 管理外)。Grok の調べは週の枠を使い、回す時刻も
@@ -1576,6 +1629,14 @@ def report_lost_posts(ledger: dict) -> None:
     途中の段で残っても、後の段(深掘りの確かめ)で済んだ投稿は失っていない。同じ投稿が複数の段で残っても、
     複数の面で残っても(面どうしで同じアカウントを検索するので、同じ投稿が複数の面に書き出される)1行にし、所属の面を併記する
     (面ごとに数えると、同じ投稿の喪失を面の数だけ通知した。監査指摘 lost-post-cross-face)。"""
+    late = {k: v for k, v in (ledger.get("late") or {}).items() if v}
+    if late:
+        # 締切で確かめを始められなかった投稿(失ってはいない。読み直しの列から次の収集が確かめる)。どの面の何件かを名指しする
+        urls = [post_url(b) or "(投稿に分けられない書き出し) " + b[:80] for v in late.values() for b in v]
+        notify("collect", f"X の確かめ(Luna)を前段の締切までに始められなかった面 {', '.join(sorted(late))}: 投稿 {len(urls)}件を"
+                          "確かめずに読み直しの列に残した(次の収集が確かめる。この回の素材には入らない):\n"
+                          + "\n".join(f"- {u}" for u in urls[:10]) + (f"\n- ほか {len(urls) - 10}件" if len(urls) > 10 else ""),
+               ok=False)
     rows: dict[str, list] = {}  # 投稿 → [表示, 面の並び, 理由の並び](最初に現れた順)
     # 済んだ投稿は失っていない。ただし崩れた候補を候補にしなかった投稿(broken)は、ほかの段で済んでもその中身が戻らない
     done = ledger["settled"] - (ledger.get("broken") or set())
@@ -1859,6 +1920,7 @@ def plan_deep_dive(deep: dict[str, list[dict]], budget: int) -> dict[str, list[d
 def deep_dive_grok(queries: list[dict], outdir: Path, chosen: dict[str, list[dict]], errs: dict,
                    suffix: str = "-deep", retry: bool = False) -> set[str]:
     """選んだ問いだけを、Grok に X の原本で調べさせる(<key><suffix>.md に書き出す)。戻りは正常に終わらなかった面。
+    始めるかどうか(X_DEEP_SEC が残っているか)は呼び側(grok_deep_phase)が決める。
     retry は、1回目で答え(投稿)が無かった問いの投げ直し: 1回目と違う角度(その面の公式アカウント・ハッシュタグ・企画名)で探させる。"""
     by_key = {q["key"]: q for q in queries}
     targets = []
@@ -1874,7 +1936,8 @@ def deep_dive_grok(queries: list[dict], outdir: Path, chosen: dict[str, list[dic
             QUESTIONS="\n".join(f"{i + 1}. {a['question']}(なぜ X の原本が要るか: {a.get('why') or '記載なし'})" for i, a in enumerate(asks))),
             encoding="utf-8")
         targets.append((q, pp))
-    return run_grok_prompts(targets, errs)
+    # 深掘りの Grok は、そのあとの確かめの見込み(X_DEEP_VERIFY_SEC)を残して切る
+    return run_grok_prompts(targets, errs, cut=x_cut(X_DEEP_VERIFY_SEC))
 
 
 DEEP_ASK_NO = re.compile(r"(?m)^\s*[-*・]?\s*問い\s*[:：]\s*(\d+)")
@@ -1964,6 +2027,137 @@ def collect_explore(key: str, proc, out_f, err_f, deadline: float) -> tuple[list
     return got, err
 
 
+def x_survey(queries: list[dict], outdir: Path, grok_errs: dict, ledger: dict, per: dict) -> tuple[list[dict], list[Path]]:
+    """X の調査を面ごとに流す: 面の Grok の調べ(grok_basic。やり直しも)が終わったら、すぐその面の確かめ(x_verify_face)を始める。
+    全面の調べを待ってから確かめる作りでは、遅い1面が前段の締切まで終わらないと、終わっていた面の確かめも起動されず全部を失った
+    (2026-11-06 02:00)。Grok は同時に GROK_WAVE 本まで(週の検索枠を消費する並列を増やさない)。
+    深掘り(grok_deep_phase)は全面の問いを揃えて予算を配るので全面の確かめを待つが、待つのは深掘りの見込み(X_DEEP_SEC)を残した
+    時刻までで、それまでに確かめ終えた面の問いで深掘りする(遅い面の確かめは前段の締切まで走らせ、終わってから結果を拾う)。
+    戻りは (候補, 読み直しの列から取った投稿のファイル)。確かめの記録は ledger にまとめる。"""
+    from concurrent.futures import ThreadPoolExecutor, wait
+    results: dict[str, tuple] = {}      # 面 → (候補, 深掘りの問い, この面の確かめの記録, 読み直しの列から取ったファイル)
+    vfuts: dict = {}
+    gx = ThreadPoolExecutor(max_workers=max(1, GROK_WAVE))         # Grok の調べ(同時に GROK_WAVE 本まで)
+    vx = ThreadPoolExecutor(max_workers=max(1, len(queries)))       # 面の確かめ(Luna。面ごとに1本)
+
+    def grok_face(q: dict) -> None:
+        grok_basic([q], outdir, grok_errs)
+        vfuts[q["key"]] = vx.submit(x_verify_face, q, outdir, grok_errs)
+
+    def take(k: str) -> None:
+        results[k] = vfuts[k].result()
+        merge_ledger(ledger, results[k][2])
+    deep_items: list[dict] = []
+    try:
+        for f in [gx.submit(grok_face, q) for q in queries]:
+            f.result()
+        # 深掘りを始める条件(締切まで X_DEEP_SEC 残っている: grok_deep_phase)に、待ちの戻り・記録の合流の分(数秒)だけ先回りして待ちを切る
+        deep_at = x_cut(X_DEEP_SEC + X_DEEP_GRACE_SEC)
+        done, _ = wait(list(vfuts.values()), timeout=None if deep_at is None else max(0.0, deep_at - time.time()))
+        for k in [k for k, f in vfuts.items() if f in done]:
+            take(k)
+        deep = {k: r[1] for k, r in results.items() if r[1]}
+        if deep:
+            deep_items = grok_deep_phase(queries, outdir, deep, grok_errs, ledger, per)
+        slow = [k for k in vfuts if k not in results]
+        for k in slow:
+            take(k)
+        missed = {k: results[k][1] for k in slow if results[k][1]}
+        if missed:
+            # 確かめが深掘りの見込みを残した時刻までに終わらなかった面の問いは、深掘りに間に合わない(機会を黙って失わない)
+            notify("collect", f"X の確かめが深掘りの見込み({X_DEEP_SEC}秒)を残した時刻までに終わらず、X の原本でしか確かめられない問い "
+                              f"{sum(len(v) for v in missed.values())}件を深掘りしなかった面: {', '.join(sorted(missed))}"
+                              "(深掘りの機会を失う)", ok=False)
+    except BaseException:
+        # 中断(SIGTERM・例外)では、まだ始めていない調べ・確かめを取り消す(走っているセッションは各担当の finally と STOPPING が止める)
+        gx.shutdown(wait=False, cancel_futures=True)
+        vx.shutdown(wait=False, cancel_futures=True)
+        raise
+    gx.shutdown()
+    vx.shutdown()
+    got = [it for q in queries for it in (results.get(q["key"]) or ([],))[0]] + deep_items
+    return got, [t for q in queries for t in (results.get(q["key"]) or ([], [], {}, []))[3]]
+
+
+def x_verify_face(q: dict, outdir: Path, grok_errs: dict) -> tuple[list[dict], list[dict], dict, list[Path]]:
+    """1面の調べが終わったあとの確かめ。認証切れ・利用上限で止まった調べの途中の書き出しを読み直しの列へ残し、前の収集で確かめられ
+    なかった投稿(読み直しの列)をこの面の書き出しに足して、Luna が確かめる(確かめ直しも)。確かめは前段の締切まで走らせる。
+    戻りは (候補, 深掘りの問い, この面の確かめの記録, 読み直しの列から取ったファイル)。"""
+    k = q["key"]
+    if grok_blocked(grok_errs, k):
+        keep_blocked_partials(outdir, [k], "{k}.partial-*.md")
+    taken = take_pending_posts(outdir, [k])
+    led = lost_posts_ledger()
+    items, deep = verify_grok_faces([q], outdir, ledger=led)
+    return items, deep.get(k) or [], led, taken
+
+
+def grok_deep_phase(queries: list[dict], outdir: Path, deep: dict[str, list[dict]], grok_errs: dict, ledger: dict,
+                    per: dict) -> list[dict]:
+    """X の原本でしか確かめられない問い(deep: 面 → 問い)を、週の検索予算の範囲で Grok に深掘りさせ、Luna が確かめる。戻りは候補。
+    前段の締切まで深掘りの見込み(X_DEEP_SEC)が残っていなければ始めない(投げ直しも同じ。途中で切れる深掘りは、週の検索枠を使って
+    答えを残さない)。"""
+    got: list[dict] = []
+    if not x_time_for(X_DEEP_SEC):
+        notify("collect", f"前段の締切まで深掘りの見込み({X_DEEP_SEC}秒)が残っておらず、X の原本でしか確かめられない問い "
+                          f"{sum(len(v) for v in deep.values())}件を深掘りしなかった面: {', '.join(sorted(deep))}(深掘りの機会を失う)",
+               ok=False)
+        return got
+    used = grok_week_usage()
+    budget = deep_budget(used)
+    chosen = plan_deep_dive(deep, budget)
+    print(f"grok: 深掘りの予算 {budget}回(直近7日の使用 {used}/{GROK_WEEKLY_SEARCHES}回)。"
+          f"問い {sum(len(v) for v in deep.values())}件のうち {sum(len(v) for v in chosen.values())}件を調べる", flush=True)
+    per["grok_week_searches"] = used
+    if not chosen:
+        return got
+    # 深掘りが時間切れ・異常終了した面(書き出しは退けてある)と、正常に終わったのに書き出しが無い・空の面は、
+    # 選んだ問いの確かめを失う。名指しで異常にする(判定は終了状態と書き出しの両方。監査指摘)
+    deep_started = time.time()
+    failed = deep_dive_grok(queries, outdir, chosen, grok_errs)
+    # 深掘りの Grok が認証切れ・利用上限で止まった面は、まだ確かめ終えていない: 残った投稿を失ったと言わず、
+    # 読み直しの列に残す(report_lost_posts。監査指摘 r4)
+    ledger["blocked"] |= {k for k in chosen if grok_blocked(grok_errs, k)}
+    keep_blocked_partials(outdir, [k for k in chosen if grok_blocked(grok_errs, k)], "{k}-deep.partial-*.md")
+    spent1 = sum(grok_search_counts(deep_started).values())   # 1回目の実際の検索回数(指示は厳密には守られない)
+    lost = sorted(k for k in failed | {k for k in chosen if not read_written(outdir / f"{k}-deep.md").strip()}
+                  if not grok_blocked(grok_errs, k))
+    if lost:
+        notify("collect", "Grok の深掘りが時間切れ・異常終了し、X の原本の確かめを失った面: "
+                          + ", ".join(f"{k}({grok_errs.get(k, '')[:120]})" for k in lost), ok=False)
+    more, _ = verify_grok_faces([q for q in queries if q["key"] in chosen], outdir, suffix="-deep", ledger=ledger)
+    got += more
+    # 答えの投稿が無かった問いは、予算の範囲で1回だけ、違う角度で投げ直す(「見つからない」で終えない。
+    # 2026-10-09: アスラン=BBⅡ世の誕生日ガシャの公式告知を1〜2回の検索で「見つからない」として、その号に載らなかった)。
+    # 予算は、この回の深掘りの予算から1回目の分(配った回数と実際の検索回数の大きいほう)を差し引いた残りと、
+    # 週の実使用から求め直した残りの小さいほう(監査指摘: 1回目が配分を超えて検索しても、この回の上限を超えない)
+    retry = {k: v for k, asks in chosen.items() if k not in failed
+             for v in [unanswered_asks(read_written(outdir / f"{k}-deep.md"), asks)] if v}
+    budget2 = max(0, min(budget - max(2 * sum(len(v) for v in chosen.values()), spent1),
+                         deep_budget(grok_week_usage())))
+    chosen2 = plan_deep_dive(retry, budget2)
+    if retry:
+        print(f"grok: 深掘りで答えの無かった問い {sum(len(v) for v in retry.values())}件のうち "
+              f"{sum(len(v) for v in chosen2.values())}件を投げ直す(予算 {budget2}回)", flush=True)
+    if chosen2 and not x_time_for(X_DEEP_SEC):
+        notify("collect", f"前段の締切まで深掘りの見込み({X_DEEP_SEC}秒)が残っておらず、深掘りで答えの無かった問い "
+                          f"{sum(len(v) for v in chosen2.values())}件を投げ直さなかった面: {', '.join(sorted(chosen2))}", ok=False)
+        return got
+    if chosen2:
+        failed2 = deep_dive_grok(queries, outdir, chosen2, grok_errs, suffix="-deep2", retry=True)
+        ledger["blocked"] |= {k for k in chosen2 if grok_blocked(grok_errs, k)}
+        keep_blocked_partials(outdir, [k for k in chosen2 if grok_blocked(grok_errs, k)], "{k}-deep2.partial-*.md")
+        lost2 = sorted(k for k in failed2 | {k for k in chosen2 if not read_written(outdir / f"{k}-deep2.md").strip()}
+                       if not grok_blocked(grok_errs, k))
+        if lost2:
+            # 投げ直しの失敗も、1回目と同じく名指しで異常にする(黙って問いの確かめを失わない。監査指摘)
+            notify("collect", "Grok の深掘りの投げ直しが時間切れ・異常終了し、X の原本の確かめを失った面: "
+                              + ", ".join(f"{k}({grok_errs.get(k, '')[:120]})" for k in lost2), ok=False)
+        more, _ = verify_grok_faces([q for q in queries if q["key"] in chosen2], outdir, suffix="-deep2", ledger=ledger)
+        got += more
+    return got
+
+
 def run_explores(skip_explore: bool, skip_grok: bool) -> tuple[list[dict], dict]:
     queries = build_prompts()
     items, per = [], {}
@@ -2039,62 +2233,11 @@ def run_explores(skip_explore: bool, skip_grok: bool) -> tuple[list[dict], dict]
         outdir.mkdir(parents=True, exist_ok=True)
         grok_errs: dict[str, str] = {}
         grok_started = time.time()
-        grok_basic(queries, outdir, grok_errs)
-        keep_blocked_partials(outdir, [q["key"] for q in queries if grok_blocked(grok_errs, q["key"])], "{k}.partial-*.md")
-        # 前の収集で確かめ役が止まって確かめられなかった投稿(読み直しの列)も、同じ面の書き出しに足して確かめる
-        taken = take_pending_posts(outdir, [q["key"] for q in queries])
-        # Luna が面ごとに確かめて候補にする。X の原本でしか確かめられない問いは、予算を確かめて Grok に深掘りさせ、もう一度 Luna が確かめる
-        # 投稿の喪失は、深掘りの確かめまで終えた最終結果で1度だけ通知する(当番の指摘 11fc3de74b)
+        # 面ごとに流す: Grok の調べが終わった面から、すぐその面の確かめ(Luna)を始める。X の原本でしか確かめられない問いは、
+        # 予算を確かめて Grok に深掘りさせ、もう一度 Luna が確かめる。投稿の喪失は、深掘りの確かめまで終えた最終結果で1度だけ
+        # 通知する(当番の指摘 11fc3de74b)
         ledger = lost_posts_ledger()
-        got, deep = verify_grok_faces(queries, outdir, ledger=ledger)
-        if deep:
-            used = grok_week_usage()
-            budget = deep_budget(used)
-            chosen = plan_deep_dive(deep, budget)
-            print(f"grok: 深掘りの予算 {budget}回(直近7日の使用 {used}/{GROK_WEEKLY_SEARCHES}回)。"
-                  f"問い {sum(len(v) for v in deep.values())}件のうち {sum(len(v) for v in chosen.values())}件を調べる", flush=True)
-            per["grok_week_searches"] = used
-            if chosen:
-                # 深掘りが時間切れ・異常終了した面(書き出しは退けてある)と、正常に終わったのに書き出しが無い・空の面は、
-                # 選んだ問いの確かめを失う。名指しで異常にする(判定は終了状態と書き出しの両方。監査指摘)
-                deep_started = time.time()
-                failed = deep_dive_grok(queries, outdir, chosen, grok_errs)
-                # 深掘りの Grok が認証切れ・利用上限で止まった面は、まだ確かめ終えていない: 残った投稿を失ったと言わず、
-                # 読み直しの列に残す(report_lost_posts。監査指摘 r4)
-                ledger["blocked"] |= {k for k in chosen if grok_blocked(grok_errs, k)}
-                keep_blocked_partials(outdir, [k for k in chosen if grok_blocked(grok_errs, k)], "{k}-deep.partial-*.md")
-                spent1 = sum(grok_search_counts(deep_started).values())   # 1回目の実際の検索回数(指示は厳密には守られない)
-                lost = sorted(k for k in failed | {k for k in chosen if not read_written(outdir / f"{k}-deep.md").strip()}
-                              if not grok_blocked(grok_errs, k))
-                if lost:
-                    notify("collect", "Grok の深掘りが時間切れ・異常終了し、X の原本の確かめを失った面: "
-                                      + ", ".join(f"{k}({grok_errs.get(k, '')[:120]})" for k in lost), ok=False)
-                more, _ = verify_grok_faces([q for q in queries if q["key"] in chosen], outdir, suffix="-deep", ledger=ledger)
-                got += more
-                # 答えの投稿が無かった問いは、予算の範囲で1回だけ、違う角度で投げ直す(「見つからない」で終えない。
-                # 2026-10-09: アスラン=BBⅡ世の誕生日ガシャの公式告知を1〜2回の検索で「見つからない」として、その号に載らなかった)。
-                # 予算は、この回の深掘りの予算から1回目の分(配った回数と実際の検索回数の大きいほう)を差し引いた残りと、
-                # 週の実使用から求め直した残りの小さいほう(監査指摘: 1回目が配分を超えて検索しても、この回の上限を超えない)
-                retry = {k: v for k, asks in chosen.items() if k not in failed
-                         for v in [unanswered_asks(read_written(outdir / f"{k}-deep.md"), asks)] if v}
-                budget2 = max(0, min(budget - max(2 * sum(len(v) for v in chosen.values()), spent1),
-                                     deep_budget(grok_week_usage())))
-                chosen2 = plan_deep_dive(retry, budget2)
-                if retry:
-                    print(f"grok: 深掘りで答えの無かった問い {sum(len(v) for v in retry.values())}件のうち "
-                          f"{sum(len(v) for v in chosen2.values())}件を投げ直す(予算 {budget2}回)", flush=True)
-                if chosen2:
-                    failed2 = deep_dive_grok(queries, outdir, chosen2, grok_errs, suffix="-deep2", retry=True)
-                    ledger["blocked"] |= {k for k in chosen2 if grok_blocked(grok_errs, k)}
-                    keep_blocked_partials(outdir, [k for k in chosen2 if grok_blocked(grok_errs, k)], "{k}-deep2.partial-*.md")
-                    lost2 = sorted(k for k in failed2 | {k for k in chosen2 if not read_written(outdir / f"{k}-deep2.md").strip()}
-                                   if not grok_blocked(grok_errs, k))
-                    if lost2:
-                        # 投げ直しの失敗も、1回目と同じく名指しで異常にする(黙って問いの確かめを失わない。監査指摘)
-                        notify("collect", "Grok の深掘りの投げ直しが時間切れ・異常終了し、X の原本の確かめを失った面: "
-                                          + ", ".join(f"{k}({grok_errs.get(k, '')[:120]})" for k in lost2), ok=False)
-                    more, _ = verify_grok_faces([q for q in queries if q["key"] in chosen2], outdir, suffix="-deep2", ledger=ledger)
-                    got += more
+        got, taken = x_survey(queries, outdir, grok_errs, ledger, per)
         # 確かめが販売元のページ・元の投稿にまとめた公式のリポスト・告知を、公式の出典として残す(深掘りの書き出しも照らす)
         got += official_post_items(grok_written(outdir, [q["key"] for q in queries]), got)
         report_lost_posts(ledger)

@@ -656,6 +656,11 @@ def escalate(stage: str, date: str, reason: str, rerun: bool = True, edition: st
     log = ROOT / "metrics" / f"oncall-{date}-{stage}.log"
     handed = (ANOMALIES if items is None else items)[:ESCALATE_ITEMS_MAX] if ledger else []
     keys = list(dict.fromkeys(anomaly_key(a) for a in handed))
+    if not rerun and ledger and stage != "backlog" and "--end-at" not in (extra_args or []):
+        # 再実行しない当番(止まっていない工程のなぜなぜ 等)は、次の定時工程の前に工程の排他を手放す。終える時刻は呼び出し時に
+        # 固定して渡す(起動し直しても延びない)。2026-11-06: 05:33 に終わった組版のなぜなぜの当番が排他を 08:03 まで持ち、
+        # 06:00 の発行と 07:30 の収集が30分待って止まった
+        extra_args = list(extra_args or []) + ["--end-at", str(int(next_slot_end(now_jst())))]
     args = ([sys.executable, str(script), "--stage", stage, "--date", date,
              "--reason", escalate_reason(reason, items) if ledger else reason[:100_000]]
             + (["--no-rerun"] if not rerun else []) + (["--edition", edition] if edition and edition != date else [])

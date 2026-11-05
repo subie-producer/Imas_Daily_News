@@ -17468,6 +17468,84 @@ def test_oncall_finished_rerun_none(tmp: Path):
           f"--finished の渡し方が違う(止まった収集に付けた・止まっていない収集に付けない): {[(a, r[:30]) for a, r in calls]}")
 
 
+def test_oncall_no_rerun_frees_lock_before_slot(tmp: Path):
+    """再実行しない当番(止まっていない工程のなぜなぜ 等)は、次の定時工程の前に工程の排他を手放す(2026-11-06: 05:33 に終わった
+    組版のなぜなぜの当番が排他を 08:03 まで持ち、06:00 の発行と 07:30 の収集が30分待って止まった)。
+    - escalate は再実行しない当番に、次の定時工程の15分前(next_slot_end)を --end-at で固定して渡す。再実行する当番・保管の当番・
+      呼び手が --end-at を渡した当番には足さない
+    - 当番は、その時刻まで1往復の枠が無ければ排他を取らずに保管に積んで終える(05:33 → 05:45)。枠があれば往復の期限をそこから
+      取り込みの分を引いた時刻にする(無期限に持たない)"""
+    import os
+    import subprocess as _sp
+    import time
+    import oncall
+    tmp.mkdir(parents=True, exist_ok=True)
+    (tmp / "scripts").mkdir(exist_ok=True)
+    (tmp / "metrics").mkdir(exist_ok=True)
+    (tmp / "scripts" / "oncall.py").write_text("", encoding="utf-8")
+    launches: list = []
+    saved = (pipelib.ROOT, _sp.Popen, os.environ.pop("INVOCATION_ID", None), pipelib._ESCALATED, list(pipelib.ANOMALIES))
+    try:
+        pipelib.ROOT = tmp
+        _sp.Popen = lambda args, **k: launches.append(list(args))
+        pipelib.ANOMALIES[:] = ["[compose] 紙面から外れた記事 11本"]
+        want = str(int(pipelib.next_slot_end(pipelib.now_jst())))
+        for kw, expect in ((dict(stage="compose", rerun=False), want), (dict(stage="release", rerun=False), want),
+                           (dict(stage="compose", rerun=True), None), (dict(stage="compose", rerun=False, extra_args=["--end-at", "7"]), "7"),
+                           (dict(stage="backlog", rerun=False, ledger=False), None)):
+            pipelib._ESCALATED = False
+            launches.clear()
+            pipelib.escalate(date="2026-11-06", reason="x", **kw)
+            args = launches[-1] if launches else []
+            got = args[args.index("--end-at") + 1] if "--end-at" in args else None
+            check(args and got == expect and args.count("--end-at") <= 1, f"escalate {kw}: --end-at が {got}(期待 {expect}): {args[-6:]}")
+    finally:
+        pipelib.ROOT, _sp.Popen = saved[0], saved[1]
+        if saved[2] is not None:
+            os.environ["INVOCATION_ID"] = saved[2]
+        pipelib._ESCALATED = saved[3]
+        pipelib.ANOMALIES[:] = saved[4]
+
+    names = ("ROOT", "BACKLOG", "notify", "job_lock", "DEADLINE_AT", "STAGE_END_AT", "RECOVER")
+    saved_o, saved_argv = {k: getattr(oncall, k) for k in names}, sys.argv
+    locks: list = []
+    notes: list = []
+
+    def no_lock(*a, **k):
+        locks.append((a, k))
+        raise pipelib.JobLockTimeout("試験: 排他は取らせない")
+    try:
+        oncall.ROOT, oncall.BACKLOG = tmp, tmp / "metrics" / "oncall-backlog.jsonl"
+        oncall.notify = lambda job, msg, ok=True, require=False: notes.append(msg) or True
+        oncall.job_lock = no_lock
+        reason = "工程は終わった(止まっていない)が、人に異常として通知した事柄がある\n- [compose] 紙面から外れた記事 11本"
+        base = ["oncall", "--stage", "compose", "--date", "2026-11-06", "--no-rerun", "--finished", "--reason", reason,
+                "--anomaly-keys", "text:bfa46fed19030e9e"]
+        # 05:33 の当番: 次の定時工程(06:00 の発行)の15分前まで12分。排他を取らず、保管に積む
+        oncall.DEADLINE_AT = oncall.STAGE_END_AT = None
+        sys.argv = base + ["--end-at", str(int(time.time() + 12 * 60))]
+        code = oncall._main()
+        rows = oncall.backlog_open()
+        check(code == 0 and not locks and len(rows) == 1 and "紙面から外れた記事" in rows[0]["evidence"]
+              and rows[0]["stage"] == "compose" and any("保管に積んだ" in m for m in notes),
+              f"枠の無い再実行しない当番が排他を取りに行く・保管に積まない: exit {code} locks {len(locks)} rows {rows} {notes[-1:]}")
+        # 同じ依頼の起動し直しでも二重に積まない
+        oncall.DEADLINE_AT = None
+        check(oncall._main() == 0 and len(oncall.backlog_open()) == 1 and not locks, "起動し直しで保管に二重に積む")
+        # 枠がある当番: 往復の期限は渡された時刻から取り込みの分を引いた時刻(無期限に排他を持たない)
+        end = int(time.time() + 3 * 3600)
+        oncall.DEADLINE_AT = None
+        sys.argv = base + ["--end-at", str(end)]
+        oncall._main()
+        check(locks and oncall.DEADLINE_AT == end - oncall.BACKLOG_MERGE_RESERVE_MIN * 60
+              and locks[-1][1].get("wait_min", 999) <= (end - time.time()) / 60,
+              f"枠のある再実行しない当番の往復の期限が次の定時工程の前でない: {oncall.DEADLINE_AT} / {end}")
+    finally:
+        for k, v in saved_o.items():
+            setattr(oncall, k, v)
+        sys.argv = saved_argv
+
+
 def test_oncall_judged_not_rejudged(tmp: Path):
     """判定済みを判定し直さない(編集長 2026-10-24「ジャッジ済みをジャッジするな」)。10/23 18:33 の収集で定点観測 lantis-sidem が
     HTTP 503(ランティスのメンテナンス)になり、当番の1回目は答えが読めず(18:56)、起動し直した2回目で「直す箇所なし」を監査が承認した
@@ -22095,6 +22173,7 @@ def main() -> int:
     test_oncall_session_waits(tmp / "osw")
     test_oncall_finished_rerun_none(tmp / "ofr")
     test_oncall_judged_not_rejudged(tmp / "ojn")
+    test_oncall_no_rerun_frees_lock_before_slot(tmp / "onrl")
     test_http503_not_whywhy(tmp / "h503")
     test_http503_collect_run(tmp / "h503c")
     test_collect_stage_order(tmp / "cso")

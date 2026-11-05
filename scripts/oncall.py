@@ -1820,6 +1820,24 @@ def main() -> int:
     return got if got in (0, CLI_BLOCKED_EXIT) else ONCALL_HANDED_EXIT
 
 
+def defer_whywhy(date: str, stage: str, reason: str, keys: list[str], end: float) -> None:
+    """次の定時工程までに1往復の枠が無い、再実行しない当番の依頼を、当番の保管に積む(工程の排他は取らない)。
+    保管は発行のあとの監視(watch)が当番に渡す。積めなければ人に知らせる(依頼を黙って消さない)。"""
+    shape = ",".join(sorted(keys)) or hashlib.sha256(reason.encode("utf-8")).hexdigest()[:10]
+    left = max(0, int(end - time.time()) // 60)
+    try:
+        kept = backlog_add([{"claim": f"{date} {stage} の当番に渡した異常(形 {shape})のなぜなぜ。次の定時工程までに当番の時間が"
+                                      f"無かった(残り {left}分)ので保管に回した。下の異常を1件ずつ原因まで遡り、欠陥なら直す",
+                             "occurs": f"{stage} が異常を人に通知した(根拠の一覧のとおり)。同じ入力・同じ状況で再び起きる",
+                             "evidence": reason[-3000:]}], date, stage, "")
+        where = "当番の保管に積んだ(発行のあと watch が当番に渡す)" if kept else "当番の保管に既にある"
+        ok = True
+    except Exception as e:      # noqa: BLE001 — 積めなくても、次の定時工程の前に排他を取らない(人には知らせる)
+        where, ok = f"当番の保管に積めなかった({type(e).__name__}: {e})。人が原因を確かめること", False
+    notify("oncall", f"{date} {stage}: 次の定時工程までに当番の1往復の時間が無い(残り {left}分)。"
+                     f"工程の排他を取らず、なぜなぜは{where}", ok=ok)
+
+
 def release_held_job_locks() -> None:
     """この process が開いたままの工程の排他(metrics/jobs.lock)の fd を閉じる。flock は open ごとなので、同じ process でも
     開き直した fd とは競合する。例外で抜けた経路が閉じ損ねても、後段の組み直しが排他を取れるようにする。"""
@@ -1866,7 +1884,8 @@ def _main() -> int:
     ap.add_argument("--backlog-done", nargs="+", metavar="KEY", help="直し終えた指摘を消し込む")
     ap.add_argument("--end-at", default="", metavar="EPOCH",
                     help="収集の当番: 取り直しまで含めて終える時刻(呼び出し側の収集が固定して渡す。起動し直しても延びない)。"
-                         "組版の --recover: 落とした記事を戻し終える締切(発行の締切)")
+                         "組版の --recover: 落とした記事を戻し終える締切(発行の締切)。"
+                         "再実行しない当番(--no-rerun): 工程の排他を手放す時刻(次の定時工程の前。pipelib.escalate が渡す)")
     ap.add_argument("--recover", action="store_true",
                     help="組版の当番: 承認まで進んだが記事を落とした。直したあと --reuse-plan で落とした記事をこの号に戻す")
     ap.add_argument("--backlog-keys", nargs="+", default=[], metavar="KEY",
@@ -1925,6 +1944,16 @@ def _main() -> int:
             mark_collect_oncall(STAGE_END_AT, date)
             import atexit
             atexit.register(COLLECT_ONCALL_MARK.unlink, missing_ok=True)   # 置いた印そのもの(後から名前が差し替わっても他を消さない)
+    elif a.no_rerun and a.end_at:
+        # 再実行しない当番(止まっていない工程のなぜなぜ 等)は、次の定時工程の前に工程の排他を手放す(終える時刻は呼び出し側が
+        # 固定して渡す)。期限が無いと往復の上限(ONCALL_LIMIT_MIN)まで排他を持ち、06:00 の発行・定時の収集を待たせて止める
+        # (2026-11-06: 05:33 に呼ばれた組版のなぜなぜの当番が 08:03 まで持ち、06:00 の発行と 07:30 の収集が止まった)。
+        # 1往復の枠が無ければ始めず、保管に積む(発行のあと watch が当番に渡す。compose.too_late_to_start と同じ)
+        end = float(a.end_at)
+        if end - time.time() < BACKLOG_MIN_WINDOW_MIN * 60:
+            defer_whywhy(date, stage, a.reason, list(a.anomaly_keys), end)
+            return 0
+        DEADLINE_AT = end - BACKLOG_MERGE_RESERVE_MIN * 60
 
     # 工程の排他(collect/compose/release/当番で共通の flock)。起動直後は親の compose がまだ持って
     # いるので、ここで終わるまで待つ。以後、再実行が終わるまで持ち続ける(pgrep の隙間を作らない。監査指摘)。

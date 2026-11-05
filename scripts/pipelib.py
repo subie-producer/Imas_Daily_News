@@ -2422,7 +2422,7 @@ def job_lock(job: str, wait_min: float = 0, wait_fn=None, yield_fn=None):
     wait_min=0 なら取れなければ即 JobLockTimeout、それ以外はその分だけ待つ。
     当番が起動する再実行(子プロセス)は、親が持っているので IMAS_JOB_LOCK=held で取らない。
     wait_fn(t0) は待つ分を待つ間に見直す(待ち始めてから現れた事情を見落とさない。組版が、待っている間に呼ばれた
-    収集の当番を待つ。監査指摘)。待つのは wait_min と wait_fn(t0) の大きいほう(t0 からの分)。
+    収集の当番を待つ。監査指摘)。待つのは wait_min と、それまでに見た wait_fn(t0) の最大の大きいほう(t0 からの分。延ばした待ちは縮めない)。
     yield_fn() が真の間は、空いていても取らずに譲る(収集→当番の受け渡しの最中。待つ分の内だけ)。
     戻り値は開いた fd(閉じるまで保持。プロセス終了で自動的に外れる)。
     """
@@ -2433,8 +2433,10 @@ def job_lock(job: str, wait_min: float = 0, wait_fn=None, yield_fn=None):
     (ROOT / "metrics").mkdir(exist_ok=True)
     fd = os.open(ROOT / "metrics" / "jobs.lock", os.O_RDWR | os.O_CREAT, 0o644)
     t0 = time.time()
+    limit = wait_min
     while True:
-        limit = max(wait_min, wait_fn(t0)) if wait_fn else wait_min
+        # 一度延ばした待ちは縮めない(当番は印を消してから排他を離す。その間に見直すと、待ちが10分に戻って時間切れになる)
+        limit = max(limit, wait_fn(t0)) if wait_fn else wait_min
         in_time = time.time() - t0 < limit * 60
         try:
             fcntl.flock(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)

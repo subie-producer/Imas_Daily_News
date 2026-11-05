@@ -2327,6 +2327,10 @@ def test_job_lock_collect_oncall_handover():
                 order.append("oncall")
                 time.sleep(0.5)          # 取り直し
                 pipelib.COLLECT_ONCALL_MARK.unlink()
+                # 本物の当番は印を atexit で消し、排他はプロセスの終わりで離す(消してから離すまでに間がある)。その間に
+                # 組版が待ちを見直しても、延ばした待ちを10分に戻して時間切れにしない(2026-11-06 監査の selfcheck が
+                # ['oncall', 'compose-timeout'] で揺れて落ちた)
+                time.sleep(0.3)
                 os.close(fd)
 
             tc = threading.Thread(target=compose_side)

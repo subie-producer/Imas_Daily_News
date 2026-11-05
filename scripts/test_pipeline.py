@@ -17468,6 +17468,125 @@ def test_oncall_finished_rerun_none(tmp: Path):
           f"--finished の渡し方が違う(止まった収集に付けた・止まっていない収集に付けない): {[(a, r[:30]) for a, r in calls]}")
 
 
+def test_oncall_no_rerun_frees_lock_before_slot(tmp: Path):
+    """再実行しない当番(止まっていない工程のなぜなぜ 等)は、次の定時工程の前に工程の排他を手放す(2026-11-06: 05:33 に終わった
+    組版のなぜなぜの当番が排他を 08:03 まで持ち、06:00 の発行と 07:30 の収集が30分待って止まった)。
+    - escalate は再実行しない当番に、次の定時工程の15分前(next_slot_end)を --end-at で固定して渡す。再実行する当番・保管の当番・
+      呼び手が --end-at を渡した当番には足さない
+    - 当番は、その時刻まで1往復の枠が無ければ排他を取らずに保管に積んで終える(05:33 → 05:45)。枠があれば往復の期限をそこから
+      取り込みの分を引いた時刻にする(無期限に持たない)"""
+    import os
+    import subprocess as _sp
+    import time
+    import oncall
+    tmp.mkdir(parents=True, exist_ok=True)
+    (tmp / "scripts").mkdir(exist_ok=True)
+    (tmp / "metrics").mkdir(exist_ok=True)
+    (tmp / "scripts" / "oncall.py").write_text("", encoding="utf-8")
+    launches: list = []
+    saved = (pipelib.ROOT, _sp.Popen, os.environ.pop("INVOCATION_ID", None), pipelib._ESCALATED, list(pipelib.ANOMALIES))
+    try:
+        pipelib.ROOT = tmp
+        _sp.Popen = lambda args, **k: launches.append(list(args))
+        pipelib.ANOMALIES[:] = ["[compose] 紙面から外れた記事 11本"]
+        want = str(int(pipelib.next_slot_end(pipelib.now_jst())))
+        for kw, expect in ((dict(stage="compose", rerun=False), want), (dict(stage="release", rerun=False), want),
+                           (dict(stage="compose", rerun=True), want), (dict(stage="release", rerun=True), want),
+                           (dict(stage="compose", rerun=False, extra_args=["--end-at", "7"]), "7"),
+                           (dict(stage="backlog", rerun=False, ledger=False), None)):
+            pipelib._ESCALATED = False
+            launches.clear()
+            pipelib.escalate(date="2026-11-06", reason="x", **kw)
+            args = launches[-1] if launches else []
+            got = args[args.index("--end-at") + 1] if "--end-at" in args else None
+            check(args and got == expect and args.count("--end-at") <= 1, f"escalate {kw}: --end-at が {got}(期待 {expect}): {args[-6:]}")
+    finally:
+        pipelib.ROOT, _sp.Popen = saved[0], saved[1]
+        if saved[2] is not None:
+            os.environ["INVOCATION_ID"] = saved[2]
+        pipelib._ESCALATED = saved[3]
+        pipelib.ANOMALIES[:] = saved[4]
+
+    names = ("ROOT", "BACKLOG", "notify", "job_lock", "DEADLINE_AT", "STAGE_END_AT", "RECOVER")
+    saved_o, saved_argv = {k: getattr(oncall, k) for k in names}, sys.argv
+    locks: list = []
+    notes: list = []
+
+    def no_lock(*a, **k):
+        locks.append((a, k))
+        raise pipelib.JobLockTimeout("試験: 排他は取らせない")
+    try:
+        oncall.ROOT, oncall.BACKLOG = tmp, tmp / "metrics" / "oncall-backlog.jsonl"
+        oncall.notify = lambda job, msg, ok=True, require=False: notes.append(msg) or True
+        oncall.job_lock = no_lock
+        reason = "工程は終わった(止まっていない)が、人に異常として通知した事柄がある\n- [compose] 紙面から外れた記事 11本"
+        base = ["oncall", "--stage", "compose", "--date", "2026-11-06", "--no-rerun", "--finished", "--reason", reason,
+                "--anomaly-keys", "text:bfa46fed19030e9e"]
+        # 05:33 の当番: 次の定時工程(06:00 の発行)の15分前まで12分。排他を取らず、保管に積む
+        oncall.DEADLINE_AT = oncall.STAGE_END_AT = None
+        sys.argv = base + ["--end-at", str(int(time.time() + 12 * 60))]
+        code = oncall._main()
+        rows = oncall.backlog_open()
+        check(code == 0 and not locks and len(rows) == 1 and "紙面から外れた記事" in rows[0]["evidence"]
+              and rows[0]["stage"] == "compose" and any("保管に積んだ" in m for m in notes),
+              f"枠の無い再実行しない当番が排他を取りに行く・保管に積まない: exit {code} locks {len(locks)} rows {rows} {notes[-1:]}")
+        # 同じ依頼の起動し直しでも二重に積まない
+        oncall.DEADLINE_AT = None
+        check(oncall._main() == 0 and len(oncall.backlog_open()) == 1 and not locks, "起動し直しで保管に二重に積む")
+        # 枠がある当番: 往復の期限は渡された時刻から取り込みの分を引いた時刻(無期限に排他を持たない)
+        end = int(time.time() + 3 * 3600)
+        oncall.DEADLINE_AT = None
+        sys.argv = base + ["--end-at", str(end)]
+        oncall._main()
+        check(locks and oncall.DEADLINE_AT == end - oncall.BACKLOG_MERGE_RESERVE_MIN * 60
+              and locks[-1][1].get("wait_min", 999) <= (end - time.time()) / 60,
+              f"枠のある再実行しない当番の往復の期限が次の定時工程の前でない: {oncall.DEADLINE_AT} / {end}")
+        # 止まった組版を直して再実行する当番(2026-11-06 05:34: 組版が TERM で止まり、unit_failed が再実行ありで呼んだ)。
+        # 05:34 → 05:45 で1往復の枠が無い: 排他を取らず保管に積み、止まったままであることを人に知らせて、起動し直させない
+        stopped = ["oncall", "--stage", "compose", "--date", "2026-11-06", "--reason",
+                   "imas-compose.service がシグナルで止まった(終了 TERM)", "--anomaly-keys", "text:63aa4e212ed6be08"]
+        locks.clear()
+        oncall.DEADLINE_AT = oncall.STAGE_END_AT = None
+        sys.argv = stopped + ["--end-at", str(int(time.time() + 11 * 60))]
+        code = oncall._main()
+        rows = oncall.backlog_open()
+        check(code == oncall.ONCALL_HANDED_EXIT and not locks and len(rows) == 2 and "TERM" in rows[-1]["evidence"]
+              and "止まったまま" in notes[-1],
+              f"枠の無い止まった組版の当番が排他を取りに行く・保管に積まない: exit {code} locks {len(locks)} rows {len(rows)} {notes[-1:]}")
+        # 枠がある: 往復は再実行と取り込みの分を残して終え、再実行も同じ時刻で切る(無期限に排他を持たない)
+        oncall.DEADLINE_AT = oncall.STAGE_END_AT = None
+        sys.argv = stopped + ["--end-at", str(end)]
+        oncall._main()
+        check(locks and oncall.STAGE_END_AT == end and oncall.DEADLINE_AT == end - oncall.STOPPED_RERUN_RESERVE_MIN * 60
+              and locks[-1][1].get("wait_min", 999) <= (end - time.time()) / 60,
+              f"枠のある止まった組版の当番の期限が次の定時工程の前でない: {oncall.DEADLINE_AT} {oncall.STAGE_END_AT} / {end}")
+    finally:
+        for k, v in saved_o.items():
+            setattr(oncall, k, v)
+        sys.argv = saved_argv
+
+    # 再実行(組版の組み直し・発行)も終える時刻で切る(上限 7200秒・1800秒まで排他を持たない)
+    names = ("ROOT", "STAGE_END_AT", "run_stage", "untracked_files", "rescue_sources", "commit_paths")
+    saved_o = {k: getattr(oncall, k) for k in names}
+    timeouts: list = []
+    try:
+        oncall.ROOT = tmp
+        oncall.run_stage = lambda cmd, log, timeout: timeouts.append((Path(cmd[1]).name, timeout)) or 0
+        oncall.untracked_files = lambda: set()
+        oncall.rescue_sources = lambda *a, **k: ""
+        oncall.commit_paths = lambda *a, **k: None
+        for stage, limit in (("compose", 7200), ("release", 1800)):
+            for end_at in (time.time() + 600, None):
+                oncall.STAGE_END_AT = end_at
+                timeouts.clear()
+                oncall.rerun_stage(stage, "2026-11-06", "edition/2026-11-06", False)
+                ok = timeouts and (timeouts[-1][1] <= 600 if end_at else timeouts[-1][1] == limit)
+                check(ok, f"{stage} の再実行の上限が終える時刻({end_at})に従わない: {timeouts}")
+    finally:
+        for k, v in saved_o.items():
+            setattr(oncall, k, v)
+
+
 def test_oncall_judged_not_rejudged(tmp: Path):
     """判定済みを判定し直さない(編集長 2026-10-24「ジャッジ済みをジャッジするな」)。10/23 18:33 の収集で定点観測 lantis-sidem が
     HTTP 503(ランティスのメンテナンス)になり、当番の1回目は答えが読めず(18:56)、起動し直した2回目で「直す箇所なし」を監査が承認した
@@ -22095,6 +22214,7 @@ def main() -> int:
     test_oncall_session_waits(tmp / "osw")
     test_oncall_finished_rerun_none(tmp / "ofr")
     test_oncall_judged_not_rejudged(tmp / "ojn")
+    test_oncall_no_rerun_frees_lock_before_slot(tmp / "onrl")
     test_http503_not_whywhy(tmp / "h503")
     test_http503_collect_run(tmp / "h503c")
     test_collect_stage_order(tmp / "cso")

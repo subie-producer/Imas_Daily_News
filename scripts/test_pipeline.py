@@ -4950,6 +4950,38 @@ def test_prompts_are_instructions_only():
           "社説" not in compose.lead_prompt("2026-09-18", []), "一面の依頼文(社説は選ばせない)")
 
 
+def test_review_contract_event_date_and_archive_minus_lines():
+    """執筆と校閲が同じ項目を同じ契約で読む(2026-11-06 号)。
+    1. R8 の event_date: 執筆は「記事の出来事の日を素材か new_facts の日付から」選ぶ。校閲は素材の event_date 欄(公演日)と違うことだけで
+       ブロックしない(一面の受付締切の記事が落ちた)。
+    2. 原本の違いの「-」の行: 本文(いまの版)に同じ内容があれば消えていない(YouTube のチャプターの写しが描画で減っただけの違いを、
+       校閲が「削除」としてゲスト発表の記事を落とした)。執筆・書き直し・校閲と、出典の変化の判定・その校閲に同じ規則が渡る"""
+    import source_watch as sw
+    w = (pipelib.PROMPTS / "write-article.md").read_text(encoding="utf-8")
+    check("素材か new_facts にある日付" in w, "執筆の event_date の契約が変わった(この検査の前提)")
+    r = (pipelib.PROMPTS / "review-article.md").read_text(encoding="utf-8")
+    r8 = r.split("- R8 ", 1)[1].split("- R9 ", 1)[0]
+    check("素材の `event_date` 欄" in r8 and "違うことだけではブロックしない" in r8 and "new_facts" in r8,
+          f"校閲の R8 が素材の event_date 欄との一致を求めたまま(執筆の契約と食い違う): {r8!r}")
+    rule = "本文のどこかにあれば、その値は消えていない"
+    for role in ("write", "revise", "review"):
+        check(rule in compose.maintenance_rules(role), f"{role} の依頼文に、本文に残る「-」の行を消えた値と扱わない規則が無い")
+    seen = []
+    orig = sw.run_session
+    sw.run_session = lambda role, prompt, *a, **k: seen.append((role, prompt)) or {}
+    try:
+        art, row = {"id": "2026-11-06-x", "slug": "x"}, {"url": "https://example.com/a", "from_at": "2026-11-05T18:40:00+09:00",
+                                                          "to_at": "2026-11-06T05:23:00+09:00"}
+        sw.judge(art, row, "-ゲスト発表第1弾", "2026-11-06")
+        sw.review(art, row, "-ゲスト発表第1弾", {"kind": "変更", "text": "t"}, "2026-11-06")
+    finally:
+        sw.run_session = orig
+    check(len(seen) == 2 and "`表示の揺れ`(ページの表示部品の出入り)" in seen[0][1] and "fetch_page.py https://example.com/a" in seen[0][1],
+          "出典の変化の判定の依頼文に、「-」だけの行をいまの本文で確かめる規則が無い")
+    check(len(seen) == 2 and "同じ内容(表記の違うものを含む)が出典のいまの本文" in seen[1][1],
+          "出典の変化の校閲の依頼文に、本文に残る値を消えたとした要約を block する規則が無い")
+
+
 def test_assemble_judge():
     """判断を分けて取り、従来と同じ形の1つの出力にまとめる。記事の並び順のまま、pending_remove は重複なし。
     1本でも答えが無ければ全体が上がる(半端な台帳を作らない)。"""
@@ -22197,6 +22229,7 @@ def main() -> int:
     test_assemble_prompt_shape()
     test_ledger_facts_are_cited(tmp / "lfc")
     test_prompts_are_instructions_only()
+    test_review_contract_event_date_and_archive_minus_lines()
     test_site_maintenance_scope_x_posts()
     test_assemble_judge()
     test_claude_traced(tmp / "ct")

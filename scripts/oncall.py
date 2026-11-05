@@ -413,6 +413,7 @@ BACKLOG_MARGIN_MIN = SLOT_MARGIN_MIN   # 次の定時工程の何分前に終え
 BACKLOG_MIN_WINDOW_MIN = 60  # これより短い枠なら始めない(取り込みの分を残して1往復も回らない)
 BACKLOG_MERGE_RESERVE_MIN = 15   # 往復を終えてから、取り込み・後始末に残す時間
 COLLECT_RERUN_RESERVE_MIN = 20   # 収集の当番: 往復を終えてから、取り込みと定点観測の取り直しに残す時間
+STOPPED_RERUN_RESERVE_MIN = 20   # 止まった工程(組版・発行)の当番: 往復を終えてから、取り込みと再実行に残す時間(再実行は --end-at で切る)
 COLLECT_MIN_WINDOW_MIN = 30      # 収集の当番: ロックを取れた時点でこれだけ無ければ直して取り直す時間が無い(往復10分+取り直し20分)
 CLEANUP_RESERVE_SEC = 300        # 収集の当番: 取り直しを打ち切ってから、後始末(素材の確定・push・通知)に残す秒数
 # 収集の当番が、取り直しまで含めて終えるべき時刻(epoch 秒。呼び出し側の収集が --end-at で固定して渡す)
@@ -1652,10 +1653,12 @@ def rerun_stage(stage: str, date: str, edition: str, full: bool, recover: bool =
     code = 1
     done = False   # compose と(release 起点なら)release が**全部**終わったときだけ True(監査指摘)
     untracked_before = untracked_files()   # 控えへ戻すとき、この間に出来た未追跡ファイルだけを消す(監査指摘)
+    # 終える時刻(--end-at)を渡された当番は、再実行もその時刻で切る(次の定時工程の前に排他を手放す)
+    bound = lambda sec: sec if STAGE_END_AT is None else max(60, min(sec, int(STAGE_END_AT - time.time())))
     try:
         if full:
             backup = reset_edition(date, edition)
-            code = run_stage([sys.executable, compose_py, "--date", date], log, 7200)
+            code = run_stage([sys.executable, compose_py, "--date", date], log, bound(7200))
         elif stage == "compose":
             limit, extra = 7200, []
             if recover:
@@ -1676,7 +1679,7 @@ def rerun_stage(stage: str, date: str, edition: str, full: bool, recover: bool =
             for p in (ROOT / "metrics").glob(f"review-{date}-*.json"):
                 p.unlink()   # 古い校閲記録が残ると release が最大巡数の古い判定を読む(監査指摘)
             commit_paths(["metrics"], f"oncall: {date} の古い校閲記録を外す", edition)
-            code = run_stage([sys.executable, compose_py, "--date", date, "--reuse-plan", *extra], log, limit)
+            code = run_stage([sys.executable, compose_py, "--date", date, "--reuse-plan", *extra], log, bound(limit))
             if recover and code == CLI_BLOCKED_EXIT:
                 # 組み直しのモデル CLI が認証切れ・利用上限で止まった(組版が投稿済み)。控えへ戻すのは下の finally。
                 # 「戻らなかった」とは言わない(戻ったら --reuse-plan で組み直せる。監査指摘 r7)
@@ -1694,7 +1697,7 @@ def rerun_stage(stage: str, date: str, edition: str, full: bool, recover: bool =
         elif stage == "classify":
             # 取り込んだあとのコードで、その号の出典の判定(合議 → 紙面の付け直し → lint)をやり直し、結果を commit する。
             # 取引が失敗すれば判定表と記事は開始時の中身に戻る(classify_retag_lint)
-            code = run_stage([sys.executable, "-c", CLASSIFY_RERUN, date], log, 3600)
+            code = run_stage([sys.executable, "-c", CLASSIFY_RERUN, date], log, bound(3600))
             if code == 0:
                 commit_paths(["source_types.yml", "docs/_posts"], f"oncall: {date} 出典の判定をやり直す(パーサ追加後)", edition)
         elif stage in ("collect", "watch"):
@@ -1744,7 +1747,7 @@ def rerun_stage(stage: str, date: str, edition: str, full: bool, recover: bool =
             code = 0
         if code == 0 and stage == "release":
             code = 1
-            code = run_stage([sys.executable, str(ROOT / "scripts" / "release.py"), "--date", date], log, 1800)
+            code = run_stage([sys.executable, str(ROOT / "scripts" / "release.py"), "--date", date], log, bound(1800))
         done = code == 0
     finally:
         # 控えを作ったあとは、失敗の種類を問わず(exit 非0・例外。release 起動時の例外も)控えへ戻す(監査指摘)
@@ -1820,9 +1823,10 @@ def main() -> int:
     return got if got in (0, CLI_BLOCKED_EXIT) else ONCALL_HANDED_EXIT
 
 
-def defer_whywhy(date: str, stage: str, reason: str, keys: list[str], end: float) -> None:
-    """次の定時工程までに1往復の枠が無い、再実行しない当番の依頼を、当番の保管に積む(工程の排他は取らない)。
-    保管は発行のあとの監視(watch)が当番に渡す。積めなければ人に知らせる(依頼を黙って消さない)。"""
+def defer_whywhy(date: str, stage: str, reason: str, keys: list[str], end: float, stopped: bool = False) -> None:
+    """次の定時工程までに1往復の枠が無い当番の依頼を、当番の保管に積む(工程の排他は取らない・離す)。
+    保管は発行のあとの監視(watch)が当番に渡す。積めなければ人に知らせる(依頼を黙って消さない)。
+    stopped は止まった工程を直して再実行する当番: 再実行もしないので、工程が止まったままであることを人に知らせる。"""
     shape = ",".join(sorted(keys)) or hashlib.sha256(reason.encode("utf-8")).hexdigest()[:10]
     left = max(0, int(end - time.time()) // 60)
     try:
@@ -1835,7 +1839,8 @@ def defer_whywhy(date: str, stage: str, reason: str, keys: list[str], end: float
     except Exception as e:      # noqa: BLE001 — 積めなくても、次の定時工程の前に排他を取らない(人には知らせる)
         where, ok = f"当番の保管に積めなかった({type(e).__name__}: {e})。人が原因を確かめること", False
     notify("oncall", f"{date} {stage}: 次の定時工程までに当番の1往復の時間が無い(残り {left}分)。"
-                     f"工程の排他を取らず、なぜなぜは{where}", ok=ok)
+                     + (f"止まった {stage} は当番が直して再実行しない(止まったまま。人が確かめて再実行すること)。" if stopped else "")
+                     + f"工程の排他を取らず、なぜなぜは{where}", ok=ok and not stopped)
 
 
 def release_held_job_locks() -> None:
@@ -1885,7 +1890,8 @@ def _main() -> int:
     ap.add_argument("--end-at", default="", metavar="EPOCH",
                     help="収集の当番: 取り直しまで含めて終える時刻(呼び出し側の収集が固定して渡す。起動し直しても延びない)。"
                          "組版の --recover: 落とした記事を戻し終える締切(発行の締切)。"
-                         "再実行しない当番(--no-rerun): 工程の排他を手放す時刻(次の定時工程の前。pipelib.escalate が渡す)")
+                         "ほかの当番(再実行しない当番・止まった組版・発行を直して再実行する当番): 再実行まで含めて工程の排他を"
+                         "手放す時刻(次の定時工程の前。pipelib.escalate が渡す)")
     ap.add_argument("--recover", action="store_true",
                     help="組版の当番: 承認まで進んだが記事を落とした。直したあと --reuse-plan で落とした記事をこの号に戻す")
     ap.add_argument("--backlog-keys", nargs="+", default=[], metavar="KEY",
@@ -1944,16 +1950,20 @@ def _main() -> int:
             mark_collect_oncall(STAGE_END_AT, date)
             import atexit
             atexit.register(COLLECT_ONCALL_MARK.unlink, missing_ok=True)   # 置いた印そのもの(後から名前が差し替わっても他を消さない)
-    elif a.no_rerun and a.end_at:
-        # 再実行しない当番(止まっていない工程のなぜなぜ 等)は、次の定時工程の前に工程の排他を手放す(終える時刻は呼び出し側が
-        # 固定して渡す)。期限が無いと往復の上限(ONCALL_LIMIT_MIN)まで排他を持ち、06:00 の発行・定時の収集を待たせて止める
-        # (2026-11-06: 05:33 に呼ばれた組版のなぜなぜの当番が 08:03 まで持ち、06:00 の発行と 07:30 の収集が止まった)。
-        # 1往復の枠が無ければ始めず、保管に積む(発行のあと watch が当番に渡す。compose.too_late_to_start と同じ)
+    elif a.end_at:
+        # 再実行しない当番(止まっていない工程のなぜなぜ 等)も、止まった工程(組版・発行)を直して再実行する当番も、次の定時工程の
+        # 前に工程の排他を手放す(終える時刻は呼び出し側が固定して渡す)。期限が無いと往復の上限(ONCALL_LIMIT_MIN)と再実行の上限まで
+        # 排他を持ち、06:00 の発行・定時の収集を待たせて止める(2026-11-06: 05:33 に呼ばれた組版のなぜなぜの当番が 08:03 まで持ち、
+        # 06:00 の発行と 07:30 の収集が止まった。05:34 に止まった組版の当番も期限が無かった)。再実行する当番は、往復を再実行と
+        # 取り込みの分を残して終え、再実行もその時刻で切る(rerun_stage)。1往復の枠が無ければ始めず、保管に積む
+        # (発行のあと watch が当番に渡す。compose.too_late_to_start と同じ)
         end = float(a.end_at)
         if end - time.time() < BACKLOG_MIN_WINDOW_MIN * 60:
-            defer_whywhy(date, stage, a.reason, list(a.anomaly_keys), end)
-            return 0
-        DEADLINE_AT = end - BACKLOG_MERGE_RESERVE_MIN * 60
+            defer_whywhy(date, stage, a.reason, list(a.anomaly_keys), end, stopped=not a.no_rerun)
+            return 0 if a.no_rerun else ONCALL_HANDED_EXIT
+        if not a.no_rerun:
+            STAGE_END_AT = end
+        DEADLINE_AT = end - (BACKLOG_MERGE_RESERVE_MIN if a.no_rerun else STOPPED_RERUN_RESERVE_MIN) * 60
 
     # 工程の排他(collect/compose/release/当番で共通の flock)。起動直後は親の compose がまだ持って
     # いるので、ここで終わるまで待つ。以後、再実行が終わるまで持ち続ける(pgrep の隙間を作らない。監査指摘)。
@@ -2027,6 +2037,10 @@ def _main() -> int:
             print("ロックを取れたが、期限までに1往復できない。保管の指摘は翌朝また渡る", flush=True)
             return 0
         # どちらも残り時間は起動し直しても増えない。人に渡し終えたので、起動し直して同じ通知を重ねない(ONCALL_HANDED_EXIT)
+        if stage != "collect" and not RECOVER:
+            # 次の定時工程の前に排他を手放す当番(--end-at): 排他を待つうちに1往復の枠が無くなった。保管に積む
+            defer_whywhy(date, stage, a.reason, list(a.anomaly_keys), DEADLINE_AT, stopped=not a.no_rerun)
+            return 0 if a.no_rerun else ONCALL_HANDED_EXIT
         if RECOVER:
             notify("oncall", f"{date} compose: 発行の締切までに、落とした記事を戻す時間が無い(残り {int(STAGE_END_AT - time.time()) // 60}分)。"
                              "戻せない記事:\n" + a.reason[-1500:], ok=False)

@@ -17491,7 +17491,8 @@ def test_oncall_no_rerun_frees_lock_before_slot(tmp: Path):
         pipelib.ANOMALIES[:] = ["[compose] 紙面から外れた記事 11本"]
         want = str(int(pipelib.next_slot_end(pipelib.now_jst())))
         for kw, expect in ((dict(stage="compose", rerun=False), want), (dict(stage="release", rerun=False), want),
-                           (dict(stage="compose", rerun=True), None), (dict(stage="compose", rerun=False, extra_args=["--end-at", "7"]), "7"),
+                           (dict(stage="compose", rerun=True), want), (dict(stage="release", rerun=True), want),
+                           (dict(stage="compose", rerun=False, extra_args=["--end-at", "7"]), "7"),
                            (dict(stage="backlog", rerun=False, ledger=False), None)):
             pipelib._ESCALATED = False
             launches.clear()
@@ -17540,10 +17541,50 @@ def test_oncall_no_rerun_frees_lock_before_slot(tmp: Path):
         check(locks and oncall.DEADLINE_AT == end - oncall.BACKLOG_MERGE_RESERVE_MIN * 60
               and locks[-1][1].get("wait_min", 999) <= (end - time.time()) / 60,
               f"枠のある再実行しない当番の往復の期限が次の定時工程の前でない: {oncall.DEADLINE_AT} / {end}")
+        # 止まった組版を直して再実行する当番(2026-11-06 05:34: 組版が TERM で止まり、unit_failed が再実行ありで呼んだ)。
+        # 05:34 → 05:45 で1往復の枠が無い: 排他を取らず保管に積み、止まったままであることを人に知らせて、起動し直させない
+        stopped = ["oncall", "--stage", "compose", "--date", "2026-11-06", "--reason",
+                   "imas-compose.service がシグナルで止まった(終了 TERM)", "--anomaly-keys", "text:63aa4e212ed6be08"]
+        locks.clear()
+        oncall.DEADLINE_AT = oncall.STAGE_END_AT = None
+        sys.argv = stopped + ["--end-at", str(int(time.time() + 11 * 60))]
+        code = oncall._main()
+        rows = oncall.backlog_open()
+        check(code == oncall.ONCALL_HANDED_EXIT and not locks and len(rows) == 2 and "TERM" in rows[-1]["evidence"]
+              and "止まったまま" in notes[-1],
+              f"枠の無い止まった組版の当番が排他を取りに行く・保管に積まない: exit {code} locks {len(locks)} rows {len(rows)} {notes[-1:]}")
+        # 枠がある: 往復は再実行と取り込みの分を残して終え、再実行も同じ時刻で切る(無期限に排他を持たない)
+        oncall.DEADLINE_AT = oncall.STAGE_END_AT = None
+        sys.argv = stopped + ["--end-at", str(end)]
+        oncall._main()
+        check(locks and oncall.STAGE_END_AT == end and oncall.DEADLINE_AT == end - oncall.STOPPED_RERUN_RESERVE_MIN * 60
+              and locks[-1][1].get("wait_min", 999) <= (end - time.time()) / 60,
+              f"枠のある止まった組版の当番の期限が次の定時工程の前でない: {oncall.DEADLINE_AT} {oncall.STAGE_END_AT} / {end}")
     finally:
         for k, v in saved_o.items():
             setattr(oncall, k, v)
         sys.argv = saved_argv
+
+    # 再実行(組版の組み直し・発行)も終える時刻で切る(上限 7200秒・1800秒まで排他を持たない)
+    names = ("ROOT", "STAGE_END_AT", "run_stage", "untracked_files", "rescue_sources", "commit_paths")
+    saved_o = {k: getattr(oncall, k) for k in names}
+    timeouts: list = []
+    try:
+        oncall.ROOT = tmp
+        oncall.run_stage = lambda cmd, log, timeout: timeouts.append((Path(cmd[1]).name, timeout)) or 0
+        oncall.untracked_files = lambda: set()
+        oncall.rescue_sources = lambda *a, **k: ""
+        oncall.commit_paths = lambda *a, **k: None
+        for stage, limit in (("compose", 7200), ("release", 1800)):
+            for end_at in (time.time() + 600, None):
+                oncall.STAGE_END_AT = end_at
+                timeouts.clear()
+                oncall.rerun_stage(stage, "2026-11-06", "edition/2026-11-06", False)
+                ok = timeouts and (timeouts[-1][1] <= 600 if end_at else timeouts[-1][1] == limit)
+                check(ok, f"{stage} の再実行の上限が終える時刻({end_at})に従わない: {timeouts}")
+    finally:
+        for k, v in saved_o.items():
+            setattr(oncall, k, v)
 
 
 def test_oncall_judged_not_rejudged(tmp: Path):

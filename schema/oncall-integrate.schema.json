@@ -1,48 +1,42 @@
 {
   "title": "oncall-integrate",
-  "description": "当番(Opus)が監査の指摘を敵対的に取り込んだ結果。受け入れたものは直し、反論するものは根拠を示す",
+  "description": "当番(Opus)のレビューへの返事。blocking の1件ずつに fixed か disagree を返す",
   "type": "object",
-  "required": ["accepted", "refuted", "changed_files", "test_evidence", "status", "rerun_mode", "editor_summary", "diagnosis", "root_cause", "recovery", "risk", "notes", "backlog_items"],
+  "required": ["replies", "changed_files", "test_evidence", "status", "rerun_mode", "editor_summary", "diagnosis", "root_cause", "recovery", "risk", "notes"],
   "additionalProperties": false,
   "properties": {
-    "editor_summary": {
-      "type": "object", "required": ["what_happened", "why", "what_changed", "similar", "paper_impact"], "additionalProperties": false,
-      "description": "この巡を終えた時点の**最終の内容**で、編集長に届く報告を毎回書き直す(初回と同じ書き方)",
-      "properties": {
-        "what_happened": {"type": "string", "minLength": 1, "maxLength": 1200},
-        "why": {"type": "string", "minLength": 1, "maxLength": 1500},
-        "what_changed": {"type": "string", "minLength": 1, "maxLength": 1500},
-        "similar": {"type": "string", "minLength": 1, "maxLength": 1500},
-        "paper_impact": {"type": "string", "minLength": 1, "maxLength": 600, "description": "紙面への影響: どの話題が、いつ公式に出て、本来どの号に載るべきで、実際にどの号になる(なった)か。1号の遅れも影響。未確定なら条件・確かめる手段・時刻。打ち消す言い方をしない。影響なしは載るべき号が変わらないと確かめたときだけ。いつの号から効くか"}
+    "replies": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "reply", "evidence"],
+        "additionalProperties": false,
+        "properties": {
+          "id": {"type": "string"},
+          "reply": {"enum": ["fixed", "disagree"]},
+          "evidence": {"type": "string", "maxLength": 600, "description": "fixed: どう直したか / disagree: 当たらない根拠(コードの該当行・再現しない入力・実測)"}
+        }
       }
     },
-    "status": {"enum": ["unchanged", "fixed", "no_fix_needed", "cannot_fix"],
-               "description": "監査の指摘で結論を改めるなら新しい値(no_fix_needed と言っていたが直した → fixed、差分を全部撤回した → no_fix_needed、人が要る → cannot_fix)。変えないなら unchanged"},
-    "rerun_mode": {"enum": ["unchanged", "rebuild", "resume", "none"],
-                   "description": "監査の指摘で再実行の仕方を改めるなら新しい値(rebuild=号を作り直す / resume=続きから / none=再実行しない)。変えないなら unchanged"},
-    "diagnosis": {"type": "string", "maxLength": 1200, "description": "診断を改めたなら新しい診断。変えないなら空文字"},
-    "root_cause": {"type": "string", "maxLength": 800, "description": "原因を改めたなら新しい原因。変えないなら空文字"},
+    "editor_summary": {
+      "type": ["object", "null"],
+      "required": ["what_happened", "why", "what_changed"],
+      "additionalProperties": false,
+      "description": "直した内容が変わったときだけ、書き直した報告(各欄1〜2文)。変わらなければ null",
+      "properties": {
+        "what_happened": {"type": "string", "minLength": 1, "maxLength": 400},
+        "why": {"type": "string", "minLength": 1, "maxLength": 400},
+        "what_changed": {"type": "string", "minLength": 1, "maxLength": 400}
+      }
+    },
+    "status": {"enum": ["unchanged", "fixed", "no_fix_needed", "cannot_fix"], "description": "結論を改めるなら新しい値。変えないなら unchanged"},
+    "rerun_mode": {"enum": ["unchanged", "rebuild", "resume", "none"], "description": "再実行の仕方を改めるなら新しい値。変えないなら unchanged"},
+    "diagnosis": {"type": "string", "maxLength": 800, "description": "診断を改めたなら新しい診断。変えないなら空文字"},
+    "root_cause": {"type": "string", "maxLength": 400, "description": "原因を改めたなら新しい原因。変えないなら空文字"},
     "recovery": {"type": "string", "maxLength": 600, "description": "no_fix_needed に改めたときの、同じ入力で今度は通る根拠。それ以外は空文字"},
-    "risk": {"type": "string", "maxLength": 600, "description": "この巡の変更で新しく壊れうるもの。変えないなら空文字"},
-    "accepted": {
-      "type": "array",
-      "items": {"type": "object", "required": ["id", "fix"], "additionalProperties": false,
-                "properties": {"id": {"type": "string"}, "fix": {"type": "string", "maxLength": 400}}}
-    },
-    "refuted": {
-      "type": "array",
-      "items": {"type": "object", "required": ["id", "evidence"], "additionalProperties": false,
-                "properties": {"id": {"type": "string"}, "evidence": {"type": "string", "maxLength": 600, "description": "指摘が当たらない根拠(再現しない入力、コードの該当行、実測)"}}}
-    },
+    "risk": {"type": "string", "maxLength": 400, "description": "この巡の変更で新しく壊れうるもの。変えないなら空文字"},
     "changed_files": {"type": "array", "items": {"type": "string"}},
-    "test_evidence": {"type": "string", "maxLength": 1200},
-    "notes": {"type": "string", "maxLength": 600},
-    "backlog_items": {
-      "type": "array", "description": "保管していた指摘を渡されたとき: この巡を終えた時点の、1件ずつの扱い(全件を毎回書き直す)。渡されていなければ []",
-      "items": {"type": "object", "required": ["key", "result", "why"], "additionalProperties": false,
-                "properties": {"key": {"type": "string", "minLength": 1},
-                               "result": {"enum": ["fixed", "already_fixed", "invalid"]},
-                               "why": {"type": "string", "minLength": 1, "maxLength": 600}}}
-    }
+    "test_evidence": {"type": "string", "maxLength": 600},
+    "notes": {"type": "string", "maxLength": 600}
   }
 }

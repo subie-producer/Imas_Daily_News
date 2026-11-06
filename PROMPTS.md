@@ -37,13 +37,12 @@
 | source-rescue | 出典が足りずに見送った記事1本の、出典の当たり(読むページと X の原本の問い)。事実は後段の facts 化・Grok の深掘り・確かめ・verify が起こす(`source_rescue.plan_tasks`。当番の組み直しの前に `oncall.rescue_sources` が呼ぶ) | Claude haiku | 当たりの JSON 配列(page / x) |
 | classify-rules / classify-site / classify-x / classify-debate | 出典種別の合議(`classify_sources`) | Claude haiku + Codex luna | 種別 JSON |
 | classify-link(+ classify-debate) | リンク先がリンク元の告知と関係しているかの合議(`classify_sources.inherit_from_links`) | Claude haiku + Codex luna | 関係する / 関係しない JSON |
-| oncall-fix(+ .objections)/ oncall-review | 当番の修正と監査(`oncall`) | Claude opus / Codex sol | 報告・判定(schema) |
+| oncall-fix | 組版・発行が止まったときの当番の PR(止まった原因を1つ直す。`oncall.fix_prompt`) | Claude opus | PR の説明(schema `oncall-fix`) |
+| oncall-fix.objections | 監査の blocking への返事(1件ずつ fixed / disagree。oncall-fix に足す) | Claude opus | 返事(schema `oncall-integrate`) |
+| oncall-review | 当番の PR のレビュー(差分の行にコメント。blocking は3種だけ、ほかは nit。2巡目は resolved / unresolved。`oncall.review_prompt`) | Codex sol | レビュー(schema `oncall-review`) |
+| oncall-anomalies | 止まった工程が記録したほかの異常の一覧(参考。直す対象ではない。`pipelib.escalate_reason`) | — | — |
 | oncall-reformat | 当番・監査のセッションが正常に終わったのに答えが読めない・schema のとおりでないとき、同じセッションを続けて答えの形だけを直させる(`oncall.run_claude` / `run_codex`。1回) | Claude opus / Codex sol(同じセッション) | 答え(最初と同じ schema) |
-| oncall-accept | 監査の must_fix が報告の誤り(misreport)だけのとき、監査が書いた編集長への報告の文面を当番が了承するか異を唱えるか(`oncall.accept_prompt`。取り込みの条件 C) | Claude opus(当番) | 了承・異議(schema `oncall-accept`) |
-| oncall-backlog | 当番が保管した「発行後に直す」指摘を、発行後の昼に直す依頼(`watch.hand_backlog` → `oncall.backlog_reason`、工程名 backlog) | Claude opus(当番) | 修正(oncall-fix と同じ) |
-| oncall-scope(.backlog)/ oncall-review.scope(.backlog) | 当番・監査の仕事の範囲。工程が止まった依頼と、保管の指摘を直す依頼(backlog)で切り替える(`oncall.fix_prompt` / `review_prompt`) | — | — |
-| oncall-parser | 持ち主を取るパーサが無い URL の種類について、当番へのパーサの依頼(`classify_sources.request_parsers` → oncall-fix の「何が起きたか」) | Claude opus(当番) | 修正(oncall-fix と同じ) |
-| oncall-whywhy | 工程が人に「異常」として通知した事柄の一覧と、なぜなぜ(原因まで遡る)の依頼。`pipelib.escalate` が異常の台帳(`ANOMALIES`)を毎回これで付ける | Claude opus(当番) | 診断・修正(oncall-fix と同じ) |
+| oncall-parser | 持ち主を取るパーサが無い URL の種類について、当番へのパーサの依頼(`classify_sources.request_parsers` → oncall-fix の「何が起きたか」)。2026-11-06 から classify 工程では当番を起こさないので使われない | Claude opus(当番) | 修正(oncall-fix と同じ) |
 
 使っていないもの(社説は 2026-09-06 号で終了): columnist-core.md、review-editorial.md、brand-lenses.yml、Kassy_Prompt.md、AI_kassy_prompt_package_v1.md、`compose.editorial_prompt`。
 
@@ -347,6 +346,27 @@
   `revoked_updates.yml` に記録した(lint はこの記録に載った更新を外すことだけを通し、新しい追記は止める)
 
 ### 当番(oncall-*)
+- **PR レビューの形に作り直した(編集長 2026-11-06)。下の 11/5 までの経緯のうち、なぜなぜ・保管の当番(backlog)・報告の了承(accept)・
+  同じ型の洗い出し・紙面への影響の監査は廃止した。** 11/6 に、止まっていない組版のなぜなぜの当番が排他を 05:33〜08:03 持ち、06:00 の発行と
+  07:30 の収集を止めた。編集長「当番は設計が終わってる。Solは反対しかしないゴミに成り下がり、Opusは意味のない修正に終始するゴミ」。
+  9/13〜11/6 の記録(約100回)を洗うと、不毛さはモデルではなく依頼文と起動条件から出ていた:
+  - 起こす条件: 工程が本当に止まったのは10回に満たず、残りは「紙面から外れた記事 N本」(校閲が根拠の無い記述を落とすのは正常)のなぜなぜと、
+    監査の later を翌朝に直させる保管の当番だった。→ 起こすのは組版・発行が止まって号が出ないときだけ(`pipelib.ONCALL_STAGES`、
+    reason の無い `diagnose_anomalies` は起こさない)
+  - 「同じ型の箇所をリポジトリ全体から探す」(修正)と「洗い出しに漏れがあれば must_fix」(監査)が「最小限」と矛盾し、監査が毎巡新しい
+    箇所を見つけてゴールが動いた(10/30 は1巡目3件・2巡目に別の4件)。→ 同じ型は notes に書くだけ。監査の新しい blocking は前の巡のあとで
+    変わった行にだけ
+  - 報告の文面が承認の条件だった: 監査の must_fix の7割以上が misreport(10/21〜: 41件中31件)。「187件と185件が合わない」「試した URL が
+    書かれていない」で何巡も回り、文面を毎巡書き直させたので正しかった記述が後退した。→ 報告は PR の説明の3欄で、レビューの対象にしない
+  - 「モデルの出来で止めない」「紙面に戻るまでが仕事」: 正常な見送りにも毎日コードの修正を書かせ、書き直しの検算を7回、日付の正規表現を
+    巡ごとに継ぎ足した(内容判断の機械化)。→ してはいけない直し方に明記し、監査の blocking にする
+  - テストの義務が「同じ型で直した箇所も」に及び、当番の追加はテスト2514行・コード1380行。sleep で待つ偽物も入った(編集長「時間のかかる
+    偽物の処理なんてやるなら本物でいいだろ」)。→ 回帰テスト1つ、本物の実装、時計を差し込む、失敗を合格にしない
+  - 「敵対的に査読し」と「must_fix が空になるまで」: 承認の条件が「監査が指摘を思いつかなくなること」になっていた。→ blocking は3種
+    (原因に当たっていない・ほかを壊す・してはいけない直し方)、ほかは nit で往復を止めない。往復は2巡まで、解決しなければ人へ
+  - 反論は「事実誤認・道筋が無い・方針で決着済み」だけ許され、記録上の反論は0件。→ blocking ごとに disagree を根拠つきで返せ、監査は
+    根拠が正しければ resolved にする
+  - nit は `metrics/oncall-backlog.jsonl` に積み、当番には渡さず人が引き取る
 - 範囲は「発行に必要な最小限で、今後もちゃんと動く正しい修正」。範囲内(must_fix)は合意まで、発行後でよいもの(later)は保管、起きる道筋を言えないものは書かない(編集長 2026-09-18)。
   範囲を決めずに合意を求めたら、監査が「dedup_key に改行 2100 個」の類を積み、当番が追いかけて2往復で時間切れになり、号が止まった
 - 紙面への影響の書き方(2026-10-07): コロムビアの一覧が描画の時間切れで取れなかった当番の報告が「記事は失っていません。…10月8日号か

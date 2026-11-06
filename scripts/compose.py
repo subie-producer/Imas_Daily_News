@@ -4867,7 +4867,7 @@ def main() -> int:
     if ok:
         # 外れた記事は slug ではなく概略(見出し・段・理由)で知らせる(編集長の指摘 2026-09-23)
         notify("compose", f"{date}号 準備完了(校閲{rounds}往復で approve)。06:00 に発行されます" + drop_summary(date) + stuck_summary(date)
-               + ("\n(異常は当番がなぜなぜして報告する)" if ANOMALIES or DROP_LOG.get(date) or STUCK.get(date) else ""))
+               + ("\n(外れた記事・異常は人が引き取る。当番は工程が止まったときだけ起きる)" if ANOMALIES or DROP_LOG.get(date) or STUCK.get(date) else ""))
         # 外れた記事・直らなかった指摘・途中の異常の原因を当番に診断させ、欠陥なら直す。外れた記事があり、発行まで時間が
         # 残っていれば、当番は直したあと落とした記事をこの号に戻す(--recover。承認済みの紙面は控えに取り、戻せなければ控えに戻す)。
         # 以前は「号は確定している」として再実行させず、発行前に直したのに2本を戻さなかった(2026-10-10。編集長「復帰保証までが

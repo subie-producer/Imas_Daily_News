@@ -125,6 +125,25 @@ AUDIT_RAN = [{"command": "python3 scripts/test_pipeline.py", "exit_code": 0, "re
              {"command": "python3 scripts/selfcheck.py", "exit_code": 0, "result": "selfcheck: 0 errors"},
              {"command": "python3 scripts/lint.py --base origin/main", "exit_code": 0, "result": "lint: 0 errors"}]
 
+
+def blocking(i: str, claim: str = "c") -> dict:
+    """監査の PR レビューの blocking のコメント(差分の行に付く)。"""
+    return {"id": i, "file": "scripts/x.py", "line": 1, "kind": "blocking", "claim": claim, "evidence": "e"}
+
+
+def nit(i: str, claim: str) -> dict:
+    """監査の PR レビューの nit(往復を止めない)。"""
+    return {"id": i, "file": "scripts/x.py", "line": 2, "kind": "nit", "claim": claim, "evidence": "e"}
+
+
+def review_answer(verdict: str = "approve", comments: list | None = None, resolved: list | None = None,
+                  unresolved: list | None = None, verification: list | None = None) -> dict:
+    """監査(Sol)の PR レビューの偽の答え(schema/oncall-review.schema.json の形)。"""
+    return {"verdict": verdict, "verification": AUDIT_RAN if verification is None else verification,
+            "comments": list(comments or []),
+            "resolutions": [{"id": i, "status": "resolved", "why": "w"} for i in resolved or []]
+            + [{"id": i, "status": "unresolved", "why": "w"} for i in unresolved or []], "notes": ""}
+
 # **テストは本物の Discord に絶対に送らない。**通知の経路を差し替え忘れたテストが本物の webhook に届いた
 # (実測 2026-09-23: 当番の修正報告の見本 3 通が編集長の Discord に出た)。webhook の URL を最初に消し、
 # さらに urlopen を塞ぐ(通知を検めるテストは、自分で偽の urlopen を差し込む)
@@ -2723,8 +2742,9 @@ def test_compose_recover(tmp: Path):
     src = __import__("inspect").getsource(compose.main)
     check('extra_args=["--recover", "--end-at", str(int(until))] if until else None' in src and "recover_until(date) if recover_pending(date)" in src,
           "承認済みで記事を落とした号を、当番に戻させていない")
-    text = (pipelib.ROOT / "prompts" / "oncall-whywhy.md").read_text(encoding="utf-8")
-    check("紙面に戻るまでが仕事" in text and "落とした記事・確定した号は戻さない" not in text, "なぜなぜの依頼文が、落とした記事を戻させていない")
+    # 当番に渡すほかの異常は参考だけ(落とした記事を戻すなぜなぜの依頼は廃止。編集長 2026-11-06)
+    text = (pipelib.ROOT / "prompts" / "oncall-anomalies.md").read_text(encoding="utf-8")
+    check("参考" in text and "直さない" in text and "紙面に戻るまでが仕事" not in text, "ほかの異常の依頼文が、なぜなぜ・復帰保証の依頼のまま")
     # 当番: 控え → 校閲記録を外す → --reuse-plan → 結果で採るか控えに戻すか
     posts = tmp / "docs" / "_posts"
     posts.mkdir(parents=True)
@@ -2981,20 +3001,20 @@ def test_oncall_report_text(tmp: Path):
         text = (tmp / "metrics" / "oncall-2026-09-12-compose-report.md").read_text(encoding="utf-8")
         check(ok and "git revert -m 1 mergehash0" in text and "headhash00"[:10] in text, f"報告の戻し方が merge commit を指さない: {text[:300]}")
         check(sent and all(req for _, req in sent), "修正報告が必須通知(require)で送られていない")
-        # Discord には編集長向けの報告(差分・記録用の診断全文は記録ファイル)。項目は 起きたこと・なぜ・どう直したか・同じ型の箇所・紙面への影響。
+        # Discord には編集長向けの報告(差分・記録用の診断全文は記録ファイル)。項目は PR の説明の3欄(何が止まったか・なぜ・どう直したか)。
         # 長さは制限しない(編集長 2026-10-04「短くして情報が0になったらゴミだ」「コード差分はゴミ」)
         check(len(sent) == 1 and "metrics/oncall-2026-09-12-compose-report.md" in sent[0][0]
               and "diff" not in sent[0][0] and "ddd" not in sent[0][0], f"編集長への報告が記録の場所つきでない・差分や診断全文を含む: {sent[:1]}")
         sent.clear()
         summ = {"what_happened": "まとめサイトの新着1件を、本文を読めないまま既読にして失っていた。" * 3,
                 "why": "モデルの空の出力を『読んで何も無かった』と解釈して既読にしていた。" * 4,
-                "what_changed": "新着ページごとに読めた・事実なし・読めなかったを返させ、読めなかったページは既読にしない。" * 3,
-                "similar": "モデルの出力で状態を変える箇所を全部調べた。" * 4, "paper_impact": "失った1件は戻らない。10/6号から効く"}
+                "what_changed": "新着ページごとに読めた・事実なし・読めなかったを返させ、読めなかったページは既読にしない。" * 3}
         oncall.report_change("collect", "2026-10-05", {"status": "fixed", "editor_summary": summ, "diagnosis": "x" * 3000}, [{"review": {"verdict": "approve"}}],
                              "base", "headhash00", "", "repair/y", ["main"], "なし")
         m = sent[0][0]
         check(m.startswith("🛠 当番が直しました: 10/5号の収集") and all(v in m for v in summ.values()) and "承認(1往復)" in m and "xxx" not in m
-              and all(f"■ {l}" in m for l in pipelib.INCIDENT_LABELS), f"編集長への報告の中身(5項目・切り詰めない): {m[:400]}")
+              and all(f"■ {l}" in m for _, l in oncall.SUMMARY_LABELS) and "■ 同じ型の箇所" not in m and "■ 紙面への影響" not in m,
+              f"編集長への報告の中身(PR の説明の3欄・切り詰めない): {m[:400]}")
         n = pipelib.editor_notice("🔧 題", [("なぜ起きたか", "長い説明" * 200)], footer="記録: x")
         check("長い説明" * 200 in n and n.startswith("🔧 題\n\n■ なぜ起きたか"), "報告の本文を切り詰めた・見出しの形でない")
         check(pipelib.internal_names("candidate_ids が無い。verified_facts を new_facts に。R1 と r77 と collect.py") ==
@@ -3006,16 +3026,14 @@ def test_oncall_report_text(tmp: Path):
         text2 = (tmp / "metrics" / "oncall-2026-09-12-compose-report.md").read_text(encoding="utf-8")
         check(ok2 and "取り込み後に追送" in text2 and "診断: d" in text2 and "検証: t" in text2, f"取り込み前の報告が不完全: {text2[:300]}")
         check("発行後に直す指摘(later): なし" in text2, "later が無いことが報告に出ない")
-        # 監査の later(発行後に直す指摘)は、前の試行から引き継いだ分も含めて報告に載る
+        # 監査の nit は、前の試行から引き継いだ分も含めて報告に載る(差分の行つき)。blocking は載らない(往復で解決したもの)
         tr = [{"round": 0, "carried_later": [{"id": "l0", "claim": "前の試行の分", "evidence": "", "occurs": "月初の号で毎回"}]},
-              {"round": 1, "review": {"verdict": "approve", "must_fix": [], "later": [
-                  {"id": "l1", "claim": "堅牢化A", "evidence": "scripts/x.py:1", "occurs": "記事が60本を超えた号(月に1〜2回)"},
-                  {"id": "l9", "claim": "改行が2100個入ったら", "evidence": "schema 上は可能", "occurs": " "}]}}]
+              {"round": 1, "review": review_answer(comments=[nit("l1", "堅牢化A"), blocking("b1", "解決済みの指摘")])}]
         oncall.report_change("compose", "2026-09-12", {"diagnosis": "d"}, tr, "base", "headhash00", "", "repair/x", ["main"], "続き")
         text3 = (tmp / "metrics" / "oncall-2026-09-12-compose-report.md").read_text(encoding="utf-8").split("\n## 往復の記録\n")[0]
-        check("発行後に直す指摘(later)2件" in text3 and "前の試行の分" in text3 and "堅牢化A" in text3 and "scripts/x.py:1" in text3
-              and "起きるとき: 記事が60本を超えた号" in text3, f"later が報告に載らない: {text3[:400]}")
-        check("改行が2100個" not in text3, "起きる道筋の無い指摘が報告の later に載った")
+        check("発行後に直す指摘(later)2件" in text3 and "前の試行の分" in text3 and "堅牢化A" in text3 and "scripts/x.py:2" in text3,
+              f"nit が報告に載らない: {text3[:400]}")
+        check("解決済みの指摘" not in text3, "blocking が報告の nit に載った")
         # 保管(keep_later): 成功すれば積んだ件数、失敗しても例外を出さない(保管の失敗で発行を止めない)
         saved_b, saved_add = oncall.BACKLOG, oncall.backlog_add
         try:
@@ -4876,7 +4894,7 @@ ACTIVE_PROMPTS = ("plan-brand", "plan-rules", "plan-lead", "plan-missing", "writ
                   "write-article.culture", "revise-article", "review-article", "review-paper", "assemble-digest", "assemble-ledger",
                   "collect-rules", "collect-item", "grok-collect", "grok-verify", "grok-deep", "explore", "watch-facts",
                   "classify-rules", "classify-site", "classify-x", "classify-debate", "classify-link",
-                  "oncall-fix", "oncall-fix.objections", "oncall-review", "oncall-parser", "oncall-whywhy", "oncall-reformat",
+                  "oncall-fix", "oncall-fix.objections", "oncall-review", "oncall-parser", "oncall-anomalies", "oncall-reformat",
                   "site-maintenance.write", "site-maintenance.revise", "site-maintenance.review")
 
 
@@ -5163,14 +5181,15 @@ def test_deadline_publish_boundary(tmp: Path):
 
     def fake_checkout(*a, **k):
         seen.append("checkout")
-        pipelib.notify("compose", "checkout に失敗(テストの代役)", ok=False)   # 締切の前に始まって止まった、の代役
-        return False                     # ここまで来たら打ち切る(締切の検査を通ったことだけを見る)
+        # 締切の前に始まって止まった、の代役。本物の checkout の失敗と同じく、止まった理由を付けて当番へ渡す(_stop_to_oncall)
+        return pipelib._stop_to_oncall("compose", d, "checkout に失敗(テストの代役)")   # ここまで来たら打ち切る
     escalated: list[list] = []
     saved = (compose.time, compose.job_lock, compose.checkout_edition_branch, sys.argv, oncall.BACKLOG,
              pipelib.job_lock, pipelib.checkout_edition_branch, pipelib.escalate, pipelib._ESCALATED, list(pipelib.ANOMALIES), _time.time)
     backlog = lambda: [r for r in oncall.backlog_open() if r.get("stage") == "compose"]
     try:
         oncall.BACKLOG = tmp / "oncall-backlog.jsonl"
+        pipelib.escalate = lambda stage, date, reason, **k: escalated.append([stage, date, k.get("rerun")]) or True
         compose.time = types.SimpleNamespace(time=lambda: clock["now"], sleep=lambda s: None)
         compose.job_lock, compose.checkout_edition_branch = fake_lock, fake_checkout
         sys.argv = ["compose.py", "--date", d, "--reuse-plan"]
@@ -5186,14 +5205,14 @@ def test_deadline_publish_boundary(tmp: Path):
             late = want != ["lock", "checkout"]
             check(late == (len(backlog()) == n_kept + 1), f"{what}: 締切を過ぎて始めないときに、なぜなぜを当番の保管へ回さない/誤って回した")
             check(late == (not pipelib.ANOMALIES), f"{what}: 始めずに終えたあとの異常の台帳: {pipelib.ANOMALIES}")
-        # 終わりの処理まで通す(compose.py を __main__ として走らせ、当番の起動を記録する)
+        # 終わりの処理まで通す(compose.py を __main__ として走らせ、当番の起動を記録する)。当番を起こすのは止まった理由を
+        # 付けて渡したときだけで、終わりの処理(理由なし)は起こさない(編集長 2026-11-06)。排他を取れずに終えた組版も起こさない
         pipelib.job_lock, pipelib.checkout_edition_branch = fake_lock, fake_checkout
-        pipelib.escalate = lambda stage, date, reason, **k: escalated.append([stage, date, k.get("rerun")]) or True
         _time.time = lambda: clock["now"]
-        for start, wait, timeout, late, what in ((at(5, 55), 0, False, True, "05:55 の再起動"),
-                                                 (at(5, 0), 0, False, False, "05:00 に起動して止まった"),
-                                                 (at(5, 45), 10 * 60, True, True, "05:45 に起動し、排他を取れないまま 05:55"),
-                                                 (at(5, 0), 10 * 60, True, False, "05:00 に起動し、排他を取れないまま 05:10")):
+        for start, wait, timeout, woken, what in ((at(5, 55), 0, False, False, "05:55 の再起動"),
+                                                  (at(5, 0), 0, False, True, "05:00 に起動して止まった"),
+                                                  (at(5, 45), 10 * 60, True, False, "05:45 に起動し、排他を取れないまま 05:55"),
+                                                  (at(5, 0), 10 * 60, True, False, "05:00 に起動し、排他を取れないまま 05:10")):
             clock.update(now=start, wait=wait, timeout=timeout)
             escalated.clear(); pipelib.ANOMALIES.clear(); pipelib._ESCALATED = False
             try:
@@ -5201,8 +5220,8 @@ def test_deadline_publish_boundary(tmp: Path):
                 code = None
             except SystemExit as e:
                 code = e.code
-            check(code == 1 and (escalated == []) == late,
-                  f"{what}: 終わりの処理が当番を{'起こした(発行の排他を塞ぐ)' if late else '起こさない'}: exit {code} / {escalated}")
+            check(code == 1 and (escalated != []) == woken and len(escalated) <= 1,
+                  f"{what}: 当番を{'起こさない' if woken else '起こした(発行の排他を塞ぐ)'}・重ねた: exit {code} / {escalated}")
         check(len(backlog()) == 4, f"当番の保管に積んだなぜなぜの数が違う: {backlog()}")
     finally:
         (compose.time, compose.job_lock, compose.checkout_edition_branch, sys.argv, oncall.BACKLOG,
@@ -10219,7 +10238,7 @@ def test_oncall_check_limits_follow_measure(tmp: Path):
             return {"status": "fixed", "diagnosis": "d"} if "oncall-fix" in str(schema) else {"accepted": [], "refuted": [], "status": "fixed"}
         oncall.run_claude = claude
         oncall.run_codex = lambda prompt, schema, cwd, timeout=1800: (audits.append(timeout)
-                                                                      or {"verdict": "approve", "must_fix": [], "verification": AUDIT_RAN, "notes": ""})
+                                                                      or review_answer())
         r = oncall.run_rounds("classify", "2026-10-28", "ctx", tmp, "B" * 40, None, "env", [])
         check(r["approved"] and limits.get("selfcheck") and limits["selfcheck"][0] >= sc_lim - 5 and limits.get("lint")
               and audits and audits[0] >= oncall.SESSION_WORK_SEC + sc_lim + tp_lim - 5 and fixes and fixes[0] >= oncall.SESSION_WORK_SEC + sc_lim - 5,
@@ -10397,33 +10416,36 @@ def test_classify_retag_without_judge(tmp: Path):
 
 
 def test_oncall_fix_until_clean(tmp: Path):
-    """当番と監査の範囲は「発行に必要な最小限で、今後もちゃんと動く正しい修正」(編集長の整理 2026-09-18)。
-    その範囲の指摘(must_fix)は合意するまで直す。発行後でよい指摘(later)は別に保管して、発行してから直す。
-    直し切れなかった試行は、修正の commit と残った指摘を残し、次の試行はその続きから始める。"""
+    """当番は止まった原因を1つ直して PR を出し、監査は差分の行にコメントを付けてレビューする(編集長 2026-11-06)。
+    止めるのは blocking(原因に当たっていない・ほかを壊す・してはいけない直し方)だけで、nit は往復を止めず保管して人が引き取る。
+    往復は2巡まで。直し切れなかった試行は、修正の commit と残った blocking を残し、次の試行はその続きから始める。"""
     import oncall
-    check(oncall.MAX_ROUNDS >= 4, f"往復の上限が {oncall.MAX_ROUNDS}。2往復で投げ出していた頃に戻っている")
-    fp = oncall.fix_prompt("compose", "2026-09-18", "ctx", [{"id": "x", "claim": "c"}])
-    rp = oncall.review_prompt("compose", "2026-09-18", {"status": "fixed"}, "diff --git a b", {"accepted": []})
-    scope = "発行するのに必要な最小限で、今後もちゃんと動く正しい修正"
-    check(scope in fp and scope in rp, "当番・監査の依頼文に仕事の範囲が無い")
-    # 紙面への影響は読者が受け取る結果で書き、1号の遅れも影響。打ち消す言い方を監査が咎める(編集長 2026-10-07「影響あるじゃん」)
-    check("1号でも遅れる・遅れうるなら影響がある" in fp and "影響を打ち消す言い方" in fp and "遅れを隠していないか" in rp,
-          "紙面への影響の書き方の契約が当番・監査の依頼文に無い")
-    check("指摘されたものは直す" in fp and "反論する" not in fp and "commit 済み" in fp and "範囲は広げない" in fp, "当番への依頼が「範囲の中で直す」になっていない")
-    check("**must_fix**" in rp and "**later**" in rp and "later が残っていてもよい" in rp, "監査への依頼が must_fix と later を分けていない")
-    # 起きる道筋(どういうときに・どのくらい)を言えない指摘は、指摘として扱わない(編集長 2026-09-18)
-    check("`occurs`" in rp and "**書かない**: 起きる道筋を言えないもの" in rp and "schema 上は可能" in rp, "監査への依頼が、起きる道筋の無い指摘を捨てさせていない")
-    check("起きる道筋が無い" in fp and "追いかけて直さない" in fp, "当番が、起きる道筋の無い指摘を弾けることになっていない")
-    check(all(x in rp for x in oncall.POLICY_EXCLUDED) and all(x in fp for x in oncall.POLICY_EXCLUDED), "判定対象外(編集方針)が依頼文に無い")
+    check(oncall.MAX_ROUNDS == 2, f"往復の上限が {oncall.MAX_ROUNDS}。PR レビューは2巡まで(2巡で未解決なら人へ)")
+    fp = oncall.fix_prompt("compose", "2026-09-18", "ctx", [blocking("x")])
+    rp = oncall.review_prompt("compose", "2026-09-18", {"status": "fixed"}, "diff --git a b", [blocking("x")],
+                              {"replies": [{"id": "x", "reply": "disagree", "evidence": "根拠"}]})
+    # 当番: 止まった原因を1つだけ直す。同じ型の箇所は notes に書くだけ。テストは本物を呼び、sleep で待たない
+    check("止まった原因を1つ直し" in fp and "notes に場所を書くだけにする(直さない)" in fp and "sleep で待たない" in fp
+          and "締切・時間の上限を延ばす" in fp and "正規表現や規則で代わりに決める" in fp, "当番への依頼が PR の範囲(原因1つ)になっていない")
+    check("`fixed`" in fp and "`disagree`" in fp and "blocking と関係ない箇所を変えない" in fp and "commit 済み" in fp,
+          "当番への依頼が blocking への返事(fixed / disagree)になっていない")
+    # 廃止した契約(同じ型の洗い出し・紙面への影響の見込み・報告の文面の監査・敵対的な査読)が戻っていない
+    for gone in ("リポジトリ全体から探す", "1号でも遅れる", "敵対的", "must_fix", "later", "misreport"):
+        check(gone not in fp and gone not in rp, f"廃止した契約「{gone}」が依頼文に残っている")
+    check("`blocking`" in rp and "`nit`" in rp and "前の巡のあとで変わった行にだけ" in rp and "resolutions" in rp
+          and "根拠が正しければ `resolved`" in rp and "当番の返事" in rp and "根拠" in rp, "監査への依頼が PR レビュー(blocking / nit / 2巡目の解決)になっていない")
+    check("PR の説明の細部" in rp and "言い回し" in rp, "報告の文面・言い回しを blocking にしない契約が無い")
     rs = json.loads((Path(oncall.__file__).resolve().parent.parent / "schema" / "oncall-review.schema.json").read_text(encoding="utf-8"))
-    check("later" in rs["required"] and rs["properties"]["must_fix"]["items"]["properties"]["severity"]["enum"] == ["blocks_publish", "corrupts_data", "stopgap", "misreport"],
-          "監査の schema: later が必須でない、または must_fix に品質・書き方の指摘を入れられる")
-    check(all("occurs" in rs["properties"][k]["items"]["required"] for k in ("must_fix", "later")), "監査の schema: 指摘に occurs(起きる道筋)が必須でない")
+    ci = rs["properties"]["comments"]["items"]
+    check(rs["required"] == ["verdict", "verification", "comments", "resolutions", "notes"]
+          and rs["properties"]["verdict"]["enum"] == ["approve", "request_changes"]
+          and ci["required"] == ["id", "file", "line", "kind", "claim", "evidence"] and ci["properties"]["kind"]["enum"] == ["blocking", "nit"],
+          "監査の schema が PR レビュー(差分の行に付くコメント・blocking / nit)になっていない")
     # 監査は実際に走らせる: 走らせたコマンドと結果(verification)が必須。テスト・selfcheck・lint を走らせた記録の無い承認は承認にしない
     # (2026-10-14: 読み取り専用の監査が走らせないまま承認し、素材ファイルの書式に無い欄で号が止まった。編集長「ずさんな承認は全部ゴミ」)
     check("verification" in rs["required"] and rs["properties"]["verification"].get("minItems") == 1,
           "監査の schema: 走らせたコマンドと結果(verification)が必須でない")
-    check("## 0. 走らせること" in rp and "test_pipeline.py" in rp and "lint.py" in rp and "approve しない" in rp,
+    check("## 1. 走らせること" in rp and "test_pipeline.py" in rp and "lint.py" in rp and "approve しない" in rp,
           "監査への依頼が、テスト・selfcheck・lint を走らせることを求めていない")
     # 走らせた = 終了コードがある。テストと selfcheck は 0。「走らせられなかった」の結果文では承認にならない(監査指摘)。lint は号の中身で
     # 赤になりうるので、走らせた記録があればよい(修正によるかは監査が判断する)
@@ -10496,7 +10518,7 @@ def test_oncall_fix_until_clean(tmp: Path):
         oncall.sh = lambda args, cwd, timeout=600: subprocess.CompletedProcess(args, 0, "", "")
         def claude(prompt, schema, cwd, timeout=1800):
             timeouts.append(timeout)
-            return {"status": "fixed", "diagnosis": "d"} if "oncall-fix" in str(schema) else {"accepted": [], "refuted": [], "status": "fixed"}
+            return {"status": "fixed", "diagnosis": "d"} if "oncall-fix" in str(schema) else {"replies": [], "status": "fixed"}
         oncall.run_claude = claude
         # (1) 監査が例外: 1往復目の修正は固定済みなので kept に残り、「監査が終わっていない」が指摘として付く
         def codex_boom(prompt, schema, cwd, timeout=1800):
@@ -10507,22 +10529,28 @@ def test_oncall_fix_until_clean(tmp: Path):
         check(not r["approved"] and "TimeoutExpired" in r["error"] and r["kept"]["head"] == "H%039d" % 1
               and r["kept"]["fix"].get("status") == "fixed" and [o["id"] for o in r["kept"]["open"]] == ["review-incomplete"],
               f"監査の例外で途中の修正が残らない: {r['error']} {r['kept']}")
-        # (2) 監査が reject し続ける: 上限まで回り、最後の指摘が残る。2往復目からは指摘を直す依頼になる
-        oncall.MAX_ROUNDS = 3
-        oncall.run_codex = lambda prompt, schema, cwd, timeout=1800: {"verdict": "reject", "must_fix": [{"id": "p1", "claim": "c"}], "notes": ""}
+        # (2) 監査が request_changes を続ける: 上限(2巡)まで回り、最後の blocking が残る。2巡目は blocking への返事の依頼になる
+        oncall.run_codex = lambda prompt, schema, cwd, timeout=1800: review_answer("request_changes", [blocking("p1")])
         tr = []
         r = oncall.run_rounds("compose", "2026-09-18", "ctx", tmp, "B" * 40, None, "env", tr)
-        check(not r["approved"] and not r["error"] and r["kept"]["head"] == "H%039d" % 3 and [o["id"] for o in r["kept"]["open"]] == ["p1"]
-              and sum(1 for t in tr if "integrate" in t) == 2, f"reject が続いたときの往復: {r['kept']} {[list(t) for t in tr]}")
-        # (3) 指摘が無くなれば終わる(続きから始めた場合も、監査を通るまで approved にならない)
-        answers = iter([{"verdict": "reject", "must_fix": [{"id": "p1", "claim": "c"}], "notes": ""}, {"verdict": "approve", "must_fix": [], "verification": AUDIT_RAN, "notes": ""}])
+        check(not r["approved"] and not r["error"] and r["kept"]["head"] == "H%039d" % 2 and [o["id"] for o in r["kept"]["open"]] == ["p1"]
+              and sum(1 for t in tr if "integrate" in t) == 1 and sum(1 for t in tr if "review" in t) == 2,
+              f"request_changes が続いたときの往復: {r['kept']} {[list(t) for t in tr]}")
+        # (3) blocking が全部 resolved になれば承認で終わる(続きから始めた場合も、前の試行の blocking を解決するまで承認にならない)
+        answers = iter([review_answer("request_changes", [blocking("p1")]), review_answer(resolved=["p1", "old"])])
         oncall.run_codex = lambda prompt, schema, cwd, timeout=1800: next(answers)
         r = oncall.run_rounds("compose", "2026-09-18", "ctx", tmp, "B" * 40,
                               {"base": "B" * 40, "head": "B" * 40, "fix": {"status": "no_fix_needed"}, "open": [{"id": "old"}]}, "env", [])
-        check(r["approved"] and r["kept"]["open"] == [], f"指摘が無くなったのに終わらない: {r}")
-        # (3x) 走らせた記録の無い承認は承認にならず、「走らせていない」を指摘として次の往復へ回す
-        answers = iter([{"verdict": "approve", "must_fix": [], "verification": [{"command": "読んだ", "result": "問題なし"}], "notes": ""},
-                        {"verdict": "approve", "must_fix": [], "verification": AUDIT_RAN, "notes": ""}])
+        check(r["approved"] and r["kept"]["open"] == [], f"blocking が全部解決したのに終わらない: {r}")
+        # (3r) approve でも、前の巡の blocking に resolved が付いていなければ(付け忘れ・unresolved)承認にしない
+        answers = iter([review_answer(resolved=[]), review_answer(unresolved=["old"])])
+        oncall.run_codex = lambda prompt, schema, cwd, timeout=1800: next(answers)
+        r = oncall.run_rounds("compose", "2026-09-18", "ctx", tmp, "B" * 40,
+                              {"base": "B" * 40, "head": "B" * 40, "fix": {"status": "no_fix_needed"}, "open": [{"id": "old"}]}, "env", [])
+        check(not r["approved"] and [o["id"] for o in r["kept"]["open"]] == ["old"], f"解決していない blocking を残して承認した: {r['kept']}")
+        # (3x) 走らせた記録の無い承認は承認にならず、「走らせていない」を blocking として次の往復へ回す
+        answers = iter([review_answer(resolved=["old"], verification=[{"command": "読んだ", "exit_code": None, "result": "問題なし"}]),
+                        review_answer(resolved=["audit-not-run"])])
         oncall.run_codex = lambda prompt, schema, cwd, timeout=1800: next(answers)
         tr = []
         r = oncall.run_rounds("compose", "2026-09-18", "ctx", tmp, "B" * 40,
@@ -10535,7 +10563,7 @@ def test_oncall_fix_until_clean(tmp: Path):
         oncall.sh = lambda args, cwd, timeout=600: (calls.append([str(a) for a in args])
                                                     or subprocess.CompletedProcess(args, 1 if "scripts/lint.py" in args else 0,
                                                                                    "lint: 2 errors, 0 warnings\n", ""))
-        answers = iter([{"verdict": "approve", "must_fix": [], "verification": AUDIT_RAN, "notes": ""}])
+        answers = iter([review_answer(resolved=["old"])])
         oncall.run_codex = lambda prompt, schema, cwd, timeout=1800: (prompts.append(prompt) or next(answers))
         tr = []
         r = oncall.run_rounds("compose", "2026-09-18", "ctx", tmp, "B" * 40,
@@ -10546,40 +10574,23 @@ def test_oncall_fix_until_clean(tmp: Path):
               and any(t.get("code_checks") == {"selfcheck": 0, "lint": 1} for t in tr),
               f"当番のコードが3つの検査を走らせて結果を監査に渡していない: {order} {prompts[:1] and prompts[0][-300:]}")
         oncall.sh = lambda args, cwd, timeout=600: subprocess.CompletedProcess(args, 0, "", "")
-        # (3a) 発行後でよい指摘(later)は approve を妨げず、往復と試行をまたいで重複なしで集まる
-        #      起きる道筋(occurs)の無い later は集めない(「schema 上は可能」の類を後の仕事にしない)
-        la = {"id": "l1", "claim": "堅牢化A", "evidence": "e", "occurs": "記事が60本を超えた号(月に1〜2回)"}
-        answers = iter([{"verdict": "reject", "must_fix": [{"id": "p1", "claim": "c"}], "later": [la], "notes": ""},
-                        {"verdict": "approve", "must_fix": [], "verification": AUDIT_RAN, "notes": "",
-                         "later": [la, {"id": "l2", "claim": "テストB", "evidence": "", "occurs": "毎号"},
-                                   {"id": "l9", "claim": "改行が2100個入ったら", "evidence": "schema 上は可能", "occurs": ""}]}])
+        # (3a) nit は往復を止めず(approve を妨げず)、往復と試行をまたいで重複なしで集まる(保管して人が引き取る)
+        answers = iter([review_answer("request_changes", [blocking("p1"), nit("l1", "堅牢化A")]),
+                        review_answer(comments=[nit("l1", "堅牢化A"), nit("l2", "テストB")], resolved=["p1", "old"])])
         oncall.run_codex = lambda prompt, schema, cwd, timeout=1800: next(answers)
         tr = []
         r = oncall.run_rounds("compose", "2026-09-18", "ctx", tmp, "B" * 40,
                               {"base": "B" * 40, "head": "B" * 40, "fix": {"status": "no_fix_needed"}, "open": [{"id": "old"}],
                                "later": [{"id": "l0", "claim": "前の試行の分", "evidence": "", "occurs": "月初の号"}]}, "env", tr)
-        check(r["approved"] and [x["claim"] for x in r["later"]] == ["前の試行の分", "堅牢化A", "テストB"], f"later の集まり方: {r['later']}")
-        check([x["claim"] for x in oncall.collect_later(tr)] == ["前の試行の分", "堅牢化A", "テストB"], "報告に載せる later が往復の記録から集まらない")
-        check("堅牢化A" in oncall.later_text(r["later"]) and "なし" in oncall.later_text([]), "later の報告文")
-        # (3c) 保管していた指摘を直す昼の仕事(backlog)では、later も must_fix として直すまで approve にならず、保管にも積まない
-        answers = iter([{"verdict": "approve", "must_fix": [], "verification": AUDIT_RAN, "notes": "", "later": [la]},
-                        {"verdict": "approve", "must_fix": [], "verification": AUDIT_RAN, "notes": "", "later": []}])
+        check(r["approved"] and [x["claim"] for x in r["later"]] == ["前の試行の分", "堅牢化A", "テストB"], f"nit の集まり方: {r['later']}")
+        check([x["claim"] for x in oncall.collect_later(tr)] == ["前の試行の分", "堅牢化A", "テストB"], "報告に載せる nit が往復の記録から集まらない")
+        check(r["later"][1]["occurs"] == "scripts/x.py:2", f"nit の保管に差分の行が残らない: {r['later'][1]}")
+        check("堅牢化A" in oncall.later_text(r["later"]) and "なし" in oncall.later_text([]), "nit の報告文")
+        # (3n) nit だけの request_changes でも往復は止まらない(blocking が無ければ次の巡で承認できる)
+        answers = iter([review_answer(comments=[nit("n1", "書き方")])])
         oncall.run_codex = lambda prompt, schema, cwd, timeout=1800: next(answers)
-        tr = []
-        r = oncall.run_rounds(oncall.BACKLOG_STAGE, "2026-10-07", "ctx", tmp, "B" * 40, None, "env", tr)
-        check(r["approved"] and r["later"] == [] and sum(1 for t in tr if "integrate" in t) == 1,
-              f"backlog で later を後回しにした: {r['later']} {[list(t) for t in tr]}")
-        row1 = {"key": "k1", "claim": "c", "occurs": "o", "evidence": "e", "at": "2026-10-01T04:25", "stage": "compose"}
-        rb = oncall.backlog_reason([row1])
-        fpb = oncall.fix_prompt(oncall.BACKLOG_STAGE, "2026-10-07", rb, None)
-        saved_rows = list(oncall.BACKLOG_ROWS)
-        oncall.BACKLOG_ROWS[:] = [row1]
-        rpb = oncall.review_prompt(oncall.BACKLOG_STAGE, "2026-10-07", {"status": "fixed"}, "diff", None)
-        oncall.BACKLOG_ROWS[:] = saved_rows
-        check("[k1]" in rb and "発行に必要な最小限に絞らない" in fpb and "欠陥の型" in fpb and "全件" in fpb
-              and "[k1]" in rpb and "全件" in rpb and "発行するのに必要な最小限" not in fpb + rpb,
-              "保管の指摘を直す依頼文(当番・監査の範囲が backlog 用になっていない)")
-        check("この号を発行するのに必要な最小限" in oncall.fix_prompt("compose", "2026-10-07", "ctx", None), "通常の当番の範囲が変わった")
+        r = oncall.run_rounds("compose", "2026-09-18", "ctx", tmp, "B" * 40, None, "env", [])
+        check(r["approved"] and [x["claim"] for x in r["later"]] == ["書き方"], f"nit で往復が止まった: {r.get('approved')} {r.get('later')}")
         # 消し込むのは、最終報告が1件ずつ扱った指摘だけ(扱っていない・2回書いた・知らない扱いは残す)
         fixb = {"backlog_items": [{"key": "k1", "result": "fixed", "why": "w"}, {"key": "k2", "result": "fixed", "why": "w"},
                                   {"key": "k2", "result": "invalid", "why": "w"}, {"key": "k4", "result": "later", "why": "w"}]}
@@ -10667,7 +10678,7 @@ def test_oncall_fix_until_clean(tmp: Path):
             check(any("読めない" in p for p in watch.hand_backlog("2026-10-07")), "保管を読めないのに残件なしにした")
         finally:
             oncall.BACKLOG = saved_bk
-        # 監視は、保管の指摘を当番に渡す(覚え書きの通知で終わらせない)。台帳は付けず、指摘の key を渡す。渡せなければ異常
+        # 監視は、保管した nit を当番に渡さない(人が引き取る。編集長 2026-11-06)。残っていても異常にしない
         import watch
         calls_w = []
         saved_w = (watch.escalate, oncall.backlog_open)
@@ -10675,14 +10686,9 @@ def test_oncall_fix_until_clean(tmp: Path):
             oncall.backlog_open = lambda: [{"key": "k1", "claim": "c"}, {"key": "k2", "claim": "d"}]
             watch.escalate = lambda *a, **kw: calls_w.append((a, kw)) or True
             ok_w = watch.hand_backlog("2026-10-07")
-            watch.escalate = lambda *a, **kw: False
-            ng_w = watch.hand_backlog("2026-10-07")
         finally:
             watch.escalate, oncall.backlog_open = saved_w
-        check(ok_w == [] and calls_w and calls_w[0][0][0] == "backlog" and calls_w[0][1]["ledger"] is False
-              and calls_w[0][1]["extra_args"] == ["--backlog-keys", "k1", "k2"] and calls_w[0][1]["rerun"] is False,
-              f"監視が保管の指摘を当番に渡さない: {calls_w}")
-        check(len(ng_w) == 1 and "k1" in ng_w[0] and "k2" in ng_w[0], f"当番に渡せなかったのに異常にしない: {ng_w}")
+        check(ok_w == [] and calls_w == [], f"監視が保管の nit を当番に渡した・異常にした: {calls_w} {ok_w}")
         # (3b) 続きの checkout が失敗しても、残してあった続きは消えない(監査指摘)
         old_wip = {"base": "B" * 40, "head": "C" * 40, "fix": {"status": "fixed"}, "open": [{"id": "old"}]}
         oncall.sh = lambda args, cwd, timeout=600: subprocess.CompletedProcess(args, 1 if "checkout" in args else 0, "", "boom")
@@ -10693,12 +10699,12 @@ def test_oncall_fix_until_clean(tmp: Path):
         oncall.MAX_ROUNDS = 1
         r = oncall.run_rounds("compose", "2026-09-18", "ctx", tmp, "B" * 40, dict(old_wip, head="B" * 40), "env", [])
         check(sorted(o["id"] for o in r["kept"]["open"]) == ["old", "review-incomplete", "selfcheck"], f"selfcheck 赤で前の指摘が消えた: {r['kept']['open']}")
-        oncall.MAX_ROUNDS = 3
+        oncall.MAX_ROUNDS = 2
         oncall.sh = lambda args, cwd, timeout=600: subprocess.CompletedProcess(args, 0, "", "")
         # (4) 時間の上限: セッションの timeout は残り時間で切られ、残りが足りなければ始めない
         oncall.ONCALL_LIMIT_MIN = 10
         timeouts.clear()
-        oncall.run_codex = lambda prompt, schema, cwd, timeout=1800: (timeouts.append(timeout), {"verdict": "reject", "must_fix": [{"id": "p"}], "notes": ""})[1]
+        oncall.run_codex = lambda prompt, schema, cwd, timeout=1800: (timeouts.append(timeout), review_answer("request_changes", [blocking("p")]))[1]
         oncall.run_rounds("compose", "2026-09-18", "ctx", tmp, "B" * 40, None, "env", [])
         check(timeouts and max(timeouts) <= 600, f"セッションの timeout が時間の上限を超える: {timeouts}")
         oncall.ONCALL_LIMIT_MIN = 1
@@ -10730,31 +10736,32 @@ def test_oncall_fix_until_clean(tmp: Path):
         oncall.BACKLOG = saved_b
 
 
-def test_oncall_report_concurrence(tmp: Path):
-    """取り込みの条件 C(編集長 2026-10-21): 監査の must_fix が編集長への報告の誤り(misreport)だけになったら、監査が直した
-    報告の文面を書いて宣告し、当番が了承すればコードの修正を取り込み、その文面で報告する(「監査が書き、当番が了承した」)。
-    当番が異を唱えたら往復を続ける。2026-10-15: 当番の報告がレトラの記事を「外れた・最大3日遅れ」と書き(実際は 10/15号に掲載)、
-    監査がその報告の誤りだけを6往復指摘して直し切れず、正しいコードの修正も取り込まれなかった。
-    あわせて、当番に渡す材料に、話題に関係する号の掲載・外れた記事・校閲の判定の記録を載せる(報告の誤りの原因)。"""
+def test_oncall_pr_review(tmp: Path):
+    """当番は PR レビューの形で回す(編集長 2026-11-06)。止めるのは blocking だけ、nit は往復を止めない。
+    前の巡の blocking は resolved が付くまで残る(付け忘れも未解決)。報告の文面は監査の対象にしない(了承の往復は廃止)。
+    時間切れは「監査が通さなかった」と書かない。当番を起こすのは止まった組版・発行だけ。"""
     import oncall
     tmp.mkdir(parents=True, exist_ok=True)
-    summary = lambda tag: {k: f"{tag}の{k}" for k in oncall.SUMMARY_KEYS}
-    own, audit1, audit2, own2 = summary("当番"), summary("監査1"), summary("監査2"), summary("当番2")
-    mis = {"id": "m1", "claim": "報告が掲載済みの記事を外れたと書いた", "evidence": "docs/_posts/…", "occurs": "この報告を読むとき",
-           "severity": "misreport"}
-    bad = dict(mis, id="b1", severity="blocks_publish", claim="原因に当たっていない")
-    schema_dir = Path(oncall.__file__).resolve().parent.parent / "schema"
-    rs = json.loads((schema_dir / "oncall-review.schema.json").read_text(encoding="utf-8"))
-    review = lambda **kw: {"verdict": "reject", "verification": AUDIT_RAN, "must_fix": [mis], "later": [], "notes": "",
-                           "editor_summary": None, **kw}
-    check(oncall.schema_ok(review(editor_summary=audit1), rs) and oncall.schema_ok(review(), rs)
-          and not oncall.schema_ok(review(editor_summary={"why": "x"}), rs) and "editor_summary" in rs["required"],
-          "監査の書式に、監査が直した報告の文面の欄(5つの欄そろい、または null)が無い")
-    acs = json.loads((schema_dir / "oncall-accept.schema.json").read_text(encoding="utf-8"))
-    check(oncall.schema_ok({"decision": "accept", "evidence": "確かめた", "editor_summary": None}, acs)
-          and not oncall.schema_ok({"decision": "ok", "evidence": "x", "editor_summary": None}, acs),
-          "当番の了承の書式(accept / object・根拠・当番の文面)")
-    names = ("run_claude", "run_codex", "freeze", "root_clean", "remote_main", "env_fingerprint", "sh", "MAX_ROUNDS", "PAPER_RECORD")
+    # ③ review_blocking: この巡の blocking と、前の巡の blocking で resolved が付かなかったもの(unresolved・付け忘れ)が残る
+    prev = [blocking("a"), blocking("b"), blocking("c")]
+    got = oncall.review_blocking(review_answer("request_changes", [blocking("n"), nit("x", "書き方")], resolved=["a"], unresolved=["b"]), prev)
+    check([g["id"] for g in got] == ["n", "b", "c"], f"止める指摘の集め方(resolved は消え、unresolved・付け忘れは残る): {[g['id'] for g in got]}")
+    check([g["id"] for g in oncall.review_blocking(review_answer("request_changes", [blocking("b")]), prev)] == ["b", "a", "c"],
+          "前の巡と同じ id の blocking を二重に数えた")
+    check(oncall.review_blocking(review_answer(resolved=["a", "b", "c"]), prev) == [], "全部 resolved なのに止める指摘が残る")
+    check([n["claim"] for n in oncall.review_nits(review_answer(comments=[blocking("n"), nit("x", "書き方")]))] == ["書き方"],
+          "nit の取り出し")
+    # ⑥ 依頼文が埋め残しなく描ける(render_prompt は埋め残し・使われない値をエラーにする)
+    fp0 = oncall.fix_prompt("compose", "2026-11-06", "## 止まった理由\nlint 赤", None)
+    fp1 = oncall.fix_prompt("compose", "2026-11-06", "ctx", [blocking("p1", "原因に当たっていない")])
+    rp0 = oncall.review_prompt("release", "2026-11-06", {"status": "no_fix_needed", "editor_summary": None}, "", None, None)
+    an = pipelib.render_prompt("oncall-anomalies", ITEMS="- [compose] 紙面から外れた記事 3本")
+    check("lint 赤" in fp0 and "## 6. レビューへの返事" not in fp0 and "原因に当たっていない" in fp1 and "## 6. レビューへの返事" in fp1
+          and "終える時刻は" in fp0 and "{" not in fp0.replace("{\n", ""), "当番の依頼文が描けない・blocking の有無で返事の節が出入りしない")
+    check("(変更なし" in rp0 and "## 前の巡のコメントと当番の返事" not in rp0 and "release" in rp0, "監査の依頼文(差分なし・1巡目)が描けない")
+    check("参考" in an and "直さない" in an and "紙面から外れた記事 3本" in an and "なぜなぜ" not in an,
+          "当番に渡すほかの異常が、なぜなぜの依頼のまま")
+    names = ("run_claude", "run_codex", "freeze", "root_clean", "remote_main", "env_fingerprint", "sh", "MAX_ROUNDS")
     saved = {n: getattr(oncall, n) for n in names}
     try:
         oncall.root_clean = lambda: True
@@ -10762,172 +10769,81 @@ def test_oncall_report_concurrence(tmp: Path):
         oncall.env_fingerprint = lambda: "env"
         oncall.freeze = lambda wt, base, rnd: ("H%039d" % rnd, "diff --git a/scripts/x.py b/scripts/x.py", ["scripts/x.py"])
         oncall.sh = lambda args, cwd, timeout=600: subprocess.CompletedProcess(args, 0, "", "")
-        oncall.MAX_ROUNDS = 4
-        oncall.PAPER_RECORD = "## 掲載の記録(2026-10-15号)\n- dsva-letora: レトラ誕生日LV"
+        calls, rprompts = [], []
 
-        def run(reviews: list[dict], accepts: list[dict], wip: dict | None = None, during_accept=None):
-            calls, prompts = [], []
-            rv, ac = iter(reviews), iter(accepts)
-
-            def claude(prompt, schema, cwd, timeout=1800):
-                calls.append(Path(schema).name)
-                prompts.append(prompt)
-                if Path(schema).name == "oncall-fix.schema.json":
-                    return {"status": "fixed", "rerun_mode": "resume", "diagnosis": "d", "editor_summary": dict(own)}
-                if Path(schema).name == "oncall-accept.schema.json":
-                    if during_accept:
-                        during_accept()
-                    a = next(ac)
-                    if isinstance(a, BaseException):
-                        raise a
-                    return a
-                return {"accepted": [], "refuted": [], "status": "unchanged", "rerun_mode": "unchanged"}
-            rprompts = []
-            oncall.run_claude = claude
-            oncall.run_codex = lambda prompt, schema, cwd, timeout=1800: (rprompts.append(prompt) or next(rv))
-            tr: list[dict] = []
-            r = oncall.run_rounds("compose", "2026-10-15", "ctx", tmp, "B" * 40, wip, "env", tr)
-            return r, tr, calls, prompts, rprompts
-
-        # (1) misreport だけ → 監査の文面 → 当番が了承 → 取り込む(承認)。報告は監査の文面で、誰が書き誰が了承したかが残る
-        r, tr, calls, prompts, rprompts = run([review(editor_summary=audit1)],
-                                              [{"decision": "accept", "evidence": "掲載の記録と合う", "editor_summary": None}])
-        who = r["fix"].get("report_authorship") or {}
-        check(r["approved"] and not r["error"] and r["head"] == "H%039d" % 1 and r["fix"].get("editor_summary") == audit1
-              and calls == ["oncall-fix.schema.json", "oncall-accept.schema.json"] and len(rprompts) == 1,
-              f"監査の must_fix が報告の誤りだけで監査が文面を書いたのに、当番の了承で取り込まない: {r.get('approved')} {calls} {r['error']}")
-        check(who.get("written_by") == "audit" and who.get("accepted_by") == "oncall" and who.get("round") == 1
-              and who.get("audit_model") == oncall.AUDIT_MODEL and who.get("oncall_model") == oncall.ONCALL_MODEL
-              and who.get("must_fix") == ["m1"] and who.get("evidence") == "掲載の記録と合う"
-              and who.get("own_summary") == own and r["kept"]["open"] == [],
-              f"誰が書き誰が了承したか(当番の元の文面も)が記録に残らない: {who}")
-        check(any(t.get("report_concurrence", {}).get("decision") == "accept" for t in tr), "往復の記録に了承が残らない")
-        check(all(audit1[k] in prompts[-1] for k in oncall.SUMMARY_KEYS) and all(own[k] in prompts[-1] for k in oncall.SUMMARY_KEYS)
-              and mis["claim"] in prompts[-1] and "掲載の記録(2026-10-15号)" in prompts[-1],
-              "当番の了承の依頼に、監査の文面・当番の文面・指摘・掲載の記録が載っていない")
-        text = oncall.editor_report("compose", "2026-10-15", r["fix"], "reject", 1, 0, "metrics/x.md", "")
-        check("監査が書き、当番が了承した" in text and audit1["paper_impact"] in text and own["paper_impact"] not in text,
-              f"報告に「監査が書き、当番が了承した」が無い・監査の文面で報告しない: {text[:400]}")
-        check(oncall.report_authorship_text(r["fix"]) and not oncall.report_authorship_text({"editor_summary": own}),
-              "記録ファイル向けの「誰が書き誰が了承したか」の文")
-        # (2) 当番が異を唱える → 往復を続ける(当番の修正のやり直しは挟まず、異議と当番の文面を監査に渡す)→ 監査が直した文面に了承
-        r, tr, calls, prompts, rprompts = run(
-            [review(editor_summary=audit1), review(editor_summary=audit2)],
-            [{"decision": "object", "evidence": "10/16号の記録ではレトラは載っていない", "editor_summary": dict(own2)},
-             {"decision": "accept", "evidence": "直った", "editor_summary": None}])
-        check(r["approved"] and r["fix"].get("editor_summary") == audit2 and len(rprompts) == 2
-              and calls == ["oncall-fix.schema.json", "oncall-accept.schema.json", "oncall-accept.schema.json"]
-              and (r["fix"].get("report_authorship") or {}).get("round") == 2,
-              f"当番が異を唱えたあと往復を続けない: {calls} {r.get('approved')} {r['fix'].get('report_authorship')}")
-        check("10/16号の記録ではレトラは載っていない" in rprompts[1] and own2["paper_impact"] in rprompts[1]
-              and audit1["paper_impact"] in rprompts[1],
-              "異議の根拠・当番の文面・監査の前の文面が、次の監査に渡らない")
-        objs = [t["report_concurrence"] for t in tr if "report_concurrence" in t]
-        check([o.get("decision") for o in objs] == ["object", "accept"] and objs[0].get("written_by") == "audit"
-              and objs[0].get("objected_by") == "oncall" and objs[0].get("audit_summary") == audit1,
-              f"異を唱えた記録(誰が書き誰が異を唱えたか)が残らない: {objs}")
-        # (2b) 異を唱え、監査が当番の文面を認めて must_fix を空にした → 普通の承認(当番の文面で報告。監査が書いたことにしない)
-        r, tr, calls, _, _ = run([review(editor_summary=audit1), review(verdict="approve", must_fix=[])],
-                                 [{"decision": "object", "evidence": "記録と違う", "editor_summary": dict(own2)}])
-        check(r["approved"] and r["fix"].get("editor_summary") == own2 and not r["fix"].get("report_authorship"),
-              f"監査が当番の異議を認めたのに当番の文面で報告しない: {r['fix'].get('editor_summary')} {r['fix'].get('report_authorship')}")
-        # (2c) 異を唱え続けたら上限まで往復し、取り込まない(残った指摘は報告の誤り)
-        r, tr, calls, _, _ = run([review(editor_summary=audit1)] * 4,
-                                 [{"decision": "object", "evidence": "違う", "editor_summary": None}] * 4)
-        check(not r["approved"] and [o["id"] for o in r["kept"]["open"]] == ["m1"] and calls.count("oncall-accept.schema.json") == 4,
-              f"異を唱え続けたのに取り込んだ・往復しない: {r.get('approved')} {calls}")
-        # (2d) 最後の往復で異を唱えて終わった → 続き(wip)に当番の最新の文面と異議一式が残り、次の試行は当番の修正を挟まず
-        #      異議を監査に渡すところから(監査指摘: 異議の直後に上限で終わると、根拠・文面が失われ、続きで当番の修正が挟まった)
-        own3 = summary("当番3")
-        oncall.MAX_ROUNDS = 2
-        r, tr, calls, _, _ = run([review(editor_summary=audit1), review(editor_summary=audit2)],
-                                 [{"decision": "object", "evidence": "一度目の異議", "editor_summary": dict(own2)},
-                                  {"decision": "object", "evidence": "二度目の異議: 10/15号に載っている", "editor_summary": dict(own3)}])
-        k = json.loads(json.dumps(r["kept"]))     # state に保存して読み戻す
-        check(not r["approved"] and k["fix"].get("editor_summary") == own3 and (k.get("objection") or {}).get("report_objection", {}).get(
-                  "evidence") == "二度目の異議: 10/15号に載っている" and k["objection"]["report_objection"]["audit_summary"] == audit2,
-              f"異議で終わった続きに、当番の最新の文面・異議の根拠・監査の文面が残らない: {k.get('objection')} {k['fix'].get('editor_summary')}")
-        oncall.MAX_ROUNDS = 4
-        wip = {"base": "B" * 40, "head": k["head"], "fix": k["fix"], "open": k["open"], "later": [], "objection": k["objection"]}
-        r, tr, calls, _, rprompts = run([review(verdict="approve", must_fix=[])], [], wip=wip)
-        check(r["approved"] and calls == [] and len(rprompts) == 1 and "二度目の異議: 10/15号に載っている" in rprompts[0]
-              and own3["paper_impact"] in rprompts[0] and audit2["paper_impact"] in rprompts[0] and r["fix"].get("editor_summary") == own3,
-              f"異議の続きが、当番の修正を挟まず異議を監査に渡すところから始まらない: {calls} {r.get('approved')}")
-        # (3) must_fix に報告の誤り以外があれば C ではない(当番の了承を求めず、修正の往復を続ける)
-        r, tr, calls, _, _ = run([review(must_fix=[mis, bad], editor_summary=audit1),
-                                  review(verdict="approve", must_fix=[])], [])
-        check(r["approved"] and "oncall-accept.schema.json" not in calls and calls.count("oncall-integrate.schema.json") == 1
-              and r["fix"].get("editor_summary") == own and not r["fix"].get("report_authorship"),
-              f"報告の誤り以外の指摘があるのに監査の文面で取り込もうとした: {calls}")
-        # (4) 監査が文面を書かなかった・テストを走らせた記録が無いときも C にしない
-        r, tr, calls, _, _ = run([review(), review(verdict="approve", must_fix=[])], [])
-        check(r["approved"] and "oncall-accept.schema.json" not in calls and not r["fix"].get("report_authorship"),
-              f"監査が文面を書いていないのに了承を求めた: {calls}")
-        r, tr, calls, _, _ = run([review(editor_summary=audit1, verification=[{"command": "読んだ", "exit_code": None, "result": ""}]),
-                                  review(verdict="approve", must_fix=[])], [])
-        check("oncall-accept.schema.json" not in calls and not r["fix"].get("report_authorship"),
-              f"走らせた記録の無い監査の文面で取り込もうとした: {calls}")
-        # (5) 了承のセッションが本体の作業ツリー・origin/main・.env に触ったら、了承でも取り込まない(Sol 監査2巡目の later)
-        for what, touch in (("本体の作業ツリー", lambda: setattr(oncall, "root_clean", lambda: False)),
-                            ("origin/main", lambda: setattr(oncall, "remote_main", lambda: "C" * 40)),
-                            (".env", lambda: setattr(oncall, "env_fingerprint", lambda: "changed"))):
-            r, tr, calls, _, _ = run([review(editor_summary=audit1)], [{"decision": "accept", "evidence": "x", "editor_summary": None}],
-                                     during_accept=touch)
-            check(not r["approved"] and r["fix"].get("status") == "cannot_fix" and not r["fix"].get("report_authorship")
-                  and calls == ["oncall-fix.schema.json", "oncall-accept.schema.json"],
-                  f"了承のセッションが{what}に触ったのに取り込んだ: {r.get('approved')} {r['fix'].get('status')} {calls}")
-            oncall.root_clean, oncall.remote_main, oncall.env_fingerprint = (lambda: True), (lambda: "B" * 40), (lambda: "env")
-        # (6) 了承のセッションが認証切れ・利用上限(CliBlocked)で止まった → 続きに「了承待ち」(最新の指摘・監査の文面)が残り、
-        #     再開は当番の修正・検査・監査を挟まず了承から(監査指摘 2026-10-22: 続きに残らず、再開で余分に回した)
-        blocked = pipelib.CliBlocked({"tool": "claude", "kind": "auth", "detail": "OAuth の期限切れ"})
-        # 偽の freeze は、続きの確かめ(0往復目)では作業ツリーに何も足されていない = 1往復目と同じ commit を返す
-        # (commit は 16進の40桁。resume_point は形の違うハッシュを続きにしない)
-        oncall.freeze = lambda wt, base, rnd: ("a%039d" % (rnd or 1), "diff --git a/scripts/x.py b/scripts/x.py", ["scripts/x.py"])
-        r, tr, calls, _, _ = run([review(editor_summary=audit1)], [blocked])
-        # _main と同じ道で state に保存し、読み戻して続きを取る(wip_of → save_state → load_state → resume_point)
-        st_p = tmp / "state.json"
-        oncall.save_state(st_p, {"log": [], "wip": oncall.wip_of("B" * 40, r["kept"], r["approved"])})
-        k = oncall.resume_point(oncall.load_state(st_p), "B" * 40) or {}
-        check(not r["approved"] and r.get("blocked") and [o["id"] for o in k.get("open") or []] == ["m1"]
-              and (k.get("accept") or {}).get("editor_summary") == audit1 and [m["id"] for m in k["accept"].get("must_fix") or []] == ["m1"]
-              and k["accept"].get("verification") == AUDIT_RAN,
-              f"了承の途中で止まった続きに、最新の指摘と監査の文面が残らない: {k.get('open')} {k.get('accept')}")
-        h0 = "a%039d" % 1
-        wip = k
-        r, tr, calls, _, rprompts = run([], [{"decision": "accept", "evidence": "掲載の記録と合う", "editor_summary": None}], wip=wip)
-        check(r["approved"] and calls == ["oncall-accept.schema.json"] and rprompts == [] and r["head"] == h0 and r["diff"].strip()
-              and r["fix"].get("editor_summary") == audit1 and (r["fix"].get("report_authorship") or {}).get("round") == 1,
-              f"了承待ちの続きが、了承から始まらない・取り込む差分が無い: {calls} {len(rprompts)} {r.get('approved')} {r['head'][:10]}")
-        # 続きの了承で異を唱えた → 当番の修正を挟まず異議を監査へ
-        r, tr, calls, _, rprompts = run([review(verdict="approve", must_fix=[])],
-                                        [{"decision": "object", "evidence": "続きでの異議", "editor_summary": dict(own2)}], wip=wip)
-        check(r["approved"] and calls == ["oncall-accept.schema.json"] and len(rprompts) == 1 and "続きでの異議" in rprompts[0]
-              and r["fix"].get("editor_summary") == own2,
-              f"続きの了承で異を唱えたあと、異議が監査に渡らない: {calls} {len(rprompts)}")
-        # 作業ツリーの commit が監査したものと違えば、了承からは始めない(普通の続き)
-        r, tr, calls, _, _ = run([review(verdict="approve", must_fix=[])], [], wip=dict(wip, head="a%039d" % 7))
-        check("oncall-accept.schema.json" not in calls and calls[:1] == ["oncall-integrate.schema.json"] and r["approved"]
-              and any("accept_skipped" in t for t in tr),
-              f"監査していない commit の続きを了承から始めた: {calls}")
-        # 了承待ちの形が条件 C を満たさない(misreport 以外・走らせた記録が無い・文面が欠ける)なら、了承からは始めない(再開時にも検める)
-        for what, acc in (("misreport 以外", dict(wip["accept"], must_fix=[mis, bad])),
-                          ("走らせた記録が無い", dict(wip["accept"], verification=[])),
-                          ("文面が欠ける", dict(wip["accept"], editor_summary={"why": "x"}))):
-            r, tr, calls, _, _ = run([review(verdict="approve", must_fix=[])], [], wip=dict(wip, accept=acc))
-            check("oncall-accept.schema.json" not in calls and calls[:1] == ["oncall-integrate.schema.json"]
-                  and not r["fix"].get("report_authorship"),
-                  f"条件 C を満たさない了承待ち({what})の続きを了承から始めた: {calls}")
-        # 続きの checkout が失敗しても、了承待ちは続きに残る(監査指摘)
-        oncall.sh = lambda args, cwd, timeout=600: subprocess.CompletedProcess(args, 1 if "checkout" in args else 0, "", "index.lock")
-        r, tr, calls, _, _ = run([], [], wip=wip)
-        nxt = oncall.wip_of("B" * 40, r["kept"], r["approved"]) or {}
-        check(r["error"] and calls == [] and (nxt.get("accept") or {}).get("editor_summary") == audit1,
-              f"続きの checkout の失敗で了承待ちが消えた: {r['error']} {nxt.get('accept')}")
-        oncall.sh = lambda args, cwd, timeout=600: subprocess.CompletedProcess(args, 0, "", "")
+        def claude(prompt, schema, cwd, timeout=1800):
+            calls.append((Path(schema).name, prompt))
+            if Path(schema).name == "oncall-fix.schema.json":
+                return {"status": "fixed", "rerun_mode": "resume", "diagnosis": "d",
+                        "editor_summary": {"what_happened": "組版が止まった", "why": "w", "what_changed": "c"}}
+            return {"replies": [{"id": "p1", "reply": "disagree", "evidence": "該当行は消した分岐の中"}], "status": "unchanged",
+                    "rerun_mode": "unchanged", "editor_summary": None}
+        oncall.run_claude = claude
+        # 2巡目の監査には、前の巡の blocking と当番の返事(disagree の根拠)が渡り、resolved で承認になる。報告の文面は1巡目のまま
+        answers = iter([review_answer("request_changes", [blocking("p1")]), review_answer(resolved=["p1"])])
+        oncall.run_codex = lambda prompt, schema, cwd, timeout=1800: (rprompts.append(prompt) or next(answers))
+        tr = []
+        r = oncall.run_rounds("compose", "2026-11-06", "ctx", tmp, "B" * 40, None, "env", tr)
+        check(r["approved"] and [c[0] for c in calls] == ["oncall-fix.schema.json", "oncall-integrate.schema.json"]
+              and "該当行は消した分岐の中" in rprompts[1] and "## 前の巡のコメントと当番の返事" in rprompts[1]
+              and "## 前の巡のコメントと当番の返事" not in rprompts[0] and r["fix"]["editor_summary"]["what_happened"] == "組版が止まった",
+              f"disagree の根拠が2巡目の監査に渡らない・承認にならない: {r.get('approved')} {[c[0] for c in calls]}")
+        check('"p1"' in calls[1][1] and "`disagree`" in calls[1][1], "当番の2巡目の依頼に blocking と返し方が無い")
+        text = oncall.editor_report("compose", "2026-11-06", r["fix"], "approve", 2, 1, "metrics/x.md", "")
+        check("何が止まったか" in text and "組版が止まった" in text and "同じ型の箇所" not in text and "紙面への影響" not in text
+              and "nit 1件" in text, f"編集長への報告が PR の説明の3欄になっていない: {text[:300]}")
     finally:
         for n, v in saved.items():
             setattr(oncall, n, v)
-    # 報告の誤りの原因: 当番に渡す材料に、関係する号の載った記事・外れた記事・校閲の判定を載せる(当番は確かめずに「外れた」と書いた)
+    # ① 当番を起こすのは止まった組版・発行だけ(収集・判定・監視・道具の更新・保管の指摘では起こさない)
+    # ② 止まっていない工程(reason なし)では当番を起こさない
+    launched = []
+    root = tmp / "esc"
+    (root / "scripts").mkdir(parents=True, exist_ok=True)
+    (root / "metrics").mkdir(exist_ok=True)
+    (root / "scripts" / "oncall.py").write_text("", encoding="utf-8")
+    saved_p = (pipelib._QUIET, pipelib.ANOMALIES[:], pipelib._ESCALATED, pipelib.oncall_clis_blocked, pipelib.ENV.get("ONCALL"),
+               os.environ.get("ONCALL"), pipelib.subprocess.Popen, pipelib.ROOT, os.environ.get("INVOCATION_ID"))
+    try:
+        pipelib.set_quiet(False)
+        pipelib.ROOT = root                         # 本物の metrics/ に当番のログを作らない
+        os.environ.pop("INVOCATION_ID", None)       # systemd の外の経路(Popen)。起動の手前で捕まえる
+        pipelib.ENV.pop("ONCALL", None)
+        os.environ.pop("ONCALL", None)
+        pipelib.oncall_clis_blocked = lambda: []
+
+        def no_launch(args, *a, **k):
+            launched.append(list(map(str, args)))
+            raise OSError("テストでは起動しない")
+        pipelib.subprocess.Popen = no_launch
+        for st in ("collect", "classify", "watch", "update", "backlog"):
+            pipelib._ESCALATED = False
+            check(pipelib.escalate(st, "2026-11-06", "止まった") is False, f"{st} で当番を起こそうとした")
+        check(launched == [], f"組版・発行以外の工程で当番の起動に進んだ: {launched[:2]}")
+        pipelib.ANOMALIES[:] = ["紙面から外れた記事 3本"]
+        pipelib._ESCALATED = False
+        check(pipelib.diagnose_anomalies("compose", "2026-11-06", rerun=False) is False and launched == [],
+              f"止まっていない組版で当番を起こそうとした: {launched[:2]}")
+        pipelib._ESCALATED = False
+        pipelib.diagnose_anomalies("compose", "2026-11-06", rerun=True, reason="lint 赤が解消できず")
+        check(any(any("oncall.py" in a for a in c) for c in launched), f"止まった組版で当番の起動に進まない: {launched[:2]}")
+    finally:
+        (quiet, anomalies, pipelib._ESCALATED, pipelib.oncall_clis_blocked, env_on, os_on,
+         pipelib.subprocess.Popen, pipelib.ROOT, inv) = saved_p
+        pipelib.set_quiet(quiet)
+        pipelib.ANOMALIES[:] = anomalies
+        if inv is not None:
+            os.environ["INVOCATION_ID"] = inv
+        if env_on is not None:
+            pipelib.ENV["ONCALL"] = env_on
+        if os_on is not None:
+            os.environ["ONCALL"] = os_on
+
+
+def test_oncall_paper_record(tmp: Path):
+    """当番の記録(context)に、関係する号の載った記事・外れた記事・校閲の最後の判定を残す(人が当番の診断を確かめる材料)。"""
+    import oncall
+    tmp.mkdir(parents=True, exist_ok=True)
     root = tmp / "root"
     d = "2026-10-15"
     (root / "docs" / "_posts").mkdir(parents=True)
@@ -10949,14 +10865,15 @@ def test_oncall_report_concurrence(tmp: Path):
     check(oncall.related_editions(d, "2026-10-16", [{"date": "2026-10-13"}, {"date": "x"}]) == ["2026-10-13", "2026-10-14", d, "2026-10-16", "2026-10-17"]
           and oncall.related_editions(d, d, []) == [d, "2026-10-16"],
           f"関係する号(呼ばれた号・取り込み先・保管の指摘の号と、それぞれの次の号): {oncall.related_editions(d, '2026-10-16', [{'date': '2026-10-13'}])}")
+    # 依頼文には載せない(紙面への影響の見込みを書かせ、それを監査させる往復をやめた。編集長 2026-11-06)
     saved_rec = oncall.PAPER_RECORD
     try:
         oncall.PAPER_RECORD = rec
         fp = oncall.fix_prompt("compose", d, "ctx", None)
-        rp = oncall.review_prompt("compose", d, {"status": "fixed"}, "diff", None)
+        rp = oncall.review_prompt("compose", d, {"status": "fixed"}, "diff", None, None)
     finally:
         oncall.PAPER_RECORD = saved_rec
-    check(rec in rp and rec in fp and str(oncall.ROOT) in fp, "当番・監査の依頼に掲載の記録が載らない・当番の依頼に記録の場所が無い")
+    check(rec not in rp and rec not in fp, "当番・監査の依頼に掲載の記録が載っている(紙面への影響の往復が戻っている)")
 
 
 def test_slugify_format():
@@ -11011,8 +10928,8 @@ def test_anomaly_ledger_and_whywhy(tmp: Path):
         pipelib.anomaly("watch", "未確認の出典 3件")
         check(pipelib.ANOMALIES == ["[compose] 記事Xを落とした: 校閲ブロック", "[watch] 未確認の出典 3件"], f"台帳: {pipelib.ANOMALIES}")
         r = pipelib.escalate_reason("止まった")
-        check(r.startswith("止まった") and "なぜなぜ" in r and "- [compose] 記事Xを落とした" in r and "- [watch] 未確認の出典 3件" in r,
-              "依頼文に台帳となぜなぜの指示が無い")
+        check(r.startswith("止まった") and "参考" in r and "なぜなぜ" not in r and "- [compose] 記事Xを落とした" in r
+              and "- [watch] 未確認の出典 3件" in r, "依頼文に台帳が参考として付かない(なぜなぜの指示が残っている)")
         # 試験実行では当番を呼ばない(呼ぶと本物の当番が起動する)
         pipelib.set_quiet(True)
         check(pipelib.escalate("compose", "2026-09-26", "x") is False and pipelib._ESCALATED is False, "quiet で当番を呼んだ")
@@ -12321,8 +12238,7 @@ def test_run_codex_isolation(tmp: Path):
     g("init", "-q", "-b", "main"); g("config", "user.email", "t@example.com"); g("config", "user.name", "t")
     (repo / "a").write_text("1"); g("add", "a"); g("commit", "-q", "-m", "base")
     log, fail_flag = tmp / "codex-calls.jsonl", tmp / "fail"
-    answer = json.dumps({"verdict": "approve", "verification": AUDIT_RAN, "must_fix": [], "later": [], "editor_summary": None, "notes": ""},
-                        ensure_ascii=False)
+    answer = json.dumps(review_answer(), ensure_ascii=False)
     fake = bindir / "codex"
     fake.write_text(f"#!{sys.executable}\n"
                     "import json, os, sys\n"
@@ -17025,8 +16941,7 @@ def test_scratch_not_tmp(tmp: Path):
     g = lambda *a: subprocess.run(["git", *a], cwd=repo, capture_output=True, text=True, check=True).stdout
     g("init", "-q", "-b", "main"); g("config", "user.email", "t@example.com"); g("config", "user.name", "t")
     (repo / "a").write_text("1"); g("add", "a"); g("commit", "-q", "-m", "base")
-    answer = json.dumps({"verdict": "approve", "verification": AUDIT_RAN, "must_fix": [], "later": [], "editor_summary": None, "notes": ""},
-                        ensure_ascii=False)
+    answer = json.dumps(review_answer(), ensure_ascii=False)
     bindir.mkdir()
     (bindir / "codex").write_text(
         f"#!{sys.executable}\nimport json, os, sys, tempfile\na = sys.argv[1:]\n"
@@ -17054,11 +16969,10 @@ SCHEMAS = Path(__file__).resolve().parent.parent / "schema"     # このコー�
 INCIDENT_FIX = {"status": "no_fix_needed",
                 "editor_summary": {"what_happened": "18時33分の収集で、ランティスの SideM ページの一覧を読めませんでした。",
                                    "why": "サイト全体がメンテナンス中で 503 を返していました。",
-                                   "what_changed": "コードは変えていません。", "similar": "どの観測先も読めなければ既読を進めません。",
-                                   "paper_impact": "02時00分の収集でも読めなければ、ランティスだけの告知は25日号へ1日遅れます。"},
+                                   "what_changed": "コードは変えていません。"},
                 "diagnosis": "事象: lantis-sidem が 503 → なぜ: サイトのメンテナンス → 対処: 不要", "root_cause": "外部サイトの保守",
-                "changed_files": [], "test_evidence": "selfcheck 0 errors", "risk": "変更なし", "confidence": 90,
-                "rerun_mode": "none", "recovery": "保守が終われば次の定時の収集が読み直す", "notes": "", "backlog_items": []}
+                "changed_files": [], "test_evidence": "selfcheck 0 errors", "risk": "変更なし",
+                "rerun_mode": "none", "recovery": "保守が終われば次の定時の収集が読み直す", "notes": ""}
 
 
 def test_oncall_answer_reformat(tmp: Path):
@@ -17136,8 +17050,7 @@ def test_oncall_answer_reformat(tmp: Path):
     g("init", "-q", "-b", "main"); g("config", "user.email", "t@example.com"); g("config", "user.name", "t")
     (repo / "a").write_text("1"); g("add", "a"); g("commit", "-q", "-m", "base")
     sid = "01a16835-6faf-75c1-959b-34ec00cf7019"
-    answer = json.dumps({"verdict": "approve", "verification": AUDIT_RAN, "must_fix": [], "later": [], "editor_summary": None,
-                         "notes": ""}, ensure_ascii=False)
+    answer = json.dumps(review_answer(), ensure_ascii=False)
     clog = tmp / "codex-calls.jsonl"
     # 直させる回: ok=正しい答え / exit1=正しい答えを書いて異常終了 / badschema=形の違う答え / slow=時間切れ
     (bindir / "codex").write_text(
@@ -17340,8 +17253,7 @@ def test_oncall_session_waits(tmp: Path):
     g = lambda *a: subprocess.run(["git", *a], cwd=repo, capture_output=True, text=True, check=True).stdout
     g("init", "-q", "-b", "main"); g("config", "user.email", "t@example.com"); g("config", "user.name", "t")
     (repo / "a").write_text("1"); g("add", "a"); g("commit", "-q", "-m", "base")
-    answer = json.dumps({"verdict": "approve", "verification": AUDIT_RAN, "must_fix": [], "later": [], "editor_summary": None,
-                         "notes": ""}, ensure_ascii=False)
+    answer = json.dumps(review_answer(), ensure_ascii=False)
     (bindir / "codex").write_text(
         f"#!{sys.executable}\nimport subprocess, sys\na = sys.argv[1:]\no = a[a.index('-o') + 1]\n"
         f"open(o, 'w', encoding='utf-8').write({answer!r})\n"
@@ -17399,7 +17311,7 @@ def test_oncall_finished_rerun_none(tmp: Path):
     stuck = lambda: (bindir / "claude").write_text(
         f"#!{sys.executable}\nimport sys, time\nif '--resume' in sys.argv:\n    time.sleep(5)\nsys.stdout.write({one[:-60]!r})\n",
         encoding="utf-8")
-    approve = {"verdict": "approve", "verification": AUDIT_RAN, "must_fix": [], "later": [], "editor_summary": None, "notes": ""}
+    approve = review_answer()
     names = ("ROOT", "notify", "job_lock", "gather_context", "env_fingerprint", "save_raw", "run_codex", "keep_later",
              "DEADLINE_AT", "STAGE_END_AT", "RECOVER", "REFORMAT_TIMEOUT_SEC")
     saved, saved_argv, saved_path, notes = {k: getattr(oncall, k) for k in names}, sys.argv, os.environ.get("PATH", ""), []
@@ -17444,8 +17356,8 @@ def test_oncall_finished_rerun_none(tmp: Path):
     check(code == 1 and len(bad) == 1 and "答えが読めなかった" in bad[0] and "途中で止まったのではない" in bad[0]
           and "当番の作業が途中で止まった" not in bad[0] and "人の判断が要る" not in bad[0],
           f"形を直させる回が時間切れの当番を、答えが読めなかったと届けない: exit {code} {[m[:160] for m in bad]}")
-    # 呼び出し側: 理由が無い(止まっていない)ときだけ --finished を渡す。収集は終わり方(終了値)を渡し、止まった収集
-    # (例外・SIGTERM・非0)には付けない(監査指摘 r2: 例外で終わった収集も末尾で無条件に当番を呼び、--finished が付いた)
+    # 呼び出し側: 理由が無い(止まっていない)ときは当番を呼ばない(編集長 2026-11-06)。止まったとき(例外・SIGTERM・非0)だけ
+    # 理由つきで escalate に渡す(--finished は付けない。収集は escalate の入口で、号が出なくなる工程ではないとして止まる)
     import collect
     calls = []
     saved_esc = (pipelib.escalate, list(pipelib.ANOMALIES), pipelib._ESCALATED)
@@ -17463,9 +17375,8 @@ def test_oncall_finished_rerun_none(tmp: Path):
         pipelib.escalate = saved_esc[0]
         pipelib.ANOMALIES[:] = saved_esc[1]
         pipelib._ESCALATED = saved_esc[2]
-    fin = ["--finished" in (a or []) for a, _ in calls]
-    check(fin == [True, False, True, False, False] and all("止まった" in r for (a, r), f in zip(calls, fin) if not f),
-          f"--finished の渡し方が違う(止まった収集に付けた・止まっていない収集に付けない): {[(a, r[:30]) for a, r in calls]}")
+    check(len(calls) == 3 and not any("--finished" in (a or []) for a, _ in calls) and all("止まった" in r for _, r in calls),
+          f"止まっていない工程で当番に渡した・止まった工程を渡さない: {[(a, r[:30]) for a, r in calls]}")
 
 
 def test_oncall_no_rerun_frees_lock_before_slot(tmp: Path):
@@ -17492,14 +17403,18 @@ def test_oncall_no_rerun_frees_lock_before_slot(tmp: Path):
         want = str(int(pipelib.next_slot_end(pipelib.now_jst())))
         for kw, expect in ((dict(stage="compose", rerun=False), want), (dict(stage="release", rerun=False), want),
                            (dict(stage="compose", rerun=True), want), (dict(stage="release", rerun=True), want),
-                           (dict(stage="compose", rerun=False, extra_args=["--end-at", "7"]), "7"),
-                           (dict(stage="backlog", rerun=False, ledger=False), None)):
+                           (dict(stage="compose", rerun=False, extra_args=["--end-at", "7"]), "7")):
             pipelib._ESCALATED = False
             launches.clear()
             pipelib.escalate(date="2026-11-06", reason="x", **kw)
             args = launches[-1] if launches else []
             got = args[args.index("--end-at") + 1] if "--end-at" in args else None
             check(args and got == expect and args.count("--end-at") <= 1, f"escalate {kw}: --end-at が {got}(期待 {expect}): {args[-6:]}")
+        # 保管の指摘の当番(backlog)は起こさない(nit は人が引き取る。編集長 2026-11-06)
+        pipelib._ESCALATED = False
+        launches.clear()
+        check(pipelib.escalate("backlog", "2026-11-06", "x", rerun=False, ledger=False) is False and launches == [],
+              f"保管の指摘の当番を起こした: {launches[-1:]}")
     finally:
         pipelib.ROOT, _sp.Popen = saved[0], saved[1]
         if saved[2] is not None:
@@ -17585,296 +17500,6 @@ def test_oncall_no_rerun_frees_lock_before_slot(tmp: Path):
     finally:
         for k, v in saved_o.items():
             setattr(oncall, k, v)
-
-
-def test_oncall_judged_not_rejudged(tmp: Path):
-    """判定済みを判定し直さない(編集長 2026-10-24「ジャッジ済みをジャッジするな」)。10/23 18:33 の収集で定点観測 lantis-sidem が
-    HTTP 503(ランティスのメンテナンス)になり、当番の1回目は答えが読めず(18:56)、起動し直した2回目で「直す箇所なし」を監査が承認した
-    (19:06)。23:30・02:00 の収集も同じ 503 で当番を起こし、「当番は既に2回試みた。人の判断が要る」が exit 1 の起動し直しのたびに届いた。
-    この記録の形で、本物の run_watch(一覧の取得だけ偽)→ diagnose_anomalies → escalate(起動の Popen だけ偽)→ 本物の oncall._main
-    (偽の claude・監査は承認)を通して確かめる:
-    - 2回目以降の同じ 503 では当番を起こさない。新しい事柄(別の観測先の失敗・同じ観測先の別の種類の失敗)が混ざれば、その事柄だけで起こす
-    - 止まった収集は、判定済みの事柄でも従来どおり起こす
-    - 枠切れ: 止まっていない工程は通知も異常終了もしない。止まった工程は人への通知が1度だけで、systemd に起動し直させない終了値で終える
-    2026-10-25 から 503 はなぜなぜの対象外(test_http503_not_whywhy)なので、判定済みの型の例は同じ観測先の HTTP 500 にした。"""
-    import shutil as _sh
-    import time
-    import types
-    import urllib.error
-    import collect
-    import oncall
-    import yaml
-    HANDED = getattr(pipelib, "ONCALL_HANDED_EXIT", "未定義")
-    date, edition = "2026-10-24", "edition/2026-10-24"
-    tmp.mkdir(parents=True, exist_ok=True)
-    root, remote, bindir, col = tmp / "ops", tmp / "ops.git", tmp / "bin", tmp / "col"
-    g = lambda *a: subprocess.run(["git", *a], cwd=root, capture_output=True, text=True, check=True).stdout.strip()
-    subprocess.run(["git", "init", "-q", "--bare", "-b", "main", str(remote)], check=True, capture_output=True)
-    subprocess.run(["git", "init", "-q", "-b", "main", str(root)], check=True, capture_output=True)
-    g("config", "user.email", "t@example"); g("config", "user.name", "t")
-    (root / "scripts").mkdir(); (root / "metrics").mkdir()
-    _sh.copytree(SCHEMAS, root / "schema")
-    (root / ".gitignore").write_text("metrics/oncall-*\nmetrics/jobs.lock\nmetrics/work/\n", encoding="utf-8")
-    for s in ("selfcheck", "lint", "oncall"):
-        (root / "scripts" / f"{s}.py").write_text(f"print('{s}: 0 errors')\n", encoding="utf-8")
-    g("add", "-A"); g("commit", "-q", "-m", "base")
-    g("remote", "add", "origin", str(remote)); g("push", "-q", "-u", "origin", "main")
-    g("checkout", "-q", "-b", edition); g("push", "-q", "-u", "origin", edition)
-    col.mkdir()
-    (col / "sources.yml").write_text(yaml.safe_dump([
-        {"id": "lantis-sidem", "brand": "sidem", "type": "html", "url": "https://lantis.jp/sidem/", "base": "https://lantis.jp",
-         "list_regex": "x", "enabled": True},
-        {"id": "columbia", "brand": "general", "type": "html", "url": "https://columbia.jp/idolmaster/", "base": "https://columbia.jp",
-         "list_regex": "x", "enabled": True}]), encoding="utf-8")
-    seen = {"lantis-sidem": ["https://lantis.jp/sidem/old"], "columbia": ["https://columbia.jp/old"]}
-    fails: dict = {}
-
-    def fake_list(s, known, fetch=None, resume=None):
-        f = fails.get(s["id"])
-        if isinstance(f, int):
-            raise urllib.error.HTTPError(s["url"], f, {500: "Internal Server Error", 404: "Not Found"}[f], None, None)
-        if f:
-            raise RuntimeError(f)
-        return [(u, "") for u in seen[s["id"]]], 1, []
-
-    one = json.dumps(INCIDENT_FIX, ensure_ascii=False)
-    twice = lambda: fake_cli(bindir, "claude", out=one + "\n\n" + one + "\n")       # 19:06 の2回目(読める答え)
-    stuck = lambda: (bindir / "claude").write_text(                                   # 18:56 の1回目(読めない答え)
-        f"#!{sys.executable}\nimport sys, time\nif '--resume' in sys.argv:\n    time.sleep(5)\nsys.stdout.write({one[:-60]!r})\n",
-        encoding="utf-8")
-    approve = {"verdict": "approve", "verification": AUDIT_RAN, "must_fix": [], "later": [], "editor_summary": None, "notes": ""}
-    launches: list[list[str]] = []
-    notes: list = []
-    end_at = str(int(time.time()) + 3 * 3600)
-
-    def collect_run(failing: dict) -> None:
-        """定時の収集1回(一覧の取得 → 台帳 → 工程の終わりの diagnose_anomalies)。止まっていない収集"""
-        fails.clear(); fails.update(failing)
-        pipelib.ANOMALIES.clear()
-        pipelib._ESCALATED = False
-        (col / "watch-state.json").write_text(json.dumps(seen), encoding="utf-8")
-        pipelib.set_quiet(True)
-        try:
-            collect.run_watch(lambda prompt, timeout=0: [])
-        finally:
-            pipelib.set_quiet(False)
-
-    def diagnose(reason: str = "") -> list[str] | None:
-        n = len(launches)
-        saved_popen = subprocess.Popen
-        subprocess.Popen = lambda args, **k: launches.append(list(args))
-        try:
-            pipelib.diagnose_anomalies("collect", date, rerun=True, reason=reason, extra_args=["--end-at", end_at])
-        finally:
-            subprocess.Popen = saved_popen
-        return launches[-1] if len(launches) > n else None
-
-    def run_oncall(args: list[str]):
-        notes.clear()
-        sys.argv = ["oncall", *args[2:]]
-        try:
-            return oncall._main()
-        except SystemExit as e:          # 直す前の実装は --anomaly-keys を知らない
-            return f"SystemExit {e.code}"
-
-    def reason_of(args) -> str:
-        return args[args.index("--reason") + 1] if args and "--reason" in args else ""
-
-    def keys_of(args) -> list[str]:
-        if not args or "--anomaly-keys" not in args:
-            return []
-        rest = args[args.index("--anomaly-keys") + 1:]
-        return [k for k in rest[:next((i for i, x in enumerate(rest) if x.startswith("--")), len(rest))]]
-
-    names = ("ROOT", "notify", "job_lock", "gather_context", "env_fingerprint", "save_raw", "run_codex", "keep_later",
-             "DEADLINE_AT", "STAGE_END_AT", "RECOVER", "REFORMAT_TIMEOUT_SEC", "mark_collect_oncall", "COLLECT_ONCALL_MARK",
-             "ALREADY_SETTLED")
-    names = tuple(n for n in names if hasattr(oncall, n))
-    saved = {k: getattr(oncall, k) for k in names}
-    saved_p = (pipelib.ROOT, pipelib.ENV, pipelib.oncall_clis_blocked, list(pipelib.ANOMALIES), pipelib._ESCALATED)
-    saved_c = (collect.ROOT, collect.STATE_PATH, collect.list_source)
-    saved_argv, saved_path, saved_inv = sys.argv, os.environ.get("PATH", ""), os.environ.pop("INVOCATION_ID", None)
-    r = {}
-    try:
-        oncall.ROOT = pipelib.ROOT = root
-        pipelib.ENV = dict(pipelib.ENV, ONCALL="on")
-        pipelib.oncall_clis_blocked = lambda: []
-        collect.ROOT, collect.STATE_PATH, collect.list_source = col, col / "watch-state.json", fake_list
-        oncall.notify = lambda job, msg, ok=True, require=False: notes.append((msg, ok)) or True
-        oncall.job_lock = lambda *a, **k: os.open(os.devnull, os.O_RDONLY)
-        oncall.gather_context = lambda *a: "ctx"
-        oncall.env_fingerprint = lambda: ""
-        oncall.save_raw = lambda *a, **k: None
-        oncall.run_codex = lambda prompt, schema, cwd, timeout=1800: dict(approve)
-        oncall.keep_later = lambda *a: 0
-        oncall.mark_collect_oncall = lambda *a, **k: None
-        oncall.COLLECT_ONCALL_MARK = tmp / "collect-oncall-mark.json"
-        oncall.RECOVER = False
-        oncall.REFORMAT_TIMEOUT_SEC = 1
-        os.environ["PATH"] = f"{bindir}{os.pathsep}{saved_path}"
-
-        # 10/23 18:33 の収集(の形): lantis-sidem が 500 → 当番(1回目は答えが読めない、起動し直した2回目で直す箇所なしを承認)
-        collect_run({"lantis-sidem": 500})
-        a1833 = diagnose()
-        r["18:33 鍵"] = keys_of(a1833)
-        twice()          # 偽の CLI を置き(実行権付き)、中身を読めない答えに差し替える
-        stuck()
-        r["18:56"] = run_oncall(a1833 or [])
-        twice()
-        r["19:06"] = run_oncall(a1833 or [])
-        r["19:06 通知"] = list(notes)
-        st = json.loads((root / "metrics" / f"oncall-{date}-collect.json").read_text(encoding="utf-8"))
-        r["記録"] = st["log"]
-        # 23:30 の収集: 同じ 500(エラーの文面が同じ)→ 当番を起こさない
-        collect_run({"lantis-sidem": 500})
-        r["23:30"] = diagnose()
-        # 起動し直し・手での起動で、判定済みの事柄だけの依頼が当番に来ても、判定し直さない(通知も異常終了もしない)
-        oncall.DEADLINE_AT = oncall.STAGE_END_AT = None
-        r["判定済みの依頼"] = (run_oncall(a1833 or []), list(notes))
-        # 02:00 の収集: 同じ 500 に、別の観測先の新しい失敗が混ざる → その事柄だけで起こす
-        collect_run({"lantis-sidem": 500, "columbia": 404})
-        a0200 = diagnose()
-        r["02:00"] = (reason_of(a0200), keys_of(a0200))
-        # 同じ観測先でも別の種類の失敗は新しい事柄
-        collect_run({"lantis-sidem": "描画に失敗: 終了コード 1"})
-        r["別の種類"] = keys_of(diagnose())
-        # 枠切れ(2回使った)で、止まっていない工程の当番に新しい事柄が来た: 人に渡さない・異常終了しない
-        oncall.DEADLINE_AT = oncall.STAGE_END_AT = None
-        r["枠切れ・止まっていない"] = (run_oncall(a0200 or []), list(notes))
-        # 止まった収集は、判定済みの事柄でも起こす。枠切れなら人への通知は1度だけ、起動し直させない終了値
-        collect_run({"lantis-sidem": 500})
-        stop = diagnose("収集が止まった(exit 1)。下の一覧をなぜなぜし、原因を直して取り直すこと")
-        r["止まった"] = (stop is not None and "--finished" not in stop, "lantis-sidem" in reason_of(stop))
-        oncall.DEADLINE_AT = oncall.STAGE_END_AT = None
-        r["枠切れ・止まった1"] = (run_oncall(stop or []), list(notes))
-        oncall.DEADLINE_AT = oncall.STAGE_END_AT = None
-        r["枠切れ・止まった2"] = (run_oncall(stop or []), list(notes))
-        # systemd の下での起動: 人に渡し終えた終了値では起動し直させない
-        runs = []
-        saved_run, saved_which = subprocess.run, _sh.which
-        os.environ["INVOCATION_ID"] = "test"
-        subprocess.run = lambda args, **k: runs.append(list(args)) or types.SimpleNamespace(returncode=0, stdout="active\n", stderr="")
-        _sh.which = lambda name, *a, **k: "/usr/bin/" + name
-        try:
-            pipelib._ESCALATED = False
-            pipelib.escalate("collect", date, "x", extra_args=["--end-at", end_at])
-        finally:
-            subprocess.run, _sh.which = saved_run, saved_which
-            os.environ.pop("INVOCATION_ID", None)
-        r["systemd"] = runs[0] if runs else []
-
-        # 鍵を残すのは「承認された no_fix_needed で、報告が人に届いた」回だけ(監査指摘 r1)。日付ごとに別の記録で確かめる
-        k = ["collect:watch-unreadable:lantis-sidem:HTTP500"]
-        def case(day: str, fix: dict, review: dict, note_fn, minutes: int = 180, finished: bool = True) -> tuple:
-            fake_cli(bindir, "claude", out=json.dumps(fix, ensure_ascii=False))
-            if fix.get("status") == "fixed":
-                # 直した当番: 作業ツリー(cwd)のコードを実際に変えて答える(差分の無い fixed は承認に進まない)
-                (bindir / "claude").write_text(
-                    f"#!{sys.executable}\nimport sys\nfrom pathlib import Path\n"
-                    f"Path('scripts/fix_note.py').write_text('print(1)\\n')\nsys.stdout.write({json.dumps(fix, ensure_ascii=False)!r})\n",
-                    encoding="utf-8")
-            oncall.run_codex = lambda prompt, schema, cwd, timeout=1800: dict(review)
-            oncall.notify = note_fn
-            oncall.DEADLINE_AT = oncall.STAGE_END_AT = None
-            notes.clear()
-            code = run_oncall(["py", "oncall.py", "--stage", "collect", "--date", day, "--edition", "2026-10-24", "--reason", "x",
-                               "--end-at", str(int(time.time()) + minutes * 60), *(["--finished"] if finished else []),
-                               "--anomaly-keys", *k])
-            p = root / "metrics" / f"oncall-{day}-collect.json"
-            log = json.loads(p.read_text(encoding="utf-8"))["log"] if p.exists() else []
-            return code, list(notes), [e.get("settled_keys") for e in log]
-        record = lambda job, msg, ok=True, require=False: notes.append((msg, ok)) or True
-        undelivered = lambda job, msg, ok=True, require=False: notes.append((msg, ok)) or not require
-        block = {"verdict": "block", "verification": AUDIT_RAN, "editor_summary": None, "notes": "",
-                 "must_fix": [{"id": "M1", "severity": "must_fix", "claim": "診断が違う", "occurs": "毎回", "evidence": "ログ"}], "later": []}
-        r["fixed"] = case("2026-11-01", dict(INCIDENT_FIX, status="fixed", changed_files=["scripts/fix_note.py"]), approve, record)
-        r["差し戻し"] = case("2026-11-02", INCIDENT_FIX, block, record)
-        r["届かない"] = case("2026-11-03", INCIDENT_FIX, approve, undelivered)
-        saved_env2 = pipelib.ENV
-        pipelib.ENV = {k_: v for k_, v in pipelib.ENV.items() if k_ != "DISCORD_WEBHOOK_URL"}
-        try:
-            r["webhook 未設定"] = case("2026-11-04", INCIDENT_FIX, approve, pipelib.notify)
-        finally:
-            pipelib.ENV = saved_env2
-        # 承認された「取り直す(resume)」の取り直しが一度失敗した: 鍵を残さず、起動し直した当番が取り直して新着を拾う(監査指摘 r4)
-        (root / "scripts" / "collect.py").write_text(
-            "from pathlib import Path\np = Path('metrics/oncall-probe-runs')\nn = int(p.read_text()) + 1 if p.exists() else 1\n"
-            "p.write_text(str(n))\nif n > 1:\n    Path('metrics/oncall-picked').write_text('new item')\nraise SystemExit(1 if n == 1 else 0)\n",
-            encoding="utf-8")
-        g("add", "scripts/collect.py"); g("commit", "-q", "-m", "一度だけ失敗する取り直し"); g("push", "-q", "origin", edition)
-        resume = dict(INCIDENT_FIX, rerun_mode="resume", recovery="保守が終わったので、定点観測を取り直して新着を素材へ戻す")
-        r["取り直し失敗"] = case("2026-11-08", resume, approve, record)
-        r["取り直し再起動"] = case("2026-11-08", resume, approve, record)
-        r["取り直し"] = ((root / "metrics" / "oncall-probe-runs").read_text(encoding="utf-8"), (root / "metrics" / "oncall-picked").exists())
-        r["承認"] = case("2026-11-05", INCIDENT_FIX, approve, record)
-        # 残り30分未満の当番でも、判定済みの照合と枠切れを先に見る(時間切れの通知で人に渡さない)
-        r["残り少ない・判定済み"] = case("2026-11-05", INCIDENT_FIX, approve, record, minutes=29)
-        for n in (1, 2):
-            (root / "metrics" / f"oncall-2026-11-06-collect-attempt-{n}").write_text("x", encoding="utf-8")
-        r["残り少ない・枠切れ"] = case("2026-11-06", INCIDENT_FIX, approve, record, minutes=29)
-        r["残り少ない・枠切れ・止まった1"] = case("2026-11-06", INCIDENT_FIX, approve, record, minutes=29, finished=False)
-        r["残り少ない・枠切れ・止まった2"] = case("2026-11-06", INCIDENT_FIX, approve, record, minutes=29, finished=False)
-        # 前提(作業ツリーが clean)を満たさない: 起動し直しても変わらないので、起動し直させない終了値
-        (root / "scripts" / "lint.py").write_text("print('dirty')\n", encoding="utf-8")
-        r["汚れ"] = case("2026-11-07", INCIDENT_FIX, approve, record)
-        g("checkout", "--", "scripts/lint.py")
-    finally:
-        for k, v in saved.items():
-            setattr(oncall, k, v)
-        pipelib.ROOT, pipelib.ENV, pipelib.oncall_clis_blocked = saved_p[:3]
-        pipelib.ANOMALIES[:] = saved_p[3]
-        pipelib._ESCALATED = saved_p[4]
-        collect.ROOT, collect.STATE_PATH, collect.list_source = saved_c
-        sys.argv = saved_argv
-        os.environ["PATH"] = saved_path
-        if saved_inv is not None:
-            os.environ["INVOCATION_ID"] = saved_inv
-    k500 = "collect:watch-unreadable:lantis-sidem:HTTP500"
-    check(r["18:33 鍵"] == [k500], f"18:33 の 500 の形の鍵(観測先と失敗の種類)を当番に渡さない: {r['18:33 鍵']}")
-    check(r["18:56"] == 1 and r["19:06"] == 0 and [e.get("settled_keys") for e in r["記録"]] == [None, [k500]],
-          f"承認された直す箇所なしの診断が、渡された鍵を記録に残さない: 18:56 exit {r['18:56']} / 19:06 exit {r['19:06']} "
-          f"記録 {[(e.get('approved'), e.get('status'), e.get('settled_keys')) for e in r['記録']]}")
-    check(r["23:30"] is None, f"判定済みの 500 で 23:30 の収集が当番を起こした: {reason_of(r['23:30'])[-200:]}")
-    code, ns = r["判定済みの依頼"]
-    check(code == 0 and not [m for m, ok in ns if not ok], f"判定済みの事柄だけの依頼で、当番が通知した・異常終了した: exit {code} {ns}")
-    why, keys = r["02:00"]
-    check(keys == ["collect:watch-unreadable:columbia:HTTP404"] and "columbia" in why and "lantis-sidem" not in why,
-          f"新しい事柄だけで当番を起こさない(判定済みの 500 を混ぜた・新しい失敗を落とした): 鍵 {keys} 依頼 {why[-300:]}")
-    check(r["別の種類"] == ["collect:watch-unreadable:lantis-sidem:RuntimeError"],
-          f"同じ観測先の別の種類の失敗を、判定済みとして当番を起こさない: {r['別の種類']}")
-    code, ns = r["枠切れ・止まっていない"]
-    check(code == 0 and not [m for m, ok in ns if not ok],
-          f"枠切れで、止まっていない工程の当番が人に渡した・異常終了した(起動し直しで重なる): exit {code} {[m[:60] for m, ok in ns]}")
-    check(r["止まった"] == (True, True), f"止まった収集の当番を、判定済みの事柄で起こさない(--finished を付けた): {r['止まった']}")
-    (c1, n1), (c2, n2) = r["枠切れ・止まった1"], r["枠切れ・止まった2"]
-    bad1, bad2 = [m for m, ok in n1 if not ok], [m for m, ok in n2 if not ok]
-    check(c1 == c2 == HANDED and HANDED not in (0, 1) and len(bad1) == 1 and "人の判断が要る" in bad1[0] and not bad2,
-          f"止まった工程の枠切れの通知が1度だけでない・起動し直させる終了値で終えた: exit {c1}/{c2}(期待 {HANDED}) 通知 {bad1} / {bad2}")
-    check(f"--property=RestartPreventExitStatus={HANDED}" in r["systemd"] and "--property=Restart=on-failure" in r["systemd"]
-          and oncall.exit_code(HANDED) == HANDED if isinstance(HANDED, int) else False,
-          f"systemd の起動し直しを、人に渡し終えた終了値で止めない: {[x for x in r['systemd'] if 'Restart' in x]}")
-    for what in ("fixed", "差し戻し", "届かない", "webhook 未設定"):
-        code, ns, logged = r.get(what, (None, [], [None]))
-        check(logged and not any(logged), f"{what}の回で、判定済みの鍵を残した(次の収集が当番を起こさなくなる): exit {code} 記録 {logged}")
-    code, ns, logged = r["fixed"]
-    check(code == 0 and any("取り込みました" in m for m, ok in ns),
-          f"fixed の回が承認・取り込みまで進まない(鍵を残さないことを確かめられない): exit {code} {[m[:50] for m, ok in ns]}")
-    (c1, _, l1), (c2, _, l2) = r["取り直し失敗"], r["取り直し再起動"]
-    check(c1 == 1 and not any(l1) and c2 == 0 and r["取り直し"] == ("2", True) and l2[-1] == [k500],
-          f"取り直しが失敗した回で鍵を残した・起動し直した当番が取り直さない: exit {c1}/{c2} 記録 {l1}/{l2} 取り直し(回数, 拾えた) {r['取り直し']}")
-    code, ns, logged = r["承認"]
-    check(code == 0 and logged == [[k500]], f"承認され報告が届いた no_fix_needed の回で鍵を残さない: exit {code} 記録 {logged}")
-    for what in ("残り少ない・判定済み", "残り少ない・枠切れ"):
-        code, ns, logged = r[what]
-        check(code == 0 and not [m for m, ok in ns if not ok],
-              f"{what}: 残り30分未満の止まっていない工程の当番が、人に渡した・異常終了した: exit {code} {[m[:60] for m, ok in ns if not ok]}")
-    (c1, n1, _), (c2, n2, _) = r["残り少ない・枠切れ・止まった1"], r["残り少ない・枠切れ・止まった2"]
-    bad1, bad2 = [m for m, ok in n1 if not ok], [m for m, ok in n2 if not ok]
-    check(c1 == c2 == HANDED and len(bad1) == 1 and "既に2回" in bad1[0] and not bad2,
-          f"残り30分未満の止まった工程の枠切れの通知が1度だけでない: exit {c1}/{c2} 通知 {[m[:40] for m in bad1]} / {[m[:40] for m in bad2]}")
-    code, ns, _ = r["汚れ"]
-    check(code == HANDED and [m for m, ok in ns if not ok and "clean でない" in m],
-          f"作業ツリーが汚れていて何もしない当番が、起動し直させる終了値で終えた(同じ通知が重なる): exit {code} {[m[:40] for m, ok in ns]}")
 
 
 def test_http503_not_whywhy(tmp: Path):
@@ -17999,11 +17624,9 @@ def test_http503_not_whywhy(tmp: Path):
     check(any(not ok and m.startswith(summary) and "lantis-sidem" in m for m, ok in ns),
           f"まとめ: 新規0件・取得に失敗した系統の通知を人に出さない: {ns}")
     launched, ledger, ns, _ = r["混ざる"]
-    why, keys = reason_of(launched), keys_of(launched)
-    check(launched is not None and "columbia" in why and "lantis-sidem" not in why
-          and "collect:watch-unreadable:columbia:HTTP404" in keys and not any("lantis" in k for k in keys)
-          and not any("lantis-sidem" in a for a in ledger),
-          f"混ざる: 404 の失敗だけで当番を起こさない(503 の観測先を依頼・台帳に含めた): 鍵 {keys} 台帳 {ledger} 依頼 {why[-300:]!r}")
+    # 収集は止まっても号が出る工程なので、404 が混ざっても当番は起こさない(編集長 2026-11-06)。台帳には 404 の失敗だけを積む
+    check(launched is None and any("columbia" in a for a in ledger) and not any("lantis-sidem" in a for a in ledger),
+          f"混ざる: 収集で当番を起こした・台帳に 404 の失敗が無い・503 の観測先を台帳に含めた: 依頼 {reason_of(launched)[-200:]!r} 台帳 {ledger}")
     check(any(not ok and "lantis-sidem" in m and "columbia" in m for m, ok in ns),
           f"混ざる: 人へのまとめの通知から 503 の観測先を落とした: {ns}")
     # 当番の取り直し(--oncall-rerun)で、503 の観測先だけが読めないなら取り直しを失敗にしない。404 が混ざればそれで失敗にする
@@ -18142,13 +17765,14 @@ def test_http503_collect_run(tmp: Path):
         check(pend(st) == [new] and not st.get("_given_up") and new not in st.get("lantis-sidem", []),
               f"{what}: 本文が 503 の新着を未処理の列に残さない・諦めた・既読にした: 未処理 {pend(st)} 諦めた {st.get('_given_up')}")
     check(r["本文503・取り直し"][0] == 0, f"本文が 503 だけの当番の取り直しを失敗にした: exit {r['本文503・取り直し'][0]}")
+    # 収集は止まっても号が出る工程なので当番は起こさない(編集長 2026-11-06)。503 以外の失敗は台帳に積み、未処理の列に残す
     code, launched, ledger, _, st = r["本文404"]
-    check(launched and any("facts 化で読めなかった" in a for a in ledger) and any("新規0件" in a for a in ledger) and pend(st) == [new],
-          f"本文が 404 の新着で当番を起こさない・未処理の列に残さない: 起動 {launched} 台帳 {ledger} 未処理 {pend(st)}")
+    check(not launched and any("facts 化で読めなかった" in a for a in ledger) and any("新規0件" in a for a in ledger) and pend(st) == [new],
+          f"本文が 404 の新着で当番を起こした・台帳に積まない・未処理の列に残さない: 起動 {launched} 台帳 {ledger} 未処理 {pend(st)}")
     check(r["本文404・取り直し"][0] == 1, f"本文が 404 で読めない当番の取り直しを成功にした: exit {r['本文404・取り直し'][0]}")
     code, launched, ledger, _, st = r["本文503・時間切れ"]
-    check(launched and any("facts 化で読めなかった" in a and "出力が読めない" in a for a in ledger) and pend(st) == [new],
-          f"本文が 503 で facts 化が時間切れの収集が、当番を起こさない(503 が別の失敗を隠した): 起動 {launched} 台帳 {ledger} 未処理 {pend(st)}")
+    check(not launched and any("facts 化で読めなかった" in a and "出力が読めない" in a for a in ledger) and pend(st) == [new],
+          f"本文が 503 で facts 化が時間切れの収集が、台帳に積まない(503 が別の失敗を隠した)・当番を起こした: 起動 {launched} 台帳 {ledger} 未処理 {pend(st)}")
     check(r["本文503・時間切れ・取り直し"][0] == 1,
           f"本文が 503 で facts 化が時間切れの当番の取り直しを成功にした: exit {r['本文503・時間切れ・取り直し'][0]}")
     check(prompts and any("503" in p for p in prompts), f"本文の取得の失敗がモデルへの素材に載らない: {[p[-200:] for p in prompts[:1]]}")
@@ -21341,7 +20965,7 @@ def test_source_update_sessions(tmp: Path):
     check(got["blocked"] == "止まった", f"CLI の利用上限を答えの読めない回と取り違えた: {got['blocked']}")
     # claude の --json-schema に渡す schema のファイルは、どれも draft-07 以外の $schema を名乗らない(名乗ると CLI が起動しない)
     for f in ("schema/source-update-review.schema.json", "schema/assemble.schema.json", "schema/oncall-fix.schema.json",
-              "schema/oncall-accept.schema.json", "schema/oncall-integrate.schema.json", "prompts/review-schema.json"):
+              "schema/oncall-integrate.schema.json", "prompts/review-schema.json"):
         d = json.loads((repo / f).read_text(encoding="utf-8")).get("$schema", "http://json-schema.org/draft-07/schema#")
         check(d.rstrip("#") == "http://json-schema.org/draft-07/schema", f"claude の CLI が読めない $schema を名乗る: {f} {d}")
 
@@ -21713,8 +21337,8 @@ def test_units_bound_memory_and_report_failure(tmp: Path):
         os.environ["INVOCATION_ID"], os.environ["IMAS_SCRATCH"] = run_id, str(tmp / "scratch")
         pipelib._ESCALATED, pipelib.oncall_clis_blocked = False, lambda: []
         pipelib.ENV["ONCALL"] = "on"
-        pipelib.ANOMALIES[:] = ["[watch] 異常"]
-        pipelib.escalate("watch", "2026-10-27", "テスト", rerun=False)
+        pipelib.ANOMALIES[:] = ["[compose] 異常"]
+        pipelib.escalate("compose", "2026-10-27", "テスト", rerun=False)    # 当番を起こすのは組版・発行だけ
         handed = [r.get("escalated") for r in pipelib.unit_run_notes(run_id)]
     finally:
         (pipelib.subprocess.run, pipelib.shutil.which, inv, pipelib._ESCALATED, pipelib.oncall_clis_blocked, an, onc, scr) = saved
@@ -21734,7 +21358,10 @@ def test_units_bound_memory_and_report_failure(tmp: Path):
     unit = sd[sd.index("--unit") + 1] if "--unit" in sd else ""
     check(unit and "--slice=imas.slice" in sd and f"--property=OnFailure=imas-failure@{unit}.service" in sd,
           f"当番の unit を工程の slice の外で起動した・失敗の通知を付けない: {sd}")
-    check(handed == ["watch"], f"当番に渡したことを走行の記録に残さない(通知の unit が当番を重ねる): {handed}")
+    # 人に渡し終えた終了値では systemd に起動し直させない(同じ通知を重ねない)
+    check(f"--property=RestartPreventExitStatus={pipelib.ONCALL_HANDED_EXIT}" in sd and "--property=Restart=on-failure" in sd,
+          f"systemd の起動し直しを、人に渡し終えた終了値で止めない: {[x for x in sd if 'Restart' in x]}")
+    check(handed == ["compose"], f"当番に渡したことを走行の記録に残さない(通知の unit が当番を重ねる): {handed}")
 
 
 def test_collect_stage_order(tmp: Path):
@@ -22213,7 +21840,6 @@ def main() -> int:
     test_oncall_answer_reformat(tmp / "oar")
     test_oncall_session_waits(tmp / "osw")
     test_oncall_finished_rerun_none(tmp / "ofr")
-    test_oncall_judged_not_rejudged(tmp / "ojn")
     test_oncall_no_rerun_frees_lock_before_slot(tmp / "onrl")
     test_http503_not_whywhy(tmp / "h503")
     test_http503_collect_run(tmp / "h503c")
@@ -22398,7 +22024,8 @@ def main() -> int:
     test_oncall_fix_until_clean(tmp / "of")
     test_oncall_check_limits_follow_measure(tmp / "oclm")
     test_classify_retag_without_judge(tmp / "crwj")
-    test_oncall_report_concurrence(tmp / "orc")
+    test_oncall_pr_review(tmp / "opr")
+    test_oncall_paper_record(tmp / "orc")
     test_settled_drops_not_rewritten(tmp / "sd")
     test_rule_bench_cases()
     test_rule_bench_judges_shape(tmp / "rb")

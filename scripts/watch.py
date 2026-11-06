@@ -175,7 +175,7 @@ def main() -> int:
     problems += hand_backlog(today)
 
     if problems:
-        notify("watch", "異常検知(当番がなぜなぜして報告する):\n- " + "\n- ".join(problems), ok=False)
+        notify("watch", "異常検知(人が引き取る):\n- " + "\n- ".join(problems), ok=False)
         # 申告で終えない。原因まで遡り、コードや契約の欠陥なら当番が直す(監視は終わっているので再実行しない)。
         # 異常の発生日は今日(journal をその日から読む)、修正の取り込み先は生きている号の branch(今日の号は発行済みで無い)
         diagnose_anomalies("watch", today, rerun=False, edition=edition_date())
@@ -185,24 +185,16 @@ def main() -> int:
 
 
 def hand_backlog(today: str) -> list[str]:
-    """当番が「発行後に直す」として保管した指摘が残っていれば、**当番に直させる**(発行は終わっている昼の仕事)。
-    戻りは異常(渡せなかった・読めなかった)。
-    以前は人への覚え書きとして通知するだけで、直す担当がいなかった(2026-10-06: 9/30 からの7件が1週間手つかず。
-    編集長「なんで直すリストを直せてなかった?」)。渡せなければ異常にする(通知で終わらせない)。
-    取り込めたら当番が消し込み、取り込めなければ残って翌朝また渡る。"""
+    """当番のレビューの nit(保管)が残っていれば、件数を記録に出す。**当番には渡さない**(人が引き取る。編集長 2026-11-06:
+    nit を翌朝の当番の仕事にすると、「〜するとよい」1件が最大6往復の仕事になっていた)。戻りは異常(保管が壊れている)。"""
     try:
         import oncall
         todo = oncall.backlog_open()
         out = ([f"当番の保管(oncall-backlog)に壊れた行がある(行 {oncall.BACKLOG_BROKEN[:5]})。その指摘は誰にも渡らない"]
                if oncall.BACKLOG_BROKEN else [])
-        if not todo:
-            return out
-        handed = escalate(oncall.BACKLOG_STAGE, today, oncall.backlog_reason(todo), rerun=False, edition=edition_date(),
-                          extra_args=["--backlog-keys", *[r["key"] for r in todo]], ledger=False, restart=False)
-        if handed:
-            print(f"保管していた指摘 {len(todo)}件を当番に渡した", flush=True)
-            return out
-        return out + [f"保管していた指摘 {len(todo)}件を当番に渡せなかった(直す担当がいない): " + ", ".join(r["key"] for r in todo)]
+        if todo:
+            print(f"レビューの nit が {len(todo)}件残っている(人が引き取る。`python3 scripts/oncall.py --backlog` で一覧)", flush=True)
+        return out
     except Exception as e:      # noqa: BLE001 — 保管の読み取りで watch 全体を落とさない
         return [f"当番の保管(oncall-backlog)を読めない・当番に渡せない: {type(e).__name__}: {str(e)[:120]}"]
 

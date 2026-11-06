@@ -1,0 +1,62 @@
+{
+ "decisions": {
+  "sweet-soar-anniversary-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "重複",
+   "note": "変更点は公式グッズ事前販売の追加で、cg面の cg-apple-of-my-ai-goods-2026 が記事にした施策と同じ"
+  },
+  "poppin-planet-fan-art-surge-2026": {
+   "action": "article",
+   "angle": "POPPIN' PLANET公開後にファンのイラスト投稿が急増し、11月6日生まれの間中美里・周防桃子も公式動画で祝われた、界隈の盛り上がりをまとめる",
+   "purpose": "新情報",
+   "rank": "culture",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ファン創作と誕生日の祝福を1本のculture記事にする"
+  },
+  "imas-birthdays-2026-11-06": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "poppin-planet-fan-art-surge-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "記念日の盛り上がりとして、ファン面の1本に統合する。桃子のBirthdayガシャはmillion面が記事にしている"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "general-poppin-planet-fan-art-surge-2026",
+    "brand": "general",
+    "rank": "culture",
+    "angle": "POPPIN' PLANET公開後にファンのイラスト投稿が急増し、11月6日生まれの間中美里・周防桃子も公式動画で祝われた、界隈の盛り上がりをまとめる",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "poppin-planet-fan-art-surge-2026",
+    "candidate_ids": [
+     "202611060418-grok-41",
+     "202611060418-grok-77"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "sweet-soar-anniversary-2026",
+    "reason": "重複",
+    "note": "変更点は公式グッズ事前販売の追加で、cg面の cg-apple-of-my-ai-goods-2026 が記事にした施策と同じ"
+   }
+  ],
+  "cross_brand": []
+ }
+}

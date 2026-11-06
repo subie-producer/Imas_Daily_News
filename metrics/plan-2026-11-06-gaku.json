@@ -1,0 +1,586 @@
+{
+ "decisions": {
+  "shiny-kawaii-season-chibiguru-2027": {
+   "action": "article",
+   "angle": "バンプレストの学マス倉本千奈・篠澤広ESPRESTOフィギュアが、篠澤広は11月12日、倉本千奈は11月27日からクレーンゲームに登場し、初衣装フィギュアが全員そろう",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "キーはシャニマス風だが内容は学マス"
+  },
+  "gkmas-lawson-2026-campaign": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/5記事で特典・商品とも既報。開始の11/10は3日以内でない"
+  },
+  "gaku-chinapay-gacha-campaign-2026-11": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "応募は11/5 23:59で終了済み。千奈ガシャ開始は別記事に含む"
+  },
+  "eclipse-light-animate-fair-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "品目欄の変化はGOLD RUSH(7)追加として11/5記事で既報。ほかは表示の差"
+  },
+  "gaku-asari-produce-seminar-2026-10": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "変更後はSNS数値の羅列で、読者に関わる変更なし"
+  },
+  "kitamura-gakuen-new-year-cards-2027": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "変更前との差が示されず、申込条件の変更とは言えない。11/5記事で既報"
+  },
+  "gaku-lawson-campaign-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "3点購入でマルチファイルの内容は11/5記事に既出"
+  },
+  "gaku-garakuta-road-recording-pv-2026": {
+   "action": "article",
+   "angle": "13名全員のH.I.F編実装を記念し、ガラクタロードの演奏収録の様子を撮影した特別版PVが公開された",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-platinum-gasha-update-2026-12": {
+   "action": "article",
+   "angle": "プラチナガシャのラインナップが12月26日11時に更新される予定",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "発表のため単独の記事"
+  },
+  "gaku-2-5th-eve-login-bonus-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "anniversary-login-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-gold-rush-vol8-serial-delay-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gold-rush-vol8-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "特装版シリアルコードは入力準備が未了、復旧後に公式Xで告知"
+  },
+  "gaku-gold-rush-vol8-release-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gold-rush-vol8-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-temari-fan-ad-tour-final-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "同人・ファン主催",
+   "note": "横浜駅の応援広告はファン企画と見られ、公式の告知でない"
+  },
+  "gaku-hatsuboshi-fes-vol7-p-idols-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "garakuta-china-misuzu-gacha-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-hatsuboshi-fes-vol6-ameyo-tsubame-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gacha-garakuta-road-ameya-2026-live",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-hatsuboshi-radio-tour-final-review-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "次回配信は11/4当日分で過ぎている。感想回のおたより締切は11/5記事で既報"
+  },
+  "chinapay-campaign-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "応募は11/5 23:59で終了済み"
+  },
+  "gakumas-cosplay-2026-11": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "ファン創作は general 面の culture で扱う"
+  },
+  "gakumas-fan-manga-2026-11": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "ファン創作は general 面の culture で扱う"
+  },
+  "curtain-damashii-new-goods-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "カーテン魂の新商品は10/16・10/26記事で既報。今日のトリガーなし"
+  },
+  "anniversary-login-2026": {
+   "action": "article",
+   "angle": "2.5thアニバーサリー前夜祭ログインボーナスが本日11時に始まり、11月16日4:59まで1連(SSR確定)か5連(出現率10倍)のチケットを選んで受け取れる",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "開始が本日"
+  },
+  "garakuta-china-misuzu-gacha-2026": {
+   "action": "article",
+   "angle": "ガラクタロードvol.7の千奈・美鈴ガシャが本日11時に始まり、11月16日9:59まで。SSRサポートカード『みんなも読んでみてっ！』が登場する",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 70,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ開始の主題を統合"
+  },
+  "gold-rush-vol8-2026": {
+   "action": "article",
+   "angle": "GOLD RUSH第8巻が本日発売。特装版に沖乃ゆう描き下ろし名刺が付くが、封入シリアルコードは入力準備が遅れ、復旧後に公式Xで知らせる",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "発売と入力遅延を1記事に"
+  },
+  "hatsuboshi-store-cheer-2026": {
+   "action": "article",
+   "angle": "ハツボシストア応援部のグッズ販売が本日始まり、団服のオンライン受注と店頭先行販売、咲季・篠澤広のポスター展示も同日に始まる",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ポスター展示の2主題を統合"
+  },
+  "garakuta-tsubame-gacha-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gacha-garakuta-road-ameya-2026-live",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "facts は雨夜燕ガシャ(本日10:59終了)の内容。開始側は千奈・美鈴の記事で扱う"
+  },
+  "gacha-garakuta-road-ameya-2026-live": {
+   "action": "article",
+   "angle": "雨夜燕のガラクタロードガシャ(SSR出現率1.5倍)が本日10:59に終了する、最後に引ける日",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "燕ガシャ関連の複数主題を統合"
+  },
+  "gakumas-live-tour-final-collab-drink-2026": {
+   "action": "article",
+   "angle": "LIVE TOUR -標- ファイナルのコラボドリンクがKアリーナ横浜で本日17時から販売され、注文者に限定トレーディングカードをランダムで渡す",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "販売は6〜8日"
+  },
+  "gaku-hatsuboshi-store-saki-poster-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "hatsuboshi-store-cheer-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "hatsuboshi-store-shinozawa-poster-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "hatsuboshi-store-cheer-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-asari-produce-seminar-2026": {
+   "action": "article",
+   "angle": "あさり先生のプロデュースゼミは11月9日10:59まで、締切まであと3日",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "締切3日前。素材8件"
+  },
+  "gaku-amayo-tsubame-training-acrylic-stand-2027": {
+   "action": "article",
+   "angle": "雨夜燕トレーニング服の特大アクスタ予約は、11月9日以降キャンセルできなくなる(3日前)",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "キャンセル期限は続報予約の note に基づく"
+  },
+  "gaku-garakuta-gacha-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gacha-garakuta-road-ameya-2026-live",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gkmas-misuzu-garakuta-present-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "garakuta-china-misuzu-gacha-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "プレゼント応募は11/4で終了。美鈴ガシャ開始の素材のみ使う"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "gaku-shiny-kawaii-season-chibiguru-2027",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "バンプレストの学マス倉本千奈・篠澤広ESPRESTOフィギュアが、篠澤広は11月12日、倉本千奈は11月27日からクレーンゲームに登場し、初衣装フィギュアが全員そろう",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "shiny-kawaii-season-chibiguru-2027",
+    "candidate_ids": [
+     "202611051234-watch-2"
+    ]
+   },
+   {
+    "slug": "gaku-garakuta-road-recording-pv-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "13名全員のH.I.F編実装を記念し、ガラクタロードの演奏収録の様子を撮影した特別版PVが公開された",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "gaku-garakuta-road-recording-pv-2026",
+    "candidate_ids": [
+     "202611060418-grok-42"
+    ]
+   },
+   {
+    "slug": "gaku-platinum-gasha-update-2026-12",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "プラチナガシャのラインナップが12月26日11時に更新される予定",
+    "purpose": "新情報",
+    "lead_score": 5,
+    "dedup_key": "gaku-platinum-gasha-update-2026-12",
+    "candidate_ids": [
+     "202611060418-grok-43"
+    ]
+   },
+   {
+    "slug": "gaku-anniversary-login-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "2.5thアニバーサリー前夜祭ログインボーナスが本日11時に始まり、11月16日4:59まで1連(SSR確定)か5連(出現率10倍)のチケットを選んで受け取れる",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "anniversary-login-2026",
+    "candidate_ids": [
+     "sched-2026-11-06-anniversary-login-2026-開始",
+     "202611060418-grok-44"
+    ]
+   },
+   {
+    "slug": "gaku-garakuta-china-misuzu-gacha-2026",
+    "brand": "gaku",
+    "rank": "medium",
+    "angle": "ガラクタロードvol.7の千奈・美鈴ガシャが本日11時に始まり、11月16日9:59まで。SSRサポートカード『みんなも読んでみてっ！』が登場する",
+    "purpose": "期日の知らせ",
+    "lead_score": 70,
+    "dedup_key": "garakuta-china-misuzu-gacha-2026",
+    "candidate_ids": [
+     "sched-2026-11-06-garakuta-china-misuzu-gacha-2026-開始",
+     "202611060418-grok-48",
+     "sched-2026-11-06-gkmas-misuzu-garakuta-present-2026-開始"
+    ]
+   },
+   {
+    "slug": "gaku-gold-rush-vol8-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "GOLD RUSH第8巻が本日発売。特装版に沖乃ゆう描き下ろし名刺が付くが、封入シリアルコードは入力準備が遅れ、復旧後に公式Xで知らせる",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "gold-rush-vol8-2026",
+    "candidate_ids": [
+     "sched-2026-11-06-gold-rush-vol8-2026-発売",
+     "202611060418-grok-45",
+     "202611060418-grok-46"
+    ]
+   },
+   {
+    "slug": "gaku-hatsuboshi-store-cheer-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "ハツボシストア応援部のグッズ販売が本日始まり、団服のオンライン受注と店頭先行販売、咲季・篠澤広のポスター展示も同日に始まる",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "hatsuboshi-store-cheer-2026",
+    "candidate_ids": [
+     "sched-2026-11-06-hatsuboshi-store-cheer-2026-発売",
+     "sched-2026-11-06-gaku-hatsuboshi-store-saki-poster-2026-開始",
+     "sched-2026-11-06-hatsuboshi-store-shinozawa-poster-2026-開始"
+    ]
+   },
+   {
+    "slug": "gaku-gacha-garakuta-road-ameya-2026-live",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "雨夜燕のガラクタロードガシャ(SSR出現率1.5倍)が本日10:59に終了する、最後に引ける日",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "gacha-garakuta-road-ameya-2026-live",
+    "candidate_ids": [
+     "sched-2026-11-06-gacha-garakuta-road-ameya-2026-live-終了",
+     "sched-2026-11-06-gacha-garakuta-road-ameya-2026-live-終了-src1",
+     "sched-2026-11-06-gacha-garakuta-road-ameya-2026-live-締切",
+     "202611060418-grok-52",
+     "sched-2026-11-06-garakuta-tsubame-gacha-2026-開始",
+     "sched-2026-11-06-garakuta-tsubame-gacha-2026-開始-src1",
+     "sched-2026-11-06-gaku-garakuta-gacha-2026-終了"
+    ]
+   },
+   {
+    "slug": "gaku-gakumas-live-tour-final-collab-drink-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "LIVE TOUR -標- ファイナルのコラボドリンクがKアリーナ横浜で本日17時から販売され、注文者に限定トレーディングカードをランダムで渡す",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "gakumas-live-tour-final-collab-drink-2026",
+    "candidate_ids": [
+     "sched-2026-11-06-gakumas-live-tour-final-collab-drink-2026-開始"
+    ]
+   },
+   {
+    "slug": "gaku-asari-produce-seminar-2026",
+    "brand": "gaku",
+    "rank": "medium",
+    "angle": "あさり先生のプロデュースゼミは11月9日10:59まで、締切まであと3日",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "gaku-asari-produce-seminar-2026",
+    "candidate_ids": [
+     "sched-2026-11-06-gaku-asari-produce-seminar-2026-締切前",
+     "sched-2026-11-06-gaku-asari-produce-seminar-2026-締切前-src1",
+     "sched-2026-11-06-gaku-asari-produce-seminar-2026-締切前-src2",
+     "sched-2026-11-06-gaku-asari-produce-seminar-2026-締切前-src3",
+     "sched-2026-11-06-gaku-asari-produce-seminar-2026-締切前-src4",
+     "sched-2026-11-06-gaku-asari-produce-seminar-2026-締切前-src5",
+     "sched-2026-11-06-gaku-asari-produce-seminar-2026-締切前-src6",
+     "sched-2026-11-06-gaku-asari-produce-seminar-2026-締切前-src7"
+    ]
+   },
+   {
+    "slug": "gaku-amayo-tsubame-training-acrylic-stand-2027",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "雨夜燕トレーニング服の特大アクスタ予約は、11月9日以降キャンセルできなくなる(3日前)",
+    "purpose": "期日の知らせ",
+    "lead_score": 15,
+    "dedup_key": "gaku-amayo-tsubame-training-acrylic-stand-2027",
+    "candidate_ids": [
+     "sched-2026-11-06-gaku-amayo-tsubame-training-acrylic-stand-2027-締切前"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "gkmas-lawson-2026-campaign",
+    "reason": "既報",
+    "note": "11/5記事で特典・商品とも既報。開始の11/10は3日以内でない"
+   },
+   {
+    "dedup_key": "gaku-chinapay-gacha-campaign-2026-11",
+    "reason": "その他",
+    "note": "応募は11/5 23:59で終了済み。千奈ガシャ開始は別記事に含む"
+   },
+   {
+    "dedup_key": "eclipse-light-animate-fair-2026",
+    "reason": "既報",
+    "note": "品目欄の変化はGOLD RUSH(7)追加として11/5記事で既報。ほかは表示の差"
+   },
+   {
+    "dedup_key": "gaku-asari-produce-seminar-2026-10",
+    "reason": "その他",
+    "note": "変更後はSNS数値の羅列で、読者に関わる変更なし"
+   },
+   {
+    "dedup_key": "kitamura-gakuen-new-year-cards-2027",
+    "reason": "既報",
+    "note": "変更前との差が示されず、申込条件の変更とは言えない。11/5記事で既報"
+   },
+   {
+    "dedup_key": "gaku-lawson-campaign-2026",
+    "reason": "既報",
+    "note": "3点購入でマルチファイルの内容は11/5記事に既出"
+   },
+   {
+    "dedup_key": "gaku-temari-fan-ad-tour-final-2026",
+    "reason": "同人・ファン主催",
+    "note": "横浜駅の応援広告はファン企画と見られ、公式の告知でない"
+   },
+   {
+    "dedup_key": "gaku-hatsuboshi-radio-tour-final-review-2026",
+    "reason": "既報",
+    "note": "次回配信は11/4当日分で過ぎている。感想回のおたより締切は11/5記事で既報"
+   },
+   {
+    "dedup_key": "chinapay-campaign-2026",
+    "reason": "その他",
+    "note": "応募は11/5 23:59で終了済み"
+   },
+   {
+    "dedup_key": "gakumas-cosplay-2026-11",
+    "reason": "面違い",
+    "note": "ファン創作は general 面の culture で扱う"
+   },
+   {
+    "dedup_key": "gakumas-fan-manga-2026-11",
+    "reason": "面違い",
+    "note": "ファン創作は general 面の culture で扱う"
+   },
+   {
+    "dedup_key": "curtain-damashii-new-goods-2026",
+    "reason": "既報",
+    "note": "カーテン魂の新商品は10/16・10/26記事で既報。今日のトリガーなし"
+   }
+  ],
+  "cross_brand": []
+ }
+}

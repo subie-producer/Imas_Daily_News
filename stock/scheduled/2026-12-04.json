@@ -215,5 +215,36 @@
   "deadline": "2026-11-05",
   "link_from": "https://x.com/imas_official/status/2116128746352836732",
   "src_candidate_id": "202611010230-grok-113"
+ },
+ {
+  "id": "sched-2026-12-04-million-arc-flags-pop-up-2026-11-開幕",
+  "dedup_key": "million-arc-flags-pop-up-2026-11",
+  "brand": "million",
+  "subject": "ARC-FLAGS POP UP CORNER コトブキヤ日本橋 開幕",
+  "kind": "開幕",
+  "note": "日本橋1Fで開幕。グッズ購入や等身大パネルを見に行ける",
+  "reserved_on": "2026-11-06",
+  "occurs_on": "2026-12-04",
+  "title": "ミリオン「ARC-FLAGS POP UP CORNER」（コトブキヤ秋葉原館・日本橋）",
+  "url": "https://idolmaster-official.jp/news/01_20267",
+  "source_type": "公式",
+  "facts": [
+   "開催場所・期間（コトブキヤ秋葉原館1F）: 11月6日（金）〜11月23日（月・祝）",
+   "開催場所・期間（コトブキヤ日本橋1F）: 12月4日（金）〜12月20日（日）",
+   "購入特典: 開催期間中、対象商品を税込2,000円お買い上げごとにランダムでポストカードを1枚プレゼント",
+   "購入特典の注意: レシートの合算は不可、特典はなくなり次第終了、絵柄は選べない、通販は対象外",
+   "描き下ろしイラストを使用したグッズと等身大パネルの展示",
+   "サジタリアス（所恵美、舞浜歩、真壁瑞希）が旗を掲げて玉座に座る姿",
+   "アクアリウム（北上麗花、ジュリア、高山紗代子）がミニキャラとして登場",
+   "特設サイト: https://www.kotobukiya.co.jp/event/detail/1357/",
+   "参加したら #ミリオンコラボ現場視察 をつけて報告",
+   "エンゲージメント: 中",
+   "言及アイドル: 所恵美、舞浜歩、真壁瑞希、北上麗花、ジュリア、高山紗代子"
+  ],
+  "via": "watch",
+  "verify": "confirmed",
+  "event_date": "2026-11-06",
+  "deadline": "2026-12-20",
+  "src_candidate_id": "202611051838-watch-9"
  }
 ]

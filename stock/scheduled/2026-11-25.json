@@ -942,5 +942,51 @@
   "deadline": "2026-11-12",
   "link_from": "https://x.com/harunamiP/status/2117987505643692102",
   "src_candidate_id": "202611050230-grok-9"
+ },
+ {
+  "id": "sched-2026-11-25-derepa-cd-jacket-2026-発売",
+  "dedup_key": "derepa-cd-jacket-2026",
+  "brand": "cg",
+  "subject": "でれぱ 拾年の宴＆デレパの神曲 CD発売",
+  "kind": "発売",
+  "note": "CDが発売され、予約分の発送も始まる",
+  "reserved_on": "2026-11-06",
+  "occurs_on": "2026-11-25",
+  "title": "でれぱCDジャケットイラスト公開",
+  "url": "https://x.com/imas_columbia/status/2117972633627337104",
+  "source_type": "準公式",
+  "facts": [
+   "CD「THE IDOLM@STER CINDERELLA PARTY! M@STER ～でれぱ 拾年の宴＆デレパの神曲～」のジャケットを公開。",
+   "くろごま描き下ろしで、本田未央・多田李衣菜が描かれている。",
+   "ブックレットと特典には主宰も登場する。",
+   "リンク: https://shop.columbia.jp/shop/e/e1125derepa/",
+   "エンゲージメント: 中",
+   "言及アイドル: 本田未央、多田李衣菜"
+  ],
+  "via": "grok",
+  "verify": "unconfirmed",
+  "src_candidate_id": "202611060418-grok-74"
+ },
+ {
+  "id": "sched-2026-11-25-derepa-cd-jacket-2026-発売-src1",
+  "dedup_key": "derepa-cd-jacket-2026",
+  "brand": "cg",
+  "subject": "でれぱ 拾年の宴＆デレパの神曲 CD発売",
+  "kind": "発売",
+  "note": "CDが発売され、予約分の発送も始まる",
+  "reserved_on": "2026-11-06",
+  "occurs_on": "2026-11-25",
+  "title": "出典元表記「~でれぱ 拾年の宴＆デレパの神曲~コロムビアミュージックショップ抽選キャンペーン」",
+  "url": "https://shop.columbia.jp/shop/e/e1125derepa/",
+  "source_type": "準公式",
+  "facts": [
+   "CDの発売日は2026年11月25日。",
+   "CDの価格は4,000円（税込）。CDのみを予約した場合、2026年11月25日（発売日）に発送。"
+  ],
+  "via": "verified_fact",
+  "verify": "unconfirmed",
+  "src_candidate_id": "202611060418-grok-74",
+  "companion_of": "sched-2026-11-25-derepa-cd-jacket-2026-発売",
+  "src_dedup_key": "derepa-cd-jacket-2026"
  }
 ]

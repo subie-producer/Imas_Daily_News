@@ -38,5 +38,73 @@
   "verify": "confirmed",
   "src_candidate_id": "202610010223-grok-51",
   "event_date": "2026-11-12"
+ },
+ {
+  "id": "sched-2026-12-03-tours-rhythm-live-festival-qualifier-maintenance-2027-終了",
+  "dedup_key": "tours-rhythm-live-festival-qualifier-maintenance-2027",
+  "brand": "joint",
+  "subject": "RHYTHM LIVE FESTIVAL 2027 予選・エントリー終了",
+  "kind": "終了",
+  "note": "25:59(翌1:59)が予選・エントリーの最終期限。駆け込みで参加できる最後の日",
+  "reserved_on": "2026-11-06",
+  "title": "ツアマスの緊急メンテナンスとRHYTHM LIVE FESTIVAL2027予選期間変更の可能性",
+  "url": "https://x.com/TOURS_imas/status/2118181385903239301",
+  "source_type": "公式",
+  "facts": [
+   "ツアマス公式は、現在ALL.Netの緊急メンテナンスが実施中と案内した。",
+   "今後の状況によってはRHYTHM LIVE FESTIVAL2027の予選期間を変更する可能性がある。",
+   "詳細はメンテナンス終了の見通しが確定次第、改めて知らせるとしている。",
+   "リンク: https://ALL.Net",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202611060418-grok-65"
+ },
+ {
+  "id": "sched-2026-12-03-tours-rhythm-live-festival-qualifier-maintenance-2027-終了-src1",
+  "dedup_key": "tours-rhythm-live-festival-qualifier-maintenance-2027",
+  "brand": "joint",
+  "subject": "RHYTHM LIVE FESTIVAL 2027 予選・エントリー終了",
+  "kind": "終了",
+  "note": "25:59(翌1:59)が予選・エントリーの最終期限。駆け込みで参加できる最後の日",
+  "reserved_on": "2026-11-06",
+  "title": "ツアマスで周防桃子の誕生日を告知、関連イベントは開催困難と案内",
+  "url": "https://x.com/TOURS_imas/status/2118357922245714150",
+  "source_type": "公式",
+  "facts": [
+   "ツアマス公式は11月6日を周防桃子の誕生日として祝った。",
+   "ALL.Netの緊急メンテナンスの影響で、誕生日コミュなどのイベント開催が難しい状況と案内した。",
+   "今後の対応は、メンテナンス終了の見通しが立ち次第、改めて知らせるとしている。",
+   "エンゲージメント: 中",
+   "言及アイドル: 周防桃子"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "event_date": "2026-11-06",
+  "src_candidate_id": "202611060418-grok-63",
+  "companion_of": "sched-2026-12-03-tours-rhythm-live-festival-qualifier-maintenance-2027-終了",
+  "src_dedup_key": "tours-momoko-birthday-maintenance-2026"
+ },
+ {
+  "id": "sched-2026-12-03-tours-rhythm-live-festival-qualifier-maintenance-2027-終了-src2",
+  "dedup_key": "tours-rhythm-live-festival-qualifier-maintenance-2027",
+  "brand": "joint",
+  "subject": "RHYTHM LIVE FESTIVAL 2027 予選・エントリー終了",
+  "kind": "終了",
+  "note": "25:59(翌1:59)が予選・エントリーの最終期限。駆け込みで参加できる最後の日",
+  "reserved_on": "2026-11-06",
+  "title": "アイドルマスター TOURS公式サイト「公式大会 RHYTHM LIVE FESTIVAL 2027」",
+  "url": "https://bandainamco-am.co.jp/am/vg/idolmaster-tours/rhythmlivefestival2027/",
+  "source_type": "公式",
+  "facts": [
+   "RHYTHM LIVE FESTIVAL 2027公式大会ページに掲載された予選日程は2026年11月12日7時～12月3日25時59分。",
+   "公式大会ページに掲載されたエントリー期間は2026年10月29日15時～12月3日25時59分。大会エントリーにはバンダイナムコIDの登録と『アイドルマスター TOURS』マイページへの登録が必要。"
+  ],
+  "via": "verified_fact",
+  "verify": "unconfirmed",
+  "src_candidate_id": "202611060418-grok-65",
+  "companion_of": "sched-2026-12-03-tours-rhythm-live-festival-qualifier-maintenance-2027-終了",
+  "src_dedup_key": "tours-rhythm-live-festival-qualifier-maintenance-2027"
  }
 ]

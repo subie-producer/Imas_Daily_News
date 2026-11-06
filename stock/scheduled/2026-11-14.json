@@ -1332,5 +1332,51 @@
   "via": "grok",
   "verify": "confirmed",
   "src_candidate_id": "202611050230-grok-44"
+ },
+ {
+  "id": "sched-2026-11-14-hangetsu-deaetara-revival-ticket-2026-結果",
+  "dedup_key": "hangetsu-deaetara-revival-ticket-2026",
+  "brand": "765",
+  "subject": "「はんげつであえたら」先行抽選の結果発表",
+  "kind": "結果",
+  "note": "13時に当落が発表され、入金も始まる",
+  "reserved_on": "2026-11-06",
+  "occurs_on": "2026-11-14",
+  "title": "菊地真・萩原雪歩 twin live「はんげつであえたら」現地チケット締切告知",
+  "url": "https://x.com/imas_official/status/2118297274384044125",
+  "source_type": "公式",
+  "facts": [
+   "菊地真・萩原雪歩 twin live「はんげつであえたら」の現地チケット締切まで、投稿時点であと3日と告知された。",
+   "公式サイトとして https://idolmaster-official.jp/mainte/index.html が案内された。",
+   "チケットページとして https://asobiticket2.asobistore.jp/receptions/d0d5822a-deb6-46fa-b2ab-19b2fedb592c が案内された。",
+   "リンク: https://idolmaster-official.jp/mainte/index.html",
+   "リンク: https://asobiticket2.asobistore.jp/receptions/d0d5822a-deb6-46fa-b2ab-19b2fedb592c",
+   "エンゲージメント: 中",
+   "言及アイドル: 菊地真、萩原雪歩"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202611060418-grok-12"
+ },
+ {
+  "id": "sched-2026-11-14-hangetsu-deaetara-revival-ticket-2026-結果-src1",
+  "dedup_key": "hangetsu-deaetara-revival-ticket-2026",
+  "brand": "765",
+  "subject": "「はんげつであえたら」先行抽選の結果発表",
+  "kind": "結果",
+  "note": "13時に当落が発表され、入金も始まる",
+  "reserved_on": "2026-11-06",
+  "occurs_on": "2026-11-14",
+  "title": "ASOBI TICKET「xR LIVE REVIVAL アソビストア一般会員先行」(2026年10月29日更新)",
+  "url": "https://asobiticket2.asobistore.jp/receptions/d0d5822a-deb6-46fa-b2ab-19b2fedb592c",
+  "source_type": "公式",
+  "facts": [
+   "結果発表は2026年11月14日(土)13時。入金期間は11月14日(土)13時から11月18日(水)23時59分まで。"
+  ],
+  "via": "verified_fact",
+  "verify": "unconfirmed",
+  "src_candidate_id": "202611060418-grok-12",
+  "companion_of": "sched-2026-11-14-hangetsu-deaetara-revival-ticket-2026-結果",
+  "src_dedup_key": "hangetsu-deaetara-revival-ticket-2026"
  }
 ]

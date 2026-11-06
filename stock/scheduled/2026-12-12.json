@@ -797,5 +797,52 @@
   "src_candidate_id": "update-23fb268bd75f",
   "companion_of": "sched-2026-12-12-xr-live-revival-2026-presale-extension-開幕",
   "src_dedup_key": "xr-live-revival-asobistore-general-advance-2026"
+ },
+ {
+  "id": "sched-2026-12-12-hangetsu-deaetara-revival-ticket-2026-開幕",
+  "dedup_key": "hangetsu-deaetara-revival-ticket-2026",
+  "brand": "765",
+  "subject": "「はんげつであえたら」大阪・オリックス劇場公演",
+  "kind": "開幕",
+  "note": "3公演(友藍・悲藍・純藍)が行われる公演日",
+  "reserved_on": "2026-11-06",
+  "occurs_on": "2026-12-12",
+  "title": "菊地真・萩原雪歩 twin live「はんげつであえたら」現地チケット締切告知",
+  "url": "https://x.com/imas_official/status/2118297274384044125",
+  "source_type": "公式",
+  "facts": [
+   "菊地真・萩原雪歩 twin live「はんげつであえたら」の現地チケット締切まで、投稿時点であと3日と告知された。",
+   "公式サイトとして https://idolmaster-official.jp/mainte/index.html が案内された。",
+   "チケットページとして https://asobiticket2.asobistore.jp/receptions/d0d5822a-deb6-46fa-b2ab-19b2fedb592c が案内された。",
+   "リンク: https://idolmaster-official.jp/mainte/index.html",
+   "リンク: https://asobiticket2.asobistore.jp/receptions/d0d5822a-deb6-46fa-b2ab-19b2fedb592c",
+   "エンゲージメント: 中",
+   "言及アイドル: 菊地真、萩原雪歩"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202611060418-grok-12"
+ },
+ {
+  "id": "sched-2026-12-12-hangetsu-deaetara-revival-ticket-2026-開幕-src1",
+  "dedup_key": "hangetsu-deaetara-revival-ticket-2026",
+  "brand": "765",
+  "subject": "「はんげつであえたら」大阪・オリックス劇場公演",
+  "kind": "開幕",
+  "note": "3公演(友藍・悲藍・純藍)が行われる公演日",
+  "reserved_on": "2026-11-06",
+  "occurs_on": "2026-12-12",
+  "title": "ASOBI TICKET「xR LIVE REVIVAL アソビストア一般会員先行」(2026年10月29日更新)",
+  "url": "https://asobiticket2.asobistore.jp/receptions/d0d5822a-deb6-46fa-b2ab-19b2fedb592c",
+  "source_type": "公式",
+  "facts": [
+   "申込から当落発表までにアソビストア会員を退会すると抽選対象外となる。公演は大阪・オリックス劇場で、2026年12月12日(土)に第一公演「～友藍～」（開場11時・開演12時）、第二公演「～悲藍～」（開場14時30分・開演15時30分）、第三公演「～純藍～」（開場18時・開演19時）を開催する。",
+   "3公演通し券は『はんげつであえたら』の3公演に参加できる。受付ページではシステム上、2026年12月12日(土)19時開演の公演のみ表示される。"
+  ],
+  "via": "verified_fact",
+  "verify": "unconfirmed",
+  "src_candidate_id": "202611060418-grok-12",
+  "companion_of": "sched-2026-12-12-hangetsu-deaetara-revival-ticket-2026-開幕",
+  "src_dedup_key": "hangetsu-deaetara-revival-ticket-2026"
  }
 ]

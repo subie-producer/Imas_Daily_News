@@ -1,0 +1,317 @@
+{
+ "decisions": {
+  "million-seasonal-snapshot-2026-02-valentine": {
+   "action": "article",
+   "angle": "SEASONAL SNAPSHOT(2月バレンタイン)の星井美希・島原エレナのシーズナルBOXが、アソビストアで11月22日まで受注中",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "million-arc-flags-pop-up-2026-11": {
+   "action": "article",
+   "angle": "『ARC-FLAGS POP UP CORNER』が本日コトブキヤ秋葉原館で開幕。等身大パネル展示、ポストカード特典(通販対象外)、日本橋は12月4日から",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "開幕当日。続報予約の2件もここに統合"
+  },
+  "hinata-good-apple-day-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "いいりんごの日の帽子投稿のみで、読者が取る行動のある新情報が無い(未確認)。culture は general 面のみ"
+  },
+  "million-premium-pickup-sr-gacha-2026-11": {
+   "action": "article",
+   "angle": "SRのみ出現の新シリーズ「プレミアムピックアップSRガシャ」開催。春香・千鶴・美也・やよいの限定SRが登場",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "終了日は素材に無く、校閲で確認"
+  },
+  "momoko-birthday-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "momoko-birthday-gasha-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "誕生日の呼びかけ投稿。桃子誕生日施策の記事に統合"
+  },
+  "momoko-birthday-gasha-2026": {
+   "action": "article",
+   "angle": "周防桃子の誕生日(11/6)に『Birthdayガシャ』と『Birthdayセット2026』が登場。衣装[マイオンリーフィットネス]やドアデコ・いろどりパネルが付く",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "誕生日コミュのメンテ影響は合同面の記事。本記事はガシャとセットのみ"
+  },
+  "momoko-birthday-set-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "momoko-birthday-gasha-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ誕生日施策。セットの内容を同記事に統合"
+  },
+  "million-platinum-starchune-yorutoakari-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-platinum-star-tune-yoruto-akari-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じイベント。ショートMV情報は既報"
+  },
+  "momoko-birthday-fanart-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人の SNS 投稿は単体で記事にしない。culture は general 面のみ"
+  },
+  "million-platinum-star-tune-yoruto-akari-2026": {
+   "action": "article",
+   "angle": "プラチナスターチューン「夜と、明かりと。」は明日11月7日20時59分まで。最終日前に報酬カードやガシャを確かめられる",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "当日のトリガー=終了が1日後。既報の折り返し内容は繰り返さない"
+  },
+  "million-kyomaf-after-sales-2026": {
+   "action": "article",
+   "angle": "京まふ2026のミリオンライブ POP UP SHOP商品がTHEキャラで事後通販。くのいちverのグッズなど、発送は2027年1月下旬以降",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "carried。受付期間は素材に無く、校閲で確認"
+  },
+  "kotobukiya-arcflags-popup-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-arc-flags-pop-up-2026-11",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ催しの開幕の続報予約"
+  },
+  "million-arc-flags-pop-up-corner-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-arc-flags-pop-up-2026-11",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ催しの開幕の続報予約"
+  },
+  "million-theater-talk-party-vol-68-2026": {
+   "action": "article",
+   "angle": "THEATER TALK PARTY☆ Vol.68のイベントショップ交換は11月9日14時59分まで、期限まで3日",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "イベントは終了済みだが交換の手続きが期限まで可能"
+  },
+  "million-yoru-to-akari-door-deco-panel-sets-2026": {
+   "action": "article",
+   "angle": "莉緒・このみの「夜と、明かりと。」ドアデコ／いろどりパネルセットは11月9日14時59分で販売終了、あと3日",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "購入の行動が別なのでイベント終了記事とは分ける"
+  },
+  "million-second-hairstyle-my-brand-glasses-2026": {
+   "action": "article",
+   "angle": "セカンドヘアスタイルガシャ～myブランド編 with glasses～の律子・紗代子SSRは11月9日14時59分まで、あと3日",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "million-seasonal-snapshot-2026-02-valentine",
+    "brand": "million",
+    "rank": "small",
+    "angle": "SEASONAL SNAPSHOT(2月バレンタイン)の星井美希・島原エレナのシーズナルBOXが、アソビストアで11月22日まで受注中",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "million-seasonal-snapshot-2026-02-valentine",
+    "candidate_ids": [
+     "202611051838-watch-0",
+     "202611060418-grok-26"
+    ]
+   },
+   {
+    "slug": "million-arc-flags-pop-up-2026-11",
+    "brand": "million",
+    "rank": "medium",
+    "angle": "『ARC-FLAGS POP UP CORNER』が本日コトブキヤ秋葉原館で開幕。等身大パネル展示、ポストカード特典(通販対象外)、日本橋は12月4日から",
+    "purpose": "新情報",
+    "lead_score": 30,
+    "dedup_key": "million-arc-flags-pop-up-2026-11",
+    "candidate_ids": [
+     "202611051838-watch-9",
+     "sched-2026-11-06-kotobukiya-arcflags-popup-2026-開幕",
+     "sched-2026-11-06-million-arc-flags-pop-up-corner-2026-開幕"
+    ]
+   },
+   {
+    "slug": "million-premium-pickup-sr-gacha-2026-11",
+    "brand": "million",
+    "rank": "small",
+    "angle": "SRのみ出現の新シリーズ「プレミアムピックアップSRガシャ」開催。春香・千鶴・美也・やよいの限定SRが登場",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "million-premium-pickup-sr-gacha-2026-11",
+    "candidate_ids": [
+     "202611060418-explore-6"
+    ]
+   },
+   {
+    "slug": "million-momoko-birthday-gasha-2026",
+    "brand": "million",
+    "rank": "medium",
+    "angle": "周防桃子の誕生日(11/6)に『Birthdayガシャ』と『Birthdayセット2026』が登場。衣装[マイオンリーフィットネス]やドアデコ・いろどりパネルが付く",
+    "purpose": "新情報",
+    "lead_score": 60,
+    "dedup_key": "momoko-birthday-gasha-2026",
+    "candidate_ids": [
+     "202611060418-grok-21",
+     "202611060418-grok-20",
+     "202611060418-grok-22"
+    ]
+   },
+   {
+    "slug": "million-platinum-star-tune-yoruto-akari-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "プラチナスターチューン「夜と、明かりと。」は明日11月7日20時59分まで。最終日前に報酬カードやガシャを確かめられる",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "million-platinum-star-tune-yoruto-akari-2026",
+    "candidate_ids": [
+     "202611020732-explore-0",
+     "202611060418-grok-23"
+    ]
+   },
+   {
+    "slug": "million-kyomaf-after-sales-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "京まふ2026のミリオンライブ POP UP SHOP商品がTHEキャラで事後通販。くのいちverのグッズなど、発送は2027年1月下旬以降",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "million-kyomaf-after-sales-2026",
+    "candidate_ids": [
+     "202611050230-grok-16"
+    ]
+   },
+   {
+    "slug": "million-theater-talk-party-vol-68-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "THEATER TALK PARTY☆ Vol.68のイベントショップ交換は11月9日14時59分まで、期限まで3日",
+    "purpose": "期日の知らせ",
+    "lead_score": 15,
+    "dedup_key": "million-theater-talk-party-vol-68-2026",
+    "candidate_ids": [
+     "sched-2026-11-06-million-theater-talk-party-vol-68-2026-締切前",
+     "sched-2026-11-06-million-theater-talk-party-vol-68-2026-締切前-src1"
+    ]
+   },
+   {
+    "slug": "million-yoru-to-akari-door-deco-panel-sets-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "莉緒・このみの「夜と、明かりと。」ドアデコ／いろどりパネルセットは11月9日14時59分で販売終了、あと3日",
+    "purpose": "期日の知らせ",
+    "lead_score": 15,
+    "dedup_key": "million-yoru-to-akari-door-deco-panel-sets-2026",
+    "candidate_ids": [
+     "sched-2026-11-06-million-yoru-to-akari-door-deco-panel-sets-2026-締切前",
+     "sched-2026-11-06-million-yoru-to-akari-door-deco-panel-sets-2026-締切前-src1",
+     "sched-2026-11-06-million-yoru-to-akari-door-deco-panel-sets-2026-締切前-src2",
+     "sched-2026-11-06-million-yoru-to-akari-door-deco-panel-sets-2026-締切前-src3"
+    ]
+   },
+   {
+    "slug": "million-second-hairstyle-my-brand-glasses-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "セカンドヘアスタイルガシャ～myブランド編 with glasses～の律子・紗代子SSRは11月9日14時59分まで、あと3日",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "million-second-hairstyle-my-brand-glasses-2026",
+    "candidate_ids": [
+     "sched-2026-11-06-million-second-hairstyle-my-brand-glasses-2026-締切前",
+     "sched-2026-11-06-million-second-hairstyle-my-brand-glasses-2026-締切前-src1",
+     "sched-2026-11-06-million-second-hairstyle-my-brand-glasses-2026-締切前-src2"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "hinata-good-apple-day-2026",
+    "reason": "その他",
+    "note": "いいりんごの日の帽子投稿のみで、読者が取る行動のある新情報が無い(未確認)。culture は general 面のみ"
+   },
+   {
+    "dedup_key": "momoko-birthday-fanart-2026",
+    "reason": "個人の話題",
+    "note": "個人の SNS 投稿は単体で記事にしない。culture は general 面のみ"
+   }
+  ],
+  "cross_brand": []
+ }
+}

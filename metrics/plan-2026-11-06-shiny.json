@@ -1,0 +1,258 @@
+{
+ "decisions": {
+  "shiny-pj-refrac7ions-chibigurumi-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/5号で全28種・各弾の日程まで掲載済み。新事実なし"
+  },
+  "shiny-orchestra-concert-2027": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-orchestra-radiant-chord-goods-2027",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公演概要は既報。新しいのは公式グッズ事前販売の開始のみで、グッズ記事に統合"
+  },
+  "imas-fan-joke-video-2026-11": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人投稿者のネタ動画で未確認"
+  },
+  "shiny-song-prism-mei-another-costume-2026-11": {
+   "action": "roundup",
+   "angle": "シャニソンの開催中ガシャ・販売中アイテム(限定★3のアナザー衣装紹介など)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-song-prism-hat-packs-2026-11": {
+   "action": "roundup",
+   "angle": "シャニソンの開催中ガシャ・販売中アイテム(帽子パック3種類の販売中)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-shaniradi-password-deadline-extension-2026-11": {
+   "action": "article",
+   "angle": "シャニラジ#405・#406の「あいことば」入力が再開され、期限が11月10日23:59まで延長された",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-orchestra-radiant-chord-goods-2027": {
+   "action": "article",
+   "angle": "「Radiant Chord」公式グッズの事前販売が11月5日に開始、アクリルチャーム付きリボンキーホルダー(1,200円)など",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "concert 主題を統合。チケット入金は既報のため別行動のグッズ受注として記事化"
+  },
+  "shiny-song-prism-third-anniversary-select-ticket-2026": {
+   "action": "roundup",
+   "angle": "シャニソンの開催中ガシャ・販売中アイテム(3周年記念セレチケパックの対象紹介)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-song-prism-kiriko-another-costume-2026-11": {
+   "action": "roundup",
+   "angle": "シャニソンの開催中ガシャ・販売中アイテム(限定★3幽谷霧子のアナザー衣装紹介)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-song-prism-im-a-cutie-finder-photo-frames-2026-11": {
+   "action": "roundup",
+   "angle": "シャニソンの開催中ガシャ・販売中アイテム(I'm a Cutie Finder新フォトフレーム販売中)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-song-prism-third-anniversary-fan-art-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のファン投稿。公式の応募企画は既報"
+  },
+  "shiny-event-commu-stream-2026-11-06": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人配信者の予告で未確認"
+  },
+  "shiny-alstromeria-gotoken-christmas-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/3号で同オードブルを掲載済み。facts(送料・支払い・発送)に新事実やトリガーなし"
+  },
+  "shiny-hyakkiyako-pop-up-after-sales-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "受付は11/5 23:59で終了済み。11/5号に最終告知あり"
+  },
+  "shiny-tokyo-jiyukei-mytime-event-2026": {
+   "action": "article",
+   "angle": "「Tokyo自由系*ガール / My time」発売記念イベントの当選発表が本日13時、チケットはスマチケ(イープラスアプリ)のみ",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(結果)。イベントは11月22日"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "shiny-shaniradi-password-deadline-extension-2026-11",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "シャニラジ#405・#406の「あいことば」入力が再開され、期限が11月10日23:59まで延長された",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "shiny-shaniradi-password-deadline-extension-2026-11",
+    "candidate_ids": [
+     "202611060418-grok-30"
+    ]
+   },
+   {
+    "slug": "shiny-orchestra-radiant-chord-goods-2027",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "「Radiant Chord」公式グッズの事前販売が11月5日に開始、アクリルチャーム付きリボンキーホルダー(1,200円)など",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "shiny-orchestra-radiant-chord-goods-2027",
+    "candidate_ids": [
+     "202611060418-grok-31",
+     "202611051838-watch-11"
+    ]
+   },
+   {
+    "slug": "shiny-tokyo-jiyukei-mytime-event-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "「Tokyo自由系*ガール / My time」発売記念イベントの当選発表が本日13時、チケットはスマチケ(イープラスアプリ)のみ",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "shiny-tokyo-jiyukei-mytime-event-2026",
+    "candidate_ids": [
+     "sched-2026-11-06-shiny-tokyo-jiyukei-mytime-event-2026-結果"
+    ]
+   },
+   {
+    "slug": "shiny-ops-roundup",
+    "brand": "shiny",
+    "rank": "roundup",
+    "angle": "シャニソンの開催中ガシャ・販売中アイテム(限定★3のアナザー衣装紹介など)",
+    "lead_score": 0,
+    "dedup_key": "shiny-song-prism-mei-another-costume-2026-11",
+    "candidate_ids": [
+     "202611060418-grok-28",
+     "202611060418-grok-29",
+     "202611060418-grok-32",
+     "202611060418-grok-33",
+     "202611060418-grok-34"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "shiny-pj-refrac7ions-chibigurumi-2026",
+    "reason": "既報",
+    "note": "11/5号で全28種・各弾の日程まで掲載済み。新事実なし"
+   },
+   {
+    "dedup_key": "imas-fan-joke-video-2026-11",
+    "reason": "個人の話題",
+    "note": "個人投稿者のネタ動画で未確認"
+   },
+   {
+    "dedup_key": "shiny-song-prism-third-anniversary-fan-art-2026",
+    "reason": "個人の話題",
+    "note": "個人のファン投稿。公式の応募企画は既報"
+   },
+   {
+    "dedup_key": "shiny-event-commu-stream-2026-11-06",
+    "reason": "個人の話題",
+    "note": "個人配信者の予告で未確認"
+   },
+   {
+    "dedup_key": "shiny-alstromeria-gotoken-christmas-2026",
+    "reason": "既報",
+    "note": "11/3号で同オードブルを掲載済み。facts(送料・支払い・発送)に新事実やトリガーなし"
+   },
+   {
+    "dedup_key": "shiny-hyakkiyako-pop-up-after-sales-2026",
+    "reason": "既報",
+    "note": "受付は11/5 23:59で終了済み。11/5号に最終告知あり"
+   }
+  ],
+  "cross_brand": []
+ }
+}

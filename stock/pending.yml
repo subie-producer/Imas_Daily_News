@@ -348,6 +348,7 @@
   subject: シャニラジ「あいことば」入力停止
   watch: 復旧の目処が立った際の公式X告知と、あいことば入力の再開(判明次第 triggers へ)
   added_on: '2026-10-28'
+  removed_on: '2026-11-06'
 - dedup_key: gaku-achievement-loading-issue-2026
   brand: gaku
   subject: 学マス アチーブメント画面のロード不具合の修正

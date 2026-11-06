@@ -632,5 +632,30 @@
   "event_date": "2026-11-11",
   "deadline": "2026-11-10",
   "src_candidate_id": "202611050230-grok-34"
+ },
+ {
+  "id": "sched-2026-11-10-shiny-shaniradi-password-deadline-extension-2026-11-締切",
+  "dedup_key": "shiny-shaniradi-password-deadline-extension-2026-11",
+  "brand": "shiny",
+  "subject": "シャニラジ#405・#406「あいことば」入力締切",
+  "kind": "締切",
+  "note": "23:59まであいことばを入力できる最終日",
+  "reserved_on": "2026-11-06",
+  "occurs_on": "2026-11-10",
+  "title": "あいことば入力期限を11月10日まで延長",
+  "url": "https://x.com/shinyc_official/status/2118267077580439604",
+  "source_type": "公式",
+  "facts": [
+   "一時停止していた「あいことば」の入力を再開した。",
+   "シャニラジ#405・#406で告知した「あいことば」の入力期限を延長した。",
+   "延長後の入力期限: 11月10日（火）23:59",
+   "アーカイブ: https://t.co/iNva08dCmz",
+   "リンク: https://t.co/iNva08dCmz",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "deadline": "2026-11-10",
+  "src_candidate_id": "202611060418-grok-30"
  }
 ]

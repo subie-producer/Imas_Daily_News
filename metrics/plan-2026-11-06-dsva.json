@@ -1,0 +1,257 @@
+{
+ "decisions": {
+  "valiv-3rd-live-meeting-qonnect-as-one": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "名古屋・東京の日程と時刻は11/5「ヴイアラ2ndLIVE、11月14日から限定公開」などに既出。新事実なし"
+  },
+  "letora-birthday-online-live-2026-lv": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "出典の変更はニュース一覧の見出し差し替えのみで、レトラ公演の締切・条件の変更ではない"
+  },
+  "valiv-3rd-live-guest-reveal-2026": {
+   "action": "article",
+   "angle": "3rdLIVE＆MEETINGのゲスト第1弾として、エリオント(3/21)・土佐兄弟(1/30・3/21)・電音部の東雲和音(1/31)の出演が発表された",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "既報はアイカツアカデミー4人のみ。土佐兄弟・電音部は新情報。エリオントが既報の4人と同一かは出典で確認"
+  },
+  "dsva-letra-birthday-online-live-2026": {
+   "action": "article",
+   "angle": "レトラ誕生日ライブ(11/11)のスペシャルゲストが、公式本文で「ジュリア」に決定と記載された(出演欄は「coming soon…」のまま)",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "既報は「coming soon…」のみ。出典内で表記が食い違うため断定せず、食い違いを明記する"
+  },
+  "valiv-3rd-live-hashtag-campaign": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/4「ヴイアラ、サイン入りポスターを5人に」に同内容。締切11/15は3日以内でない"
+  },
+  "va-liv-letora-birthday-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "出典の変更はログイン・メニュー等の表示のみで、読者に関わる変更なし"
+  },
+  "letora-birthday-online-live-2026-lv-general-sale": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "一般先着の開始は11/4の記事に既出。受付期間・価格・会場も既報と同じ"
+  },
+  "valiv-3rd-fan-preparation-playlist-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "同人・ファン主催",
+   "note": "ファン作成のプレイリストで、出典も個人のX投稿(未確認)"
+  },
+  "cosmo-manaka-stranger-things-dance-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/5に同じ動画の記事を掲載済み。新事実なし"
+  },
+  "dsva-3rd-live-meeting-qonnect-as-one": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "最速先行の締切11/15、ぬいぐるみ特典、日程はいずれも11/4・11/5の記事に既出。締切は3日以内でない"
+  },
+  "valiv-stream-schedule-2026-11-05-evening": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "配信は11/5で終了済み"
+  },
+  "letora-stardew-valley-stream-2026-11-05": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "配信は11/5で終了済み"
+  },
+  "cosmo-ace-combat-8-stream-2026-11-04": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "配信は11/4で終了済み"
+  },
+  "tomori-first-drinking-stream-2026": {
+   "action": "article",
+   "angle": "灯里愛夏の初飲酒配信「【飲酒解禁】まなか、ハタチになりましたっ！」が今夜22時からYouTubeで始まる",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(開始)。11/3の記事に配信日時とURLが既出のため、今夜開始という当日のトリガーで書く"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "dsva-valiv-3rd-live-guest-reveal-2026",
+    "brand": "dsva",
+    "rank": "medium",
+    "angle": "3rdLIVE＆MEETINGのゲスト第1弾として、エリオント(3/21)・土佐兄弟(1/30・3/21)・電音部の東雲和音(1/31)の出演が発表された",
+    "purpose": "新情報",
+    "lead_score": 60,
+    "dedup_key": "valiv-3rd-live-guest-reveal-2026",
+    "candidate_ids": [
+     "202611051234-explore-8"
+    ]
+   },
+   {
+    "slug": "dsva-letra-birthday-online-live-2026",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "レトラ誕生日ライブ(11/11)のスペシャルゲストが、公式本文で「ジュリア」に決定と記載された(出演欄は「coming soon…」のまま)",
+    "purpose": "新情報",
+    "lead_score": 25,
+    "dedup_key": "dsva-letra-birthday-online-live-2026",
+    "candidate_ids": [
+     "202611051838-watch-13",
+     "202611060418-grok-58"
+    ]
+   },
+   {
+    "slug": "dsva-tomori-first-drinking-stream-2026",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "灯里愛夏の初飲酒配信「【飲酒解禁】まなか、ハタチになりましたっ！」が今夜22時からYouTubeで始まる",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "tomori-first-drinking-stream-2026",
+    "candidate_ids": [
+     "sched-2026-11-06-tomori-first-drinking-stream-2026-開始"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "valiv-3rd-live-meeting-qonnect-as-one",
+    "reason": "既報",
+    "note": "名古屋・東京の日程と時刻は11/5「ヴイアラ2ndLIVE、11月14日から限定公開」などに既出。新事実なし"
+   },
+   {
+    "dedup_key": "letora-birthday-online-live-2026-lv",
+    "reason": "その他",
+    "note": "出典の変更はニュース一覧の見出し差し替えのみで、レトラ公演の締切・条件の変更ではない"
+   },
+   {
+    "dedup_key": "valiv-3rd-live-hashtag-campaign",
+    "reason": "既報",
+    "note": "11/4「ヴイアラ、サイン入りポスターを5人に」に同内容。締切11/15は3日以内でない"
+   },
+   {
+    "dedup_key": "va-liv-letora-birthday-2026",
+    "reason": "その他",
+    "note": "出典の変更はログイン・メニュー等の表示のみで、読者に関わる変更なし"
+   },
+   {
+    "dedup_key": "letora-birthday-online-live-2026-lv-general-sale",
+    "reason": "既報",
+    "note": "一般先着の開始は11/4の記事に既出。受付期間・価格・会場も既報と同じ"
+   },
+   {
+    "dedup_key": "valiv-3rd-fan-preparation-playlist-2026",
+    "reason": "同人・ファン主催",
+    "note": "ファン作成のプレイリストで、出典も個人のX投稿(未確認)"
+   },
+   {
+    "dedup_key": "cosmo-manaka-stranger-things-dance-2026",
+    "reason": "既報",
+    "note": "11/5に同じ動画の記事を掲載済み。新事実なし"
+   },
+   {
+    "dedup_key": "dsva-3rd-live-meeting-qonnect-as-one",
+    "reason": "既報",
+    "note": "最速先行の締切11/15、ぬいぐるみ特典、日程はいずれも11/4・11/5の記事に既出。締切は3日以内でない"
+   },
+   {
+    "dedup_key": "valiv-stream-schedule-2026-11-05-evening",
+    "reason": "その他",
+    "note": "配信は11/5で終了済み"
+   },
+   {
+    "dedup_key": "letora-stardew-valley-stream-2026-11-05",
+    "reason": "その他",
+    "note": "配信は11/5で終了済み"
+   },
+   {
+    "dedup_key": "cosmo-ace-combat-8-stream-2026-11-04",
+    "reason": "その他",
+    "note": "配信は11/4で終了済み"
+   }
+  ],
+  "cross_brand": []
+ }
+}

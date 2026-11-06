@@ -1,0 +1,171 @@
+{
+ "decisions": {
+  "765-961-idol-ultimate-ticket-deadline-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "765-961-idol-ultimate-ticket-advance-2027",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じIDOL ULTIMATEの受付締切(11/8 23:59)。出典が未確認のため公式の主題へ統合"
+  },
+  "idol-ultimate-once-and-for-all-2027": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "765-961-idol-ultimate-ticket-advance-2027",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ公演の現地チケット受付締切(11/8 23:59)。公式の主題へ統合"
+  },
+  "demirimi-clash-goods-preorder-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/31号に価格・発送時期・受注期限(11/15)掲載済み。新事実なし、締切は9日先でトリガーも無い"
+  },
+  "valiv-3rd-live-meeting-denonbu-guests-2027": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "電音部のゲスト出演の話題で、共同主催ではない。出典も未確認"
+  },
+  "tours-momoko-birthday-maintenance-2026": {
+   "action": "article",
+   "angle": "ALL.Netの緊急メンテで周防桃子の誕生日(11/6)の誕生日コミュなどが開催困難に。RHYTHM LIVE FESTIVAL2027予選期間の変更の可能性も",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "RHYTHM LIVE FESTIVAL予選期間の主題を統合。今後の対応はメンテ終了の見通し次第と案内"
+  },
+  "765-961-idol-ultimate-ticket-advance-2027": {
+   "action": "article",
+   "angle": "765×961「IDOL ULTIMATE “ONCE AND FOR ALL”」のチケット受付(プレミアム12か月会員先行・現地受付)が11月8日23:59に締切、結果発表は25日",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 55,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "締切まで2日。同行者登録が必要・1か月会員は対象外。素材3件を統合"
+  },
+  "tours-rhythm-live-festival-qualifier-maintenance-2027": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "tours-momoko-birthday-maintenance-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じALL.Net緊急メンテの影響の案内。1記事にまとめる"
+  },
+  "starlight-dining-chinese-maid-plush-2027": {
+   "action": "article",
+   "angle": "中華風メイドぬいぐるみ・餃子ぬいぐるみのASOBI STORE受注生産は11月9日23:59まで、締切3日前",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(締切前)。締切3日以内のトリガーあり。以降は数量限定販売"
+  },
+  "tours-halloween-commu-2026": {
+   "action": "article",
+   "angle": "ツアマスのハロウィンコミュ再生は本日(6日)25:59が最終日、ログインボーナスは7日23:59まで",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(終了)。メンテナンス中の影響は公式の案内に注意"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "joint-tours-momoko-birthday-maintenance-2026",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "ALL.Netの緊急メンテで周防桃子の誕生日(11/6)の誕生日コミュなどが開催困難に。RHYTHM LIVE FESTIVAL2027予選期間の変更の可能性も",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "tours-momoko-birthday-maintenance-2026",
+    "candidate_ids": [
+     "202611060418-grok-63",
+     "202611060418-grok-65"
+    ]
+   },
+   {
+    "slug": "joint-765-961-idol-ultimate-ticket-advance-2027",
+    "brand": "joint",
+    "rank": "medium",
+    "angle": "765×961「IDOL ULTIMATE “ONCE AND FOR ALL”」のチケット受付(プレミアム12か月会員先行・現地受付)が11月8日23:59に締切、結果発表は25日",
+    "purpose": "期日の知らせ",
+    "lead_score": 55,
+    "dedup_key": "765-961-idol-ultimate-ticket-advance-2027",
+    "candidate_ids": [
+     "202611060418-grok-64",
+     "202611051234-explore-3",
+     "202611060418-explore-11"
+    ]
+   },
+   {
+    "slug": "joint-starlight-dining-chinese-maid-plush-2027",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "中華風メイドぬいぐるみ・餃子ぬいぐるみのASOBI STORE受注生産は11月9日23:59まで、締切3日前",
+    "purpose": "期日の知らせ",
+    "lead_score": 15,
+    "dedup_key": "starlight-dining-chinese-maid-plush-2027",
+    "candidate_ids": [
+     "sched-2026-11-06-starlight-dining-chinese-maid-plush-2027-締切前"
+    ]
+   },
+   {
+    "slug": "joint-tours-halloween-commu-2026",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "ツアマスのハロウィンコミュ再生は本日(6日)25:59が最終日、ログインボーナスは7日23:59まで",
+    "purpose": "期日の知らせ",
+    "lead_score": 10,
+    "dedup_key": "tours-halloween-commu-2026",
+    "candidate_ids": [
+     "sched-2026-11-06-tours-halloween-commu-2026-終了"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "demirimi-clash-goods-preorder-2026",
+    "reason": "既報",
+    "note": "10/31号に価格・発送時期・受注期限(11/15)掲載済み。新事実なし、締切は9日先でトリガーも無い"
+   },
+   {
+    "dedup_key": "valiv-3rd-live-meeting-denonbu-guests-2027",
+    "reason": "面違い",
+    "note": "電音部のゲスト出演の話題で、共同主催ではない。出典も未確認"
+   }
+  ],
+  "cross_brand": []
+ }
+}

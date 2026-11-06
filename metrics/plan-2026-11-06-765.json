@@ -1,0 +1,55 @@
+{
+ "decisions": {
+  "765-961-xr-lighttag-2027": {
+   "action": "article",
+   "angle": "菊地真・萩原雪歩 twin live「はんげつであえたら」(11/18)の現地チケット受付が、投稿時点(11/5)で締切まであと3日=11月8日ごろに迫っている",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "dedup_keyはxR公演だが中身は別催し(twin live)。xRの先行は合同面で記事化済み。締切の正確な日時は出典で要確認。"
+  },
+  "765pro-961pro-idol-ultimate-once-and-for-all-2026": {
+   "action": "cross_brand",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "joint-765-961-idol-ultimate-ticket-advance-2027",
+   "reason": "",
+   "note": "765×961共同主催のxRライブのチケット受付(11/8 23:59締切)。合同面が既に記事化。"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "765-961-xr-lighttag-2027",
+    "brand": "765",
+    "rank": "medium",
+    "angle": "菊地真・萩原雪歩 twin live「はんげつであえたら」(11/18)の現地チケット受付が、投稿時点(11/5)で締切まであと3日=11月8日ごろに迫っている",
+    "purpose": "期日の知らせ",
+    "lead_score": 60,
+    "dedup_key": "765-961-xr-lighttag-2027",
+    "candidate_ids": [
+     "202611060418-grok-12",
+     "202611060418-grok-16",
+     "202611060418-grok-83",
+     "202611060418-grok-85",
+     "202611060418-grok-88",
+     "202611060418-grok-108"
+    ]
+   }
+  ],
+  "dropped": [],
+  "cross_brand": [
+   {
+    "slug": "joint-765-961-idol-ultimate-ticket-advance-2027",
+    "dedup_key": "765pro-961pro-idol-ultimate-once-and-for-all-2026",
+    "note": "765×961共同主催のxRライブのチケット受付(11/8 23:59締切)。合同面が既に記事化。"
+   }
+  ]
+ }
+}

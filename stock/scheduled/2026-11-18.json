@@ -1663,5 +1663,51 @@
   "src_candidate_id": "202610260732-explore-4",
   "companion_of": "sched-2026-11-18-cg-15th-anniversary-song-hourglass-2026-その他",
   "src_dedup_key": "cinderella-girls-hourglass-2026"
+ },
+ {
+  "id": "sched-2026-11-18-derepa-cd-jacket-2026-締切",
+  "dedup_key": "derepa-cd-jacket-2026",
+  "brand": "cg",
+  "subject": "でれぱCD予約受付締切",
+  "kind": "締切",
+  "note": "23時59分までCD予約と直筆サイン抽選に参加できる最終日",
+  "reserved_on": "2026-11-06",
+  "occurs_on": "2026-11-18",
+  "title": "でれぱCDジャケットイラスト公開",
+  "url": "https://x.com/imas_columbia/status/2117972633627337104",
+  "source_type": "準公式",
+  "facts": [
+   "CD「THE IDOLM@STER CINDERELLA PARTY! M@STER ～でれぱ 拾年の宴＆デレパの神曲～」のジャケットを公開。",
+   "くろごま描き下ろしで、本田未央・多田李衣菜が描かれている。",
+   "ブックレットと特典には主宰も登場する。",
+   "リンク: https://shop.columbia.jp/shop/e/e1125derepa/",
+   "エンゲージメント: 中",
+   "言及アイドル: 本田未央、多田李衣菜"
+  ],
+  "via": "grok",
+  "verify": "unconfirmed",
+  "src_candidate_id": "202611060418-grok-74"
+ },
+ {
+  "id": "sched-2026-11-18-derepa-cd-jacket-2026-締切-src1",
+  "dedup_key": "derepa-cd-jacket-2026",
+  "brand": "cg",
+  "subject": "でれぱCD予約受付締切",
+  "kind": "締切",
+  "note": "23時59分までCD予約と直筆サイン抽選に参加できる最終日",
+  "reserved_on": "2026-11-06",
+  "occurs_on": "2026-11-18",
+  "title": "出典元表記「~でれぱ 拾年の宴＆デレパの神曲~コロムビアミュージックショップ抽選キャンペーン」",
+  "url": "https://shop.columbia.jp/shop/e/e1125derepa/",
+  "source_type": "準公式",
+  "facts": [
+   "CDの予約受付期間は2026年10月7日22時30分から11月18日23時59分まで。",
+   "2026年10月7日22時30分から11月18日23時59分までに抽選キャンペーン対象カートからCDを予約した人が自動的に抽選対象となり、抽選で5人に原紗友里・青木瑠璃子の直筆サインとプロデューサー名入りCDジャケットをプレゼント。"
+  ],
+  "via": "verified_fact",
+  "verify": "unconfirmed",
+  "src_candidate_id": "202611060418-grok-74",
+  "companion_of": "sched-2026-11-18-derepa-cd-jacket-2026-締切",
+  "src_dedup_key": "derepa-cd-jacket-2026"
  }
 ]

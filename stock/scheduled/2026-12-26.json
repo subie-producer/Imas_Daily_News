@@ -454,5 +454,27 @@
   "src_candidate_id": "202611020220-grok-53",
   "companion_of": "sched-2026-12-26-sidem-fantastic-battle-fes-nagano-sp-2026-開幕",
   "src_dedup_key": "sidem-fantastic-battle-fes-nagano-sa-2026"
+ },
+ {
+  "id": "sched-2026-12-26-gaku-platinum-gasha-update-2026-12-開始",
+  "dedup_key": "gaku-platinum-gasha-update-2026-12",
+  "brand": "gaku",
+  "subject": "学マス プラチナガシャ ラインナップ更新",
+  "kind": "開始",
+  "note": "11時からプラチナガシャの新ラインナップを確認して引ける",
+  "reserved_on": "2026-11-06",
+  "occurs_on": "2026-12-26",
+  "title": "プラチナガシャのラインナップ更新",
+  "url": "https://x.com/gkmas_official/status/2118236878079963470",
+  "source_type": "公式",
+  "facts": [
+   "プラチナガシャを更新する。",
+   "更新日時: 2026/12/26(土) 11:00（予定）。",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "event_date": "2026-12-26",
+  "src_candidate_id": "202611060418-grok-43"
  }
 ]

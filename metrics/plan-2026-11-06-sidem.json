@@ -1,0 +1,322 @@
+{
+ "decisions": {
+  "sidem-cho-retroseparty-badges-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "購入個数制限・販売場所は10/15・10/29の記事と同じ。出典の変更も読者に関わる新事実なし"
+  },
+  "sidem-poppin-planet-2dmv-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/4・11/5の記事で公開と楽曲情報は報じ済み。新事実なし"
+  },
+  "sidem-birthday-celebration-bouquet-2026-feb": {
+   "action": "article",
+   "angle": "2月生まれ(鷹城恭二・姫野かのん・伊集院北斗・天道輝)の記念グッズ「315 Celebration Bouquet」がASOBI STOREで11月15日まで受注",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "315-celebration-bouquet-february を統合。受注は11/5開始、11/15 23:59まで"
+  },
+  "sidem-producer-meeting-2027-ajewelholic-presale": {
+   "action": "article",
+   "angle": "SideMプロミ「AJewelholIc!!!」アソビストアプレミアム12か月会員2次先行が11月26日23:59まで受付、当落は12月10日",
+   "purpose": "新情報",
+   "rank": "large",
+   "lead_score": 75,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "2次先行は未報。ajewelholic-2027 を統合(当落・入金期間の素材)"
+  },
+  "tours-second-stage-sidem-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "ツアマスS2弾は10/29稼働済み。SideMはfeaturing出演のみでTOURS側の話題"
+  },
+  "sidem-producer-meeting-ajewelholic-2027": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-producer-meeting-2027-ajewelholic-presale",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ2次先行の別出典"
+  },
+  "sidem-aji-project-story-episode-2-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/5に第2話11/11公開を報じ済み。当日のトリガーは5日後で対象外"
+  },
+  "sidem-fanfes-wgf-makuhari-live-sound-2026": {
+   "action": "article",
+   "angle": "幕張のライブ音響上映チケットが今夜24時(7日0:00)のe席リザーブから発売、劇場券売機は7日8時",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "11/5に発売予告を報じ済み。発売開始が目前というトリガーで再掲"
+  },
+  "sidem-gotoken-christmas-set-2026": {
+   "action": "article",
+   "angle": "SideM×五島軒のクリスマスパーティセットの予約が本日12時開始。16,200円、クリアファイル全5種付き、12月5日まで",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 40,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "未報。出典は店舗ページ(unconfirmed)なので校閲で確認"
+  },
+  "sidem-gotoken-fan-reaction-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿1件のみで単体では記事にしない"
+  },
+  "sidem-315-celebration-bouquet-february-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-birthday-celebration-bouquet-2026-feb",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ受注開始の公式X投稿"
+  },
+  "teddys-collection-ii-goods": {
+   "action": "article",
+   "angle": "「Teddy's Collection II」にアクリルボード-技-と缶バッジ全9種BOXなど、既報にない商品が追加。予約は11月15日まで",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "10/30の記事はチャームとマフラータオルのみ。アクリルボード・缶バッジは新しい品目"
+  },
+  "sidem-monthly-theme-song-12-cafe-parade-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/21発売で既報。新事実も当日のトリガーも無い"
+  },
+  "sidem-seibuen-retro-rose-party-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/30開幕の記事で報じ済み"
+  },
+  "sidem-cho-retroseparty-goods-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "ミニスカーフ・リングライトは10/26・10/27の記事と同じ内容"
+  },
+  "sidem-cho-retroseparty-ring-light-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "リングライト全5種1,100円は10/27の記事で報じ済み"
+  },
+  "sidem-knick-knacks-vol-2-2026": {
+   "action": "article",
+   "angle": "ハンズ北千住店の初日(11/13)購入時間帯整理券の事前Web抽選は本日19時に申込締切、当選発表は9日12時ごろ",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約の締切。催事は11/13〜12/6の全国15店舗"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "sidem-birthday-celebration-bouquet-2026-feb",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "2月生まれ(鷹城恭二・姫野かのん・伊集院北斗・天道輝)の記念グッズ「315 Celebration Bouquet」がASOBI STOREで11月15日まで受注",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "sidem-birthday-celebration-bouquet-2026-feb",
+    "candidate_ids": [
+     "202611051838-watch-10",
+     "202611060418-grok-94"
+    ]
+   },
+   {
+    "slug": "sidem-producer-meeting-2027-ajewelholic-presale",
+    "brand": "sidem",
+    "rank": "large",
+    "angle": "SideMプロミ「AJewelholIc!!!」アソビストアプレミアム12か月会員2次先行が11月26日23:59まで受付、当落は12月10日",
+    "purpose": "新情報",
+    "lead_score": 75,
+    "dedup_key": "sidem-producer-meeting-2027-ajewelholic-presale",
+    "candidate_ids": [
+     "202611051838-watch-14",
+     "202611060418-explore-8"
+    ]
+   },
+   {
+    "slug": "sidem-fanfes-wgf-makuhari-live-sound-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "幕張のライブ音響上映チケットが今夜24時(7日0:00)のe席リザーブから発売、劇場券売機は7日8時",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "sidem-fanfes-wgf-makuhari-live-sound-2026",
+    "candidate_ids": [
+     "202611060418-grok-40"
+    ]
+   },
+   {
+    "slug": "sidem-gotoken-christmas-set-2026",
+    "brand": "sidem",
+    "rank": "medium",
+    "angle": "SideM×五島軒のクリスマスパーティセットの予約が本日12時開始。16,200円、クリアファイル全5種付き、12月5日まで",
+    "purpose": "新情報",
+    "lead_score": 40,
+    "dedup_key": "sidem-gotoken-christmas-set-2026",
+    "candidate_ids": [
+     "202611060418-grok-73"
+    ]
+   },
+   {
+    "slug": "sidem-teddys-collection-ii-goods",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "「Teddy's Collection II」にアクリルボード-技-と缶バッジ全9種BOXなど、既報にない商品が追加。予約は11月15日まで",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "teddys-collection-ii-goods",
+    "candidate_ids": [
+     "202611010510-explore-1-r1",
+     "202611010510-explore-2",
+     "202611010510-explore-0"
+    ]
+   },
+   {
+    "slug": "sidem-knick-knacks-vol-2-2026",
+    "brand": "sidem",
+    "rank": "medium",
+    "angle": "ハンズ北千住店の初日(11/13)購入時間帯整理券の事前Web抽選は本日19時に申込締切、当選発表は9日12時ごろ",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "sidem-knick-knacks-vol-2-2026",
+    "candidate_ids": [
+     "sched-2026-11-06-sidem-knick-knacks-vol-2-2026-締切",
+     "sched-2026-11-06-sidem-knick-knacks-vol-2-2026-締切-src1",
+     "sched-2026-11-06-sidem-knick-knacks-vol-2-2026-締切-src2",
+     "sched-2026-11-06-sidem-knick-knacks-vol-2-2026-締切-src3"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "sidem-cho-retroseparty-badges-2026",
+    "reason": "既報",
+    "note": "購入個数制限・販売場所は10/15・10/29の記事と同じ。出典の変更も読者に関わる新事実なし"
+   },
+   {
+    "dedup_key": "sidem-poppin-planet-2dmv-2026",
+    "reason": "既報",
+    "note": "11/4・11/5の記事で公開と楽曲情報は報じ済み。新事実なし"
+   },
+   {
+    "dedup_key": "tours-second-stage-sidem-2026",
+    "reason": "面違い",
+    "note": "ツアマスS2弾は10/29稼働済み。SideMはfeaturing出演のみでTOURS側の話題"
+   },
+   {
+    "dedup_key": "sidem-aji-project-story-episode-2-2026",
+    "reason": "既報",
+    "note": "11/5に第2話11/11公開を報じ済み。当日のトリガーは5日後で対象外"
+   },
+   {
+    "dedup_key": "sidem-gotoken-fan-reaction-2026",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿1件のみで単体では記事にしない"
+   },
+   {
+    "dedup_key": "sidem-monthly-theme-song-12-cafe-parade-2026",
+    "reason": "既報",
+    "note": "10/21発売で既報。新事実も当日のトリガーも無い"
+   },
+   {
+    "dedup_key": "sidem-seibuen-retro-rose-party-2026",
+    "reason": "既報",
+    "note": "10/30開幕の記事で報じ済み"
+   },
+   {
+    "dedup_key": "sidem-cho-retroseparty-goods-2026",
+    "reason": "既報",
+    "note": "ミニスカーフ・リングライトは10/26・10/27の記事と同じ内容"
+   },
+   {
+    "dedup_key": "sidem-cho-retroseparty-ring-light-2026",
+    "reason": "既報",
+    "note": "リングライト全5種1,100円は10/27の記事で報じ済み"
+   }
+  ],
+  "cross_brand": []
+ }
+}

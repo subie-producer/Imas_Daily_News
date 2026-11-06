@@ -653,6 +653,14 @@ x_accounts:
     - imasnews765
     - zutapoke
   ファン:
+    - tt63_ouen_b         # 合議で追加: 個人・ファンによる月村手毬の応援広告掲出
+    - mi_cos              # 合議で追加: 個人のコスプレ投稿
+    - hariP_thumbtack     # 合議で追加: ファン作成の予習プレイリスト、個人発信
+    - fromCTA             # 合議で追加: 個人のキャラ誕生日イラスト投稿
+    - elckski             # 合議で追加: 個人によるデレステAR写真投稿
+    - asitamokoorogi      # 合議で追加: 個人によるアイマスのネタ動画投稿
+    - Midvalley_midon     # 合議で追加: 個人の配信者によるイベントコミュ鑑賞予告
+    - 3kaerurei           # 合議で追加: 個人アカウントのファンイラスト投稿
     - 6y_d1               # 合議で追加: 個人アカウント。シャニマスやヴイアラのファン交流と創作を発信
     - takuyatosa1         # 合議で追加: 個人の発信。MCは運営でも作品の演者でもなく、当事者ではない
     - shigrenium          # 合議で追加: 個人が「DIAMOND JOKER」の踊ってみた動画を投稿
@@ -982,6 +990,9 @@ x_accounts:
     - procinen1
     - yutaleP
   当事者:
+    - saintmarc_grill     # 合議で追加: 飲食店、ももぺあべりーとのコラボ先
+    - marine_tower        # 合議で追加: 施設運営者、シンデレラガールズとのコラボ先
+    - denonbu             # 合議で追加: 他作品(電音部)の公式、ヴイアライヴにゲスト出演
     - akiko_lawson        # 合議で追加: ローソンの『学園アイドルマスター』キャンペーン(コラボ先)
     - Neowing_Hobby2      # 合議で追加: ホビーショップの販売元として「たぴぴょん」グッズ予約を告知
     - DesignNagatomo      # 合議で追加: 「POPPIN' PLANET」映像の制作担当(グラフィック・リリック)
@@ -1173,6 +1184,10 @@ x_posts:
 
 # --- リンク元から引き継いだ種別(リンク先1つずつ。キーは pipelib.link_key)。合議がリンク元の告知と関係していると確かめたものだけ(classify_sources.inherit_from_links)。リンク先そのものの種別より強いときだけ効く ---
 link_types:
+  youtube.com/watch?v=KfUV3ZAAwWE: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/gkmas_official/status/2118282186684039301(公式)。告知と同じ「ガラクタロード」特別版PVの動画ページ
+  imas-cg-doria.sync-innovation.co.jp/: 公式    # リンク元から引き継ぎ(合議で関係を確認): https://idolmaster-official.jp/news/01_20259(公式)。元町ドリアコラボの特設サイトで、告知と同じ企画の店舗・グッズ情報
+  shop.asobistore.jp/feature/cg_apai: 公式      # リンク元から引き継ぎ(合議で関係を確認): https://x.com/imas_CGofficial/status/2118177251040899250(公式)。告知のApple of my アイ公式グッズ事前販売と同じ企画のページ
+  shop.asobistore.jp/category/sidem_bd2026: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://x.com/SideM_official/status/2118267075516940364(公式)。告知の315 Celebration Bouquet記念グッズと同じ商品シリーズ
   youtube.com/watch?v=poj4YNDJ6HY: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/valiv_official/status/2117905151424114909(公式)。『Stranger Things 踊ってみた with 愛夏』で、告知の動画と同
   youtube.com/watch?v=kGYw2sS49c0: ファン         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/shigrenium/status/2118022141128094136(ファン)。『DIAMOND JOKER』踊ってみた動画で、告知の動画と同じ
   youtube.com/watch?v=Ri6YYFLUi1o: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/imas_ch/status/2117995288468332797(公式)。辻野あかりの誕生日お祝いムービーで、告知の動画そのもの

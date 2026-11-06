@@ -1,0 +1,103 @@
+{
+ "sidem-teddys-collection-ii-goods": {
+  "title": "「Teddy's Collection II」にアクリルボード-技-と缶バッジ全9種BOXなど、既報にない商品が追加。予約は11月15日まで",
+  "stage": "執筆で見送り",
+  "why": "SOURCE_MISMATCH 新商品として示されたアクリルボードやコンプリートBOXなどは、くりすと！のページでは別商品の関連商品欄に掲載されており、個別の商品ページや予約締切を確認できませんでした。Anime Store.JPで確認できた11月15日の締切は既報商品の",
+  "candidate_ids": [
+   "202611010510-explore-1-r1",
+   "202611010510-explore-2",
+   "202611010510-explore-0"
+  ]
+ },
+ "cg-cinderella-yokohama-cosmoworld-2026": {
+  "title": "シンデレラ物販抽選、結果は本日17時から",
+  "stage": "校閲ブロック",
+  "why": "R1 抽選結果を LINE アプリ「mogily」で確認・発表するという記述に、根拠がない。出典 2 本(ザ・キャラの特設サイト・アイマスポータル)は、結果発表を「11月6日(金)17:00より順次」とだけ書いている。mogily は整理券の配布",
+  "candidate_ids": [
+   "202611051234-explore-9",
+   "sched-2026-11-06-cinderella-yokohama-cosmoworld-2026-結果",
+   "sched-2026-11-06-cinderella-yokohama-cosmoworld-2026-結果-src1",
+   "202611051838-explore-15",
+   "sched-2026-11-06-cinderella-cosmoworld-goods-lottery-2026-結果",
+   "sched-2026-11-06-cinderella-cosmoworld-goods-lottery-2026-結果-src1"
+  ]
+ },
+ "cg-motomachi-doria-2026-collab-menu": {
+  "title": "シンデレラ×元町ドリア、横浜3店の予約開始",
+  "stage": "校閲ブロック",
+  "why": "R4 横浜3店舗以外の全国店舗の数を27店舗としているが、出典では27店舗は横浜3店舗を含む全国の合計。横浜3店舗以外は24店舗(北海道1・宮城1・関東7・北陸東海3・近畿7・中国四国2・九州沖縄3)。",
+  "candidate_ids": [
+   "202611051838-watch-2",
+   "202611060418-grok-71"
+  ]
+ },
+ "dsva-valiv-3rd-live-guest-reveal-2026": {
+  "title": "ヴイアラ3rdLIVE、ゲスト第1弾を発表",
+  "stage": "校閲ブロック",
+  "why": "R4 ゲスト出演の記述(土佐兄弟・電音部の東雲和音・エリオント)は、出典の原本(2026-11-05 18:40 収集時)の動画のチャプター欄にだけあった文言に基づく。いまの版の YouTube 配信ページ(2026-11-06 05:23 に読",
+  "candidate_ids": [
+   "202611051234-explore-8"
+  ]
+ },
+ "gaku-garakuta-road-recording-pv-2026": {
+  "title": "学マス「ガラクタロード」収録PV公開",
+  "stage": "校閲ブロック",
+  "why": "R1 演奏者の漢字表記(佐野康夫・松本圭司・笹本安嗣・竹上良成・鹿内奏・吉澤達彦・若崎亮・稲川真帆)が、根拠の N3 は英字表記(Yasuo Sano など)しか示していない。漢字は根拠から導けない。探した場所: candidates/2026-",
+  "candidate_ids": [
+   "202611060418-grok-42"
+  ]
+ },
+ "general-poppin-planet-fan-art-surge-2026": {
+  "title": "POPPIN' PLANET後、絵投稿増　美里・桃子も祝福",
+  "stage": "校閲ブロック",
+  "why": "R1 見出しとリードが「POPPIN' PLANET」の公開を事実として書いているが、この記事の根拠(F1・F3)にも出典(ファンの X 投稿 1件、アイマスch の祝福投稿)にも公開の記述は無い。ファン投稿は「昨日からイラストが大量に増えた」と",
+  "candidate_ids": [
+   "202611060418-grok-41",
+   "202611060418-grok-77"
+  ]
+ },
+ "joint-starlight-dining-chinese-maid-plush-2027": {
+  "title": "シンデレラ＆学マスぬい、受注は11月9日まで",
+  "stage": "校閲ブロック",
+  "why": "R1 商品価格（ぬいぐるみ3,600円、餃子ぬいぐるみ2,200円）と、9名のアイドル名の一覧が、出典の公式ニュース本文に無い。出典の本文には価格もアイドル名も書かれておらず(「計9名のアイドルたちの」とだけある)、根拠 N1・N2 は出典で確か",
+  "candidate_ids": [
+   "sched-2026-11-06-starlight-dining-chinese-maid-plush-2027-締切前"
+  ]
+ },
+ "million-kyomaf-after-sales-2026": {
+  "title": "ミリオンライブ京まふグッズ、11月18日まで事後通販",
+  "stage": "校閲ブロック",
+  "why": "R5 京まふ2026ミリオンライブPOP UP SHOPの事後通販の話題で、sources は2件とも種別「当事者」(THEキャラ)だけ。公式・準公式、または公式の発表を報じた報道が1つも無い。素材の公式告知(idolmaster-officia",
+  "candidate_ids": [
+   "202611050230-grok-16"
+  ]
+ },
+ "sidem-gotoken-christmas-set-2026": {
+  "title": "SideM×五島軒、セット予約は本日12時開始",
+  "stage": "校閲ブロック",
+  "why": "R5 R5 公式が無い: このセット(SideM のライセンス商品・©Bandai Namco 表記・SideM Mフェス2026 記念)は公式が関わるコラボなのに、sources は当事者(五島軒の店舗ページ)のみ。公式・準公式の告知も、公式の",
+  "candidate_ids": [
+   "202611060418-grok-73"
+  ]
+ },
+ "sidem-knick-knacks-vol-2-2026": {
+  "title": "SideM北千住店の初日抽選、本日19時締切",
+  "stage": "校閲ブロック",
+  "why": "R5 この催事はアイマス公式が関わるコラボ(ハンズ創業50周年の SideM knick-knacks Vol.2)だが、sources に公式・準公式の出典が無く、当事者(ハンズ北千住店ページ)のみ。公式の告知 idolmaster-offic",
+  "candidate_ids": [
+   "sched-2026-11-06-sidem-knick-knacks-vol-2-2026-締切",
+   "sched-2026-11-06-sidem-knick-knacks-vol-2-2026-締切-src1",
+   "sched-2026-11-06-sidem-knick-knacks-vol-2-2026-締切-src2",
+   "sched-2026-11-06-sidem-knick-knacks-vol-2-2026-締切-src3"
+  ]
+ },
+ "sidem-producer-meeting-2027-ajewelholic-presale": {
+  "title": "SideMプロミ2次先行、11月26日締切",
+  "stage": "校閲ブロック",
+  "why": "R8 frontmatter の event_date が 2026-11-26（受付締切日）になっている。素材（202611051838-watch-14）の event_date は 2027-03-13（公演日）で、日付が合わない。",
+  "candidate_ids": [
+   "202611051838-watch-14",
+   "202611060418-explore-8"
+  ]
+ }
+}

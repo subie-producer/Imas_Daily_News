@@ -871,5 +871,60 @@
   "src_candidate_id": "update-d1c063591fad",
   "companion_of": "sched-2026-12-02-cinderella-athome-xr-live-apple-of-my-ai-締切",
   "src_dedup_key": "cg-xr-live-apple-of-my-ai-2027"
+ },
+ {
+  "id": "sched-2026-12-02-sidem-315-night-public-recording-2026-発売",
+  "dedup_key": "sidem-315-night-public-recording-2026",
+  "brand": "sidem",
+  "subject": "SideM Mフェス2026 テーマソングCD発売",
+  "kind": "発売",
+  "note": "対象CDが発売され、店頭で購入できる",
+  "reserved_on": "2026-11-07",
+  "occurs_on": "2026-12-02",
+  "title": "315プロNight!出張版公開録音イベント",
+  "url": "https://x.com/SideM_lantis/status/2118681301884740087",
+  "source_type": "準公式",
+  "facts": [
+   "イベント名は「MフェステーマソングCD発売記念 315プロNight! 出張版 公開録音イベント」。",
+   "日程: 2026年12月12日(土)。",
+   "1回目: 12:30開場/13:30開演。",
+   "2回目: 16:00開場/17:00開演。",
+   "会場はanimate hall BLACK（アニメイト池袋本店 北館9F）。",
+   "出演者は菊池勇成（蒼井悠介 役）。",
+   "出演者は山谷祥生（蒼井享介 役）。",
+   "出演者は益山武明（紅井朱雀 役）。",
+   "出演者は伊瀬結陸（天峰 秀 役）。",
+   "出演者は宮﨑雅也（花園百々人 役）。",
+   "応募締め切り: 2026年11月17日(火)23:59まで。",
+   "リンク: https://x.com/i/article/2097658385621712896",
+   "エンゲージメント: 中",
+   "言及アイドル: 蒼井悠介、蒼井享介、紅井朱雀、天峰 秀、花園百々人"
+  ],
+  "via": "grok",
+  "verify": "unconfirmed",
+  "event_date": "2026-12-12",
+  "deadline": "2026-11-17",
+  "src_candidate_id": "202611070232-grok-23"
+ },
+ {
+  "id": "sched-2026-12-02-sidem-315-night-public-recording-2026-発売-src1",
+  "dedup_key": "sidem-315-night-public-recording-2026",
+  "brand": "sidem",
+  "subject": "SideM Mフェス2026 テーマソングCD発売",
+  "kind": "発売",
+  "note": "対象CDが発売され、店頭で購入できる",
+  "reserved_on": "2026-11-07",
+  "occurs_on": "2026-12-02",
+  "title": "アニメイト「アイドルマスター SideM MフェステーマソングCD発売記念 315プロNight! 出張版 公開録音イベント」(2026年09月12日掲載)",
+  "url": "https://www.animate-onlineshop.jp/contents/fair_event/detail.php?id=116271",
+  "source_type": "準公式",
+  "facts": [
+   "対象商品は2026年12月2日発売のCD「THE IDOLM@STER SideM Mフェス 2026 in Winter Wonderland テーマソング『Season's Greetings Party！』」。"
+  ],
+  "via": "verified_fact",
+  "verify": "unconfirmed",
+  "src_candidate_id": "202611070232-grok-23",
+  "companion_of": "sched-2026-12-02-sidem-315-night-public-recording-2026-発売",
+  "src_dedup_key": "sidem-315-night-public-recording-2026"
  }
 ]

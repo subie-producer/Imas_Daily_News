@@ -1,0 +1,159 @@
+{
+ "collect": [
+  {
+   "at": "2026-11-07T02:33:38+09:00",
+   "edition": "2026-11-07",
+   "started_at": "2026-11-07T02:00:45+09:00",
+   "trigger": "timer",
+   "watch": {
+    "stats": {
+     "imas-portal": {
+      "found": 12,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-sidem": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-shiny": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-million": {
+      "found": 8,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "lantis-shiny": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "lantis-sidem": {
+      "found": 4,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "columbia-imas": {
+      "found": 353,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "bnam-tours": {
+      "found": 69,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "imasnews765": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     }
+    },
+    "new": 0,
+    "facted": 0,
+    "deferred": 0,
+    "blocked": 0,
+    "unavailable": 0
+   },
+   "per_query": {
+    "explore:765as": 0,
+    "explore:cinderella": 0,
+    "explore:million": 1,
+    "explore:shiny": 2,
+    "explore:sidem": 2,
+    "explore:gakuen": 0,
+    "explore:dsva": 0,
+    "explore:joint-other": 0,
+    "explore:trend": 0,
+    "grok:765as": 7,
+    "grok:cinderella": 13,
+    "grok:million": 0,
+    "grok:shiny": 5,
+    "grok:sidem": 13,
+    "grok:gakuen": 0,
+    "grok:dsva": 14,
+    "grok:joint-other": 4,
+    "grok:trend": 3,
+    "grok_searches:shiny": 8,
+    "grok_searches:765": 10,
+    "grok_searches:million": 7,
+    "grok_searches:sidem": 12,
+    "grok_searches:gaku": 20,
+    "grok_searches:cg": 11,
+    "grok_searches:general": 1,
+    "grok_searches:joint": 6,
+    "grok_searches:dsva": 10
+   },
+   "normalized": 64,
+   "added": 60,
+   "verify": {
+    "confirmed": 47,
+    "unconfirmed": 13,
+    "failed": 4
+   },
+   "duration_s": 1972
+  }
+ ],
+ "collect_required": [
+  {
+   "at": "2026-11-07T02:34:53+09:00",
+   "edition": "2026-11-07",
+   "started_at": "2026-11-07T02:00:45+09:00",
+   "trigger": "timer",
+   "reserve_s": 420,
+   "left_s": 682,
+   "elapsed_s": 75
+  }
+ ],
+ "compose": [
+  {
+   "at": "2026-11-07T03:37:18+09:00",
+   "edition": "2026-11-07",
+   "rounds": 3,
+   "approved": true,
+   "lint_green": true,
+   "planned": 47,
+   "written": 42,
+   "roundups": 1,
+   "dropped": 0,
+   "coverage": {
+    "subjects": 113,
+    "covered": 113,
+    "missing": 0,
+    "missing_keys": []
+   },
+   "dropped_by_review": [],
+   "stages_min": {
+    "選定": 2.1347034215927123,
+    "執筆": 12.715329670906067,
+    "出典の判定": 1.1941348632176716,
+    "組版": 1.4999884088834128,
+    "校閲": 1.0828901171684264,
+    "校閲1波": 1.0828901171684264
+   },
+   "target_min": 60,
+   "over_target": false,
+   "aborted": [
+    "sidem-chocolate-special-2dmv-2026",
+    "sidem-teddys-collection-ii-goods",
+    "million-kyomaf-after-sales-2026",
+    "sidem-gotoken-christmas-set-2026",
+    "sidem-mfes-winter-wonderland-decotto-2026"
+   ],
+   "duration_s": 2192
+  }
+ ]
+}

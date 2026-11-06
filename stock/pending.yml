@@ -151,6 +151,7 @@
   subject: SideM Mフェス2026テーマソングCD予約・公開録音
   watch: CD発売日の年・価格・収録曲・応募シリアルの応募期間(判明次第 triggers へ)
   added_on: '2026-09-29'
+  removed_on: '2026-11-07'
 - dedup_key: gaku-bigface-plush-vol4-2026
   brand: gaku
   subject: 学マスBIGフェイスぬいぐるみvol.4
@@ -418,3 +419,8 @@
   subject: ミリオン「たぴぴょん」ぬいぐるみ
   watch: 2027年5月上旬とされた正式な発売日(判明次第 triggers へ)
   added_on: '2026-11-05'
+- dedup_key: sidem-m-fes-winter-wonderland-bonus-2026
+  brand: sidem
+  subject: Mフェス2026 in winter wonderland 特典ブロマイドの配布条件・場所
+  watch: 条件や配布場所は店舗ごとに異なり、各店舗から詳細告知予定。判明次第 triggers へ
+  added_on: '2026-11-07'

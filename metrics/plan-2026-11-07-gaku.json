@@ -1,0 +1,417 @@
+{
+ "decisions": {
+  "gakuma-logbo-dochira-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "応募キャンペーンは11/6 23:59で終了済み。ログボ本体(11/16まで)は11/6号で既報"
+  },
+  "gaku-chinapay-campaign-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "キャンペーンは11/5 23:59で終了済み"
+  },
+  "gakumas-2-5th-eve-login-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "前夜祭ログボは11/6号で既報(11/16 4:59まで)。プレゼント応募は11/6 23:59で終了、当日のトリガーなし"
+  },
+  "gaku-tsubame-garaku-road-gasha-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "ログボ・千奈/美鈴ガシャ(11/16まで)は10/23号・11/6号で既報。新事実も当日のトリガーもなく、出典も二次情報"
+  },
+  "eclipse-light-animate-fair-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "出典の変更は対象商品欄の入れ替えで、GOLD RUSH(7)・修楽旅行の追加は11/5号で既報。フェアは11/23まで、当日のトリガーなし"
+  },
+  "gakuen-shirube-final-2026-venue": {
+   "action": "article",
+   "angle": "「標」ファイナルDAY1がKアリーナ横浜で本日開幕。公演のほか、10〜17時の会場物販(公演チケット不要、一部時間帯は整理券)を案内する。",
+   "purpose": "期日の知らせ",
+   "rank": "large",
+   "lead_score": 85,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "会場物販の3主題(整理券・物販・グッズ)を統合。開幕が当日のトリガー"
+  },
+  "gaku-mission-pass-2026-11": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gamushara-revival-gacha-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "予約の締切は本日10:59のアナザー/SSR確定セレクトガシャ終了。出典の変更(Agitato CDの予約11/8まで)は11/5号で既報"
+  },
+  "curtain-damashii-new-goods-2026": {
+   "action": "article",
+   "angle": "カーテン魂の学マス商品一覧に、ロングクッションカバー(5,500円)とラバーマット(3,300円)が新たに載っている。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "10/26号の4種(予約11/15まで)に無い品目。発売日・予約条件が素材に乏しいため、出典が足りるかは執筆と校閲が判断"
+  },
+  "gaku-garakuta-road-recording-pv-2026": {
+   "action": "article",
+   "angle": "アイドル13人全員のH.I.F編実装を記念し、「ガラクタロード」の演奏収録風景を撮った特別版PVが公式から公開された。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "carried(1回目)。既報に無い新しい公開"
+  },
+  "gaku-shirube-finale-ticket-buzz": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "SNSの当選報告の拡散で未確認。個人のSNS投稿は単体で記事にしない。開幕の知らせは venue 側で扱う"
+  },
+  "gakumas-live-tour-shirube-live-viewing-2026": {
+   "action": "article",
+   "angle": "「標」ファイナルの台湾ライブビューイングが本日初日。15:40入場・16:00開始、料金はNT$1,280、会場は秀泰影城。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "10/3号で前売は既報。当日開幕がトリガー。読者の行動(台湾の映画館での視聴)が別"
+  },
+  "gamushara-rerun-gacha-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gamushara-revival-gacha-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ復刻ガシャ・アナザーガシャの終了"
+  },
+  "gakuen-live-tour-shirube-final-bakusute-talk-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shirube-final-stream-ticket-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "DAY1配信と公演後の「ばくすて！とーく」は同じ視聴の行動"
+  },
+  "gamushara-revival-gacha-2026": {
+   "action": "article",
+   "angle": "雨夜燕のアナザーアイドルガシャと、ことね・手毬の「がむしゃらに行こう！」復刻ガシャ、SSR確定セレクトガシャが本日10時59分に終了する。",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "終了が当日のトリガー。rerun・mission-pass を統合。衣装ショップは別記事"
+  },
+  "shirube-final-stream-ticket-2026": {
+   "action": "article",
+   "angle": "「標」ファイナルDAY1を配信で観られる。公演終了後に村田綾香さんと赤羽根健治さんの「ばくすて！とーく」も生配信され、配信券は11月23日18時まで販売。",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "DAY1開幕が当日のトリガー。配信券の価格・アーカイブ期間は10/22号で既報なので、当日の視聴手順を中心に"
+  },
+  "shirube-final-venue-merch-ticket-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gakuen-shirube-final-2026-venue",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "会場物販の整理券・物販は同じ施策。整理券の当落・発券は11/3・11/4号で既報"
+  },
+  "gaku-shirube-final-merch-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gakuen-shirube-final-2026-venue",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ会場物販"
+  },
+  "gaku-gamushara-cheer-outfit-2026": {
+   "action": "article",
+   "angle": "手毬とことねの衣装「がむしゃらチア」(有償ジュエル500個)の衣装ショップでの販売が本日10時59分で終了する。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "終了が当日のトリガー。ガシャとは読者の行動(衣装購入)が別"
+  },
+  "shirube-final-goods-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gakuen-shirube-final-2026-venue",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ会場物販。購入上限・支払い方法は11/3号で既報"
+  },
+  "gaku-radio-shirube-final-review-2026": {
+   "action": "article",
+   "angle": "初星学園放送部の「標」ファイナル感想回(11月11日放送)へのおたより受付は、11月10日12時まで。あと3日。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "締切3日前がトリガー。ゲスト・フォームは11/5号で既報なので、締切の知らせとして書く"
+  },
+  "gakumas-live-tour-final-collab-drink-2026": {
+   "action": "article",
+   "angle": "「標」ファイナル公演のコラボドリンクを本日からKアリーナ横浜の場外BAYDECKや場内売店で買える。注文で限定トレーディングカードをランダムでもらえる。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "DAY1開幕が当日のトリガー。購入の行動が会場物販とは別。10/31号・11/6号で既報の内容を伝え直す"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "gaku-gakuen-shirube-final-2026-venue",
+    "brand": "gaku",
+    "rank": "large",
+    "angle": "「標」ファイナルDAY1がKアリーナ横浜で本日開幕。公演のほか、10〜17時の会場物販(公演チケット不要、一部時間帯は整理券)を案内する。",
+    "purpose": "期日の知らせ",
+    "lead_score": 85,
+    "dedup_key": "gakuen-shirube-final-2026-venue",
+    "candidate_ids": [
+     "202611062337-watch-3",
+     "sched-2026-11-07-shirube-final-venue-merch-ticket-2026-開始",
+     "sched-2026-11-07-gaku-shirube-final-merch-2026-開幕",
+     "sched-2026-11-07-gaku-shirube-final-merch-2026-開幕-src1",
+     "sched-2026-11-07-gaku-shirube-final-merch-2026-開始",
+     "sched-2026-11-07-gaku-shirube-final-merch-2026-開始-src1",
+     "sched-2026-11-07-shirube-final-goods-2026-開始",
+     "sched-2026-11-07-shirube-final-goods-2026-開始-src1",
+     "sched-2026-11-07-shirube-final-goods-2026-開始-src2"
+    ]
+   },
+   {
+    "slug": "gaku-curtain-damashii-new-goods-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "カーテン魂の学マス商品一覧に、ロングクッションカバー(5,500円)とラバーマット(3,300円)が新たに載っている。",
+    "purpose": "新情報",
+    "lead_score": 5,
+    "dedup_key": "curtain-damashii-new-goods-2026",
+    "candidate_ids": [
+     "202610260349-watch-0",
+     "202610260354-watch-0",
+     "202610260411-watch-0",
+     "202610260412-watch-0",
+     "202610260417-watch-0",
+     "202610241231-explore-11"
+    ]
+   },
+   {
+    "slug": "gaku-garakuta-road-recording-pv-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "アイドル13人全員のH.I.F編実装を記念し、「ガラクタロード」の演奏収録風景を撮った特別版PVが公式から公開された。",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "gaku-garakuta-road-recording-pv-2026",
+    "candidate_ids": [
+     "202611060418-grok-42"
+    ]
+   },
+   {
+    "slug": "gaku-gakumas-live-tour-shirube-live-viewing-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "「標」ファイナルの台湾ライブビューイングが本日初日。15:40入場・16:00開始、料金はNT$1,280、会場は秀泰影城。",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "gakumas-live-tour-shirube-live-viewing-2026",
+    "candidate_ids": [
+     "sched-2026-11-07-gakumas-live-tour-shirube-live-viewing-2026-開幕"
+    ]
+   },
+   {
+    "slug": "gaku-gamushara-revival-gacha-2026",
+    "brand": "gaku",
+    "rank": "medium",
+    "angle": "雨夜燕のアナザーアイドルガシャと、ことね・手毬の「がむしゃらに行こう！」復刻ガシャ、SSR確定セレクトガシャが本日10時59分に終了する。",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "gamushara-revival-gacha-2026",
+    "candidate_ids": [
+     "sched-2026-11-07-gamushara-revival-gacha-2026-終了",
+     "sched-2026-11-07-gamushara-revival-gacha-2026-終了-src1",
+     "update-fd9b12466e54",
+     "sched-2026-11-07-gaku-mission-pass-2026-11-締切",
+     "sched-2026-11-07-gaku-mission-pass-2026-11-締切-src1",
+     "sched-2026-11-07-gaku-mission-pass-2026-11-締切-src2",
+     "sched-2026-11-07-gaku-mission-pass-2026-11-締切-src3",
+     "sched-2026-11-07-gaku-mission-pass-2026-11-締切-src4",
+     "sched-2026-11-07-gaku-mission-pass-2026-11-締切-src5",
+     "sched-2026-11-07-gaku-mission-pass-2026-11-締切-src6",
+     "sched-2026-11-07-gaku-mission-pass-2026-11-締切-src7",
+     "sched-2026-11-07-gaku-mission-pass-2026-11-締切-src8",
+     "sched-2026-11-07-gamushara-rerun-gacha-2026-終了"
+    ]
+   },
+   {
+    "slug": "gaku-shirube-final-stream-ticket-2026",
+    "brand": "gaku",
+    "rank": "medium",
+    "angle": "「標」ファイナルDAY1を配信で観られる。公演終了後に村田綾香さんと赤羽根健治さんの「ばくすて！とーく」も生配信され、配信券は11月23日18時まで販売。",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "shirube-final-stream-ticket-2026",
+    "candidate_ids": [
+     "sched-2026-11-07-shirube-final-stream-ticket-2026-開幕",
+     "sched-2026-11-07-shirube-final-stream-ticket-2026-開幕-src1",
+     "sched-2026-11-07-shirube-final-stream-ticket-2026-開幕-src2",
+     "sched-2026-11-07-shirube-final-stream-ticket-2026-開幕-src3",
+     "sched-2026-11-07-shirube-final-stream-ticket-2026-開幕-src4",
+     "sched-2026-11-07-gakuen-live-tour-shirube-final-bakusute-talk-2026-開幕",
+     "sched-2026-11-07-gakuen-live-tour-shirube-final-bakusute-talk-2026-開幕-src1",
+     "sched-2026-11-07-gakuen-live-tour-shirube-final-bakusute-talk-2026-開幕-src2"
+    ]
+   },
+   {
+    "slug": "gaku-gamushara-cheer-outfit-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "手毬とことねの衣装「がむしゃらチア」(有償ジュエル500個)の衣装ショップでの販売が本日10時59分で終了する。",
+    "purpose": "期日の知らせ",
+    "lead_score": 15,
+    "dedup_key": "gaku-gamushara-cheer-outfit-2026",
+    "candidate_ids": [
+     "sched-2026-11-07-gaku-gamushara-cheer-outfit-2026-締切",
+     "sched-2026-11-07-gaku-gamushara-cheer-outfit-2026-終了",
+     "sched-2026-11-07-gaku-gamushara-cheer-outfit-2026-終了-src1",
+     "sched-2026-11-07-gaku-gamushara-cheer-outfit-2026-終了-src2",
+     "sched-2026-11-07-gaku-gamushara-cheer-outfit-2026-終了-src3",
+     "sched-2026-11-07-gaku-gamushara-cheer-outfit-2026-終了-src4"
+    ]
+   },
+   {
+    "slug": "gaku-radio-shirube-final-review-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "初星学園放送部の「標」ファイナル感想回(11月11日放送)へのおたより受付は、11月10日12時まで。あと3日。",
+    "purpose": "期日の知らせ",
+    "lead_score": 15,
+    "dedup_key": "gaku-radio-shirube-final-review-2026",
+    "candidate_ids": [
+     "sched-2026-11-07-gaku-radio-shirube-final-review-2026-締切前"
+    ]
+   },
+   {
+    "slug": "gaku-gakumas-live-tour-final-collab-drink-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "「標」ファイナル公演のコラボドリンクを本日からKアリーナ横浜の場外BAYDECKや場内売店で買える。注文で限定トレーディングカードをランダムでもらえる。",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "gakumas-live-tour-final-collab-drink-2026",
+    "candidate_ids": [
+     "sched-2026-11-07-gakumas-live-tour-final-collab-drink-2026-開幕"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "gakuma-logbo-dochira-2026",
+    "reason": "その他",
+    "note": "応募キャンペーンは11/6 23:59で終了済み。ログボ本体(11/16まで)は11/6号で既報"
+   },
+   {
+    "dedup_key": "gaku-chinapay-campaign-2026",
+    "reason": "その他",
+    "note": "キャンペーンは11/5 23:59で終了済み"
+   },
+   {
+    "dedup_key": "gakumas-2-5th-eve-login-2026",
+    "reason": "既報",
+    "note": "前夜祭ログボは11/6号で既報(11/16 4:59まで)。プレゼント応募は11/6 23:59で終了、当日のトリガーなし"
+   },
+   {
+    "dedup_key": "gaku-tsubame-garaku-road-gasha-2026",
+    "reason": "既報",
+    "note": "ログボ・千奈/美鈴ガシャ(11/16まで)は10/23号・11/6号で既報。新事実も当日のトリガーもなく、出典も二次情報"
+   },
+   {
+    "dedup_key": "eclipse-light-animate-fair-2026",
+    "reason": "既報",
+    "note": "出典の変更は対象商品欄の入れ替えで、GOLD RUSH(7)・修楽旅行の追加は11/5号で既報。フェアは11/23まで、当日のトリガーなし"
+   },
+   {
+    "dedup_key": "gaku-shirube-finale-ticket-buzz",
+    "reason": "出典不足",
+    "note": "SNSの当選報告の拡散で未確認。個人のSNS投稿は単体で記事にしない。開幕の知らせは venue 側で扱う"
+   }
+  ],
+  "cross_brand": []
+ }
+}

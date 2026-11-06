@@ -1,0 +1,538 @@
+{
+ "decisions": {
+  "sidem-battle-fes-theater-goods-2026": {
+   "action": "article",
+   "angle": "劇場版SideMの劇場物販が11月20日から上映劇場と松竹ストアで始まり、ウォーターボトル・ブックバンド・マルチケース・ドリップバッグが並ぶ。",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "sidem-birthday-celebration-bouquet-2026-feb": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/6号と同内容。締切11/15は3日以内でない"
+  },
+  "sidem-producer-meeting-ajewelholic-2027-premium-advance-2": {
+   "action": "article",
+   "angle": "SideMプロミ「AJewelholIc!!!」のアソビストアプレミアム12か月会員2次先行が11月26日23時59分まで受付中で、当落は12月10日13時から。",
+   "purpose": "新情報",
+   "rank": "large",
+   "lead_score": 70,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "2次先行は既報の1次先行とは別の新情報"
+  },
+  "sidem-mfes-winter-wonderland-decotto-2026": {
+   "action": "article",
+   "angle": "Mフェス2026 in Winter WonderlandのコラボがDECOTTO by animate cafe(池袋)で12月1日〜1月12日開催、12月6日までは抽選予約制。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "sidem-poppin-planet-2dmv-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/4・11/5号で公開済みを報道"
+  },
+  "sidem-idol-1koma-2026-11-07": {
+   "action": "article",
+   "angle": "「アイドルたちの1コマ」に硲道夫・舞田類・山下次郎の新ストーリー「身近なもので試してみよう」が本日0時に追加。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "sidem-chocolate-special-2dmv-2026": {
+   "action": "article",
+   "angle": "Café Parade「Chocolate Special」の2DMV公開日が11月13日22時に決定。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "sidem-315-night-public-recording-2026": {
+   "action": "article",
+   "angle": "「MフェステーマソングCD発売記念 315プロNight!出張版 公開録音イベント」が12月12日にアニメイト池袋本店で2回開催。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "出演者の全員分は全文で確認"
+  },
+  "sidem-315-night-mofumofuen-2026-11": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/6放送済み。素材は個人投稿で、出演は11/2号で既報"
+  },
+  "sidem-fanfes-wgf-entry-gift-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "入場者プレゼントの中身が素材に無い"
+  },
+  "sidem-fanfes-wgf-signage-2026": {
+   "action": "article",
+   "angle": "劇場版SideMの特別サイネージ装飾が12月3日まで新宿ピカデリー屋外となんばパークスシネマのロビーで実施中。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "sidem-m-fes-winter-wonderland-bonus-2026": {
+   "action": "article",
+   "angle": "Mフェス2026 in winter wonderlandのオリジナル特典ブロマイドのデザインと配布対象企業・サービスが公開。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "sidem-fan-joypolis-visit-2026-11": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿"
+  },
+  "sidem-fan-daimaru-collab-visit-2026-11": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿"
+  },
+  "sidem-monthly-theme-song-goods-3-2026": {
+   "action": "article",
+   "angle": "Mフェス初テーマ曲(P@SSION CHALLENGE We are 315!)リリース記念グッズ第3弾の受注は明日11月8日まで。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "11/5号で受注は8日までと既報。締切が翌日のトリガー"
+  },
+  "teddys-collection-ii-goods": {
+   "action": "article",
+   "angle": "「Teddy's Collection II」に缶バッジ・クリアカード・ステッカー・アクリルボードなど未報の商品と価格が判明(予約は11月15日まで)。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "既報はアクリルチャームとマフラータオルのみ"
+  },
+  "sidem-315-monthly-theme-12-cafe-parade": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "10/21発売済みの商品ページで新しい出来事が無い"
+  },
+  "cho-retroseparty-2026-goods": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "出典変更は表示・注意書き中心で、読者に関わる変更が確認できない"
+  },
+  "sidem-gotoken-christmas-set-2026": {
+   "action": "article",
+   "angle": "SideM×五島軒のクリスマスパーティセット(16,200円)の予約が12月5日まで。早期予約は11月21日まで全国送料無料で、全5種クリアファイル付き。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "sidem-producer-meeting-ajewelholic-2027": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-producer-meeting-ajewelholic-2027-premium-advance-2",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ2次先行。当落12/10と入金12/14まで等を統合"
+  },
+  "sidem-seibuen-retro-rose-party-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/30開幕済みで新事実も当日トリガーも無い"
+  },
+  "sidem-cho-retroseparty-goods-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "スカーフ・リングライトは10/26・10/27号で既報"
+  },
+  "sidem-cho-retroseparty-ring-light-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/27号で既報"
+  },
+  "sidem-joypolis-3-2026": {
+   "action": "article",
+   "angle": "東京ジョイポリスの第2弾スペシャルショー(Altessimoら6ユニット)は本日11月7日が最終日。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約:千秋楽。第3弾は11/8から"
+  },
+  "sidem-fbfes-wgf-2026-stage-greeting": {
+   "action": "article",
+   "angle": "劇場版SideM公開記念舞台挨拶(11月21日新宿ピカデリー)のプレリクエスト先行の当落発表が本日15時から。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約:結果"
+  },
+  "sidem-fanfes-wgf-makuhari-live-sound-2026": {
+   "action": "article",
+   "angle": "イオンシネマ幕張新都心の「劇場版SideMFANFES_WGF」第5回ライブ音響上映のチケットが本日発売(0時e席リザーブ、8時劇場券売機)。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約:発売"
+  },
+  "sidem-makuhari-live-sound-screening-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-fanfes-wgf-makuhari-live-sound-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ幕張ライブ音響上映のチケット発売"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "sidem-battle-fes-theater-goods-2026",
+    "brand": "sidem",
+    "rank": "medium",
+    "angle": "劇場版SideMの劇場物販が11月20日から上映劇場と松竹ストアで始まり、ウォーターボトル・ブックバンド・マルチケース・ドリップバッグが並ぶ。",
+    "purpose": "新情報",
+    "lead_score": 30,
+    "dedup_key": "sidem-battle-fes-theater-goods-2026",
+    "candidate_ids": [
+     "202611061234-watch-0",
+     "202611070232-explore-4"
+    ]
+   },
+   {
+    "slug": "sidem-producer-meeting-ajewelholic-2027-premium-advance-2",
+    "brand": "sidem",
+    "rank": "large",
+    "angle": "SideMプロミ「AJewelholIc!!!」のアソビストアプレミアム12か月会員2次先行が11月26日23時59分まで受付中で、当落は12月10日13時から。",
+    "purpose": "新情報",
+    "lead_score": 70,
+    "dedup_key": "sidem-producer-meeting-ajewelholic-2027-premium-advance-2",
+    "candidate_ids": [
+     "202611061234-explore-10",
+     "202611060418-explore-8"
+    ]
+   },
+   {
+    "slug": "sidem-mfes-winter-wonderland-decotto-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "Mフェス2026 in Winter WonderlandのコラボがDECOTTO by animate cafe(池袋)で12月1日〜1月12日開催、12月6日までは抽選予約制。",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "sidem-mfes-winter-wonderland-decotto-2026",
+    "candidate_ids": [
+     "202611061836-explore-15"
+    ]
+   },
+   {
+    "slug": "sidem-idol-1koma-2026-11-07",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "「アイドルたちの1コマ」に硲道夫・舞田類・山下次郎の新ストーリー「身近なもので試してみよう」が本日0時に追加。",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "sidem-idol-1koma-2026-11-07",
+    "candidate_ids": [
+     "202611070232-grok-20",
+     "202611070232-grok-53"
+    ]
+   },
+   {
+    "slug": "sidem-chocolate-special-2dmv-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "Café Parade「Chocolate Special」の2DMV公開日が11月13日22時に決定。",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "sidem-chocolate-special-2dmv-2026",
+    "candidate_ids": [
+     "202611070232-grok-21"
+    ]
+   },
+   {
+    "slug": "sidem-315-night-public-recording-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "「MフェステーマソングCD発売記念 315プロNight!出張版 公開録音イベント」が12月12日にアニメイト池袋本店で2回開催。",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "sidem-315-night-public-recording-2026",
+    "candidate_ids": [
+     "202611070232-grok-23"
+    ]
+   },
+   {
+    "slug": "sidem-fanfes-wgf-signage-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "劇場版SideMの特別サイネージ装飾が12月3日まで新宿ピカデリー屋外となんばパークスシネマのロビーで実施中。",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "sidem-fanfes-wgf-signage-2026",
+    "candidate_ids": [
+     "202611070232-grok-26"
+    ]
+   },
+   {
+    "slug": "sidem-m-fes-winter-wonderland-bonus-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "Mフェス2026 in winter wonderlandのオリジナル特典ブロマイドのデザインと配布対象企業・サービスが公開。",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "sidem-m-fes-winter-wonderland-bonus-2026",
+    "candidate_ids": [
+     "202611070232-grok-27"
+    ]
+   },
+   {
+    "slug": "sidem-monthly-theme-song-goods-3-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "Mフェス初テーマ曲(P@SSION CHALLENGE We are 315!)リリース記念グッズ第3弾の受注は明日11月8日まで。",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "sidem-monthly-theme-song-goods-3-2026",
+    "candidate_ids": [
+     "202611070232-grok-52"
+    ]
+   },
+   {
+    "slug": "sidem-teddys-collection-ii-goods",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "「Teddy's Collection II」に缶バッジ・クリアカード・ステッカー・アクリルボードなど未報の商品と価格が判明(予約は11月15日まで)。",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "teddys-collection-ii-goods",
+    "candidate_ids": [
+     "202611010510-explore-0",
+     "202611010510-explore-1-r1",
+     "202611010510-explore-2"
+    ]
+   },
+   {
+    "slug": "sidem-gotoken-christmas-set-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "SideM×五島軒のクリスマスパーティセット(16,200円)の予約が12月5日まで。早期予約は11月21日まで全国送料無料で、全5種クリアファイル付き。",
+    "purpose": "新情報",
+    "lead_score": 25,
+    "dedup_key": "sidem-gotoken-christmas-set-2026",
+    "candidate_ids": [
+     "202611060418-grok-73"
+    ]
+   },
+   {
+    "slug": "sidem-joypolis-3-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "東京ジョイポリスの第2弾スペシャルショー(Altessimoら6ユニット)は本日11月7日が最終日。",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "sidem-joypolis-3-2026",
+    "candidate_ids": [
+     "sched-2026-11-07-sidem-joypolis-3-2026-千秋楽"
+    ]
+   },
+   {
+    "slug": "sidem-fbfes-wgf-2026-stage-greeting",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "劇場版SideM公開記念舞台挨拶(11月21日新宿ピカデリー)のプレリクエスト先行の当落発表が本日15時から。",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "sidem-fbfes-wgf-2026-stage-greeting",
+    "candidate_ids": [
+     "sched-2026-11-07-sidem-fbfes-wgf-2026-stage-greeting-結果",
+     "sched-2026-11-07-sidem-fbfes-wgf-2026-stage-greeting-結果-src1"
+    ]
+   },
+   {
+    "slug": "sidem-fanfes-wgf-makuhari-live-sound-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "イオンシネマ幕張新都心の「劇場版SideMFANFES_WGF」第5回ライブ音響上映のチケットが本日発売(0時e席リザーブ、8時劇場券売機)。",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "sidem-fanfes-wgf-makuhari-live-sound-2026",
+    "candidate_ids": [
+     "sched-2026-11-07-sidem-fanfes-wgf-makuhari-live-sound-2026-発売",
+     "sched-2026-11-07-sidem-makuhari-live-sound-screening-2026-発売"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "sidem-birthday-celebration-bouquet-2026-feb",
+    "reason": "既報",
+    "note": "11/6号と同内容。締切11/15は3日以内でない"
+   },
+   {
+    "dedup_key": "sidem-poppin-planet-2dmv-2026",
+    "reason": "既報",
+    "note": "11/4・11/5号で公開済みを報道"
+   },
+   {
+    "dedup_key": "sidem-315-night-mofumofuen-2026-11",
+    "reason": "既報",
+    "note": "11/6放送済み。素材は個人投稿で、出演は11/2号で既報"
+   },
+   {
+    "dedup_key": "sidem-fanfes-wgf-entry-gift-2026",
+    "reason": "出典不足",
+    "note": "入場者プレゼントの中身が素材に無い"
+   },
+   {
+    "dedup_key": "sidem-fan-joypolis-visit-2026-11",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿"
+   },
+   {
+    "dedup_key": "sidem-fan-daimaru-collab-visit-2026-11",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿"
+   },
+   {
+    "dedup_key": "sidem-315-monthly-theme-12-cafe-parade",
+    "reason": "その他",
+    "note": "10/21発売済みの商品ページで新しい出来事が無い"
+   },
+   {
+    "dedup_key": "cho-retroseparty-2026-goods",
+    "reason": "既報",
+    "note": "出典変更は表示・注意書き中心で、読者に関わる変更が確認できない"
+   },
+   {
+    "dedup_key": "sidem-seibuen-retro-rose-party-2026",
+    "reason": "既報",
+    "note": "10/30開幕済みで新事実も当日トリガーも無い"
+   },
+   {
+    "dedup_key": "sidem-cho-retroseparty-goods-2026",
+    "reason": "既報",
+    "note": "スカーフ・リングライトは10/26・10/27号で既報"
+   },
+   {
+    "dedup_key": "sidem-cho-retroseparty-ring-light-2026",
+    "reason": "既報",
+    "note": "10/27号で既報"
+   }
+  ],
+  "cross_brand": []
+ }
+}

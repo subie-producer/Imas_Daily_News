@@ -844,5 +844,39 @@
   "src_candidate_id": "202611060418-grok-12",
   "companion_of": "sched-2026-12-12-hangetsu-deaetara-revival-ticket-2026-開幕",
   "src_dedup_key": "hangetsu-deaetara-revival-ticket-2026"
+ },
+ {
+  "id": "sched-2026-12-12-sidem-315-night-public-recording-2026-開幕",
+  "dedup_key": "sidem-315-night-public-recording-2026",
+  "brand": "sidem",
+  "subject": "315プロNight!出張版 公開録音(池袋、2回開催)",
+  "kind": "開幕",
+  "note": "アニメイト池袋本店で13:30と17:00開演の公開録音を見に行ける",
+  "reserved_on": "2026-11-07",
+  "occurs_on": "2026-12-12",
+  "title": "315プロNight!出張版公開録音イベント",
+  "url": "https://x.com/SideM_lantis/status/2118681301884740087",
+  "source_type": "準公式",
+  "facts": [
+   "イベント名は「MフェステーマソングCD発売記念 315プロNight! 出張版 公開録音イベント」。",
+   "日程: 2026年12月12日(土)。",
+   "1回目: 12:30開場/13:30開演。",
+   "2回目: 16:00開場/17:00開演。",
+   "会場はanimate hall BLACK（アニメイト池袋本店 北館9F）。",
+   "出演者は菊池勇成（蒼井悠介 役）。",
+   "出演者は山谷祥生（蒼井享介 役）。",
+   "出演者は益山武明（紅井朱雀 役）。",
+   "出演者は伊瀬結陸（天峰 秀 役）。",
+   "出演者は宮﨑雅也（花園百々人 役）。",
+   "応募締め切り: 2026年11月17日(火)23:59まで。",
+   "リンク: https://x.com/i/article/2097658385621712896",
+   "エンゲージメント: 中",
+   "言及アイドル: 蒼井悠介、蒼井享介、紅井朱雀、天峰 秀、花園百々人"
+  ],
+  "via": "grok",
+  "verify": "unconfirmed",
+  "event_date": "2026-12-12",
+  "deadline": "2026-11-17",
+  "src_candidate_id": "202611070232-grok-23"
  }
 ]

@@ -232,6 +232,7 @@ performer_domains:
 # --- ファン: ファン・サークル活動等の**当事者発信** ---
 # 自分の営みを自分で発信しているもの。他所の発表を写しているものは 二次情報 へ。
 fan_domains:
+  - art-pi.com            # 合議で追加: 個人運営のフリーランスサイト。個人の発信はファン。公式引用だけでは二次情報でない
   - crow-diary.com        # 合議で追加: 「本ブログについて」で個人カラスの雑記ブログと明記。個人に紐づく発信
   - vtuber-matomeruyon.blog.jp # 合議で追加: about.htmlは管理人のみ・法人名なし。個人なので内容によらずファン
   - nagarestar.booth.pm   # 合議で追加: 個人名義の BOOTH 店。運営者情報なし、個人に紐づくのでファン
@@ -653,6 +654,9 @@ x_accounts:
     - imasnews765
     - zutapoke
   ファン:
+    - surigomaP           # 合議で追加: 個人アカウントによる周防桃子の誕生日祝いの投稿。個人発信はファン
+    - soprano_kiri        # 合議で追加: SideMファンによるジョイポリス訪問の個人投稿。個人発信はファン
+    - kiyora1116          # 合議で追加: 個人アカウントのSideMコラボ訪問投稿。個人発信はファン
     - tt63_ouen_b         # 合議で追加: 個人・ファンによる月村手毬の応援広告掲出
     - mi_cos              # 合議で追加: 個人のコスプレ投稿
     - hariP_thumbtack     # 合議で追加: ファン作成の予習プレイリスト、個人発信
@@ -1184,6 +1188,10 @@ x_posts:
 
 # --- リンク元から引き継いだ種別(リンク先1つずつ。キーは pipelib.link_key)。合議がリンク元の告知と関係していると確かめたものだけ(classify_sources.inherit_from_links)。リンク先そのものの種別より強いときだけ効く ---
 link_types:
+  youtube.com/watch?v=K6jfRuAMg4c: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/KamizuruCosmo/status/2118750690227191854(公式)。リンク先は告知と同じ『BOMBANANA!』配信動画で、爆弾解除の内容と一致
+  youtube.com/watch?v=iMf7cPCS_-0: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/imas_ch/status/2118357676887302569(公式)。リンク元が紹介する周防桃子の誕生日祝い動画そのもの
+  youtube.com/watch?v=QMkhGXJqVOY: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/imas_ch/status/2118357676887302569(公式)。リンク元が紹介する間中美里の誕生日祝い動画そのもの
+  youtube.com/watch?v=O0jv6CWCINE: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/valiv_official/status/2118629461226643592(公式)。告知されたペンギンハグのショート動画そのもので、リンク元と同じ企画
   youtube.com/watch?v=KfUV3ZAAwWE: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/gkmas_official/status/2118282186684039301(公式)。告知と同じ「ガラクタロード」特別版PVの動画ページ
   imas-cg-doria.sync-innovation.co.jp/: 公式    # リンク元から引き継ぎ(合議で関係を確認): https://idolmaster-official.jp/news/01_20259(公式)。元町ドリアコラボの特設サイトで、告知と同じ企画の店舗・グッズ情報
   shop.asobistore.jp/feature/cg_apai: 公式      # リンク元から引き継ぎ(合議で関係を確認): https://x.com/imas_CGofficial/status/2118177251040899250(公式)。告知のApple of my アイ公式グッズ事前販売と同じ企画のページ

@@ -1,0 +1,862 @@
+{
+ "articles": [
+  {
+   "slug": "joint-imas-year-end-thanks-2026",
+   "brand": "joint",
+   "rank": "medium",
+   "angle": "アイマス年末感謝祭が12月24日19時から配信予定と判明。各ブランドの出演者と、11月30日締切の事前アンケートも併せて伝える。",
+   "purpose": "新情報",
+   "lead_score": 60,
+   "dedup_key": "imas-year-end-thanks-2026",
+   "candidate_ids": [
+    "202611070232-grok-37",
+    "202611070232-grok-38",
+    "202611062337-watch-1",
+    "202611062337-watch-8"
+   ]
+  },
+  {
+   "slug": "joint-imas-radio-stamas-5th-2026",
+   "brand": "joint",
+   "rank": "small",
+   "angle": "IM＠S RADIO第5回(11月10日)のテーマが「学マスの魅力」と決まり、お便りとファンアート(#アイマスch_FA)を募集。",
+   "purpose": "新情報",
+   "lead_score": 20,
+   "dedup_key": "imas-radio-stamas-5th-2026",
+   "candidate_ids": [
+    "202611070232-grok-40"
+   ]
+  },
+  {
+   "slug": "joint-starlight-dining-chinese-maid-plush-2027",
+   "brand": "joint",
+   "rank": "small",
+   "angle": "中華風メイドぬいぐるみ・餃子ぬいぐるみのASOBI STORE事前受注(受注生産)は11月9日23時59分まで、締切まであと2日。",
+   "purpose": "期日の知らせ",
+   "lead_score": 30,
+   "dedup_key": "starlight-dining-chinese-maid-plush-2027",
+   "candidate_ids": [
+    "sched-2026-11-06-starlight-dining-chinese-maid-plush-2027-締切前"
+   ]
+  },
+  {
+   "slug": "joint-tours-halloween-commu-2026",
+   "brand": "joint",
+   "rank": "small",
+   "angle": "ツアマスのハロウィンログインボーナスは本日11月7日23時59分が最終日。お菓子を受け取るにはそれまでにログイン。",
+   "purpose": "期日の知らせ",
+   "lead_score": 25,
+   "dedup_key": "tours-halloween-commu-2026",
+   "candidate_ids": [
+    "sched-2026-11-07-tours-halloween-commu-2026-締切",
+    "sched-2026-11-07-tours-halloween-commu-2026-終了"
+   ]
+  },
+  {
+   "slug": "sidem-battle-fes-theater-goods-2026",
+   "brand": "sidem",
+   "rank": "small",
+   "angle": "劇場版SideMの劇場物販が11月20日から上映劇場と松竹ストアで始まり、ウォーターボトル・ブックバンド・マルチケース・ドリップバッグが並ぶ。",
+   "purpose": "新情報",
+   "lead_score": 30,
+   "dedup_key": "sidem-battle-fes-theater-goods-2026",
+   "candidate_ids": [
+    "202611061234-watch-0",
+    "202611070232-explore-4"
+   ]
+  },
+  {
+   "slug": "sidem-producer-meeting-ajewelholic-2027-premium-advance-2",
+   "brand": "sidem",
+   "rank": "small",
+   "angle": "SideMプロミ「AJewelholIc!!!」のアソビストアプレミアム12か月会員2次先行が11月26日23時59分まで受付中で、当落は12月10日13時から。",
+   "purpose": "新情報",
+   "lead_score": 70,
+   "dedup_key": "sidem-producer-meeting-ajewelholic-2027-premium-advance-2",
+   "candidate_ids": [
+    "202611061234-explore-10",
+    "202611060418-explore-8"
+   ]
+  },
+  {
+   "slug": "sidem-mfes-winter-wonderland-decotto-2026",
+   "brand": "sidem",
+   "rank": "large",
+   "angle": "Mフェス2026 in Winter WonderlandのコラボがDECOTTO by animate cafe(池袋)で12月1日〜1月12日開催、12月6日までは抽選予約制。",
+   "purpose": "新情報",
+   "lead_score": 15,
+   "dedup_key": "sidem-mfes-winter-wonderland-decotto-2026",
+   "candidate_ids": [
+    "202611061836-explore-15"
+   ]
+  },
+  {
+   "slug": "sidem-idol-1koma-2026-11-07",
+   "brand": "sidem",
+   "rank": "small",
+   "angle": "「アイドルたちの1コマ」に硲道夫・舞田類・山下次郎の新ストーリー「身近なもので試してみよう」が本日0時に追加。",
+   "purpose": "新情報",
+   "lead_score": 10,
+   "dedup_key": "sidem-idol-1koma-2026-11-07",
+   "candidate_ids": [
+    "202611070232-grok-20",
+    "202611070232-grok-53"
+   ]
+  },
+  {
+   "slug": "sidem-chocolate-special-2dmv-2026",
+   "brand": "sidem",
+   "rank": "small",
+   "angle": "Café Parade「Chocolate Special」の2DMV公開日が11月13日22時に決定。",
+   "purpose": "新情報",
+   "lead_score": 20,
+   "dedup_key": "sidem-chocolate-special-2dmv-2026",
+   "candidate_ids": [
+    "202611070232-grok-21"
+   ]
+  },
+  {
+   "slug": "sidem-315-night-public-recording-2026",
+   "brand": "sidem",
+   "rank": "medium",
+   "angle": "「MフェステーマソングCD発売記念 315プロNight!出張版 公開録音イベント」が12月12日にアニメイト池袋本店で2回開催。",
+   "purpose": "新情報",
+   "lead_score": 20,
+   "dedup_key": "sidem-315-night-public-recording-2026",
+   "candidate_ids": [
+    "202611070232-grok-23"
+   ]
+  },
+  {
+   "slug": "sidem-fanfes-wgf-signage-2026",
+   "brand": "sidem",
+   "rank": "small",
+   "angle": "劇場版SideMの特別サイネージ装飾が12月3日まで新宿ピカデリー屋外となんばパークスシネマのロビーで実施中。",
+   "purpose": "新情報",
+   "lead_score": 10,
+   "dedup_key": "sidem-fanfes-wgf-signage-2026",
+   "candidate_ids": [
+    "202611070232-grok-26"
+   ]
+  },
+  {
+   "slug": "sidem-m-fes-winter-wonderland-bonus-2026",
+   "brand": "sidem",
+   "rank": "small",
+   "angle": "Mフェス2026 in winter wonderlandのオリジナル特典ブロマイドのデザインと配布対象企業・サービスが公開。",
+   "purpose": "新情報",
+   "lead_score": 15,
+   "dedup_key": "sidem-m-fes-winter-wonderland-bonus-2026",
+   "candidate_ids": [
+    "202611070232-grok-27"
+   ]
+  },
+  {
+   "slug": "sidem-monthly-theme-song-goods-3-2026",
+   "brand": "sidem",
+   "rank": "small",
+   "angle": "Mフェス初テーマ曲(P@SSION CHALLENGE We are 315!)リリース記念グッズ第3弾の受注は明日11月8日まで。",
+   "purpose": "期日の知らせ",
+   "lead_score": 25,
+   "dedup_key": "sidem-monthly-theme-song-goods-3-2026",
+   "candidate_ids": [
+    "202611070232-grok-52"
+   ]
+  },
+  {
+   "slug": "sidem-teddys-collection-ii-goods",
+   "brand": "sidem",
+   "rank": "small",
+   "angle": "「Teddy's Collection II」に缶バッジ・クリアカード・ステッカー・アクリルボードなど未報の商品と価格が判明(予約は11月15日まで)。",
+   "purpose": "新情報",
+   "lead_score": 15,
+   "dedup_key": "teddys-collection-ii-goods",
+   "candidate_ids": [
+    "202611010510-explore-0",
+    "202611010510-explore-1-r1",
+    "202611010510-explore-2"
+   ]
+  },
+  {
+   "slug": "sidem-gotoken-christmas-set-2026",
+   "brand": "sidem",
+   "rank": "medium",
+   "angle": "SideM×五島軒のクリスマスパーティセット(16,200円)の予約が12月5日まで。早期予約は11月21日まで全国送料無料で、全5種クリアファイル付き。",
+   "purpose": "新情報",
+   "lead_score": 25,
+   "dedup_key": "sidem-gotoken-christmas-set-2026",
+   "candidate_ids": [
+    "202611060418-grok-73"
+   ]
+  },
+  {
+   "slug": "sidem-joypolis-3-2026",
+   "brand": "sidem",
+   "rank": "small",
+   "angle": "東京ジョイポリスの第2弾スペシャルショー(Altessimoら6ユニット)は本日11月7日が最終日。",
+   "purpose": "期日の知らせ",
+   "lead_score": 25,
+   "dedup_key": "sidem-joypolis-3-2026",
+   "candidate_ids": [
+    "sched-2026-11-07-sidem-joypolis-3-2026-千秋楽"
+   ]
+  },
+  {
+   "slug": "sidem-fbfes-wgf-2026-stage-greeting",
+   "brand": "sidem",
+   "rank": "medium",
+   "angle": "劇場版SideM公開記念舞台挨拶(11月21日新宿ピカデリー)のプレリクエスト先行の当落発表が本日15時から。",
+   "purpose": "期日の知らせ",
+   "lead_score": 30,
+   "dedup_key": "sidem-fbfes-wgf-2026-stage-greeting",
+   "candidate_ids": [
+    "sched-2026-11-07-sidem-fbfes-wgf-2026-stage-greeting-結果",
+    "sched-2026-11-07-sidem-fbfes-wgf-2026-stage-greeting-結果-src1"
+   ]
+  },
+  {
+   "slug": "sidem-fanfes-wgf-makuhari-live-sound-2026",
+   "brand": "sidem",
+   "rank": "small",
+   "angle": "イオンシネマ幕張新都心の「劇場版SideMFANFES_WGF」第5回ライブ音響上映のチケットが本日発売(0時e席リザーブ、8時劇場券売機)。",
+   "purpose": "期日の知らせ",
+   "lead_score": 30,
+   "dedup_key": "sidem-fanfes-wgf-makuhari-live-sound-2026",
+   "candidate_ids": [
+    "sched-2026-11-07-sidem-fanfes-wgf-makuhari-live-sound-2026-発売",
+    "sched-2026-11-07-sidem-makuhari-live-sound-screening-2026-発売"
+   ]
+  },
+  {
+   "slug": "gaku-gakuen-shirube-final-2026-venue",
+   "brand": "gaku",
+   "rank": "lead",
+   "angle": "「標」ファイナルDAY1がKアリーナ横浜で本日開幕。公演のほか、10〜17時の会場物販(公演チケット不要、一部時間帯は整理券)を案内する。",
+   "purpose": "期日の知らせ",
+   "lead_score": 85,
+   "dedup_key": "gakuen-shirube-final-2026-venue",
+   "candidate_ids": [
+    "202611062337-watch-3",
+    "sched-2026-11-07-shirube-final-venue-merch-ticket-2026-開始",
+    "sched-2026-11-07-gaku-shirube-final-merch-2026-開幕",
+    "sched-2026-11-07-gaku-shirube-final-merch-2026-開幕-src1",
+    "sched-2026-11-07-gaku-shirube-final-merch-2026-開始",
+    "sched-2026-11-07-gaku-shirube-final-merch-2026-開始-src1",
+    "sched-2026-11-07-shirube-final-goods-2026-開始",
+    "sched-2026-11-07-shirube-final-goods-2026-開始-src1",
+    "sched-2026-11-07-shirube-final-goods-2026-開始-src2"
+   ]
+  },
+  {
+   "slug": "gaku-curtain-damashii-new-goods-2026",
+   "brand": "gaku",
+   "rank": "small",
+   "angle": "カーテン魂の学マス商品一覧に、ロングクッションカバー(5,500円)とラバーマット(3,300円)が新たに載っている。",
+   "purpose": "新情報",
+   "lead_score": 5,
+   "dedup_key": "curtain-damashii-new-goods-2026",
+   "candidate_ids": [
+    "202610260349-watch-0",
+    "202610260354-watch-0",
+    "202610260411-watch-0",
+    "202610260412-watch-0",
+    "202610260417-watch-0",
+    "202610241231-explore-11"
+   ]
+  },
+  {
+   "slug": "gaku-garakuta-road-recording-pv-2026",
+   "brand": "gaku",
+   "rank": "small",
+   "angle": "アイドル13人全員のH.I.F編実装を記念し、「ガラクタロード」の演奏収録風景を撮った特別版PVが公式から公開された。",
+   "purpose": "新情報",
+   "lead_score": 15,
+   "dedup_key": "gaku-garakuta-road-recording-pv-2026",
+   "candidate_ids": [
+    "202611060418-grok-42"
+   ]
+  },
+  {
+   "slug": "gaku-gakumas-live-tour-shirube-live-viewing-2026",
+   "brand": "gaku",
+   "rank": "small",
+   "angle": "「標」ファイナルの台湾ライブビューイングが本日初日。15:40入場・16:00開始、料金はNT$1,280、会場は秀泰影城。",
+   "purpose": "期日の知らせ",
+   "lead_score": 20,
+   "dedup_key": "gakumas-live-tour-shirube-live-viewing-2026",
+   "candidate_ids": [
+    "sched-2026-11-07-gakumas-live-tour-shirube-live-viewing-2026-開幕"
+   ]
+  },
+  {
+   "slug": "gaku-gamushara-revival-gacha-2026",
+   "brand": "gaku",
+   "rank": "small",
+   "angle": "雨夜燕のアナザーアイドルガシャと、ことね・手毬の「がむしゃらに行こう！」復刻ガシャ、SSR確定セレクトガシャが本日10時59分に終了する。",
+   "purpose": "期日の知らせ",
+   "lead_score": 25,
+   "dedup_key": "gamushara-revival-gacha-2026",
+   "candidate_ids": [
+    "sched-2026-11-07-gamushara-revival-gacha-2026-終了",
+    "sched-2026-11-07-gamushara-revival-gacha-2026-終了-src1",
+    "update-fd9b12466e54",
+    "sched-2026-11-07-gaku-mission-pass-2026-11-締切",
+    "sched-2026-11-07-gaku-mission-pass-2026-11-締切-src1",
+    "sched-2026-11-07-gaku-mission-pass-2026-11-締切-src2",
+    "sched-2026-11-07-gaku-mission-pass-2026-11-締切-src3",
+    "sched-2026-11-07-gaku-mission-pass-2026-11-締切-src4",
+    "sched-2026-11-07-gaku-mission-pass-2026-11-締切-src5",
+    "sched-2026-11-07-gaku-mission-pass-2026-11-締切-src6",
+    "sched-2026-11-07-gaku-mission-pass-2026-11-締切-src7",
+    "sched-2026-11-07-gaku-mission-pass-2026-11-締切-src8",
+    "sched-2026-11-07-gamushara-rerun-gacha-2026-終了"
+   ]
+  },
+  {
+   "slug": "gaku-shirube-final-stream-ticket-2026",
+   "brand": "gaku",
+   "rank": "medium",
+   "angle": "「標」ファイナルDAY1を配信で観られる。公演終了後に村田綾香さんと赤羽根健治さんの「ばくすて！とーく」も生配信され、配信券は11月23日18時まで販売。",
+   "purpose": "期日の知らせ",
+   "lead_score": 30,
+   "dedup_key": "shirube-final-stream-ticket-2026",
+   "candidate_ids": [
+    "sched-2026-11-07-shirube-final-stream-ticket-2026-開幕",
+    "sched-2026-11-07-shirube-final-stream-ticket-2026-開幕-src1",
+    "sched-2026-11-07-shirube-final-stream-ticket-2026-開幕-src2",
+    "sched-2026-11-07-shirube-final-stream-ticket-2026-開幕-src3",
+    "sched-2026-11-07-shirube-final-stream-ticket-2026-開幕-src4",
+    "sched-2026-11-07-gakuen-live-tour-shirube-final-bakusute-talk-2026-開幕",
+    "sched-2026-11-07-gakuen-live-tour-shirube-final-bakusute-talk-2026-開幕-src1",
+    "sched-2026-11-07-gakuen-live-tour-shirube-final-bakusute-talk-2026-開幕-src2"
+   ]
+  },
+  {
+   "slug": "gaku-gamushara-cheer-outfit-2026",
+   "brand": "gaku",
+   "rank": "small",
+   "angle": "手毬とことねの衣装「がむしゃらチア」(有償ジュエル500個)の衣装ショップでの販売が本日10時59分で終了する。",
+   "purpose": "期日の知らせ",
+   "lead_score": 15,
+   "dedup_key": "gaku-gamushara-cheer-outfit-2026",
+   "candidate_ids": [
+    "sched-2026-11-07-gaku-gamushara-cheer-outfit-2026-締切",
+    "sched-2026-11-07-gaku-gamushara-cheer-outfit-2026-終了",
+    "sched-2026-11-07-gaku-gamushara-cheer-outfit-2026-終了-src1",
+    "sched-2026-11-07-gaku-gamushara-cheer-outfit-2026-終了-src2",
+    "sched-2026-11-07-gaku-gamushara-cheer-outfit-2026-終了-src3",
+    "sched-2026-11-07-gaku-gamushara-cheer-outfit-2026-終了-src4"
+   ]
+  },
+  {
+   "slug": "gaku-radio-shirube-final-review-2026",
+   "brand": "gaku",
+   "rank": "small",
+   "angle": "初星学園放送部の「標」ファイナル感想回(11月11日放送)へのおたより受付は、11月10日12時まで。あと3日。",
+   "purpose": "期日の知らせ",
+   "lead_score": 15,
+   "dedup_key": "gaku-radio-shirube-final-review-2026",
+   "candidate_ids": [
+    "sched-2026-11-07-gaku-radio-shirube-final-review-2026-締切前"
+   ]
+  },
+  {
+   "slug": "gaku-gakumas-live-tour-final-collab-drink-2026",
+   "brand": "gaku",
+   "rank": "medium",
+   "angle": "「標」ファイナル公演のコラボドリンクを本日からKアリーナ横浜の場外BAYDECKや場内売店で買える。注文で限定トレーディングカードをランダムでもらえる。",
+   "purpose": "期日の知らせ",
+   "lead_score": 20,
+   "dedup_key": "gakumas-live-tour-final-collab-drink-2026",
+   "candidate_ids": [
+    "sched-2026-11-07-gakumas-live-tour-final-collab-drink-2026-開幕"
+   ]
+  },
+  {
+   "slug": "cg-motomachidoria-momopeaberry-2026",
+   "brand": "cg",
+   "rank": "large",
+   "angle": "元町ドリアとのコラボで櫻井桃華・橘ありす・的場梨沙の限定メニューが登場し、横浜3店の席予約は11月6日18時に開始、グッズは11月20日からヴィレヴァン横浜ワールドポーターズ店で販売。",
+   "purpose": "新情報",
+   "lead_score": 20,
+   "dedup_key": "cg-motomachidoria-momopeaberry-2026",
+   "candidate_ids": [
+    "202611061234-explore-4",
+    "202611060418-grok-71"
+   ]
+  },
+  {
+   "slug": "cg-15th-anniversary-party-2026-general",
+   "brand": "cg",
+   "rank": "large",
+   "angle": "15周年公演の現地チケット一般販売(先着)が本日12時に開始、15時からは公式リセール(抽選)も受付開始。",
+   "purpose": "期日の知らせ",
+   "lead_score": 80,
+   "dedup_key": "cg-15th-anniversary-party-2026-general",
+   "candidate_ids": [
+    "202611061234-explore-6",
+    "sched-2026-11-07-cg-15th-anniversary-party-2026-general-発売",
+    "202611070232-grok-9",
+    "202611070232-grok-51",
+    "sched-2026-11-07-cg-15th-party-resale-2026-開始"
+   ]
+  },
+  {
+   "slug": "cg-sousenkyo-2026-15th-popup",
+   "brand": "cg",
+   "rank": "small",
+   "angle": "「シンデレラガール総選挙＆15th Invitational P@rty!!」が11月21日〜29日に横浜ランドマークホールで開催され、入場は無料の事前予約制(抽選、申込は11月12日23時59分まで)。",
+   "purpose": "新情報",
+   "lead_score": 30,
+   "dedup_key": "cg-sousenkyo-2026-15th-popup",
+   "candidate_ids": [
+    "202611062337-watch-0"
+   ]
+  },
+  {
+   "slug": "cg-popn-toybox-revival-2026",
+   "brand": "cg",
+   "rank": "medium",
+   "angle": "「Pop'n ToyBox!! もういっかい！」(12月13日、オリックス劇場)の一般会員先行は明日11月8日23時59分が締切、結果発表は11月14日13時。",
+   "purpose": "期日の知らせ",
+   "lead_score": 15,
+   "dedup_key": "cg-popn-toybox-revival-2026",
+   "candidate_ids": [
+    "202611070232-grok-8"
+   ]
+  },
+  {
+   "slug": "cg-765-961-xr-lighttag-2027",
+   "brand": "cg",
+   "rank": "small",
+   "angle": "「シンデレラガールズの日常」で、HOURGLASSをテーマにしたコミック「これまでとこれからと〜HOURGLASS〜」が公開された。",
+   "purpose": "新情報",
+   "lead_score": 10,
+   "dedup_key": "765-961-xr-lighttag-2027",
+   "candidate_ids": [
+    "202611070232-grok-11",
+    "202611070232-grok-12",
+    "202611070232-grok-41",
+    "202611070232-grok-43",
+    "202611070232-grok-46",
+    "202611070232-grok-50"
+   ]
+  },
+  {
+   "slug": "cg-cosmoworld-air-cabin-2026",
+   "brand": "cg",
+   "rank": "small",
+   "angle": "よこはまコスモワールドの定休日(11月19日・26日、12月3日)とYOKOHAMA AIR CABINの運休日(12月9日)が判明。コラボは11月13日開幕で入園は無料。",
+   "purpose": "新情報",
+   "lead_score": 15,
+   "dedup_key": "cg-cosmoworld-air-cabin-2026",
+   "candidate_ids": [
+    "202611051838-explore-15",
+    "202611051234-explore-9"
+   ]
+  },
+  {
+   "slug": "cg-cinderella-15th-orchestra-concert",
+   "brand": "cg",
+   "rank": "medium",
+   "angle": "15周年記念オーケストラコンサートのアソビストアプレミアム会員2次先行の当落が本日13時から確認でき、当選者の入金は11月11日23時59分まで。",
+   "purpose": "期日の知らせ",
+   "lead_score": 25,
+   "dedup_key": "cinderella-15th-orchestra-concert",
+   "candidate_ids": [
+    "sched-2026-11-07-cinderella-15th-orchestra-concert-結果"
+   ]
+  },
+  {
+   "slug": "million-cyber-planet-popup-osaka-2026",
+   "brand": "million",
+   "rank": "large",
+   "angle": "Cyber Planet POP UP SHOP大阪会場がきょう11月7日にアベノラクバスで開幕、15日まで。購入特典の配布とOSMOスタンプ作成が始まる。",
+   "purpose": "期日の知らせ",
+   "lead_score": 60,
+   "dedup_key": "cyber-planet-popup-osaka-2026",
+   "candidate_ids": [
+    "202611061836-watch-8",
+    "sched-2026-11-07-cyber-planet-popup-osaka-2026-開幕",
+    "sched-2026-11-07-medicos-cyberplanet-popup-2026-開幕",
+    "sched-2026-11-07-x-com-43-開幕",
+    "sched-2026-11-07-x-com-43-開幕-src1",
+    "sched-2026-11-07-million-cyber-planet-popup-2026-開幕",
+    "sched-2026-11-07-million-cyber-planet-popup-2026-開幕-src1",
+    "sched-2026-11-07-million-cyber-planet-popup-2026-開幕-src2",
+    "sched-2026-11-07-million-cyber-planet-popup-osaka-2026-開幕",
+    "sched-2026-11-07-million-cyber-planet-popup-osaka-2026-開幕-src1"
+   ]
+  },
+  {
+   "slug": "million-kyomaf-after-sales-2026",
+   "brand": "million",
+   "rank": "medium",
+   "angle": "京まふ2026のミリオンライブPOP UP SHOPの事後通販で、くのいちverのカードケースセットやタペストリーなど7品目の価格が判明。",
+   "purpose": "新情報",
+   "lead_score": 10,
+   "dedup_key": "million-kyomaf-after-sales-2026",
+   "candidate_ids": [
+    "202611050230-grok-16"
+   ]
+  },
+  {
+   "slug": "million-platinum-star-tune-yoru-to-akari-2026",
+   "brand": "million",
+   "rank": "large",
+   "angle": "ミリシタ「夜と、明かりと。」とSherry 'n Cherryガシャが、きょう11月7日20時59分で終了する最終日。",
+   "purpose": "期日の知らせ",
+   "lead_score": 30,
+   "dedup_key": "million-platinum-star-tune-yoru-to-akari-2026",
+   "candidate_ids": [
+    "sched-2026-11-07-million-platinum-star-tune-yoru-to-akari-2026-締切",
+    "sched-2026-11-07-million-platinum-star-tune-yoru-to-akari-2026-締切-src1",
+    "sched-2026-11-07-million-platinum-star-tune-yoru-to-akari-2026-締切-src2",
+    "sched-2026-11-07-million-platinum-star-tune-yoru-to-akari-2026-締切-src3",
+    "202610311835-watch-0",
+    "sched-2026-11-07-million-sherry-n-cherry-gasha-2026-締切",
+    "sched-2026-11-07-million-sherry-n-cherry-gasha-2026-締切-src1",
+    "sched-2026-11-07-million-sherry-n-cherry-gasha-2026-締切-src2",
+    "sched-2026-11-07-million-sherry-n-cherry-gasha-2026-締切-src3",
+    "sched-2026-11-07-million-platinum-starchune-yorutoakari-2026-終了",
+    "sched-2026-11-07-million-platinum-starchune-yorutoakari-2026-終了-src1",
+    "sched-2026-11-07-platinum-stune-yoru-akari-2026-終了",
+    "sched-2026-11-07-platinum-stune-yoru-akari-2026-終了-src1"
+   ]
+  },
+  {
+   "slug": "shiny-jr-tabi-kyoto-2026",
+   "brand": "shiny",
+   "rank": "medium",
+   "angle": "「推し旅」×JR東海キャンペーンが12月8日〜2027年3月7日に開催。新幹線車内ボイスドラマ、ゲーム連動、スタンプラリー、グッズ販売を実施。",
+   "purpose": "新情報",
+   "lead_score": 70,
+   "dedup_key": "shiny-jr-tabi-kyoto-2026",
+   "candidate_ids": [
+    "202611061836-watch-2",
+    "202611070232-explore-1"
+   ]
+  },
+  {
+   "slug": "shiny-orchestra-concert-2027",
+   "brand": "shiny",
+   "rank": "large",
+   "angle": "Radiant Chord公式グッズのうち、襟付きプロデューサーシャツ(S〜XL、税込8,900円)など既報にない商品情報を伝える。",
+   "purpose": "新情報",
+   "lead_score": 10,
+   "dedup_key": "shiny-orchestra-concert-2027",
+   "candidate_ids": [
+    "202611061836-explore-14",
+    "202611062337-explore-21"
+   ]
+  },
+  {
+   "slug": "shiny-hbtk-clip-2026-11",
+   "brand": "shiny",
+   "rank": "small",
+   "angle": "シャニラジHBTKの切り抜きが公開。ささやきボイス収録時のエピソードを紹介。",
+   "purpose": "新情報",
+   "lead_score": 5,
+   "dedup_key": "shiny-hbtk-clip-2026-11",
+   "candidate_ids": [
+    "202611070232-grok-15"
+   ]
+  },
+  {
+   "slug": "shiny-shaniradi-password-deadline-extension-2026-11",
+   "brand": "shiny",
+   "rank": "small",
+   "angle": "シャニラジ#405・#406の「あいことば」入力は11月10日23:59まで。締切まであと3日。",
+   "purpose": "期日の知らせ",
+   "lead_score": 15,
+   "dedup_key": "shiny-shaniradi-password-deadline-extension-2026-11",
+   "candidate_ids": [
+    "202611070232-grok-16",
+    "sched-2026-11-07-shiny-shaniradi-password-deadline-extension-2026-11-締切前"
+   ]
+  },
+  {
+   "slug": "shiny-hachiban-collab-final-2026",
+   "brand": "shiny",
+   "rank": "small",
+   "angle": "8番らーめん玉島店・連島店のコラボ最終企画。本日11/7と11/8に連島店で鈴木羽那との記念撮影会、お出迎え&お見送りを実施。",
+   "purpose": "新情報",
+   "lead_score": 20,
+   "dedup_key": "shiny-hachiban-collab-final-2026",
+   "candidate_ids": [
+    "202611070232-grok-19"
+   ]
+  },
+  {
+   "slug": "shiny-hate-ni-fureru-no-nara-2026",
+   "brand": "shiny",
+   "rank": "small",
+   "angle": "シーズのシナリオイベント「果てにふれるのなら」は11月10日11時59分まで。終了まであと3日、報酬交換とミッション消化を確認。",
+   "purpose": "期日の知らせ",
+   "lead_score": 20,
+   "dedup_key": "shiny-hate-ni-fureru-no-nara-2026",
+   "candidate_ids": [
+    "sched-2026-11-07-shiny-hate-ni-fureru-no-nara-2026-締切前",
+    "sched-2026-11-07-shiny-hate-ni-fureru-no-nara-2026-締切前-src1"
+   ]
+  },
+  {
+   "slug": "dsva-letra-birthday-online-live-2026",
+   "brand": "dsva",
+   "rank": "medium",
+   "angle": "レトラ誕生日ライブの現地LVチケットはコンビニ決済の受付が11月9日23時59分までと、締切が2日後に迫っている。",
+   "purpose": "期日の知らせ",
+   "lead_score": 60,
+   "dedup_key": "dsva-letra-birthday-online-live-2026",
+   "candidate_ids": [
+    "202611061234-explore-12"
+   ]
+  },
+  {
+   "slug": "dsva-ops-roundup",
+   "brand": "dsva",
+   "rank": "roundup",
+   "angle": "ヴイアラ所属アイドルの配信・動画出演まとめ(灯里愛夏の初飲酒配信の実施など)",
+   "lead_score": 0,
+   "dedup_key": "tomori-first-drinking-stream-2026",
+   "candidate_ids": [
+    "202611070232-grok-33",
+    "202611070232-grok-55",
+    "202611070232-grok-56",
+    "202611070232-grok-58",
+    "202611070232-grok-60",
+    "202611070232-grok-61",
+    "202611070232-grok-62",
+    "202611070232-grok-34",
+    "202611070232-grok-35",
+    "202611070232-grok-59",
+    "202611070232-grok-63",
+    "202611070232-grok-36"
+   ]
+  },
+  {
+   "slug": "765-765as-961-idol-ultimate-2027",
+   "brand": "765",
+   "rank": "large",
+   "angle": "765×961 IDOL ULTIMATE ONCE AND FOR ALL の現地チケット受付は11月8日23:59(あす)締切。公式が「あと2日」と告知している。",
+   "purpose": "期日の知らせ",
+   "lead_score": 30,
+   "dedup_key": "765as-961-idol-ultimate-2027",
+   "candidate_ids": [
+    "202611070232-grok-42",
+    "202611061234-explore-2"
+   ]
+  },
+  {
+   "slug": "general-imas-birthdays-2026-11-06",
+   "brand": "general",
+   "rank": "culture",
+   "angle": "アイマスchが11月6日生まれの間中美里と周防桃子を公式YouTube Shortsの動画で祝福した。",
+   "purpose": "新情報",
+   "lead_score": 5,
+   "dedup_key": "imas-birthdays-2026-11-06",
+   "candidate_ids": [
+    "202611060418-grok-77"
+   ]
+  }
+ ],
+ "dropped": [
+  {
+   "dedup_key": "sidem-birthday-celebration-bouquet-2026-feb",
+   "reason": "既報",
+   "note": "11/6号と同内容。締切11/15は3日以内でない"
+  },
+  {
+   "dedup_key": "sidem-poppin-planet-2dmv-2026",
+   "reason": "既報",
+   "note": "11/4・11/5号で公開済みを報道"
+  },
+  {
+   "dedup_key": "sidem-315-night-mofumofuen-2026-11",
+   "reason": "既報",
+   "note": "11/6放送済み。素材は個人投稿で、出演は11/2号で既報"
+  },
+  {
+   "dedup_key": "sidem-fanfes-wgf-entry-gift-2026",
+   "reason": "出典不足",
+   "note": "入場者プレゼントの中身が素材に無い"
+  },
+  {
+   "dedup_key": "sidem-fan-joypolis-visit-2026-11",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿"
+  },
+  {
+   "dedup_key": "sidem-fan-daimaru-collab-visit-2026-11",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿"
+  },
+  {
+   "dedup_key": "sidem-315-monthly-theme-12-cafe-parade",
+   "reason": "その他",
+   "note": "10/21発売済みの商品ページで新しい出来事が無い"
+  },
+  {
+   "dedup_key": "cho-retroseparty-2026-goods",
+   "reason": "既報",
+   "note": "出典変更は表示・注意書き中心で、読者に関わる変更が確認できない"
+  },
+  {
+   "dedup_key": "sidem-seibuen-retro-rose-party-2026",
+   "reason": "既報",
+   "note": "10/30開幕済みで新事実も当日トリガーも無い"
+  },
+  {
+   "dedup_key": "sidem-cho-retroseparty-goods-2026",
+   "reason": "既報",
+   "note": "スカーフ・リングライトは10/26・10/27号で既報"
+  },
+  {
+   "dedup_key": "sidem-cho-retroseparty-ring-light-2026",
+   "reason": "既報",
+   "note": "10/27号で既報"
+  },
+  {
+   "dedup_key": "gakuma-logbo-dochira-2026",
+   "reason": "その他",
+   "note": "応募キャンペーンは11/6 23:59で終了済み。ログボ本体(11/16まで)は11/6号で既報"
+  },
+  {
+   "dedup_key": "gaku-chinapay-campaign-2026",
+   "reason": "その他",
+   "note": "キャンペーンは11/5 23:59で終了済み"
+  },
+  {
+   "dedup_key": "gakumas-2-5th-eve-login-2026",
+   "reason": "既報",
+   "note": "前夜祭ログボは11/6号で既報(11/16 4:59まで)。プレゼント応募は11/6 23:59で終了、当日のトリガーなし"
+  },
+  {
+   "dedup_key": "gaku-tsubame-garaku-road-gasha-2026",
+   "reason": "既報",
+   "note": "ログボ・千奈/美鈴ガシャ(11/16まで)は10/23号・11/6号で既報。新事実も当日のトリガーもなく、出典も二次情報"
+  },
+  {
+   "dedup_key": "eclipse-light-animate-fair-2026",
+   "reason": "既報",
+   "note": "出典の変更は対象商品欄の入れ替えで、GOLD RUSH(7)・修楽旅行の追加は11/5号で既報。フェアは11/23まで、当日のトリガーなし"
+  },
+  {
+   "dedup_key": "gaku-shirube-finale-ticket-buzz",
+   "reason": "出典不足",
+   "note": "SNSの当選報告の拡散で未確認。個人のSNS投稿は単体で記事にしない。開幕の知らせは venue 側で扱う"
+  },
+  {
+   "dedup_key": "cg-marine-tower-2026-event",
+   "reason": "既報",
+   "note": "11/6号で日程・アンバサダー・チケット(11/6発売)を既報。新事実なし、開幕は11/26でトリガー外"
+  },
+  {
+   "dedup_key": "cg-naha-dejimas-collab-2026",
+   "reason": "既報",
+   "note": "11/5号でスタンプラリー・グッズ・第2弾まで既報。新事実・トリガーなし"
+  },
+  {
+   "dedup_key": "cinderella-girls-yokohama-marine-tower-trend-2026",
+   "reason": "出典不足",
+   "note": "未確認のまとめ記事。Xトレンド入りのみで新事実なく、コラボ自体は既報"
+  },
+  {
+   "dedup_key": "cg-hub-the-last-order-2026",
+   "reason": "既報",
+   "note": "11/6号で期間・店舗・予約開始を既報。facts に新事実なし"
+  },
+  {
+   "dedup_key": "cg-apple-of-my-ai-goods-2026",
+   "reason": "既報",
+   "note": "11/6号でグッズ全品目・価格・11月29日締切を既報。トリガーは未到来"
+  },
+  {
+   "dedup_key": "cg-cinderella-party-cd5-2026",
+   "reason": "既報",
+   "note": "11/2号で発売日・価格・特典・予約キャンペーンを既報。11/6にジャケット公開も記事化済み"
+  },
+  {
+   "dedup_key": "cg-hourglass-radio-premiere-2026",
+   "reason": "既報",
+   "note": "出典の変更はコロムビアのトップのCD第5弾ジャケット告知の表示で、既報。HOURGLASS自体の締切・条件の変更なし"
+  },
+  {
+   "dedup_key": "cg-memory-pict-january-2026",
+   "reason": "既報",
+   "note": "10/31・11/2号で第8弾と11月15日締切を既報。締切まで8日でトリガー外"
+  },
+  {
+   "dedup_key": "cg-athome-xr-apple-of-my-ai-ticket-2026",
+   "reason": "既報",
+   "note": "11/3号で一般会員先行(11月15日締切・11月28日当落)を既報。締切まで8日でトリガー外"
+  },
+  {
+   "dedup_key": "million-seasonal-snapshot-2026-02-valentine",
+   "reason": "既報",
+   "note": "11/6号で同内容を記事化済み。受注締切11/22は3日以内でもない"
+  },
+  {
+   "dedup_key": "hinata-good-apple-day-2026",
+   "reason": "その他",
+   "note": "11/5の公式Xの一言告知で終了済み、出典も未確認。読者の行動に結びつく事実なし"
+  },
+  {
+   "dedup_key": "million-momoko-birthday-gacha-2026",
+   "reason": "既報",
+   "note": "11/6限りで終了済み。11/6号で桃子誕生日ガシャを記事化済み"
+  },
+  {
+   "dedup_key": "million-momoko-birthday-set-2026",
+   "reason": "既報",
+   "note": "11/6限りで終了済み。11/6号で2026セットを記事化済み"
+  },
+  {
+   "dedup_key": "million-premium-pickup-sr-gacha-2026-11",
+   "reason": "既報",
+   "note": "11/6号で4人の新シリーズを記事化済み。新しい事実なし"
+  },
+  {
+   "dedup_key": "general-momoko-birthday-fan-celebration-2026",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿1件で、ファン面の対象でもない"
+  },
+  {
+   "dedup_key": "shiny-tsutaya-yujo-fumetsu-popup-2026",
+   "reason": "既報",
+   "note": "10/31号に全グッズ・会場・日程が既報。開幕は11/11で当日・3日以内のトリガー無し"
+  },
+  {
+   "dedup_key": "shiny-song-prism-mei-another-costume-2026-11",
+   "reason": "既報",
+   "note": "11/6号「開催中ガシャと販売中アイテム」に同内容。新事実・トリガー無し"
+  },
+  {
+   "dedup_key": "shiny-song-prism-hat-packs-2026-11",
+   "reason": "既報",
+   "note": "11/6号に帽子パック3種販売中と既報。新事実無し"
+  },
+  {
+   "dedup_key": "shiny-hyakkiyako-pop-up-after-sales-2026",
+   "reason": "既報",
+   "note": "事後通販は11/5 23:59に受付終了済み。商品情報は10/22・11/2・11/5号で既報"
+  },
+  {
+   "dedup_key": "valiv-3rd-live-meeting-2027",
+   "reason": "既報",
+   "note": "受付期間・日程・会場は10/27号などで既報。先行締切の11/15は8日先でトリガー外。"
+  },
+  {
+   "dedup_key": "valiv-3rd-live-guest-reveal-2026",
+   "reason": "既報",
+   "note": "11/3の特番の内容。電音部・土佐兄弟は11/3号の特番記事、アイカツアカデミー！は11/4号、2ndLIVE限定公開は11/5号で既に出ている。新しい事実もトリガーも無い。"
+  },
+  {
+   "dedup_key": "poppin-planet-fan-art-surge-2026",
+   "reason": "出典不足",
+   "note": "個人1人のSNS投稿のみで未確認。個人の投稿は単体で記事にしない。"
+  }
+ ],
+ "editorial_slug": "gaku-gakuen-shirube-final-2026-venue",
+ "editorial_brand": "gaku"
+}

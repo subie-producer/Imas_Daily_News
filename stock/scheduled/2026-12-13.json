@@ -677,5 +677,36 @@
   "src_candidate_id": "202611060418-grok-58",
   "companion_of": "sched-2026-12-13-dsva-letra-birthday-online-live-2026-締切",
   "src_dedup_key": "letora-birthday-online-live-2026"
+ },
+ {
+  "id": "sched-2026-12-13-cg-popn-toybox-revival-2026-開幕",
+  "dedup_key": "cg-popn-toybox-revival-2026",
+  "brand": "cg",
+  "subject": "Pop'n ToyBox!! もういっかい！公演",
+  "kind": "開幕",
+  "note": "オリックス劇場で公演(開演16:00)。現地で観られる",
+  "reserved_on": "2026-11-07",
+  "occurs_on": "2026-12-13",
+  "title": "Pop’n ToyBox!! もういっかい！一般会員先行",
+  "url": "https://asobiticket2.asobistore.jp/receptions/d0d5822a-deb6-46fa-b2ab-19b2fedb592c",
+  "source_type": "公式",
+  "facts": [
+   "受付期間: 2026年10月3日(土)19:00～2026年11月8日(日)23:59（10月29日更新）。",
+   "結果発表: 2026年11月14日(土)13:00。",
+   "入金期間: 2026年11月14日(土)13:00～2026年11月18日(水)23:59。",
+   "『Pop’n ToyBox!! もういっかい！』は2026年8月13～16日に開催した『Pop’n ToyBox!!』公演のうち夕方公演と同一の公演内容で、ステージセットを一部変更して届ける。",
+   "公演は2026年12月13日(日)、オリックス劇場で開場15:00・開演16:00。",
+   "はんげつであえたら・Pop’n ToyBox!! もういっかい！各日券は早期限定グッズ付き11,000円（税込）、現地通常チケット9,800円（税込）。",
+   "未就学児入場不可。",
+   "一人1公演につき2枚まで申し込み可能（複数公演申込可）。",
+   "本公演では『アイドルマスター』シリーズ出演声優の出演予定はない。",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "event_date": "2026-12-13",
+  "deadline": "2026-11-08",
+  "link_from": "https://x.com/imas_CGofficial/status/2118644561044292016",
+  "src_candidate_id": "202611070232-grok-8"
  }
 ]

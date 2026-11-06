@@ -1709,5 +1709,82 @@
   "src_candidate_id": "202611060418-grok-74",
   "companion_of": "sched-2026-11-18-derepa-cd-jacket-2026-締切",
   "src_dedup_key": "derepa-cd-jacket-2026"
+ },
+ {
+  "id": "sched-2026-11-18-cg-hourglass-premiere-mv-2026-開始",
+  "dedup_key": "cg-hourglass-premiere-mv-2026",
+  "brand": "cg",
+  "subject": "「これまでとこれからと～HOURGLASS～」Premiere MV公開",
+  "kind": "開始",
+  "note": "21:00にPremiere MVが公開され、視聴できる",
+  "reserved_on": "2026-11-07",
+  "occurs_on": "2026-11-18",
+  "title": "「これまでとこれからと～HOURGLASS～」Premiere MV公開予定",
+  "url": "https://x.com/imas_CGofficial/status/2118285705009115226",
+  "source_type": "公式",
+  "facts": [
+   "「これまでとこれからと～HOURGLASS～」のPremiere MVは2026年11月18日(水)21:00より公開予定。",
+   "リンク: https://idolmaster-official.jp/mainte/index.html",
+   "エンゲージメント: 中",
+   "言及アイドル: 喜多見柚"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "event_date": "2026-11-18",
+  "src_candidate_id": "202611070232-grok-12"
+ },
+ {
+  "id": "sched-2026-11-18-cg-hourglass-premiere-mv-2026-開始-src1",
+  "dedup_key": "cg-hourglass-premiere-mv-2026",
+  "brand": "cg",
+  "subject": "「これまでとこれからと～HOURGLASS～」Premiere MV公開",
+  "kind": "開始",
+  "note": "21:00にPremiere MVが公開され、視聴できる",
+  "reserved_on": "2026-11-07",
+  "occurs_on": "2026-11-18",
+  "title": "シンデレラガールズの日常コミック公開",
+  "url": "https://x.com/imas_CGofficial/status/2118282179318808870",
+  "source_type": "公式",
+  "facts": [
+   "「シンデレラガールズの日常」のコミック「これまでとこれからと～HOURGLASS～」を公開した。",
+   "エンゲージメント: 中",
+   "言及アイドル: 喜多見柚"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202611070232-grok-11",
+  "companion_of": "sched-2026-11-18-cg-hourglass-premiere-mv-2026-開始",
+  "src_dedup_key": "cg-everyday-comic-hourglass-2026"
+ },
+ {
+  "id": "sched-2026-11-18-cg-popn-toybox-revival-2026-締切",
+  "dedup_key": "cg-popn-toybox-revival-2026",
+  "brand": "cg",
+  "subject": "Pop'n ToyBox!! もういっかい！先行 当選者の入金期限",
+  "kind": "締切",
+  "note": "当選者の入金の最終日(23:59まで)。入金手続きができる",
+  "reserved_on": "2026-11-07",
+  "occurs_on": "2026-11-18",
+  "title": "Pop’n ToyBox!! もういっかい！一般会員先行",
+  "url": "https://asobiticket2.asobistore.jp/receptions/d0d5822a-deb6-46fa-b2ab-19b2fedb592c",
+  "source_type": "公式",
+  "facts": [
+   "受付期間: 2026年10月3日(土)19:00～2026年11月8日(日)23:59（10月29日更新）。",
+   "結果発表: 2026年11月14日(土)13:00。",
+   "入金期間: 2026年11月14日(土)13:00～2026年11月18日(水)23:59。",
+   "『Pop’n ToyBox!! もういっかい！』は2026年8月13～16日に開催した『Pop’n ToyBox!!』公演のうち夕方公演と同一の公演内容で、ステージセットを一部変更して届ける。",
+   "公演は2026年12月13日(日)、オリックス劇場で開場15:00・開演16:00。",
+   "はんげつであえたら・Pop’n ToyBox!! もういっかい！各日券は早期限定グッズ付き11,000円（税込）、現地通常チケット9,800円（税込）。",
+   "未就学児入場不可。",
+   "一人1公演につき2枚まで申し込み可能（複数公演申込可）。",
+   "本公演では『アイドルマスター』シリーズ出演声優の出演予定はない。",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "event_date": "2026-12-13",
+  "deadline": "2026-11-08",
+  "link_from": "https://x.com/imas_CGofficial/status/2118644561044292016",
+  "src_candidate_id": "202611070232-grok-8"
  }
 ]

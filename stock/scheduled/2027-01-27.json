@@ -296,5 +296,76 @@
   "src_candidate_id": "202609240734-explore-6",
   "event_date": "2027-01-27",
   "deadline": "2026-11-15"
+ },
+ {
+  "id": "sched-2027-01-27-gaku-conceptual-single-collection-2026-発売",
+  "dedup_key": "gaku-conceptual-single-collection-2026",
+  "brand": "gaku",
+  "subject": "Conceptual Single Collection発売",
+  "kind": "発売",
+  "note": "CD3種とコンプリートスペシャルセットが発売され、購入できる",
+  "reserved_on": "2026-11-08",
+  "occurs_on": "2027-01-27",
+  "title": "Conceptual Single Collection予約受付",
+  "url": "https://x.com/gkmas_official/status/2119021079901720999",
+  "source_type": "公式",
+  "facts": [
+   "新ソロ楽曲を収録するCDシリーズ「初星学園 Conceptual Single Collection」が予約受付中。",
+   "Vol.1～Vol.3の3種類。",
+   "スペシャルセットにはCD3種、ライブツアービジュアルクラフトボックス、標ロゴキーホルダーが付属。",
+   "予約締切: 11月15日(日)。",
+   "リンク: https://mainte.asobistore.jp/",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "deadline": "2026-11-15",
+  "link_from": "https://idolmaster-official.jp/news/01_20235",
+  "src_candidate_id": "202611080229-grok-44"
+ },
+ {
+  "id": "sched-2027-01-27-gaku-conceptual-single-collection-2026-発売-src1",
+  "dedup_key": "gaku-conceptual-single-collection-2026",
+  "brand": "gaku",
+  "subject": "Conceptual Single Collection発売",
+  "kind": "発売",
+  "note": "CD3種とコンプリートスペシャルセットが発売され、購入できる",
+  "reserved_on": "2026-11-08",
+  "occurs_on": "2027-01-27",
+  "title": "Conceptual Single Collection予約受付中",
+  "url": "https://x.com/gkmas_official/status/2119052254808248776",
+  "source_type": "公式",
+  "facts": [
+   "初星学園 Conceptual Single Collectionを予約受付中。",
+   "学マス標ツアー ファイナル公演 DAY1で披露された楽曲も収録。",
+   "「クラフトボックス」が付属するコンプリートスペシャルセットも販売。",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202611080229-grok-80",
+  "companion_of": "sched-2027-01-27-gaku-conceptual-single-collection-2026-発売",
+  "src_dedup_key": "gakumas-conceptual-single-collection-2026"
+ },
+ {
+  "id": "sched-2027-01-27-gaku-conceptual-single-collection-2026-発売-src2",
+  "dedup_key": "gaku-conceptual-single-collection-2026",
+  "brand": "gaku",
+  "subject": "Conceptual Single Collection発売",
+  "kind": "発売",
+  "note": "CD3種とコンプリートスペシャルセットが発売され、購入できる",
+  "reserved_on": "2026-11-08",
+  "occurs_on": "2027-01-27",
+  "title": "学園アイドルマスター（学マス）レーベル公式サイト「【学園アイドルマスター】「初星学園 Conceptual Single Collection」 発売決定＆予約開始！」(2026.09.23)",
+  "url": "https://gakuen-label.idolmaster-official.jp/news/conceptual",
+  "source_type": "準公式",
+  "facts": [
+   "2026年9月23日掲載の告知。初星学園 Conceptual Single Collectionは2027年1月27日（水）発売予定。予約は2026年11月15日（日）まで。"
+  ],
+  "via": "verified_fact",
+  "verify": "unconfirmed",
+  "src_candidate_id": "202611080229-grok-44",
+  "companion_of": "sched-2027-01-27-gaku-conceptual-single-collection-2026-発売",
+  "src_dedup_key": "gaku-conceptual-single-collection-2026"
  }
 ]

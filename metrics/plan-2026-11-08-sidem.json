@@ -1,0 +1,379 @@
+{
+ "decisions": {
+  "sidem-birthday-celebration-bouquet-2026-feb": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/6号に同内容を記事化済み。締切11/15は3日以内でなく新事実も無い"
+  },
+  "sidem-producer-meeting-ajewelholic-2027-premium-advance-2": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/7号に同内容を記事化済み。締切11/26で期日も遠い"
+  },
+  "sidem-gotoken-christmas-party-set-2026": {
+   "action": "article",
+   "angle": "Mフェス2026記念の五島軒「クリスマスパーティセット」(16,200円)の予約が12月5日まで、早期割引は11月21日まで。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "sidem-315-shop-lottery-stock-2026-09-22": {
+   "action": "article",
+   "angle": "315!!!SHOP抽選くじの在庫状況が更新され、B賞・C賞の在庫なしの顔ぶれが変わった。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "過去号は9月の在庫。今回の在庫内容は別"
+  },
+  "sidem-agatsuma-nin-nin-ambassadors-2026": {
+   "action": "article",
+   "angle": "吾妻コラボで、達成賞のアクリルキーホルダーが一部の引換場所で配布終了し、温泉タオルが完売した。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "出典更新。配布終了・完売は読者に関わる変更"
+  },
+  "sidem-battle-fes-theater-goods-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/7号の劇場物販記事に商品・販売場所・11/20開始とも記載済み"
+  },
+  "cg-15th-anniversary-party-2026-general": {
+   "action": "article",
+   "angle": "11月8日は東雲荘一郎の誕生日で、SideM公式が本人からの感謝のメッセージ付きで祝った。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "dedup_keyはシンデレラ15thだが中身は東雲荘一郎の誕生日。1コマ(11/7分)は既報"
+  },
+  "sidem-1koma-update-2026-11-08": {
+   "action": "article",
+   "angle": "「アイドルたちの1コマ」に11月8日付の新ストーリー『舐めんじゃねー！』が掲載された。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "11/7号とは別の新ストーリー"
+  },
+  "cafe-parade-chocolate-special-2dmv-2026": {
+   "action": "article",
+   "angle": "Café Parade「Chocolate Special」の2DMVが11月13日(金)22時に公開と決まった。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "memory-pict-8th-january-2026": {
+   "action": "article",
+   "angle": "劇場版SideM(11月20日公開)の入場者プレゼント情報が公式から告知され、ムビチケ前売券は1,800円。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "dedup_keyはシンデレラのMemory Pict.だが中身は劇場版SideM。priorは無関係"
+  },
+  "sidem-monthly-theme-song-vol-3-goods-2026": {
+   "action": "article",
+   "angle": "MONTHLY THEME SONG vol.3記念グッズ第3弾の受注は本日23時59分まで(A-on STORE・アニメイト通販など)。発売は2027年1月6日。",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ受注締切の3主題をここへ統合"
+  },
+  "shinonome-birthday-fan-celebration-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "ファン個人のSNS投稿。誕生日は公式投稿の記事で扱う"
+  },
+  "teddys-collection-ii-goods": {
+   "action": "article",
+   "angle": "「Teddy's Collection II」にボールチェーンマスコット・ミニカチューシャ・缶バッジ・クリアカード・クリアファイルなどの予約商品が並んだ。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "10/30号はアクリルチャームとタオルのみ。品目が増えた"
+  },
+  "sidem-315-monthly-theme-12-cafe-parade": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "10/21発売済みのCDの販売ページで、新しい発表も当日のトリガーも無い"
+  },
+  "sidem-mfes-winter-wonderland-decotto-2026": {
+   "action": "article",
+   "angle": "Mフェス2026 in Winter Wonderlandのコラボカフェが12月1日から池袋のDECOTTOで開催。12月1〜6日はWeb抽選予約制。",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "sidem-joypolis3-2026": {
+   "action": "article",
+   "angle": "SideM in JOYPOLIS 3のスペシャルショーが本日第3弾に切り替わり、Jupiter・W・FRAME・High×Jokerら7組を12月6日まで上映する。",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "当日開始のトリガー"
+  },
+  "sidem-monthly-theme-goods-dai3-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-monthly-theme-song-vol-3-goods-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ第3弾グッズの受注締切"
+  },
+  "sidem-monthly-theme-song-goods-3-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-monthly-theme-song-vol-3-goods-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ第3弾グッズの受注締切"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "sidem-gotoken-christmas-party-set-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "Mフェス2026記念の五島軒「クリスマスパーティセット」(16,200円)の予約が12月5日まで、早期割引は11月21日まで。",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "sidem-gotoken-christmas-party-set-2026",
+    "candidate_ids": [
+     "202611070733-explore-6"
+    ]
+   },
+   {
+    "slug": "sidem-315-shop-lottery-stock-2026-09-22",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "315!!!SHOP抽選くじの在庫状況が更新され、B賞・C賞の在庫なしの顔ぶれが変わった。",
+    "purpose": "新情報",
+    "lead_score": 5,
+    "dedup_key": "sidem-315-shop-lottery-stock-2026-09-22",
+    "candidate_ids": [
+     "202611071833-explore-6"
+    ]
+   },
+   {
+    "slug": "sidem-agatsuma-nin-nin-ambassadors-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "吾妻コラボで、達成賞のアクリルキーホルダーが一部の引換場所で配布終了し、温泉タオルが完売した。",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "sidem-agatsuma-nin-nin-ambassadors-2026",
+    "candidate_ids": [
+     "update-80683abb1f53"
+    ]
+   },
+   {
+    "slug": "sidem-cg-15th-anniversary-party-2026-general",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "11月8日は東雲荘一郎の誕生日で、SideM公式が本人からの感謝のメッセージ付きで祝った。",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "cg-15th-anniversary-party-2026-general",
+    "candidate_ids": [
+     "202611080229-grok-31",
+     "202611080229-grok-33",
+     "202611080229-grok-94",
+     "202611080229-grok-98"
+    ]
+   },
+   {
+    "slug": "sidem-1koma-update-2026-11-08",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "「アイドルたちの1コマ」に11月8日付の新ストーリー『舐めんじゃねー！』が掲載された。",
+    "purpose": "新情報",
+    "lead_score": 5,
+    "dedup_key": "sidem-1koma-update-2026-11-08",
+    "candidate_ids": [
+     "202611080229-grok-32"
+    ]
+   },
+   {
+    "slug": "sidem-cafe-parade-chocolate-special-2dmv-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "Café Parade「Chocolate Special」の2DMVが11月13日(金)22時に公開と決まった。",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "cafe-parade-chocolate-special-2dmv-2026",
+    "candidate_ids": [
+     "202611080229-grok-34"
+    ]
+   },
+   {
+    "slug": "sidem-memory-pict-8th-january-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "劇場版SideM(11月20日公開)の入場者プレゼント情報が公式から告知され、ムビチケ前売券は1,800円。",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "memory-pict-8th-january-2026",
+    "candidate_ids": [
+     "202611080229-grok-35",
+     "202611080229-grok-92",
+     "202611080229-grok-107"
+    ]
+   },
+   {
+    "slug": "sidem-monthly-theme-song-vol-3-goods-2026",
+    "brand": "sidem",
+    "rank": "medium",
+    "angle": "MONTHLY THEME SONG vol.3記念グッズ第3弾の受注は本日23時59分まで(A-on STORE・アニメイト通販など)。発売は2027年1月6日。",
+    "purpose": "期日の知らせ",
+    "lead_score": 60,
+    "dedup_key": "sidem-monthly-theme-song-vol-3-goods-2026",
+    "candidate_ids": [
+     "202611080229-grok-36",
+     "sched-2026-11-08-sidem-monthly-theme-song-vol-3-goods-2026-締切",
+     "sched-2026-11-08-sidem-monthly-theme-song-vol-3-goods-2026-締切-src1",
+     "sched-2026-11-08-sidem-monthly-theme-goods-dai3-2026-締切",
+     "sched-2026-11-08-sidem-monthly-theme-goods-dai3-2026-締切-src1",
+     "sched-2026-11-08-sidem-monthly-theme-goods-dai3-2026-締切-src2",
+     "sched-2026-11-08-sidem-monthly-theme-song-goods-3-2026-締切"
+    ]
+   },
+   {
+    "slug": "sidem-teddys-collection-ii-goods",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "「Teddy's Collection II」にボールチェーンマスコット・ミニカチューシャ・缶バッジ・クリアカード・クリアファイルなどの予約商品が並んだ。",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "teddys-collection-ii-goods",
+    "candidate_ids": [
+     "202611010510-explore-0",
+     "202611010510-explore-1-r1",
+     "202611010510-explore-2"
+    ]
+   },
+   {
+    "slug": "sidem-mfes-winter-wonderland-decotto-2026",
+    "brand": "sidem",
+    "rank": "medium",
+    "angle": "Mフェス2026 in Winter Wonderlandのコラボカフェが12月1日から池袋のDECOTTOで開催。12月1〜6日はWeb抽選予約制。",
+    "purpose": "新情報",
+    "lead_score": 25,
+    "dedup_key": "sidem-mfes-winter-wonderland-decotto-2026",
+    "candidate_ids": [
+     "202611061836-explore-15"
+    ]
+   },
+   {
+    "slug": "sidem-joypolis3-2026",
+    "brand": "sidem",
+    "rank": "medium",
+    "angle": "SideM in JOYPOLIS 3のスペシャルショーが本日第3弾に切り替わり、Jupiter・W・FRAME・High×Jokerら7組を12月6日まで上映する。",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "sidem-joypolis3-2026",
+    "candidate_ids": [
+     "sched-2026-11-08-sidem-joypolis3-2026-開始"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "sidem-birthday-celebration-bouquet-2026-feb",
+    "reason": "既報",
+    "note": "11/6号に同内容を記事化済み。締切11/15は3日以内でなく新事実も無い"
+   },
+   {
+    "dedup_key": "sidem-producer-meeting-ajewelholic-2027-premium-advance-2",
+    "reason": "既報",
+    "note": "11/7号に同内容を記事化済み。締切11/26で期日も遠い"
+   },
+   {
+    "dedup_key": "sidem-battle-fes-theater-goods-2026",
+    "reason": "既報",
+    "note": "11/7号の劇場物販記事に商品・販売場所・11/20開始とも記載済み"
+   },
+   {
+    "dedup_key": "shinonome-birthday-fan-celebration-2026",
+    "reason": "個人の話題",
+    "note": "ファン個人のSNS投稿。誕生日は公式投稿の記事で扱う"
+   },
+   {
+    "dedup_key": "sidem-315-monthly-theme-12-cafe-parade",
+    "reason": "その他",
+    "note": "10/21発売済みのCDの販売ページで、新しい発表も当日のトリガーも無い"
+   }
+  ],
+  "cross_brand": []
+ }
+}

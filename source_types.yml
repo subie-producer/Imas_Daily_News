@@ -134,6 +134,7 @@ discovery_only_domains:
 # --- 二次情報: 他所の発表を写して伝えている情報源(規程2.5) ---
 # 法人運営か個人運営かは問わない。自ら取材・発表していないものはここ。
 secondary_domains:
+  - sakigames.jp          # 合議で追加: 運営者情報で非公式の攻略サイトと明記。公式発表を記事化
   - xitter.cf             # 合議で追加: X閲覧用の非公式フロントエンド。公式Xの投稿を写して表示する媒体
   - gamehack.jp           # 合議で追加: 運営者情報で企業発表を発信する媒体と明記。記事は他社発表の転載
   - bestcalendar.jp       # 合議で追加: 編集部署名の記事で、ハチバンの受注販売発表を言い換えて伝えている
@@ -648,12 +649,19 @@ x_accounts:
     - famitsu
     - GamerNeJp
   二次情報:
+    - Anime_Voice         # 合議で追加: アニメ・声優系の情報媒体として、コラボ告知を他所発表から紹介
     - imas_goodscheck     # 合議で追加: 公式グッズ発売発表を伝達するグッズ情報アカウント
     - TCGsupplyNavi       # 合議で追加: TCG情報サイト。商品情報を集約・発信
     - gkmas_GR            # 合議で追加: 雑誌情報を伝達、独自取材なし
     - imasnews765
     - zutapoke
   ファン:
+    - nswmr112z           # 合議で追加: 個人による東雲荘一郎の誕生日祝い投稿
+    - master100765        # 合議で追加: 個人による標ツアーFINAL DAY1の観客感想
+    - ma_ru_mar_u         # 合議で追加: 個人によるシャニソン3周年アート投稿
+    - crazylulu9999       # 合議で追加: 個人アカウントによるChrome拡張機能の公開告知
+    - aptx4869_willow     # 合議で追加: 個人アカウントによる秋葉原コトブキヤ訪問の投稿
+    - JulsHBRX            # 合議で追加: 個人アカウントによる765PRO痛車デザインの共有
     - surigomaP           # 合議で追加: 個人アカウントによる周防桃子の誕生日祝いの投稿。個人発信はファン
     - soprano_kiri        # 合議で追加: SideMファンによるジョイポリス訪問の個人投稿。個人発信はファン
     - kiyora1116          # 合議で追加: 個人アカウントのSideMコラボ訪問投稿。個人発信はファン
@@ -994,6 +1002,7 @@ x_accounts:
     - procinen1
     - yutaleP
   当事者:
+    - patty3_info         # 合議で追加: ぬい商品の三次予約を告知。販売元の一次発信とみる(要確認)
     - saintmarc_grill     # 合議で追加: 飲食店、ももぺあべりーとのコラボ先
     - marine_tower        # 合議で追加: 施設運営者、シンデレラガールズとのコラボ先
     - denonbu             # 合議で追加: 他作品(電音部)の公式、ヴイアライヴにゲスト出演
@@ -1188,6 +1197,16 @@ x_posts:
 
 # --- リンク元から引き継いだ種別(リンク先1つずつ。キーは pipelib.link_key)。合議がリンク元の告知と関係していると確かめたものだけ(classify_sources.inherit_from_links)。リンク先そのものの種別より強いときだけ効く ---
 link_types:
+  youtube.com/watch?v=muY5-bC4ZQ8: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/TomoriManaka/status/2118878752998564001(公式)。灯里愛夏のデュエプレ配信のYouTubeページで、告知と同じ配信
+  youtube.com/watch?v=fEJ1j9g5MgM: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/KamizuruCosmo/status/2119033735534481598(公式)。上水流宇宙のCAIRN配信のYouTubeページで、告知と同じ配信
+  store.moviewalker.jp/item/detail/5386: 公式   # リンク元から引き継ぎ(合議で関係を確認): https://x.com/SideM_official/status/2118629473507811823(公式)。劇場版SideMのムビチケ商品ページで、告知の前売券と同じ
+  shop.asobistore.jp/category/gakuen_cd_slcl4: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://x.com/gkmas_official/status/2119021239335612670(公式)。告知と同じSeason Solo Collectionの受注ページ。相手の別商品
+  lnk.to/ryPrMboo: 公式                         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/gkmas_official/status/2119035688066896047(公式)。標ツアーファイナルDAY1のプレイリストで、告知のセットリストと一致
+  forms.cloud.microsoft/pages/responsepage.aspx?id=q7kiOCyrIE-ozavmrJhsNy1jUNck6E5Boq5Ni9tgygZUQzAwWEFUOVpQRzdCWVdYTDkyV0JYNzAxOC4u: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://x.com/gkmas_official/status/2118901260749361310(公式)。十王星南の誕生日メッセージ募集フォームで、告知と同じ募集
+  nex-tone.link/HpEQwWiuZ: 公式                 # リンク元から引き継ぎ(合議で関係を確認): https://x.com/gkmas_official/status/2119021281526030717(公式)。告知の楽曲「慟哭のコンチェルト」の再生・購入ページ
+  asobiticket2.asobistore.jp/receptions/5aaf52eb-ffd7-490d-b3d5-fd403d3028d8: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://idolmaster-official.jp/news/01_20299(公式)。告知が挙げるティーン割チケットの受付URLと一致。同じ先行受付
+  asobiticket2.asobistore.jp/receptions/157d3088-23a9-4c05-b112-ff548cd3d834: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://idolmaster-official.jp/news/01_20299(公式)。告知が挙げる現地+xRセット・現地チケットの受付URLと一致。同じ先行受付
+  recommend.jr-central.co.jp/oshi-tabi/idolmaster_shinycolors/: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://idolmaster-official.jp/news/01_20270(公式)。告知と同じ推し旅コラボの特設サイトで、参加方法と内容を案内
   youtube.com/watch?v=K6jfRuAMg4c: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/KamizuruCosmo/status/2118750690227191854(公式)。リンク先は告知と同じ『BOMBANANA!』配信動画で、爆弾解除の内容と一致
   youtube.com/watch?v=iMf7cPCS_-0: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/imas_ch/status/2118357676887302569(公式)。リンク元が紹介する周防桃子の誕生日祝い動画そのもの
   youtube.com/watch?v=QMkhGXJqVOY: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/imas_ch/status/2118357676887302569(公式)。リンク元が紹介する間中美里の誕生日祝い動画そのもの

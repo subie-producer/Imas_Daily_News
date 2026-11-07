@@ -1268,5 +1268,58 @@
   "verify": "confirmed",
   "event_date": "2026-11-20",
   "src_candidate_id": "202611061234-watch-0"
+ },
+ {
+  "id": "sched-2026-11-20-gaku-jouo-seina-birthday-message-2026-締切",
+  "dedup_key": "gaku-jouo-seina-birthday-message-2026",
+  "brand": "gaku",
+  "subject": "十王星南 誕生日メッセージ募集の締切",
+  "kind": "締切",
+  "note": "募集の最終日(予定)。お祝いメッセージと質問をフォームから送れる",
+  "reserved_on": "2026-11-08",
+  "occurs_on": "2026-11-20",
+  "title": "十王星南誕生日メッセージ募集",
+  "url": "https://x.com/gkmas_official/status/2118901260749361310",
+  "source_type": "公式",
+  "facts": [
+   "十王星南の誕生日特別編に向けて誕生日お祝いメッセージを募集。",
+   "十王星南に答えてほしい質問も募集。",
+   "募集期限: 11/20(金)まで（予定）。",
+   "リンク: https://forms.cloud.microsoft/pages/responsepage.aspx?id=q7kiOCyrIE-ozavmrJhsNy1jUNck6E5Boq5Ni9tgygZUQzAwWEFUOVpQRzdCWVdYTDkyV0JYNzAxOC4u&route=shorturl",
+   "エンゲージメント: 中",
+   "言及アイドル: 十王星南"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "deadline": "2026-11-20",
+  "src_candidate_id": "202611080229-grok-49"
+ },
+ {
+  "id": "sched-2026-11-20-sidem-fantastic-battle-fes-film-gift-2026-開幕",
+  "dedup_key": "sidem-fantastic-battle-fes-film-gift-2026",
+  "brand": "sidem",
+  "subject": "劇場版SideM 公開",
+  "kind": "開幕",
+  "note": "劇場版SideMが公開され、入場者プレゼント第1弾(チケット風カード)も配布開始",
+  "reserved_on": "2026-11-08",
+  "occurs_on": "2026-11-20",
+  "title": "劇場版SideM入場者プレゼント情報公開",
+  "url": "https://x.com/SideM_official/status/2118629473507811823",
+  "source_type": "公式",
+  "facts": [
+   "SideM公式が『劇場版 アイドルマスター SideM F＠NTASTIC BATTLE FES ～Who goes first～』の入場者プレゼント情報公開を告知した。",
+   "MOVIE WALKER STOREの商品ページには本作の公開日を2026年11月20日と記載している。",
+   "MOVIE WALKER STOREでムビチケ前売券（カード）は1,800円（税込）で販売されている。",
+   "MOVIE WALKER STOREのムビチケカード券は5営業日以内に発送と記載されている。",
+   "映画は2025年10月の幕張、11月の大阪で開催された『315 Production presents F＠NTASTIC BATTLE FES ～Who goes first～』を題材として、8ユニット・総勢25名のアイドルが出演する。",
+   "リンク: https://idolmaster-official.jp/mainte/index.html",
+   "リンク: https://store.moviewalker.jp/item/detail/5386",
+   "リンク: https://mainte.asobistore.jp/",
+   "エンゲージメント: 高"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "event_date": "2026-11-20",
+  "src_candidate_id": "202611080229-grok-35"
  }
 ]

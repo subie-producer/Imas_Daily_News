@@ -1143,5 +1143,54 @@
   "src_candidate_id": "202611062337-watch-8",
   "companion_of": "sched-2026-11-27-imas-year-end-survey-2026-締切前",
   "src_dedup_key": "imas-year-end-livestream-2026"
+ },
+ {
+  "id": "sched-2026-11-27-sidem-fantastic-battle-fes-film-gift-2026-開始",
+  "dedup_key": "sidem-fantastic-battle-fes-film-gift-2026",
+  "brand": "sidem",
+  "subject": "劇場版SideM 入場者プレゼント第2弾",
+  "kind": "開始",
+  "note": "第2弾のライブフォトポストカード2枚セットの配布が始まり、劇場でもらえる",
+  "reserved_on": "2026-11-08",
+  "occurs_on": "2026-11-27",
+  "title": "劇場版SideM入場者プレゼント情報公開",
+  "url": "https://x.com/SideM_official/status/2118629473507811823",
+  "source_type": "公式",
+  "facts": [
+   "SideM公式が『劇場版 アイドルマスター SideM F＠NTASTIC BATTLE FES ～Who goes first～』の入場者プレゼント情報公開を告知した。",
+   "MOVIE WALKER STOREの商品ページには本作の公開日を2026年11月20日と記載している。",
+   "MOVIE WALKER STOREでムビチケ前売券（カード）は1,800円（税込）で販売されている。",
+   "MOVIE WALKER STOREのムビチケカード券は5営業日以内に発送と記載されている。",
+   "映画は2025年10月の幕張、11月の大阪で開催された『315 Production presents F＠NTASTIC BATTLE FES ～Who goes first～』を題材として、8ユニット・総勢25名のアイドルが出演する。",
+   "リンク: https://idolmaster-official.jp/mainte/index.html",
+   "リンク: https://store.moviewalker.jp/item/detail/5386",
+   "リンク: https://mainte.asobistore.jp/",
+   "エンゲージメント: 高"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "event_date": "2026-11-20",
+  "src_candidate_id": "202611080229-grok-35"
+ },
+ {
+  "id": "sched-2026-11-27-sidem-fantastic-battle-fes-film-gift-2026-開始-src1",
+  "dedup_key": "sidem-fantastic-battle-fes-film-gift-2026",
+  "brand": "sidem",
+  "subject": "劇場版SideM 入場者プレゼント第2弾",
+  "kind": "開始",
+  "note": "第2弾のライブフォトポストカード2枚セットの配布が始まり、劇場でもらえる",
+  "reserved_on": "2026-11-08",
+  "occurs_on": "2026-11-27",
+  "title": "公式「劇場版 アイドルマスター SideM 315 Production presents F＠NTASTIC BATTLE FES ～Who goes first～」(2026年11月7日)",
+  "url": "https://idolmaster-official.jp/live_event/sidem_fbfes_wgf/movie/",
+  "source_type": "公式",
+  "facts": [
+   "公式サイト掲載の入場者プレゼント第2弾は2026年11月27日から12月3日まで配布。内容はライブフォトポストカード2枚セット（DRAMATIC STARS、FRAME、彩、High×Joker、神速一魂、THE 虎牙道、F-LAGS、Legendersの全8種ランダム）。数量限定、なくなり次第終了。1人1回の鑑賞につき1つを渡し、入場が必要。"
+  ],
+  "via": "verified_fact",
+  "verify": "unconfirmed",
+  "src_candidate_id": "202611080229-grok-35",
+  "companion_of": "sched-2026-11-27-sidem-fantastic-battle-fes-film-gift-2026-開始",
+  "src_dedup_key": "sidem-fantastic-battle-fes-film-gift-2026"
  }
 ]

@@ -1,0 +1,255 @@
+{
+ "decisions": {
+  "valiv-manaka-20th-birthday-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11月6日の初飲酒配信は終了済みで、11-03・11-06・11-07号で記事化済み"
+  },
+  "va-liv-letora-birthday-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "valiv-letora-birthday-live-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ出典ページの更新(予定販売枚数終了)。同じ出来事"
+  },
+  "valiv-letora-birthday-live-2026": {
+   "action": "article",
+   "angle": "レトラ誕生日ライブの現地LV一般先着が、予定販売枚数に達して受付終了になった(11日18時の締切を待たず)。",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 80,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "source_change: 販売中/売切間近→予定販売枚数終了。締切前予約3件もここに集約。配信券・公演概要は既報"
+  },
+  "letora-birthday-online-live-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "ジュリア出演・公演概要は11-06・11-07号で記事化済み"
+  },
+  "letora-birthday-online-live-2026-julia-guest": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "valiv-letora-birthday-live-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(締切前)も同じ現地LV受付の話。売り切れの記事に統合。ジュリア出演は11-06号で既報"
+  },
+  "letora-birthday-lv-general-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "valiv-letora-birthday-live-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "一般先着の内容は11-02・11-04号で既報。続報予約も統合"
+  },
+  "valiv-3rd-live-meeting-qonnect-as-one-2027": {
+   "action": "article",
+   "angle": "vα-liv 3rdLIVE&MEETING -QONNECT AS ONE-の名古屋・東京の日程と、現地チケット最速先行(おすわりぬいぐるみ付き、11月15日23時59分まで)を伝える。",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 40,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ゲスト第1弾・チケット先行の主題を統合。2ndLIVE限定公開(11-05号)とアイカツ出演(11-04号)は既報のため新規分に絞る"
+  },
+  "valiv-cairn-stream-2026-11-07": {
+   "action": "roundup",
+   "angle": "ヴイアラ直近の配信まとめ(上水流宇宙『CAIRN』、灯里愛夏『デュエル・マスターズ プレイス』)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "11月7日の配信告知"
+  },
+  "valiv-duel-masters-plays-stream-2026-11-07": {
+   "action": "roundup",
+   "angle": "ヴイアラ直近の配信まとめ(11月7日の昼夜配信)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "灯里愛夏の昼配信、マスターランク挑戦"
+  },
+  "manaka-first-drinking-stream-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-03・11-06・11-07号で記事化済み。配信は終了済み"
+  },
+  "valiv-cairn-stream-result-2026-11-07": {
+   "action": "roundup",
+   "angle": "ヴイアラ直近の配信まとめ(上水流宇宙『CAIRN』配信後の報告)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "半年ぶりのCAIRN配信の振り返り"
+  },
+  "cosmo-letra-penguin-hug-short-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-07号の配信・動画出演まとめで紹介済み"
+  },
+  "valiv-channel-subscriber-growth-2026-11-06": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人の投稿による登録者数の記録で、公式の発表ではない"
+  },
+  "v-alive-3rd-live-meeting-ticket-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "valiv-3rd-live-meeting-qonnect-as-one-2027",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ公演の現地チケット先行。申込期限は11月15日"
+  },
+  "valiv-3rd-live-guest-reveal-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "valiv-3rd-live-meeting-qonnect-as-one-2027",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ公演のゲスト第1弾。11-04・11-05号の既報分は新事実に数えない"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "dsva-valiv-letora-birthday-live-2026",
+    "brand": "dsva",
+    "rank": "medium",
+    "angle": "レトラ誕生日ライブの現地LV一般先着が、予定販売枚数に達して受付終了になった(11日18時の締切を待たず)。",
+    "purpose": "新情報",
+    "lead_score": 80,
+    "dedup_key": "valiv-letora-birthday-live-2026",
+    "candidate_ids": [
+     "update-508160dde93e",
+     "sched-2026-11-08-valiv-letora-birthday-live-2026-締切前",
+     "sched-2026-11-08-valiv-letora-birthday-live-2026-締切前-src1",
+     "sched-2026-11-08-valiv-letora-birthday-live-2026-締切前-src2",
+     "sched-2026-11-08-valiv-letora-birthday-live-2026-締切前-src3",
+     "update-3164e623a119",
+     "sched-2026-11-08-letora-birthday-lv-general-2026-締切前",
+     "sched-2026-11-08-letora-birthday-lv-general-2026-締切前-src1",
+     "sched-2026-11-08-letora-birthday-lv-general-2026-締切前-src2",
+     "sched-2026-11-08-letora-birthday-lv-general-2026-締切前-src3",
+     "sched-2026-11-08-letora-birthday-online-live-2026-julia-guest-締切前"
+    ]
+   },
+   {
+    "slug": "dsva-valiv-3rd-live-meeting-qonnect-as-one-2027",
+    "brand": "dsva",
+    "rank": "medium",
+    "angle": "vα-liv 3rdLIVE&MEETING -QONNECT AS ONE-の名古屋・東京の日程と、現地チケット最速先行(おすわりぬいぐるみ付き、11月15日23時59分まで)を伝える。",
+    "purpose": "新情報",
+    "lead_score": 40,
+    "dedup_key": "valiv-3rd-live-meeting-qonnect-as-one-2027",
+    "candidate_ids": [
+     "202611080229-grok-59",
+     "202611080229-grok-85",
+     "202611051234-explore-8"
+    ]
+   },
+   {
+    "slug": "dsva-ops-roundup",
+    "brand": "dsva",
+    "rank": "roundup",
+    "angle": "ヴイアラ直近の配信まとめ(上水流宇宙『CAIRN』、灯里愛夏『デュエル・マスターズ プレイス』)",
+    "lead_score": 0,
+    "dedup_key": "valiv-cairn-stream-2026-11-07",
+    "candidate_ids": [
+     "202611080229-grok-60",
+     "202611080229-grok-113",
+     "202611080229-grok-114",
+     "202611080229-grok-61",
+     "202611080229-grok-115",
+     "202611080229-grok-117",
+     "202611080229-grok-118",
+     "202611080229-grok-63"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "valiv-manaka-20th-birthday-2026",
+    "reason": "既報",
+    "note": "11月6日の初飲酒配信は終了済みで、11-03・11-06・11-07号で記事化済み"
+   },
+   {
+    "dedup_key": "letora-birthday-online-live-2026",
+    "reason": "既報",
+    "note": "ジュリア出演・公演概要は11-06・11-07号で記事化済み"
+   },
+   {
+    "dedup_key": "manaka-first-drinking-stream-2026",
+    "reason": "既報",
+    "note": "11-03・11-06・11-07号で記事化済み。配信は終了済み"
+   },
+   {
+    "dedup_key": "cosmo-letra-penguin-hug-short-2026",
+    "reason": "既報",
+    "note": "11-07号の配信・動画出演まとめで紹介済み"
+   },
+   {
+    "dedup_key": "valiv-channel-subscriber-growth-2026-11-06",
+    "reason": "個人の話題",
+    "note": "個人の投稿による登録者数の記録で、公式の発表ではない"
+   }
+  ],
+  "cross_brand": []
+ }
+}

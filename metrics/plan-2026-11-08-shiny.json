@@ -1,0 +1,387 @@
+{
+ "decisions": {
+  "shiny-jr-tabi-kyoto-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/7号の記事に期間・車内企画・特典・スタンプラリーが既出。新事実なし(京都出張所は別主題)"
+  },
+  "shiny-noctchill-live-2027-presale": {
+   "action": "article",
+   "angle": "noctchill単独ライブ(2027年3月27・28日 ゼビオアリーナ仙台)のアソビストア一般会員先行抽選が12月1日23:59まで受付中、当落は12月12日、ティーン割も同日程",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 85,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "一般・ティーン割の先行を1記事に集約"
+  },
+  "shiny-kyoto-official-shop-2026": {
+   "action": "article",
+   "angle": "アイドルマスター オフィシャルショップ京都出張所が12月8日から2027年3月7日までイオンモールKYOTO Sakura館に期間限定オープン",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "場所・営業時間・スタンプラリー全7カ所など既報にない事実あり"
+  },
+  "shiny-autumn-maple-box-2026": {
+   "action": "article",
+   "angle": "プロデュースイベント「オータム・メイプル・ボックス」が11月10日に開始予定",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "既報は報酬紹介のみで開始日は新事実"
+  },
+  "shiny-noctchill-asobi-general-2027": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-noctchill-live-2027-presale",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ先行抽選。料金・特典・申込枚数の素材を統合"
+  },
+  "shiny-noctchill-teen-ticket-2027": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-noctchill-live-2027-presale",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ先行抽選のティーン割。年齢条件・座席の素材を統合"
+  },
+  "shiny-song-for-prism-3rd-art-submissions-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shinycolors-3rd-anniv-art-campaign-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ3周年アート投稿キャンペーン"
+  },
+  "shiny-maintenance-2026-11-10": {
+   "action": "article",
+   "angle": "11月10日12:00〜15:00にメンテナンス。開始前に中断したプロデュースと283ステージは再開不可、10連無料スタンプガシャはメンテ前まで",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "読者の行動に関わる注意事項"
+  },
+  "shiny-hitohira-gacha-2026": {
+   "action": "article",
+   "angle": "シャニソンの新全体曲衣装【ひとひら】ガシャを開催中",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "roundupは3件に満たないため小記事。素材は少ない"
+  },
+  "shiny-hbtk-clip-2026-11": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/7号にHBTK切り抜きの記事あり。同内容"
+  },
+  "general-shiny-song-3rd-art-fan-submissions-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿の様子で未確認。キャンペーン自体は別記事で扱う"
+  },
+  "shiny-hyakkiyako-pop-up-after-sales-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "事後通販は11/5に受付終了済み。新事実なし"
+  },
+  "shiny-ramen-8-collab-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-hachiban-collab-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じコラボの最終日(続報予約)"
+  },
+  "shiny-hachiban-collab-2026": {
+   "action": "article",
+   "angle": "シャニマス×8番らーめんコラボが本日11月8日で最終日。店舗のコラボセット・パネル展示、通販、連島店での羽那の撮影会とお出迎えが最後",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "コラボ最終日の4主題を集約。箱らーめん受注は読者の行動が別なので別記事"
+  },
+  "shiny-hachiban-ramen-collab-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-hachiban-collab-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じコラボの最終日(続報予約)"
+  },
+  "shiny-jong-tama-higuchi-madoka-figure-2026": {
+   "action": "article",
+   "angle": "樋口円香フィギュアの予約と浅倉透フィギュアの三次受注は11月11日まで、締切まであと3日",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約。各19,800円(税込)、発送は2027年6月予定"
+  },
+  "shiny-hachiban-box-ramen-set-2026": {
+   "action": "article",
+   "angle": "「8番箱らーめん シャイニーカラーズコラボセット」のハチバンeSHOP受注は本日23時59分まで",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約。店頭コラボとは申込先が別のため別記事"
+  },
+  "shinycolors-3rd-anniv-art-campaign-2026": {
+   "action": "article",
+   "angle": "「#シャニソン3周年アート」X投稿キャンペーンの応募は本日23時59分まで",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約。同キャンペーンの別主題を集約"
+  },
+  "shiny-song-autumn-login-pass": {
+   "action": "article",
+   "angle": "シャニソン「秋色が重なる空」ログインボーナスパスの販売終了(11月11日11:59)まであと3日",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約。購入は11日11:59まで"
+  },
+  "shiny-hachiban-collab-final-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-hachiban-collab-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じコラボの最終日。連島店の撮影会・お出迎えの素材を統合"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "shiny-noctchill-live-2027-presale",
+    "brand": "shiny",
+    "rank": "medium",
+    "angle": "noctchill単独ライブ(2027年3月27・28日 ゼビオアリーナ仙台)のアソビストア一般会員先行抽選が12月1日23:59まで受付中、当落は12月12日、ティーン割も同日程",
+    "purpose": "新情報",
+    "lead_score": 85,
+    "dedup_key": "shiny-noctchill-live-2027-presale",
+    "candidate_ids": [
+     "202611071235-watch-1",
+     "202611080229-grok-125",
+     "202611080229-grok-23",
+     "202611080229-grok-99",
+     "202611080229-grok-100",
+     "202611080229-grok-24"
+    ]
+   },
+   {
+    "slug": "shiny-kyoto-official-shop-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "アイドルマスター オフィシャルショップ京都出張所が12月8日から2027年3月7日までイオンモールKYOTO Sakura館に期間限定オープン",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "shiny-kyoto-official-shop-2026",
+    "candidate_ids": [
+     "202611071833-explore-5"
+    ]
+   },
+   {
+    "slug": "shiny-autumn-maple-box-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "プロデュースイベント「オータム・メイプル・ボックス」が11月10日に開始予定",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "shiny-autumn-maple-box-2026",
+    "candidate_ids": [
+     "202611080229-explore-3",
+     "202611080229-grok-26"
+    ]
+   },
+   {
+    "slug": "shiny-maintenance-2026-11-10",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "11月10日12:00〜15:00にメンテナンス。開始前に中断したプロデュースと283ステージは再開不可、10連無料スタンプガシャはメンテ前まで",
+    "purpose": "新情報",
+    "lead_score": 25,
+    "dedup_key": "shiny-maintenance-2026-11-10",
+    "candidate_ids": [
+     "202611080229-grok-27"
+    ]
+   },
+   {
+    "slug": "shiny-hitohira-gacha-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "シャニソンの新全体曲衣装【ひとひら】ガシャを開催中",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "shiny-hitohira-gacha-2026",
+    "candidate_ids": [
+     "202611080229-grok-28"
+    ]
+   },
+   {
+    "slug": "shiny-hachiban-collab-2026",
+    "brand": "shiny",
+    "rank": "medium",
+    "angle": "シャニマス×8番らーめんコラボが本日11月8日で最終日。店舗のコラボセット・パネル展示、通販、連島店での羽那の撮影会とお出迎えが最後",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "shiny-hachiban-collab-2026",
+    "candidate_ids": [
+     "sched-2026-11-08-shiny-hachiban-collab-2026-終了",
+     "sched-2026-11-08-shiny-hachiban-collab-2026-終了-src1",
+     "sched-2026-11-08-shiny-hachiban-collab-2026-終了-src2",
+     "sched-2026-11-08-shiny-ramen-8-collab-2026-終了",
+     "sched-2026-11-08-shiny-hachiban-ramen-collab-2026-終了",
+     "sched-2026-11-08-shiny-hachiban-ramen-collab-2026-終了-src1",
+     "sched-2026-11-08-shiny-hachiban-ramen-collab-2026-終了-src2",
+     "sched-2026-11-08-shiny-hachiban-collab-final-2026-終了"
+    ]
+   },
+   {
+    "slug": "shiny-jong-tama-higuchi-madoka-figure-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "樋口円香フィギュアの予約と浅倉透フィギュアの三次受注は11月11日まで、締切まであと3日",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "shiny-jong-tama-higuchi-madoka-figure-2026",
+    "candidate_ids": [
+     "sched-2026-11-08-shiny-jong-tama-higuchi-madoka-figure-2026-締切前",
+     "sched-2026-11-08-shiny-jong-tama-higuchi-madoka-figure-2026-締切前-src1"
+    ]
+   },
+   {
+    "slug": "shiny-hachiban-box-ramen-set-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "「8番箱らーめん シャイニーカラーズコラボセット」のハチバンeSHOP受注は本日23時59分まで",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "shiny-hachiban-box-ramen-set-2026",
+    "candidate_ids": [
+     "sched-2026-11-08-shiny-hachiban-box-ramen-set-2026-締切",
+     "sched-2026-11-08-shiny-hachiban-box-ramen-set-2026-締切-src1"
+    ]
+   },
+   {
+    "slug": "shiny-shinycolors-3rd-anniv-art-campaign-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "「#シャニソン3周年アート」X投稿キャンペーンの応募は本日23時59分まで",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "shinycolors-3rd-anniv-art-campaign-2026",
+    "candidate_ids": [
+     "sched-2026-11-08-shinycolors-3rd-anniv-art-campaign-2026-締切",
+     "202611080229-grok-25"
+    ]
+   },
+   {
+    "slug": "shiny-song-autumn-login-pass",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "シャニソン「秋色が重なる空」ログインボーナスパスの販売終了(11月11日11:59)まであと3日",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "shiny-song-autumn-login-pass",
+    "candidate_ids": [
+     "sched-2026-11-08-shiny-song-autumn-login-pass-締切前"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "shiny-jr-tabi-kyoto-2026",
+    "reason": "既報",
+    "note": "11/7号の記事に期間・車内企画・特典・スタンプラリーが既出。新事実なし(京都出張所は別主題)"
+   },
+   {
+    "dedup_key": "shiny-hbtk-clip-2026-11",
+    "reason": "既報",
+    "note": "11/7号にHBTK切り抜きの記事あり。同内容"
+   },
+   {
+    "dedup_key": "general-shiny-song-3rd-art-fan-submissions-2026",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿の様子で未確認。キャンペーン自体は別記事で扱う"
+   },
+   {
+    "dedup_key": "shiny-hyakkiyako-pop-up-after-sales-2026",
+    "reason": "既報",
+    "note": "事後通販は11/5に受付終了済み。新事実なし"
+   }
+  ],
+  "cross_brand": []
+ }
+}

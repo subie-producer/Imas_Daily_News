@@ -62,5 +62,30 @@
   "src_candidate_id": "202611042334-explore-13",
   "companion_of": "sched-2027-01-28-gaku-go-my-way-badge-package-correction-2026-締切前",
   "src_dedup_key": "gakumasu-go-my-way-badge-misprint-2026"
+ },
+ {
+  "id": "sched-2027-01-28-gaku-round1-vol2-2026-締切前",
+  "dedup_key": "gaku-round1-vol2-2026",
+  "brand": "gaku",
+  "subject": "学マス×ROUND1 vol.2 終了3日前",
+  "kind": "締切前",
+  "note": "31日の終了まで3日、ラウンドワン全店で参加できる最後の機会",
+  "reserved_on": "2026-11-08",
+  "occurs_on": "2027-01-31",
+  "title": "学園アイドルマスター × ROUND1 vol.2開催決定",
+  "url": "https://collabo-cafe.com/events/collabo/gakuen-idolmaster-round1-vol2-2026-2027-pre-info/",
+  "source_type": "二次情報",
+  "facts": [
+   "「学園アイドルマスター × ROUND1 vol.2」の開催が決定した。",
+   "開催期間: 2026年12月1日(火)〜2027年1月31日(日)",
+   "開催場所はラウンドワン全店。",
+   "キャンペーン内容の詳細は後日発表予定。",
+   "エンゲージメント: 中"
+  ],
+  "via": "explore",
+  "verify": "unconfirmed",
+  "event_date": "2026-12-01",
+  "deadline": "2027-01-31",
+  "src_candidate_id": "202611071833-explore-7"
  }
 ]

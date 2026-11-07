@@ -1,0 +1,206 @@
+{
+ "decisions": {
+  "million-premium-pickup-sr-gasha-2026-11": {
+   "action": "article",
+   "angle": "プレミアムピックアップSRガシャ(おもてなしガール！シリーズ)は11月9日23:59まで。プレミアムスター150個で春香・千鶴のSRを入手できる。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "終了が3日以内。運営まとめは3件に満たず単独の小記事。"
+  },
+  "million-12thlive-blu-ray": {
+   "action": "article",
+   "angle": "ミリオン12thLIVE Blu-rayのアソビストア受注は11月12日まで。特装版の内容(両日本編・フォトブック・CD2枚)とダイジェスト映像公開。",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "この面の直近記事に無い新規商品。"
+  },
+  "million-seasonal-snapshot-valentine-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/6「美希・エレナのバレンタイン受注」と同じ施策。締切11/22でトリガー無し。"
+  },
+  "million-my-brand-glasses-gasha-2026": {
+   "action": "article",
+   "angle": "ミリシタ「セカンドヘアスタイルガシャ～myブランド編 with glasses～」で紗代子と律子が洋服とON/OFFできるメガネをトータルプロデュース。4コマまんがも公開。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "4コマ主題を統合。"
+  },
+  "million-my-brand-glasses-four-panel-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-my-brand-glasses-gasha-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じガシャの関連投稿。"
+  },
+  "million-platinum-star-tune-yoruto-akari-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/7 20:59に終了済み。直近の記事で報じ済み。"
+  },
+  "million-tapipyon-matsuri-plush-2027": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/5「たぴぴょん」予約開始と同じ商品の別URL。発売は2027年5月で当日のトリガー無し。"
+  },
+  "million-arc-flags-pop-up-fan-visit-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人SNS投稿のみ。ポップアップは11/6・11/7に記事化済み。"
+  },
+  "million-kyomaf-after-sales-2026": {
+   "action": "article",
+   "angle": "京まふ2026ミリオンライブPOP UP SHOPの事後通販が11月18日23:59まで。101点を取り扱い、一部は数量限定。",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "直近記事に無い。"
+  },
+  "millionlive-hinata-apple-ambassador-2026": {
+   "action": "article",
+   "angle": "木下ひなたが4年目のりんご大使を務める第50回そうべつりんごまつりは本日11月8日が最終日。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(終了・千秋楽)を1記事にまとめる。"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "million-premium-pickup-sr-gasha-2026-11",
+    "brand": "million",
+    "rank": "small",
+    "angle": "プレミアムピックアップSRガシャ(おもてなしガール！シリーズ)は11月9日23:59まで。プレミアムスター150個で春香・千鶴のSRを入手できる。",
+    "purpose": "期日の知らせ",
+    "lead_score": 10,
+    "dedup_key": "million-premium-pickup-sr-gasha-2026-11",
+    "candidate_ids": [
+     "202611070733-explore-2"
+    ]
+   },
+   {
+    "slug": "million-12thlive-blu-ray",
+    "brand": "million",
+    "rank": "medium",
+    "angle": "ミリオン12thLIVE Blu-rayのアソビストア受注は11月12日まで。特装版の内容(両日本編・フォトブック・CD2枚)とダイジェスト映像公開。",
+    "purpose": "新情報",
+    "lead_score": 60,
+    "dedup_key": "million-12thlive-blu-ray",
+    "candidate_ids": [
+     "202611071235-watch-0",
+     "202611080229-grok-126"
+    ]
+   },
+   {
+    "slug": "million-my-brand-glasses-gasha-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "ミリシタ「セカンドヘアスタイルガシャ～myブランド編 with glasses～」で紗代子と律子が洋服とON/OFFできるメガネをトータルプロデュース。4コマまんがも公開。",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "million-my-brand-glasses-gasha-2026",
+    "candidate_ids": [
+     "202611080229-grok-19",
+     "202611080229-grok-20"
+    ]
+   },
+   {
+    "slug": "million-kyomaf-after-sales-2026",
+    "brand": "million",
+    "rank": "medium",
+    "angle": "京まふ2026ミリオンライブPOP UP SHOPの事後通販が11月18日23:59まで。101点を取り扱い、一部は数量限定。",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "million-kyomaf-after-sales-2026",
+    "candidate_ids": [
+     "202611050230-grok-16"
+    ]
+   },
+   {
+    "slug": "million-millionlive-hinata-apple-ambassador-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "木下ひなたが4年目のりんご大使を務める第50回そうべつりんごまつりは本日11月8日が最終日。",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "millionlive-hinata-apple-ambassador-2026",
+    "candidate_ids": [
+     "sched-2026-11-08-millionlive-hinata-apple-ambassador-2026-終了",
+     "sched-2026-11-08-millionlive-hinata-apple-ambassador-2026-終了-src1",
+     "sched-2026-11-08-millionlive-hinata-apple-ambassador-2026-千秋楽",
+     "sched-2026-11-08-millionlive-hinata-apple-ambassador-2026-千秋楽-src1"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "million-seasonal-snapshot-valentine-2026",
+    "reason": "既報",
+    "note": "11/6「美希・エレナのバレンタイン受注」と同じ施策。締切11/22でトリガー無し。"
+   },
+   {
+    "dedup_key": "million-tapipyon-matsuri-plush-2027",
+    "reason": "既報",
+    "note": "11/5「たぴぴょん」予約開始と同じ商品の別URL。発売は2027年5月で当日のトリガー無し。"
+   },
+   {
+    "dedup_key": "million-arc-flags-pop-up-fan-visit-2026",
+    "reason": "個人の話題",
+    "note": "個人SNS投稿のみ。ポップアップは11/6・11/7に記事化済み。"
+   },
+   {
+    "dedup_key": "million-platinum-star-tune-yoruto-akari-2026",
+    "reason": "既報",
+    "note": "11/7 20:59に終了済み。直近の記事で報じ済み。"
+   }
+  ],
+  "cross_brand": []
+ }
+}

@@ -1336,5 +1336,29 @@
   "src_candidate_id": "sched-2026-11-06-gkmas-misuzu-garakuta-present-2026-開始",
   "companion_of": "sched-2026-11-13-garakuta-china-misuzu-gacha-2026-締切前",
   "src_dedup_key": "gkmas-misuzu-garakuta-present-2026"
+ },
+ {
+  "id": "sched-2026-11-13-cafe-parade-chocolate-special-2dmv-2026-開始",
+  "dedup_key": "cafe-parade-chocolate-special-2dmv-2026",
+  "brand": "sidem",
+  "subject": "Café Parade「Chocolate Special」2DMV公開",
+  "kind": "開始",
+  "note": "22時にCafé Parade「Chocolate Special」の2DMVが公開され、視聴できる",
+  "reserved_on": "2026-11-08",
+  "occurs_on": "2026-11-13",
+  "title": "Café Parade『Chocolate Special』2DMV公開日決定",
+  "url": "https://x.com/SideM_lantis/status/2118682309989966102",
+  "source_type": "準公式",
+  "facts": [
+   "Café Parade『Chocolate Special』の2DMV公開日が2026年11月13日（金）22:00予定と発表された。",
+   "エンゲージメント: 中",
+   "言及アイドル: 神谷幸広、東雲荘一郎、アスラン＝ベルゼビュートⅡ世、卯月巻緒、水嶋咲",
+   "Café Parade「Chocolate Special」の2DMV公開日は2026年11月13日(金)22:00予定。",
+   "言及アイドル: 神谷 幸広、東雲 荘一郎、アスラン＝BBⅡ世、卯月 巻緒、水嶋 咲"
+  ],
+  "via": "grok",
+  "verify": "unconfirmed",
+  "event_date": "2026-11-13",
+  "src_candidate_id": "202611080229-grok-34"
  }
 ]

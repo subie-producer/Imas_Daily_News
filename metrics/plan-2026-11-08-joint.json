@@ -1,0 +1,87 @@
+{
+ "decisions": {
+  "imas-year-end-thanks-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-07号の記事に出演者・配信日時・アンケート締切まで掲載済み。新事実も当日のトリガーも無い(配信は12/24、アンケート締切は11/30)。"
+  },
+  "cg-million-clash-match-2027": {
+   "action": "article",
+   "angle": "デレミリ合同ライブ「CLASH M@TCH!!」の公式グッズ事前販売が始まり、受注は11月15日まで(描きおろしビジュアル使用)。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "グッズ事前受注の開始は既報に無い新情報。cg-million-clash-match-goods-2026 を統合。商品詳細ページは404で確認できていない点に注意。"
+  },
+  "cg-million-clash-match-goods-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-million-clash-match-2027",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ公演の同じグッズ事前受注(受注は11/15まで)の知らせ。"
+  },
+  "xr-live-revival-2026-presale-extension": {
+   "action": "article",
+   "angle": "xR LIVE REVIVALのアソビストア先行の抽選受付が本日23時59分で最終日。当落発表は11月14日13時。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(締切日)で当日のトリガーあり。延長の事実と申込条件は11-05号などで既報なので、最終日であることと当落以降の日程を中心にする。"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "joint-cg-million-clash-match-2027",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "デレミリ合同ライブ「CLASH M@TCH!!」の公式グッズ事前販売が始まり、受注は11月15日まで(描きおろしビジュアル使用)。",
+    "purpose": "新情報",
+    "lead_score": 30,
+    "dedup_key": "cg-million-clash-match-2027",
+    "candidate_ids": [
+     "202611071833-watch-0",
+     "202611080229-grok-119",
+     "202611080229-grok-15"
+    ]
+   },
+   {
+    "slug": "joint-xr-live-revival-2026-presale-extension",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "xR LIVE REVIVALのアソビストア先行の抽選受付が本日23時59分で最終日。当落発表は11月14日13時。",
+    "purpose": "期日の知らせ",
+    "lead_score": 60,
+    "dedup_key": "xr-live-revival-2026-presale-extension",
+    "candidate_ids": [
+     "sched-2026-11-08-xr-live-revival-2026-presale-extension-締切",
+     "sched-2026-11-08-xr-live-revival-2026-presale-extension-締切-src1"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "imas-year-end-thanks-2026",
+    "reason": "既報",
+    "note": "11-07号の記事に出演者・配信日時・アンケート締切まで掲載済み。新事実も当日のトリガーも無い(配信は12/24、アンケート締切は11/30)。"
+   }
+  ],
+  "cross_brand": []
+ }
+}

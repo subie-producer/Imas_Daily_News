@@ -856,6 +856,7 @@
   "https://bandainamco-am.co.jp/am/vg/idolmaster-tours/news/20230623.html"
  ],
  "imasnews765": [
+  "https://imasnews765.com/?p=32648",
   "https://imasnews765.com/?p=32645",
   "https://imasnews765.com/?p=32642",
   "https://imasnews765.com/?p=32636",
@@ -969,9 +970,7 @@
   "https://imasnews765.com/?p=32178",
   "https://imasnews765.com/?p=32175"
  ],
- "_unreadable": {
-  "https://imasnews765.com/?p=32648": 1
- },
+ "_unreadable": {},
  "pylonport-sidem": [
   "https://pylonport.bandainamcomusiclive.co.jp/more/902",
   "https://pylonport.bandainamcomusiclive.co.jp/more/900",
@@ -1093,15 +1092,6 @@
   "https://lantis.jp/sidem/extra/index.html#20260925",
   "https://lantis.jp/sidem/extra/index.html#20260912_2"
  ],
- "_pending": [
-  {
-   "source_id": "imasnews765",
-   "brand": "general",
-   "url": "https://imasnews765.com/?p=32648",
-   "title": "学マス標ツアー ファイナル公演 DAY1 セットリスト公開",
-   "source_type": "ファン",
-   "csr": false
-  }
- ],
+ "_pending": [],
  "_given_up": []
 }

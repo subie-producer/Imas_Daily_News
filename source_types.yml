@@ -1188,6 +1188,7 @@ x_posts:
 
 # --- リンク元から引き継いだ種別(リンク先1つずつ。キーは pipelib.link_key)。合議がリンク元の告知と関係していると確かめたものだけ(classify_sources.inherit_from_links)。リンク先そのものの種別より強いときだけ効く ---
 link_types:
+  recommend.jr-central.co.jp/oshi-tabi/idolmaster_shinycolors/: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://idolmaster-official.jp/news/01_20270(公式)。告知と同じ推し旅コラボの特設サイトで、参加方法と内容を案内
   youtube.com/watch?v=K6jfRuAMg4c: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/KamizuruCosmo/status/2118750690227191854(公式)。リンク先は告知と同じ『BOMBANANA!』配信動画で、爆弾解除の内容と一致
   youtube.com/watch?v=iMf7cPCS_-0: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/imas_ch/status/2118357676887302569(公式)。リンク元が紹介する周防桃子の誕生日祝い動画そのもの
   youtube.com/watch?v=QMkhGXJqVOY: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/imas_ch/status/2118357676887302569(公式)。リンク元が紹介する間中美里の誕生日祝い動画そのもの

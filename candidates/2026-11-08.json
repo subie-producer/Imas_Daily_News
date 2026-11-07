@@ -797,5 +797,132 @@
       "開催期間: 2026年12月1日(火)〜2027年1月31日(日)"
     ],
     "archived_at": "2026-11-07T18:34:18+09:00"
+  },
+  {
+    "id": "update-60498d80caac",
+    "title": "出典の更新: 学マス「ECLIPSE LIGHT」フェア、特典13種",
+    "brand": "gaku",
+    "source_type": "当事者",
+    "url": "https://www.animate-onlineshop.jp/contents/fair_event/detail.php?id=115933",
+    "found_at": "2026-11-07T18:40:53+09:00",
+    "dedup_key": "eclipse-light-animate-fair-2026",
+    "verify": "confirmed",
+    "via": "watch",
+    "origin": "watch",
+    "published_date": "2026-11-07",
+    "facts": [
+      "変更後(11月7日18時35分に読んだ版): 【コミック】学園アイドルマスター GOLD RUSH(8) 特装版",
+      "変更後(11月7日18時35分に読んだ版): 2,200",
+      "変更後(11月7日18時35分に読んだ版): 円(税込)",
+      "変更後(11月7日18時35分に読んだ版): 【音楽】学園アイドルマスター 初星学園 Gravure Solo Collection Vol.1「ねえ、言っちゃうよ。」",
+      "変更後(11月7日18時35分に読んだ版): 3,500",
+      "変更前(11月6日18時39分に読んだ版): 円(税込)",
+      "変更前(11月6日18時39分に読んだ版): 【コミック】学園アイドルマスター GOLD RUSH(8) 特装版",
+      "変更前(11月6日18時39分に読んだ版): 2,200",
+      "変更前(11月6日18時39分に読んだ版): 【音楽】学園アイドルマスター 初星学園 LIVE TOUR Single「修楽旅行」",
+      "変更前(11月6日18時39分に読んだ版): 2,500"
+    ],
+    "source_change": {
+      "from_at": "2026-11-06T18:39:05+09:00",
+      "to_at": "2026-11-07T18:35:30+09:00",
+      "articles": [
+        "2026-10-02-gaku-eclipse-light-animate-fair-2026",
+        "2026-10-10-gaku-eclipse-light-animate-fair-2026",
+        "2026-10-31-gaku-eclipse-light-animate-fair-2026",
+        "2026-11-05-gaku-eclipse-light-animate-fair-2026"
+      ]
+    },
+    "archived_at": "2026-11-07T18:35:30+09:00"
+  },
+  {
+    "id": "update-3164e623a119",
+    "title": "出典の更新: レトラ誕生日ライブLV、当落発表と入金期限",
+    "brand": "dsva",
+    "source_type": "公式",
+    "url": "https://t.co/ON7vMQp5kT",
+    "found_at": "2026-11-07T18:51:04+09:00",
+    "dedup_key": "va-liv-letora-birthday-2026",
+    "verify": "confirmed",
+    "via": "watch",
+    "origin": "watch",
+    "published_date": "2026-11-07",
+    "facts": [
+      "変更後(11月7日18時34分に読んだ版): 予定販売枚数終了",
+      "変更後(11月7日18時34分に読んだ版): 予定販売数終了",
+      "変更後(11月7日18時34分に読んだ版): 予定販売枚数終了",
+      "変更前(11月5日23時35分に読んだ版): 販売中",
+      "変更前(11月5日23時35分に読んだ版): 売切間近",
+      "変更前(11月5日23時35分に読んだ版): ログイン／新規会員登録"
+    ],
+    "source_change": {
+      "from_at": "2026-11-05T23:35:44+09:00",
+      "to_at": "2026-11-07T18:34:30+09:00",
+      "articles": [
+        "2026-10-13-dsva-va-liv-letora-birthday-2026"
+      ]
+    },
+    "archived_at": "2026-11-07T18:34:30+09:00"
+  },
+  {
+    "id": "update-80683abb1f53",
+    "title": "出典の更新: SideM彩、吾妻6町村で忍者コラボ開催",
+    "brand": "sidem",
+    "source_type": "当事者",
+    "url": "https://edith.co.jp/lp/agatsuma-sidem/",
+    "found_at": "2026-11-07T18:55:12+09:00",
+    "dedup_key": "sidem-agatsuma-nin-nin-2026",
+    "verify": "confirmed",
+    "via": "watch",
+    "origin": "watch",
+    "published_date": "2026-11-07",
+    "facts": [
+      "変更後(11月7日18時36分に読んだ版): 2026年11月6日",
+      "変更後(11月7日18時36分に読んだ版): デジタルスタンプラリー達成賞その二「群馬あがつまアクリルキーホルダー」は一部引換場所にて配布終了となっております。引換可能な場所は群馬県吾妻行政県税事務所公式Xをご確認ください。コラボオリジナルビッグ缶バッジは引き続き配布しております。",
+      "変更後(11月7日18時36分に読んだ版): 2026年11月6日",
+      "変更後(11月7日18時36分に読んだ版): オリジナルグッズの「温泉タオル」が完売となりました。再入荷予定は後日お知らせいたします。",
+      "変更後(11月7日18時36分に読んだ版): ※不定休 営業状況は店舗HP・Xをご確認ください。（11/6更新）",
+      "変更前(11月1日3時08分に読んだ版): ※水曜定休（臨時休業あり）"
+    ],
+    "source_change": {
+      "from_at": "2026-11-01T03:08:24+09:00",
+      "to_at": "2026-11-07T18:36:00+09:00",
+      "articles": [
+        "2026-10-24-sidem-agatsuma-nin-nin-2026",
+        "2026-11-01-sidem-agatsuma-nin-nin-ambassadors-2026"
+      ]
+    },
+    "archived_at": "2026-11-07T18:36:00+09:00"
+  },
+  {
+    "id": "update-508160dde93e",
+    "title": "出典の更新: レトラBD現地LV、当落発表は本日",
+    "brand": "dsva",
+    "source_type": "公式",
+    "url": "https://livepocket.jp/e/va-liv_letora_bd2026",
+    "found_at": "2026-11-07T19:08:28+09:00",
+    "dedup_key": "valiv-letora-birthday-live-2026",
+    "verify": "confirmed",
+    "via": "watch",
+    "origin": "watch",
+    "published_date": "2026-11-07",
+    "facts": [
+      "変更後(11月7日18時34分に読んだ版): 予定販売枚数終了",
+      "変更後(11月7日18時34分に読んだ版): 予定販売数終了",
+      "変更後(11月7日18時34分に読んだ版): 予定販売枚数終了",
+      "変更前(11月5日23時35分に読んだ版): 販売中",
+      "変更前(11月5日23時35分に読んだ版): 売切間近",
+      "変更前(11月5日23時35分に読んだ版): ログイン／新規会員登録"
+    ],
+    "source_change": {
+      "from_at": "2026-11-05T23:35:44+09:00",
+      "to_at": "2026-11-07T18:34:30+09:00",
+      "articles": [
+        "2026-10-31-dsva-valiv-letora-birthday-live-2026",
+        "2026-11-02-dsva-valiv-letora-birthday-live-2026",
+        "2026-11-03-dsva-valiv-letora-birthday-live-2026",
+        "2026-11-04-dsva-letora-birthday-lv-general-2026"
+      ]
+    },
+    "archived_at": "2026-11-07T18:34:30+09:00"
   }
 ]

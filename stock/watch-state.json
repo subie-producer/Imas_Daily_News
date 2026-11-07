@@ -1,5 +1,7 @@
 {
  "imas-portal": [
+  "https://idolmaster-official.jp/news/01_20322",
+  "https://idolmaster-official.jp/news/01_20235",
   "https://idolmaster-official.jp/news/01_20306",
   "https://idolmaster-official.jp/news/01_20304",
   "https://idolmaster-official.jp/news/01_20299",
@@ -16,9 +18,9 @@
   "https://idolmaster-official.jp/news/01_20297",
   "https://idolmaster-official.jp/news/01_20295",
   "https://idolmaster-official.jp/news/01_20258",
+  "https://idolmaster-official.jp/news/01_20232",
   "https://idolmaster-official.jp/news/01_20280",
   "https://idolmaster-official.jp/news/01_20267",
-  "https://idolmaster-official.jp/news/01_20232",
   "https://idolmaster-official.jp/news/01_20282",
   "https://idolmaster-official.jp/news/01_20286",
   "https://idolmaster-official.jp/news/01_20266",
@@ -967,7 +969,9 @@
   "https://imasnews765.com/?p=32178",
   "https://imasnews765.com/?p=32175"
  ],
- "_unreadable": {},
+ "_unreadable": {
+  "https://imasnews765.com/?p=32648": 1
+ },
  "pylonport-sidem": [
   "https://pylonport.bandainamcomusiclive.co.jp/more/902",
   "https://pylonport.bandainamcomusiclive.co.jp/more/900",
@@ -1089,6 +1093,15 @@
   "https://lantis.jp/sidem/extra/index.html#20260925",
   "https://lantis.jp/sidem/extra/index.html#20260912_2"
  ],
- "_pending": [],
+ "_pending": [
+  {
+   "source_id": "imasnews765",
+   "brand": "general",
+   "url": "https://imasnews765.com/?p=32648",
+   "title": "学マス標ツアー ファイナル公演 DAY1 セットリスト公開",
+   "source_type": "ファン",
+   "csr": false
+  }
+ ],
  "_given_up": []
 }

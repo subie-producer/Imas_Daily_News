@@ -1,0 +1,379 @@
+{
+ "decisions": {
+  "noctchill-live-performance-2027": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/8記事と催しの記事に日程・会場・出演者が既出"
+  },
+  "shiny-jr-tabi-kyoto-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/7記事の本文と同内容。新事実なし"
+  },
+  "shiny-autumn-maple-box-2026-11": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/8に「11月10日開始」の記事が出ており同じ施策"
+  },
+  "shiny-next-idol-teaser-2026-11": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-upcoming-idol-teaser-2026-11",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ予告投稿"
+  },
+  "shiny-upcoming-idol-teaser-2026-11": {
+   "action": "article",
+   "angle": "公式Xが予告した新アイドルの登場は11月10日15時、名前はまだ伏せられている",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-noctchill-live-2027-presale": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/8記事に日程・同行者規則とも全て既出。トリガーは12/1で先"
+  },
+  "shiny-song-for-prism-hitohira-gacha-2026": {
+   "action": "roundup",
+   "angle": "開催中の【ひとひら】ガシャと販売中パッケージの定常運営まとめ",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-orchestra-2027-goods-order": {
+   "action": "article",
+   "angle": "シャニマスオケ2027の公式グッズ事前販売、受注は11月15日まで。28名の描きおろしアパレル・アクセサリー",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-8ban-tsurajima-collab-closing-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "コラボは11/8に終了済み。店の御礼投稿のみ"
+  },
+  "shiny-casting-tenka-package-2026": {
+   "action": "roundup",
+   "angle": "販売中のピース付きパッケージ(甜花・愛依・雛菜・摩美々・Lv.6ノウハウ・8.5th)のまとめ",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-casting-mei-package-2026": {
+   "action": "roundup",
+   "angle": "販売中のピース付きパッケージのまとめ",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-hinana-sol-loquy-package-2026": {
+   "action": "roundup",
+   "angle": "販売中のピース付きパッケージのまとめ",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-nichika-package": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/1記事と同内容"
+  },
+  "shiny-mamimi-package-2026": {
+   "action": "roundup",
+   "angle": "販売中のピース付きパッケージのまとめ",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "casting-love-forms-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/31記事と同内容。終了は11/18で3日以内ではない"
+  },
+  "hinana-stamp-gasha-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/31記事と同内容。終了は11/27"
+  },
+  "nichika-whisper-gasha-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/31記事と同内容"
+  },
+  "mamimi-pinup-gasha-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/31記事と同内容"
+  },
+  "shiny-level-six-howto-package-2026-10": {
+   "action": "roundup",
+   "angle": "販売中のピース付きパッケージ・特別パッケージのまとめ",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-85th-casting-hazuki-package-2026": {
+   "action": "roundup",
+   "angle": "8.5th Anniversary特別パッケージのまとめ",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-85th-paracolle-selection-package-2026": {
+   "action": "roundup",
+   "angle": "8.5th Anniversary特別パッケージのまとめ",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-3rd-anniversary-select-ticket-targets-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "対象を紹介するという投稿予告のみで、内容の事実が無い"
+  },
+  "shiny-hyakkiyako-pop-up-after-sales-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "受付は11/5に終了済み"
+  },
+  "shiny-hitohira-gacha-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-song-for-prism-hitohira-gacha-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ【ひとひら】ガシャ"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "shiny-upcoming-idol-teaser-2026-11",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "公式Xが予告した新アイドルの登場は11月10日15時、名前はまだ伏せられている",
+    "purpose": "新情報",
+    "lead_score": 30,
+    "dedup_key": "shiny-upcoming-idol-teaser-2026-11",
+    "candidate_ids": [
+     "202611090235-explore-4",
+     "202611082337-explore-24"
+    ]
+   },
+   {
+    "slug": "shiny-orchestra-2027-goods-order",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "シャニマスオケ2027の公式グッズ事前販売、受注は11月15日まで。28名の描きおろしアパレル・アクセサリー",
+    "purpose": "新情報",
+    "lead_score": 25,
+    "dedup_key": "shiny-orchestra-2027-goods-order",
+    "candidate_ids": [
+     "202611090235-grok-26"
+    ]
+   },
+   {
+    "slug": "shiny-ops-roundup",
+    "brand": "shiny",
+    "rank": "roundup",
+    "angle": "開催中の【ひとひら】ガシャと販売中パッケージの定常運営まとめ",
+    "lead_score": 0,
+    "dedup_key": "shiny-song-for-prism-hitohira-gacha-2026",
+    "candidate_ids": [
+     "202611090235-grok-24",
+     "202611090235-grok-85",
+     "202611090235-grok-86",
+     "202611090235-grok-87",
+     "202611090235-grok-89",
+     "202611090235-grok-94",
+     "202611090235-grok-95",
+     "202611090235-grok-96",
+     "202611080229-grok-28"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "noctchill-live-performance-2027",
+    "reason": "既報",
+    "note": "11/8記事と催しの記事に日程・会場・出演者が既出"
+   },
+   {
+    "dedup_key": "shiny-jr-tabi-kyoto-2026",
+    "reason": "既報",
+    "note": "11/7記事の本文と同内容。新事実なし"
+   },
+   {
+    "dedup_key": "shiny-autumn-maple-box-2026-11",
+    "reason": "既報",
+    "note": "11/8に「11月10日開始」の記事が出ており同じ施策"
+   },
+   {
+    "dedup_key": "shiny-noctchill-live-2027-presale",
+    "reason": "既報",
+    "note": "11/8記事に日程・同行者規則とも全て既出。トリガーは12/1で先"
+   },
+   {
+    "dedup_key": "shiny-8ban-tsurajima-collab-closing-2026",
+    "reason": "その他",
+    "note": "コラボは11/8に終了済み。店の御礼投稿のみ"
+   },
+   {
+    "dedup_key": "shiny-nichika-package",
+    "reason": "既報",
+    "note": "11/1記事と同内容"
+   },
+   {
+    "dedup_key": "casting-love-forms-2026",
+    "reason": "既報",
+    "note": "10/31記事と同内容。終了は11/18で3日以内ではない"
+   },
+   {
+    "dedup_key": "hinana-stamp-gasha-2026",
+    "reason": "既報",
+    "note": "10/31記事と同内容。終了は11/27"
+   },
+   {
+    "dedup_key": "nichika-whisper-gasha-2026",
+    "reason": "既報",
+    "note": "10/31記事と同内容"
+   },
+   {
+    "dedup_key": "mamimi-pinup-gasha-2026",
+    "reason": "既報",
+    "note": "10/31記事と同内容"
+   },
+   {
+    "dedup_key": "shiny-3rd-anniversary-select-ticket-targets-2026",
+    "reason": "出典不足",
+    "note": "対象を紹介するという投稿予告のみで、内容の事実が無い"
+   },
+   {
+    "dedup_key": "shiny-hyakkiyako-pop-up-after-sales-2026",
+    "reason": "既報",
+    "note": "受付は11/5に終了済み"
+   }
+  ],
+  "cross_brand": []
+ }
+}

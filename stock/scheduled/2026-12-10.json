@@ -228,5 +228,63 @@
   "src_candidate_id": "202611061234-explore-10",
   "companion_of": "sched-2026-12-10-sidem-pm2027-premium-member-second-advance-結果",
   "src_dedup_key": "sidem-producer-meeting-ajewelholic-2027-premium-advance-2"
+ },
+ {
+  "id": "sched-2026-12-10-va-liv-retra-birthday-voice-2026-締切前",
+  "dedup_key": "va-liv-retra-birthday-voice-2026",
+  "brand": "dsva",
+  "subject": "レトラ バースデー記念ボイス2026 販売終了まであと3日",
+  "kind": "締切前",
+  "note": "12月13日23:59の販売終了前に購入できる",
+  "reserved_on": "2026-11-09",
+  "occurs_on": "2026-12-13",
+  "title": "vα-liv バースデー記念ボイス2026 レトラ 販売開始",
+  "url": "https://idolmaster-official.jp/news/01_20310",
+  "source_type": "公式",
+  "facts": [
+   "販売期間: 2026年11月8日(日) 21:00～2026年12月13日(日) 23:59",
+   "価格: 3,300円(税込)",
+   "今回は、前後編のセット販売",
+   "期間限定販売",
+   "販売ページ: https://va-liv.booth.pm/items/9105347",
+   "誕生日のお祝いに何をするか、一緒に考えるレトラとあなたの特別な日の1コマを描くコミュボイス",
+   "プロジェクト情報: https://idolmaster-official.jp/va-liv",
+   "エンゲージメント: 中",
+   "言及アイドル: レトラ",
+   "ライバーアイドル『レトラ』のバースデー記念ボイス2026がvα-liv特設BOOTHで販売開始。",
+   "誕生日のお祝いを一緒に考えるレトラとあなたの特別な日の1コマを描くコミュボイス。",
+   "前後編のセット販売。",
+   "商品名: vα-liv バースデー記念ボイス2026 レトラ。",
+   "誕生日のお祝いを一緒に考えるレトラと購入者の特別な日の一コマを描くコミュボイス。",
+   "販売期間: 2026年11月8日（日）21:00～2026年12月13日（日）23:59。",
+   "価格: 3,300円（税込）。",
+   "エンゲージメント: 低"
+  ],
+  "via": "watch",
+  "verify": "unconfirmed",
+  "deadline": "2026-12-13",
+  "link_from": "https://x.com/imas_official/status/2119407095523193119",
+  "src_candidate_id": "202611082337-watch-0"
+ },
+ {
+  "id": "sched-2026-12-10-va-liv-retra-birthday-voice-2026-締切前-src1",
+  "dedup_key": "va-liv-retra-birthday-voice-2026",
+  "brand": "dsva",
+  "subject": "レトラ バースデー記念ボイス2026 販売終了まであと3日",
+  "kind": "締切前",
+  "note": "12月13日23:59の販売終了前に購入できる",
+  "reserved_on": "2026-11-09",
+  "occurs_on": "2026-12-13",
+  "title": "レトラのバースデー記念ボイス2026販売開始",
+  "url": "https://x.com/imas_official/status/2119407095523193119",
+  "source_type": "公式",
+  "facts": [
+   "【 #ヴイアラ 】「バースデー記念ボイス2026 レトラ」BOOTHにて期間限定販売開始！！販売は12/13(日)まで！ #ヴイアラ #idolmaster https://idolmaster-official.jp/news/01_20310"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202611090235-grok-138",
+  "companion_of": "sched-2026-12-10-va-liv-retra-birthday-voice-2026-締切前",
+  "src_dedup_key": "valiv-letora-birthday-voice-2026"
  }
 ]

@@ -889,5 +889,60 @@
   "src_candidate_id": "202611060418-explore-8",
   "companion_of": "sched-2026-11-23-sidem-producer-meeting-ajewelholic-2027-premium-advance-2-締切前",
   "src_dedup_key": "sidem-pm2027-premium-member-second-advance"
+ },
+ {
+  "id": "sched-2026-11-23-gaku-memory-goods-2026-締切",
+  "dedup_key": "gaku-memory-goods-2026",
+  "brand": "gaku",
+  "subject": "標ツアー記念グッズ受注販売 締切",
+  "kind": "締切",
+  "note": "受注最終日。商品ページから注文できる最後の日",
+  "reserved_on": "2026-11-09",
+  "occurs_on": "2026-11-23",
+  "title": "LIVE TOUR -標- 開催記念グッズ受注販売",
+  "url": "https://shop.asobistore.jp/feature/gkmas_livetourshirube_memorial",
+  "source_type": "公式",
+  "facts": [
+   "受注販売期間: 2026年11月8日（日）～2026年11月23日（月・祝）。",
+   "発送時期: 2027年4月上旬以降順次。",
+   "公式フォトフレームセットは3,700円。",
+   "公式アイドルセットは4,800円。",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "unconfirmed",
+  "deadline": "2026-11-23",
+  "link_from": "https://x.com/gkmas_official/status/2119383071472685265",
+  "src_candidate_id": "202611090235-grok-54"
+ },
+ {
+  "id": "sched-2026-11-23-gaku-memory-goods-2026-締切-src1",
+  "dedup_key": "gaku-memory-goods-2026",
+  "brand": "gaku",
+  "subject": "標ツアー記念グッズ受注販売 締切",
+  "kind": "締切",
+  "note": "受注最終日。商品ページから注文できる最後の日",
+  "reserved_on": "2026-11-09",
+  "occurs_on": "2026-11-23",
+  "title": "LIVE TOUR -標- 開催記念グッズ受注販売",
+  "url": "https://x.com/gkmas_official/status/2119383071472685265",
+  "source_type": "公式",
+  "facts": [
+   "／",
+   "学園アイドルマスター LIVE TOUR -標-",
+   "イベント開催記念グッズ 販売決定📢",
+   "＼",
+   "アイドルセットやテープチャームなど",
+   "標ツアーを振り返るグッズをラインナップ✨",
+   "本日20時より受注開始！",
+   "受注は11月23日(月)まで⏰",
+   "ご購入はこちら🛒",
+   "#学マス標ファイナル_DAY2"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202611090235-grok-118",
+  "companion_of": "sched-2026-11-23-gaku-memory-goods-2026-締切",
+  "src_dedup_key": "gaku-memory-goods-2026"
  }
 ]

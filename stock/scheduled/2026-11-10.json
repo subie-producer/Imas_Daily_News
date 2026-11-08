@@ -906,5 +906,30 @@
   "event_date": "2026-11-10",
   "deadline": "2026-11-10",
   "src_candidate_id": "202611080229-grok-27"
+ },
+ {
+  "id": "sched-2026-11-10-shiny-upcoming-idol-teaser-2026-11-開始",
+  "dedup_key": "shiny-upcoming-idol-teaser-2026-11",
+  "brand": "shiny",
+  "subject": "シャニマス 予告アイドル登場",
+  "kind": "開始",
+  "note": "15時から予告されていた新アイドルが登場し、名前を確かめられる",
+  "reserved_on": "2026-11-09",
+  "occurs_on": "2026-11-10",
+  "title": "シャニマスで近日登場予定のアイドルをチラ見せ",
+  "url": "https://x.com/imassc_official/status/2119263651198607617",
+  "source_type": "公式",
+  "facts": [
+   "公式Xが近日登場予定のアイドルをチラ見せし、誰が登場するか予想するよう呼びかけた。",
+   "11月10日(火) 15:00〜 登場予定です！",
+   "エンゲージメント: 高",
+   "近日登場予定のアイドルが予告されたが、投稿本文ではアイドル名は明かされていない。",
+   "登場予定: 2026年11月10日(火) 15:00～",
+   "エンゲージメント: 中"
+  ],
+  "via": "explore",
+  "verify": "unconfirmed",
+  "event_date": "2026-11-10",
+  "src_candidate_id": "202611090235-explore-4"
  }
 ]

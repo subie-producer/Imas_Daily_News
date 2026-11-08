@@ -1,0 +1,221 @@
+{
+ "decisions": {
+  "million-12thlive-bluray": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-12th-bluray-order-extension-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ12thLIVE Blu-rayの受注(11/12まで)"
+  },
+  "million-night-and-lights-event-shop-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-yoru-to-akari-door-deco-panel-sets-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じドアデコ／いろどりパネルセットの販売終了(11/9 14:59)"
+  },
+  "million-miricolle-2026-11": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-millionlive-collection-2026-11",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じミリコレ！開催(11/9 15:00)の二次情報"
+  },
+  "million-millionlive-collection-2026-11": {
+   "action": "article",
+   "angle": "ミリシタの期間限定イベント「ミリコレ！～MILLIONLIVE COLLECTION～」が本日15時に開幕し、コインでイベント限定ガシャを引ける",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "詳細は開催後に案内予定"
+  },
+  "million-platinum-star-tune-yoruto-akari-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-yoru-to-akari-door-deco-panel-sets-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "イベント本体とショップ期限は11/7に終了済みで既報。本日の期限はドアデコセットに統合"
+  },
+  "million-premium-pickup-sr-gasha-2026-11": {
+   "action": "article",
+   "angle": "プレミアムピックアップSRガシャ(おもてなしガール！シリーズ)は本日23時59分まで、プレミアムスター150個でカードと交換できる",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "二次情報のみ。11/6の新シリーズ記事と重なるため、本日終了を軸に書く"
+  },
+  "million-theater-talk-party-vol-68-2026": {
+   "action": "article",
+   "angle": "THEATER TALK PARTY☆ Vol.68のイベントショップでのユニットコイン交換は本日14時59分まで",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "million-12th-bluray-order-extension-2026": {
+   "action": "article",
+   "angle": "ミリオン12thLIVE Blu-rayのASOBI STORE受注は11月12日の締切まであと3日",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "12thlive-bluray・12thlive-blu-rayを統合"
+  },
+  "million-yoru-to-akari-door-deco-panel-sets-2026": {
+   "action": "article",
+   "angle": "「夜と、明かりと。」の莉緒・このみのドアデコ／いろどりパネルセットは本日14時59分で販売終了",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "night-and-lights・platinum-star-tuneのショップ関連素材を統合"
+  },
+  "million-second-hairstyle-my-brand-glasses-2026": {
+   "action": "article",
+   "angle": "セカンドヘアスタイルガシャ～myブランド編 with glasses～は本日14時59分で終了、律子・紗代子のSSRを引ける最終日",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "million-12thlive-blu-ray": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-12th-bluray-order-extension-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ12thLIVE Blu-rayの受注締切3日前"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "million-millionlive-collection-2026-11",
+    "brand": "million",
+    "rank": "medium",
+    "angle": "ミリシタの期間限定イベント「ミリコレ！～MILLIONLIVE COLLECTION～」が本日15時に開幕し、コインでイベント限定ガシャを引ける",
+    "purpose": "新情報",
+    "lead_score": 60,
+    "dedup_key": "million-millionlive-collection-2026-11",
+    "candidate_ids": [
+     "202611090235-grok-22",
+     "202611090235-explore-2"
+    ]
+   },
+   {
+    "slug": "million-premium-pickup-sr-gasha-2026-11",
+    "brand": "million",
+    "rank": "small",
+    "angle": "プレミアムピックアップSRガシャ(おもてなしガール！シリーズ)は本日23時59分まで、プレミアムスター150個でカードと交換できる",
+    "purpose": "期日の知らせ",
+    "lead_score": 15,
+    "dedup_key": "million-premium-pickup-sr-gasha-2026-11",
+    "candidate_ids": [
+     "202611070733-explore-2"
+    ]
+   },
+   {
+    "slug": "million-theater-talk-party-vol-68-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "THEATER TALK PARTY☆ Vol.68のイベントショップでのユニットコイン交換は本日14時59分まで",
+    "purpose": "期日の知らせ",
+    "lead_score": 10,
+    "dedup_key": "million-theater-talk-party-vol-68-2026",
+    "candidate_ids": [
+     "sched-2026-11-09-million-theater-talk-party-vol-68-2026-締切",
+     "sched-2026-11-09-million-theater-talk-party-vol-68-2026-締切-src1"
+    ]
+   },
+   {
+    "slug": "million-12th-bluray-order-extension-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "ミリオン12thLIVE Blu-rayのASOBI STORE受注は11月12日の締切まであと3日",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "million-12th-bluray-order-extension-2026",
+    "candidate_ids": [
+     "sched-2026-11-09-million-12th-bluray-order-extension-2026-締切前",
+     "202611081235-watch-0",
+     "sched-2026-11-09-million-12thlive-blu-ray-締切前",
+     "sched-2026-11-09-million-12thlive-blu-ray-締切前-src1"
+    ]
+   },
+   {
+    "slug": "million-yoru-to-akari-door-deco-panel-sets-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "「夜と、明かりと。」の莉緒・このみのドアデコ／いろどりパネルセットは本日14時59分で販売終了",
+    "purpose": "期日の知らせ",
+    "lead_score": 15,
+    "dedup_key": "million-yoru-to-akari-door-deco-panel-sets-2026",
+    "candidate_ids": [
+     "sched-2026-11-09-million-yoru-to-akari-door-deco-panel-sets-2026-締切",
+     "sched-2026-11-09-million-yoru-to-akari-door-deco-panel-sets-2026-締切-src1",
+     "sched-2026-11-09-million-yoru-to-akari-door-deco-panel-sets-2026-締切-src2",
+     "sched-2026-11-09-million-yoru-to-akari-door-deco-panel-sets-2026-締切-src3",
+     "sched-2026-11-09-million-yoru-to-akari-door-deco-panel-sets-2026-終了",
+     "sched-2026-11-09-million-yoru-to-akari-door-deco-panel-sets-2026-終了-src1",
+     "202611081834-explore-2",
+     "202611020732-explore-0",
+     "sched-2026-11-09-million-platinum-star-tune-yoruto-akari-2026-終了"
+    ]
+   },
+   {
+    "slug": "million-second-hairstyle-my-brand-glasses-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "セカンドヘアスタイルガシャ～myブランド編 with glasses～は本日14時59分で終了、律子・紗代子のSSRを引ける最終日",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "million-second-hairstyle-my-brand-glasses-2026",
+    "candidate_ids": [
+     "sched-2026-11-09-million-second-hairstyle-my-brand-glasses-2026-締切",
+     "sched-2026-11-09-million-second-hairstyle-my-brand-glasses-2026-締切-src1",
+     "sched-2026-11-09-million-second-hairstyle-my-brand-glasses-2026-締切-src2",
+     "sched-2026-11-09-million-second-hairstyle-my-brand-glasses-2026-終了",
+     "sched-2026-11-09-million-second-hairstyle-my-brand-glasses-2026-終了-src1",
+     "sched-2026-11-09-million-second-hairstyle-my-brand-glasses-2026-終了-src2"
+    ]
+   }
+  ],
+  "dropped": [],
+  "cross_brand": []
+ }
+}

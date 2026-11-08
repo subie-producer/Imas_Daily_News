@@ -1,0 +1,116 @@
+{
+ "decisions": {
+  "cg-sousenkyo-2026-15th-popup": {
+   "action": "article",
+   "angle": "総選挙&15thのPOP UP SHOP(横浜、11/21〜29)の入場抽選予約は11月12日23時59分の締切まであと3日、当落は16日、先着は17日",
+   "claimed_slug": "",
+   "lead_score": 60,
+   "merge_into": "",
+   "note": "続報予約(締切前)。締切3日以内の当日トリガー",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "reason": ""
+  },
+  "cg-hub-last-order-2026": {
+   "action": "drop",
+   "angle": "",
+   "claimed_slug": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "note": "11/6に開催(11/20〜)を記事化済み。新事実・当日トリガー無し(二次情報)",
+   "purpose": "",
+   "rank": "",
+   "reason": "既報"
+  },
+  "cinderella-memory-pict-8th": {
+   "action": "drop",
+   "angle": "",
+   "claimed_slug": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "note": "11/2に受注11/15までを記事化済み。締切は6日先でトリガー無し",
+   "purpose": "",
+   "rank": "",
+   "reason": "既報"
+  },
+  "cg-apple-of-my-ai-goods-2026": {
+   "action": "drop",
+   "angle": "",
+   "claimed_slug": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "note": "11/6記事に価格・受注11/29まで・公演日程すべて既出。新事実無し",
+   "purpose": "",
+   "rank": "",
+   "reason": "既報"
+  },
+  "cg-hub-collaboration-2026": {
+   "action": "drop",
+   "angle": "",
+   "claimed_slug": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "note": "HUBコラボ(11/20〜12/13)は11/6記事と同じ施策。未確認ソースで新事実無し",
+   "purpose": "",
+   "rank": "",
+   "reason": "既報"
+  },
+  "cinderella-party-master-2026": {
+   "action": "drop",
+   "angle": "",
+   "claimed_slug": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "note": "11/2・11/6にデレパCD・ジャケットを記事化済み。予約締切11/18は9日先でトリガー無し",
+   "purpose": "",
+   "rank": "",
+   "reason": "既報"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "cg-sousenkyo-2026-15th-popup",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "総選挙&15thのPOP UP SHOP(横浜、11/21〜29)の入場抽選予約は11月12日23時59分の締切まであと3日、当落は16日、先着は17日",
+    "purpose": "期日の知らせ",
+    "lead_score": 60,
+    "dedup_key": "cg-sousenkyo-2026-15th-popup",
+    "candidate_ids": [
+     "202611080734-explore-0",
+     "202611090235-grok-151",
+     "sched-2026-11-09-cg-sousenkyo-2026-15th-popup-締切前"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "cg-hub-last-order-2026",
+    "reason": "既報",
+    "note": "11/6に開催(11/20〜)を記事化済み。新事実・当日トリガー無し(二次情報)"
+   },
+   {
+    "dedup_key": "cinderella-memory-pict-8th",
+    "reason": "既報",
+    "note": "11/2に受注11/15までを記事化済み。締切は6日先でトリガー無し"
+   },
+   {
+    "dedup_key": "cg-apple-of-my-ai-goods-2026",
+    "reason": "既報",
+    "note": "11/6記事に価格・受注11/29まで・公演日程すべて既出。新事実無し"
+   },
+   {
+    "dedup_key": "cg-hub-collaboration-2026",
+    "reason": "既報",
+    "note": "HUBコラボ(11/20〜12/13)は11/6記事と同じ施策。未確認ソースで新事実無し"
+   },
+   {
+    "dedup_key": "cinderella-party-master-2026",
+    "reason": "既報",
+    "note": "11/2・11/6にデレパCD・ジャケットを記事化済み。予約締切11/18は9日先でトリガー無し"
+   }
+  ],
+  "cross_brand": []
+ }
+}

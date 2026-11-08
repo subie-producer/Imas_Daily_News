@@ -1,0 +1,149 @@
+{
+ "decisions": {
+  "765-961-idol-ultimate-once-and-for-all-2027": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "先行受付は公式既報どおり11/8 23:59で終了済み。二次情報の「11/9 23:59」は公式と矛盾し、未確認。新事実なし"
+  },
+  "demirimi-clash-goods-preorder-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "受注は11/15まで(締切まで6日で3日以内ではない)。10/31号と同内容で新事実なし"
+  },
+  "tours-allnet-service-suspension-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "tours-tentative-resumption-2026-11",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "出典変更(11/8から順次試験的に稼働再開)は同じ出来事。再開の記事に統合"
+  },
+  "imas-year-end-stream-global-survey-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/7号「アイマス年末感謝祭、6ブランド出演とアンケート」と同じ年末配信アンケート(言語版の別URL)。締切11/30は当日のトリガーなし"
+  },
+  "tours-tentative-resumption-2026-11": {
+   "action": "article",
+   "angle": "ALL.Net停止で止まっていたツアマスが11月8日から試験的に稼働再開。ログボ・期間限定コミュ等の対応は週明け以降に案内",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 70,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "allnet主題を統合。清夏誕生日は問題なければ予定通り"
+  },
+  "joint-30ms-hanami-saki-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "学マス単独キャラの商品で複数ブランド共同ではない。学マス面の話題。出典も二次情報で未確認"
+  },
+  "cg-million-clash-match-2027": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "demirimi-clash-goods-preorder-2026と同じ施策。10/31号既報、新事実・当日トリガーなし"
+  },
+  "starlight-dining-chinese-maid-plush-2027": {
+   "action": "article",
+   "angle": "中華風メイドぬいぐるみ・餃子ぬいぐるみの受注生産は本日23時59分まで、以降は数量限定販売",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(締切当日)。シンデレラ＆学マス共同"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "joint-tours-tentative-resumption-2026-11",
+    "brand": "joint",
+    "rank": "medium",
+    "angle": "ALL.Net停止で止まっていたツアマスが11月8日から試験的に稼働再開。ログボ・期間限定コミュ等の対応は週明け以降に案内",
+    "purpose": "新情報",
+    "lead_score": 70,
+    "dedup_key": "tours-tentative-resumption-2026-11",
+    "candidate_ids": [
+     "202611090235-grok-73",
+     "202611082337-explore-31"
+    ]
+   },
+   {
+    "slug": "joint-starlight-dining-chinese-maid-plush-2027",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "中華風メイドぬいぐるみ・餃子ぬいぐるみの受注生産は本日23時59分まで、以降は数量限定販売",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "starlight-dining-chinese-maid-plush-2027",
+    "candidate_ids": [
+     "sched-2026-11-09-starlight-dining-chinese-maid-plush-2027-締切"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "765-961-idol-ultimate-once-and-for-all-2027",
+    "reason": "既報",
+    "note": "先行受付は公式既報どおり11/8 23:59で終了済み。二次情報の「11/9 23:59」は公式と矛盾し、未確認。新事実なし"
+   },
+   {
+    "dedup_key": "demirimi-clash-goods-preorder-2026",
+    "reason": "既報",
+    "note": "受注は11/15まで(締切まで6日で3日以内ではない)。10/31号と同内容で新事実なし"
+   },
+   {
+    "dedup_key": "imas-year-end-stream-global-survey-2026",
+    "reason": "既報",
+    "note": "11/7号「アイマス年末感謝祭、6ブランド出演とアンケート」と同じ年末配信アンケート(言語版の別URL)。締切11/30は当日のトリガーなし"
+   },
+   {
+    "dedup_key": "joint-30ms-hanami-saki-2026",
+    "reason": "面違い",
+    "note": "学マス単独キャラの商品で複数ブランド共同ではない。学マス面の話題。出典も二次情報で未確認"
+   },
+   {
+    "dedup_key": "cg-million-clash-match-2027",
+    "reason": "既報",
+    "note": "demirimi-clash-goods-preorder-2026と同じ施策。10/31号既報、新事実・当日トリガーなし"
+   }
+  ],
+  "cross_brand": []
+ }
+}

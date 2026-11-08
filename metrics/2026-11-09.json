@@ -1,0 +1,158 @@
+{
+ "collect": [
+  {
+   "at": "2026-11-09T02:38:01+09:00",
+   "edition": "2026-11-09",
+   "started_at": "2026-11-09T02:00:45+09:00",
+   "trigger": "timer",
+   "watch": {
+    "stats": {
+     "imas-portal": {
+      "found": 12,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-sidem": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-shiny": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-million": {
+      "found": 8,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "lantis-shiny": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "lantis-sidem": {
+      "found": 4,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "columbia-imas": {
+      "found": 353,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "bnam-tours": {
+      "found": 69,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "imasnews765": {
+      "found": 10,
+      "pages": 1,
+      "new": 1,
+      "deferred": 0
+     }
+    },
+    "new": 1,
+    "facted": 1,
+    "deferred": 0,
+    "blocked": 0,
+    "unavailable": 0
+   },
+   "per_query": {
+    "explore:765as": 1,
+    "explore:cinderella": 0,
+    "explore:million": 2,
+    "explore:shiny": 1,
+    "explore:sidem": 0,
+    "explore:gakuen": 5,
+    "explore:dsva": 0,
+    "explore:joint-other": 1,
+    "explore:trend": 6,
+    "grok_week_searches": 815,
+    "grok:765as": 1,
+    "grok:cinderella": 14,
+    "grok:million": 3,
+    "grok:shiny": 22,
+    "grok:sidem": 10,
+    "grok:gakuen": 74,
+    "grok:dsva": 5,
+    "grok:joint-other": 4,
+    "grok:trend": 3,
+    "grok_searches:shiny": 25,
+    "grok_searches:gaku": 12,
+    "grok_searches:general": 8,
+    "grok_searches:cg": 5,
+    "grok_searches:765": 6,
+    "grok_searches:dsva": 5,
+    "grok_searches:sidem": 5,
+    "grok_searches:million": 5,
+    "grok_searches:joint": 7
+   },
+   "normalized": 153,
+   "added": 124,
+   "verify": {
+    "confirmed": 127,
+    "unconfirmed": 20,
+    "failed": 6
+   },
+   "duration_s": 2235
+  }
+ ],
+ "collect_required": [
+  {
+   "at": "2026-11-09T02:38:59+09:00",
+   "edition": "2026-11-09",
+   "started_at": "2026-11-09T02:00:45+09:00",
+   "trigger": "timer",
+   "reserve_s": 420,
+   "left_s": 419,
+   "elapsed_s": 59
+  }
+ ],
+ "compose": [
+  {
+   "at": "2026-11-09T03:28:43+09:00",
+   "edition": "2026-11-09",
+   "rounds": 4,
+   "approved": true,
+   "lint_green": true,
+   "planned": 36,
+   "written": 33,
+   "roundups": 2,
+   "dropped": 0,
+   "coverage": {
+    "subjects": 122,
+    "covered": 122,
+    "missing": 0,
+    "missing_keys": []
+   },
+   "dropped_by_review": [],
+   "stages_min": {
+    "選定": 2.4276201725006104,
+    "執筆": 6.055405076344808,
+    "出典の判定": 4.656220897038778,
+    "組版": 0.7317790309588115,
+    "校閲": 1.1644162774085998,
+    "校閲1波": 1.1644162774085998
+   },
+   "target_min": 60,
+   "over_target": false,
+   "aborted": [
+    "sidem-mfes-winter-wonderland-decotto-2026",
+    "million-premium-pickup-sr-gasha-2026-11",
+    "dsva-letora-birthday-lv-general-2026"
+   ],
+   "duration_s": 1677
+  }
+ ]
+}

@@ -1,5 +1,12 @@
 {
  "imas-portal": [
+  "https://idolmaster-official.jp/news/01_20310",
+  "https://idolmaster-official.jp/news/01_20328",
+  "https://idolmaster-official.jp/news/01_20238",
+  "https://idolmaster-official.jp/news/01_20307",
+  "https://idolmaster-official.jp/news/01_20305",
+  "https://idolmaster-official.jp/news/01_20300",
+  "https://idolmaster-official.jp/news/01_20321",
   "https://idolmaster-official.jp/news/01_20322",
   "https://idolmaster-official.jp/news/01_20235",
   "https://idolmaster-official.jp/news/01_20306",
@@ -8,8 +15,8 @@
   "https://idolmaster-official.jp/news/01_20308",
   "https://idolmaster-official.jp/news/01_20309",
   "https://idolmaster-official.jp/news/01_20240",
-  "https://idolmaster-official.jp/news/01_20274",
   "https://idolmaster-official.jp/news/01_20112",
+  "https://idolmaster-official.jp/news/01_20274",
   "https://idolmaster-official.jp/news/01_20284",
   "https://idolmaster-official.jp/news/01_20270",
   "https://idolmaster-official.jp/news/01_20294",
@@ -18,9 +25,9 @@
   "https://idolmaster-official.jp/news/01_20297",
   "https://idolmaster-official.jp/news/01_20295",
   "https://idolmaster-official.jp/news/01_20258",
-  "https://idolmaster-official.jp/news/01_20232",
-  "https://idolmaster-official.jp/news/01_20280",
   "https://idolmaster-official.jp/news/01_20267",
+  "https://idolmaster-official.jp/news/01_20280",
+  "https://idolmaster-official.jp/news/01_20232",
   "https://idolmaster-official.jp/news/01_20282",
   "https://idolmaster-official.jp/news/01_20286",
   "https://idolmaster-official.jp/news/01_20266",
@@ -856,6 +863,11 @@
   "https://bandainamco-am.co.jp/am/vg/idolmaster-tours/news/20230623.html"
  ],
  "imasnews765": [
+  "https://imasnews765.com/?p=32662",
+  "https://imasnews765.com/?p=32659",
+  "https://imasnews765.com/?p=32655",
+  "https://imasnews765.com/?p=32652",
+  "https://imasnews765.com/?p=32650",
   "https://imasnews765.com/?p=32648",
   "https://imasnews765.com/?p=32645",
   "https://imasnews765.com/?p=32642",
@@ -1093,5 +1105,15 @@
   "https://lantis.jp/sidem/extra/index.html#20260912_2"
  ],
  "_pending": [],
- "_given_up": []
+ "_given_up": [
+  {
+   "source_id": "imasnews765",
+   "brand": "general",
+   "url": "https://imasnews765.com/?p=32650",
+   "title": "アイドルマスター TOURS 11月8日より試験的再開",
+   "source_type": "ファン",
+   "csr": false,
+   "given_up_at": "2026-11-08T18:32:35+09:00"
+  }
+ ]
 }

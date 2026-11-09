@@ -1,0 +1,101 @@
+{
+ "decisions": {
+  "cg-memory-pict-8th-2026": {
+   "action": "article",
+   "angle": "Memory Pict. 第8弾は初詣テーマで蘭子と梨沙が着物姿、受注は11月15日23:59まで",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 50,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ商品の January 主題を統合。既報なし。"
+  },
+  "cg-memory-pict-8th-january-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-memory-pict-8th-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ第8弾の受注(受注期間・テーマ・アイドルが同一)"
+  },
+  "cg-starlight-dining-plush-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "グッズ情報アカウントの投稿のみで公式の出典が無く未確認。発売は2027年2月。"
+  },
+  "cg-chitose-birthday-2026": {
+   "action": "article",
+   "angle": "アイマスchが黒埼ちとせの誕生日(11月10日)のお祝いムービーをYouTube Shortsで公開",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公式発信、当日の出来事。"
+  },
+  "cg-apple-of-my-ai-goods-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11月6日号で受注開始・11月29日締切・ラバーキーホルダー(全9種)まで掲載済み。新事実も当日のトリガーも無い。"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "cg-memory-pict-8th-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "Memory Pict. 第8弾は初詣テーマで蘭子と梨沙が着物姿、受注は11月15日23:59まで",
+    "purpose": "新情報",
+    "lead_score": 50,
+    "dedup_key": "cg-memory-pict-8th-2026",
+    "candidate_ids": [
+     "202611091233-explore-2",
+     "202611100230-grok-19"
+    ]
+   },
+   {
+    "slug": "cg-chitose-birthday-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "アイマスchが黒埼ちとせの誕生日(11月10日)のお祝いムービーをYouTube Shortsで公開",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "cg-chitose-birthday-2026",
+    "candidate_ids": [
+     "202611100230-grok-74"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "cg-starlight-dining-plush-2026",
+    "reason": "出典不足",
+    "note": "グッズ情報アカウントの投稿のみで公式の出典が無く未確認。発売は2027年2月。"
+   },
+   {
+    "dedup_key": "cg-apple-of-my-ai-goods-2026",
+    "reason": "既報",
+    "note": "11月6日号で受注開始・11月29日締切・ラバーキーホルダー(全9種)まで掲載済み。新事実も当日のトリガーも無い。"
+   }
+  ],
+  "cross_brand": []
+ }
+}

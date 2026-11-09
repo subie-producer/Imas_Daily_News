@@ -1,0 +1,759 @@
+{
+ "decisions": {
+  "gakuen-kanae-debut-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-09記事に実装日・エピソード0・特別CMが既出"
+  },
+  "gaku-duet-song-collection-2-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-09記事に発売日・価格・特典が既出"
+  },
+  "gaku-season-solo-collection-2027": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-09記事と同内容、締切は1月10日で3日以内でない"
+  },
+  "gakuen-3rd-period-2027": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "3rd Periodも新曲・香名江発表も11-09記事に既出"
+  },
+  "gaku-gearbeat-concerto-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-steampunk-gearbeat-goods-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ商品の受注開始"
+  },
+  "gakumasu-museum-card-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-08記事(Museum Cardとぬい三次予約)と同じ施策"
+  },
+  "gaku-lalaport-collab-2027": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "DAY1新曲・配信は既報、ららぽーとも11-08記事に既出"
+  },
+  "gkmas-lawson-2026-campaign": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-lawson-collab-goods-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "出典の変更は他ブランド情報中心で学マスの変更なし。開始日の記事に統合"
+  },
+  "gakumas-hyo-final-archive-2026": {
+   "action": "article",
+   "angle": "標ファイナル両日の視聴コメント付きアーカイブが公開され、公演アンケートも実施中",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "配信券は11月23日18時まで"
+  },
+  "gakumas-hatsuboshi-maid-campaign-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-hoshihoshi-maid-site-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ初星メイド企画"
+  },
+  "gaku-17-instrumental-tracks-2026": {
+   "action": "article",
+   "angle": "初星学園の楽曲計17曲のインスト音源データが公開された",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "利用規約の確認が必要"
+  },
+  "gaku-hiwatari-kanae-debut-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "香名江実装は11-09記事に既出"
+  },
+  "gaku-3rd-single-finish-goods-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "出典の変更は表示のみ、締切11月15日は既報で3日以内でもない"
+  },
+  "gaku-amayo-tsubame-training-acrylic-stand-2027": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "出典の変更は販売サイトの販促バナーで読者に関わらない"
+  },
+  "gakuen-hatsuboshi-hr-2-5th-sp-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-09記事に11月15日配信が既出、当日でも直前でもない"
+  },
+  "gakuen-kanae-amazon-gift-campaign-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-09記事に既出、締切は15日"
+  },
+  "gaku-nurebairo-release-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-09記事に配信開始が既出"
+  },
+  "gaku-crossfire-release-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-09記事に既出"
+  },
+  "gaku-fantastic-gathering-release-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-09記事に既出"
+  },
+  "gaku-hoshigakuen-radio-final-review-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-radio-shirube-final-review-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ放送回のおたより締切"
+  },
+  "gaku-duet-song-collection-vol2-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-09記事と同じ第2弾、新事実なし"
+  },
+  "gaku-hoshihoshi-maid-site-2026": {
+   "action": "article",
+   "angle": "2.5周年特設サイト第1弾「初星メイド」体験が公開、ミニキャラアイコンも配布",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ステッカー抽選は9日で終了済み。サイト体験とアイコン配布を軸にする"
+  },
+  "gaku-shirube-final-comment-archive-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gakumas-hyo-final-archive-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ視聴コメント付きアーカイブ"
+  },
+  "gaku-kananae-shinjuku-ad-2026": {
+   "action": "article",
+   "angle": "氷渡香名江のプロデュース開始前の駅広告が新宿に掲出、11月15日まで",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "掲出は予定"
+  },
+  "gaku-weiss-schwarz-take-next-step-2027": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-08記事に第2弾2027年春が既出"
+  },
+  "gaku-lalaport-collaboration-2027": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-08記事に5施設が既出"
+  },
+  "shirube-final-stream-ticket-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "配信券は11月23日まで既報、当日トリガーなし"
+  },
+  "gaku-2-5th-anniversary-hr-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-09記事に既出"
+  },
+  "gaku-anniversary-pack-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-09記事の開催中施策に既出"
+  },
+  "gaku-maid-mini-character-icons-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-hoshihoshi-maid-site-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ初星メイド企画"
+  },
+  "gaku-museum-card-and-nui-rerelease-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-08記事(Museum Cardとぬい)と同じ施策"
+  },
+  "hatsuboshi-conceptual-single-collection-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-08・11-09記事に既出、締切は15日"
+  },
+  "gaku-lawson-collab-goods-2026": {
+   "action": "article",
+   "angle": "学マス×ローソンが本日開始、店頭は地域により11日・12日開始の店舗もあり、限定グッズはLoppi/HMVで10時から予約",
+   "purpose": "期日の知らせ",
+   "rank": "large",
+   "lead_score": 80,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "開始日の記事。ローソン系4主題を統合"
+  },
+  "gaku-the-3rd-period-announcement": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-09記事に既出"
+  },
+  "gaku-kanae-new-idol": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "香名江実装は既報"
+  },
+  "gaku-shirube-final-day2-fan-attendance-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿"
+  },
+  "gaku-steampunk-gearbeat-goods-2026": {
+   "action": "article",
+   "angle": "スチームパンク新作「Gearbeat Concerto」のWEB事前受注が本日ASOBI STOREで始まる(予定)",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "発売2027年3月26日、日本・上海で12月24日からポップアップ"
+  },
+  "gaku-instrumental-download-17-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-17-instrumental-tracks-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じインスト音源公開"
+  },
+  "gaku-shirube-final-day1-gasha": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "DAY1の告知まとめ、内容は既報の記事に既出"
+  },
+  "curtain-damashii-new-goods-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10-26記事等に既出、受付締切は15日で3日以内でない"
+  },
+  "imas-radio-5-2026": {
+   "action": "article",
+   "angle": "IM@S RADIO第5回が本日20時に生放送、天音ゆかりがゲスト出演",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "YouTube「アイドルマスターチャンネル」、終了後にメンバーシップ限定アフタートーク"
+  },
+  "lawson-collab-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-lawson-collab-goods-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じローソンコラボの開始"
+  },
+  "gaku-lawson-collaboration-2026-autumn": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-lawson-collab-goods-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じローソンコラボの開始"
+  },
+  "imas-radio-next-2026-11-10": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "imas-radio-5-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ放送回"
+  },
+  "gaku-radio-shirube-final-review-2026": {
+   "action": "article",
+   "angle": "初星学園放送部の標ファイナル感想回のおたより受付は本日12時まで",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "放送は11日、ゲストは長月あおい・小鹿なお・松田彩音"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "gaku-gakumas-hyo-final-archive-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "標ファイナル両日の視聴コメント付きアーカイブが公開され、公演アンケートも実施中",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "gakumas-hyo-final-archive-2026",
+    "candidate_ids": [
+     "202611091835-watch-0",
+     "202611100230-grok-110",
+     "202611100230-grok-41"
+    ]
+   },
+   {
+    "slug": "gaku-17-instrumental-tracks-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "初星学園の楽曲計17曲のインスト音源データが公開された",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "gaku-17-instrumental-tracks-2026",
+    "candidate_ids": [
+     "202611091835-explore-5",
+     "202611100230-grok-98"
+    ]
+   },
+   {
+    "slug": "gaku-hoshihoshi-maid-site-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "2.5周年特設サイト第1弾「初星メイド」体験が公開、ミニキャラアイコンも配布",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "gaku-hoshihoshi-maid-site-2026",
+    "candidate_ids": [
+     "202611100230-grok-40",
+     "202611100230-grok-97",
+     "202611091835-watch-2",
+     "202611100230-grok-112",
+     "202611100230-grok-54"
+    ]
+   },
+   {
+    "slug": "gaku-kananae-shinjuku-ad-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "氷渡香名江のプロデュース開始前の駅広告が新宿に掲出、11月15日まで",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "gaku-kananae-shinjuku-ad-2026",
+    "candidate_ids": [
+     "202611100230-grok-43"
+    ]
+   },
+   {
+    "slug": "gaku-lawson-collab-goods-2026",
+    "brand": "gaku",
+    "rank": "large",
+    "angle": "学マス×ローソンが本日開始、店頭は地域により11日・12日開始の店舗もあり、限定グッズはLoppi/HMVで10時から予約",
+    "purpose": "期日の知らせ",
+    "lead_score": 80,
+    "dedup_key": "gaku-lawson-collab-goods-2026",
+    "candidate_ids": [
+     "202611100230-grok-57",
+     "update-3eac8ba234f9",
+     "sched-2026-11-10-gkmas-lawson-2026-campaign-開始",
+     "sched-2026-11-10-gkmas-lawson-2026-campaign-開始-src1",
+     "sched-2026-11-10-lawson-collab-2026-開始",
+     "sched-2026-11-10-lawson-collab-2026-開始-src1",
+     "sched-2026-11-10-gaku-lawson-collaboration-2026-autumn-開始",
+     "sched-2026-11-10-gaku-lawson-collaboration-2026-autumn-開始-src1"
+    ]
+   },
+   {
+    "slug": "gaku-steampunk-gearbeat-goods-2026",
+    "brand": "gaku",
+    "rank": "medium",
+    "angle": "スチームパンク新作「Gearbeat Concerto」のWEB事前受注が本日ASOBI STOREで始まる(予定)",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "gaku-steampunk-gearbeat-goods-2026",
+    "candidate_ids": [
+     "202611100230-grok-89",
+     "202611100230-grok-120",
+     "sched-2026-11-10-gaku-steampunk-gearbeat-goods-2026-開始",
+     "sched-2026-11-10-gaku-steampunk-gearbeat-goods-2026-開始-src1",
+     "sched-2026-11-10-gaku-steampunk-gearbeat-goods-2026-開始-src2",
+     "202611090732-explore-9",
+     "202611092333-explore-6"
+    ]
+   },
+   {
+    "slug": "gaku-imas-radio-5-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "IM@S RADIO第5回が本日20時に生放送、天音ゆかりがゲスト出演",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "imas-radio-5-2026",
+    "candidate_ids": [
+     "sched-2026-11-10-imas-radio-5-2026-開始",
+     "sched-2026-11-10-imas-radio-next-2026-11-10-開始"
+    ]
+   },
+   {
+    "slug": "gaku-radio-shirube-final-review-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "初星学園放送部の標ファイナル感想回のおたより受付は本日12時まで",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "gaku-radio-shirube-final-review-2026",
+    "candidate_ids": [
+     "sched-2026-11-10-gaku-radio-shirube-final-review-2026-締切",
+     "202611100230-grok-38"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "gakuen-kanae-debut-2026",
+    "reason": "既報",
+    "note": "11-09記事に実装日・エピソード0・特別CMが既出"
+   },
+   {
+    "dedup_key": "gaku-duet-song-collection-2-2026",
+    "reason": "既報",
+    "note": "11-09記事に発売日・価格・特典が既出"
+   },
+   {
+    "dedup_key": "gaku-season-solo-collection-2027",
+    "reason": "既報",
+    "note": "11-09記事と同内容、締切は1月10日で3日以内でない"
+   },
+   {
+    "dedup_key": "gakuen-3rd-period-2027",
+    "reason": "既報",
+    "note": "3rd Periodも新曲・香名江発表も11-09記事に既出"
+   },
+   {
+    "dedup_key": "gakumasu-museum-card-2026",
+    "reason": "既報",
+    "note": "11-08記事(Museum Cardとぬい三次予約)と同じ施策"
+   },
+   {
+    "dedup_key": "gaku-lalaport-collab-2027",
+    "reason": "既報",
+    "note": "DAY1新曲・配信は既報、ららぽーとも11-08記事に既出"
+   },
+   {
+    "dedup_key": "gaku-hiwatari-kanae-debut-2026",
+    "reason": "既報",
+    "note": "香名江実装は11-09記事に既出"
+   },
+   {
+    "dedup_key": "gaku-3rd-single-finish-goods-2026",
+    "reason": "既報",
+    "note": "出典の変更は表示のみ、締切11月15日は既報で3日以内でもない"
+   },
+   {
+    "dedup_key": "gaku-amayo-tsubame-training-acrylic-stand-2027",
+    "reason": "既報",
+    "note": "出典の変更は販売サイトの販促バナーで読者に関わらない"
+   },
+   {
+    "dedup_key": "gakuen-hatsuboshi-hr-2-5th-sp-2026",
+    "reason": "既報",
+    "note": "11-09記事に11月15日配信が既出、当日でも直前でもない"
+   },
+   {
+    "dedup_key": "gakuen-kanae-amazon-gift-campaign-2026",
+    "reason": "既報",
+    "note": "11-09記事に既出、締切は15日"
+   },
+   {
+    "dedup_key": "gaku-nurebairo-release-2026",
+    "reason": "既報",
+    "note": "11-09記事に配信開始が既出"
+   },
+   {
+    "dedup_key": "gaku-crossfire-release-2026",
+    "reason": "既報",
+    "note": "11-09記事に既出"
+   },
+   {
+    "dedup_key": "gaku-fantastic-gathering-release-2026",
+    "reason": "既報",
+    "note": "11-09記事に既出"
+   },
+   {
+    "dedup_key": "gaku-duet-song-collection-vol2-2026",
+    "reason": "既報",
+    "note": "11-09記事と同じ第2弾、新事実なし"
+   },
+   {
+    "dedup_key": "gaku-weiss-schwarz-take-next-step-2027",
+    "reason": "既報",
+    "note": "11-08記事に第2弾2027年春が既出"
+   },
+   {
+    "dedup_key": "gaku-lalaport-collaboration-2027",
+    "reason": "既報",
+    "note": "11-08記事に5施設が既出"
+   },
+   {
+    "dedup_key": "shirube-final-stream-ticket-2026",
+    "reason": "既報",
+    "note": "配信券は11月23日まで既報、当日トリガーなし"
+   },
+   {
+    "dedup_key": "gaku-2-5th-anniversary-hr-2026",
+    "reason": "既報",
+    "note": "11-09記事に既出"
+   },
+   {
+    "dedup_key": "gaku-anniversary-pack-2026",
+    "reason": "既報",
+    "note": "11-09記事の開催中施策に既出"
+   },
+   {
+    "dedup_key": "gaku-museum-card-and-nui-rerelease-2026",
+    "reason": "既報",
+    "note": "11-08記事(Museum Cardとぬい)と同じ施策"
+   },
+   {
+    "dedup_key": "hatsuboshi-conceptual-single-collection-2026",
+    "reason": "既報",
+    "note": "11-08・11-09記事に既出、締切は15日"
+   },
+   {
+    "dedup_key": "gaku-the-3rd-period-announcement",
+    "reason": "既報",
+    "note": "11-09記事に既出"
+   },
+   {
+    "dedup_key": "gaku-kanae-new-idol",
+    "reason": "既報",
+    "note": "香名江実装は既報"
+   },
+   {
+    "dedup_key": "gaku-shirube-final-day2-fan-attendance-2026",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿"
+   },
+   {
+    "dedup_key": "gaku-shirube-final-day1-gasha",
+    "reason": "既報",
+    "note": "DAY1の告知まとめ、内容は既報の記事に既出"
+   },
+   {
+    "dedup_key": "curtain-damashii-new-goods-2026",
+    "reason": "既報",
+    "note": "10-26記事等に既出、受付締切は15日で3日以内でない"
+   }
+  ],
+  "cross_brand": []
+ }
+}

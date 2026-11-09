@@ -1,0 +1,211 @@
+{
+ "decisions": {
+  "valiv-letora-birthday-live-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "変更点のバースデーボイス販売は11-09号で記事済み。公演は明日で今日のトリガー無し、LV一般先着は終了済み"
+  },
+  "kamizuru-cosmo-tekito-ryoku-dance-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-09号『テキトーリョク』踊ってみた動画の記事と同じ"
+  },
+  "valiv-3rd-live-qonnect-as-one-2027": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "出典の変更はYouTubeページの表示のみ。読者に関わる変更なし。内容は既報(11-05号)"
+  },
+  "valiv-3rd-live-meeting-qonnect-as-one-2027": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "日程・料金・先行締切は11-08号に記載済み。締切11月15日は3日以内でない"
+  },
+  "valiv-aikatsu-nodojiman-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "出演は11-03号・11-09号で記事済み。新しい事実は出演後の謝意の投稿のみ"
+  },
+  "letora-birthday-online-live-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "ジュリア出演は11-06号で記事済み。公演は明日(11日)で今日のトリガー無し"
+  },
+  "letora-birthday-voice-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-09号『レトラのバースデーボイス、12月13日まで販売』と同じ"
+  },
+  "manaka-tonkotsu-short-2026-11-09": {
+   "action": "article",
+   "angle": "ヴイアライヴ公式が灯里愛夏のショート動画『豚骨を愛しすぎた女はめんどくさい。』を公開した",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公式アカウントの発表。素材は2件で短い記事"
+  },
+  "letora-dressmaker-stream-2026-11-08": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "11月8日21時の配信で、すでに終了済み"
+  },
+  "letora-mieru-fantasic-cover-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "個人のX投稿がカバー動画を紹介しただけで、公式の発表ではない"
+  },
+  "letora-ad-neobridge-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿のみで、単体で記事にしない"
+  },
+  "cosmo-weekly-schedule-2026-11-09": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "ACE8最終回は11-05号で記事済み。ほかは日時の無い予定で、まとめにする件数にも足りない"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "dsva-manaka-tonkotsu-short-2026-11-09",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "ヴイアライヴ公式が灯里愛夏のショート動画『豚骨を愛しすぎた女はめんどくさい。』を公開した",
+    "purpose": "新情報",
+    "lead_score": 25,
+    "dedup_key": "manaka-tonkotsu-short-2026-11-09",
+    "candidate_ids": [
+     "202611100230-grok-63",
+     "202611100230-grok-104"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "valiv-letora-birthday-live-2026",
+    "reason": "既報",
+    "note": "変更点のバースデーボイス販売は11-09号で記事済み。公演は明日で今日のトリガー無し、LV一般先着は終了済み"
+   },
+   {
+    "dedup_key": "kamizuru-cosmo-tekito-ryoku-dance-2026",
+    "reason": "既報",
+    "note": "11-09号『テキトーリョク』踊ってみた動画の記事と同じ"
+   },
+   {
+    "dedup_key": "valiv-3rd-live-qonnect-as-one-2027",
+    "reason": "その他",
+    "note": "出典の変更はYouTubeページの表示のみ。読者に関わる変更なし。内容は既報(11-05号)"
+   },
+   {
+    "dedup_key": "valiv-3rd-live-meeting-qonnect-as-one-2027",
+    "reason": "既報",
+    "note": "日程・料金・先行締切は11-08号に記載済み。締切11月15日は3日以内でない"
+   },
+   {
+    "dedup_key": "valiv-aikatsu-nodojiman-2026",
+    "reason": "既報",
+    "note": "出演は11-03号・11-09号で記事済み。新しい事実は出演後の謝意の投稿のみ"
+   },
+   {
+    "dedup_key": "letora-birthday-online-live-2026",
+    "reason": "既報",
+    "note": "ジュリア出演は11-06号で記事済み。公演は明日(11日)で今日のトリガー無し"
+   },
+   {
+    "dedup_key": "letora-birthday-voice-2026",
+    "reason": "既報",
+    "note": "11-09号『レトラのバースデーボイス、12月13日まで販売』と同じ"
+   },
+   {
+    "dedup_key": "letora-dressmaker-stream-2026-11-08",
+    "reason": "その他",
+    "note": "11月8日21時の配信で、すでに終了済み"
+   },
+   {
+    "dedup_key": "letora-mieru-fantasic-cover-2026",
+    "reason": "出典不足",
+    "note": "個人のX投稿がカバー動画を紹介しただけで、公式の発表ではない"
+   },
+   {
+    "dedup_key": "letora-ad-neobridge-2026",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿のみで、単体で記事にしない"
+   },
+   {
+    "dedup_key": "cosmo-weekly-schedule-2026-11-09",
+    "reason": "既報",
+    "note": "ACE8最終回は11-05号で記事済み。ほかは日時の無い予定で、まとめにする件数にも足りない"
+   }
+  ],
+  "cross_brand": []
+ }
+}

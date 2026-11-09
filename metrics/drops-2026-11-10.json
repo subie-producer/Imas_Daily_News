@@ -1,0 +1,57 @@
+{
+ "million-millionlive-collection-2026-11": {
+  "title": "ミリコレ開催中のイベント限定カードはSR「魅惑のマイクパフォーマンス 高坂海美」(CV:上田麗奈)。11/9の開幕記事に無かった新情報として伝える",
+  "stage": "執筆で見送り",
+  "why": "NO_PRIMARY_SOURCE ミリシタのイベント限定SRカードを伝える話題ですが、素材のGamerchページは二次情報です。公式・準公式の告知、または公式発表を報じた報道の出典を確認できませんでした。",
+  "candidate_ids": [
+   "202611091233-explore-4"
+  ]
+ },
+ "million-snapshot-memories-gasha-2026-11": {
+  "title": "11/9 15時に始まった「Snapshot Memoriesガシャ」。限定SSRは徳川まつりと箱崎星梨花、衣装付きSRに如月千早と我那覇響が新規追加された",
+  "stage": "執筆で見送り",
+  "why": "NO_PRIMARY_SOURCE 公式告知の出典を確認できませんでした。素材のURLは二次情報のまとめサイトと投稿ミラーで、公式の告知ページや公式X投稿のURLが素材に含まれていません。",
+  "candidate_ids": [
+   "202611092333-explore-1",
+   "202611100230-explore-1"
+  ]
+ },
+ "sidem-howanu-i-vol-6-7-2026": {
+  "title": "SideMほわぬい6・7、11月28日登場",
+  "stage": "書き直しで見送り",
+  "why": "NOT_NEWS 校閲指摘I1のとおり、SideMほわぬいvol.6・7の登場予定日とラインナップは2026-10-27号の既報と同じで、今号で新たに発表・発生した事実は取り扱い店舗数だけです。店舗数だけでは記事の中核にならないため、今号の記事としては出しません。",
+  "candidate_ids": [
+   "202611090732-explore-1"
+  ]
+ },
+ "sidem-fantastic-battle-fes-film-2026": {
+  "title": "SideM劇場版、8ユニット25人が出演",
+  "stage": "書き直しで見送り",
+  "why": "OTHER I1の指摘に従い、記事の中核は既報と重複し、新しい事実や当日のトリガーがないため、記事として掲載しません。",
+  "candidate_ids": [
+   "202611100230-grok-35"
+  ]
+ },
+ "sidem-daimaru-vol2-2026": {
+  "title": "SideM大丸東京店、きょう20時閉幕",
+  "stage": "校閲ブロック",
+  "why": "R12 大丸東京店の事前整理券の対象日(10/28・10/31・11/1)は既に終わった受付の日程で、今日(11/10)の来場者の行動にも今日の出来事の理解にも要らない。R12 が挙げる「終わった受付・販売・抽選の日程」に当たる。対象日以外に店頭で",
+  "candidate_ids": [
+   "sched-2026-11-10-sidem-daimaru-vol2-2026-千秋楽",
+   "sched-2026-11-10-sidem-daimaru-vol2-2026-千秋楽-src1",
+   "sched-2026-11-10-sidem-daimaru-vol2-2026-千秋楽-src2",
+   "sched-2026-11-10-sidem-daimaru-matsuzakaya-popup-2026-終了",
+   "sched-2026-11-10-sidem-daimaru-matsuzakaya-popup-2026-終了-src1",
+   "sched-2026-11-10-sidem-daimaru-tokyo-vol-2-2026-千秋楽"
+  ]
+ },
+ "sidem-knick-knacks-yokohama-lottery-2026": {
+  "title": "ハンズ横浜店、初日抽選結果を発表",
+  "stage": "校閲ブロック",
+  "why": "R1 「11月13日の入場」の2段落目に、出典にない記述がある。出典(ハンズ横浜店の告知ページ 2026-11-09 12:00更新)が書くのは、フリー入場は12時10分の予定で、開始が予定より早まる場合があり、混雑状況によって入場を制限する場合",
+  "candidate_ids": [
+   "202611100230-grok-37",
+   "202611100230-grok-95"
+  ]
+ }
+}

@@ -1,0 +1,138 @@
+{
+ "decisions": {
+  "tours-test-resumption-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/9号「ツアマス、11月8日から試験稼働再開」と同内容。新事実・当日トリガー無し"
+  },
+  "demirimi-clash-goods-preorder-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/31号と同内容。受注締切11/15は5日後で3日以内のトリガーに未達"
+  },
+  "tours-trial-resumption-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/9号と同内容。新事実無し"
+  },
+  "tours-tentative-resumption-2026-11": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/9号本文に全事実が既出。続報の案内も素材に無い"
+  },
+  "idolmaster-tours-trial-resume-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/9号と同内容。新事実無し"
+  },
+  "saki-hanami-30ms-you-and-ai-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "学マス単独の商品で共同主催ではない。学マス面で扱う話題"
+  },
+  "imas-global-producer-survey-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/7号「アイマス年末感謝祭、6ブランド出演とアンケート」と同じ施策。締切11/30で当日トリガー無し"
+  },
+  "cg-million-clash-match-2027": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/31号のグッズ受注と同内容の再掲。新事実無し"
+  }
+ },
+ "plan": {
+  "articles": [],
+  "dropped": [
+   {
+    "dedup_key": "tours-test-resumption-2026",
+    "reason": "既報",
+    "note": "11/9号「ツアマス、11月8日から試験稼働再開」と同内容。新事実・当日トリガー無し"
+   },
+   {
+    "dedup_key": "demirimi-clash-goods-preorder-2026",
+    "reason": "既報",
+    "note": "10/31号と同内容。受注締切11/15は5日後で3日以内のトリガーに未達"
+   },
+   {
+    "dedup_key": "tours-trial-resumption-2026",
+    "reason": "既報",
+    "note": "11/9号と同内容。新事実無し"
+   },
+   {
+    "dedup_key": "tours-tentative-resumption-2026-11",
+    "reason": "既報",
+    "note": "11/9号本文に全事実が既出。続報の案内も素材に無い"
+   },
+   {
+    "dedup_key": "idolmaster-tours-trial-resume-2026",
+    "reason": "既報",
+    "note": "11/9号と同内容。新事実無し"
+   },
+   {
+    "dedup_key": "saki-hanami-30ms-you-and-ai-2026",
+    "reason": "面違い",
+    "note": "学マス単独の商品で共同主催ではない。学マス面で扱う話題"
+   },
+   {
+    "dedup_key": "imas-global-producer-survey-2026",
+    "reason": "既報",
+    "note": "11/7号「アイマス年末感謝祭、6ブランド出演とアンケート」と同じ施策。締切11/30で当日トリガー無し"
+   },
+   {
+    "dedup_key": "cg-million-clash-match-2027",
+    "reason": "既報",
+    "note": "10/31号のグッズ受注と同内容の再掲。新事実無し"
+   }
+  ],
+  "cross_brand": []
+ }
+}

@@ -134,6 +134,9 @@ discovery_only_domains:
 # --- 二次情報: 他所の発表を写して伝えている情報源(規程2.5) ---
 # 法人運営か個人運営かは問わない。自ら取材・発表していないものはここ。
 secondary_domains:
+  - xitter.gq             # 合議で追加: Nitter代替のX閲覧プロキシ。公式アカウントの投稿を転載表示
+  - oshitomo.jp           # 合議で追加: About記載の運営会社。公式グッズ投稿の内容を言い換え、署名は編集部のみ
+  - hobbynote.jp          # 合議で追加: 各社の公式スケジュールを写して編集部がまとめる攻略媒体。自ら取材した形跡なし
   - bazupapiko.workers.dev # 合議で追加: 公式X・公式サイトの発表を要約・引用するまとめ記事。取材の形跡なし
   - mirishita.2chblog.jp  # 合議で追加: ミリシタの攻略・雑談をまとめた媒体。公式投稿を写して伝える
   - sakigames.jp          # 合議で追加: 運営者情報で非公式の攻略サイトと明記。公式発表を記事化
@@ -654,6 +657,7 @@ x_accounts:
     - famitsu
     - GamerNeJp
   二次情報:
+    - animegoods60630     # 合議で追加: 予約情報を伝える情報系名。販売元と示す材料は要約に無い
     - moca_news           # 合議で追加: HUBコラボ開催を伝える情報アカウント。他所発表の媒体的な伝達
     - Anime_Voice         # 合議で追加: アニメ・声優系の情報媒体として、コラボ告知を他所発表から紹介
     - imas_goodscheck     # 合議で追加: 公式グッズ発売発表を伝達するグッズ情報アカウント
@@ -662,6 +666,14 @@ x_accounts:
     - imasnews765
     - zutapoke
   ファン:
+    - zych43721313        # 合議で追加: イベントへの現地参加を個人が投稿
+    - t2jacker            # 合議で追加: 広告を現地で目撃した個人の投稿
+    - kentotsu255         # 合議で追加: 個人によるカバー曲の投稿
+    - iris_co2            # 合議で追加: 楽曲の企画に個人として参加
+    - gokuchan00          # 合議で追加: キャラクターの誕生日を祝う個人投稿
+    - gogo5gogo3          # 合議で追加: 映画公開日の個人的な情報発信とみられる
+    - convenichecker      # 合議で追加: 店頭確認の目撃は定義上ファン。他所発表の転載は要約に無い
+    - Lioba_shiny         # 合議で追加: 個人のファン創作(カバー曲の企画)
     - beasu_shinryu       # 合議で追加: 個人アカウントの吹奏楽アレンジ投稿。個人に紐づくためファン
     - nswmr112z           # 合議で追加: 個人による東雲荘一郎の誕生日祝い投稿
     - master100765        # 合議で追加: 個人による標ツアーFINAL DAY1の観客感想
@@ -1009,6 +1021,7 @@ x_accounts:
     - procinen1
     - yutaleP
   当事者:
+    - yokohama_hands      # 合議で追加: 店舗が自ら商品の抽選結果を発表
     - liveaudio_fes       # 合議で追加: 映画祭での上映告知。催しの主催・会場側の一次発信
     - patty3_info         # 合議で追加: ぬい商品の三次予約を告知。販売元の一次発信とみる(要確認)
     - saintmarc_grill     # 合議で追加: 飲食店、ももぺあべりーとのコラボ先
@@ -1205,6 +1218,13 @@ x_posts:
 
 # --- リンク元から引き継いだ種別(リンク先1つずつ。キーは pipelib.link_key)。合議がリンク元の告知と関係していると確かめたものだけ(classify_sources.inherit_from_links)。リンク先そのものの種別より強いときだけ効く ---
 link_types:
+  youtube.com/watch?v=yI28sfoghXo: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/imas_ch/status/2119807227229778175(公式)。黒埼ちとせの誕生日お祝いショート動画で、告知と同じもの
+  youtube.com/watch?v=PyV266jKW78: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/valiv_official/status/2119626034673074235(公式)。愛夏の切り抜きショート動画で、告知の動画と同じもの
+  www.shochiku.co.jp/cinema/lineup/%E5%8A%87%E5%A0%B4%E7%89%88-%E3%82%A2%E3%82%A4%E3%83%89%E3%83%AB%E3%83%9E%E3%82%B9%E3%82%BF%E3%83%BC-sidem-f%EF%BC%A0ntastic-battle-fes-%EF%BD%9Ewho-goes-first%EF%BD%9E/: ファン # リンク元から引き継ぎ(合議で関係を確認): https://x.com/gogo5gogo3/status/2119767959552061782(ファン)。劇場版SideMの公開情報ページで、告知の作品と同じもの
+  convenicheck.com/newitem/newit_lawson/140393/: ファン # リンク元から引き継ぎ(合議で関係を確認): https://x.com/convenichecker/status/2119808722335871070(ファン)。学マス×ローソンのグッズ販売・予約ページで、告知と同じ商品
+  shop.asobistore.jp/products/detail/250921-00-00-00: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://x.com/gkmas_official/status/2119731727904202849(公式)。リンク元もDuet Song Collection第2弾の3種セット予約告知で、
+  gakuen-label.idolmaster-official.jp/news/5eb_7303fh: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://x.com/gkmas_official/status/2119710742069023065(公式)。リンク元もインスト音源17曲の公開告知で、リンク先は同じ公開の案内
+  youtube.com/watch?v=SYknvFikB8I: 二次情報         # リンク元から引き継ぎ(合議で関係を確認): https://imasnews765.com/?p=32664(二次情報)。同じ映画舞台挨拶の動画。元記事本文も同催しの報道。相手は本文を未確認
   youtube.com/watch?v=qv4STKcBqTY: ファン         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/beasu_shinryu/status/2119473365312491699(ファン)。快盗Vの吹奏楽アレンジ投稿告知。リンク先は同じ動画
   youtube.com/watch?v=fFkKb0H5Ets: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/KamizuruCosmo/status/2119358131822318018(公式)。上水流宇宙のテキトーリョク踊ってみた告知。リンク先は同じ動画
   nex-tone.link/pPju4A8WE: 公式                 # リンク元から引き継ぎ(合議で関係を確認): https://x.com/gkmas_official/status/2119383523870318905(公式)。FANTASTIC GATHERING!の配信開始告知。リンク先は同曲の配信ペー

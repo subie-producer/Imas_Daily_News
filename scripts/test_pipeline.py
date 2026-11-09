@@ -16687,6 +16687,44 @@ def test_cli_blocked_r5(tmp: Path):
     check(any("grok" in m and "全クエリ0件" in m for m in wnotes), f"停止に本物の失敗が混ざった回を、watch が検知しない: {wnotes}")
 
 
+def test_watch_notices_do_not_fail(tmp: Path):
+    """監視は、紙面を止めない事柄(回帰テストの赤・記事総数の目安・nit の残り)では異常終了しない(編集長 2026-11-09「こんなので止めんな」)。
+    号が出ていないときだけ異常終了する。偽物にするのは git・selfcheck の起動・通知だけで、監視の判定は本物(watch.main)。"""
+    import datetime
+    from unittest.mock import patch
+    import watch
+    root = tmp / "repo"
+    (root / "metrics").mkdir(parents=True)
+    (root / "docs" / "_posts").mkdir(parents=True)
+    shutil.copy(Path(__file__).resolve().parent.parent / "source_types.yml", root / "source_types.yml")
+    now = datetime.datetime(2026, 11, 9, 9, tzinfo=pipelib.JST)
+    env = {k: "x" for k in ("CODEX_WRITE_MODEL", "EDITORIAL_MODEL", "COLLECT_MODEL", "GROK_HOURS", "SITE_URL")}
+    env["REVIEW_MODEL"] = "haiku"
+    posts = "\n".join(f"docs/_posts/2026-11-01-a{i}.md" for i in range(2600))
+
+    def run(published: bool):
+        sent = []
+        def git(*a, check=True):
+            if a[:2] == ("cat-file", "-e"):
+                return subprocess.CompletedProcess([], 0 if published else 1, "", "")
+            return subprocess.CompletedProcess([], 0, posts if a[0] == "ls-tree" else "", "")
+        red = lambda *a, **kw: subprocess.CompletedProcess([], 1, "::error file=scripts/test_pipeline.py::回帰テストが赤\n", "")
+        with patch.object(watch, "ROOT", root), patch.object(watch, "now_jst", lambda: now), patch.object(watch, "ENV", env), \
+                patch.object(watch, "git", git), patch.object(watch.subprocess, "run", red), \
+                patch.object(watch, "hand_backlog", lambda *a: ["保管の nit 1件"]), \
+                patch.object(watch, "notify", lambda job, msg, ok=True, **kw: sent.append((msg, ok)) or True):
+            return watch.main(), sent
+
+    code, sent = run(published=True)
+    check(code == 0 and sent and all(ok for _, ok in sent)
+          and any("回帰テストが赤" in m and "記事総数" in m and "nit" in m for m, _ in sent),
+          f"紙面を止めない事柄で監視が異常終了した・知らせに載らない: {code} {sent}")
+    code, sent = run(published=False)
+    check(code == 1 and any(not ok and "発行されていない" in m for m, ok in sent)
+          and not any(not ok and "回帰テストが赤" in m for m, ok in sent),
+          f"号が出ていないのに異常終了しない・知らせを異常に混ぜた: {code} {sent}")
+
+
 def test_cli_blocked_r6(tmp: Path):
     """Sol 監査 r5 の指摘の再発防止(偽の CLI を本物の子プロセスとして起動する):
     (1) Grok が投稿を書いてから利用上限で止まった面の途中の書き出しを、確かめに回すか読み直しの列に残す(.grok ごと消えない)
@@ -22025,6 +22063,7 @@ def main() -> int:
     test_oncall_check_limits_follow_measure(tmp / "oclm")
     test_classify_retag_without_judge(tmp / "crwj")
     test_oncall_pr_review(tmp / "opr")
+    test_watch_notices_do_not_fail(tmp / "wnf")
     test_oncall_paper_record(tmp / "orc")
     test_settled_drops_not_rewritten(tmp / "sd")
     test_rule_bench_cases()

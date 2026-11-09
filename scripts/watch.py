@@ -20,11 +20,13 @@ from pathlib import Path
 import yaml
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from pipelib import ENV, ROOT, diagnose_anomalies, edition_date, escalate, git, notify, notify_crash, now_jst
+from pipelib import ENV, ROOT, diagnose_anomalies, edition_date, git, notify, notify_crash, now_jst
 
 def main() -> int:
     today = now_jst().strftime("%Y-%m-%d")
-    problems = []
+    # problems は紙面を止める・壊す異常(監視を異常終了にする)。notices は人が引き取る知らせ(異常終了にしない。
+    # 編集長 2026-11-09「こんなので止めんな」: 回帰テストの赤・記事総数・保管の指摘で毎朝監視が失敗していた)
+    problems, notices = [], []
     git("fetch", "origin", "--prune")
 
     # 0. スクリプト自身が壊れていないか。
@@ -35,8 +37,8 @@ def main() -> int:
     r = subprocess.run([sys.executable, str(ROOT / "scripts" / "selfcheck.py"), "--quiet"],
                        cwd=ROOT, capture_output=True, text=True)
     if r.returncode != 0:
-        problems += [l.replace("::error file=", "").replace("::", ": ")
-                     for l in r.stdout.splitlines() if l.startswith("::error")]
+        notices += [l.replace("::error file=", "").replace("::", ": ")
+                    for l in r.stdout.splitlines() if l.startswith("::error")]
 
     # 1. 今日の号が発行されているか
     if git("cat-file", "-e", f"origin/main:docs/_editions/{today}.md", check=False).returncode != 0:
@@ -90,7 +92,7 @@ def main() -> int:
     r = git("ls-tree", "-r", "--name-only", "origin/main", "docs/_posts/")
     n_posts = len([l for l in r.stdout.splitlines() if l.endswith(".md")])
     if n_posts > POSTS_THRESHOLD:
-        problems.append(
+        notices.append(
             f"記事総数 {n_posts} 本が閾値 {POSTS_THRESHOLD} を超過。"
             "Pages ビルド劣化前に『号スナップショットへの記事リスト持たせ』改修を実施すること(PIPELINE §9.5)")
 
@@ -167,20 +169,20 @@ def main() -> int:
             reason = why_unresolved.get(base, "") or next(
                 (r for url, *_ in items for k in [video_key(url)] if k for r in [why_unresolved.get(k, "")] if r), "")
             lines.append("    判定: " + (reason if reason else "合議に掛かっていない(判定の記録なし)"))
-        problems.append(
+        notices.append(
             f"紙面に未確認の出典が {sum(len(v) for v in unknown.values())}件 / {len(unknown)}種 残っている"
             "(種別を決めて判定表に書けば直る):\n" + "\n".join(lines))
 
-    # 8. 当番が「発行後に直す」として保管した指摘が残っていれば、当番に直させる
-    problems += hand_backlog(today)
+    # 8. 当番のレビューの nit の残り(人が引き取る)
+    notices += hand_backlog(today)
 
+    if notices:
+        notify("watch", "要確認(人が引き取る。紙面は止まっていない):\n- " + "\n- ".join(notices))
     if problems:
-        notify("watch", "異常検知(人が引き取る):\n- " + "\n- ".join(problems), ok=False)
-        # 申告で終えない。原因まで遡り、コードや契約の欠陥なら当番が直す(監視は終わっているので再実行しない)。
-        # 異常の発生日は今日(journal をその日から読む)、修正の取り込み先は生きている号の branch(今日の号は発行済みで無い)
-        diagnose_anomalies("watch", today, rerun=False, edition=edition_date())
+        notify("watch", "異常検知(紙面が止まっている・止まりうる):\n- " + "\n- ".join(problems), ok=False)
         return 1
-    print(f"watch OK: {today} 号発行済み・残存ブランチなし・collect {runs}回・.env 整合", flush=True)
+    print(f"watch OK: {today} 号発行済み・残存ブランチなし・collect {runs}回・.env 整合"
+          + (f"(要確認 {len(notices)}件)" if notices else ""), flush=True)
     return 0
 
 

@@ -424,3 +424,18 @@
   subject: Mフェス2026 in winter wonderland 特典ブロマイドの配布条件・場所
   watch: 条件や配布場所は店舗ごとに異なり、各店舗から詳細告知予定。判明次第 triggers へ
   added_on: '2026-11-07'
+- dedup_key: another-event-cue-2026
+  brand: shiny
+  subject: シャニソン アナザーイベント「キュー！」
+  watch: 「近日開催」とされた開催日・期間(判明次第 triggers へ)
+  added_on: '2026-11-11'
+- dedup_key: l-antica-xr-mv-2026
+  brand: shiny
+  subject: アンティーカ3曲のxRライブVer.・フルサイズ版MV追加
+  watch: 「月影のアンシェネ」など3曲のxRライブVer.とフルサイズ版MVの正式な追加日(追加予定とのみ告知)
+  added_on: '2026-11-11'
+- dedup_key: rinze-hana-rerun-gasha-2026
+  brand: shiny
+  subject: シャニソン 凛世・羽那の限定★3復刻ピックアップガシャ
+  watch: 復刻ピックアップガシャの開催期間・開始日(予告のみで期間は未記載。判明次第 triggers へ)
+  added_on: '2026-11-11'

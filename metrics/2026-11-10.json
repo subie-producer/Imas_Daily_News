@@ -106,6 +106,358 @@
     "failed": 9
    },
    "duration_s": 2058
+  },
+  {
+   "at": "2026-11-10T07:34:42+09:00",
+   "edition": "2026-11-11",
+   "started_at": "2026-11-10T07:30:45+09:00",
+   "trigger": "timer",
+   "watch": {
+    "stats": {
+     "imas-portal": {
+      "found": 12,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-sidem": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-shiny": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-million": {
+      "found": 8,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "lantis-shiny": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "lantis-sidem": {
+      "found": 4,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "columbia-imas": {
+      "found": 353,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "bnam-tours": {
+      "found": 69,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "imasnews765": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     }
+    },
+    "new": 0,
+    "facted": 0,
+    "deferred": 0,
+    "blocked": 0,
+    "unavailable": 0
+   },
+   "per_query": {
+    "explore:765as": 0,
+    "explore:cinderella": 0,
+    "explore:million": 0,
+    "explore:shiny": 1,
+    "explore:sidem": 0,
+    "explore:gakuen": 6,
+    "explore:dsva": 4,
+    "explore:joint-other": 0,
+    "explore:trend": 2
+   },
+   "normalized": 13,
+   "added": 10,
+   "verify": {
+    "confirmed": 3,
+    "unconfirmed": 10,
+    "failed": 0
+   },
+   "duration_s": 237
+  },
+  {
+   "at": "2026-11-10T12:36:15+09:00",
+   "edition": "2026-11-11",
+   "started_at": "2026-11-10T12:30:45+09:00",
+   "trigger": "timer",
+   "watch": {
+    "stats": {
+     "imas-portal": {
+      "found": 24,
+      "pages": 2,
+      "new": 4,
+      "deferred": 0
+     },
+     "pylonport-sidem": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-shiny": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-million": {
+      "found": 8,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "lantis-shiny": {
+      "found": 10,
+      "pages": 1,
+      "new": 1,
+      "deferred": 0
+     },
+     "lantis-sidem": {
+      "found": 5,
+      "pages": 1,
+      "new": 3,
+      "deferred": 0
+     },
+     "columbia-imas": {
+      "found": 353,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "bnam-tours": {
+      "found": 69,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "imasnews765": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     }
+    },
+    "new": 8,
+    "facted": 10,
+    "deferred": 0,
+    "blocked": 0,
+    "unavailable": 0
+   },
+   "per_query": {
+    "explore:765as": 0,
+    "explore:cinderella": 0,
+    "explore:million": 1,
+    "explore:shiny": 1,
+    "explore:sidem": 0,
+    "explore:gakuen": 2,
+    "explore:dsva": 1,
+    "explore:joint-other": 1,
+    "explore:trend": 3
+   },
+   "normalized": 19,
+   "added": 14,
+   "verify": {
+    "confirmed": 14,
+    "unconfirmed": 5,
+    "failed": 0
+   },
+   "duration_s": 329
+  },
+  {
+   "at": "2026-11-10T18:35:41+09:00",
+   "edition": "2026-11-11",
+   "started_at": "2026-11-10T18:30:45+09:00",
+   "trigger": "timer",
+   "watch": {
+    "stats": {
+     "imas-portal": {
+      "found": 24,
+      "pages": 2,
+      "new": 2,
+      "deferred": 0
+     },
+     "pylonport-sidem": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-shiny": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-million": {
+      "found": 8,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "lantis-shiny": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "lantis-sidem": {
+      "found": 5,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "columbia-imas": {
+      "found": 353,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "bnam-tours": {
+      "found": 69,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "imasnews765": {
+      "found": 10,
+      "pages": 1,
+      "new": 1,
+      "deferred": 0
+     }
+    },
+    "new": 3,
+    "facted": 5,
+    "deferred": 0,
+    "blocked": 0,
+    "unavailable": 0
+   },
+   "per_query": {
+    "explore:765as": 0,
+    "explore:cinderella": 1,
+    "explore:million": 2,
+    "explore:shiny": 0,
+    "explore:sidem": 1,
+    "explore:gakuen": 2,
+    "explore:dsva": 1,
+    "explore:joint-other": 0,
+    "explore:trend": 1
+   },
+   "normalized": 13,
+   "added": 7,
+   "verify": {
+    "confirmed": 7,
+    "unconfirmed": 6,
+    "failed": 0
+   },
+   "duration_s": 295
+  },
+  {
+   "at": "2026-11-10T23:35:20+09:00",
+   "edition": "2026-11-11",
+   "started_at": "2026-11-10T23:30:45+09:00",
+   "trigger": "timer",
+   "watch": {
+    "stats": {
+     "imas-portal": {
+      "found": 24,
+      "pages": 2,
+      "new": 1,
+      "deferred": 0
+     },
+     "pylonport-sidem": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-shiny": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-million": {
+      "found": 8,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "lantis-shiny": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "lantis-sidem": {
+      "found": 5,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "columbia-imas": {
+      "found": 353,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "bnam-tours": {
+      "found": 69,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "imasnews765": {
+      "found": 10,
+      "pages": 1,
+      "new": 1,
+      "deferred": 0
+     }
+    },
+    "new": 2,
+    "facted": 3,
+    "deferred": 0,
+    "blocked": 0,
+    "unavailable": 0
+   },
+   "per_query": {
+    "explore:765as": 0,
+    "explore:cinderella": 1,
+    "explore:million": 0,
+    "explore:shiny": 1,
+    "explore:sidem": 0,
+    "explore:gakuen": 1,
+    "explore:dsva": 0,
+    "explore:joint-other": 0,
+    "explore:trend": 1
+   },
+   "normalized": 7,
+   "added": 3,
+   "verify": {
+    "confirmed": 6,
+    "unconfirmed": 1,
+    "failed": 0
+   },
+   "duration_s": 274
   }
  ],
  "collect_required": [
@@ -117,6 +469,42 @@
    "reserve_s": 420,
    "left_s": 596,
    "elapsed_s": 145
+  },
+  {
+   "at": "2026-11-10T07:35:50+09:00",
+   "edition": "2026-11-11",
+   "started_at": "2026-11-10T07:30:45+09:00",
+   "trigger": "timer",
+   "reserve_s": 420,
+   "left_s": 16818,
+   "elapsed_s": 68
+  },
+  {
+   "at": "2026-11-10T12:37:57+09:00",
+   "edition": "2026-11-11",
+   "started_at": "2026-11-10T12:30:45+09:00",
+   "trigger": "timer",
+   "reserve_s": 420,
+   "left_s": 20325,
+   "elapsed_s": 103
+  },
+  {
+   "at": "2026-11-10T18:37:08+09:00",
+   "edition": "2026-11-11",
+   "started_at": "2026-11-10T18:30:45+09:00",
+   "trigger": "timer",
+   "reserve_s": 420,
+   "left_s": 16760,
+   "elapsed_s": 88
+  },
+  {
+   "at": "2026-11-10T23:35:20+09:00",
+   "edition": "2026-11-11",
+   "started_at": "2026-11-10T23:30:45+09:00",
+   "trigger": "timer",
+   "reserve_s": 420,
+   "left_s": 5980,
+   "elapsed_s": 1
   }
  ],
  "compose": [
@@ -157,6 +545,68 @@
     "sidem-fantastic-battle-fes-film-2026"
    ],
    "duration_s": 1527
+  }
+ ],
+ "recheck": [
+  {
+   "at": "2026-11-10T07:37:37+09:00",
+   "cap": 60,
+   "parallel": 4,
+   "runs_per_day": 4,
+   "cycle_days": 1.27,
+   "oldest_age_h": 120.0,
+   "targets": 304,
+   "chosen": 60,
+   "tried": 60,
+   "checked": 57,
+   "changed": 31,
+   "elapsed_s": 97,
+   "cycle_days_actual": 1.33
+  },
+  {
+   "at": "2026-11-10T12:39:50+09:00",
+   "cap": 60,
+   "parallel": 4,
+   "runs_per_day": 4,
+   "cycle_days": 1.27,
+   "oldest_age_h": 125.0,
+   "targets": 304,
+   "chosen": 60,
+   "tried": 60,
+   "checked": 57,
+   "changed": 40,
+   "elapsed_s": 103,
+   "cycle_days_actual": 1.33
+  },
+  {
+   "at": "2026-11-10T18:39:15+09:00",
+   "cap": 60,
+   "parallel": 4,
+   "runs_per_day": 4,
+   "cycle_days": 1.27,
+   "oldest_age_h": 131.0,
+   "targets": 304,
+   "chosen": 60,
+   "tried": 60,
+   "checked": 57,
+   "changed": 45,
+   "elapsed_s": 117,
+   "cycle_days_actual": 1.33
+  },
+  {
+   "at": "2026-11-10T23:37:29+09:00",
+   "cap": 60,
+   "parallel": 4,
+   "runs_per_day": 4,
+   "cycle_days": 1.27,
+   "oldest_age_h": 136.0,
+   "targets": 304,
+   "chosen": 60,
+   "tried": 60,
+   "checked": 57,
+   "changed": 47,
+   "elapsed_s": 118,
+   "cycle_days_actual": 1.33
   }
  ]
 }

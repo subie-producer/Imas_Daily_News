@@ -138,5 +138,37 @@
   "src_candidate_id": "sched-2026-10-11-shiny-fumage-cruise-2026-締切",
   "event_date": "2026-12-19",
   "deadline": "2026-10-11"
+ },
+ {
+  "id": "sched-2026-12-19-shiny-first-refrac7ions-still-blue-2026-gift-開幕",
+  "dedup_key": "shiny-first-refrac7ions-still-blue-2026-gift",
+  "brand": "shiny",
+  "subject": "shiny, the first REFRAC7IONS「Still blue」初日",
+  "kind": "開幕",
+  "note": "初日公演(18:00開演)。メッセージBOXは11:00から受付",
+  "reserved_on": "2026-11-11",
+  "occurs_on": "2026-12-19",
+  "title": "shiny, the first REFRAC7IONS \" Still blue \" プレゼント受付のご案内（メッセージ類のみ）",
+  "url": "https://idolmaster-official.jp/news/01_20329",
+  "source_type": "公式",
+  "facts": [
+   "公演タイトル: shiny, the first REFRAC7IONS \" Still blue \"",
+   "日程: 2026年12月19日(土) 17:00開場／18:00開演",
+   "日程: 2026年12月20日(日) 16:00開場／17:00開演",
+   "会場: 国立代々木競技場 第一体育館",
+   "プレゼント: 本公演ではメッセージ類（手紙・色紙・寄せ書きなど）のみお受け取り",
+   "フラワースタンド・楽屋花: お預かりはお断り",
+   "受付時間: 12月19日(土) 11:00～開演まで",
+   "受付時間: 12月20日(日) 11:00～開演まで",
+   "受付場所: 公演当日「メッセージBOX」まで直接持込み",
+   "メッセージ類以外のプレゼント: お受け取りはお断り",
+   "受付時間外に持ち込まれたもの: 基本的に受け取り不可",
+   "出演者等関係各所への直接送付（メッセージ・プレゼント・フラワースタンド・楽屋花等）: お控えください",
+   "エンゲージメント: 中"
+  ],
+  "via": "watch",
+  "verify": "confirmed",
+  "event_date": "2026-12-19",
+  "src_candidate_id": "202611101235-watch-3"
  }
 ]

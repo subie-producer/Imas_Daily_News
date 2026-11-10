@@ -1,0 +1,479 @@
+{
+ "decisions": {
+  "sidem-fanfes-wgf-popcorn-box-2026": {
+   "action": "article",
+   "angle": "劇場版SideMのホログラムステッカー付きポップコーンBOXが11月20日からSMT劇場で950円で販売される(公開日の情報も併載)",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "劇場版の公開日情報(sidem-fantastic-battle-fes-film-2026)を統合"
+  },
+  "sidem-fantastic-battle-fes-film-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-fanfes-wgf-popcorn-box-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ劇場版の公開に関わる話。ポップコーンBOX記事に統合"
+  },
+  "sidem-whats-it-taste-like-cd-series": {
+   "action": "article",
+   "angle": "新CDシリーズ「What's it taste like?」(Sweet/Spicy/Bitter)の発売決定。発売日2027年2月24日・3月3日・3月10日、特典デザイン、店舗別特典、ブックレット裏面まで",
+   "purpose": "新情報",
+   "rank": "large",
+   "lead_score": 80,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じCDシリーズの関連主題6件を統合(素材7件)"
+  },
+  "sidem-whats-it-taste-like-release-dates": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-whats-it-taste-like-cd-series",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "sidem-whats-it-taste-like-bonus-design": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-whats-it-taste-like-cd-series",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "sidem-whats-it-taste-like-booklet-back": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-whats-it-taste-like-cd-series",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "sidem-aji-project-cds-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-whats-it-taste-like-cd-series",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "sidem-whats-it-taste-like-sweet-2027-tokuten": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-whats-it-taste-like-cd-series",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "Sweetの店舗特典"
+  },
+  "sidem-whats-it-taste-like-store-bonuses-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-whats-it-taste-like-cd-series",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "シリーズの店舗特典"
+  },
+  "sidem-passion-challenge-monthly-15-aya": {
+   "action": "article",
+   "angle": "MONTHLY THEME SONG 15 彩(猫柳キリオ・華村翔真・清澄九郎)が2027年1月27日発売、店舗特典も決定",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "彩の店舗特典(sidem-passion-challenge-monthly-theme-15-2027-tokuten)を統合"
+  },
+  "sidem-passion-challenge-monthly-theme-15-2027-tokuten": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-passion-challenge-monthly-15-aya",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "sidem-passion-challenge-monthly-14-beit-jacket-video": {
+   "action": "article",
+   "angle": "MONTHLY THEME SONG 14 Beit(12月23日発売)のジャケットと試聴動画が公開、封入特典はストーリー解放用シリアルコード",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ジャケット・試聴動画・封入特典は既報の本文に無い"
+  },
+  "sidem-passion-challenge-monthly-theme-14-2026-tokuten": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "Beitの店舗特典は2026-10-10号の記事と同内容"
+  },
+  "sidem-monthly-theme-song-14-beit-tokuten": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "出典の変更はWhat's it taste like?の特典掲載で、Beitの特典に変更なし。新シリーズ分はCD記事で扱う"
+  },
+  "sidem-fbfes-wanna-step-in-goods-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11月10日号で15日23時59分までと既報。締切は4日後で当日のトリガーなし"
+  },
+  "imas-radio-2026-11-24": {
+   "action": "cross_brand",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "joint-imas-radio-stamas-5th-2026",
+   "reason": "",
+   "note": "IM＠S RADIOは合同面が記事化済み"
+  },
+  "sidem-315-night-letter-call-2026-11": {
+   "action": "article",
+   "angle": "SideMラジオ「315プロNight!」(もふもふえん出演)がお便り・イラストを募集、今週中に送る",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "準公式の告知。事実は少なく短い記事"
+  },
+  "sidem-aji-project-story-episode-2-2026": {
+   "action": "article",
+   "angle": "「AJIプロジェクト」ストーリー第2話「密着・スパイシー！？」が本日公開",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(開始)。sidem-aji-project-episode-2を統合"
+  },
+  "sidem-aji-project-episode-2": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-aji-project-story-episode-2-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "sidem-fbfes-wgf-2026-stage-greeting": {
+   "action": "article",
+   "angle": "劇場版SideM公開記念舞台挨拶(11月21日・新宿ピカデリー)の一般発売(先着)が本日12時に開始",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(発売・開始)を1記事に"
+  },
+  "sidem-315-celebration-bouquet-birthday-goods-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11月6日号の2月生まれ記念グッズ(受注11月15日まで)と同じ施策。締切は4日後"
+  },
+  "fan-sidem-retopa-visit-report-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人の来訪報告で出典も未確認"
+  },
+  "teddys-collection-ii-goods": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10月30日号と同じ内容、締切は11月15日で4日後"
+  },
+  "sidem-howanu-i-vol-6-7-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "登場日11月28日とラインナップは10月27日号の既報。新事実も当日のトリガーもなし"
+  },
+  "sidem-daimaru-vol2-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "東京店は11月10日に終了、梅田店の日程・整理券は10月の既報と同じ"
+  },
+  "sidem-daimaru-matsuzakaya-popup-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "梅田店(11月18日開始)の情報は既報、開始は7日後でトリガーなし"
+  },
+  "sidem-knick-knacks-yokohama-lottery-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "結果発表の日時・内容が素材に無く、出典は未確認の投稿のみ"
+  },
+  "sidem-knick-knacks-vol-2-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "15店舗・11月13日開始は11月2〜9日号の既報。開始は2日後で当日のトリガーなし"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "sidem-fanfes-wgf-popcorn-box-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "劇場版SideMのホログラムステッカー付きポップコーンBOXが11月20日からSMT劇場で950円で販売される(公開日の情報も併載)",
+    "purpose": "新情報",
+    "lead_score": 25,
+    "dedup_key": "sidem-fanfes-wgf-popcorn-box-2026",
+    "candidate_ids": [
+     "202611101235-watch-1",
+     "202611110233-grok-161",
+     "202611100230-grok-35"
+    ]
+   },
+   {
+    "slug": "sidem-315-night-letter-call-2026-11",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "SideMラジオ「315プロNight!」(もふもふえん出演)がお便り・イラストを募集、今週中に送る",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "sidem-315-night-letter-call-2026-11",
+    "candidate_ids": [
+     "202611110233-grok-65"
+    ]
+   },
+   {
+    "slug": "sidem-whats-it-taste-like-cd-series",
+    "brand": "sidem",
+    "rank": "large",
+    "angle": "新CDシリーズ「What's it taste like?」(Sweet/Spicy/Bitter)の発売決定。発売日2027年2月24日・3月3日・3月10日、特典デザイン、店舗別特典、ブックレット裏面まで",
+    "purpose": "新情報",
+    "lead_score": 80,
+    "dedup_key": "sidem-whats-it-taste-like-cd-series",
+    "candidate_ids": [
+     "202611110233-grok-67",
+     "202611101235-watch-5",
+     "202611110233-explore-7",
+     "202611110233-grok-68",
+     "202611110233-grok-69",
+     "202611110233-grok-70",
+     "202611110233-grok-116",
+     "202611110233-grok-137"
+    ]
+   },
+   {
+    "slug": "sidem-passion-challenge-monthly-15-aya",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "MONTHLY THEME SONG 15 彩(猫柳キリオ・華村翔真・清澄九郎)が2027年1月27日発売、店舗特典も決定",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "sidem-passion-challenge-monthly-15-aya",
+    "candidate_ids": [
+     "202611110233-grok-71",
+     "202611110233-grok-139",
+     "202611101235-watch-8"
+    ]
+   },
+   {
+    "slug": "sidem-passion-challenge-monthly-14-beit-jacket-video",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "MONTHLY THEME SONG 14 Beit(12月23日発売)のジャケットと試聴動画が公開、封入特典はストーリー解放用シリアルコード",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "sidem-passion-challenge-monthly-14-beit-jacket-video",
+    "candidate_ids": [
+     "202611110233-grok-72"
+    ]
+   },
+   {
+    "slug": "sidem-fbfes-wgf-2026-stage-greeting",
+    "brand": "sidem",
+    "rank": "medium",
+    "angle": "劇場版SideM公開記念舞台挨拶(11月21日・新宿ピカデリー)の一般発売(先着)が本日12時に開始",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "sidem-fbfes-wgf-2026-stage-greeting",
+    "candidate_ids": [
+     "sched-2026-11-11-sidem-fbfes-wgf-2026-stage-greeting-発売",
+     "sched-2026-11-11-sidem-fbfes-wgf-2026-stage-greeting-発売-src1",
+     "sched-2026-11-11-sidem-fbfes-wgf-2026-stage-greeting-開始",
+     "sched-2026-11-11-sidem-fbfes-wgf-2026-stage-greeting-開始-src1"
+    ]
+   },
+   {
+    "slug": "sidem-aji-project-story-episode-2-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "「AJIプロジェクト」ストーリー第2話「密着・スパイシー！？」が本日公開",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "sidem-aji-project-story-episode-2-2026",
+    "candidate_ids": [
+     "sched-2026-11-11-sidem-aji-project-story-episode-2-2026-開始",
+     "202611110233-grok-66"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "sidem-passion-challenge-monthly-theme-14-2026-tokuten",
+    "reason": "既報",
+    "note": "Beitの店舗特典は2026-10-10号の記事と同内容"
+   },
+   {
+    "dedup_key": "sidem-monthly-theme-song-14-beit-tokuten",
+    "reason": "既報",
+    "note": "出典の変更はWhat's it taste like?の特典掲載で、Beitの特典に変更なし。新シリーズ分はCD記事で扱う"
+   },
+   {
+    "dedup_key": "sidem-fbfes-wanna-step-in-goods-2026",
+    "reason": "既報",
+    "note": "11月10日号で15日23時59分までと既報。締切は4日後で当日のトリガーなし"
+   },
+   {
+    "dedup_key": "sidem-315-celebration-bouquet-birthday-goods-2026",
+    "reason": "既報",
+    "note": "11月6日号の2月生まれ記念グッズ(受注11月15日まで)と同じ施策。締切は4日後"
+   },
+   {
+    "dedup_key": "fan-sidem-retopa-visit-report-2026",
+    "reason": "個人の話題",
+    "note": "個人の来訪報告で出典も未確認"
+   },
+   {
+    "dedup_key": "teddys-collection-ii-goods",
+    "reason": "既報",
+    "note": "10月30日号と同じ内容、締切は11月15日で4日後"
+   },
+   {
+    "dedup_key": "sidem-howanu-i-vol-6-7-2026",
+    "reason": "既報",
+    "note": "登場日11月28日とラインナップは10月27日号の既報。新事実も当日のトリガーもなし"
+   },
+   {
+    "dedup_key": "sidem-daimaru-vol2-2026",
+    "reason": "既報",
+    "note": "東京店は11月10日に終了、梅田店の日程・整理券は10月の既報と同じ"
+   },
+   {
+    "dedup_key": "sidem-daimaru-matsuzakaya-popup-2026",
+    "reason": "既報",
+    "note": "梅田店(11月18日開始)の情報は既報、開始は7日後でトリガーなし"
+   },
+   {
+    "dedup_key": "sidem-knick-knacks-yokohama-lottery-2026",
+    "reason": "出典不足",
+    "note": "結果発表の日時・内容が素材に無く、出典は未確認の投稿のみ"
+   },
+   {
+    "dedup_key": "sidem-knick-knacks-vol-2-2026",
+    "reason": "既報",
+    "note": "15店舗・11月13日開始は11月2〜9日号の既報。開始は2日後で当日のトリガーなし"
+   }
+  ],
+  "cross_brand": [
+   {
+    "slug": "joint-imas-radio-stamas-5th-2026",
+    "dedup_key": "imas-radio-2026-11-24",
+    "note": "IM＠S RADIOは合同面が記事化済み"
+   }
+  ]
+ }
+}

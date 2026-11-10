@@ -103,5 +103,56 @@
   "event_date": "2026-12-08",
   "deadline": "2027-03-07",
   "src_candidate_id": "202611071833-explore-5"
+ },
+ {
+  "id": "sched-2026-12-08-tours-rhythm-live-festival-qualifier-extension-2027-締切前",
+  "dedup_key": "tours-rhythm-live-festival-qualifier-extension-2027",
+  "brand": "joint",
+  "subject": "ツアマス RHYTHM LIVE FESTIVAL 2027 予選・エントリー締切前",
+  "kind": "締切前",
+  "note": "締切まで間もなく。エントリーと予選プレイを済ませられる",
+  "reserved_on": "2026-11-11",
+  "occurs_on": "2026-12-11",
+  "title": "RHYTHM LIVE FESTIVAL 2027の予選・エントリー期間を延長",
+  "url": "https://x.com/TOURS_imas/status/2120080271126987075",
+  "source_type": "公式",
+  "facts": [
+   "ALL.Netの緊急メンテナンスに伴い稼働を停止していたが、11月8日より試験的に稼働を再開した。",
+   "大会予選は当初の予定どおり11月12日より開始する。",
+   "楽曲練習などの準備期間を考慮し、予選終了日を延長することを決定した。",
+   "決勝大会の日程に変更はない。",
+   "試験的な稼働再開のため、今後の状況により日程調整が入る可能性がある。",
+   "予選期間: 2026年11月12日(木) 07:00 ～ 12月10日(木) 25:59。",
+   "エントリー期間: 2026年11月12日(木) 07:00 ～ 12月10日(木) 25:59。",
+   "ランキング更新日: 11月16日(月)・11月20日(金)・11月27日(金)・12月4日(金)。",
+   "リンク: https://t.co/oXqVG6sxox",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "event_date": "2026-11-12",
+  "deadline": "2026-12-10",
+  "src_candidate_id": "202611110233-grok-100"
+ },
+ {
+  "id": "sched-2026-12-08-tours-rhythm-live-festival-qualifier-extension-2027-締切前-src1",
+  "dedup_key": "tours-rhythm-live-festival-qualifier-extension-2027",
+  "brand": "joint",
+  "subject": "ツアマス RHYTHM LIVE FESTIVAL 2027 予選・エントリー締切前",
+  "kind": "締切前",
+  "note": "締切まで間もなく。エントリーと予選プレイを済ませられる",
+  "reserved_on": "2026-11-11",
+  "occurs_on": "2026-12-11",
+  "title": "公式サイト「公式大会 RHYTHM LIVE FESTIVAL 2027」",
+  "url": "https://bandainamco-am.co.jp/am/vg/idolmaster-tours/rhythmlivefestival2027/",
+  "source_type": "公式",
+  "facts": [
+   "大会予選ランキングの上位20人には現地観覧権が得られる。ランキングはスコアが同じ場合に同位表示され、同順位内はP.Lvが高い順、累計ファン数が多い順に表示。最終大会予選ランキングは12月11日公開予定。"
+  ],
+  "via": "verified_fact",
+  "verify": "unconfirmed",
+  "src_candidate_id": "202611110233-grok-100",
+  "companion_of": "sched-2026-12-08-tours-rhythm-live-festival-qualifier-extension-2027-締切前",
+  "src_dedup_key": "tours-rhythm-live-festival-qualifier-extension-2027"
  }
 ]

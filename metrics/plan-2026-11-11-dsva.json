@@ -1,0 +1,264 @@
+{
+ "decisions": {
+  "letora-birthday-voice-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/9号でバースデーボイス12月13日まで販売を記事化済み。豚骨ショートも11/10号で既報"
+  },
+  "valiv-aikatsu-nodojiman-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/9号で配信告知済み。終了後の事実は出演して歌っただけで新情報なし"
+  },
+  "letora-birthday-online-live-2026": {
+   "action": "article",
+   "angle": "レトラ BIRTHDAY ONLINE LIVE 2026が本日19時開演。ASOBI STAGE配信、冒頭無料配信、お台場の現地LV(18時開場)、21時30分アフタートーク、12日18時までの最速アーカイブ",
+   "purpose": "期日の知らせ",
+   "rank": "large",
+   "lead_score": 90,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公演日の当日トリガー。ジュリアのゲスト出演・LV一般先着終了は既報"
+  },
+  "valiv-3rdlive-meeting-qonnect-as-one-ticket-firstlot-2027": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/8号で名古屋・東京日程と先行締切を記事化済み。締切11/15は3日以内でない"
+  },
+  "manaka-clips-weekly-tuesday-2026": {
+   "action": "roundup",
+   "angle": "ヴイアラの配信・動画出演まとめ(灯里愛夏の切り抜き動画、毎週火曜18:30投稿)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "cosmo-wa-da-da-dance-2026": {
+   "action": "roundup",
+   "angle": "ヴイアラの配信・動画出演まとめ(上水流宇宙のKep1er「WA DA DA」踊ってみたショート)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "cosmo-travellin-cats-in-usa-stream-report-2026-11-10": {
+   "action": "roundup",
+   "angle": "ヴイアラの配信・動画出演まとめ(上水流宇宙「Travellin Cats in USA」配信アーカイブ)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "valiv-letora-birthday-live-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "letora-birthday-online-live-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "出典変更は一般先着の予定枚数終了で11/8号に既報。公演日記事へ統合"
+  },
+  "va-liv-letora-birthday-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "letora-birthday-online-live-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "dsva-letora-birthday-live-viewing-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "letora-birthday-online-live-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "抽選受付は終了済み。開催情報のみ統合"
+  },
+  "letora-birthday-live-2026-liveviewing": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "letora-birthday-online-live-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "valiv-letora-birthday-2026-lv-goods-lottery": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "letora-birthday-online-live-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "letora-birthday-online-live-2026-lv": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "letora-birthday-online-live-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "letora-birthday-lv-general-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "18時締切の予約だが、一般先着は11/8号で予定枚数終了と既報。申し込める状態でない"
+  },
+  "dsva-letra-birthday-online-live-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "letora-birthday-online-live-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "letora-birthday-online-live-2026-julia-guest": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "letora-birthday-online-live-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ジュリア出演は11/6号で既報。締切予約も一般先着終了済みのため統合"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "dsva-letora-birthday-online-live-2026",
+    "brand": "dsva",
+    "rank": "large",
+    "angle": "レトラ BIRTHDAY ONLINE LIVE 2026が本日19時開演。ASOBI STAGE配信、冒頭無料配信、お台場の現地LV(18時開場)、21時30分アフタートーク、12日18時までの最速アーカイブ",
+    "purpose": "期日の知らせ",
+    "lead_score": 90,
+    "dedup_key": "letora-birthday-online-live-2026",
+    "candidate_ids": [
+     "202611110233-grok-93",
+     "sched-2026-11-11-letora-birthday-online-live-2026-開幕",
+     "sched-2026-11-11-letora-birthday-online-live-2026-開幕-src1",
+     "sched-2026-11-11-letora-birthday-online-live-2026-開幕-src2",
+     "update-508160dde93e",
+     "update-3164e623a119",
+     "sched-2026-11-11-valiv-letora-birthday-live-2026-開幕",
+     "sched-2026-11-11-valiv-letora-birthday-live-2026-開始",
+     "sched-2026-11-11-valiv-letora-birthday-live-2026-開始-src1",
+     "sched-2026-11-11-valiv-letora-birthday-live-2026-締切",
+     "sched-2026-11-11-valiv-letora-birthday-live-2026-締切-src1",
+     "sched-2026-11-11-valiv-letora-birthday-live-2026-締切-src2",
+     "sched-2026-11-11-valiv-letora-birthday-live-2026-締切-src3",
+     "sched-2026-11-11-va-liv-letora-birthday-2026-開始",
+     "sched-2026-11-11-va-liv-letora-birthday-2026-開幕",
+     "sched-2026-11-11-va-liv-letora-birthday-2026-開幕-src1",
+     "sched-2026-11-11-dsva-letora-birthday-live-viewing-2026-開幕",
+     "sched-2026-11-11-letora-birthday-live-2026-liveviewing-開幕",
+     "sched-2026-11-11-valiv-letora-birthday-2026-lv-goods-lottery-開幕",
+     "sched-2026-11-11-valiv-letora-birthday-2026-lv-goods-lottery-開幕-src1",
+     "sched-2026-11-11-valiv-letora-birthday-2026-lv-goods-lottery-開始",
+     "sched-2026-11-11-valiv-letora-birthday-2026-lv-goods-lottery-開始-src1",
+     "sched-2026-11-11-letora-birthday-online-live-2026-lv-開始",
+     "sched-2026-11-11-letora-birthday-online-live-2026-lv-開始-src1",
+     "sched-2026-11-11-letora-birthday-online-live-2026-lv-開幕",
+     "sched-2026-11-11-dsva-letra-birthday-online-live-2026-開幕",
+     "sched-2026-11-11-dsva-letra-birthday-online-live-2026-開幕-src1",
+     "sched-2026-11-11-letora-birthday-online-live-2026-julia-guest-締切",
+     "sched-2026-11-11-letora-birthday-online-live-2026-julia-guest-開幕"
+    ]
+   },
+   {
+    "slug": "dsva-ops-roundup",
+    "brand": "dsva",
+    "rank": "roundup",
+    "angle": "ヴイアラの配信・動画出演まとめ(灯里愛夏の切り抜き動画、毎週火曜18:30投稿)",
+    "lead_score": 0,
+    "dedup_key": "manaka-clips-weekly-tuesday-2026",
+    "candidate_ids": [
+     "202611110233-grok-95",
+     "202611110233-grok-154",
+     "202611110233-grok-96",
+     "202611110233-grok-155",
+     "202611110233-grok-157",
+     "202611110233-grok-97",
+     "202611110233-grok-158"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "letora-birthday-voice-2026",
+    "reason": "既報",
+    "note": "11/9号でバースデーボイス12月13日まで販売を記事化済み。豚骨ショートも11/10号で既報"
+   },
+   {
+    "dedup_key": "valiv-aikatsu-nodojiman-2026",
+    "reason": "既報",
+    "note": "11/9号で配信告知済み。終了後の事実は出演して歌っただけで新情報なし"
+   },
+   {
+    "dedup_key": "valiv-3rdlive-meeting-qonnect-as-one-ticket-firstlot-2027",
+    "reason": "既報",
+    "note": "11/8号で名古屋・東京日程と先行締切を記事化済み。締切11/15は3日以内でない"
+   },
+   {
+    "dedup_key": "letora-birthday-lv-general-2026",
+    "reason": "既報",
+    "note": "18時締切の予約だが、一般先着は11/8号で予定枚数終了と既報。申し込める状態でない"
+   }
+  ],
+  "cross_brand": []
+ }
+}

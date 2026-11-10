@@ -1,0 +1,628 @@
+{
+ "decisions": {
+  "gaku-17-instrumental-tracks-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/10号で記事化済み、新事実なし"
+  },
+  "gaku-duet-song-collection-2-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/9号で価格・特典・同時購入セットまで既報"
+  },
+  "gaku-season-solo-collection-2027": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/9号で予約期限・発売日・価格とも既報"
+  },
+  "gaku-the-3rd-period-2027": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "同じ内容(標ファイナルDAY2)は11/9号で既報"
+  },
+  "gaku-hiwatari-kanae-profile-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-hiwatari-kanae-implementation-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ氷渡香名江の実装の話題"
+  },
+  "gaku-round1-campaign-vol-2-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/8号で12/1開始を既報、開始まで3日超"
+  },
+  "gakuen-hatsuboshi-hr-2-5th-sp-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/9号で既報、配信は15日でトリガー外"
+  },
+  "gaku-steampunk-gearbeat-goods-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/8号・11/10号で既報、新事実なし"
+  },
+  "gaku-hiwatari-kanae-implementation-2026": {
+   "action": "article",
+   "angle": "氷渡香名江は倉本千奈付きのメイドで、11月16日にプロデュースアイドルとして実装され、出身地は静岡県と公表された",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "千奈付きのメイド・出身地が新事実。profile を統合"
+  },
+  "gakuen-3rd-period-2027": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/9号で既報(3rd Period・DAY2新曲)"
+  },
+  "gaku-muginimi-collection-vol2-capsule": {
+   "action": "article",
+   "angle": "むぎゅみにコレクションフィギュア vol.2が2027年4月下旬からカプセルトイで順次登場、全5種・500円",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "mugyumin を統合"
+  },
+  "gaku-lawson-store-goods-2026": {
+   "action": "article",
+   "angle": "ローソン×学マスの店頭グッズ・お菓子・限定予約が、北海道・九州・中国地域などでは本日11日から、一部店舗は12日から発売",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 40,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ローソン関連の各施策を1記事にまとめる"
+  },
+  "gaku-lawson-multifile-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-lawson-store-goods-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-lawson-original-food-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-lawson-store-goods-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-lawson-loppi-goods-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-lawson-store-goods-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-lawson-quote-campaign-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-lawson-store-goods-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shion-shiina-birthday-goods-2026": {
+   "action": "article",
+   "angle": "ASOBI STORE限定「紫雲清夏誕生日記念セット2026」が4,900円で登場、アクスタ・缶バッジ2個・ブロマイド入りで2027年2月上旬以降お届け",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ツアマスの誕生日コミュ(合同面)とは別施策"
+  },
+  "shion-shiina-birthday-stream-2026": {
+   "action": "article",
+   "angle": "紫雲清夏の生誕記念配信が11日0時に公開され、公式Xが視聴への謝意とともにアーカイブ公開中と案内",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "archive を統合"
+  },
+  "shion-shiina-birthday-stream-archive-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shion-shiina-birthday-stream-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "loppi-hmv-karaagekun-mini-plush-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-lawson-store-goods-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ローソンのLoppi・HMV施策"
+  },
+  "mugyumin-collection-figure-vol2": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-muginimi-collection-vol2-capsule",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gakumas-note-hometown-kananae": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-hiwatari-kanae-implementation-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "出身地は静岡県"
+  },
+  "gaku-lawson-print-15-bromides-2026-10": {
+   "action": "article",
+   "angle": "ローソンプリントの学マスブロマイドに84種が追加され、好きな絵柄を選んで購入できる",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "10/7号の15種とは別の追加分"
+  },
+  "kananae-episode-zero": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/9号でエピソード0公開を既報"
+  },
+  "lawson-print-random-bromide-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-lawson-store-goods-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ローソンのランダムブロマイド"
+  },
+  "lawson-gakumasu-campaign-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-lawson-store-goods-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-hoshihoshi-maid-site-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/10号でメイド体験とアイコン配布を既報"
+  },
+  "gakumas-hyo-final-archive-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/10号でアーカイブ・アンケートとも既報"
+  },
+  "fan-gakumasu-song-16-after-shirube-final-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "同人・ファン主催",
+   "note": "ファンの個人投稿。ファン面は general 面のみ"
+  },
+  "fan-shion-shiina-birthday-celebration-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "ファン面(culture)は general 面だけ"
+  },
+  "gakuen-kanae-debut-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/9号で11/16開始を既報"
+  },
+  "gakuen-duet-song-collection-2": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "重複",
+   "note": "gaku-duet-song-collection-2-2026 と同じ話題で既報"
+  },
+  "curtain-damashii-new-goods-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/26号で受付11/15までを既報、締切まで3日超"
+  },
+  "gaku-producer-ranking-season4-2026": {
+   "action": "article",
+   "angle": "プロデューサーランキング シーズン4の開催期間が12日4時59分に終了し、集計期間は12日5時から15日10時59分まで",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(終了)"
+  },
+  "gaku-miraimira-tsukimura-temari-2026": {
+   "action": "article",
+   "angle": "MiraiMira 1/7「月村手毬 雨上がりのアイリス 特訓前Ver.」のメーカー受注締切は本日11日、価格22,000円・発売は2027年5月予定",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(締切)。tezuki を統合"
+  },
+  "gaku-tezuki-temari-figure-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-miraimira-tsukimura-temari-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じフィギュアの同じ締切"
+  },
+  "gaku-radio-shirube-final-review-2026": {
+   "action": "article",
+   "angle": "初星学園放送部が本日11日放送、LIVE TOUR -標-ファイナル感想回に長月あおいさん・小鹿なおさん・松田彩音さんがゲスト",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(開始・その他)を1記事に"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "gaku-hiwatari-kanae-implementation-2026",
+    "brand": "gaku",
+    "rank": "medium",
+    "angle": "氷渡香名江は倉本千奈付きのメイドで、11月16日にプロデュースアイドルとして実装され、出身地は静岡県と公表された",
+    "purpose": "新情報",
+    "lead_score": 60,
+    "dedup_key": "gaku-hiwatari-kanae-implementation-2026",
+    "candidate_ids": [
+     "202611101235-explore-12",
+     "202611100734-explore-5",
+     "202611110233-grok-81"
+    ]
+   },
+   {
+    "slug": "gaku-muginimi-collection-vol2-capsule",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "むぎゅみにコレクションフィギュア vol.2が2027年4月下旬からカプセルトイで順次登場、全5種・500円",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "gaku-muginimi-collection-vol2-capsule",
+    "candidate_ids": [
+     "202611101834-watch-0",
+     "202611110233-grok-159",
+     "202611110233-grok-80"
+    ]
+   },
+   {
+    "slug": "gaku-lawson-store-goods-2026",
+    "brand": "gaku",
+    "rank": "medium",
+    "angle": "ローソン×学マスの店頭グッズ・お菓子・限定予約が、北海道・九州・中国地域などでは本日11日から、一部店舗は12日から発売",
+    "purpose": "期日の知らせ",
+    "lead_score": 40,
+    "dedup_key": "gaku-lawson-store-goods-2026",
+    "candidate_ids": [
+     "202611101834-explore-10",
+     "202611110233-explore-10",
+     "202611110233-explore-12",
+     "202611110233-explore-13",
+     "202611110233-explore-14",
+     "202611110233-grok-79",
+     "202611110233-grok-85",
+     "202611110233-grok-86"
+    ]
+   },
+   {
+    "slug": "gaku-shion-shiina-birthday-goods-2026",
+    "brand": "gaku",
+    "rank": "medium",
+    "angle": "ASOBI STORE限定「紫雲清夏誕生日記念セット2026」が4,900円で登場、アクスタ・缶バッジ2個・ブロマイド入りで2027年2月上旬以降お届け",
+    "purpose": "新情報",
+    "lead_score": 30,
+    "dedup_key": "shion-shiina-birthday-goods-2026",
+    "candidate_ids": [
+     "202611110233-grok-75",
+     "202611110233-grok-140"
+    ]
+   },
+   {
+    "slug": "gaku-shion-shiina-birthday-stream-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "紫雲清夏の生誕記念配信が11日0時に公開され、公式Xが視聴への謝意とともにアーカイブ公開中と案内",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "shion-shiina-birthday-stream-2026",
+    "candidate_ids": [
+     "202611110233-grok-76",
+     "202611110233-grok-141",
+     "202611110233-grok-142",
+     "202611110233-grok-143",
+     "202611110233-grok-144",
+     "202611110233-grok-145",
+     "202611110233-grok-146",
+     "202611110233-grok-77"
+    ]
+   },
+   {
+    "slug": "gaku-lawson-print-15-bromides-2026-10",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "ローソンプリントの学マスブロマイドに84種が追加され、好きな絵柄を選んで購入できる",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "gaku-lawson-print-15-bromides-2026-10",
+    "candidate_ids": [
+     "202611110233-grok-83"
+    ]
+   },
+   {
+    "slug": "gaku-producer-ranking-season4-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "プロデューサーランキング シーズン4の開催期間が12日4時59分に終了し、集計期間は12日5時から15日10時59分まで",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "gaku-producer-ranking-season4-2026",
+    "candidate_ids": [
+     "sched-2026-11-11-gaku-producer-ranking-season4-2026-終了"
+    ]
+   },
+   {
+    "slug": "gaku-miraimira-tsukimura-temari-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "MiraiMira 1/7「月村手毬 雨上がりのアイリス 特訓前Ver.」のメーカー受注締切は本日11日、価格22,000円・発売は2027年5月予定",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "gaku-miraimira-tsukimura-temari-2026",
+    "candidate_ids": [
+     "sched-2026-11-11-gaku-miraimira-tsukimura-temari-2026-締切",
+     "sched-2026-11-11-gaku-tezuki-temari-figure-2026-締切",
+     "sched-2026-11-11-gaku-tezuki-temari-figure-2026-締切-src1"
+    ]
+   },
+   {
+    "slug": "gaku-radio-shirube-final-review-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "初星学園放送部が本日11日放送、LIVE TOUR -標-ファイナル感想回に長月あおいさん・小鹿なおさん・松田彩音さんがゲスト",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "gaku-radio-shirube-final-review-2026",
+    "candidate_ids": [
+     "sched-2026-11-11-gaku-radio-shirube-final-review-2026-その他",
+     "sched-2026-11-11-gaku-radio-shirube-final-review-2026-開始"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "gaku-17-instrumental-tracks-2026",
+    "reason": "既報",
+    "note": "11/10号で記事化済み、新事実なし"
+   },
+   {
+    "dedup_key": "gaku-duet-song-collection-2-2026",
+    "reason": "既報",
+    "note": "11/9号で価格・特典・同時購入セットまで既報"
+   },
+   {
+    "dedup_key": "gaku-season-solo-collection-2027",
+    "reason": "既報",
+    "note": "11/9号で予約期限・発売日・価格とも既報"
+   },
+   {
+    "dedup_key": "gaku-the-3rd-period-2027",
+    "reason": "既報",
+    "note": "同じ内容(標ファイナルDAY2)は11/9号で既報"
+   },
+   {
+    "dedup_key": "gaku-round1-campaign-vol-2-2026",
+    "reason": "既報",
+    "note": "11/8号で12/1開始を既報、開始まで3日超"
+   },
+   {
+    "dedup_key": "gakuen-hatsuboshi-hr-2-5th-sp-2026",
+    "reason": "既報",
+    "note": "11/9号で既報、配信は15日でトリガー外"
+   },
+   {
+    "dedup_key": "gaku-steampunk-gearbeat-goods-2026",
+    "reason": "既報",
+    "note": "11/8号・11/10号で既報、新事実なし"
+   },
+   {
+    "dedup_key": "gakuen-3rd-period-2027",
+    "reason": "既報",
+    "note": "11/9号で既報(3rd Period・DAY2新曲)"
+   },
+   {
+    "dedup_key": "kananae-episode-zero",
+    "reason": "既報",
+    "note": "11/9号でエピソード0公開を既報"
+   },
+   {
+    "dedup_key": "gaku-hoshihoshi-maid-site-2026",
+    "reason": "既報",
+    "note": "11/10号でメイド体験とアイコン配布を既報"
+   },
+   {
+    "dedup_key": "gakumas-hyo-final-archive-2026",
+    "reason": "既報",
+    "note": "11/10号でアーカイブ・アンケートとも既報"
+   },
+   {
+    "dedup_key": "fan-gakumasu-song-16-after-shirube-final-2026",
+    "reason": "同人・ファン主催",
+    "note": "ファンの個人投稿。ファン面は general 面のみ"
+   },
+   {
+    "dedup_key": "fan-shion-shiina-birthday-celebration-2026",
+    "reason": "面違い",
+    "note": "ファン面(culture)は general 面だけ"
+   },
+   {
+    "dedup_key": "gakuen-kanae-debut-2026",
+    "reason": "既報",
+    "note": "11/9号で11/16開始を既報"
+   },
+   {
+    "dedup_key": "gakuen-duet-song-collection-2",
+    "reason": "重複",
+    "note": "gaku-duet-song-collection-2-2026 と同じ話題で既報"
+   },
+   {
+    "dedup_key": "curtain-damashii-new-goods-2026",
+    "reason": "既報",
+    "note": "10/26号で受付11/15までを既報、締切まで3日超"
+   }
+  ],
+  "cross_brand": []
+ }
+}

@@ -1,0 +1,79 @@
+{
+ "decisions": {
+  "765pro-allstars-never-end-idol-bluray-day1-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "Amazonの掲載価格が15,040円→15,038円に動いただけ。公式価格・発売日は9日の記事と同じで、読者に関わる変更なし"
+  },
+  "miki-hoshii-future-spotlight-animonium-2027": {
+   "action": "article",
+   "angle": "星井美希の海外ソロ公演第4弾「THE FUTURE SPOTLIGHT」が2027年2月14日、バンコクのANIMONIUM 2027で開催決定。配信なし、参加方法は後日発表",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 85,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "imas-radio-amane-2026-11-10": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "10日20時の放送は終了済みで、当日のトリガーも新事実もない。次回(24日)は合同面が記事にしている"
+  },
+  "miki-animonium-2027": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "miki-hoshii-future-spotlight-animonium-2027",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ公演の公式X告知。素材として統合"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "765-miki-hoshii-future-spotlight-animonium-2027",
+    "brand": "765",
+    "rank": "medium",
+    "angle": "星井美希の海外ソロ公演第4弾「THE FUTURE SPOTLIGHT」が2027年2月14日、バンコクのANIMONIUM 2027で開催決定。配信なし、参加方法は後日発表",
+    "purpose": "新情報",
+    "lead_score": 85,
+    "dedup_key": "miki-hoshii-future-spotlight-animonium-2027",
+    "candidate_ids": [
+     "202611101235-watch-0",
+     "202611110233-grok-119",
+     "202611110233-grok-112"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "765pro-allstars-never-end-idol-bluray-day1-2026",
+    "reason": "既報",
+    "note": "Amazonの掲載価格が15,040円→15,038円に動いただけ。公式価格・発売日は9日の記事と同じで、読者に関わる変更なし"
+   },
+   {
+    "dedup_key": "imas-radio-amane-2026-11-10",
+    "reason": "その他",
+    "note": "10日20時の放送は終了済みで、当日のトリガーも新事実もない。次回(24日)は合同面が記事にしている"
+   }
+  ],
+  "cross_brand": []
+ }
+}

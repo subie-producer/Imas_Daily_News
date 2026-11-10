@@ -1,0 +1,691 @@
+{
+ "decisions": {
+  "shiny-upcoming-idol-teaser-2026-11": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11月9日号・10日号で記事化済み。登場は昨日15時"
+  },
+  "shiny-first-refrac7ions-still-blue-2026-gift": {
+   "action": "article",
+   "angle": "「Still blue」12月19・20日公演のプレゼント受付はメッセージ類のみ、花やスタンドは受け付けない",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-colors-new-single-2027-tokuten": {
+   "action": "article",
+   "angle": "シャニマス新シングル(2027年1月27日発売)の店舗特典がアニメイト・Amazon・ゲーマーズで決定",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-yunera-collab-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11月10日号で期間・5種の風呂・特典を記事化済み。新事実なし、トリガーも21日で当日ではない"
+  },
+  "shiny-orchestra-concert-2027-radiant-chord": {
+   "action": "article",
+   "angle": "「Radiant Chord」のゲーム先行が11月10日15時から12月1日23時59分まで受付開始。当落は12月12日13時",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 75,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公式サイト更新(source_change)も統合"
+  },
+  "shiny-song-for-prism-3rd-anniversary-live-results-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11月10日号「個人別最終結果発表」と同じ内容"
+  },
+  "shiny-orchestra-concert-2027": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-orchestra-concert-2027-radiant-chord",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "出典更新はゲーム先行の追加で、同じ出来事"
+  },
+  "shiny-autumn-maple-box-2026": {
+   "action": "roundup",
+   "angle": "開催中のプロデュースイベント・ガシャ・フェス(トワコレ追加の素材)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "koito-birthday-2026": {
+   "action": "article",
+   "angle": "11月11日は福丸小糸の誕生日。シャニマス・シャニソン両方で誕生日ミニコミュ、スタンプガシャ、記念パック、ジュエル配布などが始まった",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "小糸関連7主題を統合"
+  },
+  "koito-birthday-stamp-gasha-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "koito-birthday-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "koito-birthday-jewel-sale-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "koito-birthday-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "koito-precious-pack-rerun-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "koito-birthday-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "koito-birthday-packs-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "koito-birthday-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "song-koito-birthday-gasha-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "koito-birthday-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "song-koito-birthday-story-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "koito-birthday-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "hina-wonderful-stamp-gasha-2026": {
+   "action": "article",
+   "angle": "市川雛菜の特別ピンナップS-SSR「ふたりぶんわんだふる」スタンプガシャとステップアップが開始",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ピース付きパッケージを統合"
+  },
+  "hina-wonderful-piece-pack-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "hina-wonderful-stamp-gasha-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-act-3-mano-gasha-2026": {
+   "action": "roundup",
+   "angle": "開催中のスタンプガシャ(第3回シャイニーアクト真乃、トワコレ)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "真乃ピース付きパッケージも含む"
+  },
+  "twilight-collection-meguru-kaho-2026": {
+   "action": "roundup",
+   "angle": "開催中のスタンプガシャ(第3回シャイニーアクト真乃、トワコレ)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "めぐる・果穂ピース付きパッケージも含む"
+  },
+  "mano-shiny-act-piece-pack-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-act-3-mano-gasha-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "meguru-twilight-piece-pack-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "twilight-collection-meguru-kaho-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "kaho-twilight-piece-pack-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "twilight-collection-meguru-kaho-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-85-afterparty-free-gasha-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-85-afterparty-campaign-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-85-afterparty-missions-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-85-afterparty-campaign-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-85-afterparty-campaign-2026": {
+   "action": "article",
+   "angle": "8.5周年後夜祭が始まり、1日1回無料10連(最大90連)・特別ミッション・最大85%ステップアップ・各種アップを実施",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "後夜祭の4主題を統合"
+  },
+  "autumn-maple-box-2026": {
+   "action": "roundup",
+   "angle": "開催中のスタンプガシャ・プロデュースイベント・フェス(オータム・メイプル・ボックスの報酬は和泉愛依)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "masters-fes-2026-11": {
+   "action": "roundup",
+   "angle": "開催中のスタンプガシャ・プロデュースイベント・フェス(11月マスターズフェス)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "10日号で開幕を記事化済み、定常運営として束ねる"
+  },
+  "meguru-memory-boost-reward-2026": {
+   "action": "roundup",
+   "angle": "開催中のスタンプガシャ・プロデュースイベント・フェス(めぐるのメモリーブースト報酬追加)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-85-afterparty-stepup-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-85-afterparty-campaign-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "l-antica-xr-mv-2026": {
+   "action": "article",
+   "angle": "アンティーカ3曲にxRライブVer.のMVとフルサイズ版MVを追加予定",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "rinze-hana-rerun-gasha-2026": {
+   "action": "article",
+   "angle": "杜野凛世・鈴木羽那の2024年限定★3が復刻ピックアップガシャで再登場予定、期間中ログインで復刻チケット配布",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "another-event-cue-2026": {
+   "action": "article",
+   "angle": "アナザーイベント「キュー！」を近日開催予定、報酬にSSRサポート鈴木羽那、新ストーリーはなし",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "autumn-sky-login-pass-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-song-autumn-login-pass",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じパスの販売終了告知"
+  },
+  "kiriko-mei-pickup-end-2026": {
+   "action": "article",
+   "angle": "シャニソン「反射する星々、その先へ」(霧子・愛依)ピックアップガシャと同ステップアップは本日11時59分で終了",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-radio-hbtk-2026-11": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "放送は昨夜終了。11月4日・7日号で関連記事あり、新事実なし"
+  },
+  "shiny-web4koma-666-2026": {
+   "action": "roundup",
+   "angle": "開催中のスタンプガシャ・プロデュースイベント・フェス(web4コマ第666話 めぐる回の公開)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-3rd-anniversary-live-results-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11月10日号「個人別最終結果発表」で記事化済み"
+  },
+  "shiny-jong-tama-higuchi-madoka-figure-2026": {
+   "action": "article",
+   "angle": "シャニマス×雀魂の樋口円香フィギュア予約と浅倉透フィギュア三次受注が、グッドスマイルカンパニー公式ショップで本日最終日",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(締切)"
+  },
+  "shiny-tsutaya-yujo-fumetsu-popup-2026": {
+   "action": "article",
+   "angle": "『友情不滅宣言』POP UP SHOPが本日SHIBUYA TSUTAYAで開幕、30日まで。購入特典はしおりとポストカード",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(開幕)"
+  },
+  "shiny-3rd-anniv-login-bonus-2026": {
+   "action": "article",
+   "angle": "シャニソン3周年ログインボーナス第2弾が本日開始、11月30日23時59分までに7日ログインでガシャチケット",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(開始)"
+  },
+  "shiny-song-autumn-login-pass": {
+   "action": "article",
+   "angle": "シャニソン「秋色が重なる空」ログインボーナスパスは本日11時59分で販売終了",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(締切)"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "shiny-first-refrac7ions-still-blue-2026-gift",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "「Still blue」12月19・20日公演のプレゼント受付はメッセージ類のみ、花やスタンドは受け付けない",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "shiny-first-refrac7ions-still-blue-2026-gift",
+    "candidate_ids": [
+     "202611101235-watch-3"
+    ]
+   },
+   {
+    "slug": "shiny-colors-new-single-2027-tokuten",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "シャニマス新シングル(2027年1月27日発売)の店舗特典がアニメイト・Amazon・ゲーマーズで決定",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "shiny-colors-new-single-2027-tokuten",
+    "candidate_ids": [
+     "202611101235-watch-4"
+    ]
+   },
+   {
+    "slug": "shiny-orchestra-concert-2027-radiant-chord",
+    "brand": "shiny",
+    "rank": "medium",
+    "angle": "「Radiant Chord」のゲーム先行が11月10日15時から12月1日23時59分まで受付開始。当落は12月12日13時",
+    "purpose": "新情報",
+    "lead_score": 75,
+    "dedup_key": "shiny-orchestra-concert-2027-radiant-chord",
+    "candidate_ids": [
+     "202611101834-watch-2",
+     "202611110233-grok-136",
+     "update-55c65ba66113"
+    ]
+   },
+   {
+    "slug": "shiny-koito-birthday-2026",
+    "brand": "shiny",
+    "rank": "medium",
+    "angle": "11月11日は福丸小糸の誕生日。シャニマス・シャニソン両方で誕生日ミニコミュ、スタンプガシャ、記念パック、ジュエル配布などが始まった",
+    "purpose": "新情報",
+    "lead_score": 30,
+    "dedup_key": "koito-birthday-2026",
+    "candidate_ids": [
+     "202611110233-grok-36",
+     "202611110233-grok-37",
+     "202611110233-grok-38",
+     "202611110233-grok-39",
+     "202611110233-grok-40",
+     "202611110233-grok-41",
+     "202611110233-grok-42"
+    ]
+   },
+   {
+    "slug": "shiny-hina-wonderful-stamp-gasha-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "市川雛菜の特別ピンナップS-SSR「ふたりぶんわんだふる」スタンプガシャとステップアップが開始",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "hina-wonderful-stamp-gasha-2026",
+    "candidate_ids": [
+     "202611110233-grok-43",
+     "202611110233-grok-44"
+    ]
+   },
+   {
+    "slug": "shiny-85-afterparty-campaign-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "8.5周年後夜祭が始まり、1日1回無料10連(最大90連)・特別ミッション・最大85%ステップアップ・各種アップを実施",
+    "purpose": "新情報",
+    "lead_score": 25,
+    "dedup_key": "shiny-85-afterparty-campaign-2026",
+    "candidate_ids": [
+     "202611110233-grok-52",
+     "202611110233-grok-50",
+     "202611110233-grok-51",
+     "202611110233-grok-56"
+    ]
+   },
+   {
+    "slug": "shiny-l-antica-xr-mv-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "アンティーカ3曲にxRライブVer.のMVとフルサイズ版MVを追加予定",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "l-antica-xr-mv-2026",
+    "candidate_ids": [
+     "202611110233-grok-57"
+    ]
+   },
+   {
+    "slug": "shiny-rinze-hana-rerun-gasha-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "杜野凛世・鈴木羽那の2024年限定★3が復刻ピックアップガシャで再登場予定、期間中ログインで復刻チケット配布",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "rinze-hana-rerun-gasha-2026",
+    "candidate_ids": [
+     "202611110233-grok-58"
+    ]
+   },
+   {
+    "slug": "shiny-another-event-cue-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "アナザーイベント「キュー！」を近日開催予定、報酬にSSRサポート鈴木羽那、新ストーリーはなし",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "another-event-cue-2026",
+    "candidate_ids": [
+     "202611110233-grok-59"
+    ]
+   },
+   {
+    "slug": "shiny-kiriko-mei-pickup-end-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "シャニソン「反射する星々、その先へ」(霧子・愛依)ピックアップガシャと同ステップアップは本日11時59分で終了",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "kiriko-mei-pickup-end-2026",
+    "candidate_ids": [
+     "202611110233-grok-61"
+    ]
+   },
+   {
+    "slug": "shiny-jong-tama-higuchi-madoka-figure-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "シャニマス×雀魂の樋口円香フィギュア予約と浅倉透フィギュア三次受注が、グッドスマイルカンパニー公式ショップで本日最終日",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "shiny-jong-tama-higuchi-madoka-figure-2026",
+    "candidate_ids": [
+     "sched-2026-11-11-shiny-jong-tama-higuchi-madoka-figure-2026-締切",
+     "sched-2026-11-11-shiny-jong-tama-higuchi-madoka-figure-2026-締切-src1"
+    ]
+   },
+   {
+    "slug": "shiny-tsutaya-yujo-fumetsu-popup-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "『友情不滅宣言』POP UP SHOPが本日SHIBUYA TSUTAYAで開幕、30日まで。購入特典はしおりとポストカード",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "shiny-tsutaya-yujo-fumetsu-popup-2026",
+    "candidate_ids": [
+     "sched-2026-11-11-shiny-tsutaya-yujo-fumetsu-popup-2026-開幕"
+    ]
+   },
+   {
+    "slug": "shiny-3rd-anniv-login-bonus-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "シャニソン3周年ログインボーナス第2弾が本日開始、11月30日23時59分までに7日ログインでガシャチケット",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "shiny-3rd-anniv-login-bonus-2026",
+    "candidate_ids": [
+     "sched-2026-11-11-shiny-3rd-anniv-login-bonus-2026-開始"
+    ]
+   },
+   {
+    "slug": "shiny-song-autumn-login-pass",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "シャニソン「秋色が重なる空」ログインボーナスパスは本日11時59分で販売終了",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "shiny-song-autumn-login-pass",
+    "candidate_ids": [
+     "sched-2026-11-11-shiny-song-autumn-login-pass-締切",
+     "202611110233-grok-60"
+    ]
+   },
+   {
+    "slug": "shiny-ops-roundup",
+    "brand": "shiny",
+    "rank": "roundup",
+    "angle": "開催中のプロデュースイベント・ガシャ・フェス(トワコレ追加の素材)",
+    "lead_score": 0,
+    "dedup_key": "shiny-autumn-maple-box-2026",
+    "candidate_ids": [
+     "202611110233-explore-2",
+     "202611110233-grok-45",
+     "202611110233-grok-135",
+     "202611110233-grok-46",
+     "202611110233-grok-134",
+     "202611110233-grok-53",
+     "202611110233-grok-54",
+     "202611110233-grok-55",
+     "202611110233-grok-63",
+     "202611110233-grok-47",
+     "202611110233-grok-48",
+     "202611110233-grok-49"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "shiny-upcoming-idol-teaser-2026-11",
+    "reason": "既報",
+    "note": "11月9日号・10日号で記事化済み。登場は昨日15時"
+   },
+   {
+    "dedup_key": "shiny-yunera-collab-2026",
+    "reason": "既報",
+    "note": "11月10日号で期間・5種の風呂・特典を記事化済み。新事実なし、トリガーも21日で当日ではない"
+   },
+   {
+    "dedup_key": "shiny-song-for-prism-3rd-anniversary-live-results-2026",
+    "reason": "既報",
+    "note": "11月10日号「個人別最終結果発表」と同じ内容"
+   },
+   {
+    "dedup_key": "shiny-radio-hbtk-2026-11",
+    "reason": "既報",
+    "note": "放送は昨夜終了。11月4日・7日号で関連記事あり、新事実なし"
+   },
+   {
+    "dedup_key": "shiny-3rd-anniversary-live-results-2026",
+    "reason": "既報",
+    "note": "11月10日号「個人別最終結果発表」で記事化済み"
+   }
+  ],
+  "cross_brand": []
+ }
+}

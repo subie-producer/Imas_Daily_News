@@ -190,5 +190,35 @@
   "deadline": "2026-11-12",
   "link_from": "https://imasnews765.com/?p=32615",
   "src_candidate_id": "202610301836-watch-3"
+ },
+ {
+  "id": "sched-2026-12-23-sidem-passion-challenge-monthly-14-beit-jacket-video-発売",
+  "dedup_key": "sidem-passion-challenge-monthly-14-beit-jacket-video",
+  "brand": "sidem",
+  "subject": "SideM MONTHLY THEME SONG 14 Beit 発売",
+  "kind": "発売",
+  "note": "CDが発売され、店頭・通販で購入できる",
+  "reserved_on": "2026-11-11",
+  "occurs_on": "2026-12-23",
+  "title": "P@SSION CHALLENGE MONTHLY THEME SONG 14 Beit 試聴動画公開",
+  "url": "https://x.com/SideM_lantis/status/2119988415601254420",
+  "source_type": "準公式",
+  "facts": [
+   "「～P@SSION CHALLENGE We are 315！～ MONTHLY THEME SONG 14 Beit」は12月23日発売と告知された。",
+   "ジャケットと試聴動画が公開された。",
+   "YouTube: https://www.youtube.com/watch?v=qehUw0zK8IM&feature=youtu.be",
+   "投稿ではシリーズを、315プロダクションの冠番組「P@SSION CHALLENGE We are 315！」のマンスリーテーマソングを16ユニットで繋いでいくものと説明した。",
+   "封入特典：ポータルサイトでCD特典ストーリーが閲覧できるストーリー解放用シリアルコード。",
+   "初回生産特典：ユニットメンバー全員分の特製ブロマイド。",
+   "CD SHOPとして https://lnk.to/LACM-24794 が案内された。",
+   "リンク: https://www.youtube.com/watch?v=qehUw0zK8IM&feature=youtu.be",
+   "リンク: https://lnk.to/LACM-24794",
+   "エンゲージメント: 中",
+   "言及アイドル: Beit"
+  ],
+  "via": "grok",
+  "verify": "unconfirmed",
+  "event_date": "2026-12-23",
+  "src_candidate_id": "202611110233-grok-72"
  }
 ]

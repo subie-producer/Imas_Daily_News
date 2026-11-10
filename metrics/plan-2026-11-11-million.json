@@ -1,0 +1,209 @@
+{
+ "decisions": {
+  "million-ova-onkyo-earphone-charger-2026": {
+   "action": "article",
+   "angle": "OVA記念の録り下ろしボイス搭載イヤホン(22,000円)・充電器(6,600円)の受注が13日15時までと迫る",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "既報なし。締切が2日後"
+  },
+  "million-snapshot-memories-gasha-2026-11": {
+   "action": "article",
+   "angle": "Snapshot Memoriesガシャは17日14時59分まで。徳川まつり・箱崎星梨花のSSRと、千早・響のSR(めたもる！シリーズ)が登場",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "snapshot-memories-gacha-2026-11 を統合。既報なし。roundup は3件に満たず通常記事"
+  },
+  "charm-nuit-piece-discount-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "変更点はニコ生ページの放送枠表示(MUSIC ON THE RADIO #422)で、交換所キャンペーンの条件変更ではない。読者に関わる変更なし"
+  },
+  "million-milicolle-2026-11": {
+   "action": "article",
+   "angle": "ミリコレ開催中。コインで回すイベントガシャの限定SR「魅惑のマイクパフォーマンス 高坂海美」が新情報",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "million-millionlive-collection-2026-11 を統合。既報本文に限定カード(海美)の記載なし"
+  },
+  "tomoka-birthday-2026": {
+   "action": "article",
+   "angle": "11日は天空橋朋花の誕生日。ミリシタでBirthdayガシャとセット2026が登場し、劇場も特別仕様に",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 65,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ガシャ・セットを統合した同一施策の1記事"
+  },
+  "tomoka-birthday-gacha-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "tomoka-birthday-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ誕生日施策"
+  },
+  "tomoka-birthday-set-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "tomoka-birthday-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ誕生日施策"
+  },
+  "snapshot-memories-gacha-2026-11": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-snapshot-memories-gasha-2026-11",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じガシャ"
+  },
+  "million-platinum-star-tune-yoruto-akari-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "イベントは11月7日に終了済み。ドアデコセットも9日終了で既報"
+  },
+  "million-millionlive-collection-2026-11": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-milicolle-2026-11",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じミリコレ"
+  },
+  "millionlive-hinata-apple-ambassador-2026": {
+   "action": "article",
+   "angle": "そうべつりんごめぐりのスタンプ賞品応募は本日11日が締切(受付は道の駅そうべつ情報館i、9〜17時)",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約の締切。当日に手続きできる"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "million-ova-onkyo-earphone-charger-2026",
+    "brand": "million",
+    "rank": "medium",
+    "angle": "OVA記念の録り下ろしボイス搭載イヤホン(22,000円)・充電器(6,600円)の受注が13日15時までと迫る",
+    "purpose": "新情報",
+    "lead_score": 30,
+    "dedup_key": "million-ova-onkyo-earphone-charger-2026",
+    "candidate_ids": [
+     "202611101235-watch-2",
+     "202611110233-grok-162"
+    ]
+   },
+   {
+    "slug": "million-snapshot-memories-gasha-2026-11",
+    "brand": "million",
+    "rank": "small",
+    "angle": "Snapshot Memoriesガシャは17日14時59分まで。徳川まつり・箱崎星梨花のSSRと、千早・響のSR(めたもる！シリーズ)が登場",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "million-snapshot-memories-gasha-2026-11",
+    "candidate_ids": [
+     "202611101235-explore-10",
+     "202611092333-explore-1",
+     "202611110233-grok-30"
+    ]
+   },
+   {
+    "slug": "million-milicolle-2026-11",
+    "brand": "million",
+    "rank": "small",
+    "angle": "ミリコレ開催中。コインで回すイベントガシャの限定SR「魅惑のマイクパフォーマンス 高坂海美」が新情報",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "million-milicolle-2026-11",
+    "candidate_ids": [
+     "202611101834-explore-6",
+     "202611091233-explore-4"
+    ]
+   },
+   {
+    "slug": "million-tomoka-birthday-2026",
+    "brand": "million",
+    "rank": "medium",
+    "angle": "11日は天空橋朋花の誕生日。ミリシタでBirthdayガシャとセット2026が登場し、劇場も特別仕様に",
+    "purpose": "新情報",
+    "lead_score": 65,
+    "dedup_key": "tomoka-birthday-2026",
+    "candidate_ids": [
+     "202611110233-grok-27",
+     "202611110233-grok-34",
+     "202611110233-grok-28",
+     "202611110233-grok-29"
+    ]
+   },
+   {
+    "slug": "million-millionlive-hinata-apple-ambassador-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "そうべつりんごめぐりのスタンプ賞品応募は本日11日が締切(受付は道の駅そうべつ情報館i、9〜17時)",
+    "purpose": "期日の知らせ",
+    "lead_score": 10,
+    "dedup_key": "millionlive-hinata-apple-ambassador-2026",
+    "candidate_ids": [
+     "sched-2026-11-11-millionlive-hinata-apple-ambassador-2026-締切"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "charm-nuit-piece-discount-2026",
+    "reason": "その他",
+    "note": "変更点はニコ生ページの放送枠表示(MUSIC ON THE RADIO #422)で、交換所キャンペーンの条件変更ではない。読者に関わる変更なし"
+   },
+   {
+    "dedup_key": "million-platinum-star-tune-yoruto-akari-2026",
+    "reason": "既報",
+    "note": "イベントは11月7日に終了済み。ドアデコセットも9日終了で既報"
+   }
+  ],
+  "cross_brand": []
+ }
+}

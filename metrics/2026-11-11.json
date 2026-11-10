@@ -1,0 +1,158 @@
+{
+ "collect": [
+  {
+   "at": "2026-11-11T02:35:26+09:00",
+   "edition": "2026-11-11",
+   "started_at": "2026-11-11T02:00:45+09:00",
+   "trigger": "timer",
+   "watch": {
+    "stats": {
+     "imas-portal": {
+      "found": 12,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-sidem": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-shiny": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-million": {
+      "found": 8,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "lantis-shiny": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "lantis-sidem": {
+      "found": 5,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "columbia-imas": {
+      "found": 353,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "bnam-tours": {
+      "found": 69,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "imasnews765": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     }
+    },
+    "new": 0,
+    "facted": 0,
+    "deferred": 0,
+    "blocked": 0,
+    "unavailable": 0
+   },
+   "per_query": {
+    "explore:765as": 1,
+    "explore:cinderella": 1,
+    "explore:million": 0,
+    "explore:shiny": 5,
+    "explore:sidem": 3,
+    "explore:gakuen": 5,
+    "explore:dsva": 0,
+    "explore:joint-other": 0,
+    "explore:trend": 2,
+    "grok_week_searches": 747,
+    "grok:765as": 10,
+    "grok:cinderella": 12,
+    "grok:million": 8,
+    "grok:shiny": 35,
+    "grok:sidem": 17,
+    "grok:gakuen": 35,
+    "grok:dsva": 14,
+    "grok:joint-other": 7,
+    "grok:trend": 13,
+    "grok_searches:sidem": 13,
+    "grok_searches:joint": 14,
+    "grok_searches:dsva": 5,
+    "grok_searches:cg": 6,
+    "grok_searches:shiny": 10,
+    "grok_searches:gaku": 9,
+    "grok_searches:million": 9,
+    "grok_searches:765": 6,
+    "grok_searches:general": 10
+   },
+   "normalized": 168,
+   "added": 144,
+   "verify": {
+    "confirmed": 136,
+    "unconfirmed": 31,
+    "failed": 1
+   },
+   "duration_s": 2080
+  }
+ ],
+ "collect_required": [
+  {
+   "at": "2026-11-11T02:37:35+09:00",
+   "edition": "2026-11-11",
+   "started_at": "2026-11-11T02:00:45+09:00",
+   "trigger": "timer",
+   "reserve_s": 420,
+   "left_s": 574,
+   "elapsed_s": 129
+  }
+ ],
+ "compose": [
+  {
+   "at": "2026-11-11T03:34:42+09:00",
+   "edition": "2026-11-11",
+   "rounds": 5,
+   "approved": true,
+   "lint_green": true,
+   "planned": 45,
+   "written": 43,
+   "roundups": 2,
+   "dropped": 0,
+   "coverage": {
+    "subjects": 157,
+    "covered": 157,
+    "missing": 0,
+    "missing_keys": []
+   },
+   "dropped_by_review": [
+    "gaku-lawson-print-15-bromides-2026-10"
+   ],
+   "stages_min": {
+    "選定": 2.0280648748079937,
+    "執筆": 10.4181721051534,
+    "出典の判定": 1.4752792914708455,
+    "組版": 0.8893423875172933,
+    "校閲": 1.0579119761784872,
+    "校閲1波": 1.0579119761784872
+   },
+   "target_min": 60,
+   "over_target": false,
+   "aborted": [
+    "million-milicolle-2026-11"
+   ],
+   "duration_s": 2037
+  }
+ ]
+}

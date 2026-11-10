@@ -1,0 +1,74 @@
+{
+ "decisions": {
+  "idolmaster-tours-trial-resumption-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11月9日の合同面記事「ツアマス、11月8日から試験稼働再開」と同内容で、新事実も当日のトリガーも無い"
+  },
+  "tomoka-birthday-fan-celebration-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "imas-birthdays-2026-11-11",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ファン投稿の祝福はファン面の1本に束ねる"
+  },
+  "fan-maid-experience-results-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "imas-birthdays-2026-11-11",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ファンの体験結果共有もファン面の1本に束ねる。個人は主役にしない"
+  },
+  "imas-birthdays-2026-11-11": {
+   "action": "article",
+   "angle": "11月11日の誕生日(福丸小糸・紫雲清夏・レトラ)をアイマスchがお祝いムービーで祝福し、朋花の誕生日や初星メイド体験などファンの祝福・交流も広がった",
+   "purpose": "新情報",
+   "rank": "culture",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ファン面(culture)の1本。各ブランド面の誕生日施策とは別に、公式chの祝福とファンの盛り上がりを扱う"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "general-imas-birthdays-2026-11-11",
+    "brand": "general",
+    "rank": "culture",
+    "angle": "11月11日の誕生日(福丸小糸・紫雲清夏・レトラ)をアイマスchがお祝いムービーで祝福し、朋花の誕生日や初星メイド体験などファンの祝福・交流も広がった",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "imas-birthdays-2026-11-11",
+    "candidate_ids": [
+     "202611110233-grok-114",
+     "202611110233-grok-32",
+     "202611110233-grok-90"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "idolmaster-tours-trial-resumption-2026",
+    "reason": "既報",
+    "note": "11月9日の合同面記事「ツアマス、11月8日から試験稼働再開」と同内容で、新事実も当日のトリガーも無い"
+   }
+  ],
+  "cross_brand": []
+ }
+}

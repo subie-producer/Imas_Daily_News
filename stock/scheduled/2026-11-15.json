@@ -3772,5 +3772,27 @@
   "deadline": "2026-11-15",
   "link_from": "https://x.com/imas_official/status/2119716639453389231",
   "src_candidate_id": "202611091835-watch-1"
+ },
+ {
+  "id": "sched-2026-11-15-gaku-producer-ranking-season4-2026-終了",
+  "dedup_key": "gaku-producer-ranking-season4-2026",
+  "brand": "gaku",
+  "subject": "学マス プロデューサーランキング シーズン4 集計期間終了",
+  "kind": "終了",
+  "note": "集計期間が10時59分に終わり、ランキングの最終順位を見に行ける",
+  "reserved_on": "2026-11-11",
+  "occurs_on": "2026-11-15",
+  "title": "プロデューサーランキング シーズン4開催中",
+  "url": "https://x.com/gkmas_official/status/2097880490074378578",
+  "source_type": "公式",
+  "facts": [
+   "開催期間は11月12日(木)4:59まで(予定)",
+   "集計期間は11月12日(木)5:00〜11月15日(日)10:59まで(予定)"
+  ],
+  "via": "",
+  "verify": "confirmed",
+  "event_date": "2026-09-11",
+  "deadline": "2026-11-12",
+  "src_candidate_id": "sched-2026-11-11-gaku-producer-ranking-season4-2026-終了"
  }
 ]

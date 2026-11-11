@@ -1,0 +1,719 @@
+{
+ "decisions": {
+  "gaku-17-instrumental-tracks-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-10にインスト17曲公開の記事済み、新事実なし"
+  },
+  "gaku-steampunk-gearbeat-goods-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "変更後の受注の記載は11-10記事の内容と同じで、読者に関わる変更なし"
+  },
+  "lawson-gakumas-multifile-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "ローソン施策は11-05・11-10・11-11に記事済み。新事実・当日のトリガーなし"
+  },
+  "lawson-gakumas-langly-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-10の店頭販売の記事と同内容"
+  },
+  "lawson-gakumas-store-goods-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-lawson-store-goods-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ店頭グッズの発売"
+  },
+  "lawson-gakumas-loppi-goods-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "Loppi予約は11-10に記事済み。期限は2027年1月で当日のトリガーなし"
+  },
+  "lawson-gakumas-quote-post-campaign-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-10のローソン施策の記事と同内容。締切11/16は3日以内ではない"
+  },
+  "gakuen-idolmaster-round1-vol-2-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-08に12月1日開始の記事済み"
+  },
+  "eclipse-light-animate-fair-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "対象商品欄の入れ替わりで、GOLD RUSH(7)特装版は11-05に記事済み。フェアは11/23まで"
+  },
+  "gkmas-hoshi-hr-2-5th-anniv-mirror-policy-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gakuen-hatsuboshi-hr-2-5th-sp-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ミラー配信ポリシーを同じ記事に統合"
+  },
+  "lawson-gkmas-goods-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-lawson-store-goods-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ店頭グッズの発売"
+  },
+  "gakumas-hyo-final-archive-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-10にアーカイブ公開と11/23までの記事済み"
+  },
+  "gaku-radio-final-talk-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-11に放送の記事済み"
+  },
+  "gaku-radio-2026-11-18": {
+   "action": "article",
+   "angle": "学マス放送部11月18日放送回のゲストが飯田ヒカル・七瀬つむぎ・陽高真白に決まり、おたよりは13日午前までと伝える。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-duet-song-collection-2-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-09に発売3作の記事済み"
+  },
+  "gakuen-hatsuboshi-hr-2-5th-sp-2026": {
+   "action": "article",
+   "angle": "「初星学園HR ～2.5thアニバーサリーSP～」は15日19:30配信で、氷渡香名江の実装と新ユニット「乖轟」の情報を告知する。ミラー配信ポリシーも示された。",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 55,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "配信まで3日。ミラー配信ポリシーは新しい事実"
+  },
+  "shion-shiina-birthday-goods-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-11に誕生日セット4,900円の記事済み"
+  },
+  "shion-shiina-birthday-stream-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-11に生誕配信の記事済み"
+  },
+  "gaku-kan-nae-ad-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-10に新宿駅広告の記事済み"
+  },
+  "gaku-wednesday-jewels-2026-11-11": {
+   "action": "roundup",
+   "angle": "開催中の運営情報(水曜ジュエル配布・前夜祭ログボ・GOLD RUSH無料公開)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-gold-rush-vol8-code-2026": {
+   "action": "article",
+   "angle": "GOLD RUSH第8巻特装版のシリアルコードが、アイマスポータルで入力できるようになった。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-gold-rush-free-70-2026-11": {
+   "action": "roundup",
+   "angle": "GOLD RUSH 70話分無料(11/21 18:00まで)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-muginimi-collection-vol2-capsule": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-11にvol.2の記事済み"
+  },
+  "fan-ume-cosplay-2026-11-11": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "ファン面(general)の話題。個人のSNS投稿"
+  },
+  "fan-ume-agitato-cosplay-2026-11-10": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "ファン面(general)の話題。個人のSNS投稿"
+  },
+  "fan-hanami-sisters-cosplay-2026-11-10": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "ファン面(general)の話題。個人のSNS投稿"
+  },
+  "curtain-damashii-new-goods-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-b2-tapestry-juo-sena",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じカーテン魂の予約受付"
+  },
+  "gaku-lawson-print-15-bromides-2026-10": {
+   "action": "article",
+   "angle": "ローソンプリントの学園アイドルマスター ブロマイドに84種が追加された。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "10-07の記事は15種。84種は新しい事実"
+  },
+  "gaku-conceptual-single-collection-2027": {
+   "action": "article",
+   "angle": "「初星学園 Conceptual Single Collection」(Vol.1〜3・コンプリートスペシャルセット)の予約は15日まで。締切まであと3日。",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じCD予約の6主題を統合"
+  },
+  "hatsuboshi-conceptual-single-collection-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-conceptual-single-collection-2027",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "conceptual-single-collection-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-conceptual-single-collection-2027",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-b2-tapestry-juo-sena": {
+   "action": "article",
+   "angle": "カーテン魂の学マス新作グッズ(B2タペストリーやクッションなど)の予約受付は15日まで。Anime Store.JPで予約できる。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-kotone-endless-dance-graphic-tee": {
+   "action": "article",
+   "angle": "藤田ことねグラフィックTシャツ(ENDLESS DANCE)の予約キャンセルは本日12日まで。13日以降は不可。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "anniversary-login-2026": {
+   "action": "roundup",
+   "angle": "2.5thアニバーサリー前夜祭ログボ(16日4:59まで)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gakumas-espresto-prize-kuramoto-shinozawa": {
+   "action": "article",
+   "angle": "ESPRESTO篠澤広フィギュアが本日から全国のクレーンゲームに順次登場する。倉本千奈は27日。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-3rd-single-finish-goods-2026": {
+   "action": "article",
+   "angle": "3rdシングル完走記念グッズの受注(アソビストア・アニメイト)は15日まで。締切まであと3日。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-conceptual-single-collection-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-conceptual-single-collection-2027",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gakuen-kanae-amazon-gift-campaign-2026": {
+   "action": "article",
+   "angle": "氷渡香名江の実装記念Amazonギフトカードキャンペーンは15日23:59まで。締切まであと3日。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-conceptual-collection-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-conceptual-single-collection-2027",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-lawson-store-goods-2026": {
+   "action": "article",
+   "angle": "学マス×ローソンの店頭グッズが本日12日、江津敬川店(島根)と内子五十崎インター店(愛媛)でも発売される。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "店頭発売の3主題を統合"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "gaku-radio-2026-11-18",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "学マス放送部11月18日放送回のゲストが飯田ヒカル・七瀬つむぎ・陽高真白に決まり、おたよりは13日午前までと伝える。",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "gaku-radio-2026-11-18",
+    "candidate_ids": [
+     "202611120230-grok-77"
+    ]
+   },
+   {
+    "slug": "gaku-gakuen-hatsuboshi-hr-2-5th-sp-2026",
+    "brand": "gaku",
+    "rank": "medium",
+    "angle": "「初星学園HR ～2.5thアニバーサリーSP～」は15日19:30配信で、氷渡香名江の実装と新ユニット「乖轟」の情報を告知する。ミラー配信ポリシーも示された。",
+    "purpose": "期日の知らせ",
+    "lead_score": 55,
+    "dedup_key": "gakuen-hatsuboshi-hr-2-5th-sp-2026",
+    "candidate_ids": [
+     "202611120230-grok-79",
+     "202611120230-grok-151",
+     "202611111835-watch-12",
+     "202611120230-grok-150",
+     "202611120230-grok-182"
+    ]
+   },
+   {
+    "slug": "gaku-gold-rush-vol8-code-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "GOLD RUSH第8巻特装版のシリアルコードが、アイマスポータルで入力できるようになった。",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "gaku-gold-rush-vol8-code-2026",
+    "candidate_ids": [
+     "202611120230-grok-84"
+    ]
+   },
+   {
+    "slug": "gaku-lawson-print-15-bromides-2026-10",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "ローソンプリントの学園アイドルマスター ブロマイドに84種が追加された。",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "gaku-lawson-print-15-bromides-2026-10",
+    "candidate_ids": [
+     "202611110233-grok-83"
+    ]
+   },
+   {
+    "slug": "gaku-conceptual-single-collection-2027",
+    "brand": "gaku",
+    "rank": "medium",
+    "angle": "「初星学園 Conceptual Single Collection」(Vol.1〜3・コンプリートスペシャルセット)の予約は15日まで。締切まであと3日。",
+    "purpose": "期日の知らせ",
+    "lead_score": 60,
+    "dedup_key": "gaku-conceptual-single-collection-2027",
+    "candidate_ids": [
+     "sched-2026-11-12-gaku-conceptual-single-collection-2027-締切前",
+     "sched-2026-11-12-hatsuboshi-conceptual-single-collection-2026-締切前",
+     "sched-2026-11-12-conceptual-single-collection-2026-締切前",
+     "sched-2026-11-12-gaku-conceptual-single-collection-2026-締切前",
+     "sched-2026-11-12-gaku-conceptual-single-collection-2026-締切前-src1",
+     "sched-2026-11-12-gaku-conceptual-collection-2026-締切前",
+     "sched-2026-11-12-gaku-conceptual-collection-2026-締切前-src1",
+     "sched-2026-11-12-gaku-conceptual-collection-2026-締切前-src2"
+    ]
+   },
+   {
+    "slug": "gaku-b2-tapestry-juo-sena",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "カーテン魂の学マス新作グッズ(B2タペストリーやクッションなど)の予約受付は15日まで。Anime Store.JPで予約できる。",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "gaku-b2-tapestry-juo-sena",
+    "candidate_ids": [
+     "sched-2026-11-12-gaku-b2-tapestry-juo-sena-締切前",
+     "sched-2026-11-12-gaku-b2-tapestry-juo-sena-締切前-src1",
+     "sched-2026-11-12-gaku-b2-tapestry-juo-sena-締切前-src2",
+     "sched-2026-11-12-gaku-b2-tapestry-juo-sena-締切前-src3",
+     "sched-2026-11-12-gaku-b2-tapestry-juo-sena-締切前-src4",
+     "202610260411-watch-0",
+     "202610260412-watch-0",
+     "202610260417-watch-0",
+     "202610241231-explore-11",
+     "sched-2026-11-12-curtain-damashii-new-goods-2026-締切前",
+     "sched-2026-11-12-curtain-damashii-new-goods-2026-締切前-src1"
+    ]
+   },
+   {
+    "slug": "gaku-kotone-endless-dance-graphic-tee",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "藤田ことねグラフィックTシャツ(ENDLESS DANCE)の予約キャンセルは本日12日まで。13日以降は不可。",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "gaku-kotone-endless-dance-graphic-tee",
+    "candidate_ids": [
+     "sched-2026-11-12-gaku-kotone-endless-dance-graphic-tee-締切",
+     "sched-2026-11-12-gaku-kotone-endless-dance-graphic-tee-締切-src1"
+    ]
+   },
+   {
+    "slug": "gaku-gakumas-espresto-prize-kuramoto-shinozawa",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "ESPRESTO篠澤広フィギュアが本日から全国のクレーンゲームに順次登場する。倉本千奈は27日。",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "gakumas-espresto-prize-kuramoto-shinozawa",
+    "candidate_ids": [
+     "sched-2026-11-12-gakumas-espresto-prize-kuramoto-shinozawa-発売"
+    ]
+   },
+   {
+    "slug": "gaku-3rd-single-finish-goods-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "3rdシングル完走記念グッズの受注(アソビストア・アニメイト)は15日まで。締切まであと3日。",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "gaku-3rd-single-finish-goods-2026",
+    "candidate_ids": [
+     "sched-2026-11-12-gaku-3rd-single-finish-goods-2026-締切前"
+    ]
+   },
+   {
+    "slug": "gaku-gakuen-kanae-amazon-gift-campaign-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "氷渡香名江の実装記念Amazonギフトカードキャンペーンは15日23:59まで。締切まであと3日。",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "gakuen-kanae-amazon-gift-campaign-2026",
+    "candidate_ids": [
+     "sched-2026-11-12-gakuen-kanae-amazon-gift-campaign-2026-締切前",
+     "sched-2026-11-12-gakuen-kanae-amazon-gift-campaign-2026-締切前-src1",
+     "sched-2026-11-12-gakuen-kanae-amazon-gift-campaign-2026-締切前-src2"
+    ]
+   },
+   {
+    "slug": "gaku-lawson-store-goods-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "学マス×ローソンの店頭グッズが本日12日、江津敬川店(島根)と内子五十崎インター店(愛媛)でも発売される。",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "gaku-lawson-store-goods-2026",
+    "candidate_ids": [
+     "sched-2026-11-12-gaku-lawson-store-goods-2026-発売",
+     "sched-2026-11-12-gaku-lawson-store-goods-2026-発売-src1",
+     "sched-2026-11-12-gaku-lawson-store-goods-2026-発売-src2",
+     "sched-2026-11-12-gaku-lawson-store-goods-2026-発売-src3",
+     "sched-2026-11-12-gaku-lawson-store-goods-2026-発売-src4",
+     "sched-2026-11-12-gaku-lawson-store-goods-2026-発売-src5",
+     "202611111232-explore-10",
+     "202611111835-explore-21"
+    ]
+   },
+   {
+    "slug": "gaku-ops-roundup",
+    "brand": "gaku",
+    "rank": "roundup",
+    "angle": "開催中の運営情報(水曜ジュエル配布・前夜祭ログボ・GOLD RUSH無料公開)",
+    "lead_score": 0,
+    "dedup_key": "gaku-wednesday-jewels-2026-11-11",
+    "candidate_ids": [
+     "202611120230-grok-83",
+     "202611120230-grok-85",
+     "202611120230-grok-154",
+     "sched-2026-11-12-anniversary-login-2026-締切前",
+     "sched-2026-11-12-anniversary-login-2026-締切前-src1"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "gaku-17-instrumental-tracks-2026",
+    "reason": "既報",
+    "note": "11-10にインスト17曲公開の記事済み、新事実なし"
+   },
+   {
+    "dedup_key": "gaku-steampunk-gearbeat-goods-2026",
+    "reason": "既報",
+    "note": "変更後の受注の記載は11-10記事の内容と同じで、読者に関わる変更なし"
+   },
+   {
+    "dedup_key": "lawson-gakumas-multifile-2026",
+    "reason": "既報",
+    "note": "ローソン施策は11-05・11-10・11-11に記事済み。新事実・当日のトリガーなし"
+   },
+   {
+    "dedup_key": "lawson-gakumas-langly-2026",
+    "reason": "既報",
+    "note": "11-10の店頭販売の記事と同内容"
+   },
+   {
+    "dedup_key": "lawson-gakumas-loppi-goods-2026",
+    "reason": "既報",
+    "note": "Loppi予約は11-10に記事済み。期限は2027年1月で当日のトリガーなし"
+   },
+   {
+    "dedup_key": "lawson-gakumas-quote-post-campaign-2026",
+    "reason": "既報",
+    "note": "11-10のローソン施策の記事と同内容。締切11/16は3日以内ではない"
+   },
+   {
+    "dedup_key": "gakuen-idolmaster-round1-vol-2-2026",
+    "reason": "既報",
+    "note": "11-08に12月1日開始の記事済み"
+   },
+   {
+    "dedup_key": "eclipse-light-animate-fair-2026",
+    "reason": "既報",
+    "note": "対象商品欄の入れ替わりで、GOLD RUSH(7)特装版は11-05に記事済み。フェアは11/23まで"
+   },
+   {
+    "dedup_key": "gakumas-hyo-final-archive-2026",
+    "reason": "既報",
+    "note": "11-10にアーカイブ公開と11/23までの記事済み"
+   },
+   {
+    "dedup_key": "gaku-radio-final-talk-2026",
+    "reason": "既報",
+    "note": "11-11に放送の記事済み"
+   },
+   {
+    "dedup_key": "gaku-duet-song-collection-2-2026",
+    "reason": "既報",
+    "note": "11-09に発売3作の記事済み"
+   },
+   {
+    "dedup_key": "shion-shiina-birthday-goods-2026",
+    "reason": "既報",
+    "note": "11-11に誕生日セット4,900円の記事済み"
+   },
+   {
+    "dedup_key": "shion-shiina-birthday-stream-2026",
+    "reason": "既報",
+    "note": "11-11に生誕配信の記事済み"
+   },
+   {
+    "dedup_key": "gaku-kan-nae-ad-2026",
+    "reason": "既報",
+    "note": "11-10に新宿駅広告の記事済み"
+   },
+   {
+    "dedup_key": "gaku-muginimi-collection-vol2-capsule",
+    "reason": "既報",
+    "note": "11-11にvol.2の記事済み"
+   },
+   {
+    "dedup_key": "fan-ume-cosplay-2026-11-11",
+    "reason": "面違い",
+    "note": "ファン面(general)の話題。個人のSNS投稿"
+   },
+   {
+    "dedup_key": "fan-ume-agitato-cosplay-2026-11-10",
+    "reason": "面違い",
+    "note": "ファン面(general)の話題。個人のSNS投稿"
+   },
+   {
+    "dedup_key": "fan-hanami-sisters-cosplay-2026-11-10",
+    "reason": "面違い",
+    "note": "ファン面(general)の話題。個人のSNS投稿"
+   }
+  ],
+  "cross_brand": []
+ }
+}

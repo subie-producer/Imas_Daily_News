@@ -1170,5 +1170,56 @@
   "src_candidate_id": "update-55c65ba66113",
   "companion_of": "sched-2026-11-28-shiny-orchestra-concert-2027-radiant-chord-締切前",
   "src_dedup_key": "shiny-orchestra-concert-2027"
+ },
+ {
+  "id": "sched-2026-11-28-v-aliv-3rd-live-ticket-2026-結果",
+  "dedup_key": "v-aliv-3rd-live-ticket-2026",
+  "brand": "joint",
+  "subject": "vα-liv 3rdLIVE＆MEETING 先行抽選の結果発表",
+  "kind": "結果",
+  "note": "13:00に抽選結果が発表され、当選者は入金手続きに進める",
+  "reserved_on": "2026-11-12",
+  "occurs_on": "2026-11-28",
+  "title": "ヴイアラ3rdLIVE＆MEETING 現地チケット最速先行",
+  "url": "https://x.com/imas_official/status/2113267406470803691",
+  "source_type": "公式",
+  "facts": [
+   "#ヴイアラ 3rdLIVE＆MEETINGの現地チケット最速先行申込を案内した。",
+   "グッズ付きチケットのグッズはおすわりぬいぐるみ。",
+   "申込期限: 2026年11月15日(日)23:59まで",
+   "申込ページ: https://asobiticket2.asobistore.jp/receptions/a911b189-ae4a-4bc6-9f15-729201d4ff7c",
+   "リンク: https://asobiticket2.asobistore.jp/receptions/a911b189-ae4a-4bc6-9f15-729201d4ff7c",
+   "エンゲージメント: 中",
+   "現地チケット最速先行の申込を案内した。",
+   "グッズ付きチケットの特典はおすわりぬいぐるみ。",
+   "申込期限：2026年11月15日(日)23:59まで。",
+   "申込ページ：https://asobiticket2.asobistore.jp/receptions/a911b189-ae4a-4bc6-9f15-729201d4ff7c",
+   "言及アイドル: 灯里愛夏、上水流宇宙、レトラ"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "deadline": "2026-11-15",
+  "src_candidate_id": "sched-2026-11-12-v-aliv-3rd-live-ticket-2026-締切前"
+ },
+ {
+  "id": "sched-2026-11-28-v-aliv-3rd-live-ticket-2026-結果-src1",
+  "dedup_key": "v-aliv-3rd-live-ticket-2026",
+  "brand": "joint",
+  "subject": "vα-liv 3rdLIVE＆MEETING 先行抽選の結果発表",
+  "kind": "結果",
+  "note": "13:00に抽選結果が発表され、当選者は入金手続きに進める",
+  "reserved_on": "2026-11-12",
+  "occurs_on": "2026-11-28",
+  "title": "ASOBI TICKET「PROJECT IM@S vα-liv 3rdLIVE ＆ MEETING QONNECT AS ONE アソビストア一般会員先行」",
+  "url": "https://asobiticket2.asobistore.jp/receptions/a911b189-ae4a-4bc6-9f15-729201d4ff7c",
+  "source_type": "公式",
+  "facts": [
+   "受付はアソビストア一般会員先行の抽選。受付期間は2026年10月17日（土）21:30～11月15日（日）23:59。結果発表は2026年11月28日（土）13:00。入金期間は2026年11月28日（土）13:00～12月2日（水）23:59。複数公演申込可。"
+  ],
+  "via": "verified_fact",
+  "verify": "unconfirmed",
+  "src_candidate_id": "sched-2026-11-12-v-aliv-3rd-live-ticket-2026-締切前",
+  "companion_of": "sched-2026-11-28-v-aliv-3rd-live-ticket-2026-結果",
+  "src_dedup_key": "v-aliv-3rd-live-ticket-2026"
  }
 ]

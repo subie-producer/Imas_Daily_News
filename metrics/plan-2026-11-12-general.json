@@ -1,0 +1,124 @@
+{
+ "decisions": {
+  "allnet-aime-tours-test-resumption-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-09号「ツアマス、11月8日から試験稼働再開」で既報。新事実なし"
+  },
+  "tomoka-birthday-fan-art-2026": {
+   "action": "article",
+   "angle": "天空橋朋花と紫雲清夏の誕生日を祝うファンイラストや、ミリシタ『一旦愛して♡』の踊ってみた動画への反応など、界隈の盛り上がりを1本にまとめる。",
+   "purpose": "新情報",
+   "rank": "culture",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "個人投稿は単体にせず、it-tan動画の話題を統合して1本のファン面記事にする"
+  },
+  "million-it-tan-aishite-dance-video-reaction-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "tomoka-birthday-fan-art-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ファン創作の細切れ話題としてcultureの1本に統合"
+  },
+  "official-birthday-nov12-2026": {
+   "action": "article",
+   "angle": "アイマス公式チャンネルが11月12日の誕生日として城ヶ崎美嘉と猫柳キリオを祝うお祝いムービーを公開した。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "SideM面のキリオ記事とは出典・内容が別(公式chの両名のお祝い動画)"
+  },
+  "imas-birthdays-2026-11-11": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-11号「アイマスch、小糸・清夏・レトラの誕生日祝う」と同内容"
+  },
+  "official-birthday-nov11-b-2026": {
+   "action": "article",
+   "angle": "アイマス公式チャンネルが11月11日の誕生日として相川千夏・大石泉・天空橋朋花を祝うお祝いムービーを公開した。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "11-11号の既報は小糸・清夏・レトラのみ。千夏・泉・朋花の3人は未報"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "general-tomoka-birthday-fan-art-2026",
+    "brand": "general",
+    "rank": "culture",
+    "angle": "天空橋朋花と紫雲清夏の誕生日を祝うファンイラストや、ミリシタ『一旦愛して♡』の踊ってみた動画への反応など、界隈の盛り上がりを1本にまとめる。",
+    "purpose": "新情報",
+    "lead_score": 5,
+    "dedup_key": "tomoka-birthday-fan-art-2026",
+    "candidate_ids": [
+     "202611120230-grok-30",
+     "202611120230-grok-32"
+    ]
+   },
+   {
+    "slug": "general-official-birthday-nov12-2026",
+    "brand": "general",
+    "rank": "small",
+    "angle": "アイマス公式チャンネルが11月12日の誕生日として城ヶ崎美嘉と猫柳キリオを祝うお祝いムービーを公開した。",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "official-birthday-nov12-2026",
+    "candidate_ids": [
+     "202611120230-grok-98"
+    ]
+   },
+   {
+    "slug": "general-official-birthday-nov11-b-2026",
+    "brand": "general",
+    "rank": "small",
+    "angle": "アイマス公式チャンネルが11月11日の誕生日として相川千夏・大石泉・天空橋朋花を祝うお祝いムービーを公開した。",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "official-birthday-nov11-b-2026",
+    "candidate_ids": [
+     "202611120230-grok-119"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "allnet-aime-tours-test-resumption-2026",
+    "reason": "既報",
+    "note": "11-09号「ツアマス、11月8日から試験稼働再開」で既報。新事実なし"
+   },
+   {
+    "dedup_key": "imas-birthdays-2026-11-11",
+    "reason": "既報",
+    "note": "11-11号「アイマスch、小糸・清夏・レトラの誕生日祝う」と同内容"
+   }
+  ],
+  "cross_brand": []
+ }
+}

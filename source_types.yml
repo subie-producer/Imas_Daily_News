@@ -135,6 +135,7 @@ discovery_only_domains:
 # --- 二次情報: 他所の発表を写して伝えている情報源(規程2.5) ---
 # 法人運営か個人運営かは問わない。自ら取材・発表していないものはここ。
 secondary_domains:
+  - crea.bunshun.jp       # 合議で追加: 文藝春秋の雑誌サイトが、企業のプレスリリースを転載して伝えている
   - teapawt.org           # 合議で追加: 相手のファン説は運営が個人と分からず不適。X投稿を写す代行=二次情報
   - xitter.gq             # 合議で追加: Nitter代替のX閲覧プロキシ。公式アカウントの投稿を転載表示
   - oshitomo.jp           # 合議で追加: About記載の運営会社。公式グッズ投稿の内容を言い換え、署名は編集部のみ
@@ -269,6 +270,9 @@ party_paths:
   - item.rakuten.co.jp/f272078-takatsuki        # 高槻市ふるさと納税
 
 party_domains:
+  - sync-innovation.co.jp # 合議で追加: コラボイベントの主催者・グッズ販売元の自社ニュース、一次発信
+  - landmarkhall.jp       # 合議で追加: 催しの会場。イベント日程・予約・企画協力の告知を出している
+  - tohogakuen.ac.jp      # 合議で追加: 自校の声優科の授業「業界特別講座」を主催し、自ら告知している
   - aikatsu-academy.com   # 合議で追加: 他作品(アイカツ！)の公式サイト。フッターの権利表記。アイマスから見て当事者
   - bandai-hobby.net      # 合議で追加: フッターはBANDAI SPIRITS。30MS花海咲季の発売・販売元
   - f-ice.jp              # 合議で追加: 学マスなどのサイクルウェアの販売代理・ライセンス商品を売る会社
@@ -624,6 +628,7 @@ x_accounts:
     - asobistore
     - imas_musicradio
   演者:
+    - yukari_amane_       # 合議で追加: 天音ゆかり本人名義で、ラジオ出演への感謝を投稿
     - T_Larissa_T         # 合議で追加: 武田羅梨沙本人の発信。喜多見柚への思いと公演の意気込みを投稿
     - AkihoSuzumoto       # 合議で追加: 有栖川夏葉役の声優・涼本あきほ本人
     - s_schisa            # 合議で追加: シャニマス放送後の出演者投稿
@@ -669,6 +674,13 @@ x_accounts:
     - imasnews765
     - zutapoke
   ファン:
+    - xx_utaiuta          # 合議で追加: 個人によるコスプレ投稿
+    - tsunaito            # 合議で追加: 個人によるレトラ誕生日祝い投稿
+    - komesuki_f          # 合議で追加: 個人によるコスプレ投稿
+    - eme_green914        # 合議で追加: 個人による踊ってみた動画と反応の投稿
+    - ann123_456          # 合議で追加: 個人によるコスプレ投稿
+    - Purple_dream14      # 合議で追加: 個人アカウントによる朋花誕生日のファンイラスト
+    - GAGAGA_07           # 合議で追加: 個人アカウントによる城ヶ崎美嘉の誕生日祝い投稿
     - tavcegravce0329     # 合議で追加: 個人アカウント。大石泉と相川千夏の誕生日を祝う投稿
     - supowt93            # 合議で追加: SideMファンによる来訪報告。個人アカウント
     - ryutaloP            # 合議で追加: 個人アカウント。紫雲清夏の誕生日を祝うファン投稿
@@ -1031,6 +1043,8 @@ x_accounts:
     - procinen1
     - yutaleP
   当事者:
+    - bkdanikebukuro      # 合議で追加: ばくだん焼本舗池袋店のMフェス特典(コラボ店舗の発信)
+    - animatekuzuha       # 合議で追加: グッズ入荷の告知。店舗の発信と読める(個人の可能性も)
     - yokohama_hands      # 合議で追加: 店舗が自ら商品の抽選結果を発表
     - liveaudio_fes       # 合議で追加: 映画祭での上映告知。催しの主催・会場側の一次発信
     - patty3_info         # 合議で追加: ぬい商品の三次予約を告知。販売元の一次発信とみる(要確認)
@@ -1228,6 +1242,16 @@ x_posts:
 
 # --- リンク元から引き継いだ種別(リンク先1つずつ。キーは pipelib.link_key)。合議がリンク元の告知と関係していると確かめたものだけ(classify_sources.inherit_from_links)。リンク先そのものの種別より強いときだけ効く ---
 link_types:
+  youtube.com/watch?v=ziG6nPFb9xQ: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/imas_ch/status/2120531997915222401(公式)。城ヶ崎美嘉の11/12誕生日祝福ショートで、告知と同じ内容
+  youtube.com/watch?v=oCmI57v90XY: ファン         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/s_tyunp_im/status/2113598083175235750(ファン)。告知の『一旦愛して♡』踊ってみた動画そのもの
+  youtube.com/watch?v=WFkeFP72e6Y: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/imas_ch/status/2120169613933822201(公式)。天空橋朋花の11/11誕生日祝福ショートで、告知と同じ内容
+  youtube.com/watch?v=9ZVOmQ8umTg: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/imas_ch/status/2120169613933822201(公式)。相川千夏の11/11誕生日祝福ショートで、告知と同じ内容
+  youtube.com/watch?v=88tqpiCIzQs: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/imas_ch/status/2120142412161163546(公式)。IM＠S RADIO #5天音ゆかり回のアフタートーク配信で、告知と同じ
+  youtube.com/watch?v=1__-z6GKQDs: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/imas_ch/status/2120169613933822201(公式)。大石泉の11/11誕生日祝福ショートで、告知と同じ内容
+  youtube.com/watch?v=1Rn_gKQq4B8: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/imas_ch/status/2120531997915222401(公式)。猫柳キリオの11/12誕生日祝福ショートで、告知と同じ内容
+  shop.asobistore.jp/products/detail/243707-00-00-00: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://idolmaster-official.jp/news/01_20323(公式)。告知のレトラバースデーグッズの販売ページ本体
+  nicovideo.jp/watch/lv351633219: 準公式          # リンク元から引き継ぎ(合議で関係を確認): https://x.com/SideM_lantis/status/2120358352345829586(準公式)。ニコ生の本編タイムシフトで、告知の315プロNight!回と同じ番組
+  championcross.jp/episodes/c7ad65fc225f2: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://x.com/gkmas_official/status/2120346467043021115(公式)。告知の70話無料キャンペーン対象の『GOLD RUSH』第1話ページ
   youtube.com/watch?v=s3AoLY_lgos: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/imas_ch/status/2120169622028620225(公式)。告知で紹介された紫雲清夏の誕生日お祝い動画そのもの
   youtube.com/watch?v=qehUw0zK8IM: 準公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/SideM_lantis/status/2119988415601254420(準公式)。告知されたシングルの試聴動画そのもの
   youtube.com/watch?v=l0hm9DCfwD8: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/TomoriManaka/status/2120086566160711975(公式)。告知された灯里愛夏の切り抜き動画そのもの

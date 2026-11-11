@@ -1,0 +1,31 @@
+[
+ {
+  "id": "sched-2026-12-25-sidem-mfes-animate-winter-wonderland-2026-終了",
+  "dedup_key": "sidem-mfes-animate-winter-wonderland-2026",
+  "brand": "sidem",
+  "subject": "SideM Mフェス2026 アニメイトフェア最終日",
+  "kind": "終了",
+  "note": "ブロマイド配布の最終日、なくなり次第終了",
+  "reserved_on": "2026-11-12",
+  "occurs_on": "2026-12-25",
+  "title": "SideM Mフェス2026 in Winter Wonderland at アニメイト",
+  "url": "https://www.animate-onlineshop.jp/contents/fair_event/detail.php?id=116355",
+  "source_type": "当事者",
+  "facts": [
+   "掲載日: 2026年11月6日。最終更新: 2026年11月11日。",
+   "開催期間: 2026年12月1日(火)～12月25日(金)。",
+   "開催場所: 全国アニメイト・アニメイト通販。",
+   "期間中、SideM関連のグッズ、書籍、オーディオ・ビジュアル商品、グラッテ飲食を購入または予約内金税込1,100円ごとにブロマイド（全12種）を1枚プレゼント。",
+   "特典は選択不可で、期間中でもなくなり次第終了。",
+   "アニメイト通販では条件が異なる場合があり、開催期間外発売商品の予約は予約内金がないため対象外。",
+   "オンラインくじ、カプセル筐体商品、くまめいと関連商品、一部TCG等は特典対象外。",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "unconfirmed",
+  "event_date": "2026-12-01",
+  "deadline": "2026-12-25",
+  "link_from": "https://x.com/animateykic/status/2120090190236819694",
+  "src_candidate_id": "202611120230-grok-68"
+ }
+]

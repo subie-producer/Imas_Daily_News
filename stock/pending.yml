@@ -424,11 +424,13 @@
   subject: Mフェス2026 in winter wonderland 特典ブロマイドの配布条件・場所
   watch: 条件や配布場所は店舗ごとに異なり、各店舗から詳細告知予定。判明次第 triggers へ
   added_on: '2026-11-07'
+  removed_on: '2026-11-12'
 - dedup_key: another-event-cue-2026
   brand: shiny
   subject: シャニソン アナザーイベント「キュー！」
   watch: 「近日開催」とされた開催日・期間(判明次第 triggers へ)
   added_on: '2026-11-11'
+  removed_on: '2026-11-12'
 - dedup_key: l-antica-xr-mv-2026
   brand: shiny
   subject: アンティーカ3曲のxRライブVer.・フルサイズ版MV追加

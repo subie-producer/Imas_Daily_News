@@ -1,0 +1,252 @@
+{
+ "decisions": {
+  "million-nakamura-genta-lecture-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "声優個人の学校講座ゲスト出演で、アイマス作品の発表ではない"
+  },
+  "million-12thlive-blu-ray-order-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-12th-bluray-order-extension-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ12thLIVE Blu-ray受注締切(本日)"
+  },
+  "tomoka-birthday-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/11号『ミリシタ、朋花の誕生日施策を実施』と同内容。新事実・当日のトリガーなし"
+  },
+  "million-ova-onkyo-earphone-charger-2026": {
+   "action": "article",
+   "angle": "OVA録り下ろしボイス搭載イヤホンと充電器の受注は明日13日15時まで。受注期限が迫る一方、各モデルのCVも判明した。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "締切3日以内。million-ova-audio-goods-2026を統合(CV情報が新事実)"
+  },
+  "million-tomoka-birthday-gacha-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/11号の朋花誕生日施策の記事に同内容"
+  },
+  "million-12th-bluray-order-extension-2026": {
+   "action": "article",
+   "angle": "ミリオン12thLIVE Blu-ray特装版(39,050円)のASOBI STORE受注は本日11月12日が最終日。",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 70,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約の締切。million-12thlive-blu-ray-order-2026とmillion-12thlive-blu-rayを統合"
+  },
+  "million-snapshot-memories-gasha-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/11号『Snapshot Memoriesガシャ、17日14:59まで』と同じ。締切は5日後でトリガーなし"
+  },
+  "million-ova-audio-goods-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-ova-onkyo-earphone-charger-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じOVAイヤホン・充電器の受注。CV情報を統合"
+  },
+  "million-ringo-festival-goods-ec-2026": {
+   "action": "article",
+   "angle": "壮瞥りんごまつりの公式グッズが11日19時からEC販売開始。数量限定で売り切れ次第終了。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "現地販売品のEC販売は新情報。出典が未確認のため校閲で確認"
+  },
+  "tomoka-birthday-pilgrimage-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "ファンの個人投稿の聖地巡礼。culture記事はgeneral面のみ"
+  },
+  "million-platinum-star-tune-yoruto-akari-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "イベントは11/7終了。交換キャンペーン(11/30まで)は11/6号の記事に既出で当日のトリガーなし"
+  },
+  "million-milicolle-2026-11": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-millionlive-collection-2026-11",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じミリコレ開催。Snapshot Memoriesの内容は既報"
+  },
+  "million-millionlive-collection-2026-11": {
+   "action": "article",
+   "angle": "ミリコレ開催中。イベント限定カードはSR「魅惑のマイクパフォーマンス 高坂海美」(CV上田麗奈)で、コイン集めのイベントガシャから入手できる。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "11/9号の開幕記事にないカード名・CVが新事実。million-milicolle-2026-11を統合"
+  },
+  "million-12thlive-blu-ray": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-12th-bluray-order-extension-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ12thLIVE Blu-ray受注締切(本日)。続報予約も同記事に集約"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "million-ova-onkyo-earphone-charger-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "OVA録り下ろしボイス搭載イヤホンと充電器の受注は明日13日15時まで。受注期限が迫る一方、各モデルのCVも判明した。",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "million-ova-onkyo-earphone-charger-2026",
+    "candidate_ids": [
+     "202611112333-explore-6",
+     "202611120230-grok-28"
+    ]
+   },
+   {
+    "slug": "million-12th-bluray-order-extension-2026",
+    "brand": "million",
+    "rank": "medium",
+    "angle": "ミリオン12thLIVE Blu-ray特装版(39,050円)のASOBI STORE受注は本日11月12日が最終日。",
+    "purpose": "期日の知らせ",
+    "lead_score": 70,
+    "dedup_key": "million-12th-bluray-order-extension-2026",
+    "candidate_ids": [
+     "202611120230-grok-23",
+     "202611120230-grok-137",
+     "202611120230-grok-138",
+     "sched-2026-11-12-million-12th-bluray-order-extension-2026-締切",
+     "202611111835-watch-8",
+     "202611120230-grok-180",
+     "sched-2026-11-12-million-12thlive-blu-ray-締切",
+     "sched-2026-11-12-million-12thlive-blu-ray-締切-src1"
+    ]
+   },
+   {
+    "slug": "million-ringo-festival-goods-ec-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "壮瞥りんごまつりの公式グッズが11日19時からEC販売開始。数量限定で売り切れ次第終了。",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "million-ringo-festival-goods-ec-2026",
+    "candidate_ids": [
+     "202611120230-grok-29"
+    ]
+   },
+   {
+    "slug": "million-millionlive-collection-2026-11",
+    "brand": "million",
+    "rank": "small",
+    "angle": "ミリコレ開催中。イベント限定カードはSR「魅惑のマイクパフォーマンス 高坂海美」(CV上田麗奈)で、コイン集めのイベントガシャから入手できる。",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "million-millionlive-collection-2026-11",
+    "candidate_ids": [
+     "202611091233-explore-4",
+     "202611101834-explore-6"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "million-nakamura-genta-lecture-2026",
+    "reason": "個人の話題",
+    "note": "声優個人の学校講座ゲスト出演で、アイマス作品の発表ではない"
+   },
+   {
+    "dedup_key": "tomoka-birthday-2026",
+    "reason": "既報",
+    "note": "11/11号『ミリシタ、朋花の誕生日施策を実施』と同内容。新事実・当日のトリガーなし"
+   },
+   {
+    "dedup_key": "million-tomoka-birthday-gacha-2026",
+    "reason": "既報",
+    "note": "11/11号の朋花誕生日施策の記事に同内容"
+   },
+   {
+    "dedup_key": "million-snapshot-memories-gasha-2026",
+    "reason": "既報",
+    "note": "11/11号『Snapshot Memoriesガシャ、17日14:59まで』と同じ。締切は5日後でトリガーなし"
+   },
+   {
+    "dedup_key": "tomoka-birthday-pilgrimage-2026",
+    "reason": "面違い",
+    "note": "ファンの個人投稿の聖地巡礼。culture記事はgeneral面のみ"
+   },
+   {
+    "dedup_key": "million-platinum-star-tune-yoruto-akari-2026",
+    "reason": "既報",
+    "note": "イベントは11/7終了。交換キャンペーン(11/30まで)は11/6号の記事に既出で当日のトリガーなし"
+   }
+  ],
+  "cross_brand": []
+ }
+}

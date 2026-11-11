@@ -1,0 +1,147 @@
+{
+ "decisions": {
+  "bandainamco-am-co-jp-32": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "tours-rhythm-live-festival-qualifier-extension-2027",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "予選開始の同じ出来事。期間延長は11日の記事で既報"
+  },
+  "fullahead-gakumasu-pu-kuji-2026-11": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "学マス面の話題で共同名義ではない。販売店の投稿のみで未確認、在庫切れ表示"
+  },
+  "tours-shiina-birthday-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11日の記事に同じ内容(コミュ期間・称号・フォトページ)。新事実なし"
+  },
+  "tours-rhythm-live-festival-qualifier-extension-2027": {
+   "action": "article",
+   "angle": "RHYTHM LIVE FESTIVAL 2027の予選が本日7時に開始。期間は12月10日25時59分まで、エントリー受付中で、マスター部門とチャレンジ部門のオンラインランキングで競う。",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "予選開始の4主題(32・2027-qualifier・maintenance)をここへ統合"
+  },
+  "imas-year-end-stream-survey-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11月7日の「アイマス年末感謝祭、6ブランド出演とアンケート」と同じ施策。締切は11月30日で当日のトリガーなし"
+  },
+  "tours-rhythm-live-festival-2027-qualifier": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "tours-rhythm-live-festival-qualifier-extension-2027",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "予選開始の同じ出来事"
+  },
+  "v-aliv-3rd-live-ticket-2026": {
+   "action": "article",
+   "angle": "vα-liv 3rdLIVE＆MEETINGの現地チケット最速先行は15日23時59分まで、締切まであと3日。グッズ付きチケットの特典はおすわりぬいぐるみ。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "締切3日前のトリガー"
+  },
+  "tours-rhythm-live-festival-qualifier-maintenance-2027": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "tours-rhythm-live-festival-qualifier-extension-2027",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "メンテ時の変更可能性は、期間延長と試験稼働再開で解消済み。予選開始に統合"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "joint-tours-rhythm-live-festival-qualifier-extension-2027",
+    "brand": "joint",
+    "rank": "medium",
+    "angle": "RHYTHM LIVE FESTIVAL 2027の予選が本日7時に開始。期間は12月10日25時59分まで、エントリー受付中で、マスター部門とチャレンジ部門のオンラインランキングで競う。",
+    "purpose": "期日の知らせ",
+    "lead_score": 60,
+    "dedup_key": "tours-rhythm-live-festival-qualifier-extension-2027",
+    "candidate_ids": [
+     "202611120230-grok-97",
+     "202611120230-grok-174",
+     "202611120230-grok-175",
+     "sched-2026-11-12-tours-rhythm-live-festival-qualifier-extension-2027-開始",
+     "update-ba3fa19f4e24",
+     "sched-2026-11-12-bandainamco-am-co-jp-32-開始",
+     "sched-2026-11-12-tours-rhythm-live-festival-2027-qualifier-開始",
+     "sched-2026-11-12-tours-rhythm-live-festival-qualifier-maintenance-2027-開始",
+     "sched-2026-11-12-tours-rhythm-live-festival-qualifier-maintenance-2027-開始-src1",
+     "sched-2026-11-12-tours-rhythm-live-festival-qualifier-maintenance-2027-開始-src2"
+    ]
+   },
+   {
+    "slug": "joint-v-aliv-3rd-live-ticket-2026",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "vα-liv 3rdLIVE＆MEETINGの現地チケット最速先行は15日23時59分まで、締切まであと3日。グッズ付きチケットの特典はおすわりぬいぐるみ。",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "v-aliv-3rd-live-ticket-2026",
+    "candidate_ids": [
+     "sched-2026-11-12-v-aliv-3rd-live-ticket-2026-締切前"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "fullahead-gakumasu-pu-kuji-2026-11",
+    "reason": "面違い",
+    "note": "学マス面の話題で共同名義ではない。販売店の投稿のみで未確認、在庫切れ表示"
+   },
+   {
+    "dedup_key": "tours-shiina-birthday-2026",
+    "reason": "既報",
+    "note": "11日の記事に同じ内容(コミュ期間・称号・フォトページ)。新事実なし"
+   },
+   {
+    "dedup_key": "imas-year-end-stream-survey-2026",
+    "reason": "既報",
+    "note": "11月7日の「アイマス年末感謝祭、6ブランド出演とアンケート」と同じ施策。締切は11月30日で当日のトリガーなし"
+   }
+  ],
+  "cross_brand": []
+ }
+}

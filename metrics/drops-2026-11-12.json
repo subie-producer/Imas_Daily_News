@@ -1,0 +1,85 @@
+{
+ "sidem-knick-knacks-vol-2-2026": {
+  "title": "「SideM knick-knacks Vol.2」は明日11月13日に全国15店舗のハンズで開幕し、横浜店は購入時間帯の事前WEB抽選結果を発表した。",
+  "stage": "執筆で見送り",
+  "why": "NOT_NEWS 横浜店の抽選結果を伝える素材は未確認で、リンク先の現行ページでは結果を確認できませんでした。確認できた公式告知は全国15店舗で11月13日から開催するという内容で、既報と重なり、新しい事実を記事の軸にできません。",
+  "candidate_ids": [
+   "202611100230-grok-95",
+   "202611100230-grok-37"
+  ]
+ },
+ "million-ringo-festival-goods-ec-2026": {
+  "title": "壮瞥りんごまつりの公式グッズが11日19時からEC販売開始。数量限定で売り切れ次第終了。",
+  "stage": "執筆で見送り",
+  "why": "NO_PRIMARY_SOURCE 公式X投稿を転載した二次情報の記事は読めましたが、公式販売ページへの短縮URLは403で取得できず、公式・準公式の出典を確認できませんでした。",
+  "candidate_ids": [
+   "202611120230-grok-29"
+  ]
+ },
+ "million-millionlive-collection-2026-11": {
+  "title": "ミリコレ開催中。イベント限定カードはSR「魅惑のマイクパフォーマンス 高坂海美」(CV上田麗奈)で、コイン集めのイベントガシャから入手できる。",
+  "stage": "執筆で見送り",
+  "why": "NO_PRIMARY_SOURCE ミリシタのイベント情報ですが、確認できた出典は二次情報のページのみで、公式・準公式または報道の出典を確保できませんでした。",
+  "candidate_ids": [
+   "202611091233-explore-4",
+   "202611101834-explore-6"
+  ]
+ },
+ "sidem-gotoken-christmas-party-set-2026": {
+  "title": "SideM×五島軒、地域別送料を掲載",
+  "stage": "書き直しで見送り",
+  "why": "NO_PRIMARY_SOURCE R5を満たす公式・準公式または報道の出典を確認できませんでした。五島軒公式X（https://x.com/gotokenhanbai）はfetch_page.pyで読みましたが、出典の種別は「当事者」でした。アイドルマスター公式X（https://x.com/imas_officia",
+  "candidate_ids": [
+   "update-7a810507f6df"
+  ]
+ },
+ "sidem-mfes-bakudanyaki-2026": {
+  "title": "SideM×ばくだん焼本舗、5店舗でコラボ",
+  "stage": "書き直しで見送り",
+  "why": "NO_PRIMARY_SOURCE 公式・準公式または公式発表を報じた報道で、ばくだん焼本舗とのコラボ開催・販売内容を確認できる出典を見つけられませんでした。確認したバンダイナムコアミューズメント公式ページ（https://bandainamco-am.co.jp/chara_shop/idolmaster/extra",
+  "candidate_ids": [
+   "202611112333-explore-10",
+   "202611120230-grok-69",
+   "202611120230-grok-70"
+  ]
+ },
+ "sidem-kirio-birthday-2026": {
+  "title": "SideM、猫柳キリオの誕生日に感謝のメッセージ",
+  "stage": "書き直しで見送り",
+  "why": "OTHER 校閲指摘I1により、同じ猫柳キリオ誕生日の公式祝福を扱う本記事は紙面から落とすよう指定されています。",
+  "candidate_ids": [
+   "202611120230-grok-62"
+  ],
+  "settled": {
+   "rule": "P1",
+   "dup_of": [
+    "general-official-birthday-nov12-2026"
+   ]
+  }
+ },
+ "joint-tours-rhythm-live-festival-qualifier-extension-2027": {
+  "title": "ツアマス大会予選、12月10日まで参加受付",
+  "stage": "校閲ブロック",
+  "why": "R2 verified_facts N2 の url が公式大会ページを指しているが、そのページ本文には「11月16日・11月20日・11月27日・12月4日の更新」が無い(ページにあるのは「12月4日公開予定」「12月11日公開予定」のランキン",
+  "candidate_ids": [
+   "202611120230-grok-97",
+   "202611120230-grok-174",
+   "202611120230-grok-175",
+   "sched-2026-11-12-tours-rhythm-live-festival-qualifier-extension-2027-開始",
+   "update-ba3fa19f4e24",
+   "sched-2026-11-12-bandainamco-am-co-jp-32-開始",
+   "sched-2026-11-12-tours-rhythm-live-festival-2027-qualifier-開始",
+   "sched-2026-11-12-tours-rhythm-live-festival-qualifier-maintenance-2027-開始",
+   "sched-2026-11-12-tours-rhythm-live-festival-qualifier-maintenance-2027-開始-src1",
+   "sched-2026-11-12-tours-rhythm-live-festival-qualifier-maintenance-2027-開始-src2"
+  ]
+ },
+ "sidem-fbfes-wanna-step-in-goods-2026": {
+  "title": "SideM「Wanna step in」グッズ15日まで",
+  "stage": "校閲ブロック",
+  "why": "R1 缶バッジの「各全10種」は、根拠の N2 にも素材の facts にも無い。開いた出典の ASOBI STORE 特設サイト(shop.asobistore.jp/feature/sidem_fbfes_wsi)にも、公式ポータル(news",
+  "candidate_ids": [
+   "sched-2026-11-12-sidem-fbfes-wanna-step-in-goods-2026-締切前"
+  ]
+ }
+}

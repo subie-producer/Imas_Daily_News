@@ -101,5 +101,26 @@
   "deadline": "2026-12-05",
   "link_from": "https://x.com/gotokenhanbai/status/2118176492706242982",
   "src_candidate_id": "202611070733-explore-6"
+ },
+ {
+  "id": "sched-2026-12-05-sidem-joypolis-screening-2026-12-05-終了",
+  "dedup_key": "sidem-joypolis-screening-2026-12-05",
+  "brand": "sidem",
+  "subject": "SideMジョイポリス貸切上映会 一般販売終了",
+  "kind": "終了",
+  "note": "18時までローソンチケットで参加券を購入できる最終日",
+  "reserved_on": "2026-11-12",
+  "occurs_on": "2026-12-05",
+  "title": "出典の更新: SideMジョイポリス上映会、参加券3500円",
+  "url": "https://tokyo-joypolis.com/event/sidem_jp2026/index.html",
+  "source_type": "公式",
+  "facts": [
+   "変更後(11月11日12時34分に読んだ版): 2026年11月19日（木）12:00～",
+   "変更後(11月11日12時34分に読んだ版): 12月5日（土）18:00",
+   "変更前(10月27日3時04分に読んだ版): 2026年11月19日（木）12:00～12月4日（金）23:59"
+  ],
+  "via": "watch",
+  "verify": "confirmed",
+  "src_candidate_id": "update-25f84d75fb73"
  }
 ]

@@ -353,5 +353,34 @@
   "src_candidate_id": "202610300224-grok-82",
   "companion_of": "sched-2026-12-06-sidem-knick-knacks-vol-2-2026-千秋楽",
   "src_dedup_key": "sidem-knick-knacks-vol2-2026"
+ },
+ {
+  "id": "sched-2026-12-06-letora-birthday-goods-2026-締切",
+  "dedup_key": "letora-birthday-goods-2026",
+  "brand": "dsva",
+  "subject": "レトラ バースデー記念グッズセット2026 受注締切",
+  "kind": "締切",
+  "note": "23:59までグッズセットを受注で注文できる最終日。",
+  "reserved_on": "2026-11-12",
+  "occurs_on": "2026-12-06",
+  "title": "レトラ バースデー記念グッズセット2026",
+  "url": "https://x.com/valiv_official/status/2120471763796820174",
+  "source_type": "公式",
+  "facts": [
+   "◤　　#レトラ誕生祭2026",
+   "バースデー記念グッズ販売決定！◢",
+   "バースデー記念グッズセットが今年も登場🪐",
+   "今年のテーマは「新アイドル衣装」✨",
+   "イラストは森倉円先生による描き下ろし！",
+   "プレミアムなグッズ5点セットは、",
+   "期間限定受注販売となりますので、",
+   "お見逃しなく！⚡",
+   "🔽ご購入はこちら",
+   "※受注期間：12月6日(日)23:59まで",
+   "#ヴイアラ #れとらぶ"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202611120230-grok-165"
  }
 ]

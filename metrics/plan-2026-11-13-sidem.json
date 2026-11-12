@@ -1,0 +1,402 @@
+{
+ "decisions": {
+  "sidem-whats-it-taste-like-cd-series": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-11号の記事に発売日・価格・特典まで掲載済み。新事実なし"
+  },
+  "sidem-passion-challenge-monthly-14-beit-jacket-video": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-11号でジャケット・試聴動画・12/23発売を記事化済み"
+  },
+  "sidem-fanfes-wgf-popcorn-box-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-11号で11/20発売を記事化済み。新事実なし"
+  },
+  "sidem-mfes-bakudanyaki-2026": {
+   "action": "article",
+   "angle": "Mフェス2026 in winter wonderlandとばくだん焼本舗のコラボが12月1日〜27日に5店舗で開催され、コースターとブロマイドの特典が付く。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "池袋店の併設ポップアップ特典(popup-benefit)を統合"
+  },
+  "sidem-fbfes-movie-stage-greeting-shinjuku-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-12号にLV販売日時・料金・登壇者まで掲載済み。出典変更に読者向けの新事実なし。LV販売は18日で当日トリガーなし"
+  },
+  "sidem-315-episode-idol-one-panel-update-2026-10": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "出典の変化はページの表示要素のみで、読者に関わる変更なし"
+  },
+  "teddys-collection-ii-goods": {
+   "action": "article",
+   "angle": "Anime Store.JPで予約中の「Teddy's Collection II」(ワイヤー3連アクリルチャーム・マフラータオル)の予約締切が11月15日に迫る。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "締切3日以内のトリガー"
+  },
+  "sidem-battle-fes-film-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/20公開と長野・幕張公演の日程は既報。公開は1週間先でトリガーなし"
+  },
+  "sidem-seibuen-retro-party-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "変更は謎解きラリー特典の交換対応のお知らせ見出しのみで、内容が分からない"
+  },
+  "cafe-parade-chocolate-special-2dmv-2026": {
+   "action": "article",
+   "angle": "Café Parade「Chocolate Special」の2DMVが本日22時にYouTubeでプレミア公開される。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(開始)。素材2件"
+  },
+  "fantastic-combination-live-retrospective-2026": {
+   "action": "article",
+   "angle": "PYLON PORTにSideM 3Dアイドルライブ振り返り特集の第1弾が掲載され、F＠NCOM前半3公演の公演・楽曲情報を紹介している。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "劇場版公開とWanna step in開催を記念した特集"
+  },
+  "sidem-birthday-celebration-bouquet-2026-feb": {
+   "action": "article",
+   "angle": "2月生まれ記念グッズ「315 Celebration Bouquet」の受注は15日23時59分まで。グリッター缶バッジのサンプルも公開された。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "締切3日以内のトリガー。サンプル紹介は新事実"
+  },
+  "sidem-gotoken-christmas-party-set-2026": {
+   "action": "article",
+   "angle": "SideM×五島軒のクリスマスパーティセットについて、地域別の送料(1,100円〜1,870円エリアなど)が明らかになった。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "出典変更で送料の地域別金額が追加。既報は「送料別」のみ。予約は12/5まで"
+  },
+  "sidem-mfes-bakudanyaki-popup-benefit-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-mfes-bakudanyaki-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じコラボの池袋店ポップアップ特典"
+  },
+  "sidem-fbfes-wanna-step-in-goods-2026": {
+   "action": "article",
+   "angle": "「Wanna step in」公式グッズの追加直前販売(受注)は11月15日23時59分まで。数量限定で12月中旬以降順次発送。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "締切3日以内のトリガー"
+  },
+  "sidem-knick-knacks-vol2-hands-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-knick-knacks-vol-2-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ開催・同じ開幕"
+  },
+  "sidem-fantastic-battle-fes-nagano-general-advance-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-fantastic-battle-fes-nagano-2026-general",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "長野公演先行の結果発表と入金で同じ手続き"
+  },
+  "sidem-fantastic-battle-fes-nagano-2026-general": {
+   "action": "article",
+   "angle": "「Wanna step in」長野公演の一般会員先行・SP席先行の抽選結果が本日13:00に発表され、SP席は17日23:59までに入金が必要。",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 70,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(結果)。SP席先行2件を統合"
+  },
+  "sidem-fantastic-battle-fes-nagano-sp-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-fantastic-battle-fes-nagano-2026-general",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ長野公演先行の結果発表"
+  },
+  "sidem-knick-knacks-vol-2-2026": {
+   "action": "article",
+   "angle": "「SideM knick-knacks Vol.2」がハンズ全国15店舗とオンラインストアで本日開幕する。北千住店は当選した整理券の時間帯に購入。",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 50,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(開幕)。hands主題を統合"
+  },
+  "sidem-315pronight-mofumofuen-clip-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "続報予約だが素材factsにタイムシフト終了の記載がない(11-12号既報で23:59までと案内済み)"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "sidem-mfes-bakudanyaki-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "Mフェス2026 in winter wonderlandとばくだん焼本舗のコラボが12月1日〜27日に5店舗で開催され、コースターとブロマイドの特典が付く。",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "sidem-mfes-bakudanyaki-2026",
+    "candidate_ids": [
+     "202611120735-explore-7",
+     "202611112333-explore-10",
+     "202611120230-grok-70"
+    ]
+   },
+   {
+    "slug": "sidem-teddys-collection-ii-goods",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "Anime Store.JPで予約中の「Teddy's Collection II」(ワイヤー3連アクリルチャーム・マフラータオル)の予約締切が11月15日に迫る。",
+    "purpose": "期日の知らせ",
+    "lead_score": 10,
+    "dedup_key": "teddys-collection-ii-goods",
+    "candidate_ids": [
+     "update-4543ba85cf8a"
+    ]
+   },
+   {
+    "slug": "sidem-cafe-parade-chocolate-special-2dmv-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "Café Parade「Chocolate Special」の2DMVが本日22時にYouTubeでプレミア公開される。",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "cafe-parade-chocolate-special-2dmv-2026",
+    "candidate_ids": [
+     "202611130231-grok-30",
+     "sched-2026-11-13-cafe-parade-chocolate-special-2dmv-2026-開始"
+    ]
+   },
+   {
+    "slug": "sidem-fantastic-combination-live-retrospective-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "PYLON PORTにSideM 3Dアイドルライブ振り返り特集の第1弾が掲載され、F＠NCOM前半3公演の公演・楽曲情報を紹介している。",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "fantastic-combination-live-retrospective-2026",
+    "candidate_ids": [
+     "202611130231-grok-31",
+     "202611130231-grok-67"
+    ]
+   },
+   {
+    "slug": "sidem-birthday-celebration-bouquet-2026-feb",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "2月生まれ記念グッズ「315 Celebration Bouquet」の受注は15日23時59分まで。グリッター缶バッジのサンプルも公開された。",
+    "purpose": "期日の知らせ",
+    "lead_score": 10,
+    "dedup_key": "sidem-birthday-celebration-bouquet-2026-feb",
+    "candidate_ids": [
+     "202611130231-grok-68",
+     "202611130231-grok-70"
+    ]
+   },
+   {
+    "slug": "sidem-gotoken-christmas-party-set-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "SideM×五島軒のクリスマスパーティセットについて、地域別の送料(1,100円〜1,870円エリアなど)が明らかになった。",
+    "purpose": "新情報",
+    "lead_score": 5,
+    "dedup_key": "sidem-gotoken-christmas-party-set-2026",
+    "candidate_ids": [
+     "update-7a810507f6df"
+    ]
+   },
+   {
+    "slug": "sidem-fbfes-wanna-step-in-goods-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "「Wanna step in」公式グッズの追加直前販売(受注)は11月15日23時59分まで。数量限定で12月中旬以降順次発送。",
+    "purpose": "期日の知らせ",
+    "lead_score": 15,
+    "dedup_key": "sidem-fbfes-wanna-step-in-goods-2026",
+    "candidate_ids": [
+     "sched-2026-11-12-sidem-fbfes-wanna-step-in-goods-2026-締切前"
+    ]
+   },
+   {
+    "slug": "sidem-fantastic-battle-fes-nagano-2026-general",
+    "brand": "sidem",
+    "rank": "medium",
+    "angle": "「Wanna step in」長野公演の一般会員先行・SP席先行の抽選結果が本日13:00に発表され、SP席は17日23:59までに入金が必要。",
+    "purpose": "期日の知らせ",
+    "lead_score": 70,
+    "dedup_key": "sidem-fantastic-battle-fes-nagano-2026-general",
+    "candidate_ids": [
+     "sched-2026-11-13-sidem-fantastic-battle-fes-nagano-2026-general-結果",
+     "sched-2026-11-13-sidem-fantastic-battle-fes-nagano-general-advance-2026-結果",
+     "sched-2026-11-13-sidem-fantastic-battle-fes-nagano-sp-2026-結果",
+     "sched-2026-11-13-sidem-fantastic-battle-fes-nagano-sp-2026-結果-src1"
+    ]
+   },
+   {
+    "slug": "sidem-knick-knacks-vol-2-2026",
+    "brand": "sidem",
+    "rank": "medium",
+    "angle": "「SideM knick-knacks Vol.2」がハンズ全国15店舗とオンラインストアで本日開幕する。北千住店は当選した整理券の時間帯に購入。",
+    "purpose": "期日の知らせ",
+    "lead_score": 50,
+    "dedup_key": "sidem-knick-knacks-vol-2-2026",
+    "candidate_ids": [
+     "sched-2026-11-13-sidem-knick-knacks-vol-2-2026-開幕",
+     "sched-2026-11-13-sidem-knick-knacks-vol-2-2026-開幕-src1",
+     "sched-2026-11-13-sidem-knick-knacks-vol-2-2026-開幕-src2",
+     "sched-2026-11-13-sidem-knick-knacks-vol-2-2026-開幕-src3",
+     "sched-2026-11-13-sidem-knick-knacks-vol2-hands-2026-開幕"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "sidem-whats-it-taste-like-cd-series",
+    "reason": "既報",
+    "note": "11-11号の記事に発売日・価格・特典まで掲載済み。新事実なし"
+   },
+   {
+    "dedup_key": "sidem-passion-challenge-monthly-14-beit-jacket-video",
+    "reason": "既報",
+    "note": "11-11号でジャケット・試聴動画・12/23発売を記事化済み"
+   },
+   {
+    "dedup_key": "sidem-fanfes-wgf-popcorn-box-2026",
+    "reason": "既報",
+    "note": "11-11号で11/20発売を記事化済み。新事実なし"
+   },
+   {
+    "dedup_key": "sidem-fbfes-movie-stage-greeting-shinjuku-2026",
+    "reason": "既報",
+    "note": "11-12号にLV販売日時・料金・登壇者まで掲載済み。出典変更に読者向けの新事実なし。LV販売は18日で当日トリガーなし"
+   },
+   {
+    "dedup_key": "sidem-315-episode-idol-one-panel-update-2026-10",
+    "reason": "既報",
+    "note": "出典の変化はページの表示要素のみで、読者に関わる変更なし"
+   },
+   {
+    "dedup_key": "sidem-battle-fes-film-2026",
+    "reason": "既報",
+    "note": "11/20公開と長野・幕張公演の日程は既報。公開は1週間先でトリガーなし"
+   },
+   {
+    "dedup_key": "sidem-seibuen-retro-party-2026",
+    "reason": "出典不足",
+    "note": "変更は謎解きラリー特典の交換対応のお知らせ見出しのみで、内容が分からない"
+   },
+   {
+    "dedup_key": "sidem-315pronight-mofumofuen-clip-2026",
+    "reason": "既報",
+    "note": "続報予約だが素材factsにタイムシフト終了の記載がない(11-12号既報で23:59までと案内済み)"
+   }
+  ],
+  "cross_brand": []
+ }
+}

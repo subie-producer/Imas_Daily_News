@@ -241,6 +241,7 @@ performer_domains:
 # --- ファン: ファン・サークル活動等の**当事者発信** ---
 # 自分の営みを自分で発信しているもの。他所の発表を写しているものは 二次情報 へ。
 fan_domains:
+  - oshikatsu.ldblog.jp   # 合議で追加: 個人運営のブログ。内容が紹介・まとめでも個人はファン
   - art-pi.com            # 合議で追加: 個人運営のフリーランスサイト。個人の発信はファン。公式引用だけでは二次情報でない
   - crow-diary.com        # 合議で追加: 「本ブログについて」で個人カラスの雑記ブログと明記。個人に紐づく発信
   - vtuber-matomeruyon.blog.jp # 合議で追加: about.htmlは管理人のみ・法人名なし。個人なので内容によらずファン
@@ -270,6 +271,8 @@ party_paths:
   - item.rakuten.co.jp/f272078-takatsuki        # 高槻市ふるさと納税
 
 party_domains:
+  - steamcommunity.com    # 合議で追加: 一般の配信サービスのコミュニティページ。Steam公式About(Valve運営
+  - camp-fire.jp          # 合議で追加: 一般の募集サービス。案件主は電猫遊戯(ゲーム開発元)。運営者情報で確認
   - sync-innovation.co.jp # 合議で追加: コラボイベントの主催者・グッズ販売元の自社ニュース、一次発信
   - landmarkhall.jp       # 合議で追加: 催しの会場。イベント日程・予約・企画協力の告知を出している
   - tohogakuen.ac.jp      # 合議で追加: 自校の声優科の授業「業界特別講座」を主催し、自ら告知している
@@ -628,6 +631,7 @@ x_accounts:
     - asobistore
     - imas_musicradio
   演者:
+    - todamegumi          # 合議で追加: 出演者本人の発信。ARC-FLAGSのPOP UP訪問を自ら投稿
     - yukari_amane_       # 合議で追加: 天音ゆかり本人名義で、ラジオ出演への感謝を投稿
     - T_Larissa_T         # 合議で追加: 武田羅梨沙本人の発信。喜多見柚への思いと公演の意気込みを投稿
     - AkihoSuzumoto       # 合議で追加: 有栖川夏葉役の声優・涼本あきほ本人
@@ -674,6 +678,7 @@ x_accounts:
     - imasnews765
     - zutapoke
   ファン:
+    - ontheEel            # 合議で追加: 個人アカウントによる、ファンとしての作品紹介の投稿
     - xx_utaiuta          # 合議で追加: 個人によるコスプレ投稿
     - tsunaito            # 合議で追加: 個人によるレトラ誕生日祝い投稿
     - komesuki_f          # 合議で追加: 個人によるコスプレ投稿
@@ -1179,6 +1184,7 @@ x_accounts:
 # tiktok.com/@…、ch.nicovideo.jp/…、manga.nicovideo.jp/comic/… など。ドメイン(プラットフォーム)では
 # 決まらず、そのパスの主体で決まる。合議が足す(classify_sources.add_paths)。
 path_types:
+  note.com/karagarashi: ファン                    # 合議で追加: 個人のnote。ライブ旅行記・感想を一人称で投稿
   ch.nicovideo.jp/MillionRADIO: 準公式            # 合議で追加: ニコニコ公式生放送の番組を自ら配信する公式チャンネル
   note.com/senshu_idol: ファン                    # 合議で追加: 大学のファンサークルが書く考察記事。公式の立場はない
   t.co/oXqVG6t5e5: 公式                         # 機械で追加: 展開先 https://bandainamco-am.co.jp/am/vg/idolmaster-tours/rhythmlivefestival2027/
@@ -1242,6 +1248,11 @@ x_posts:
 
 # --- リンク元から引き継いだ種別(リンク先1つずつ。キーは pipelib.link_key)。合議がリンク元の告知と関係していると確かめたものだけ(classify_sources.inherit_from_links)。リンク先そのものの種別より強いときだけ効く ---
 link_types:
+  youtube.com/watch?v=rOaYx3zdutg: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/UtagawaLetora/status/2120911852121268487(公式)。リンク先はレトラ誕生祭2026のバースデーライブのアーカイブ
+  youtube.com/watch?v=RKpCpM4_sGM: 準公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/SideM_lantis/status/2120833994551939421(準公式)。リンク先はCafé Parade「Chocolate Special」2DMVの
+  youtube.com/watch?v=GdklRzQDprw: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/KamizuruCosmo/status/2120803804631478491(公式)。リンク先はレイン・パターソンとのLove Optionsダンス動画
+  x.com/i/status/2120838471107686485: 公式      # リンク元から引き継ぎ(合議で関係を確認): https://x.com/valiv_official/status/2120855429421162539(公式)。リンク先はvα-live音泉ラジオの題名・メール募集の告知そのもの
+  www.onsen.ag/program/va-liv: 公式             # リンク元から引き継ぎ(合議で関係を確認): https://x.com/valiv_official/status/2120855429421162539(公式)。告知と同じラジオ番組『vα-livがすくすく育つラジオ（卵）』の番組ページ
   youtube.com/watch?v=ziG6nPFb9xQ: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/imas_ch/status/2120531997915222401(公式)。城ヶ崎美嘉の11/12誕生日祝福ショートで、告知と同じ内容
   youtube.com/watch?v=oCmI57v90XY: ファン         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/s_tyunp_im/status/2113598083175235750(ファン)。告知の『一旦愛して♡』踊ってみた動画そのもの
   youtube.com/watch?v=WFkeFP72e6Y: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/imas_ch/status/2120169613933822201(公式)。天空橋朋花の11/11誕生日祝福ショートで、告知と同じ内容

@@ -2119,5 +2119,31 @@
   "deadline": "2026-11-19",
   "link_from": "https://sidematome.xxxblog.jp/",
   "src_candidate_id": "202611111835-watch-0"
+ },
+ {
+  "id": "sched-2026-11-18-gaku-radio-2026-11-18-guests-開始",
+  "dedup_key": "gaku-radio-2026-11-18-guests",
+  "brand": "gaku",
+  "subject": "初星学園放送部 11月18日放送回",
+  "kind": "開始",
+  "note": "飯田ヒカル・七瀬つむぎ・陽高真白がゲストの放送を聴ける",
+  "reserved_on": "2026-11-13",
+  "occurs_on": "2026-11-18",
+  "title": "初星学園放送部 11月18日放送回のゲスト",
+  "url": "https://x.com/gkmas_official/status/2120499281476080062",
+  "source_type": "公式",
+  "facts": [
+   "初星学園放送部の2026年11月18日(水)放送回のゲストは飯田ヒカル(藤田ことね役)、七瀬つむぎ(有村麻央役)、陽高真白(十王星南役)。",
+   "公式Xは次回もゲストと一緒にライブを振り返ると案内。",
+   "投稿フォームの募集は金曜午前までと案内。",
+   "お便り投稿フォーム: https://idolmaster-official.jp/gakuen/gakuenradio/contact/",
+   "リンク: https://idolmaster-official.jp/gakuen/gakuenradio/contact/",
+   "エンゲージメント: 中",
+   "言及アイドル: 藤田ことね、有村麻央、十王星南"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "event_date": "2026-11-18",
+  "src_candidate_id": "202611130231-grok-40"
  }
 ]

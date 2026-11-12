@@ -1619,5 +1619,79 @@
   "event_date": "2026-11-21",
   "deadline": "2026-11-19",
   "src_candidate_id": "202611120230-grok-67"
+ },
+ {
+  "id": "sched-2026-11-16-gaku-gacha-day1-2026-締切",
+  "dedup_key": "gaku-gacha-day1-2026",
+  "brand": "gaku",
+  "subject": "標ファイナル公演記念ガシャDAY1 終了",
+  "kind": "締切",
+  "note": "9:59までSSR確定のDAY1ガシャを引ける最終日(予定)",
+  "reserved_on": "2026-11-13",
+  "occurs_on": "2026-11-16",
+  "title": "標ファイナル公演記念ガシャDAY1",
+  "url": "https://x.com/gkmas_official/status/2119021398798848390",
+  "source_type": "公式",
+  "facts": [
+   "開催期間: 11/7（土）21:00～11/16（月）9:59まで（予定）。",
+   "有償限定で1回限り。",
+   "SSRプロデュースアイドルが1枚以上確定。",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "deadline": "2026-11-16",
+  "src_candidate_id": "sched-2026-11-13-gaku-gacha-day1-2026-締切前"
+ },
+ {
+  "id": "sched-2026-11-16-gaku-lawson-quote-campaign-2026-締切",
+  "dedup_key": "gaku-lawson-quote-campaign-2026",
+  "brand": "gaku",
+  "subject": "ローソン×学マス引用ポストキャンペーン締切",
+  "kind": "締切",
+  "note": "23:59までに引用ポストすればQUOカード1万円分の抽選に応募できる最終日",
+  "reserved_on": "2026-11-13",
+  "occurs_on": "2026-11-16",
+  "title": "ローソン「学園アイドルマスター」引用ポストキャンペーン",
+  "url": "https://lawson-faq.lawson.co.jp/faq/show/2315?site_domain=default",
+  "source_type": "当事者",
+  "facts": [
+   "キャンペーン期間：2026年11月10日（火）ポスト後～2026年11月16日（月）23:59。",
+   "ローソン公式X（@akiko_lawson）をフォローし、対象ポストに「#ローソン学園アイドルマスター」とコメントを入れて引用ポストした人の中から、抽選で1名にオリジナルQUOカード1万円分をプレゼント。",
+   "当選者への通知メッセージは2027年1月下旬に配信予定。",
+   "エンゲージメント: 中",
+   "キャンペーン期間: 2026年11月10日（火）のポスト後～2026年11月16日（月）23:59。",
+   "ローソン公式X（@akiko_lawson）をフォローし、対象ポストに「#ローソン学園アイドルマスター」を付けて引用ポストした人から抽選で1名にオリジナルQUOカード1万円分をプレゼント。"
+  ],
+  "via": "explore",
+  "verify": "unconfirmed",
+  "event_date": "2026-11-10",
+  "deadline": "2026-11-16",
+  "src_candidate_id": "202611121236-explore-19"
+ },
+ {
+  "id": "sched-2026-11-16-gaku-maintenance-2026-11-16-開始",
+  "dedup_key": "gaku-maintenance-2026-11-16",
+  "brand": "gaku",
+  "subject": "学マス メンテナンス開始(10:00)",
+  "kind": "開始",
+  "note": "10時の開始前にプロデュースと「アイドルへの道」を完了させる最終日",
+  "reserved_on": "2026-11-13",
+  "occurs_on": "2026-11-16",
+  "title": "11月16日のメンテナンス予告",
+  "url": "https://x.com/gkmas_official/status/2120807562656538794",
+  "source_type": "公式",
+  "facts": [
+   "2026年11月16日(月)10:00よりメンテナンスを行う予定。",
+   "メンテナンスでは、プレイ中のプロデュースデータおよび「アイドルへの道」に挑戦中のデータを破棄する。",
+   "破棄されたプロデュースデータや「アイドルへの道」に挑戦中のデータは復旧できない。",
+   "公式Xは、メンテナンス開始予定までにプロデュースおよび「アイドルへの道」の挑戦を完了するよう案内。",
+   "詳細はゲーム内お知らせを確認するよう案内。",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "event_date": "2026-11-16",
+  "src_candidate_id": "202611130231-grok-36"
  }
 ]

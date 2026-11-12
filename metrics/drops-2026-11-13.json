@@ -1,0 +1,45 @@
+{
+ "million-ringo-festival-goods-ec-2026": {
+  "title": "木下ひなたの壮瞥りんごまつりの公式グッズが、11月11日19時からECで販売中。数に限りがあり、売り切れ次第終了する。",
+  "stage": "執筆で見送り",
+  "why": "NO_PRIMARY_SOURCE 公式グッズのEC販売開始を扱う公式告知または準公式・報道の出典を確認できませんでした。素材の二次情報ページは読めましたが、EC販売先のURLは取得時にHTTP 403となり、公式の告知ページにも到達できませんでした。",
+  "candidate_ids": [
+   "202611120230-grok-29"
+  ]
+ },
+ "gaku-b2-tapestry-juo-sena": {
+  "title": "学マス新作グッズ、予約締切まであと2日",
+  "stage": "書き直しで見送り",
+  "why": "NO_PRIMARY_SOURCE 指定された候補を確認しましたが、R5を満たす公式・準公式または報道の出典は見つかりませんでした。素材のコラボカフェ記事を python3 scripts/fetch_page.py で読み直したところ、出典の種別は「二次情報」でした。指摘にあるとおり、gakuen-label の準公",
+  "candidate_ids": [
+   "202610260411-watch-0",
+   "202610260412-watch-0",
+   "202610260417-watch-0",
+   "202610241231-explore-11"
+  ]
+ },
+ "sidem-teddys-collection-ii-goods": {
+  "title": "SideM「Teddy’s Collection II」予約は15日まで",
+  "stage": "書き直しで見送り",
+  "why": "SOURCE_MISMATCH 現在のAnime Store.JP掲載にはTeddy's Collection IIの商品がなく、予約締切や予約可否も確認できません。記事の中心となる「11月15日まで予約できる」という内容を裏付ける現在の出典がないため、掲載を見送ります。",
+  "candidate_ids": [
+   "update-4543ba85cf8a"
+  ]
+ },
+ "dsva-mugen-sakuraro-kakaku-crowdfunding-2026": {
+  "title": "夢幻桜楼閣CF、レトラ限定グッズは19日まで",
+  "stage": "校閲ブロック",
+  "why": "R11 見出しとリードの中核が「11月19日まで募集」という既知の期限と限定グッズの紹介だけで、発行日(2026-11-13)時点で新しく発表・発生したことが無い。候補素材は 11/12 の公式Xの告知投稿で、内容は既報の9月30日開始の募集の再掲",
+  "candidate_ids": [
+   "202611130231-grok-50"
+  ]
+ },
+ "sidem-gotoken-christmas-party-set-2026": {
+  "title": "SideM×五島軒、地域別送料を掲載",
+  "stage": "校閲ブロック",
+  "why": "R4 本文の末尾の段落が、出典の注意書きを誤って「送料」の話にしている。出典の五島軒ページには「※配送は天候や交通事情による影響で遅れる場合もございます」とあり、遅れるのは配送であって送料ではない。今回新しく足された段落で、出典に無い内容を書いて",
+  "candidate_ids": [
+   "update-7a810507f6df"
+  ]
+ }
+}

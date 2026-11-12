@@ -1,0 +1,206 @@
+{
+ "decisions": {
+  "tomori-manaka-kpf2026-stage": {
+   "action": "article",
+   "angle": "灯里愛夏が11月29日のKPF2026(北九州)でスペシャルトーク&ライブに出演する。無料、グリーンステージ14時10分から。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "出典は未確認。記事にできるかは執筆・校閲が判断"
+  },
+  "valiv-letora-birthday-live-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "変更後の差分はセットリスト公開とグッズ受注開始のみで、11/12号の2記事が既報。表示の変化のみで新しい事実なし"
+  },
+  "letora-birthday-live-setlist-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/12号のセットリスト記事(全9曲)が既報。新事実なし"
+  },
+  "letora-birthday-goods-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/12号に5点セット・受注期限12月6日まで掲載済み。締切は3日以内でなく当日のトリガーも無い"
+  },
+  "cosmo-rain-patterson-love-options": {
+   "action": "article",
+   "angle": "上水流宇宙がレイン・パターソンと初のダンスコラボ「Love Options」をYouTubeショートとTikTokで公開した。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "mugen-sakuraro-kakaku-crowdfunding-2026": {
+   "action": "article",
+   "angle": "ゲーム『夢幻桜楼閣』の発売応援クラウドファンディングで、レトラのアクリルスタンドやミニフィギュアなどの限定グッズが11月19日まで募られている。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "出典は未確認。レトラ関連グッズの記載がある点を軸にする"
+  },
+  "letora-birthday-live-two-shot-2026": {
+   "action": "article",
+   "angle": "レトラが誕生祭2026の振り返り・感謝配信をYouTubeで行い、ライブ後の2ショットも公開した。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "SNS投稿単体ではなく公式の振り返り配信を軸にする"
+  },
+  "valiv-onsen-radio-egg": {
+   "action": "article",
+   "angle": "vα-livのラジオ番組タイトルが「vα-livがすくすく育つラジオ（卵）」に決定し、本日からメール募集が始まった。配信日は後日発表。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "valiv-3rdlive-meeting-ticket-early-2027": {
+   "action": "article",
+   "angle": "ヴイアラ3rdLIVE＆MEETINGの現地チケット最速先行は11月15日23時59分まで。グッズ付きチケットはおすわりぬいぐるみ付き。",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 70,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "締切が2日後で当日のトリガーに当たる。素材6件"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "dsva-tomori-manaka-kpf2026-stage",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "灯里愛夏が11月29日のKPF2026(北九州)でスペシャルトーク&ライブに出演する。無料、グリーンステージ14時10分から。",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "tomori-manaka-kpf2026-stage",
+    "candidate_ids": [
+     "202611120735-explore-9"
+    ]
+   },
+   {
+    "slug": "dsva-cosmo-rain-patterson-love-options",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "上水流宇宙がレイン・パターソンと初のダンスコラボ「Love Options」をYouTubeショートとTikTokで公開した。",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "cosmo-rain-patterson-love-options",
+    "candidate_ids": [
+     "202611130231-grok-49",
+     "202611130231-grok-76"
+    ]
+   },
+   {
+    "slug": "dsva-mugen-sakuraro-kakaku-crowdfunding-2026",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "ゲーム『夢幻桜楼閣』の発売応援クラウドファンディングで、レトラのアクリルスタンドやミニフィギュアなどの限定グッズが11月19日まで募られている。",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "mugen-sakuraro-kakaku-crowdfunding-2026",
+    "candidate_ids": [
+     "202611130231-grok-50"
+    ]
+   },
+   {
+    "slug": "dsva-letora-birthday-live-two-shot-2026",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "レトラが誕生祭2026の振り返り・感謝配信をYouTubeで行い、ライブ後の2ショットも公開した。",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "letora-birthday-live-two-shot-2026",
+    "candidate_ids": [
+     "202611130231-grok-51",
+     "202611130231-grok-78",
+     "202611130231-grok-79"
+    ]
+   },
+   {
+    "slug": "dsva-valiv-onsen-radio-egg",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "vα-livのラジオ番組タイトルが「vα-livがすくすく育つラジオ（卵）」に決定し、本日からメール募集が始まった。配信日は後日発表。",
+    "purpose": "新情報",
+    "lead_score": 30,
+    "dedup_key": "valiv-onsen-radio-egg",
+    "candidate_ids": [
+     "202611130231-grok-74",
+     "202611130231-grok-80"
+    ]
+   },
+   {
+    "slug": "dsva-valiv-3rdlive-meeting-ticket-early-2027",
+    "brand": "dsva",
+    "rank": "medium",
+    "angle": "ヴイアラ3rdLIVE＆MEETINGの現地チケット最速先行は11月15日23時59分まで。グッズ付きチケットはおすわりぬいぐるみ付き。",
+    "purpose": "期日の知らせ",
+    "lead_score": 70,
+    "dedup_key": "valiv-3rdlive-meeting-ticket-early-2027",
+    "candidate_ids": [
+     "202611130231-grok-75",
+     "202611130231-grok-81",
+     "202611130231-grok-82",
+     "202611130231-grok-87",
+     "202611130231-grok-90",
+     "202611130231-grok-91"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "valiv-letora-birthday-live-2026",
+    "reason": "既報",
+    "note": "変更後の差分はセットリスト公開とグッズ受注開始のみで、11/12号の2記事が既報。表示の変化のみで新しい事実なし"
+   },
+   {
+    "dedup_key": "letora-birthday-live-setlist-2026",
+    "reason": "既報",
+    "note": "11/12号のセットリスト記事(全9曲)が既報。新事実なし"
+   },
+   {
+    "dedup_key": "letora-birthday-goods-2026",
+    "reason": "既報",
+    "note": "11/12号に5点セット・受注期限12月6日まで掲載済み。締切は3日以内でなく当日のトリガーも無い"
+   }
+  ],
+  "cross_brand": []
+ }
+}

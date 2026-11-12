@@ -1,0 +1,57 @@
+{
+ "decisions": {
+  "fan-mofumofuen-54-2026": {
+   "action": "article",
+   "angle": "ファンの投稿で、もふもふえんの3人(岡村直央・橘志狼・姫野かのん)の曲「そだてっ！たいむかぷせる」「もふデビ★うぉんてっど」「伝えたいのはこんなきもち」がまとめて紹介された。",
+   "purpose": "新情報",
+   "rank": "culture",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ投稿者の3件を1本のファン面にまとめる。出典は未確認の個人投稿のみで、校閲で裏付けを確認する。"
+  },
+  "fan-mofumofuen-55-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "fan-mofumofuen-54-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ投稿者・同じ3人・同日の紹介。ファン面の1本に統合する。"
+  },
+  "fan-mofumofuen-56-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "fan-mofumofuen-54-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ投稿者・同じ3人・同日の紹介。ファン面の1本に統合する。"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "general-fan-mofumofuen-54-2026",
+    "brand": "general",
+    "rank": "culture",
+    "angle": "ファンの投稿で、もふもふえんの3人(岡村直央・橘志狼・姫野かのん)の曲「そだてっ！たいむかぷせる」「もふデビ★うぉんてっど」「伝えたいのはこんなきもち」がまとめて紹介された。",
+    "purpose": "新情報",
+    "lead_score": 5,
+    "dedup_key": "fan-mofumofuen-54-2026",
+    "candidate_ids": [
+     "202611130231-grok-58",
+     "202611130231-grok-59",
+     "202611130231-grok-60"
+    ]
+   }
+  ],
+  "dropped": [],
+  "cross_brand": []
+ }
+}

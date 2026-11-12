@@ -1,0 +1,449 @@
+{
+ "decisions": {
+  "gaku-lawson-campaign-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "二次情報。内容は11/10〜12のローソン記事で既出。75万表示のみ新しいが記事にする価値は薄い"
+  },
+  "gakuen-hatsuboshi-hr-2-5th-sp-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "変更後の19:30は11/12の記事に既出。配信は15日で当日ではない"
+  },
+  "gaku-lawson-store-goods-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "価格・地域別発売日とも11/11・11/12の記事に既出"
+  },
+  "gaku-lawson-food-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/10発売の対象お菓子。新事実・当日トリガー無し"
+  },
+  "gaku-lawson-multifile-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "終了は11/23でトリガー無し。条件は11/10〜11の記事に既出"
+  },
+  "gaku-lawson-quote-campaign-2026": {
+   "action": "article",
+   "angle": "ローソン×学マスの引用ポストキャンペーン(QUOカード1万円分が抽選1名)は11月16日23時59分まで、締切3日前。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "eclipse-light-animate-fair-2026": {
+   "action": "article",
+   "angle": "アニメイト通販のECLIPSE LIGHTフェア対象商品欄にGOLD RUSH(8)通常版(税込880円)が加わった。フェアは11月23日まで。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "品目追加(変更後に通常版880円)"
+  },
+  "gaku-kotone-endless-dance-graphic-tee": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "変更点は別商品の掲載で、Tシャツの条件に変更なし。キャンセル期限は11/12の記事で既出"
+  },
+  "gaku-lawson-loppi-reservation-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "予約期間・引渡日とも11/10の記事に既出。締切は2027年1月"
+  },
+  "hatsuboshi-maid-x-trend-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/9の話題で締切も終了済み。11/10に初星メイドの記事あり"
+  },
+  "gaku-conceptual-single-collection-2027": {
+   "action": "article",
+   "angle": "初星学園 Conceptual Single Collection Vol.1〜3の予約は11月15日まで、締切2日前。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-duet-song-collection-2-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/9の記事に既出。発売は2027年3月でトリガー無し"
+  },
+  "gaku-maintenance-2026-11-16": {
+   "action": "article",
+   "angle": "11月16日10時から学マスのメンテナンスがあり、プレイ中のプロデュースとアイドルへの道のデータは破棄され復旧できない。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-hidawatari-kanae-profile-2026": {
+   "action": "article",
+   "angle": "氷渡香名江の誕生日・身長・趣味・特技などのプロフィールが公式Xで公開された。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-hidawatari-kanae-episode-0-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/9にエピソード0公開の記事あり。facts新規無し"
+  },
+  "gaku-radio-2026-11-11-archive": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/11の放送回は終了済みで、本日の新事実無し"
+  },
+  "gaku-radio-2026-11-18": {
+   "action": "article",
+   "angle": "初星学園放送部11月18日放送回(ゲスト:飯田ヒカル・七瀬つむぎ・陽高真白)のおたより募集は本日13日午前まで。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-radio-2026-11-11-broadcast": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/11放送は終了済み。11/11に放送記事あり"
+  },
+  "gaku-gold-rush-vol8-code-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "コード入力再開は11/12の記事に既出"
+  },
+  "gaku-b2-tapestry-juo-sena": {
+   "action": "article",
+   "angle": "カーテン魂の学マス新作グッズ(B2タペストリー・特大アクスタ・クッションカバー・Tシャツ)のAnime Store.JP予約は11月15日まで、締切2日前。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "garakuta-china-misuzu-gacha-2026": {
+   "action": "article",
+   "angle": "ガラクタロードvol.7の千奈・美鈴ガシャ(SSRサポートカード『みんなも読んでみてっ！』)は11月16日9時59分まで、終了3日前。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約"
+  },
+  "gaku-gacha-day1-2026": {
+   "action": "article",
+   "angle": "標ファイナル記念ガシャDAY1・DAY2(有償限定1回、SSR確定)は11月16日9時59分まで、終了3日前。",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約。DAY2を統合"
+  },
+  "gaku-gacha-day2-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-gacha-day1-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ施策・同じ期日のため1記事に統合"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "gaku-lawson-quote-campaign-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "ローソン×学マスの引用ポストキャンペーン(QUOカード1万円分が抽選1名)は11月16日23時59分まで、締切3日前。",
+    "purpose": "期日の知らせ",
+    "lead_score": 10,
+    "dedup_key": "gaku-lawson-quote-campaign-2026",
+    "candidate_ids": [
+     "202611121236-explore-19"
+    ]
+   },
+   {
+    "slug": "gaku-eclipse-light-animate-fair-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "アニメイト通販のECLIPSE LIGHTフェア対象商品欄にGOLD RUSH(8)通常版(税込880円)が加わった。フェアは11月23日まで。",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "eclipse-light-animate-fair-2026",
+    "candidate_ids": [
+     "update-4532a04d61de"
+    ]
+   },
+   {
+    "slug": "gaku-conceptual-single-collection-2027",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "初星学園 Conceptual Single Collection Vol.1〜3の予約は11月15日まで、締切2日前。",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "gaku-conceptual-single-collection-2027",
+    "candidate_ids": [
+     "202611130231-grok-34",
+     "202611130231-grok-71"
+    ]
+   },
+   {
+    "slug": "gaku-maintenance-2026-11-16",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "11月16日10時から学マスのメンテナンスがあり、プレイ中のプロデュースとアイドルへの道のデータは破棄され復旧できない。",
+    "purpose": "新情報",
+    "lead_score": 30,
+    "dedup_key": "gaku-maintenance-2026-11-16",
+    "candidate_ids": [
+     "202611130231-grok-36"
+    ]
+   },
+   {
+    "slug": "gaku-hidawatari-kanae-profile-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "氷渡香名江の誕生日・身長・趣味・特技などのプロフィールが公式Xで公開された。",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "gaku-hidawatari-kanae-profile-2026",
+    "candidate_ids": [
+     "202611130231-grok-37"
+    ]
+   },
+   {
+    "slug": "gaku-radio-2026-11-18",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "初星学園放送部11月18日放送回(ゲスト:飯田ヒカル・七瀬つむぎ・陽高真白)のおたより募集は本日13日午前まで。",
+    "purpose": "期日の知らせ",
+    "lead_score": 10,
+    "dedup_key": "gaku-radio-2026-11-18",
+    "candidate_ids": [
+     "202611130231-grok-40"
+    ]
+   },
+   {
+    "slug": "gaku-b2-tapestry-juo-sena",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "カーテン魂の学マス新作グッズ(B2タペストリー・特大アクスタ・クッションカバー・Tシャツ)のAnime Store.JP予約は11月15日まで、締切2日前。",
+    "purpose": "期日の知らせ",
+    "lead_score": 15,
+    "dedup_key": "gaku-b2-tapestry-juo-sena",
+    "candidate_ids": [
+     "202610260411-watch-0",
+     "202610260412-watch-0",
+     "202610260417-watch-0",
+     "202610241231-explore-11"
+    ]
+   },
+   {
+    "slug": "gaku-garakuta-china-misuzu-gacha-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "ガラクタロードvol.7の千奈・美鈴ガシャ(SSRサポートカード『みんなも読んでみてっ！』)は11月16日9時59分まで、終了3日前。",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "garakuta-china-misuzu-gacha-2026",
+    "candidate_ids": [
+     "sched-2026-11-13-garakuta-china-misuzu-gacha-2026-締切前",
+     "sched-2026-11-13-garakuta-china-misuzu-gacha-2026-締切前-src1"
+    ]
+   },
+   {
+    "slug": "gaku-gacha-day1-2026",
+    "brand": "gaku",
+    "rank": "medium",
+    "angle": "標ファイナル記念ガシャDAY1・DAY2(有償限定1回、SSR確定)は11月16日9時59分まで、終了3日前。",
+    "purpose": "期日の知らせ",
+    "lead_score": 60,
+    "dedup_key": "gaku-gacha-day1-2026",
+    "candidate_ids": [
+     "sched-2026-11-13-gaku-gacha-day1-2026-締切前",
+     "sched-2026-11-13-gaku-gacha-day1-2026-締切前-src1",
+     "sched-2026-11-13-gaku-gacha-day1-2026-締切前-src2",
+     "sched-2026-11-13-gaku-gacha-day1-2026-締切前-src3",
+     "sched-2026-11-13-gaku-gacha-day2-2026-締切前",
+     "sched-2026-11-13-gaku-gacha-day2-2026-締切前-src1",
+     "sched-2026-11-13-gaku-gacha-day2-2026-締切前-src2",
+     "sched-2026-11-13-gaku-gacha-day2-2026-締切前-src3"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "gaku-lawson-campaign-2026",
+    "reason": "既報",
+    "note": "二次情報。内容は11/10〜12のローソン記事で既出。75万表示のみ新しいが記事にする価値は薄い"
+   },
+   {
+    "dedup_key": "gakuen-hatsuboshi-hr-2-5th-sp-2026",
+    "reason": "既報",
+    "note": "変更後の19:30は11/12の記事に既出。配信は15日で当日ではない"
+   },
+   {
+    "dedup_key": "gaku-lawson-store-goods-2026",
+    "reason": "既報",
+    "note": "価格・地域別発売日とも11/11・11/12の記事に既出"
+   },
+   {
+    "dedup_key": "gaku-lawson-food-2026",
+    "reason": "既報",
+    "note": "11/10発売の対象お菓子。新事実・当日トリガー無し"
+   },
+   {
+    "dedup_key": "gaku-lawson-multifile-2026",
+    "reason": "既報",
+    "note": "終了は11/23でトリガー無し。条件は11/10〜11の記事に既出"
+   },
+   {
+    "dedup_key": "gaku-kotone-endless-dance-graphic-tee",
+    "reason": "その他",
+    "note": "変更点は別商品の掲載で、Tシャツの条件に変更なし。キャンセル期限は11/12の記事で既出"
+   },
+   {
+    "dedup_key": "gaku-lawson-loppi-reservation-2026",
+    "reason": "既報",
+    "note": "予約期間・引渡日とも11/10の記事に既出。締切は2027年1月"
+   },
+   {
+    "dedup_key": "hatsuboshi-maid-x-trend-2026",
+    "reason": "既報",
+    "note": "11/9の話題で締切も終了済み。11/10に初星メイドの記事あり"
+   },
+   {
+    "dedup_key": "gaku-duet-song-collection-2-2026",
+    "reason": "既報",
+    "note": "11/9の記事に既出。発売は2027年3月でトリガー無し"
+   },
+   {
+    "dedup_key": "gaku-hidawatari-kanae-episode-0-2026",
+    "reason": "既報",
+    "note": "11/9にエピソード0公開の記事あり。facts新規無し"
+   },
+   {
+    "dedup_key": "gaku-radio-2026-11-11-archive",
+    "reason": "既報",
+    "note": "11/11の放送回は終了済みで、本日の新事実無し"
+   },
+   {
+    "dedup_key": "gaku-radio-2026-11-11-broadcast",
+    "reason": "既報",
+    "note": "11/11放送は終了済み。11/11に放送記事あり"
+   },
+   {
+    "dedup_key": "gaku-gold-rush-vol8-code-2026",
+    "reason": "既報",
+    "note": "コード入力再開は11/12の記事に既出"
+   }
+  ],
+  "cross_brand": []
+ }
+}

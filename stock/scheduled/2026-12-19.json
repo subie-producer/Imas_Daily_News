@@ -170,5 +170,32 @@
   "verify": "confirmed",
   "event_date": "2026-12-19",
   "src_candidate_id": "202611101235-watch-3"
+ },
+ {
+  "id": "sched-2026-12-19-shiny-first-refrac7ions-2026-banpresto-truck-開幕",
+  "dedup_key": "shiny-first-refrac7ions-2026-banpresto-truck",
+  "brand": "shiny",
+  "subject": "「Still blue」1日目・BANPRESTO TRUCK出店",
+  "kind": "開幕",
+  "note": "代々木第一体育館でライブとBANPRESTO TRUCKのクレーンゲームを楽しめる",
+  "reserved_on": "2026-11-13",
+  "occurs_on": "2026-12-19",
+  "title": "shiny the first REFRAC7IONS会場 BANPRESTO TRUCK出店",
+  "url": "https://idolmaster-official.jp/news/01_20338",
+  "source_type": "公式",
+  "facts": [
+   "ライブ: 『shiny, the first REFRAC7IONS “Still blue”』",
+   "開催日時: 12月19日(土)・20日(日)",
+   "会場: 国立代々木競技場第一体育館",
+   "BANPRESTO TRUCKの出店が決定",
+   "BANPRESTO TRUCKでは、今週末からナムコのお店とナムコオンラインクレーンで順次登場予定の「アイドルマスター シャイニーカラーズ ちびぐるみ～PJ: REFRAC7IONS～vol.1からvol.6」全28種のクレーンゲームがプレイできる筐体を用意",
+   "クレーンゲームのプレイは事前抽選での整理券制かつ有料",
+   "トラック周辺ではその他お楽しみいただける施策も実施予定（詳細は12月初旬に発表予定）",
+   "エンゲージメント: 中"
+  ],
+  "via": "watch",
+  "verify": "confirmed",
+  "event_date": "2026-12-19",
+  "src_candidate_id": "202611121236-watch-7"
  }
 ]

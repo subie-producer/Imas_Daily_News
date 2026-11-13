@@ -106,6 +106,94 @@
     "failed": 0
    },
    "duration_s": 1626
+  },
+  {
+   "at": "2026-11-14T07:34:35+09:00",
+   "edition": "2026-11-15",
+   "started_at": "2026-11-14T07:30:45+09:00",
+   "trigger": "timer",
+   "watch": {
+    "stats": {
+     "imas-portal": {
+      "found": 12,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-sidem": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-shiny": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-million": {
+      "found": 8,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "lantis-shiny": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "lantis-sidem": {
+      "found": 5,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "columbia-imas": {
+      "found": 354,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "bnam-tours": {
+      "found": 70,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "imasnews765": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     }
+    },
+    "new": 0,
+    "facted": 0,
+    "deferred": 0,
+    "blocked": 0,
+    "unavailable": 0
+   },
+   "per_query": {
+    "explore:765as": 0,
+    "explore:cinderella": 4,
+    "explore:million": 1,
+    "explore:shiny": 1,
+    "explore:sidem": 2,
+    "explore:gakuen": 1,
+    "explore:dsva": 1,
+    "explore:joint-other": 1,
+    "explore:trend": 0
+   },
+   "normalized": 11,
+   "added": 11,
+   "verify": {
+    "confirmed": 8,
+    "unconfirmed": 3,
+    "failed": 0
+   },
+   "duration_s": 230
   }
  ],
  "collect_required": [
@@ -117,6 +205,15 @@
    "reserve_s": 420,
    "left_s": 1029,
    "elapsed_s": 90
+  },
+  {
+   "at": "2026-11-14T07:34:36+09:00",
+   "edition": "2026-11-15",
+   "started_at": "2026-11-14T07:30:45+09:00",
+   "trigger": "timer",
+   "reserve_s": 420,
+   "left_s": 16825,
+   "elapsed_s": 2
   }
  ],
  "compose": [

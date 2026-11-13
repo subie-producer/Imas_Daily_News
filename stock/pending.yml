@@ -404,6 +404,7 @@
   subject: ツアマス ALL.Net緊急メンテナンスの終了
   watch: メンテナンス終了時刻・オンラインモードとマイページの再開(公式が「あらためて知らせる」とした各コンテンツの再開状況)
   added_on: '2026-11-03'
+  removed_on: '2026-11-14'
 - dedup_key: gaku-amayo-tsubame-training-acrylic-stand-2027
   brand: gaku
   subject: 雨夜燕(トレーニング服)特大アクリルスタンド
@@ -446,3 +447,8 @@
   subject: ミリシタ 百瀬莉緒のTrue Ending報酬デザイン変更
   watch: 「近日中」とされた称号・BG GrafiXのシルエット解除とデザイン変更の実施日(判明次第 triggers へ)
   added_on: '2026-11-13'
+- dedup_key: hatsuboshi-twinkle-rabbit-theme-2026-11
+  brand: gaku
+  subject: ハツボシストア新テーマ「トゥインクルラビット」
+  watch: 全員のビジュアルと詳細(近日公開予定)、11月内の正式登場日(判明次第 triggers へ)
+  added_on: '2026-11-14'

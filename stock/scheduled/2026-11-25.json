@@ -1106,5 +1106,27 @@
   "deadline": "2026-11-12",
   "link_from": "https://x.com/harunamiP/status/2117987505643692102",
   "src_candidate_id": "sched-2026-11-09-imas-mor-424-2026-締切前"
+ },
+ {
+  "id": "sched-2026-11-25-sidem-refrain-atrium-2dmv-2026-開始",
+  "dedup_key": "sidem-refrain-atrium-2dmv-2026",
+  "brand": "sidem",
+  "subject": "Legenders「リフレインアトリウム」2DMV公開(21:00予定)",
+  "kind": "開始",
+  "note": "21時に2DMVを視聴できる",
+  "reserved_on": "2026-11-14",
+  "occurs_on": "2026-11-25",
+  "title": "Legenders「リフレインアトリウム」2DMV公開日決定",
+  "url": "https://x.com/SideM_lantis/status/2121229089860415700",
+  "source_type": "準公式",
+  "facts": [
+   "Legenders「リフレインアトリウム」の2DMV公開日は2026年11月25日(水)21:00予定。",
+   "エンゲージメント: 中",
+   "言及アイドル: Legenders"
+  ],
+  "via": "grok",
+  "verify": "unconfirmed",
+  "event_date": "2026-11-25",
+  "src_candidate_id": "202611140226-grok-45"
  }
 ]

@@ -1,0 +1,242 @@
+{
+ "decisions": {
+  "valiv-onsen-radio-egg": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "出典の変更は「再生速度」→「Loading...」の表示差のみで、読者に関わる変更なし"
+  },
+  "letora-birthday-online-live-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11月11日開催済み。アーカイブ期間・チケット販売は既報の本文にあり、新事実も当日トリガーも無い"
+  },
+  "dsva-radio-title-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "番組名・メール募集は11月13日の記事で既報。4コマ第36話は別主題で扱う"
+  },
+  "tomoka-birthday-fan-art-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "『一旦愛して♡』踊ってみたは11月12日に既報。動画は10月23日公開の他者チャンネルのもので、新事実なし"
+  },
+  "valiv-3rdlive-meeting-ticket-early-2027": {
+   "action": "article",
+   "angle": "ヴイアラ3rdLIVE＆MEETINGのアソビストア一般会員先行は、あす11月15日23時59分の締切が迫る。",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 55,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "締切が翌日のトリガー。4コマ第36話の公開は付記程度"
+  },
+  "cosmo-rain-patterson-love-options": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11月13日の「宇宙とレイン・パターソンが初ダンスコラボ」で既報。同じ動画で新事実なし"
+  },
+  "manaka-biohazard-re2-clear-2026": {
+   "action": "article",
+   "angle": "灯里愛夏が『BIOHAZARD RE:2』を初プレイで目標のスタンダードクリア、アーカイブを公開中。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "cosmo-lain-happiness-dance-2026": {
+   "action": "article",
+   "angle": "上水流宇宙とレイン・パターソンが「Happiness」を踊ったコラボ動画を公開した。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "Love Options動画(既報)とは別の新しい動画"
+  },
+  "mugen-sakuraro-kakaku-crowdfunding-2026": {
+   "action": "article",
+   "angle": "ゲーム『夢幻桜楼閣』の発売応援クラウドファンディングが11月19日まで、レトラの限定グッズがリターンに並ぶ。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "carried。終了まで5日。出典の十分さは執筆・校閲で判断"
+  },
+  "valiv-2nd-live-premiere-2026": {
+   "action": "article",
+   "angle": "ヴイアラ2ndLIVEの限定プレミア公開が本日14時に始まり、15日23時59分まで視聴できる。",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(開始)。3rdLIVE最速先行の締切も同時刻"
+  },
+  "cosmo-ace8-mission24-26-report-2026": {
+   "action": "article",
+   "angle": "上水流宇宙の「ACE8」最終回が今夜配信される。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(開始)。素材のfactsに14日夜配信と明記"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "dsva-valiv-3rdlive-meeting-ticket-early-2027",
+    "brand": "dsva",
+    "rank": "medium",
+    "angle": "ヴイアラ3rdLIVE＆MEETINGのアソビストア一般会員先行は、あす11月15日23時59分の締切が迫る。",
+    "purpose": "期日の知らせ",
+    "lead_score": 55,
+    "dedup_key": "valiv-3rdlive-meeting-ticket-early-2027",
+    "candidate_ids": [
+     "202611140226-grok-61",
+     "202611140226-grok-95",
+     "202611140226-grok-96",
+     "202611140226-grok-116",
+     "202611140226-grok-119",
+     "202611140226-grok-121",
+     "202611140226-grok-125",
+     "202611140226-grok-126"
+    ]
+   },
+   {
+    "slug": "dsva-manaka-biohazard-re2-clear-2026",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "灯里愛夏が『BIOHAZARD RE:2』を初プレイで目標のスタンダードクリア、アーカイブを公開中。",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "manaka-biohazard-re2-clear-2026",
+    "candidate_ids": [
+     "202611140226-grok-63",
+     "202611140226-grok-114",
+     "202611140226-grok-115",
+     "202611140226-grok-117",
+     "202611140226-grok-118",
+     "202611140226-grok-120"
+    ]
+   },
+   {
+    "slug": "dsva-cosmo-lain-happiness-dance-2026",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "上水流宇宙とレイン・パターソンが「Happiness」を踊ったコラボ動画を公開した。",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "cosmo-lain-happiness-dance-2026",
+    "candidate_ids": [
+     "202611140226-grok-64"
+    ]
+   },
+   {
+    "slug": "dsva-mugen-sakuraro-kakaku-crowdfunding-2026",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "ゲーム『夢幻桜楼閣』の発売応援クラウドファンディングが11月19日まで、レトラの限定グッズがリターンに並ぶ。",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "mugen-sakuraro-kakaku-crowdfunding-2026",
+    "candidate_ids": [
+     "202611130231-grok-50"
+    ]
+   },
+   {
+    "slug": "dsva-valiv-2nd-live-premiere-2026",
+    "brand": "dsva",
+    "rank": "medium",
+    "angle": "ヴイアラ2ndLIVEの限定プレミア公開が本日14時に始まり、15日23時59分まで視聴できる。",
+    "purpose": "期日の知らせ",
+    "lead_score": 60,
+    "dedup_key": "valiv-2nd-live-premiere-2026",
+    "candidate_ids": [
+     "sched-2026-11-14-valiv-2nd-live-premiere-2026-開始",
+     "sched-2026-11-14-valiv-2nd-live-premiere-2026-開始-src1"
+    ]
+   },
+   {
+    "slug": "dsva-cosmo-ace8-mission24-26-report-2026",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "上水流宇宙の「ACE8」最終回が今夜配信される。",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "cosmo-ace8-mission24-26-report-2026",
+    "candidate_ids": [
+     "sched-2026-11-14-cosmo-ace8-mission24-26-report-2026-開始"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "valiv-onsen-radio-egg",
+    "reason": "既報",
+    "note": "出典の変更は「再生速度」→「Loading...」の表示差のみで、読者に関わる変更なし"
+   },
+   {
+    "dedup_key": "letora-birthday-online-live-2026",
+    "reason": "既報",
+    "note": "11月11日開催済み。アーカイブ期間・チケット販売は既報の本文にあり、新事実も当日トリガーも無い"
+   },
+   {
+    "dedup_key": "dsva-radio-title-2026",
+    "reason": "既報",
+    "note": "番組名・メール募集は11月13日の記事で既報。4コマ第36話は別主題で扱う"
+   },
+   {
+    "dedup_key": "tomoka-birthday-fan-art-2026",
+    "reason": "既報",
+    "note": "『一旦愛して♡』踊ってみたは11月12日に既報。動画は10月23日公開の他者チャンネルのもので、新事実なし"
+   },
+   {
+    "dedup_key": "cosmo-rain-patterson-love-options",
+    "reason": "既報",
+    "note": "11月13日の「宇宙とレイン・パターソンが初ダンスコラボ」で既報。同じ動画で新事実なし"
+   }
+  ],
+  "cross_brand": []
+ }
+}

@@ -1,0 +1,533 @@
+{
+ "decisions": {
+  "cg-15th-party-streaming-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/13号の配信券販売開始と同内容(価格・期間・アーカイブ)"
+  },
+  "cinderella-orchestra-concert-2027": {
+   "action": "article",
+   "angle": "15周年オーケストラコンサートのアソビストア一般会員先行が11月29日23:59まで。当落は12月11日13時",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 50,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "一般会員先行は新しい段階。2027年1月11・12日パシフィコ横浜"
+  },
+  "cg-parfait-coquette-celebration-animo-2026": {
+   "action": "article",
+   "angle": "POPUP「Parfait Coquette Celebration」のグッズがAnimoで事後通販に。12月11日17時まで、特典なし",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "cg-memory-pict-8th-2026": {
+   "action": "article",
+   "angle": "Memory Pict.第8弾の受注は明日11月15日23:59まで",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "締切翌日。source_changeは表示差のみとみて期日で扱う"
+  },
+  "cg-15th-hourglass-cd-2026-11": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "発売11/18は4日後でトリガー外。収録内容・価格は既報"
+  },
+  "cinderella-yokohama-cosmo-air-cabin-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/13号の開幕記事と同内容(期間・休業日)"
+  },
+  "cg-motomachidoria-momopeaberry-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "変更後の予約11/13 12時開始は11/13号が既に記事化"
+  },
+  "cinderella-girls-yokohama-marine-tower-2026": {
+   "action": "article",
+   "angle": "横浜マリンタワーのコラボで、夜間の営業時間が12月3日以降21:10開始に変更、MV放映は18:10に、注文特典にストロータグが追加",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "source_change: 時間・特典の変更は読者に関わる"
+  },
+  "cinderella-yokohama-collab-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/13号と同内容"
+  },
+  "cg-yamanashi-walk-wander-art-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/13号でグッズ・フード詳細を記事化済み。開幕11/21は7日後"
+  },
+  "cg-hourglass-premiere-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "MV 11/18 21時は10/31号で既報、当日トリガー無し"
+  },
+  "cg-apple-of-my-ai-goods-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/6号と同内容。受注締切11/29は遠い"
+  },
+  "cg-apple-of-my-ai-general-presale-2027": {
+   "action": "article",
+   "angle": "「Apple of my アイ」現地チケット一般会員先行は明日11月15日23:59まで",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "締切1日前"
+  },
+  "cinderella-15th-anniversary-hourglass-cd-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "「不滅のパワー」公開は11/13号で記事化済み"
+  },
+  "harada-miyo-birthday-fan-celebration-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "同人・ファン主催",
+   "note": "ファン投稿。culture枠はgeneral面"
+  },
+  "cg-cosmo-world-collaboration-fan-visit-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS来訪報告"
+  },
+  "arakane-no-utsuwa-listen-2026": {
+   "action": "roundup",
+   "angle": "15周年CD「HOURGLASS」収録曲の試聴公開(あらかねの器・バベル・ROSEリミックス・Brand new!)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "babel-listen-2026": {
+   "action": "roundup",
+   "angle": "15周年CD「HOURGLASS」収録曲の試聴公開(あらかねの器・バベル・ROSEリミックス・Brand new!)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "rose-natsuki-remix-listen-2026": {
+   "action": "roundup",
+   "angle": "15周年CD「HOURGLASS」収録曲の試聴公開(あらかねの器・バベル・ROSEリミックス・Brand new!)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "brand-new-unicus-listen-2026": {
+   "action": "roundup",
+   "angle": "15周年CD「HOURGLASS」収録曲の試聴公開(あらかねの器・バベル・ROSEリミックス・Brand new!)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "cg-motomachi-doria-collab-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "開催決定・席予約は11/7・11/13号で既報"
+  },
+  "harada-miyo-birthday-2026": {
+   "action": "article",
+   "angle": "原田美世の誕生日の今日、アイマスchがお祝いムービーを案内",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公式チャンネルの案内。11/10の黒埼ちとせ誕生日と同型"
+  },
+  "cg-isetan-osechi-campaign-2027": {
+   "action": "article",
+   "angle": "伊勢丹おせち2027のフォロー&リポスト抽選(茄子BIGアクリルスタンド2名)は11月17日23:59まで、あと3日",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "おせち販売とは読者の行動(応募/注文)が別"
+  },
+  "cg-isetan-osechi-2027": {
+   "action": "article",
+   "angle": "デレマス×伊勢丹おせち2027の販売は11月17日23:59まで、あと3日",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "cg-popntoybox-revival-general-lottery-2026": {
+   "action": "cross_brand",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "joint-xr-live-revival-asobistore-general-advance-2026",
+   "reason": "",
+   "note": "xR LIVE REVIVAL(12/13公演)の先行当落と同じ施策。共同面が記事化"
+  },
+  "cg-sweet-melty-whip-after-sale-2026": {
+   "action": "article",
+   "angle": "Sweet Melty Whip事後通販はMEDICOS ONLINE SHOPで11月17日まで、あと3日",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "cg-popn-toybox-revival-2026": {
+   "action": "cross_brand",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "joint-xr-live-revival-asobistore-general-advance-2026",
+   "reason": "",
+   "note": "同上。当落13時・入金18日23:59は共同面の記事に含まれる"
+  },
+  "cg-15th-anniversary-party-2026-venue-goods": {
+   "action": "article",
+   "angle": "15周年PARTYの物販事前抽選整理券は11月17日23:59まで、あと3日",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 70,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "11/28・29のKアリーナ横浜物販。開催前最大の期日"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "cg-cinderella-orchestra-concert-2027",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "15周年オーケストラコンサートのアソビストア一般会員先行が11月29日23:59まで。当落は12月11日13時",
+    "purpose": "新情報",
+    "lead_score": 50,
+    "dedup_key": "cinderella-orchestra-concert-2027",
+    "candidate_ids": [
+     "202611131234-watch-0",
+     "202611140226-grok-82"
+    ]
+   },
+   {
+    "slug": "cg-parfait-coquette-celebration-animo-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "POPUP「Parfait Coquette Celebration」のグッズがAnimoで事後通販に。12月11日17時まで、特典なし",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "cg-parfait-coquette-celebration-animo-2026",
+    "candidate_ids": [
+     "202611131839-watch-4",
+     "202611140226-grok-76",
+     "202611140226-grok-79"
+    ]
+   },
+   {
+    "slug": "cg-memory-pict-8th-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "Memory Pict.第8弾の受注は明日11月15日23:59まで",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "cg-memory-pict-8th-2026",
+    "candidate_ids": [
+     "202611131839-watch-6",
+     "update-f7c9cfc0a610",
+     "202611140226-grok-53",
+     "202611140226-grok-94",
+     "202611140226-grok-100"
+    ]
+   },
+   {
+    "slug": "cg-cinderella-girls-yokohama-marine-tower-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "横浜マリンタワーのコラボで、夜間の営業時間が12月3日以降21:10開始に変更、MV放映は18:10に、注文特典にストロータグが追加",
+    "purpose": "新情報",
+    "lead_score": 25,
+    "dedup_key": "cinderella-girls-yokohama-marine-tower-2026",
+    "candidate_ids": [
+     "update-e809ad47bab8"
+    ]
+   },
+   {
+    "slug": "cg-apple-of-my-ai-general-presale-2027",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "「Apple of my アイ」現地チケット一般会員先行は明日11月15日23:59まで",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "cg-apple-of-my-ai-general-presale-2027",
+    "candidate_ids": [
+     "202611140226-grok-11",
+     "202611140226-grok-99"
+    ]
+   },
+   {
+    "slug": "cg-harada-miyo-birthday-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "原田美世の誕生日の今日、アイマスchがお祝いムービーを案内",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "harada-miyo-birthday-2026",
+    "candidate_ids": [
+     "202611140226-grok-89"
+    ]
+   },
+   {
+    "slug": "cg-isetan-osechi-campaign-2027",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "伊勢丹おせち2027のフォロー&リポスト抽選(茄子BIGアクリルスタンド2名)は11月17日23:59まで、あと3日",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "cg-isetan-osechi-campaign-2027",
+    "candidate_ids": [
+     "sched-2026-11-14-cg-isetan-osechi-campaign-2027-締切前"
+    ]
+   },
+   {
+    "slug": "cg-isetan-osechi-2027",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "デレマス×伊勢丹おせち2027の販売は11月17日23:59まで、あと3日",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "cg-isetan-osechi-2027",
+    "candidate_ids": [
+     "sched-2026-11-14-cg-isetan-osechi-2027-締切前",
+     "sched-2026-11-14-cg-isetan-osechi-2027-締切前-src1"
+    ]
+   },
+   {
+    "slug": "cg-sweet-melty-whip-after-sale-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "Sweet Melty Whip事後通販はMEDICOS ONLINE SHOPで11月17日まで、あと3日",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "cg-sweet-melty-whip-after-sale-2026",
+    "candidate_ids": [
+     "sched-2026-11-14-cg-sweet-melty-whip-after-sale-2026-締切前"
+    ]
+   },
+   {
+    "slug": "cg-15th-anniversary-party-2026-venue-goods",
+    "brand": "cg",
+    "rank": "medium",
+    "angle": "15周年PARTYの物販事前抽選整理券は11月17日23:59まで、あと3日",
+    "purpose": "期日の知らせ",
+    "lead_score": 70,
+    "dedup_key": "cg-15th-anniversary-party-2026-venue-goods",
+    "candidate_ids": [
+     "sched-2026-11-14-cg-15th-anniversary-party-2026-venue-goods-締切前"
+    ]
+   },
+   {
+    "slug": "cg-ops-roundup",
+    "brand": "cg",
+    "rank": "roundup",
+    "angle": "15周年CD「HOURGLASS」収録曲の試聴公開(あらかねの器・バベル・ROSEリミックス・Brand new!)",
+    "lead_score": 0,
+    "dedup_key": "arakane-no-utsuwa-listen-2026",
+    "candidate_ids": [
+     "202611140226-grok-72",
+     "202611140226-grok-73",
+     "202611140226-grok-74",
+     "202611140226-grok-75"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "cg-15th-party-streaming-2026",
+    "reason": "既報",
+    "note": "11/13号の配信券販売開始と同内容(価格・期間・アーカイブ)"
+   },
+   {
+    "dedup_key": "cg-15th-hourglass-cd-2026-11",
+    "reason": "既報",
+    "note": "発売11/18は4日後でトリガー外。収録内容・価格は既報"
+   },
+   {
+    "dedup_key": "cinderella-yokohama-cosmo-air-cabin-2026",
+    "reason": "既報",
+    "note": "11/13号の開幕記事と同内容(期間・休業日)"
+   },
+   {
+    "dedup_key": "cg-motomachidoria-momopeaberry-2026",
+    "reason": "既報",
+    "note": "変更後の予約11/13 12時開始は11/13号が既に記事化"
+   },
+   {
+    "dedup_key": "cinderella-yokohama-collab-2026",
+    "reason": "既報",
+    "note": "11/13号と同内容"
+   },
+   {
+    "dedup_key": "cg-yamanashi-walk-wander-art-2026",
+    "reason": "既報",
+    "note": "11/13号でグッズ・フード詳細を記事化済み。開幕11/21は7日後"
+   },
+   {
+    "dedup_key": "cg-hourglass-premiere-2026",
+    "reason": "既報",
+    "note": "MV 11/18 21時は10/31号で既報、当日トリガー無し"
+   },
+   {
+    "dedup_key": "cg-apple-of-my-ai-goods-2026",
+    "reason": "既報",
+    "note": "11/6号と同内容。受注締切11/29は遠い"
+   },
+   {
+    "dedup_key": "cinderella-15th-anniversary-hourglass-cd-2026",
+    "reason": "既報",
+    "note": "「不滅のパワー」公開は11/13号で記事化済み"
+   },
+   {
+    "dedup_key": "harada-miyo-birthday-fan-celebration-2026",
+    "reason": "同人・ファン主催",
+    "note": "ファン投稿。culture枠はgeneral面"
+   },
+   {
+    "dedup_key": "cg-cosmo-world-collaboration-fan-visit-2026",
+    "reason": "個人の話題",
+    "note": "個人のSNS来訪報告"
+   },
+   {
+    "dedup_key": "cg-motomachi-doria-collab-2026",
+    "reason": "既報",
+    "note": "開催決定・席予約は11/7・11/13号で既報"
+   }
+  ],
+  "cross_brand": [
+   {
+    "slug": "joint-xr-live-revival-asobistore-general-advance-2026",
+    "dedup_key": "cg-popntoybox-revival-general-lottery-2026",
+    "note": "xR LIVE REVIVAL(12/13公演)の先行当落と同じ施策。共同面が記事化"
+   },
+   {
+    "slug": "joint-xr-live-revival-asobistore-general-advance-2026",
+    "dedup_key": "cg-popn-toybox-revival-2026",
+    "note": "同上。当落13時・入金18日23:59は共同面の記事に含まれる"
+   }
+  ]
+ }
+}

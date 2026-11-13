@@ -135,6 +135,9 @@ discovery_only_domains:
 # --- 二次情報: 他所の発表を写して伝えている情報源(規程2.5) ---
 # 法人運営か個人運営かは問わない。自ら取材・発表していないものはここ。
 secondary_domains:
+  - release.traicy.com    # 合議で追加: PR TIMESの発表文を転載。自社取材の形跡なし
+  - news.dellows.jp       # 合議で追加: 主催の発表をもとに、編集部名で書いた記事
+  - nitter.cf             # 合議で追加: 相手は転載表示を理由に公式とするが、運営は無関係の中継媒体
   - crea.bunshun.jp       # 合議で追加: 文藝春秋の雑誌サイトが、企業のプレスリリースを転載して伝えている
   - teapawt.org           # 合議で追加: 相手のファン説は運営が個人と分からず不適。X投稿を写す代行=二次情報
   - xitter.gq             # 合議で追加: Nitter代替のX閲覧プロキシ。公式アカウントの投稿を転載表示
@@ -271,6 +274,9 @@ party_paths:
   - item.rakuten.co.jp/f272078-takatsuki        # 高槻市ふるさと納税
 
 party_domains:
+  - www-stage.aac.pref.aichi.jp # 合議で追加: 愛知県芸術劇場の公式サイト。会場と自主事業の運営元
+  - neec.ac.jp            # 合議で追加: 学校が運営する会場(アリーナ)の施設紹介ページ
+  - chugai-contents.jp    # 合議で追加: 同社運営のグッズ通販。アニメ等の商品の販売元
   - steamcommunity.com    # 合議で追加: 一般の配信サービスのコミュニティページ。Steam公式About(Valve運営
   - camp-fire.jp          # 合議で追加: 一般の募集サービス。案件主は電猫遊戯(ゲーム開発元)。運営者情報で確認
   - sync-innovation.co.jp # 合議で追加: コラボイベントの主催者・グッズ販売元の自社ニュース、一次発信
@@ -678,6 +684,9 @@ x_accounts:
     - imasnews765
     - zutapoke
   ファン:
+    - yubal207            # 合議で追加: 個人アカウントの『一旦愛して♡』踊ってみた動画。個人発信はファン
+    - hassy084T           # 合議で追加: 個人アカウントによる原田美世の誕生日祝いのファン投稿
+    - Liar_612            # 合議で追加: 個人アカウントの横浜コスモワールド来訪報告。個人発信はファン
     - ontheEel            # 合議で追加: 個人アカウントによる、ファンとしての作品紹介の投稿
     - xx_utaiuta          # 合議で追加: 個人によるコスプレ投稿
     - tsunaito            # 合議で追加: 個人によるレトラ誕生日祝い投稿
@@ -1248,6 +1257,15 @@ x_posts:
 
 # --- リンク元から引き継いだ種別(リンク先1つずつ。キーは pipelib.link_key)。合議がリンク元の告知と関係していると確かめたものだけ(classify_sources.inherit_from_links)。リンク先そのものの種別より強いときだけ効く ---
 link_types:
+  youtube.com/watch?v=m1UKDYlrxwg: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/gkmas_official/status/2120433853407920240(公式)。告知と同じ初星学園放送部#113の放送動画
+  youtube.com/watch?v=i2Gs6sKH9Gg: 準公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/imas_columbia/status/2121166190773198859(準公式)。告知と同じ楽曲「Brand new!」の試聴動画
+  youtube.com/watch?v=hIBx-tzzTis: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/TomoriManaka/status/2121289160745181502(公式)。告知の灯里愛夏のBIOHAZARD配信アーカイブ
+  youtube.com/watch?v=KJ3LO1M4xcM: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/imas_ch/status/2121256778297958467(公式)。告知と同じ原田美世の誕生日お祝いムービー
+  youtube.com/watch?v=APheYmKfeFQ: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/imasml_theater/status/2121196392542826825(公式)。告知で公開予告されている同じMV
+  youtube.com/watch?v=AFbmLF2fuIE: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/KamizuruCosmo/status/2121189106944528430(公式)。告知と同じ「Happiness」踊ってみた動画
+  lnk.to/CafeParade_2DMV: 準公式                  # リンク元から引き継ぎ(合議で関係を確認): https://x.com/SideM_lantis/status/2121226579905016224(準公式)。同じ楽曲の配信・DLページで、告知の2DMVと同じ企画
+  colleize.com/lineup/400/438244: 当事者          # リンク元から引き継ぎ(合議で関係を確認): https://x.com/colleize/status/2121219025489571882(当事者)。同じ商品(スイーツver. 花海咲季のアクリルスタンド)の予約ページ
+  shop.asobistore.jp/s/feature/shiny_style_collection: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://x.com/shinyc_official/status/2121181275574632864(公式)。告知のSHINY Style COLLECTION公式グッズ受注と同じ商品の販売
   youtube.com/watch?v=rOaYx3zdutg: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/UtagawaLetora/status/2120911852121268487(公式)。リンク先はレトラ誕生祭2026のバースデーライブのアーカイブ
   youtube.com/watch?v=RKpCpM4_sGM: 準公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/SideM_lantis/status/2120833994551939421(準公式)。リンク先はCafé Parade「Chocolate Special」2DMVの
   youtube.com/watch?v=GdklRzQDprw: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/KamizuruCosmo/status/2120803804631478491(公式)。リンク先はレイン・パターソンとのLove Optionsダンス動画

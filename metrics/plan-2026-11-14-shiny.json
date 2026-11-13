@@ -1,0 +1,301 @@
+{
+ "decisions": {
+  "sidem-shinycolors-sparkle-showdown-2027-06": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "出典変更の追加出演者(大塚剛央・天﨑滉平ほか)は11/13の記事の出演者一覧に既に載っている。新事実なし"
+  },
+  "shiny-birthday-plate-2026-vol2": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/13の記事に第2弾の全ラインアップ・受注開始が既出。締切11/30はまだ先でトリガーなし"
+  },
+  "shiny-jr-tabi-kyoto-2026": {
+   "action": "article",
+   "angle": "12月8日開始のJR東海「推し旅」京都デジタルスタンプラリーの対象スポットに京都駅・上賀茂神社など5か所が解禁された。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "11/7の記事では対象スポットは後日発表。スポット名が新事実"
+  },
+  "shiny-orchestra-2027-preorder-goods": {
+   "action": "article",
+   "angle": "シャニマスオケ2027の公式グッズ(パンフレットなど)事前受注は、あす11月15日まで。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "締切まで2日以内。11/9の記事と同じ施策だがトリガーあり"
+  },
+  "shiny-song-for-prism-third-anniversary-2026": {
+   "action": "article",
+   "angle": "「Song for Prism」が11月14日に3周年を迎えた。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "当日の記念日。素材は公式Xの1件のみで短い記事になる"
+  },
+  "shiny-shiny-party-2026-november": {
+   "action": "roundup",
+   "angle": "シャニソンで開催中のイベント・ガシャ・楽曲追加(シャイニーパーティー、キュー！、xR版楽曲、テクニカルチャレンジ杯、HBTK切り抜き)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "11/24 23:59までのログインでSSR桑山千雪を入手できる"
+  },
+  "shiny-song-for-prism-rerun-pickup-gacha-2026-november": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "凛世・羽那の限定★3復刻は11/11の記事で既報。新事実もトリガーも無い"
+  },
+  "shiny-song-for-prism-tabisuru-nejimaki-girl-gacha-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "はるき限定ガシャは11/12・11/13の運営情報記事で既報。アナザー衣装紹介だけで新事実なし"
+  },
+  "shiny-song-for-prism-another-event-kyu-2026": {
+   "action": "roundup",
+   "angle": "シャニソンのアナザーイベント「キュー！」が開催中。ストーリー＞イベントタブから視聴できる",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "11/11に近日開催と報じた件の開始。定常運営まとめへ"
+  },
+  "shiny-style-collection-goods-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "第3弾グッズの受注は11/13の記事で既報(品目・価格も既出)。締切11/29はまだ先"
+  },
+  "shiny-song-for-prism-autumn-memory-xr-live-song-2026": {
+   "action": "roundup",
+   "angle": "月岡恋鐘『秋の終わり、僕の記憶(xRライブ ver.)』がシャニソンに追加。MV視聴でフルサイズ版を見られる",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "11/11に追加予告済み。追加の実施は楽曲追加として定常運営まとめへ"
+  },
+  "shiny-song-for-prism-technical-challenge-cup-18-2026": {
+   "action": "roundup",
+   "angle": "第18回テクニカルチャレンジ杯が開催中。課題曲は『秋の終わり、僕の記憶(xRライブ ver.)』",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "月例イベントとして定常運営まとめへ"
+  },
+  "shiny-mattari-hbtk-clip-2026-11-13": {
+   "action": "roundup",
+   "angle": "シャニラジ関連の#まったりHBTK切り抜きを公開。MSPで着用した衣装のエピソードを扱う",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "配信・動画の定常情報として定常運営まとめへ"
+  },
+  "shiny-style-collection-3-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/13の記事で第3弾(Fumage・彼岸流)の受注と11/29締切が既報。新事実もトリガーも無い"
+  },
+  "shiny-borderless-oh-yeah-event-merch-2026": {
+   "action": "article",
+   "angle": "「ボーダーレス・ノンストレス / Oh Yeah!!」発売記念イベントの会場物販が本日13時30分から始まる。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(開始)。購入制限(1アイテム3点、缶バッジ6点)や体験会なしは10/25の記事に既出。当日開始を知らせる"
+  },
+  "song-koito-birthday-gasha-2026": {
+   "action": "article",
+   "angle": "シャニソン小糸誕生日記念ガシャは11月17日23時59分の終了まであと3日。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(締切前)。11/11の記事の既報だが締切3日前のトリガーあり"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "shiny-jr-tabi-kyoto-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "12月8日開始のJR東海「推し旅」京都デジタルスタンプラリーの対象スポットに京都駅・上賀茂神社など5か所が解禁された。",
+    "purpose": "新情報",
+    "lead_score": 60,
+    "dedup_key": "shiny-jr-tabi-kyoto-2026",
+    "candidate_ids": [
+     "202611131839-watch-5",
+     "202611140226-grok-80"
+    ]
+   },
+   {
+    "slug": "shiny-orchestra-2027-preorder-goods",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "シャニマスオケ2027の公式グッズ(パンフレットなど)事前受注は、あす11月15日まで。",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "shiny-orchestra-2027-preorder-goods",
+    "candidate_ids": [
+     "202611140226-grok-34"
+    ]
+   },
+   {
+    "slug": "shiny-song-for-prism-third-anniversary-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "「Song for Prism」が11月14日に3周年を迎えた。",
+    "purpose": "新情報",
+    "lead_score": 25,
+    "dedup_key": "shiny-song-for-prism-third-anniversary-2026",
+    "candidate_ids": [
+     "202611140226-grok-35"
+    ]
+   },
+   {
+    "slug": "shiny-borderless-oh-yeah-event-merch-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "「ボーダーレス・ノンストレス / Oh Yeah!!」発売記念イベントの会場物販が本日13時30分から始まる。",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "shiny-borderless-oh-yeah-event-merch-2026",
+    "candidate_ids": [
+     "sched-2026-11-14-shiny-borderless-oh-yeah-event-merch-2026-開始",
+     "sched-2026-11-14-shiny-borderless-oh-yeah-event-merch-2026-開始-src1",
+     "sched-2026-11-14-shiny-borderless-oh-yeah-event-merch-2026-開始-src2"
+    ]
+   },
+   {
+    "slug": "shiny-song-koito-birthday-gasha-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "シャニソン小糸誕生日記念ガシャは11月17日23時59分の終了まであと3日。",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "song-koito-birthday-gasha-2026",
+    "candidate_ids": [
+     "sched-2026-11-14-song-koito-birthday-gasha-2026-締切前",
+     "sched-2026-11-14-song-koito-birthday-gasha-2026-締切前-src1",
+     "sched-2026-11-14-song-koito-birthday-gasha-2026-締切前-src2",
+     "sched-2026-11-14-song-koito-birthday-gasha-2026-締切前-src3",
+     "sched-2026-11-14-song-koito-birthday-gasha-2026-締切前-src4",
+     "sched-2026-11-14-song-koito-birthday-gasha-2026-締切前-src5",
+     "sched-2026-11-14-song-koito-birthday-gasha-2026-締切前-src6"
+    ]
+   },
+   {
+    "slug": "shiny-ops-roundup",
+    "brand": "shiny",
+    "rank": "roundup",
+    "angle": "シャニソンで開催中のイベント・ガシャ・楽曲追加(シャイニーパーティー、キュー！、xR版楽曲、テクニカルチャレンジ杯、HBTK切り抜き)",
+    "lead_score": 0,
+    "dedup_key": "shiny-shiny-party-2026-november",
+    "candidate_ids": [
+     "202611140226-grok-36",
+     "202611140226-grok-39",
+     "202611140226-grok-41",
+     "202611140226-grok-42",
+     "202611140226-grok-43"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "sidem-shinycolors-sparkle-showdown-2027-06",
+    "reason": "既報",
+    "note": "出典変更の追加出演者(大塚剛央・天﨑滉平ほか)は11/13の記事の出演者一覧に既に載っている。新事実なし"
+   },
+   {
+    "dedup_key": "shiny-birthday-plate-2026-vol2",
+    "reason": "既報",
+    "note": "11/13の記事に第2弾の全ラインアップ・受注開始が既出。締切11/30はまだ先でトリガーなし"
+   },
+   {
+    "dedup_key": "shiny-song-for-prism-rerun-pickup-gacha-2026-november",
+    "reason": "既報",
+    "note": "凛世・羽那の限定★3復刻は11/11の記事で既報。新事実もトリガーも無い"
+   },
+   {
+    "dedup_key": "shiny-song-for-prism-tabisuru-nejimaki-girl-gacha-2026",
+    "reason": "既報",
+    "note": "はるき限定ガシャは11/12・11/13の運営情報記事で既報。アナザー衣装紹介だけで新事実なし"
+   },
+   {
+    "dedup_key": "shiny-style-collection-goods-2026",
+    "reason": "既報",
+    "note": "第3弾グッズの受注は11/13の記事で既報(品目・価格も既出)。締切11/29はまだ先"
+   },
+   {
+    "dedup_key": "shiny-style-collection-3-2026",
+    "reason": "既報",
+    "note": "11/13の記事で第3弾(Fumage・彼岸流)の受注と11/29締切が既報。新事実もトリガーも無い"
+   }
+  ],
+  "cross_brand": []
+ }
+}

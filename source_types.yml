@@ -135,6 +135,7 @@ discovery_only_domains:
 # --- 二次情報: 他所の発表を写して伝えている情報源(規程2.5) ---
 # 法人運営か個人運営かは問わない。自ら取材・発表していないものはここ。
 secondary_domains:
+  - mainichikirei.jp      # 合議で追加: PR TIMESのプレスリリースを本文ごと転載、自社取材の形跡なし
   - release.traicy.com    # 合議で追加: PR TIMESの発表文を転載。自社取材の形跡なし
   - news.dellows.jp       # 合議で追加: 主催の発表をもとに、編集部名で書いた記事
   - nitter.cf             # 合議で追加: 相手は転載表示を理由に公式とするが、運営は無関係の中継媒体
@@ -1193,6 +1194,7 @@ x_accounts:
 # tiktok.com/@…、ch.nicovideo.jp/…、manga.nicovideo.jp/comic/… など。ドメイン(プラットフォーム)では
 # 決まらず、そのパスの主体で決まる。合議が足す(classify_sources.add_paths)。
 path_types:
+  t.co/VuddOGS7g5: 当事者                         # 機械で追加: 展開先 https://www.medicos-e.net/newsdetail/imas_millionlive_popup/
   note.com/karagarashi: ファン                    # 合議で追加: 個人のnote。ライブ旅行記・感想を一人称で投稿
   ch.nicovideo.jp/MillionRADIO: 準公式            # 合議で追加: ニコニコ公式生放送の番組を自ら配信する公式チャンネル
   note.com/senshu_idol: ファン                    # 合議で追加: 大学のファンサークルが書く考察記事。公式の立場はない

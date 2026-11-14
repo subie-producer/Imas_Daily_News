@@ -135,6 +135,7 @@ discovery_only_domains:
 # --- 二次情報: 他所の発表を写して伝えている情報源(規程2.5) ---
 # 法人運営か個人運営かは問わない。自ら取材・発表していないものはここ。
 secondary_domains:
+  - mainichikirei.jp      # 合議で追加: PR TIMESのプレスリリースを本文ごと転載、自社取材の形跡なし
   - release.traicy.com    # 合議で追加: PR TIMESの発表文を転載。自社取材の形跡なし
   - news.dellows.jp       # 合議で追加: 主催の発表をもとに、編集部名で書いた記事
   - nitter.cf             # 合議で追加: 相手は転載表示を理由に公式とするが、運営は無関係の中継媒体
@@ -503,6 +504,7 @@ video_ids:
     - sm18526341          # 機械で追加: nicovideo.jp/user/17835786「iM@S 6th Anniversary Live - キラ」
     - LSkzNm3AzHk         # 機械で追加: @TogawaNonoha「〖 世界のアソビ大全51 〗遊び…？いいえ、ののは vs ま」
   公式:
+    - jDCmFezjYxE         # 機械で追加: @project_imas_va-liv「【期間限定公開】#ヴイアラ 2ndLIVE -BEYOND 」
     - I_EuyjX03zY         # 機械で追加: @imas-official「ゲーム【ミリシタ】高山 紗代子 スペシャル動画【アイドルマス」
     - iVOtp0VZh8g         # 機械で追加: @TomoriManaka「【ハロウィン】苦手なカボチャ、丸々1個食う。【灯里愛夏 / 」
     - MW86O8bUrtE         # 機械で追加: @imas-official「【学マス】雨夜 燕「H.I.F編」シナリオ告知PV【アイドル」
@@ -684,6 +686,14 @@ x_accounts:
     - imasnews765
     - zutapoke
   ファン:
+    - sanasan528          # 合議で追加: 個人アカウントによるルネサンス×SideMコラボ体験の共有
+    - sagisawaria         # 合議で追加: 個人アカウントによる「こいかぜ」のファン歌唱投稿
+    - mmamonmo            # 合議で追加: 個人アカウントによるシャニマス衣装のファンイラスト
+    - cha73               # 合議で追加: 個人アカウントによる関裕美の日刊ファン投稿
+    - almon2017           # 合議で追加: 個人アカウントによるミリシタ楽曲の聖地巡礼投稿
+    - Suzuno_Naro         # 合議で追加: 個人アカウントによる氷渡香名江の新CMへの感想
+    - MoonDaikonP         # 合議で追加: 個人アカウントによるデレステ無料単発のファン投稿
+    - 8ga3_Nov07          # 合議で追加: 個人アカウントによるデレステのスクリーンショット投稿
     - yubal207            # 合議で追加: 個人アカウントの『一旦愛して♡』踊ってみた動画。個人発信はファン
     - hassy084T           # 合議で追加: 個人アカウントによる原田美世の誕生日祝いのファン投稿
     - Liar_612            # 合議で追加: 個人アカウントの横浜コスモワールド来訪報告。個人発信はファン
@@ -1057,6 +1067,7 @@ x_accounts:
     - procinen1
     - yutaleP
   当事者:
+    - tukurifigure        # 合議で追加: 公式ライセンスのグッズを受注販売する会社、販売元
     - bkdanikebukuro      # 合議で追加: ばくだん焼本舗池袋店のMフェス特典(コラボ店舗の発信)
     - animatekuzuha       # 合議で追加: グッズ入荷の告知。店舗の発信と読める(個人の可能性も)
     - yokohama_hands      # 合議で追加: 店舗が自ら商品の抽選結果を発表
@@ -1193,6 +1204,7 @@ x_accounts:
 # tiktok.com/@…、ch.nicovideo.jp/…、manga.nicovideo.jp/comic/… など。ドメイン(プラットフォーム)では
 # 決まらず、そのパスの主体で決まる。合議が足す(classify_sources.add_paths)。
 path_types:
+  t.co/VuddOGS7g5: 当事者                         # 機械で追加: 展開先 https://www.medicos-e.net/newsdetail/imas_millionlive_popup/
   note.com/karagarashi: ファン                    # 合議で追加: 個人のnote。ライブ旅行記・感想を一人称で投稿
   ch.nicovideo.jp/MillionRADIO: 準公式            # 合議で追加: ニコニコ公式生放送の番組を自ら配信する公式チャンネル
   note.com/senshu_idol: ファン                    # 合議で追加: 大学のファンサークルが書く考察記事。公式の立場はない
@@ -1257,6 +1269,9 @@ x_posts:
 
 # --- リンク元から引き継いだ種別(リンク先1つずつ。キーは pipelib.link_key)。合議がリンク元の告知と関係していると確かめたものだけ(classify_sources.inherit_from_links)。リンク先そのものの種別より強いときだけ効く ---
 link_types:
+  youtube.com/watch?v=K3MBIJ4TABk: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/valiv_official/status/2121528563316961631(公式)。上水流宇宙とレイン・パターソンの踊ってみた動画で、告知と同じ
+  youtube.com/watch?v=HgSwILKG9_k: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/SideM_official/status/2121516735304012147(公式)。AJIなヤツら試し読み動画で、告知と同じ動画
+  youtube.com/watch?v=BYebSlBe8Z4: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/imas_official/status/2120804538315923602(公式)。フレあかラジオのプレミア公開先で、告知と同じ番組
   youtube.com/watch?v=m1UKDYlrxwg: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/gkmas_official/status/2120433853407920240(公式)。告知と同じ初星学園放送部#113の放送動画
   youtube.com/watch?v=i2Gs6sKH9Gg: 準公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/imas_columbia/status/2121166190773198859(準公式)。告知と同じ楽曲「Brand new!」の試聴動画
   youtube.com/watch?v=hIBx-tzzTis: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/TomoriManaka/status/2121289160745181502(公式)。告知の灯里愛夏のBIOHAZARD配信アーカイブ

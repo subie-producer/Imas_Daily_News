@@ -1,0 +1,26 @@
+{
+ "decisions": {
+  "765pro-allstars-never-end-idol-bluray-day1-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "変更はAmazon掲載価格の変動(15,040円→14,869円)のみ。公式価格・発売日・特典は既報通りで、発売(11/25)も3日以内でなく当日トリガー無し"
+  }
+ },
+ "plan": {
+  "articles": [],
+  "dropped": [
+   {
+    "dedup_key": "765pro-allstars-never-end-idol-bluray-day1-2026",
+    "reason": "既報",
+    "note": "変更はAmazon掲載価格の変動(15,040円→14,869円)のみ。公式価格・発売日・特典は既報通りで、発売(11/25)も3日以内でなく当日トリガー無し"
+   }
+  ],
+  "cross_brand": []
+ }
+}

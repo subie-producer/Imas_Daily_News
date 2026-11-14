@@ -1,0 +1,354 @@
+{
+ "decisions": {
+  "shiny-birthday-plate-vol-2-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-13号の記事に価格・種類・締切11/30が既出。当日のトリガー無し"
+  },
+  "shiny-prism-focus-look-up-to-the-sky-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "YouTubeプレイリストの再生数・表示の変化のみで読者に関わる変更なし"
+  },
+  "shiny-birthday-plate-2026-vol2": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-13号に受注開始・11/30締切・第1弾再販・お届け時期まで既出。締切は15日後でトリガー無し"
+  },
+  "shiny-song-for-prism-3rd-anniv-x-campaign": {
+   "action": "article",
+   "angle": "シャニソン3周年記念「心に残るセリフ」X投稿キャンペーンが11月29日まで。応募条件と賞品のBIGアクリルスタンド30名",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-party-november-2026": {
+   "action": "article",
+   "angle": "シャイニーパーティ in Novemberの交換所の品目と上限、ログインミッション報酬、受取・交換期限11月27日",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "11-14号は開催と千雪配布のみ。交換品目・ミッション報酬は新しい事実"
+  },
+  "shiny-song-for-prism-3rd-anniversary-art-2026": {
+   "action": "article",
+   "angle": "プロデューサーの思い出スクリーンショットを集めたシャニソン3周年記念アートが公開、4Kで拡大して探せる",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 8,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "11-08号は募集の締切記事。完成・公開は新しい事実"
+  },
+  "shiny-song-for-prism-third-anniversary-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-14号で3周年到達を記事化済み"
+  },
+  "shiny-shiny-party-2026-november": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-party-november-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じイベント"
+  },
+  "shiny-song-for-prism-pickup-gasha-haruki-2026-11": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-12号の運営情報まとめで開催中を既報。新事実・期日なし"
+  },
+  "shiny-song-for-prism-rerun-pickup-gasha-suzuki-hana-2026-11": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-11号で凛世・羽那の限定★3復刻を記事化済み。新事実・期日なし"
+  },
+  "shiny-orchestra-2027-preorder-goods": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-orchestra-radiant-chord-goods-2027",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じグッズ受注締切"
+  },
+  "shiny-song-for-prism-another-event-kyu-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-11号・11-14号で既報。新事実・期日なし"
+  },
+  "fan-shiny-hachiban-ramen-uniform-illustration-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "同人・ファン主催",
+   "note": "個人のファンイラスト。shiny面にculture枠なし"
+  },
+  "shiny-sweets-paradise-cafe-2026": {
+   "action": "article",
+   "angle": "シャニマス×スイパラ名古屋栄店は本日11月15日が最終日。東京・大阪は11月24日まで",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "lisani-tokyo-2027": {
+   "action": "article",
+   "angle": "LISANI！TOKYO 2027、ストレイライト出演2月21日公演のチケット最速先行は本日23時59分まで",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-alstroemeria-gotoken-xmas-2026": {
+   "action": "article",
+   "angle": "アルストロメリア×五島軒クリスマスオードブルの全国送料無料の早期予約は本日11月15日まで",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-orchestra-concert-2027": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-orchestra-radiant-chord-goods-2027",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公演情報は既報。続報予約はグッズ受注締切のため統合"
+  },
+  "shiny-orchestra-radiant-chord-goods-2027": {
+   "action": "article",
+   "angle": "「Radiant Chord」公式グッズ事前販売(ASOBI STORE)の受注は本日11月15日が最終日",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "4主題を統合。素材7件"
+  },
+  "shiny-orchestra-2027-goods-order": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-orchestra-radiant-chord-goods-2027",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じグッズ受注締切"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "shiny-song-for-prism-3rd-anniv-x-campaign",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "シャニソン3周年記念「心に残るセリフ」X投稿キャンペーンが11月29日まで。応募条件と賞品のBIGアクリルスタンド30名",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "shiny-song-for-prism-3rd-anniv-x-campaign",
+    "candidate_ids": [
+     "202611141834-watch-0",
+     "202611150227-grok-96",
+     "202611150227-grok-131"
+    ]
+   },
+   {
+    "slug": "shiny-party-november-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "シャイニーパーティ in Novemberの交換所の品目と上限、ログインミッション報酬、受取・交換期限11月27日",
+    "purpose": "新情報",
+    "lead_score": 5,
+    "dedup_key": "shiny-party-november-2026",
+    "candidate_ids": [
+     "202611142334-explore-4",
+     "202611150227-grok-33"
+    ]
+   },
+   {
+    "slug": "shiny-song-for-prism-3rd-anniversary-art-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "プロデューサーの思い出スクリーンショットを集めたシャニソン3周年記念アートが公開、4Kで拡大して探せる",
+    "purpose": "新情報",
+    "lead_score": 8,
+    "dedup_key": "shiny-song-for-prism-3rd-anniversary-art-2026",
+    "candidate_ids": [
+     "202611150227-grok-31"
+    ]
+   },
+   {
+    "slug": "shiny-sweets-paradise-cafe-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "シャニマス×スイパラ名古屋栄店は本日11月15日が最終日。東京・大阪は11月24日まで",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "shiny-sweets-paradise-cafe-2026",
+    "candidate_ids": [
+     "sched-2026-11-15-shiny-sweets-paradise-cafe-2026-終了",
+     "sched-2026-11-15-shiny-sweets-paradise-cafe-2026-終了-src1"
+    ]
+   },
+   {
+    "slug": "shiny-lisani-tokyo-2027",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "LISANI！TOKYO 2027、ストレイライト出演2月21日公演のチケット最速先行は本日23時59分まで",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "lisani-tokyo-2027",
+    "candidate_ids": [
+     "sched-2026-11-15-lisani-tokyo-2027-締切"
+    ]
+   },
+   {
+    "slug": "shiny-alstroemeria-gotoken-xmas-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "アルストロメリア×五島軒クリスマスオードブルの全国送料無料の早期予約は本日11月15日まで",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "shiny-alstroemeria-gotoken-xmas-2026",
+    "candidate_ids": [
+     "sched-2026-11-15-shiny-alstroemeria-gotoken-xmas-2026-締切"
+    ]
+   },
+   {
+    "slug": "shiny-orchestra-radiant-chord-goods-2027",
+    "brand": "shiny",
+    "rank": "medium",
+    "angle": "「Radiant Chord」公式グッズ事前販売(ASOBI STORE)の受注は本日11月15日が最終日",
+    "purpose": "期日の知らせ",
+    "lead_score": 60,
+    "dedup_key": "shiny-orchestra-radiant-chord-goods-2027",
+    "candidate_ids": [
+     "sched-2026-11-15-shiny-orchestra-radiant-chord-goods-2027-締切",
+     "sched-2026-11-15-shiny-orchestra-radiant-chord-goods-2027-締切-src1",
+     "202611150227-grok-36",
+     "sched-2026-11-15-shiny-orchestra-2027-preorder-goods-締切",
+     "sched-2026-11-15-shiny-orchestra-concert-2027-締切",
+     "sched-2026-11-15-shiny-orchestra-concert-2027-締切-src1",
+     "sched-2026-11-15-shiny-orchestra-2027-goods-order-締切"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "shiny-birthday-plate-vol-2-2026",
+    "reason": "既報",
+    "note": "11-13号の記事に価格・種類・締切11/30が既出。当日のトリガー無し"
+   },
+   {
+    "dedup_key": "shiny-prism-focus-look-up-to-the-sky-2026",
+    "reason": "その他",
+    "note": "YouTubeプレイリストの再生数・表示の変化のみで読者に関わる変更なし"
+   },
+   {
+    "dedup_key": "shiny-birthday-plate-2026-vol2",
+    "reason": "既報",
+    "note": "11-13号に受注開始・11/30締切・第1弾再販・お届け時期まで既出。締切は15日後でトリガー無し"
+   },
+   {
+    "dedup_key": "shiny-song-for-prism-third-anniversary-2026",
+    "reason": "既報",
+    "note": "11-14号で3周年到達を記事化済み"
+   },
+   {
+    "dedup_key": "shiny-song-for-prism-pickup-gasha-haruki-2026-11",
+    "reason": "既報",
+    "note": "11-12号の運営情報まとめで開催中を既報。新事実・期日なし"
+   },
+   {
+    "dedup_key": "shiny-song-for-prism-rerun-pickup-gasha-suzuki-hana-2026-11",
+    "reason": "既報",
+    "note": "11-11号で凛世・羽那の限定★3復刻を記事化済み。新事実・期日なし"
+   },
+   {
+    "dedup_key": "shiny-song-for-prism-another-event-kyu-2026",
+    "reason": "既報",
+    "note": "11-11号・11-14号で既報。新事実・期日なし"
+   },
+   {
+    "dedup_key": "fan-shiny-hachiban-ramen-uniform-illustration-2026",
+    "reason": "同人・ファン主催",
+    "note": "個人のファンイラスト。shiny面にculture枠なし"
+   }
+  ],
+  "cross_brand": []
+ }
+}

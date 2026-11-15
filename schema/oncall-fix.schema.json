@@ -1,39 +1,29 @@
 {
   "title": "oncall-fix",
-  "description": "当番(Opus)の修正報告。判断はここに、変更は作業ツリーに",
+  "description": "当番(Opus)の PR の説明。判断はここに、変更は作業ツリーに",
   "type": "object",
-  "required": ["status", "editor_summary", "diagnosis", "root_cause", "changed_files", "test_evidence", "risk", "confidence", "rerun_mode", "recovery", "notes", "backlog_items"],
+  "required": ["status", "editor_summary", "diagnosis", "root_cause", "changed_files", "test_evidence", "risk", "rerun_mode", "recovery", "notes"],
   "additionalProperties": false,
   "properties": {
     "editor_summary": {
-      "type": "object", "required": ["what_happened", "why", "what_changed", "similar", "paper_impact"], "additionalProperties": false,
-      "description": "編集長(コードを読まない人)に Discord で届ける報告。日本語。コードの差分を書かない。内部の名前は避け、使うなら何を指すかを添える。短くするために情報を落とさない",
+      "type": "object",
+      "required": ["what_happened", "why", "what_changed"],
+      "additionalProperties": false,
+      "description": "編集長への報告。日本語で各欄1〜2文。差分・ファイル名・関数名を書かない",
       "properties": {
-        "what_happened": {"type": "string", "minLength": 1, "maxLength": 1200, "description": "起きたこと。紙面で何が失われた・遅れたか"},
-        "why": {"type": "string", "minLength": 1, "maxLength": 1500, "description": "なぜ起きたか。原因の型まで遡る。確定できないなら、なぜ確定できないか"},
-        "what_changed": {"type": "string", "minLength": 1, "maxLength": 1500, "description": "どう直したか(直さなかったなら、なぜか)"},
-        "similar": {"type": "string", "minLength": 1, "maxLength": 1500, "description": "同じ型の箇所: どこを探し、どれを直し、どれがなぜ起きないと言えるか"},
-        "paper_impact": {"type": "string", "minLength": 1, "maxLength": 600, "description": "紙面への影響: どの話題が、いつ公式に出て、本来どの号に載るべきで、実際にどの号になる(なった)か。1号の遅れも影響。未確定なら条件・確かめる手段・時刻。打ち消す言い方をしない。影響なしは載るべき号が変わらないと確かめたときだけ。いつの号から効くか"}
+        "what_happened": {"type": "string", "minLength": 1, "maxLength": 400, "description": "何が止まったか"},
+        "why": {"type": "string", "minLength": 1, "maxLength": 400, "description": "なぜ止まったか"},
+        "what_changed": {"type": "string", "minLength": 1, "maxLength": 400, "description": "どう直したか(直していなければ、なぜ直さないか)"}
       }
     },
-    "status": {"enum": ["fixed", "no_fix_needed", "cannot_fix"], "description": "fixed=コードを直した(差分がある) / no_fix_needed=コードの欠陥ではない(データ・環境。差分は無いか、回帰テスト scripts/test_pipeline.py だけ) / cannot_fix=人が要る"},
-    "rerun_mode": {"enum": ["rebuild", "resume", "none"],
-                   "description": "止まった工程をどう再実行すべきか。rebuild=その号を作り直す(計画・執筆・組版の層を直した、または同じ入力では同じ結果になる) / resume=続きから(compose は --reuse-plan、release はそのまま) / none=いま再実行しない(同じ入力では同じ結果になる。工程が止まっていれば人へ渡り、止まっていなければ次の定時の実行に任せる)。no_fix_needed でも必ず答える"},
-    "recovery": {"type": "string", "maxLength": 600,
-                 "description": "no_fix_needed のとき: 同じ入力で再実行して今度は通る根拠(何が変わったか。例: 枠切れがリセットされた)。同じ入力では同じ結果になるなら rerun_mode は none にする"},
-    "diagnosis": {"type": "string", "maxLength": 1200, "description": "何が起きたか(ログ・状態からの事実)"},
-    "root_cause": {"type": "string", "maxLength": 800, "description": "設計・実装のどこが原因か"},
+    "status": {"enum": ["fixed", "no_fix_needed", "cannot_fix"], "description": "fixed=scripts/test_pipeline.py 以外を変えた / no_fix_needed=変えていない(回帰テストだけを含む) / cannot_fix=人が要る"},
+    "rerun_mode": {"enum": ["rebuild", "resume", "none"], "description": "rebuild=号を作り直す(計画・執筆・組版の層を直した) / resume=続きから / none=再実行しても同じ結果"},
+    "recovery": {"type": "string", "maxLength": 600, "description": "no_fix_needed のとき: 同じ入力で再実行して今度は通る根拠。それ以外は空文字"},
+    "diagnosis": {"type": "string", "maxLength": 800, "description": "ログ・状態から確かめた事実"},
+    "root_cause": {"type": "string", "maxLength": 400, "description": "止まった原因(1〜2文)"},
     "changed_files": {"type": "array", "items": {"type": "string"}},
-    "test_evidence": {"type": "string", "maxLength": 1200, "description": "selfcheck と、直した箇所を実際に踏ませたテストの結果"},
-    "risk": {"type": "string", "maxLength": 600, "description": "この修正で新しく壊れうるもの"},
-    "confidence": {"type": "integer", "minimum": 0, "maximum": 100},
-    "notes": {"type": "string", "maxLength": 800},
-    "backlog_items": {
-      "type": "array", "description": "保管していた指摘を渡されたとき: 1件ずつの扱い。渡されていなければ []",
-      "items": {"type": "object", "required": ["key", "result", "why"], "additionalProperties": false,
-                "properties": {"key": {"type": "string", "minLength": 1},
-                               "result": {"enum": ["fixed", "already_fixed", "invalid"], "description": "fixed=直した / already_fixed=もう直っていた / invalid=事実誤認・起きない"},
-                               "why": {"type": "string", "minLength": 1, "maxLength": 600, "description": "根拠(どう直したか、またはファイル:行・実データ)"}}}
-    }
+    "test_evidence": {"type": "string", "maxLength": 600, "description": "足した回帰テストと selfcheck の結果"},
+    "risk": {"type": "string", "maxLength": 400, "description": "この修正で新しく壊れうるもの"},
+    "notes": {"type": "string", "maxLength": 800, "description": "同じ型の箇所など、直さずに気づいたこと"}
   }
 }

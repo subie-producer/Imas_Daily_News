@@ -595,19 +595,12 @@ def diagnose_anomalies(stage: str, date: str, rerun: bool = False, reason: str =
     edition に生きている号の日付を渡す。戻り値は当番を呼んだか。"""
     if not ANOMALIES or _ESCALATED:
         return False
-    items = None
     if not reason:
-        # 工程は止まっていない: 同じ号・同じ工程で当番が診断し監査が承認した事柄(同じ形の鍵)は、判定し直させない。
-        # 新しい事柄だけを渡す。全部が判定済みなら当番を起こさない(人への通知は見つけたときに済んでいる)
-        settled = settled_anomaly_keys(date, stage)
-        items = [a for a in ANOMALIES if anomaly_key(a) not in settled]
-        if not items:
-            print(f"当番を起こさない({stage} {date}): 異常は全部、この号・この工程で当番が診断し監査が承認した事柄と同じ型"
-                  f"({len(ANOMALIES)}件)", flush=True)
-            return False
-    # reason が無い = 工程は止まっていない。当番に伝え、「いま再実行しても変わらない」を「人の判断が要る」にさせない(oncall --finished)
-    return escalate(stage, date, reason or "工程は終わった(止まっていない)が、人に異常として通知した事柄がある。下の一覧をなぜなぜすること",
-                    rerun=rerun, edition=edition, extra_args=list(extra_args or []) + ([] if reason else ["--finished"]), items=items)
+        # 工程は止まっていない: 当番を起こさない(異常は見つけたときに人へ通知してある)。当番は工程が止まって号が出ない
+        # ときだけ起こす(編集長 2026-11-06。止まっていない工程のなぜなぜの当番が排他を握り、06:00 の発行を止めた)
+        print(f"当番を起こさない({stage} {date}): 工程は止まっていない(異常 {len(ANOMALIES)}件は通知済み)", flush=True)
+        return False
+    return escalate(stage, date, reason, rerun=rerun, edition=edition, extra_args=list(extra_args or []))
 
 
 ESCALATE_ITEMS_MAX = 30      # 当番に渡す台帳の件数の上限(引数1つの上限 128KB に収める: 30件 × 1200 字まで)
@@ -618,12 +611,15 @@ ONCALL_HANDED_EXIT = 79
 
 
 def escalate_reason(reason: str, items: list[str] | None = None) -> str:
-    """当番に渡す理由 = 呼び出し側の理由 + 異常の台帳(なぜなぜの依頼文 prompts/oncall-whywhy)。台帳が空なら理由だけ。
-    items を渡したら、台帳の代わりにその事柄だけ(判定済みを除いた残り)。"""
+    """当番に渡す理由 = 呼び出し側の理由(止まった原因) + この工程で記録した異常(参考。prompts/oncall-anomalies)。
+    台帳が空なら理由だけ。items を渡したら、台帳の代わりにその事柄だけ。"""
     items = ANOMALIES if items is None else items
     if not items:
         return reason[:4000]
-    return reason[:4000] + "\n\n" + render_prompt("oncall-whywhy", ITEMS="\n".join(f"- {a[:1200]}" for a in items[:ESCALATE_ITEMS_MAX]))
+    return reason[:4000] + "\n\n" + render_prompt("oncall-anomalies", ITEMS="\n".join(f"- {a[:1200]}" for a in items[:ESCALATE_ITEMS_MAX]))
+
+
+ONCALL_STAGES = ("compose", "release")   # 当番を起こす工程(止まると号が出ない工程。編集長 2026-11-06)
 
 
 def escalate(stage: str, date: str, reason: str, rerun: bool = True, edition: str = "",
@@ -642,6 +638,10 @@ def escalate(stage: str, date: str, reason: str, rerun: bool = True, edition: st
         print(f"[試験実行・当番を呼ばない] {stage} {date}: {reason[:200]}", flush=True)
         return False
     if ENV.get("ONCALL", "on").lower() == "off" or os.environ.get("ONCALL", "").lower() == "off":
+        return False
+    if stage not in ONCALL_STAGES:
+        # 収集・判定・監視・道具の更新・保管の指摘は、止まっても号は出る(次の定時の回が取り直す)。当番を起こさない
+        print(f"当番を起こさない({stage} {date}): 号が出なくなる工程(組版・発行)ではない", flush=True)
         return False
     if oncall_clis_blocked():
         # 当番も同じ CLI で同じ理由で止まり、1日2回の枠を使うだけになる(2026-10-20 18:34・18:35 の当番が2回とも認証切れで即死)。

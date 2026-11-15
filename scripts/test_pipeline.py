@@ -10681,13 +10681,13 @@ def test_oncall_fix_until_clean(tmp: Path):
         # 監視は、保管した nit を当番に渡さない(人が引き取る。編集長 2026-11-06)。残っていても異常にしない
         import watch
         calls_w = []
-        saved_w = (watch.escalate, oncall.backlog_open)
+        saved_w = (pipelib.escalate, oncall.backlog_open)
         try:
             oncall.backlog_open = lambda: [{"key": "k1", "claim": "c"}, {"key": "k2", "claim": "d"}]
-            watch.escalate = lambda *a, **kw: calls_w.append((a, kw)) or True
+            pipelib.escalate = lambda *a, **kw: calls_w.append((a, kw)) or True
             ok_w = watch.hand_backlog("2026-10-07")
         finally:
-            watch.escalate, oncall.backlog_open = saved_w
+            pipelib.escalate, oncall.backlog_open = saved_w
         check(ok_w == [] and calls_w == [], f"監視が保管の nit を当番に渡した・異常にした: {calls_w} {ok_w}")
         # (3b) 続きの checkout が失敗しても、残してあった続きは消えない(監査指摘)
         old_wip = {"base": "B" * 40, "head": "C" * 40, "fix": {"status": "fixed"}, "open": [{"id": "old"}]}

@@ -16203,6 +16203,65 @@ def test_cli_blocked_oncall_not_counted(tmp: Path):
             os.environ["PATH"] = saved_path
 
 
+def test_oncall_rounds_exhausted_not_restarted(tmp: Path):
+    """2往復で blocking が残った当番は、人に渡し終えた終わり方(ONCALL_HANDED_EXIT)で終える。systemd に起動し直させない
+    (起動し直すと往復の数が戻り、同じ指摘でさらに2巡する。監査指摘 2026-11-09 r2)。作業が例外で止まったときは起動し直しで通りうるので 1。
+    本物の _main を一時リポジトリで走らせ、往復(モデルの答え)だけを固定の結果に差し替える。"""
+    import oncall
+    date, edition = "2026-11-09", "edition/2026-11-10"
+    tmp.mkdir(parents=True, exist_ok=True)
+    root, remote = tmp / "ops", tmp / "ops.git"
+    g = lambda *a: subprocess.run(["git", *a], cwd=root, capture_output=True, text=True, check=True).stdout.strip()
+    subprocess.run(["git", "init", "-q", "--bare", "-b", "main", str(remote)], check=True, capture_output=True)
+    subprocess.run(["git", "init", "-q", "-b", "main", str(root)], check=True, capture_output=True)
+    g("config", "user.email", "t@example"); g("config", "user.name", "t")
+    (root / "scripts").mkdir(); (root / "metrics").mkdir()
+    (root / ".gitignore").write_text("metrics/oncall-*\nmetrics/jobs.lock\nmetrics/work/\n", encoding="utf-8")
+    (root / "scripts" / "x.py").write_text("x = 0\n", encoding="utf-8")
+    g("add", "-A"); g("commit", "-q", "-m", "base")
+    g("remote", "add", "origin", str(remote)); g("push", "-q", "-u", "origin", "main")
+    g("checkout", "-q", "-b", edition); g("push", "-q", "-u", "origin", edition)
+    base = g("rev-parse", "HEAD")
+    left_open = [{"id": "B1", "file": "scripts/x.py", "line": 1, "kind": "blocking", "claim": "原因に当たっていない", "evidence": "再現"}]
+    fix = {"status": "fixed", "diagnosis": "d", "editor_summary": {"what_happened": "a", "why": "b", "what_changed": "c"}}
+
+    def rounds(error: str):
+        def run_rounds(*a, **k):
+            tr = a[-1]
+            tr += [{"round": 1, "fix": fix}, {"round": 1, "review": {"verdict": "request_changes"}},
+                   {"round": 2, "review": {"verdict": "request_changes"}}]
+            if error:
+                tr.append({"error": error})
+            return {"approved": False, "error": error, "fix": fix, "head": base, "diff": "", "changed": [],
+                    "kept": {"head": base, "fix": fix, "open": left_open, "later": []}, "later": []}
+        return run_rounds
+
+    names = ("ROOT", "notify", "job_lock", "gather_context", "env_fingerprint", "run_rounds", "DEADLINE_AT", "STAGE_END_AT", "RECOVER")
+    saved, saved_argv, notes = {k: getattr(oncall, k) for k in names}, sys.argv, []
+    try:
+        oncall.ROOT = root
+        oncall.notify = lambda job, msg, ok=True, require=False: notes.append((msg, ok)) or True
+        oncall.job_lock = lambda *a, **k: os.open(os.devnull, os.O_RDONLY)
+        oncall.gather_context = lambda *a: "ctx"
+        oncall.env_fingerprint = lambda: ""
+        oncall.DEADLINE_AT = oncall.STAGE_END_AT = None
+        oncall.RECOVER = False
+        sys.argv = ["oncall", "--stage", "compose", "--date", date, "--edition", edition[len("edition/"):]]
+        oncall.run_rounds = rounds("")
+        code = oncall._main()
+        check(code == pipelib.ONCALL_HANDED_EXIT and any("解決しなかった" in m and not ok for m, ok in notes),
+              f"2往復で解決しなかった当番が、起動し直される終わり方をした: exit {code} {[m[:120] for m, ok in notes]}")
+        for p in (root / "metrics").glob(f"oncall-{date}-compose*"):
+            p.unlink()
+        oncall.run_rounds = rounds("RuntimeError: 通信が切れた")
+        code = oncall._main()
+        check(code == 1, f"例外で止まった当番が、起動し直されない終わり方をした: exit {code}")
+    finally:
+        for k, v in saved.items():
+            setattr(oncall, k, v)
+        sys.argv = saved_argv
+
+
 def test_cli_block_detect_and_post(tmp: Path):
     """認証切れ・利用上限の見分け(実物の文言)・投稿のまとめ方(同じ原因は1回、止まったままなら間を置いて1回、戻ったら1回)・
     道具の動作確認・出典の判定・探索・Grok の各経路で失敗に数えないこと。"""
@@ -21875,6 +21934,7 @@ def main() -> int:
     test_cli_blocked_watch_not_counted(tmp / "cbw")
     test_cli_blocked_compose(tmp / "cbc")
     test_cli_blocked_oncall_not_counted(tmp / "cbo")
+    test_oncall_rounds_exhausted_not_restarted(tmp / "ore")
     test_oncall_answer_reformat(tmp / "oar")
     test_oncall_session_waits(tmp / "osw")
     test_oncall_finished_rerun_none(tmp / "ofr")

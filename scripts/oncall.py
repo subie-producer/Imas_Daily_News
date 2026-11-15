@@ -2026,7 +2026,12 @@ def _main() -> int:
                 # 以下は当番の書いた要約で、監査で承認されていない(紙面への影響も確かめられていない)。そう明示する(監査指摘)
                 + [(label + "(監査で未承認)", s[k]) for k, label in SUMMARY_LABELS if s.get(k)],
                 footer=f"記録(差分・検証の全文): {rec.relative_to(ROOT)}" + (f"(記録ブランチ {wip_branch})" if wip_branch else "")), ok=False)
-            return 1
+            # 往復を使い切った・直せないと判断した・時間切れ・答えが読めないは、人に渡し終えた。起動し直させない(起動し直すと
+            # 往復の数が戻り、同じ指摘でさらに2巡する。監査指摘 2026-11-09 r2)。作業が例外で止まった・main が動いたときだけ、
+            # 起動し直しで通りうる(試行の上限 MAX_ATTEMPTS で止まる)
+            if (res["error"] and not res.get("unreadable")) or last.get("remote_moved"):
+                return 1
+            return ONCALL_HANDED_EXIT
 
         # 発行後でよい指摘(later)を保管する。**保管の失敗で発行を止めない**(修正報告には必ず載る)
         keep_later(res["later"], date, stage, head)

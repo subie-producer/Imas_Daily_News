@@ -17450,7 +17450,8 @@ def test_oncall_finished_rerun_none(tmp: Path):
           f"止まった工程の none を人に渡さない: exit {code} {[(m[:60], ok) for m, ok in ns]}")
     code, ns = codes["2026-10-21"]
     bad = [m for m, ok in ns if not ok]
-    check(code == 1 and len(bad) == 1 and "答えが読めなかった" in bad[0] and "途中で止まったのではない" in bad[0]
+    # 答えが読めない回も人に渡し終えた終わり方(起動し直すと往復の数が戻り、同じ答えでさらに回る。監査指摘 2026-11-09 r2)
+    check(code == pipelib.ONCALL_HANDED_EXIT and len(bad) == 1 and "答えが読めなかった" in bad[0] and "途中で止まったのではない" in bad[0]
           and "当番の作業が途中で止まった" not in bad[0] and "人の判断が要る" not in bad[0],
           f"形を直させる回が時間切れの当番を、答えが読めなかったと届けない: exit {code} {[m[:160] for m in bad]}")
     # 呼び出し側: 理由が無い(止まっていない)ときは当番を呼ばない(編集長 2026-11-06)。止まったとき(例外・SIGTERM・非0)だけ

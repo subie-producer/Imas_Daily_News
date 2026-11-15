@@ -1837,5 +1837,57 @@
   "src_candidate_id": "202611130231-grok-54",
   "companion_of": "sched-2026-11-20-tours-allnet-maintenance-remedy-2026-開始",
   "src_dedup_key": "tours-rhythm-live-festival-2027"
+ },
+ {
+  "id": "sched-2026-11-20-sidem-wgf-general-ticket-sale-2026-開幕",
+  "dedup_key": "sidem-wgf-general-ticket-sale-2026",
+  "brand": "sidem",
+  "subject": "劇場版SideM 全国公開",
+  "kind": "開幕",
+  "note": "全国の映画館で劇場版SideMを鑑賞できる",
+  "reserved_on": "2026-11-16",
+  "occurs_on": "2026-11-20",
+  "title": "劇場版SideM舞台挨拶の一般先着発売",
+  "url": "https://x.com/SideM_official/status/2120345769559437780",
+  "source_type": "公式",
+  "facts": [
+   "公開記念舞台挨拶の一般発売（先着）が2026年11月11日(水)12時に開始。",
+   "投稿内の公式ページリンクはメンテナンス案内に転送され、購入条件は投稿本文に記載なし。",
+   "投稿はアソビストア限定ムビチケを案内し、11月11日までの注文分は11月15日(日)までに届ける予定と告知。",
+   "ムビチケ商品ページの販売期間: 2026年10月16日(金)10:00～11月19日(木)23:59まで",
+   "投稿リンクの商品は315Pro FRAMEコンプリートセットで、販売価格9,300円（税込）。",
+   "セット内容: ムビチケカード券4枚、ミニアクリルスタンド本体3個・台座3個、KVポストカード1枚、特典の証明写真風ブロマイド1枚。",
+   "商品ページはFRAMEの購入特典を証明写真風ブロマイド（FRAME）と記載。",
+   "2026年11月11日(水)までの注文分は11月15日(日)までにお届け予定。11月12日(木)以降は順次発送で、注文時期によって公開期間中に届かない場合がある。",
+   "リンク: https://idolmaster-official.jp/mainte/index.html",
+   "リンク: https://shop.asobistore.jp/products/detail/249822-sm_uni06-00-00",
+   "エンゲージメント: 高"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "event_date": "2026-11-21",
+  "deadline": "2026-11-19",
+  "src_candidate_id": "sched-2026-11-16-sidem-wgf-general-ticket-sale-2026-締切前"
+ },
+ {
+  "id": "sched-2026-11-20-sidem-wgf-general-ticket-sale-2026-開幕-src1",
+  "dedup_key": "sidem-wgf-general-ticket-sale-2026",
+  "brand": "sidem",
+  "subject": "劇場版SideM 全国公開",
+  "kind": "開幕",
+  "note": "全国の映画館で劇場版SideMを鑑賞できる",
+  "reserved_on": "2026-11-16",
+  "occurs_on": "2026-11-20",
+  "title": "アソビストア「劇場版 アイドルマスター SideM F＠NTASTIC BATTLE FES アソビストア限定ムビチケカード券 315Pro FRAMEコンプリートセット」",
+  "url": "https://shop.asobistore.jp/products/detail/249822-sm_uni06-00-00",
+  "source_type": "準公式",
+  "facts": [
+   "対象作品は2026年11月20日(金)より全国の映画館で公開予定の「劇場版 アイドルマスター SideM F＠NTASTIC BATTLE FES ～Who goes first～」。"
+  ],
+  "via": "verified_fact",
+  "verify": "unconfirmed",
+  "src_candidate_id": "sched-2026-11-16-sidem-wgf-general-ticket-sale-2026-締切前",
+  "companion_of": "sched-2026-11-20-sidem-wgf-general-ticket-sale-2026-開幕",
+  "src_dedup_key": "sidem-wgf-general-ticket-sale-2026"
  }
 ]

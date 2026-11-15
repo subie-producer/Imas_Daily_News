@@ -1,0 +1,133 @@
+{
+ "decisions": {
+  "valiv-2nd-live-premiere-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "限定公開は11月15日23時59分に終了済み。既報の内容のみ"
+  },
+  "va-liv-3rd-live-2027": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "source_change は公式ポータルのログイン表示などの表示のみの変化で、読者に関わる変更なし"
+  },
+  "valiv-3rdlive-tokyo-band-2026": {
+   "action": "article",
+   "angle": "ヴイアラ3rdLIVE東京公演(2027年3月21・22日)のバンドメンバー4人(ドラムス・キーボード・ベース・ギター)が発表された",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 70,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "名古屋ゲスト・先行締切は既報なので触れても短く。新情報はバンド出演者"
+  },
+  "valiv-3rd-live-meeting-guest-updates-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "valiv-3rdlive-tokyo-band-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ公式発表(バンド出演者・名古屋ゲスト)。先行締切は終了済みで既報"
+  },
+  "dsva-cosmo-ace-combat-8-clear-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11月15日に同内容を記事化済み。配信は21日で当日のトリガーなし"
+  },
+  "letora-birthday-online-live-report-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11日のバースデーライブは当日・翌日の記事で既報。出典はレトラ個人の引用投稿のみ"
+  },
+  "mugen-sakuraro-kakaku-crowdfunding-2026": {
+   "action": "article",
+   "angle": "『夢幻桜楼閣』発売応援クラウドファンディングの締切(11月19日)まであと3日。CAMPFIREで支援でき、レトラの限定グッズも載る",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(締切前)。11月14日の記事は支援者名掲載の話で、締切の知らせは別"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "dsva-valiv-3rdlive-tokyo-band-2026",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "ヴイアラ3rdLIVE東京公演(2027年3月21・22日)のバンドメンバー4人(ドラムス・キーボード・ベース・ギター)が発表された",
+    "purpose": "新情報",
+    "lead_score": 70,
+    "dedup_key": "valiv-3rdlive-tokyo-band-2026",
+    "candidate_ids": [
+     "202611151832-explore-9",
+     "202611160221-explore-10"
+    ]
+   },
+   {
+    "slug": "dsva-mugen-sakuraro-kakaku-crowdfunding-2026",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "『夢幻桜楼閣』発売応援クラウドファンディングの締切(11月19日)まであと3日。CAMPFIREで支援でき、レトラの限定グッズも載る",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "mugen-sakuraro-kakaku-crowdfunding-2026",
+    "candidate_ids": [
+     "sched-2026-11-16-mugen-sakuraro-kakaku-crowdfunding-2026-締切前"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "valiv-2nd-live-premiere-2026",
+    "reason": "既報",
+    "note": "限定公開は11月15日23時59分に終了済み。既報の内容のみ"
+   },
+   {
+    "dedup_key": "va-liv-3rd-live-2027",
+    "reason": "その他",
+    "note": "source_change は公式ポータルのログイン表示などの表示のみの変化で、読者に関わる変更なし"
+   },
+   {
+    "dedup_key": "dsva-cosmo-ace-combat-8-clear-2026",
+    "reason": "既報",
+    "note": "11月15日に同内容を記事化済み。配信は21日で当日のトリガーなし"
+   },
+   {
+    "dedup_key": "letora-birthday-online-live-report-2026",
+    "reason": "既報",
+    "note": "11日のバースデーライブは当日・翌日の記事で既報。出典はレトラ個人の引用投稿のみ"
+   }
+  ],
+  "cross_brand": []
+ }
+}

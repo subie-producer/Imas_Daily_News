@@ -146,6 +146,7 @@
   subject: 学マス×バトスピ、2027年春に2商品
   watch: イラストやカードデザインの詳細(判明次第 triggers へ)
   added_on: '2026-09-29'
+  removed_on: '2026-11-16'
 - dedup_key: cd-the-idolm-ster-sidem-m
   brand: sidem
   subject: SideM Mフェス2026テーマソングCD予約・公開録音
@@ -452,6 +453,7 @@
   subject: ハツボシストア新テーマ「トゥインクルラビット」
   watch: 全員のビジュアルと詳細(近日公開予定)、11月内の正式登場日(判明次第 triggers へ)
   added_on: '2026-11-14'
+  removed_on: '2026-11-16'
 - dedup_key: cg-sega-lucky-kuji-vol1-purchase-period-2026
   brand: cg
   subject: セガ ラッキーくじ シンデレラガールズ Vol.1キュート 購入期間再設定

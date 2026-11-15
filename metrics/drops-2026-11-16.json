@@ -1,0 +1,42 @@
+{
+ "million-kyomaf-after-sales-2026": {
+  "title": "ミリオンライブ京まふ通販、18日23時59分まで",
+  "stage": "書き直しで見送り",
+  "why": "NO_PRIMARY_SOURCE 公式・準公式の告知または報道を検索しましたが、本文の事後通販を裏付ける該当ページを確認できませんでした。確認できたTHEキャラ オンラインストアの商品一覧（https://www.the-chara.com/view/search?search_category=ct4940）は f",
+  "candidate_ids": [
+   "sched-2026-11-15-million-kyomaf-after-sales-2026-締切前"
+  ]
+ },
+ "million-seasonal-snapshot-valentine": {
+  "title": "ミリオンのバレンタイングッズ、受注は22日まで",
+  "stage": "書き直しで見送り",
+  "why": "OTHER I1の指摘どおり、既報と同内容の受注情報で、新しい事実や当日のトリガーがなく、記事として成立しないため掲載を見送る。",
+  "candidate_ids": [
+   "202611141834-watch-3"
+  ]
+ },
+ "gaku-ops-roundup": {
+  "title": "学マス、香名江登場と2.5周年の運営情報",
+  "stage": "校閲ブロック",
+  "why": "P1 同じ知らせが2本ある。gaku-gakuen-kanae-debut-2026(lead)とgaku-ops-roundupは、氷渡香名江登場記念のパネルミッション、登場記念と2.5thのプロデュースキャンペーン、登場記念と2.5thのログ",
+  "candidate_ids": [
+   "202611160221-grok-60",
+   "202611160221-grok-61",
+   "202611160221-grok-62",
+   "202611160221-grok-63",
+   "202611160221-grok-64",
+   "202611160221-grok-65",
+   "202611160221-grok-66",
+   "202611160221-grok-81",
+   "202611160221-grok-82",
+   "202611160221-grok-83",
+   "202611160221-grok-84"
+  ],
+  "settled": {
+   "rule": "P1",
+   "dup_of": [
+    "gaku-gakuen-kanae-debut-2026"
+   ]
+  }
+ }
+}

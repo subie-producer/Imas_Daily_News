@@ -1099,5 +1099,38 @@
   "event_date": "2026-12-02",
   "link_from": "https://x.com/TOURS_imas/status/2121181281530814763",
   "src_candidate_id": "202611140226-explore-7"
+ },
+ {
+  "id": "sched-2026-12-02-sidem-mfes-winter-wonderland-theme-cd-2026-発売",
+  "dedup_key": "sidem-mfes-winter-wonderland-theme-cd-2026",
+  "brand": "sidem",
+  "subject": "Mフェス2026テーマソングCD「Season's Greetings Party!」発売",
+  "kind": "発売",
+  "note": "CDが店頭・通販で買える(税込2,750円)",
+  "reserved_on": "2026-11-16",
+  "occurs_on": "2026-12-02",
+  "title": "Mフェス2026テーマソングCD『Season's Greetings Party！』予約受付",
+  "url": "https://www.animate-onlineshop.jp/pd/3593417/",
+  "source_type": "当事者",
+  "facts": [
+   "THE IDOLM@STER SideM Mフェス 2026 in Winter Wonderland テーマソング「Season's Greetings Party！」を2026年12月2日発売。",
+   "品番はLACA-25317。",
+   "ジャケットは表情が異なる「Mフェス2026」描き下ろしイラストを使用。",
+   "歌唱参加はW、神速一魂、C.FIRST。",
+   "全員歌唱テーマソング、各ソロVer.、テーマソングOff Vocalの計9トラックを収録。",
+   "アニメイト特典はミニフォト。",
+   "アニメイト特典はロングフォト。",
+   "封入特典はブロマイド(全7種のうちランダム2種、初回)。",
+   "対象CDを注文した人に315プロNight!出張版公開録音イベントの応募シリアルを配布。",
+   "配布期間: 2026年11月17日(火)23:59まで。",
+   "応募締切: 2026年11月17日(火)23:59まで。",
+   "早期予約キャンペーンは対象期間中に予約(内金全額)した人に応募シリアルを渡す。",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "deadline": "2026-11-17",
+  "link_from": "https://x.com/animateshinjuku/status/2121859597925552427",
+  "src_candidate_id": "202611160221-grok-28"
  }
 ]

@@ -682,5 +682,30 @@
   "src_candidate_id": "sched-2026-11-15-shiny-orchestra-concert-2027-締切",
   "companion_of": "sched-2027-03-22-shiny-orchestra-radiant-chord-goods-2027-開幕",
   "src_dedup_key": "shiny-orchestra-concert-2027"
+ },
+ {
+  "id": "sched-2027-03-22-valiv-3rdlive-tokyo-band-2026-千秋楽",
+  "dedup_key": "valiv-3rdlive-tokyo-band-2026",
+  "brand": "dsva",
+  "subject": "ヴイアラ3rdLIVE at TOKYO DAY2 開催",
+  "kind": "千秋楽",
+  "note": "日本工学院アリーナで東京公演Day2が開催され、バンドの演奏を見に行ける。",
+  "reserved_on": "2026-11-16",
+  "occurs_on": "2027-03-22",
+  "title": "ヴイアラ3rdLIVE東京公演のバンドメンバー発表",
+  "url": "https://x.com/valiv_official",
+  "source_type": "公式",
+  "facts": [
+   "東京公演は2027年3月21日・22日開催の「3rdLIVE at TOKYO DAY1＆DAY2」と発表された。",
+   "東京公演のバンド出演者として、ドラムスの中村”マーボー”真行、キーボードの川路玲奈、ベースのカワノアキ、ギターの佐々木侑太が発表された。",
+   "エンゲージメント: 中",
+   "名古屋公演は2027年1月30日の「PRODUCER MEETING」と発表された。",
+   "同公演のゲストとして佐藤貴文、TAMU、Fra、矢野圭将が発表された。",
+   "ヴイアラ公式チャンネルで、ヴイアラ2ndLIVEの期間限定公開が2026年11月14日14時に始まると告知された。"
+  ],
+  "via": "explore",
+  "verify": "unconfirmed",
+  "event_date": "2027-03-21",
+  "src_candidate_id": "202611151832-explore-9"
  }
 ]

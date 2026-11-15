@@ -1,0 +1,220 @@
+{
+ "decisions": {
+  "shiny-style-collection-3-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/13の記事に同内容。締切11/29は3日以内でない"
+  },
+  "shiny-song-for-prism-3rd-anniversary-login-bonus-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "Xキャンペーン・3周年アート・ログボは11/13・11/15の記事に既出。二次情報"
+  },
+  "shiny-tomarikaze-no-haru-tachi-rerun-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-tomarikaze-no-harutachi-rerun-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ復刻イベント。報酬(限定コミュ・SSR浅倉透等)の素材を統合"
+  },
+  "shiny-style-fumage-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/13の記事にFumage・受注11/29まで既出"
+  },
+  "shiny-song-for-prism-rinze-rerun-2026-11": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/11に凛世の限定★3復刻を記事化済み。新事実なし"
+  },
+  "shiny-tomarikaze-no-harutachi-rerun-2026": {
+   "action": "article",
+   "angle": "シナリオイベント「とまりかぜの春たちは」が11月18日から27日11時59分まで復刻開催され、限定コミュやSSRサポート【caaaaaaall】浅倉透などが報酬になる。",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 55,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "二次情報の報酬内容は公式で未確認の点に留意"
+  },
+  "shiny-collab-fes-2026-11": {
+   "action": "article",
+   "angle": "シャニマスで「コラボフェス」が11月18日から27日11時59分まで開催される。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "事実は期間のみ。短い記事にする"
+  },
+  "shiny-maintenance-2026-11-18": {
+   "action": "article",
+   "angle": "シャニマスは11月18日12時〜15時にメンテナンスを行い、開催中の無料10連ガシャはメンテ前まで引ける。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "メンテ日時は新発表"
+  },
+  "shiny-song-for-prism-haruki-pickup-2026-11": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/12の運営情報記事ではるき限定ガシャを案内済み。新事実なし"
+  },
+  "cg-memory-pict-8th-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "中身はSHINY Style COLLECTION(彼岸流)で11/13の記事に既出。priorのMemory Pict.は無関係"
+  },
+  "shiny-song-for-prism-3rd-anniversary-art-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/15の記事に同内容"
+  },
+  "shiny-song-for-prism-3rd-anniv-x-campaign": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/15の記事に応募方法・賞品・期限とも既出"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "shiny-tomarikaze-no-harutachi-rerun-2026",
+    "brand": "shiny",
+    "rank": "medium",
+    "angle": "シナリオイベント「とまりかぜの春たちは」が11月18日から27日11時59分まで復刻開催され、限定コミュやSSRサポート【caaaaaaall】浅倉透などが報酬になる。",
+    "purpose": "新情報",
+    "lead_score": 55,
+    "dedup_key": "shiny-tomarikaze-no-harutachi-rerun-2026",
+    "candidate_ids": [
+     "202611160221-grok-18",
+     "202611152337-explore-52"
+    ]
+   },
+   {
+    "slug": "shiny-collab-fes-2026-11",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "シャニマスで「コラボフェス」が11月18日から27日11時59分まで開催される。",
+    "purpose": "新情報",
+    "lead_score": 25,
+    "dedup_key": "shiny-collab-fes-2026-11",
+    "candidate_ids": [
+     "202611160221-grok-19"
+    ]
+   },
+   {
+    "slug": "shiny-maintenance-2026-11-18",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "シャニマスは11月18日12時〜15時にメンテナンスを行い、開催中の無料10連ガシャはメンテ前まで引ける。",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "shiny-maintenance-2026-11-18",
+    "candidate_ids": [
+     "202611160221-grok-20"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "shiny-style-collection-3-2026",
+    "reason": "既報",
+    "note": "11/13の記事に同内容。締切11/29は3日以内でない"
+   },
+   {
+    "dedup_key": "shiny-song-for-prism-3rd-anniversary-login-bonus-2026",
+    "reason": "既報",
+    "note": "Xキャンペーン・3周年アート・ログボは11/13・11/15の記事に既出。二次情報"
+   },
+   {
+    "dedup_key": "shiny-style-fumage-2026",
+    "reason": "既報",
+    "note": "11/13の記事にFumage・受注11/29まで既出"
+   },
+   {
+    "dedup_key": "shiny-song-for-prism-rinze-rerun-2026-11",
+    "reason": "既報",
+    "note": "11/11に凛世の限定★3復刻を記事化済み。新事実なし"
+   },
+   {
+    "dedup_key": "shiny-song-for-prism-haruki-pickup-2026-11",
+    "reason": "既報",
+    "note": "11/12の運営情報記事ではるき限定ガシャを案内済み。新事実なし"
+   },
+   {
+    "dedup_key": "cg-memory-pict-8th-2026",
+    "reason": "既報",
+    "note": "中身はSHINY Style COLLECTION(彼岸流)で11/13の記事に既出。priorのMemory Pict.は無関係"
+   },
+   {
+    "dedup_key": "shiny-song-for-prism-3rd-anniversary-art-2026",
+    "reason": "既報",
+    "note": "11/15の記事に同内容"
+   },
+   {
+    "dedup_key": "shiny-song-for-prism-3rd-anniv-x-campaign",
+    "reason": "既報",
+    "note": "11/15の記事に応募方法・賞品・期限とも既出"
+   }
+  ],
+  "cross_brand": []
+ }
+}

@@ -1,0 +1,232 @@
+{
+ "decisions": {
+  "million-cyber-planet-popup-shop-mail-order-2026": {
+   "action": "article",
+   "angle": "Cyber Planet POP UP SHOPの事後通販が本日正午に受注開始。12月1日まで、特典クリアカード付き、OSMOスタンプ・会場限定カード・パネル応募券は対象外",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "受注開始が当日のトリガー。続報予約の medicos-cyberplanet-popup-2026 を統合"
+  },
+  "million-photo-panel-new-designs-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-14に記事化済み。新しい事実なし。発売の20日は4日先でまだ3日以内でもない"
+  },
+  "million-platinum-star-tune-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "イベントは11/7に終了済み。ガシャの注意書きのみで新しい事実なし"
+  },
+  "million-kyomaf-after-sales-2026": {
+   "action": "article",
+   "angle": "京まふ2026のミリオンライブPOP UP SHOP事後通販が18日23時59分で締切、あと2日",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "締切が3日以内。11-08の記事の商品・価格は繰り返さず、期日と手続きに絞る"
+  },
+  "million-seasonal-snapshot-valentine": {
+   "action": "article",
+   "angle": "SEASONAL SNAPSHOT「バレンタイン」(星井美希・島原エレナ)のグッズ受注が11月22日まで、アソビストアで受付中",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "carried。既報なし。11-14公開で締切は22日"
+  },
+  "medicos-e-net-44": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-cyber-planet-popup-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "等身大パネルCP応募締切は同じ施策。1記事にまとめる"
+  },
+  "million-cyber-planet-popup-2026": {
+   "action": "article",
+   "angle": "Cyber Planet POP UP SHOPの等身大パネルプレゼントキャンペーンの応募は本日23時59分まで。会場で受け取った応募券が必要で、事後通販は対象外",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "パネル応募は事後通販(注文)とは読者の行動が別なので別記事。medicos-e-net-44 と cyber-planet-popup-osaka-2026 を統合"
+  },
+  "million-opera-seria-popup-mail-order-2026": {
+   "action": "article",
+   "angle": "POP UP SHOP「オペラセリア」の事後通販(Animo)は本日17時で受注締切。発送は2027年2月下旬、店舗特典は付かない",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "締切が当日。operaseria-popup-postorder-2026 を統合"
+  },
+  "cyber-planet-popup-osaka-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-cyber-planet-popup-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "大阪会場は15日に終了済み。残る手続きはパネル応募締切のみで、同じ施策"
+  },
+  "operaseria-popup-postorder-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-opera-seria-popup-mail-order-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ事後通販の同じ締切"
+  },
+  "soutei-shinrigai-mv-2026": {
+   "action": "article",
+   "angle": "「想定心理外 -Outside Isotope-」のMVが本日20時にYouTubeでプレミア公開",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 50,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公開が当日のトリガー。11-14の記事にある日時の伝え直し"
+  },
+  "medicos-cyberplanet-popup-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-cyber-planet-popup-shop-mail-order-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ事後通販の受注開始(正午)。素材の全文は未確認で、続報予約の記載から判断"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "million-cyber-planet-popup-shop-mail-order-2026",
+    "brand": "million",
+    "rank": "medium",
+    "angle": "Cyber Planet POP UP SHOPの事後通販が本日正午に受注開始。12月1日まで、特典クリアカード付き、OSMOスタンプ・会場限定カード・パネル応募券は対象外",
+    "purpose": "期日の知らせ",
+    "lead_score": 60,
+    "dedup_key": "million-cyber-planet-popup-shop-mail-order-2026",
+    "candidate_ids": [
+     "202611151234-explore-7",
+     "sched-2026-11-16-medicos-cyberplanet-popup-2026-開始",
+     "sched-2026-11-16-medicos-cyberplanet-popup-2026-開始-src1"
+    ]
+   },
+   {
+    "slug": "million-kyomaf-after-sales-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "京まふ2026のミリオンライブPOP UP SHOP事後通販が18日23時59分で締切、あと2日",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "million-kyomaf-after-sales-2026",
+    "candidate_ids": [
+     "sched-2026-11-15-million-kyomaf-after-sales-2026-締切前"
+    ]
+   },
+   {
+    "slug": "million-seasonal-snapshot-valentine",
+    "brand": "million",
+    "rank": "small",
+    "angle": "SEASONAL SNAPSHOT「バレンタイン」(星井美希・島原エレナ)のグッズ受注が11月22日まで、アソビストアで受付中",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "million-seasonal-snapshot-valentine",
+    "candidate_ids": [
+     "202611141834-watch-3"
+    ]
+   },
+   {
+    "slug": "million-cyber-planet-popup-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "Cyber Planet POP UP SHOPの等身大パネルプレゼントキャンペーンの応募は本日23時59分まで。会場で受け取った応募券が必要で、事後通販は対象外",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "million-cyber-planet-popup-2026",
+    "candidate_ids": [
+     "sched-2026-11-16-million-cyber-planet-popup-2026-締切",
+     "sched-2026-11-16-million-cyber-planet-popup-2026-締切-src1",
+     "sched-2026-11-16-million-cyber-planet-popup-2026-締切-src2",
+     "sched-2026-11-16-medicos-e-net-44-締切",
+     "sched-2026-11-16-cyber-planet-popup-osaka-2026-締切"
+    ]
+   },
+   {
+    "slug": "million-opera-seria-popup-mail-order-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "POP UP SHOP「オペラセリア」の事後通販(Animo)は本日17時で受注締切。発送は2027年2月下旬、店舗特典は付かない",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "million-opera-seria-popup-mail-order-2026",
+    "candidate_ids": [
+     "sched-2026-11-16-million-opera-seria-popup-mail-order-2026-締切",
+     "sched-2026-11-16-operaseria-popup-postorder-2026-締切"
+    ]
+   },
+   {
+    "slug": "million-soutei-shinrigai-mv-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "「想定心理外 -Outside Isotope-」のMVが本日20時にYouTubeでプレミア公開",
+    "purpose": "期日の知らせ",
+    "lead_score": 50,
+    "dedup_key": "soutei-shinrigai-mv-2026",
+    "candidate_ids": [
+     "sched-2026-11-16-soutei-shinrigai-mv-2026-開始"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "million-photo-panel-new-designs-2026",
+    "reason": "既報",
+    "note": "11-14に記事化済み。新しい事実なし。発売の20日は4日先でまだ3日以内でもない"
+   },
+   {
+    "dedup_key": "million-platinum-star-tune-2026",
+    "reason": "既報",
+    "note": "イベントは11/7に終了済み。ガシャの注意書きのみで新しい事実なし"
+   }
+  ],
+  "cross_brand": []
+ }
+}

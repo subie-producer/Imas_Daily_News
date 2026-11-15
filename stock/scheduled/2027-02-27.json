@@ -687,5 +687,73 @@
   "deadline": "2026-11-15",
   "link_from": "https://x.com/imasml_765PRO/status/2120456515110801755",
   "src_candidate_id": "202611130231-grok-17"
+ },
+ {
+  "id": "sched-2027-02-27-gaku-update-2026-13-発売",
+  "dedup_key": "gaku-update-2026-13",
+  "brand": "gaku",
+  "subject": "学マス×バトスピ コラボスターター・ブースター発売",
+  "kind": "発売",
+  "note": "コラボスターターとブースターが発売され、購入や公認大会での使用ができる",
+  "reserved_on": "2026-11-16",
+  "occurs_on": "2027-02-27",
+  "title": "バトルスピリッツ描き下ろし",
+  "url": "https://x.com/gkmas_official/status/2121936004353585568",
+  "source_type": "公式",
+  "facts": [
+   "「バトルスピリッツ」",
+   "描き下ろしイラスト初公開✨",
+   "香名江も含めた全14名の描き下ろしイラストは、",
+   "バトルスピリッツらしく「カード」を携えて登場！",
+   "イラストは「バトスピ公式X」でも順次公開予定♪",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202611160221-grok-43"
+ },
+ {
+  "id": "sched-2027-02-27-gaku-update-2026-13-発売-src1",
+  "dedup_key": "gaku-update-2026-13",
+  "brand": "gaku",
+  "subject": "学マス×バトスピ コラボスターター・ブースター発売",
+  "kind": "発売",
+  "note": "コラボスターターとブースターが発売され、購入や公認大会での使用ができる",
+  "reserved_on": "2026-11-16",
+  "occurs_on": "2027-02-27",
+  "title": "Battle Spirits「[26RSD13]コラボスターター 学園アイドルマスター 始まりのステップ − 商品情報」",
+  "url": "https://www.battlespirits.com/product/starter/starter-26rsd13.php",
+  "source_type": "当事者",
+  "facts": [
+   "コラボスターター「学園アイドルマスター 始まりのステップ」は2027年2月27日（土）発売予定。",
+   "コラボスターターのカードは、2027年2月27日以降に公認大会で使用できる。"
+  ],
+  "via": "verified_fact",
+  "verify": "unconfirmed",
+  "src_candidate_id": "202611160221-grok-43",
+  "companion_of": "sched-2027-02-27-gaku-update-2026-13-発売",
+  "src_dedup_key": "gaku-update-2026-13"
+ },
+ {
+  "id": "sched-2027-02-27-gaku-update-2026-13-発売-src2",
+  "dedup_key": "gaku-update-2026-13",
+  "brand": "gaku",
+  "subject": "学マス×バトスピ コラボスターター・ブースター発売",
+  "kind": "発売",
+  "note": "コラボスターターとブースターが発売され、購入や公認大会での使用ができる",
+  "reserved_on": "2026-11-16",
+  "occurs_on": "2027-02-27",
+  "title": "Battle Spirits「[26RCB03]コラボブースター 学園アイドルマスター 輝けるアイドル − 商品情報」",
+  "url": "https://www.battlespirits.com/product/booster/booster-26rcb03.php",
+  "source_type": "当事者",
+  "facts": [
+   "コラボブースター「学園アイドルマスター 輝けるアイドル」は2027年2月27日（土）発売予定。",
+   "コラボブースターのカードは、2027年2月27日以降に公認大会で使用できる。"
+  ],
+  "via": "verified_fact",
+  "verify": "unconfirmed",
+  "src_candidate_id": "202611160221-grok-43",
+  "companion_of": "sched-2027-02-27-gaku-update-2026-13-発売",
+  "src_dedup_key": "gaku-update-2026-13"
  }
 ]

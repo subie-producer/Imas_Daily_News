@@ -1,0 +1,272 @@
+{
+ "decisions": {
+  "shiny-colors-new-single-2027-tokuten": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-11の記事に同じ店舗特典が全て既出"
+  },
+  "koito-birthday-fan-celebrations-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "小糸の誕生日施策は11-11に記事済み。ファン投稿は単体で記事にしない"
+  },
+  "shiny-first-refrac7ions-2026-banpresto-truck": {
+   "action": "article",
+   "angle": "「Still blue」(12月19・20日、代々木第一)の会場にBANPRESTO TRUCKが出店し、ちびぐるみのクレーンゲームを事前抽選の整理券制で有料プレイできる。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-birthday-plate-2026-vol2": {
+   "action": "article",
+   "angle": "バースデープレート第2弾(全8種・各5,000円)の受注がASOBI STOREで本日始まり、11月30日23時59分まで。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "PR TIMESの素材も統合"
+  },
+  "shiny-birthday-plate-series-2-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-birthday-plate-2026-vol2",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-style-collection-3-2026": {
+   "action": "article",
+   "angle": "SHINY Style COLLECTION第3弾(Fumage・彼岸流)のグッズ受注が11月29日まで。霧子の公式グッズセットは5,000円で2027年2月下旬以降お届け。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-web4koma-667-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-web-comic-668-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ連載の前話"
+  },
+  "shiny-antica-xr-live-mv-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-11に「アンティーカ3曲にxR版とフルMV追加へ」で記事済み"
+  },
+  "shiny-style-collection-vol3-kiriko-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-style-collection-3-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ施策の個別商品"
+  },
+  "shiny-song-for-prism-3rd-anniversary-login-bonus-2026": {
+   "action": "roundup",
+   "angle": "シャニソンの開催中運営情報: 3周年記念ログボ第2弾、テクニカルチャレンジ杯、xRライブ楽曲追加",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-technical-challenge-cup-18-2026": {
+   "action": "roundup",
+   "angle": "シャニソンの開催中運営情報: 本日開始の第18回テクニカルチャレンジ杯",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-web-comic-668-2026": {
+   "action": "article",
+   "angle": "web4コマ漫画の第668話「言葉の応酬」(櫻木真乃)が公開された。第667話「普段とのギャップ」(小宮果穂)も併せて伝える。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-song-autumn-end-xr-live-2026": {
+   "action": "roundup",
+   "angle": "シャニソンの開催中運営情報: 本日12時に月岡恋鐘のxRライブ楽曲「秋の終わり、僕の記憶」追加",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-song-for-prism-rerun-pickup-gacha-2026-11": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-11に凛世・羽那の限定★3復刻を記事済み"
+  },
+  "shiny-pj-refrac7ions-chibigurumi-2026": {
+   "action": "article",
+   "angle": "ちびぐるみ～PJ: REFRAC7IONS～のvol.1・vol.2がナムコとナムコオンラインクレーンで本日から登場する。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約。11-05に既報、本日が開始日"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "shiny-first-refrac7ions-2026-banpresto-truck",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "「Still blue」(12月19・20日、代々木第一)の会場にBANPRESTO TRUCKが出店し、ちびぐるみのクレーンゲームを事前抽選の整理券制で有料プレイできる。",
+    "purpose": "新情報",
+    "lead_score": 60,
+    "dedup_key": "shiny-first-refrac7ions-2026-banpresto-truck",
+    "candidate_ids": [
+     "202611121236-watch-7"
+    ]
+   },
+   {
+    "slug": "shiny-birthday-plate-2026-vol2",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "バースデープレート第2弾(全8種・各5,000円)の受注がASOBI STOREで本日始まり、11月30日23時59分まで。",
+    "purpose": "新情報",
+    "lead_score": 25,
+    "dedup_key": "shiny-birthday-plate-2026-vol2",
+    "candidate_ids": [
+     "202611121236-watch-10",
+     "202611121236-explore-13"
+    ]
+   },
+   {
+    "slug": "shiny-style-collection-3-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "SHINY Style COLLECTION第3弾(Fumage・彼岸流)のグッズ受注が11月29日まで。霧子の公式グッズセットは5,000円で2027年2月下旬以降お届け。",
+    "purpose": "新情報",
+    "lead_score": 30,
+    "dedup_key": "shiny-style-collection-3-2026",
+    "candidate_ids": [
+     "202611121836-watch-3",
+     "202611130231-grok-24"
+    ]
+   },
+   {
+    "slug": "shiny-web-comic-668-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "web4コマ漫画の第668話「言葉の応酬」(櫻木真乃)が公開された。第667話「普段とのギャップ」(小宮果穂)も併せて伝える。",
+    "purpose": "新情報",
+    "lead_score": 5,
+    "dedup_key": "shiny-web-comic-668-2026",
+    "candidate_ids": [
+     "202611130231-grok-27",
+     "202611121836-explore-9"
+    ]
+   },
+   {
+    "slug": "shiny-pj-refrac7ions-chibigurumi-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "ちびぐるみ～PJ: REFRAC7IONS～のvol.1・vol.2がナムコとナムコオンラインクレーンで本日から登場する。",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "shiny-pj-refrac7ions-chibigurumi-2026",
+    "candidate_ids": [
+     "sched-2026-11-13-shiny-pj-refrac7ions-chibigurumi-2026-開始"
+    ]
+   },
+   {
+    "slug": "shiny-ops-roundup",
+    "brand": "shiny",
+    "rank": "roundup",
+    "angle": "シャニソンの開催中運営情報: 3周年記念ログボ第2弾、テクニカルチャレンジ杯、xRライブ楽曲追加",
+    "lead_score": 0,
+    "dedup_key": "shiny-song-for-prism-3rd-anniversary-login-bonus-2026",
+    "candidate_ids": [
+     "202611130231-grok-25",
+     "202611130231-grok-26",
+     "202611130231-grok-28"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "shiny-colors-new-single-2027-tokuten",
+    "reason": "既報",
+    "note": "11-11の記事に同じ店舗特典が全て既出"
+   },
+   {
+    "dedup_key": "koito-birthday-fan-celebrations-2026",
+    "reason": "既報",
+    "note": "小糸の誕生日施策は11-11に記事済み。ファン投稿は単体で記事にしない"
+   },
+   {
+    "dedup_key": "shiny-antica-xr-live-mv-2026",
+    "reason": "既報",
+    "note": "11-11に「アンティーカ3曲にxR版とフルMV追加へ」で記事済み"
+   },
+   {
+    "dedup_key": "shiny-song-for-prism-rerun-pickup-gacha-2026-11",
+    "reason": "既報",
+    "note": "11-11に凛世・羽那の限定★3復刻を記事済み"
+   }
+  ],
+  "cross_brand": []
+ }
+}

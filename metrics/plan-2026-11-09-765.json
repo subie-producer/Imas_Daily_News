@@ -1,0 +1,56 @@
+{
+ "decisions": {
+  "765pro-allstars-never-end-idol-bluray-day1-2026": {
+   "action": "article",
+   "angle": "765PRO ALLSTARS「NEVER END IDOL」Blu-ray通常版DAY1が11月25日発売、Amazon.co.jp限定でL判ブロマイド14種セット特典付き",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "imas-mor-424-2026": {
+   "action": "article",
+   "angle": "アイマスMOR424(11月25日放送)の白戸佑輔さん宛メールは11月12日まで、締切3日前",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "締切3日以内のトリガー。続報予約。新事実として白戸さんが律子ソロ曲Discord Areaの作編曲担当"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "765-765pro-allstars-never-end-idol-bluray-day1-2026",
+    "brand": "765",
+    "rank": "small",
+    "angle": "765PRO ALLSTARS「NEVER END IDOL」Blu-ray通常版DAY1が11月25日発売、Amazon.co.jp限定でL判ブロマイド14種セット特典付き",
+    "purpose": "新情報",
+    "lead_score": 30,
+    "dedup_key": "765pro-allstars-never-end-idol-bluray-day1-2026",
+    "candidate_ids": [
+     "202611090235-grok-17"
+    ]
+   },
+   {
+    "slug": "765-imas-mor-424-2026",
+    "brand": "765",
+    "rank": "small",
+    "angle": "アイマスMOR424(11月25日放送)の白戸佑輔さん宛メールは11月12日まで、締切3日前",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "imas-mor-424-2026",
+    "candidate_ids": [
+     "sched-2026-11-09-imas-mor-424-2026-締切前"
+    ]
+   }
+  ],
+  "dropped": [],
+  "cross_brand": []
+ }
+}

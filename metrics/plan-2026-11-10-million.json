@@ -1,0 +1,117 @@
+{
+ "decisions": {
+  "yoru-to-akari-door-deco-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "販売期限は11/9 14:59で終了済み。11/4の記事ですでに伝えた内容で、今日のトリガーも無い"
+  },
+  "million-millionlive-collection-2026-11": {
+   "action": "article",
+   "angle": "ミリコレ開催中のイベント限定カードはSR「魅惑のマイクパフォーマンス 高坂海美」(CV:上田麗奈)。11/9の開幕記事に無かった新情報として伝える",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "prior本文に限定カード名が無いため新情報とする"
+  },
+  "million-platinum-star-tune-yoru-to-akari-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "出典の変更は表示や記載内容の更新で、読者に関わる締切・条件の変更ではない。イベントも11/7に終了済み"
+  },
+  "million-snapshot-memories-gasha-2026-11": {
+   "action": "article",
+   "angle": "11/9 15時に始まった「Snapshot Memoriesガシャ」。限定SSRは徳川まつりと箱崎星梨花、衣装付きSRに如月千早と我那覇響が新規追加された",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 55,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じガシャの別出典(snapshot-memories-2026-11)を統合。素材が合計5件以上なのでmedium"
+  },
+  "million-snapshot-memories-2026-11": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-snapshot-memories-gasha-2026-11",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じガシャ。新衣装「メイキング・ミライ」「ユメ・コイ・ゴコロ」の素材を統合"
+  },
+  "million-platinum-star-tune-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "イベント・セカンドヘアスタイルガシャとも終了済み。11/4〜11/7の記事で既報。真・このみセットの11/23までも11/4に報じた内容で今日のトリガーは無い"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "million-millionlive-collection-2026-11",
+    "brand": "million",
+    "rank": "small",
+    "angle": "ミリコレ開催中のイベント限定カードはSR「魅惑のマイクパフォーマンス 高坂海美」(CV:上田麗奈)。11/9の開幕記事に無かった新情報として伝える",
+    "purpose": "新情報",
+    "lead_score": 25,
+    "dedup_key": "million-millionlive-collection-2026-11",
+    "candidate_ids": [
+     "202611091233-explore-4"
+    ]
+   },
+   {
+    "slug": "million-snapshot-memories-gasha-2026-11",
+    "brand": "million",
+    "rank": "medium",
+    "angle": "11/9 15時に始まった「Snapshot Memoriesガシャ」。限定SSRは徳川まつりと箱崎星梨花、衣装付きSRに如月千早と我那覇響が新規追加された",
+    "purpose": "新情報",
+    "lead_score": 55,
+    "dedup_key": "million-snapshot-memories-gasha-2026-11",
+    "candidate_ids": [
+     "202611092333-explore-1",
+     "202611100230-explore-1"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "yoru-to-akari-door-deco-2026",
+    "reason": "その他",
+    "note": "販売期限は11/9 14:59で終了済み。11/4の記事ですでに伝えた内容で、今日のトリガーも無い"
+   },
+   {
+    "dedup_key": "million-platinum-star-tune-yoru-to-akari-2026",
+    "reason": "その他",
+    "note": "出典の変更は表示や記載内容の更新で、読者に関わる締切・条件の変更ではない。イベントも11/7に終了済み"
+   },
+   {
+    "dedup_key": "million-platinum-star-tune-2026",
+    "reason": "既報",
+    "note": "イベント・セカンドヘアスタイルガシャとも終了済み。11/4〜11/7の記事で既報。真・このみセットの11/23までも11/4に報じた内容で今日のトリガーは無い"
+   }
+  ],
+  "cross_brand": []
+ }
+}

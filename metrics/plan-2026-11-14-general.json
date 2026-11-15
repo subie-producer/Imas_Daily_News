@@ -1,0 +1,63 @@
+{
+ "decisions": {
+  "imas-channel-radio-member-stream-2026-11": {
+   "action": "article",
+   "angle": "アイマスchのメンバー限定ラジオが11月18日19時に配信。冒頭15分は誰でも視聴でき、MCは南早紀、ゲストは宮﨑雅也。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公式サイトの告知。imas-ch-november-radio-2026 を統合"
+  },
+  "imas-ch-november-radio-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "imas-channel-radio-member-stream-2026-11",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ11月18日のアイマスchラジオ告知(X投稿)"
+  },
+  "xr-live-revival-twin-2026": {
+   "action": "cross_brand",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "joint-xr-live-revival-asobistore-general-advance-2026",
+   "reason": "",
+   "note": "本日13時の当落発表は合同面が記事化済み。同じ先行抽選の結果発表と入金期限"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "general-imas-channel-radio-member-stream-2026-11",
+    "brand": "general",
+    "rank": "small",
+    "angle": "アイマスchのメンバー限定ラジオが11月18日19時に配信。冒頭15分は誰でも視聴でき、MCは南早紀、ゲストは宮﨑雅也。",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "imas-channel-radio-member-stream-2026-11",
+    "candidate_ids": [
+     "202611131839-watch-0",
+     "202611140226-grok-71",
+     "202611140226-grok-93"
+    ]
+   }
+  ],
+  "dropped": [],
+  "cross_brand": [
+   {
+    "slug": "joint-xr-live-revival-asobistore-general-advance-2026",
+    "dedup_key": "xr-live-revival-twin-2026",
+    "note": "本日13時の当落発表は合同面が記事化済み。同じ先行抽選の結果発表と入金期限"
+   }
+  ]
+ }
+}

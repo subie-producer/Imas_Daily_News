@@ -1,0 +1,32 @@
+{
+ "sidem-mfes-winter-wonderland-decotto-2026": {
+  "title": "Mフェス 2026 in Winter Wonderland × DECOTTO が12月1日から池袋で開催、12月6日までは抽選予約制",
+  "stage": "執筆で見送り",
+  "why": "NO_PRIMARY_SOURCE 素材のページでは開催期間や12月1〜6日の抽選予約制、メニュー・グッズの詳細を確認できましたが、二次情報でした。アニメイトカフェの公式ページはコラボ開催決定の表示にとどまり、これらの中核情報を確認できる公式・準公式の出典には届きませんでした",
+  "candidate_ids": [
+   "202611061836-explore-15"
+  ]
+ },
+ "million-premium-pickup-sr-gasha-2026-11": {
+  "title": "プレミアムピックアップSRガシャ(おもてなしガール！シリーズ)は本日23時59分まで、プレミアムスター150個でカードと交換できる",
+  "stage": "執筆で見送り",
+  "why": "NO_PRIMARY_SOURCE 公式が告知するゲーム内施策だが、素材は二次情報で、確認できた告知内容も二次情報ページのみ。公式・準公式または報道の出典を確保できなかったため。",
+  "candidate_ids": [
+   "202611070733-explore-2"
+  ]
+ },
+ "dsva-letora-birthday-lv-general-2026": {
+  "title": "レトラ誕生日LV現地チケットのコンビニ決済は今夜23時59分まで。LivePocketは『予定販売枚数終了』から『販売中・売切間近』に表示が変わった",
+  "stage": "執筆で見送り",
+  "why": "SOURCE_MISMATCH LivePocketの受付ページを読み直すと「予定販売枚数終了」と表示されており、11月8日23時42分時点の素材にある「販売中・売切間近」と食い違っていました。申込可能な状態を確認できないため、指定の切り口では記事にできません。",
+  "candidate_ids": [
+   "sched-2026-11-09-letora-birthday-lv-general-2026-締切",
+   "sched-2026-11-09-letora-birthday-lv-general-2026-締切-src1",
+   "sched-2026-11-09-letora-birthday-lv-general-2026-締切-src2",
+   "sched-2026-11-09-letora-birthday-lv-general-2026-締切-src3",
+   "update-fccc14197486",
+   "update-ab2c974b8c5d",
+   "sched-2026-11-09-letora-birthday-online-live-2026-julia-guest-締切"
+  ]
+ }
+}

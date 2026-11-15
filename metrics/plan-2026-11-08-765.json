@@ -1,0 +1,135 @@
+{
+ "decisions": {
+  "765-961-idol-ultimate-once-and-for-all-2027": {
+   "action": "article",
+   "angle": "765×961 xRライブ「IDOL ULTIMATE ONCE AND FOR ALL」のアソビストアプレミアム12か月会員先行が本日23時59分で最終日、当落発表は11月25日13時。",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 70,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "当日の締切が本件のトリガー。同じ施策の他4主題を統合。"
+  },
+  "765as-961-idol-ultimate-2027": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "765-961-idol-ultimate-once-and-for-all-2027",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ先行受付の締切告知"
+  },
+  "765-961-idol-ultimate-ticket-advance-2027": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "765-961-idol-ultimate-once-and-for-all-2027",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ先行受付の締切告知"
+  },
+  "765-961-idol-ultimate-ticket-2027": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "765-961-idol-ultimate-once-and-for-all-2027",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ先行受付の受付情報"
+  },
+  "765-961-idol-ultimate-ticket-reminder-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "765-961-idol-ultimate-once-and-for-all-2027",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約。同じ先行受付の締切で一本化"
+  },
+  "765-961-xr-lighttag-2027": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "重複",
+   "note": "実体は「はんげつであえたら」先行の締切告知。合同面のxR LIVE REVIVAL先行の記事と同じ施策"
+  },
+  "hangetsu-deaetara-revival-ticket-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "重複",
+   "note": "続報予約だが、合同面の記事(先行最終日・当落11月14日13時)と同じ施策のため記事にしない"
+  },
+  "imas-radio-stamas-5th-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11月7日号の記事に事実が全て既出。本日のトリガーも無い(放送は11月10日)"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "765-961-idol-ultimate-once-and-for-all-2027",
+    "brand": "765",
+    "rank": "medium",
+    "angle": "765×961 xRライブ「IDOL ULTIMATE ONCE AND FOR ALL」のアソビストアプレミアム12か月会員先行が本日23時59分で最終日、当落発表は11月25日13時。",
+    "purpose": "期日の知らせ",
+    "lead_score": 70,
+    "dedup_key": "765-961-idol-ultimate-once-and-for-all-2027",
+    "candidate_ids": [
+     "sched-2026-11-08-765-961-idol-ultimate-once-and-for-all-2027-締切",
+     "202611070733-explore-0",
+     "202611080229-explore-1",
+     "202611071235-explore-4",
+     "sched-2026-11-08-765-961-idol-ultimate-ticket-advance-2027-締切",
+     "sched-2026-11-08-765-961-idol-ultimate-ticket-advance-2027-締切-src1",
+     "202611080229-grok-10",
+     "202611080229-grok-68",
+     "sched-2026-11-08-765-961-idol-ultimate-ticket-reminder-2026-締切",
+     "sched-2026-11-08-765-961-idol-ultimate-ticket-reminder-2026-締切-src1"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "imas-radio-stamas-5th-2026",
+    "reason": "既報",
+    "note": "11月7日号の記事に事実が全て既出。本日のトリガーも無い(放送は11月10日)"
+   },
+   {
+    "dedup_key": "765-961-xr-lighttag-2027",
+    "reason": "重複",
+    "note": "実体は「はんげつであえたら」先行の締切告知。合同面のxR LIVE REVIVAL先行の記事と同じ施策"
+   },
+   {
+    "dedup_key": "hangetsu-deaetara-revival-ticket-2026",
+    "reason": "重複",
+    "note": "続報予約だが、合同面の記事(先行最終日・当落11月14日13時)と同じ施策のため記事にしない"
+   }
+  ],
+  "cross_brand": []
+ }
+}

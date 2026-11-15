@@ -1,0 +1,58 @@
+{
+ "decisions": {
+  "765pro-allstars-never-end-idol-bluray-day1-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "Amazon商品ページの表示変化(ナビ文言と掲載価格15,040→14,868円)のみ。公式価格17,600円・発売日11/25・特典は11/9の記事のまま。"
+  },
+  "765-hangetsu-xr-revival-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "重複",
+   "note": "当落13時・入金18日23:59までは、合同面のxR LIVE REVIVAL一般会員先行の記事(joint-xr-live-revival-asobistore-general-advance-2026)と同じ施策。765単独主催のためcross_brandにはしない。"
+  },
+  "hangetsu-deaetara-revival-ticket-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "重複",
+   "note": "同じ当落発表(13時・入金18日23:59まで)で、合同面の記事が先に押さえた。facts も既報の11/1・11/6の記事と同内容。"
+  }
+ },
+ "plan": {
+  "articles": [],
+  "dropped": [
+   {
+    "dedup_key": "765pro-allstars-never-end-idol-bluray-day1-2026",
+    "reason": "既報",
+    "note": "Amazon商品ページの表示変化(ナビ文言と掲載価格15,040→14,868円)のみ。公式価格17,600円・発売日11/25・特典は11/9の記事のまま。"
+   },
+   {
+    "dedup_key": "765-hangetsu-xr-revival-2026",
+    "reason": "重複",
+    "note": "当落13時・入金18日23:59までは、合同面のxR LIVE REVIVAL一般会員先行の記事(joint-xr-live-revival-asobistore-general-advance-2026)と同じ施策。765単独主催のためcross_brandにはしない。"
+   },
+   {
+    "dedup_key": "hangetsu-deaetara-revival-ticket-2026",
+    "reason": "重複",
+    "note": "同じ当落発表(13時・入金18日23:59まで)で、合同面の記事が先に押さえた。facts も既報の11/1・11/6の記事と同内容。"
+   }
+  ],
+  "cross_brand": []
+ }
+}

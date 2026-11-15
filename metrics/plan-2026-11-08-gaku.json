@@ -1,0 +1,762 @@
+{
+ "decisions": {
+  "gaku-login-bonus-post-campaign-2026": {
+   "action": "roundup",
+   "angle": "開催中のログボ関連の投稿キャンペーン(抽選30名)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gakumas-voice-actor-gacha-reaction-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "声優個人のSNS投稿への反応"
+  },
+  "gaku-round1-vol2-2026": {
+   "action": "article",
+   "angle": "学マス×ROUND1 vol.2が12月1日から全店で開催決定、詳細は後日発表",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "eclipse-light-animate-fair-2026": {
+   "action": "article",
+   "angle": "アニメイト「ECLIPSE LIGHT」フェアの対象商品欄が再び更新され、品目が入れ替わった",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "source_change。変更前後を比べて書く"
+  },
+  "gaku-steampunk-gearbeat-goods-2026": {
+   "action": "article",
+   "angle": "スチームパンク新作グッズ「Gearbeat Concerto」が2027年3月26日発売、ASOBI STOREで11月10日から受注",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ポップアップ開催(日本・上海)も含める"
+  },
+  "gaku-3rd-single-finish-goods-2026": {
+   "action": "article",
+   "angle": "3rdシングル完走記念グッズの受注は11月15日まで、アニメイトでも受付中",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "既報(ASOBI STORE7商品)にないアニメイト取り扱いを新事実に"
+  },
+  "gaku-shirube-final-day1-setlist-2026": {
+   "action": "article",
+   "angle": "標ファイナルDAY1のセットリスト公開(全曲・歌唱者、プレイリスト公開)",
+   "purpose": "新情報",
+   "rank": "large",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同種4主題を統合。素材10件以上"
+  },
+  "gakuen-masu-hyo-tour-final-day1-setlist-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-shirube-final-day1-setlist-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-kai-go-unit-2026": {
+   "action": "article",
+   "angle": "DAY1で雨夜燕×有村麻央の新ユニット「乖轟」と新曲「アンバランス」(11月末実装)を発表",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "手毬・美鈴の新曲は別記事(慟哭のコンチェルト)"
+  },
+  "gaku-shirube-final-day1-setlist": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-shirube-final-day1-setlist-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-shirube-final-day1-archive": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shirube-final-stream-ticket-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "最速版アーカイブは配信券の視聴手段"
+  },
+  "gaku-shirube-final-day1-gasha": {
+   "action": "roundup",
+   "angle": "DAY1記念の有償限定ガシャ(SSR1枚以上確定、11月16日9:59まで)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-dokoku-concerto-release": {
+   "action": "article",
+   "angle": "月村手毬・秦谷美鈴の新曲「慟哭のコンチェルト」が本日サブスク配信・DL販売開始",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-season-solo-collection-order": {
+   "action": "article",
+   "angle": "標ツアー先行販売のSeason Solo Collection 4名分がASOBI STOREで受注開始",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-conceptual-single-collection-2026": {
+   "action": "article",
+   "angle": "初星学園 Conceptual Single Collection Vol.1〜3の予約は11月15日まで、スペシャルセットも",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同種1主題を統合"
+  },
+  "gaku-agitato-vol2-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gravure-solo-collection-vol-2-agitato",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ASOBI STORE特典ステッカー情報を統合"
+  },
+  "gaku-gearbeat-concerto-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-steampunk-gearbeat-goods-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "3rd-single-completion-goods-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-3rd-single-finish-goods-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-shirube-final-rubber-mat-day2": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gakuen-shirube-final-2026-venue",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ラバーマットはDAY1で販売済みでDAY2販売なし、を新事実に"
+  },
+  "gaku-jouo-seina-birthday-message-2026": {
+   "action": "article",
+   "angle": "十王星南の誕生日特別編に向け、お祝いメッセージと質問を11月20日まで募集",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-login-ratio-result-2026": {
+   "action": "roundup",
+   "angle": "ログボ比率予想キャンペーンの結果は27:73",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-lalaport-collab-2027": {
+   "action": "article",
+   "angle": "学マス×ららぽーとコラボが2027年に5施設で開催予定、ヴァイスシュヴァルツ第2弾も2027年春",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-shirube-day1-fan-reaction": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿のみ"
+  },
+  "gaku-weekend-produce-campaign-2026": {
+   "action": "roundup",
+   "angle": "開催中の週末プロデュース強化キャンペーン(11月9日4:59まで)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-logon-bonus-choice-2026": {
+   "action": "roundup",
+   "angle": "開催中の「あなたはどっち派」ログボ(11月16日4:59まで)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "ichiban-kuji-part7-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/21に全ラインナップと12/12発売を記事化済み。新事実・当日トリガー無し"
+  },
+  "gaku-shirube-final-live-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gakuen-shirube-final-2026-venue",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gakumas-conceptual-single-collection-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-conceptual-single-collection-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gakumas-museum-card-and-nui-order-2026": {
+   "action": "article",
+   "angle": "Museum Cardと一緒に暮らすぬいの三次予約が本日12時に開始",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "unconfirmedなので出典は執筆・校閲で確認"
+  },
+  "gakumas-shirube-final-day1-setlist-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-shirube-final-day1-setlist-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "curtain-damashii-new-goods-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/7にロングクッションカバー・ラバーマット掲載を記事化済み"
+  },
+  "gaku-shirube-finale-ticket-buzz": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gakuen-shirube-final-2026-venue",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "千秋楽の予約。素材は7/9のSNS話で未確認、DAY2開催の事実のみ使う"
+  },
+  "gravure-solo-collection-vol-2-agitato": {
+   "action": "article",
+   "angle": "CD「Agitato」の予約は本日11月8日が期限、ショップごとに時間が異なる",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同種4主題を統合。ASOBI STOREはステッカー特典"
+  },
+  "gravure-solo-collection-agitato-vol2": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gravure-solo-collection-vol-2-agitato",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gakumas-live-tour-shirube-live-viewing-2026": {
+   "action": "article",
+   "angle": "標ファイナル台湾ライブビューイング2日目が本日15:40入場・16:00開始",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-cycle-jersey-restock-2026": {
+   "action": "article",
+   "angle": "サイクルジャージ全13種の再受注は本日11月8日が申込締切",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gakumas-live-tour-final-collab-drink-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gakuen-shirube-final-2026-venue",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "コラボドリンク・限定カードは本日が最終販売日、と記事内で触れる"
+  },
+  "gaku-gravure-solo-collection-vol-2-agitato": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gravure-solo-collection-vol-2-agitato",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shirube-final-goods-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gakuen-shirube-final-2026-venue",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "DAY2の会場物販10〜17時"
+  },
+  "gaku-amayo-tsubame-training-acrylic-stand-2027": {
+   "action": "article",
+   "angle": "雨夜燕の特大アクスタ予約は本日がキャンセル可能な最終日、翌9日から不可",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gakuen-shirube-final-2026-venue": {
+   "action": "article",
+   "angle": "標ファイナルDAY2を本日Kアリーナ横浜で開催、17時開演。会場物販(10〜17時)とコラボドリンクも本日が最終日で、ラバーマットはDAY2販売なし",
+   "purpose": "期日の知らせ",
+   "rank": "large",
+   "lead_score": 85,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "この面の一面。公演・物販・ドリンク・ラバーマットを1本に"
+  },
+  "shirube-final-stream-ticket-2026": {
+   "action": "article",
+   "angle": "DAY2は配信券で視聴でき、公演後に村田綾香・峯田茉優出演の「ばくすて！とーく」を生配信。DAY1最速版アーカイブは11月9日18時まで",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "配信券は11月23日18時まで。DAY2出演者は既報にない新事実"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "gaku-round1-vol2-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "学マス×ROUND1 vol.2が12月1日から全店で開催決定、詳細は後日発表",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "gaku-round1-vol2-2026",
+    "candidate_ids": [
+     "202611071833-explore-7"
+    ]
+   },
+   {
+    "slug": "gaku-eclipse-light-animate-fair-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "アニメイト「ECLIPSE LIGHT」フェアの対象商品欄が再び更新され、品目が入れ替わった",
+    "purpose": "新情報",
+    "lead_score": 5,
+    "dedup_key": "eclipse-light-animate-fair-2026",
+    "candidate_ids": [
+     "update-60498d80caac"
+    ]
+   },
+   {
+    "slug": "gaku-steampunk-gearbeat-goods-2026",
+    "brand": "gaku",
+    "rank": "medium",
+    "angle": "スチームパンク新作グッズ「Gearbeat Concerto」が2027年3月26日発売、ASOBI STOREで11月10日から受注",
+    "purpose": "新情報",
+    "lead_score": 25,
+    "dedup_key": "gaku-steampunk-gearbeat-goods-2026",
+    "candidate_ids": [
+     "202611072335-watch-0",
+     "202611080229-grok-124",
+     "202611080229-grok-46"
+    ]
+   },
+   {
+    "slug": "gaku-3rd-single-finish-goods-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "3rdシングル完走記念グッズの受注は11月15日まで、アニメイトでも受付中",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "gaku-3rd-single-finish-goods-2026",
+    "candidate_ids": [
+     "202611072335-watch-2",
+     "202611080229-grok-47",
+     "202611080229-grok-108"
+    ]
+   },
+   {
+    "slug": "gaku-shirube-final-day1-setlist-2026",
+    "brand": "gaku",
+    "rank": "large",
+    "angle": "標ファイナルDAY1のセットリスト公開(全曲・歌唱者、プレイリスト公開)",
+    "purpose": "新情報",
+    "lead_score": 30,
+    "dedup_key": "gaku-shirube-final-day1-setlist-2026",
+    "candidate_ids": [
+     "202611072335-explore-20",
+     "202611080229-watch-0",
+     "202611080229-grok-38",
+     "202611080229-grok-101",
+     "202611080229-grok-103",
+     "202611080229-grok-104",
+     "202611080229-grok-105",
+     "202611080229-grok-106",
+     "202611080229-grok-109",
+     "202611080229-grok-111",
+     "202611080229-grok-122",
+     "202611080229-grok-83"
+    ]
+   },
+   {
+    "slug": "gaku-kai-go-unit-2026",
+    "brand": "gaku",
+    "rank": "medium",
+    "angle": "DAY1で雨夜燕×有村麻央の新ユニット「乖轟」と新曲「アンバランス」(11月末実装)を発表",
+    "purpose": "新情報",
+    "lead_score": 30,
+    "dedup_key": "gaku-kai-go-unit-2026",
+    "candidate_ids": [
+     "202611080229-explore-6",
+     "202611080229-grok-40"
+    ]
+   },
+   {
+    "slug": "gaku-dokoku-concerto-release",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "月村手毬・秦谷美鈴の新曲「慟哭のコンチェルト」が本日サブスク配信・DL販売開始",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "gaku-dokoku-concerto-release",
+    "candidate_ids": [
+     "202611080229-grok-42",
+     "202611080229-grok-79"
+    ]
+   },
+   {
+    "slug": "gaku-season-solo-collection-order",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "標ツアー先行販売のSeason Solo Collection 4名分がASOBI STOREで受注開始",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "gaku-season-solo-collection-order",
+    "candidate_ids": [
+     "202611080229-grok-43"
+    ]
+   },
+   {
+    "slug": "gaku-conceptual-single-collection-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "初星学園 Conceptual Single Collection Vol.1〜3の予約は11月15日まで、スペシャルセットも",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "gaku-conceptual-single-collection-2026",
+    "candidate_ids": [
+     "202611080229-grok-44",
+     "202611080229-grok-80"
+    ]
+   },
+   {
+    "slug": "gaku-jouo-seina-birthday-message-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "十王星南の誕生日特別編に向け、お祝いメッセージと質問を11月20日まで募集",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "gaku-jouo-seina-birthday-message-2026",
+    "candidate_ids": [
+     "202611080229-grok-49"
+    ]
+   },
+   {
+    "slug": "gaku-lalaport-collab-2027",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "学マス×ららぽーとコラボが2027年に5施設で開催予定、ヴァイスシュヴァルツ第2弾も2027年春",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "gaku-lalaport-collab-2027",
+    "candidate_ids": [
+     "202611080229-grok-51"
+    ]
+   },
+   {
+    "slug": "gaku-gakumas-museum-card-and-nui-order-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "Museum Cardと一緒に暮らすぬいの三次予約が本日12時に開始",
+    "purpose": "期日の知らせ",
+    "lead_score": 10,
+    "dedup_key": "gakumas-museum-card-and-nui-order-2026",
+    "candidate_ids": [
+     "202611080229-grok-81"
+    ]
+   },
+   {
+    "slug": "gaku-gravure-solo-collection-vol-2-agitato",
+    "brand": "gaku",
+    "rank": "medium",
+    "angle": "CD「Agitato」の予約は本日11月8日が期限、ショップごとに時間が異なる",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "gravure-solo-collection-vol-2-agitato",
+    "candidate_ids": [
+     "sched-2026-11-08-gravure-solo-collection-vol-2-agitato-締切",
+     "202611080229-grok-45",
+     "202611080229-grok-102",
+     "sched-2026-11-08-gravure-solo-collection-agitato-vol2-締切",
+     "sched-2026-11-08-gaku-gravure-solo-collection-vol-2-agitato-締切",
+     "sched-2026-11-08-gaku-gravure-solo-collection-vol-2-agitato-締切-src1"
+    ]
+   },
+   {
+    "slug": "gaku-gakumas-live-tour-shirube-live-viewing-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "標ファイナル台湾ライブビューイング2日目が本日15:40入場・16:00開始",
+    "purpose": "期日の知らせ",
+    "lead_score": 15,
+    "dedup_key": "gakumas-live-tour-shirube-live-viewing-2026",
+    "candidate_ids": [
+     "sched-2026-11-08-gakumas-live-tour-shirube-live-viewing-2026-千秋楽"
+    ]
+   },
+   {
+    "slug": "gaku-cycle-jersey-restock-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "サイクルジャージ全13種の再受注は本日11月8日が申込締切",
+    "purpose": "期日の知らせ",
+    "lead_score": 15,
+    "dedup_key": "gaku-cycle-jersey-restock-2026",
+    "candidate_ids": [
+     "sched-2026-11-08-gaku-cycle-jersey-restock-2026-締切"
+    ]
+   },
+   {
+    "slug": "gaku-amayo-tsubame-training-acrylic-stand-2027",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "雨夜燕の特大アクスタ予約は本日がキャンセル可能な最終日、翌9日から不可",
+    "purpose": "期日の知らせ",
+    "lead_score": 15,
+    "dedup_key": "gaku-amayo-tsubame-training-acrylic-stand-2027",
+    "candidate_ids": [
+     "sched-2026-11-08-gaku-amayo-tsubame-training-acrylic-stand-2027-締切"
+    ]
+   },
+   {
+    "slug": "gaku-gakuen-shirube-final-2026-venue",
+    "brand": "gaku",
+    "rank": "large",
+    "angle": "標ファイナルDAY2を本日Kアリーナ横浜で開催、17時開演。会場物販(10〜17時)とコラボドリンクも本日が最終日で、ラバーマットはDAY2販売なし",
+    "purpose": "期日の知らせ",
+    "lead_score": 85,
+    "dedup_key": "gakuen-shirube-final-2026-venue",
+    "candidate_ids": [
+     "sched-2026-11-08-gakuen-shirube-final-2026-venue-千秋楽",
+     "sched-2026-11-08-gakuen-shirube-final-2026-venue-千秋楽-src1",
+     "sched-2026-11-08-gakuen-shirube-final-2026-venue-千秋楽-src2",
+     "202611080229-grok-48",
+     "202611080229-grok-58",
+     "sched-2026-11-08-gaku-shirube-finale-ticket-buzz-千秋楽",
+     "sched-2026-11-08-gakumas-live-tour-final-collab-drink-2026-千秋楽",
+     "sched-2026-11-08-gakumas-live-tour-final-collab-drink-2026-終了",
+     "sched-2026-11-08-shirube-final-goods-2026-開始",
+     "sched-2026-11-08-shirube-final-goods-2026-開始-src1",
+     "sched-2026-11-08-shirube-final-goods-2026-開始-src2"
+    ]
+   },
+   {
+    "slug": "gaku-shirube-final-stream-ticket-2026",
+    "brand": "gaku",
+    "rank": "medium",
+    "angle": "DAY2は配信券で視聴でき、公演後に村田綾香・峯田茉優出演の「ばくすて！とーく」を生配信。DAY1最速版アーカイブは11月9日18時まで",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "shirube-final-stream-ticket-2026",
+    "candidate_ids": [
+     "sched-2026-11-08-shirube-final-stream-ticket-2026-開幕",
+     "sched-2026-11-08-shirube-final-stream-ticket-2026-開幕-src1",
+     "sched-2026-11-08-shirube-final-stream-ticket-2026-開幕-src2",
+     "sched-2026-11-08-shirube-final-stream-ticket-2026-開幕-src3",
+     "202611080229-grok-39"
+    ]
+   },
+   {
+    "slug": "gaku-ops-roundup",
+    "brand": "gaku",
+    "rank": "roundup",
+    "angle": "開催中のログボ関連の投稿キャンペーン(抽選30名)",
+    "lead_score": 0,
+    "dedup_key": "gaku-login-bonus-post-campaign-2026",
+    "candidate_ids": [
+     "202611070733-explore-7",
+     "202611080229-grok-41",
+     "202611080229-grok-123",
+     "202611080229-grok-50",
+     "202611080229-grok-55",
+     "202611080229-grok-56"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "gakumas-voice-actor-gacha-reaction-2026",
+    "reason": "個人の話題",
+    "note": "声優個人のSNS投稿への反応"
+   },
+   {
+    "dedup_key": "gaku-shirube-day1-fan-reaction",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿のみ"
+   },
+   {
+    "dedup_key": "ichiban-kuji-part7-2026",
+    "reason": "既報",
+    "note": "10/21に全ラインナップと12/12発売を記事化済み。新事実・当日トリガー無し"
+   },
+   {
+    "dedup_key": "curtain-damashii-new-goods-2026",
+    "reason": "既報",
+    "note": "11/7にロングクッションカバー・ラバーマット掲載を記事化済み"
+   }
+  ],
+  "cross_brand": []
+ }
+}

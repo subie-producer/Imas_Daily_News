@@ -1,0 +1,319 @@
+{
+ "decisions": {
+  "cg-million-clash-match-2027-preorder-goods": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "demirimi-clash-goods-preorder-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じグッズ事前販売(11/15締切)"
+  },
+  "demirimi-clash-goods-preorder-2026": {
+   "action": "article",
+   "angle": "CLASH M@TCH!!の公式グッズ事前受注が11月15日(日)締切まで残りわずか。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "tours-prime-match-fes-2026-11": {
+   "action": "article",
+   "angle": "ツアマス「プライムマッチフェス」が11月19日7時から2027年1月17日まで開催。自動エントリー、8回のグループマッチング、総合ランキング上位にはアナザー衣装『フューチャーライラック』。",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "tours-prime-match-fes-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "tours-prime-match-fes-2026-11",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ催しの予告ツイート"
+  },
+  "tours-producers-station-nakano-event-2026": {
+   "action": "article",
+   "angle": "ツアマス公式店舗イベントが12月2日にProducers Station中野で開催。定員35名、参加料300円、マイページ事前登録が必要。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "tours-producers-station-nakano-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "tours-producers-station-nakano-event-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じイベントの告知ツイート"
+  },
+  "tours-allnet-maintenance-remedy-2026": {
+   "action": "article",
+   "angle": "ALL.Net緊急メンテの補填として、ハロウィン限定コミュを11月21〜27日に再実施し、RHYTHM LIVE FESTIVAL 2027予選の終了を12月10日25時59分へ延長(決勝日程は不変)。",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "tours-rhythm-live-festival-2027": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "tours-allnet-maintenance-remedy-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "出典の変更(予選終了12/3→12/10)は補填策の記事に含める"
+  },
+  "tours-rhythm-live-festival-qualifier-extension-2027": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "予選の延長は11/11号の記事で既報"
+  },
+  "tours-rhythm-live-festival-2027-qualifier": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/23号で既報。予選開始(11/12)も過ぎた"
+  },
+  "tours-rhythm-live-festival-qualifier-maintenance-2027": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/6号で既報。結論は補填策の記事で扱う"
+  },
+  "fureaka-radio-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "配信は11/13で終了、11/13号で既報。次回の配信日時は素材に無い"
+  },
+  "denonbu-valiv-akiba-watchalong-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "電音部公式が主催する同時視聴会で、共同主催ではない"
+  },
+  "xr-live-revival-asobistore-general-advance-2026": {
+   "action": "article",
+   "angle": "xR LIVE REVIVALのアソビストア一般会員先行の当落が本日13時に発表。当選者の入金は18日23時59分まで。",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 75,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "3主題を統合"
+  },
+  "xr-live-revival-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "xr-live-revival-asobistore-general-advance-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ先行の当落発表"
+  },
+  "xr-live-revival-2026-presale-extension": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "xr-live-revival-asobistore-general-advance-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ先行(延長済み)の当落発表"
+  },
+  "dememiri-clash-match-ticket-2027": {
+   "action": "article",
+   "angle": "デレミリ合同ライブ(CLASH M@TCH!!)のアソビストア一般会員先行の当落が本日13時に発表。入金は18日23時59分まで。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "clash-match-new-song-2027": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "dememiri-clash-match-ticket-2027",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "新曲は11/2号で既報。当日のトリガーは先行の当落発表"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "joint-tours-prime-match-fes-2026-11",
+    "brand": "joint",
+    "rank": "medium",
+    "angle": "ツアマス「プライムマッチフェス」が11月19日7時から2027年1月17日まで開催。自動エントリー、8回のグループマッチング、総合ランキング上位にはアナザー衣装『フューチャーライラック』。",
+    "purpose": "新情報",
+    "lead_score": 30,
+    "dedup_key": "tours-prime-match-fes-2026-11",
+    "candidate_ids": [
+     "202611131839-watch-14",
+     "202611140226-grok-123"
+    ]
+   },
+   {
+    "slug": "joint-tours-producers-station-nakano-event-2026",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "ツアマス公式店舗イベントが12月2日にProducers Station中野で開催。定員35名、参加料300円、マイページ事前登録が必要。",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "tours-producers-station-nakano-event-2026",
+    "candidate_ids": [
+     "202611140226-explore-7",
+     "202611140226-grok-122"
+    ]
+   },
+   {
+    "slug": "joint-demirimi-clash-goods-preorder-2026",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "CLASH M@TCH!!の公式グッズ事前受注が11月15日(日)締切まで残りわずか。",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "demirimi-clash-goods-preorder-2026",
+    "candidate_ids": [
+     "202611140226-grok-22",
+     "202611140226-grok-77",
+     "202611140226-grok-97",
+     "202611131839-watch-3"
+    ]
+   },
+   {
+    "slug": "joint-tours-allnet-maintenance-remedy-2026",
+    "brand": "joint",
+    "rank": "medium",
+    "angle": "ALL.Net緊急メンテの補填として、ハロウィン限定コミュを11月21〜27日に再実施し、RHYTHM LIVE FESTIVAL 2027予選の終了を12月10日25時59分へ延長(決勝日程は不変)。",
+    "purpose": "新情報",
+    "lead_score": 30,
+    "dedup_key": "tours-allnet-maintenance-remedy-2026",
+    "candidate_ids": [
+     "202611140226-grok-68",
+     "202611140226-grok-124",
+     "202611130231-grok-54"
+    ]
+   },
+   {
+    "slug": "joint-xr-live-revival-asobistore-general-advance-2026",
+    "brand": "joint",
+    "rank": "medium",
+    "angle": "xR LIVE REVIVALのアソビストア一般会員先行の当落が本日13時に発表。当選者の入金は18日23時59分まで。",
+    "purpose": "期日の知らせ",
+    "lead_score": 75,
+    "dedup_key": "xr-live-revival-asobistore-general-advance-2026",
+    "candidate_ids": [
+     "sched-2026-11-14-xr-live-revival-asobistore-general-advance-2026-結果",
+     "sched-2026-11-14-xr-live-revival-asobistore-general-advance-2026-結果-src1",
+     "sched-2026-11-14-xr-live-revival-2026-結果",
+     "sched-2026-11-14-xr-live-revival-2026-presale-extension-結果",
+     "sched-2026-11-14-xr-live-revival-2026-presale-extension-結果-src1"
+    ]
+   },
+   {
+    "slug": "joint-dememiri-clash-match-ticket-2027",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "デレミリ合同ライブ(CLASH M@TCH!!)のアソビストア一般会員先行の当落が本日13時に発表。入金は18日23時59分まで。",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "dememiri-clash-match-ticket-2027",
+    "candidate_ids": [
+     "sched-2026-11-14-dememiri-clash-match-ticket-2027-結果",
+     "sched-2026-11-14-dememiri-clash-match-ticket-2027-結果-src1",
+     "sched-2026-11-14-clash-match-new-song-2027-結果"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "denonbu-valiv-akiba-watchalong-2026",
+    "reason": "面違い",
+    "note": "電音部公式が主催する同時視聴会で、共同主催ではない"
+   },
+   {
+    "dedup_key": "fureaka-radio-2026",
+    "reason": "既報",
+    "note": "配信は11/13で終了、11/13号で既報。次回の配信日時は素材に無い"
+   },
+   {
+    "dedup_key": "tours-rhythm-live-festival-qualifier-extension-2027",
+    "reason": "既報",
+    "note": "予選の延長は11/11号の記事で既報"
+   },
+   {
+    "dedup_key": "tours-rhythm-live-festival-2027-qualifier",
+    "reason": "既報",
+    "note": "10/23号で既報。予選開始(11/12)も過ぎた"
+   },
+   {
+    "dedup_key": "tours-rhythm-live-festival-qualifier-maintenance-2027",
+    "reason": "既報",
+    "note": "11/6号で既報。結論は補填策の記事で扱う"
+   }
+  ],
+  "cross_brand": []
+ }
+}

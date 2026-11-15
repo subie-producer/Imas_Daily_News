@@ -370,5 +370,54 @@
   "src_candidate_id": "202611060418-grok-13",
   "companion_of": "sched-2027-07-24-765-961-idol-ultimate-ticket-advance-2027-開幕",
   "src_dedup_key": "765pro-961pro-idol-ultimate-once-and-for-all-2026"
+ },
+ {
+  "id": "sched-2027-07-24-765as-961-idol-ultimate-2027-開幕",
+  "dedup_key": "765as-961-idol-ultimate-2027",
+  "brand": "765",
+  "subject": "IDOL ULTIMATE ONCE AND FOR ALL 第一公演",
+  "kind": "開幕",
+  "note": "京王アリーナ TOKYOで第一公演(開演18:00)。現地・配信で観られる",
+  "reserved_on": "2026-11-07",
+  "occurs_on": "2027-07-24",
+  "title": "765 PRODUCTION × 961 PRODUCTION IDOL ULTIMATE ONCE AND FOR ALL 現地チケット受付",
+  "url": "https://x.com/imas_official/status/2118644575728275781",
+  "source_type": "公式",
+  "facts": [
+   "◢━━━━━✧━━━━━◣",
+   "⠀⠀⠀ 765 PRO×961 PRO",
+   "⠀⠀⠀ ⠀IDOL ULTIMATE",
+   "⠀⠀“ONCE AND FOR ALL”",
+   "＼現地チケット締切まで／",
+   "あ　と　2⃣　日",
+   "◥━━━━━✦━━━━━◤",
+   "✧公式サイト",
+   "✦チケット受付11/8 23:59まで",
+   "#xR_765vs961"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202611070232-grok-42"
+ },
+ {
+  "id": "sched-2027-07-24-765as-961-idol-ultimate-2027-開幕-src1",
+  "dedup_key": "765as-961-idol-ultimate-2027",
+  "brand": "765",
+  "subject": "IDOL ULTIMATE ONCE AND FOR ALL 第一公演",
+  "kind": "開幕",
+  "note": "京王アリーナ TOKYOで第一公演(開演18:00)。現地・配信で観られる",
+  "reserved_on": "2026-11-07",
+  "occurs_on": "2027-07-24",
+  "title": "THE IDOLM@STER OFFICIAL WEB「765 PRODUCTION × 961 PRODUCTION IDOL ULTIMATE ONCE AND FOR ALL」",
+  "url": "https://idolmaster-official.jp/live_event/IUOAFA/",
+  "source_type": "公式",
+  "facts": [
+   "会場は京王アリーナ TOKYO。第一公演「TO:STARLIT OF PROMISE」は2027年7月24日、開場17:00・開演18:00。第二公演「BE:STELLA OF ABSOLUTE」は7月25日、開場11:00・開演12:00。第三公演「IF:THE DAY OF JUDGMENT」は7月25日、開場17:00・開演18:00。"
+  ],
+  "via": "verified_fact",
+  "verify": "unconfirmed",
+  "src_candidate_id": "202611070232-grok-42",
+  "companion_of": "sched-2027-07-24-765as-961-idol-ultimate-2027-開幕",
+  "src_dedup_key": "765as-961-idol-ultimate-2027"
  }
 ]

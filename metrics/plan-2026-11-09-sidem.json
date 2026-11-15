@@ -1,0 +1,204 @@
+{
+ "decisions": {
+  "imas-year-end-thanks-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/7号の合同面記事に神原大地の出演・配信日時・アンケートまで掲載済み。新事実なし"
+  },
+  "sidem-battle-fes-theater-goods-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/7号に同内容(11/20販売開始・商品群)掲載済み。発売は11日後でトリガーなし"
+  },
+  "sidem-315-shop-lottery-stock-2026-09-22": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "出典の変更は11/8 3時の読み取りで、同日号の在庫なし更新記事に反映済み。facts は記号の入れ替わりのみで新事実を特定できない"
+  },
+  "sidem-315-episode-idol-one-panel-update-2026-10": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/8号「舐めんじゃねー！」の更新記事で既報。変更点は同ストーリーの掲載"
+  },
+  "cg-15th-anniversary-party-2026-general": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "東雲荘一郎の誕生日投稿は11/8号で記事化済み。ほかの facts は他ブランドの話題で面違い"
+  },
+  "sidem-whogoesfirst-live-audio-makuhari-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "幕張ライブ音響上映は11/5・11/6・11/7号で記事化済み。出典は第三者のX投稿で未確認、当日のトリガーなし"
+  },
+  "sidem-1koma-update-2026-11-08": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/8号「アイドルたちの1コマ」更新で既報。同じ更新の公式X投稿"
+  },
+  "teddys-collection-ii-goods": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/30号に商品・価格・締切11/15を掲載済み。締切は6日後で3日以内のトリガーなし"
+  },
+  "sidem-315-monthly-theme-12-cafe-parade": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "CDは10/21発売済みの商品ページで、新しい発表も当日のトリガーも無い"
+  },
+  "sidem-mfes-winter-wonderland-decotto-2026": {
+   "action": "article",
+   "angle": "Mフェス 2026 in Winter Wonderland × DECOTTO が12月1日から池袋で開催、12月6日までは抽選予約制",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "既報なし・carried。開催期間、休業日、予約方法を短く伝える"
+  },
+  "sidem-knick-knacks-vol-2-2026": {
+   "action": "article",
+   "angle": "ハンズ北千住店の初日(11/13)購入時間帯整理券の抽選結果が、本日12時ごろ特設Webページで発表される",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 75,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(結果)。当選番号と購入時間帯の確認方法、入場時の持ち物を伝える"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "sidem-mfes-winter-wonderland-decotto-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "Mフェス 2026 in Winter Wonderland × DECOTTO が12月1日から池袋で開催、12月6日までは抽選予約制",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "sidem-mfes-winter-wonderland-decotto-2026",
+    "candidate_ids": [
+     "202611061836-explore-15"
+    ]
+   },
+   {
+    "slug": "sidem-knick-knacks-vol-2-2026",
+    "brand": "sidem",
+    "rank": "medium",
+    "angle": "ハンズ北千住店の初日(11/13)購入時間帯整理券の抽選結果が、本日12時ごろ特設Webページで発表される",
+    "purpose": "期日の知らせ",
+    "lead_score": 75,
+    "dedup_key": "sidem-knick-knacks-vol-2-2026",
+    "candidate_ids": [
+     "sched-2026-11-09-sidem-knick-knacks-vol-2-2026-結果",
+     "sched-2026-11-09-sidem-knick-knacks-vol-2-2026-結果-src1",
+     "sched-2026-11-09-sidem-knick-knacks-vol-2-2026-結果-src2",
+     "sched-2026-11-09-sidem-knick-knacks-vol-2-2026-結果-src3"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "imas-year-end-thanks-2026",
+    "reason": "既報",
+    "note": "11/7号の合同面記事に神原大地の出演・配信日時・アンケートまで掲載済み。新事実なし"
+   },
+   {
+    "dedup_key": "sidem-battle-fes-theater-goods-2026",
+    "reason": "既報",
+    "note": "11/7号に同内容(11/20販売開始・商品群)掲載済み。発売は11日後でトリガーなし"
+   },
+   {
+    "dedup_key": "sidem-315-shop-lottery-stock-2026-09-22",
+    "reason": "既報",
+    "note": "出典の変更は11/8 3時の読み取りで、同日号の在庫なし更新記事に反映済み。facts は記号の入れ替わりのみで新事実を特定できない"
+   },
+   {
+    "dedup_key": "sidem-315-episode-idol-one-panel-update-2026-10",
+    "reason": "既報",
+    "note": "11/8号「舐めんじゃねー！」の更新記事で既報。変更点は同ストーリーの掲載"
+   },
+   {
+    "dedup_key": "cg-15th-anniversary-party-2026-general",
+    "reason": "既報",
+    "note": "東雲荘一郎の誕生日投稿は11/8号で記事化済み。ほかの facts は他ブランドの話題で面違い"
+   },
+   {
+    "dedup_key": "sidem-whogoesfirst-live-audio-makuhari-2026",
+    "reason": "既報",
+    "note": "幕張ライブ音響上映は11/5・11/6・11/7号で記事化済み。出典は第三者のX投稿で未確認、当日のトリガーなし"
+   },
+   {
+    "dedup_key": "sidem-1koma-update-2026-11-08",
+    "reason": "既報",
+    "note": "11/8号「アイドルたちの1コマ」更新で既報。同じ更新の公式X投稿"
+   },
+   {
+    "dedup_key": "teddys-collection-ii-goods",
+    "reason": "既報",
+    "note": "10/30号に商品・価格・締切11/15を掲載済み。締切は6日後で3日以内のトリガーなし"
+   },
+   {
+    "dedup_key": "sidem-315-monthly-theme-12-cafe-parade",
+    "reason": "その他",
+    "note": "CDは10/21発売済みの商品ページで、新しい発表も当日のトリガーも無い"
+   }
+  ],
+  "cross_brand": []
+ }
+}

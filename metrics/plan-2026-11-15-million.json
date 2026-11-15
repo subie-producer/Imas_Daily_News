@@ -1,0 +1,285 @@
+{
+ "decisions": {
+  "million-photo-panel-new-designs-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/14号の本文と同内容。発売は20日で当日・3日以内のトリガー無し"
+  },
+  "million-snapshot-memories-gasha-2026-11": {
+   "action": "article",
+   "angle": "Snapshot Memoriesガシャの徳川まつり・箱崎星梨花の4コマまんがが公開された(ガシャは17日14:59まで)",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "4コマ公開は既報本文に無い新事実"
+  },
+  "medicos-e-net-44": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "medicos-cyberplanet-popup-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ事後通販の出典変更"
+  },
+  "medicos-cyberplanet-popup-2026": {
+   "action": "article",
+   "angle": "Cyber Planet POP UP SHOPの事後通販が出典で判明:11月16日正午〜12月1日にMEDICOS ONLINE SHOPで受注(OSMOスタンプは対象外)",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "source_change。受注開始が明日で、会場最終日記事とは読者の行動が別"
+  },
+  "million-seasonal-snapshot-valentine": {
+   "action": "article",
+   "angle": "アソビストアで「SEASONAL SNAPSHOT バレンタイン」(星井美希・島原エレナ)の受注が11月22日まで",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "既報なし。アクスタ・パネル・ブロマイドの特製BOXなど"
+  },
+  "soutei-shinrigai-mv-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/14号で16日20時公開を報じ済み。新事実なく公開は明日"
+  },
+  "million-pinky-ring-gem-effects-2026-11": {
+   "action": "article",
+   "angle": "ミリシタのピンキーリングは宝石ごとに光る強さが5段階で異なり、購入前に試着機能で確認できる",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "既報なし。小ネタだが基準を満たす"
+  },
+  "showa-kinen-park-pilgrimage-2026-11": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "個人投稿の聖地巡礼。culture は general 面のみで、単体記事にもしない"
+  },
+  "million-platinum-star-tune-yoruto-akari-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "イベントは11/7に終了済みで既報多数。新事実・トリガー無し"
+  },
+  "x-com-43": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cyber-planet-popup-osaka-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "大阪会場の最終日(千秋楽予約)を統合"
+  },
+  "million-cyber-planet-popup-osaka-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cyber-planet-popup-osaka-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "大阪会場の最終日(千秋楽予約)を統合"
+  },
+  "cyber-planet-popup-osaka-2026": {
+   "action": "article",
+   "angle": "Cyber Planet POP UP SHOP大阪会場がきょう最終日。アベノラクバスで11〜19時、購入特典とOSMOスタンプは今日まで、等身大パネル応募は16日23:59まで",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "最終日。複数キー(x-com-43など)の素材を統合"
+  },
+  "million-kyomaf-after-sales-2026": {
+   "action": "article",
+   "angle": "京まふ2026ミリオンライブ事後通販(101点)は18日23:59まで、締切まであと3日",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約の締切前。facts に期限あり"
+  },
+  "million-cyber-planet-popup-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cyber-planet-popup-osaka-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "大阪会場の最終日(終了予約)を統合"
+  },
+  "million-clash-match-goods-2026": {
+   "action": "cross_brand",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "joint-demirimi-clash-goods-preorder-2026",
+   "reason": "",
+   "note": "CG×ミリオン共同名義。合同面が本日締切の記事を立て済み"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "million-snapshot-memories-gasha-2026-11",
+    "brand": "million",
+    "rank": "small",
+    "angle": "Snapshot Memoriesガシャの徳川まつり・箱崎星梨花の4コマまんがが公開された(ガシャは17日14:59まで)",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "million-snapshot-memories-gasha-2026-11",
+    "candidate_ids": [
+     "202611141234-explore-7",
+     "202611150227-grok-23"
+    ]
+   },
+   {
+    "slug": "million-medicos-cyberplanet-popup-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "Cyber Planet POP UP SHOPの事後通販が出典で判明:11月16日正午〜12月1日にMEDICOS ONLINE SHOPで受注(OSMOスタンプは対象外)",
+    "purpose": "新情報",
+    "lead_score": 25,
+    "dedup_key": "medicos-cyberplanet-popup-2026",
+    "candidate_ids": [
+     "update-89c3e875cf56",
+     "sched-2026-11-15-medicos-cyberplanet-popup-2026-終了",
+     "update-a803d33a8050"
+    ]
+   },
+   {
+    "slug": "million-seasonal-snapshot-valentine",
+    "brand": "million",
+    "rank": "small",
+    "angle": "アソビストアで「SEASONAL SNAPSHOT バレンタイン」(星井美希・島原エレナ)の受注が11月22日まで",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "million-seasonal-snapshot-valentine",
+    "candidate_ids": [
+     "202611141834-watch-3"
+    ]
+   },
+   {
+    "slug": "million-pinky-ring-gem-effects-2026-11",
+    "brand": "million",
+    "rank": "small",
+    "angle": "ミリシタのピンキーリングは宝石ごとに光る強さが5段階で異なり、購入前に試着機能で確認できる",
+    "purpose": "新情報",
+    "lead_score": 5,
+    "dedup_key": "million-pinky-ring-gem-effects-2026-11",
+    "candidate_ids": [
+     "202611150227-grok-26"
+    ]
+   },
+   {
+    "slug": "million-cyber-planet-popup-osaka-2026",
+    "brand": "million",
+    "rank": "medium",
+    "angle": "Cyber Planet POP UP SHOP大阪会場がきょう最終日。アベノラクバスで11〜19時、購入特典とOSMOスタンプは今日まで、等身大パネル応募は16日23:59まで",
+    "purpose": "期日の知らせ",
+    "lead_score": 60,
+    "dedup_key": "cyber-planet-popup-osaka-2026",
+    "candidate_ids": [
+     "sched-2026-11-15-cyber-planet-popup-osaka-2026-千秋楽",
+     "sched-2026-11-15-cyber-planet-popup-osaka-2026-終了",
+     "sched-2026-11-15-cyber-planet-popup-osaka-2026-終了-src1",
+     "sched-2026-11-15-x-com-43-千秋楽",
+     "sched-2026-11-15-x-com-43-千秋楽-src1",
+     "sched-2026-11-15-million-cyber-planet-popup-osaka-2026-千秋楽",
+     "sched-2026-11-15-million-cyber-planet-popup-osaka-2026-千秋楽-src1",
+     "sched-2026-11-15-million-cyber-planet-popup-2026-終了",
+     "sched-2026-11-15-million-cyber-planet-popup-2026-終了-src1"
+    ]
+   },
+   {
+    "slug": "million-kyomaf-after-sales-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "京まふ2026ミリオンライブ事後通販(101点)は18日23:59まで、締切まであと3日",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "million-kyomaf-after-sales-2026",
+    "candidate_ids": [
+     "sched-2026-11-15-million-kyomaf-after-sales-2026-締切前"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "million-photo-panel-new-designs-2026",
+    "reason": "既報",
+    "note": "11/14号の本文と同内容。発売は20日で当日・3日以内のトリガー無し"
+   },
+   {
+    "dedup_key": "soutei-shinrigai-mv-2026",
+    "reason": "既報",
+    "note": "11/14号で16日20時公開を報じ済み。新事実なく公開は明日"
+   },
+   {
+    "dedup_key": "showa-kinen-park-pilgrimage-2026-11",
+    "reason": "面違い",
+    "note": "個人投稿の聖地巡礼。culture は general 面のみで、単体記事にもしない"
+   },
+   {
+    "dedup_key": "million-platinum-star-tune-yoruto-akari-2026",
+    "reason": "既報",
+    "note": "イベントは11/7に終了済みで既報多数。新事実・トリガー無し"
+   }
+  ],
+  "cross_brand": [
+   {
+    "slug": "joint-demirimi-clash-goods-preorder-2026",
+    "dedup_key": "million-clash-match-goods-2026",
+    "note": "CG×ミリオン共同名義。合同面が本日締切の記事を立て済み"
+   }
+  ]
+ }
+}

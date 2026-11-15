@@ -1,0 +1,411 @@
+{
+ "decisions": {
+  "sidem-fbfes-movie-stage-greeting-shinjuku-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/12号が日時・料金・販売開始(18日0時)まで報じ済み。当日のトリガーなし"
+  },
+  "sidem-mfes-animate-winter-wonderland-2026": {
+   "action": "article",
+   "angle": "アニメイトのMフェス2026対象商品に、THE 虎牙道とF-LAGSのアクリルブロック(税込1,100円)が加わった。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "source_change。変更前後の対象商品の差を記事化"
+  },
+  "315shop-nyan-goods-asobistore-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-315nyao-asobi-store-order-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じASOBI STORE受注"
+  },
+  "sidem-315shop-nyao-mini-goods-latte-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-315nyao-mini-goods-latte-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じmini ver.グッズ・ラテの発表"
+  },
+  "sidem-battle-fes-who-goes-first-theater-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/20上映開始と長野・幕張の日程は既報。開幕まで6日でトリガーなし"
+  },
+  "sidem-315nyao-asobi-store-order-2026": {
+   "action": "article",
+   "angle": "「いらっしゃいませ！315にゃお店屋さん」関連グッズのASOBI STORE受注が11月13日に始まり、30日まで受け付ける(お届けは2027年2月以降)。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "315にゃお店屋さん(店舗の発売)とは行動が別なので別記事"
+  },
+  "sidem-315nyao-mini-goods-latte-2026": {
+   "action": "article",
+   "angle": "315!!!SHOP「にゃお店屋さんmini ver.」グッズとフォーチューンラテが11月19日10時に発売(缶バッジのみ12月1日)。19日は10時から特別営業。",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "315shop-nyao-mini-goods-latte を統合"
+  },
+  "sidem-agatsuma-nin-nin-ambassadors-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "source_change は日付表記と在庫状況リンクの追加のみ。読者に関わる変更なし"
+  },
+  "sidem-idol-1koma-utsurou-keshiki-2026": {
+   "action": "article",
+   "angle": "SideM公式ポータルの「アイドルたちの1コマ」が新コンテンツ「うつろう景色」に更新された。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "単体で書ける量は少ないが新しい更新"
+  },
+  "sidem-refrain-atrium-2dmv-2026": {
+   "action": "article",
+   "angle": "Legenders「リフレインアトリウム」の2DMVが11月25日21時に公開される予定。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "cafe-parade-chocolate-special-2dmv-2026": {
+   "action": "article",
+   "angle": "Café Parade「Chocolate Special」の2DMVが公開され、連動ストーリー「My sweet&bitter Valentine」と配信リンクも案内された。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "前号は公開予告のみ。公開済みの事実と連動ストーリー名・配信が新しい"
+  },
+  "sidem-mfes-cd-night-public-recording-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-315-night-public-recording-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ公開録音イベント"
+  },
+  "sidem-315-night-mofumofuen-2026-11": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/13放送分で終了済み。11/2・11/11・11/12号で案内済み"
+  },
+  "fantastic-combination-live-retrospective-2026": {
+   "action": "article",
+   "angle": "PYLON PORTのSideM 3Dライブ振り返り特集第2弾が公開され、F＠NCOMのPINATATIME!!・CHOCOFFICERANGER!!・AtoZto!!を取り上げた。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "第1弾は11/13号。第2弾は新しい公開"
+  },
+  "sidem-birthday-celebration-bouquet-2026-feb": {
+   "action": "article",
+   "angle": "2月生まれ4人の記念グッズ「315 Celebration Bouquet」のASOBI STORE受注は、あす11月15日23時59分まで。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "締切が明日"
+  },
+  "teddys-collection-ii-goods": {
+   "action": "article",
+   "angle": "Anime Store.JP「Teddy's Collection II」のアクリルチャームとマフラータオルは、あす11月15日が予約締切。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "締切が明日。carried と source_change あり"
+  },
+  "sidem-gotoken-christmas-party-set-2026": {
+   "action": "article",
+   "angle": "五島軒のSideMクリスマスパーティセットの送料が地域別に案内された(北海道1,100円、東北1,540円など)。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "source_change。既報は「送料別」とだけあり、地域別送料は新しい事実。早期予約の送料無料は11/21まで"
+  },
+  "sidem-fantastic-battle-fes-nagano-sp-2026": {
+   "action": "article",
+   "angle": "長野公演のアソビストア一般会員先行の当選者は、11月17日23時59分までに入金を。あと3日。",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(締切前)。nagano-general-advance を統合。S・A席とSP席の入金期限は同じ"
+  },
+  "sidem-315-night-public-recording-2026": {
+   "action": "article",
+   "angle": "「315プロNight!」出張版公開録音(12月12日・池袋)の応募シリアル付きCD予約と申込は、11月17日23時59分の締切まであと3日。",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(締切前)。mfes-cd-night-public-recording を統合"
+  },
+  "sidem-fantastic-battle-fes-nagano-general-advance-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-fantastic-battle-fes-nagano-sp-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ先行・同じ入金期限(17日23時59分)"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "sidem-mfes-animate-winter-wonderland-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "アニメイトのMフェス2026対象商品に、THE 虎牙道とF-LAGSのアクリルブロック(税込1,100円)が加わった。",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "sidem-mfes-animate-winter-wonderland-2026",
+    "candidate_ids": [
+     "update-1dd38748a867"
+    ]
+   },
+   {
+    "slug": "sidem-315nyao-asobi-store-order-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "「いらっしゃいませ！315にゃお店屋さん」関連グッズのASOBI STORE受注が11月13日に始まり、30日まで受け付ける(お届けは2027年2月以降)。",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "sidem-315nyao-asobi-store-order-2026",
+    "candidate_ids": [
+     "202611131839-explore-23",
+     "202611131234-watch-2"
+    ]
+   },
+   {
+    "slug": "sidem-315nyao-mini-goods-latte-2026",
+    "brand": "sidem",
+    "rank": "medium",
+    "angle": "315!!!SHOP「にゃお店屋さんmini ver.」グッズとフォーチューンラテが11月19日10時に発売(缶バッジのみ12月1日)。19日は10時から特別営業。",
+    "purpose": "新情報",
+    "lead_score": 25,
+    "dedup_key": "sidem-315nyao-mini-goods-latte-2026",
+    "candidate_ids": [
+     "202611131839-explore-24",
+     "202611131839-watch-7",
+     "202611140226-grok-81"
+    ]
+   },
+   {
+    "slug": "sidem-idol-1koma-utsurou-keshiki-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "SideM公式ポータルの「アイドルたちの1コマ」が新コンテンツ「うつろう景色」に更新された。",
+    "purpose": "新情報",
+    "lead_score": 5,
+    "dedup_key": "sidem-idol-1koma-utsurou-keshiki-2026",
+    "candidate_ids": [
+     "202611140226-grok-44",
+     "202611140226-grok-103"
+    ]
+   },
+   {
+    "slug": "sidem-refrain-atrium-2dmv-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "Legenders「リフレインアトリウム」の2DMVが11月25日21時に公開される予定。",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "sidem-refrain-atrium-2dmv-2026",
+    "candidate_ids": [
+     "202611140226-grok-45"
+    ]
+   },
+   {
+    "slug": "sidem-cafe-parade-chocolate-special-2dmv-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "Café Parade「Chocolate Special」の2DMVが公開され、連動ストーリー「My sweet&bitter Valentine」と配信リンクも案内された。",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "cafe-parade-chocolate-special-2dmv-2026",
+    "candidate_ids": [
+     "202611140226-grok-46",
+     "202611140226-grok-104",
+     "202611140226-grok-108",
+     "202611140226-grok-109"
+    ]
+   },
+   {
+    "slug": "sidem-fantastic-combination-live-retrospective-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "PYLON PORTのSideM 3Dライブ振り返り特集第2弾が公開され、F＠NCOMのPINATATIME!!・CHOCOFFICERANGER!!・AtoZto!!を取り上げた。",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "fantastic-combination-live-retrospective-2026",
+    "candidate_ids": [
+     "202611140226-grok-49",
+     "202611140226-grok-105",
+     "202611140226-grok-110"
+    ]
+   },
+   {
+    "slug": "sidem-birthday-celebration-bouquet-2026-feb",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "2月生まれ4人の記念グッズ「315 Celebration Bouquet」のASOBI STORE受注は、あす11月15日23時59分まで。",
+    "purpose": "期日の知らせ",
+    "lead_score": 15,
+    "dedup_key": "sidem-birthday-celebration-bouquet-2026-feb",
+    "candidate_ids": [
+     "202611140226-grok-51",
+     "202611140226-grok-106",
+     "202611140226-grok-107",
+     "202611140226-grok-111"
+    ]
+   },
+   {
+    "slug": "sidem-teddys-collection-ii-goods",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "Anime Store.JP「Teddy's Collection II」のアクリルチャームとマフラータオルは、あす11月15日が予約締切。",
+    "purpose": "期日の知らせ",
+    "lead_score": 15,
+    "dedup_key": "teddys-collection-ii-goods",
+    "candidate_ids": [
+     "202611010510-explore-2"
+    ]
+   },
+   {
+    "slug": "sidem-gotoken-christmas-party-set-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "五島軒のSideMクリスマスパーティセットの送料が地域別に案内された(北海道1,100円、東北1,540円など)。",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "sidem-gotoken-christmas-party-set-2026",
+    "candidate_ids": [
+     "update-7a810507f6df"
+    ]
+   },
+   {
+    "slug": "sidem-fantastic-battle-fes-nagano-sp-2026",
+    "brand": "sidem",
+    "rank": "medium",
+    "angle": "長野公演のアソビストア一般会員先行の当選者は、11月17日23時59分までに入金を。あと3日。",
+    "purpose": "期日の知らせ",
+    "lead_score": 60,
+    "dedup_key": "sidem-fantastic-battle-fes-nagano-sp-2026",
+    "candidate_ids": [
+     "sched-2026-11-14-sidem-fantastic-battle-fes-nagano-sp-2026-締切前",
+     "sched-2026-11-14-sidem-fantastic-battle-fes-nagano-sp-2026-締切前-src1",
+     "sched-2026-11-14-sidem-fantastic-battle-fes-nagano-general-advance-2026-締切前",
+     "sched-2026-11-14-sidem-fantastic-battle-fes-nagano-general-advance-2026-締切前-src1"
+    ]
+   },
+   {
+    "slug": "sidem-315-night-public-recording-2026",
+    "brand": "sidem",
+    "rank": "medium",
+    "angle": "「315プロNight!」出張版公開録音(12月12日・池袋)の応募シリアル付きCD予約と申込は、11月17日23時59分の締切まであと3日。",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "sidem-315-night-public-recording-2026",
+    "candidate_ids": [
+     "sched-2026-11-14-sidem-315-night-public-recording-2026-締切前",
+     "202611140226-grok-47"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "sidem-fbfes-movie-stage-greeting-shinjuku-2026",
+    "reason": "既報",
+    "note": "11/12号が日時・料金・販売開始(18日0時)まで報じ済み。当日のトリガーなし"
+   },
+   {
+    "dedup_key": "sidem-battle-fes-who-goes-first-theater-2026",
+    "reason": "既報",
+    "note": "11/20上映開始と長野・幕張の日程は既報。開幕まで6日でトリガーなし"
+   },
+   {
+    "dedup_key": "sidem-agatsuma-nin-nin-ambassadors-2026",
+    "reason": "その他",
+    "note": "source_change は日付表記と在庫状況リンクの追加のみ。読者に関わる変更なし"
+   },
+   {
+    "dedup_key": "sidem-315-night-mofumofuen-2026-11",
+    "reason": "既報",
+    "note": "11/13放送分で終了済み。11/2・11/11・11/12号で案内済み"
+   }
+  ],
+  "cross_brand": []
+ }
+}

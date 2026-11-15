@@ -1,0 +1,392 @@
+{
+ "decisions": {
+  "million-photo-panel-new-designs-2026": {
+   "action": "article",
+   "angle": "アイドルフォトパネルの新柄8種(春香・律子・あずさ・環・麗花・美奈子・ジュリア・美也)が11月20日からオフィシャルショップ5店舗で各5,000円で発売。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "million-official-shop-photo-panels-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-photo-panel-new-designs-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ商品の別出典"
+  },
+  "million-12th-blu-ray-order-deadline-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "受注は11/12で終了済み。11/8・9・12号で既報"
+  },
+  "million-theater-days-update-2026-11-12": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/13号で強制アップデートと演出変更を記事化済み。新事実なし"
+  },
+  "million-kyomaf-after-sales-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "変更は商品一覧の表示順・掲載の差で、価格は11/8号の本文どおり。締切11/18はまだ4日先"
+  },
+  "outside-isotope-mv-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "soutei-shinrigai-mv-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "MV公開日の二次情報。他の事実は各主題に分けて扱う"
+  },
+  "million-master-style-drop-2026": {
+   "action": "roundup",
+   "angle": "ミリシタの運営情報まとめ(11/13更新): マスタースタイルドロップのM/L/XLセットは11/30 23:59まで。",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "soutei-shinrigai-mv-2026": {
+   "action": "article",
+   "angle": "ミリシタの楽曲『想定心理外 -Outside Isotope-』のMVが11月16日(月)20時にYouTubeで公開される。",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "million-pinky-ring-rank5-glow-2026": {
+   "action": "roundup",
+   "angle": "ミリシタの更新まとめ: ピンキーリングにランク5が追加され、宝石・誕生石の光る効果を切り替えられる。",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "snapshot-memories-gasha-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-snapshot-memories-gasha-2026-11",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じガシャの徳川まつりカード紹介"
+  },
+  "snapshot-memories-four-comas-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-snapshot-memories-gasha-2026-11",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じガシャの登場アイドル4コマ"
+  },
+  "my-setlist-feature-2026": {
+   "action": "roundup",
+   "angle": "ミリシタの更新まとめ: 好きな楽曲とアイドルでオリジナルのセットリストを作れる「マイセットリスト」機能を追加。",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "operaseria-popup-postorder-2026": {
+   "action": "article",
+   "angle": "オペラセリアPOP UP SHOPの事後通販(ブロマイドセット)は11月16日17時まで、締切が3日以内に迫っている。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "master-style-drop-set-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-master-style-drop-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じセットの公式告知"
+  },
+  "bunkasai-styling-lesson-2026": {
+   "action": "roundup",
+   "angle": "ミリシタの更新まとめ: スタイリングレッスン対応衣装に「ブンカサイ」シリーズが追加。",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shika-leon-private-order-pose-2026": {
+   "action": "roundup",
+   "angle": "ミリシタの更新まとめ: プライベートオーダーに詩花・玲音の「とっておきのポーズ！」が追加(AR非対応端末では利用不可)。",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "official-setlists-7th-9thlive-2026": {
+   "action": "roundup",
+   "angle": "ミリシタの更新まとめ: 公式セットリストに7th・8th・9thLIVEが追加。",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "igr-bookmarked-story-playback-2026": {
+   "action": "roundup",
+   "angle": "ミリシタの更新まとめ: アイグラのタイトル画面からブックマーク済みストーリーを直接再生できる。",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "weekend-harlequin-another-shader-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "weekend-harlequin-song-purchase-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ楽曲のアナザー設定映像"
+  },
+  "weekend-harlequin-song-purchase-2026": {
+   "action": "roundup",
+   "angle": "ミリシタの更新まとめ: 楽曲購入に「週末だけのハーレクイン」が追加(有償ジュエル60個)。アナザーシェーダー設定の映像も公開。",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "million-platinum-star-tune-yoruto-akari-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "イベントは11/7に終了済みで、11/5〜9号で既報。新事実なし"
+  },
+  "million-ringo-festival-goods-ec-2026": {
+   "action": "article",
+   "angle": "木下ひなたの壮瞥りんごまつりの公式グッズが、現地販売分のEC販売を11月11日19時から開始(数量限定、売切れ次第終了)。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "carried。出典が弱いため執筆・校閲で確認"
+  },
+  "million-mitsukoshi-osechi-2027": {
+   "action": "article",
+   "angle": "ミリオン×三越おせち2027の販売は11月17日23時59分まで。三越伊勢丹オンラインストアで予約でき、締切まであと3日。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(締切前)"
+  },
+  "million-snapshot-memories-gasha-2026-11": {
+   "action": "article",
+   "angle": "Snapshot Memoriesガシャは11月17日14:59まで。徳川まつり・箱崎星梨花のSSRを引けるのはあと3日。",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(締切前)。カード紹介と4コマの素材を統合"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "million-photo-panel-new-designs-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "アイドルフォトパネルの新柄8種(春香・律子・あずさ・環・麗花・美奈子・ジュリア・美也)が11月20日からオフィシャルショップ5店舗で各5,000円で発売。",
+    "purpose": "新情報",
+    "lead_score": 30,
+    "dedup_key": "million-photo-panel-new-designs-2026",
+    "candidate_ids": [
+     "202611131234-watch-1",
+     "202611131839-explore-32"
+    ]
+   },
+   {
+    "slug": "million-soutei-shinrigai-mv-2026",
+    "brand": "million",
+    "rank": "medium",
+    "angle": "ミリシタの楽曲『想定心理外 -Outside Isotope-』のMVが11月16日(月)20時にYouTubeで公開される。",
+    "purpose": "新情報",
+    "lead_score": 60,
+    "dedup_key": "soutei-shinrigai-mv-2026",
+    "candidate_ids": [
+     "202611140226-grok-17",
+     "202611132333-explore-2"
+    ]
+   },
+   {
+    "slug": "million-operaseria-popup-postorder-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "オペラセリアPOP UP SHOPの事後通販(ブロマイドセット)は11月16日17時まで、締切が3日以内に迫っている。",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "operaseria-popup-postorder-2026",
+    "candidate_ids": [
+     "202611140226-grok-25"
+    ]
+   },
+   {
+    "slug": "million-ringo-festival-goods-ec-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "木下ひなたの壮瞥りんごまつりの公式グッズが、現地販売分のEC販売を11月11日19時から開始(数量限定、売切れ次第終了)。",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "million-ringo-festival-goods-ec-2026",
+    "candidate_ids": [
+     "202611120230-grok-29"
+    ]
+   },
+   {
+    "slug": "million-mitsukoshi-osechi-2027",
+    "brand": "million",
+    "rank": "small",
+    "angle": "ミリオン×三越おせち2027の販売は11月17日23時59分まで。三越伊勢丹オンラインストアで予約でき、締切まであと3日。",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "million-mitsukoshi-osechi-2027",
+    "candidate_ids": [
+     "sched-2026-11-14-million-mitsukoshi-osechi-2027-締切前"
+    ]
+   },
+   {
+    "slug": "million-snapshot-memories-gasha-2026-11",
+    "brand": "million",
+    "rank": "medium",
+    "angle": "Snapshot Memoriesガシャは11月17日14:59まで。徳川まつり・箱崎星梨花のSSRを引けるのはあと3日。",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "million-snapshot-memories-gasha-2026-11",
+    "candidate_ids": [
+     "sched-2026-11-14-million-snapshot-memories-gasha-2026-11-締切前",
+     "sched-2026-11-14-million-snapshot-memories-gasha-2026-11-締切前-src1",
+     "202611140226-grok-19",
+     "202611140226-grok-20"
+    ]
+   },
+   {
+    "slug": "million-ops-roundup",
+    "brand": "million",
+    "rank": "roundup",
+    "angle": "ミリシタの運営情報まとめ(11/13更新): マスタースタイルドロップのM/L/XLセットは11/30 23:59まで。",
+    "lead_score": 0,
+    "dedup_key": "million-master-style-drop-2026",
+    "candidate_ids": [
+     "202611140226-explore-1",
+     "202611140226-grok-18",
+     "202611140226-grok-21",
+     "202611140226-grok-27",
+     "202611140226-grok-28",
+     "202611140226-grok-29",
+     "202611140226-grok-30",
+     "202611140226-grok-32",
+     "202611140226-grok-26",
+     "202611140226-grok-31"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "million-12th-blu-ray-order-deadline-2026",
+    "reason": "既報",
+    "note": "受注は11/12で終了済み。11/8・9・12号で既報"
+   },
+   {
+    "dedup_key": "million-theater-days-update-2026-11-12",
+    "reason": "既報",
+    "note": "11/13号で強制アップデートと演出変更を記事化済み。新事実なし"
+   },
+   {
+    "dedup_key": "million-kyomaf-after-sales-2026",
+    "reason": "既報",
+    "note": "変更は商品一覧の表示順・掲載の差で、価格は11/8号の本文どおり。締切11/18はまだ4日先"
+   },
+   {
+    "dedup_key": "million-platinum-star-tune-yoruto-akari-2026",
+    "reason": "既報",
+    "note": "イベントは11/7に終了済みで、11/5〜9号で既報。新事実なし"
+   }
+  ],
+  "cross_brand": []
+ }
+}

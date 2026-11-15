@@ -1,0 +1,874 @@
+{
+ "decisions": {
+  "gaku-gearbeat-concerto-popup-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/8記事「Gearbeat 11月10日受注開始」に受注・発売日・ポップアップ日程すべて既出。受注開始は明日で当日トリガーなし"
+  },
+  "gaku-lalaport-collab-2027": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "題は乖轟の発表で、11/8記事で既報(ららぽーとも既報)"
+  },
+  "30ms-saki-you-and-ai-2026": {
+   "action": "article",
+   "angle": "30MS 花海咲季(20th Anniv. YOU AND アイ!)が11月21日発売、価格5,060円",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gakuen-hatsuboshi-hr-2-5th-sp-2026": {
+   "action": "article",
+   "angle": "初星学園HR 2.5thアニバーサリーSPが11月15日19時から生配信、香名江と乖轟の情報を発表",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "gaku-2-5th-hr-2026を統合"
+  },
+  "gakuen-kanae-debut-2026": {
+   "action": "article",
+   "angle": "氷渡香名江が11月16日からプロデュース開始、エピソード0公開中、14日に特別TVCM",
+   "purpose": "新情報",
+   "rank": "large",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "素材多数。香名江関連の発表を1記事に統合"
+  },
+  "gakuen-kanae-amazon-gift-campaign-2026": {
+   "action": "article",
+   "angle": "香名江実装記念のAmazonギフトカード抽選とリマインドいいねキャンペーン、参加は11月15日23時59分まで",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "リマインダー企画を統合"
+  },
+  "gakuen-3rd-period-2027": {
+   "action": "article",
+   "angle": "学園アイドルマスター The 3rd Periodが2027年6月12日・13日にKアリーナ横浜で開催決定",
+   "purpose": "新情報",
+   "rank": "large",
+   "lead_score": 85,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-kananae-produce-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gakuen-kanae-debut-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-duet-song-collection-2-2026": {
+   "action": "article",
+   "angle": "Duet Song Collection第2弾の3作品が2027年3月17日発売、特装盤はASOBI STORE限定",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-season-solo-collection-2027": {
+   "action": "article",
+   "angle": "Season Solo Collection4種の予約は2027年1月10日まで、発売は3月3日",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 8,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "既報(11/8)に無い予約期限と発売日が新事実"
+  },
+  "gakumas-kyogo-unit-announcement": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "乖轟と慟哭のコンチェルトは11/8記事で既報。SNS反響のみ"
+  },
+  "tours-trial-restart-2026": {
+   "action": "cross_brand",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "joint-tours-tentative-resumption-2026-11",
+   "reason": "",
+   "note": ""
+  },
+  "eclipse-light-animate-fair-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "GOLD RUSH(8)への更新は11/8記事「対象商品が更新」で既報。表示の更新のみ"
+  },
+  "gakumas-hyo-final-day2-setlist": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-crossfire-performance-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-kananae-produce-start-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gakuen-kanae-debut-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-character-kananae-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gakuen-kanae-debut-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-kananae-episode0-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gakuen-kanae-debut-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-2-5th-hr-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gakuen-hatsuboshi-hr-2-5th-sp-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-tv-cm-kananae-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gakuen-kanae-debut-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-nurebairo-release-2026": {
+   "action": "article",
+   "angle": "標ファイナルDAY2で披露の新曲「濡羽色の薄明」「クロスファイア」「FANTASTIC GATHERING!」が本日11月9日から配信・DL販売開始",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 28,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "当日開始。3曲の配信を統合"
+  },
+  "gaku-crossfire-release-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-nurebairo-release-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-fantastic-gathering-release-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-nurebairo-release-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shirube-final-stream-ticket-2026": {
+   "action": "article",
+   "angle": "標ファイナル最速版アーカイブ視聴は本日18時まで、配信券は11月23日18時まで",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 28,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "DAY2最速版アーカイブ素材を統合"
+  },
+  "gaku-shirube-final-day1-setlist-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "DAY1全30曲と乖轟初披露は11/8記事で既報"
+  },
+  "gaku-kai-go-unit-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/8記事で既報"
+  },
+  "gaku-fantastic-performance-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-crossfire-performance-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-crossfire-performance-2026": {
+   "action": "article",
+   "angle": "標ファイナルDAY2で新曲3曲をサプライズ披露、セットリストも公開",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "クロスファイア、FANTASTIC GATHERING!、濡羽色の薄明の初披露とDAY2セットリストを統合"
+  },
+  "gaku-nurebairo-performance-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-crossfire-performance-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-shirube-final-day1-gasha": {
+   "action": "roundup",
+   "angle": "開催中の標ファイナル記念ガシャ(DAY1・DAY2)、前夜祭パック、ガラクタロードガシャ",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-gacha-day2-2026": {
+   "action": "roundup",
+   "angle": "開催中の標ファイナル記念ガシャ(DAY1・DAY2)、前夜祭パック、ガラクタロードガシャ",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-anniversary-pack-2026": {
+   "action": "roundup",
+   "angle": "開催中の標ファイナル記念ガシャ(DAY1・DAY2)、前夜祭パック、ガラクタロードガシャ",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-memory-goods-2026": {
+   "action": "article",
+   "angle": "標開催記念グッズの受注販売は11月23日まで、フォトフレームセット3,700円・アイドルセット4,800円",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-kananae-reminder-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gakuen-kanae-amazon-gift-campaign-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-final-stream-archive-day2-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shirube-final-stream-ticket-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "hatsuboshi-conceptual-single-collection-2026": {
+   "action": "article",
+   "angle": "Conceptual Single Collection、予約は11月15日まで、11,000円・2027年1月27日発売、DAY2披露曲も収録",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 18,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "9/25記事に無い価格・予約期限・特典が新事実。DAY2披露曲を統合"
+  },
+  "gaku-bluray-shirube-final-2026": {
+   "action": "article",
+   "angle": "標ファイナル公演Blu-rayが発売決定、3枚組29,700円で2027年11月中旬お届け",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 22,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-gravure-solo-agitato-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "予約は11/8で終了済み。11/8記事で既報"
+  },
+  "gaku-produce-seminar-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-asari-produce-seminar-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-gacha-garakuta-2026": {
+   "action": "roundup",
+   "angle": "開催中の標ファイナル記念ガシャ(DAY1・DAY2)、前夜祭パック、ガラクタロードガシャ",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-conceptual-day2-songs-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "hatsuboshi-conceptual-single-collection-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-final-day2-iida-change-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "11/8の公演当日の出演者体調告知で終了済み"
+  },
+  "gaku-final-day2-entry-policy-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "11/8のDAY2入場案内で終了済みイベント"
+  },
+  "gaku-dokoku-concerto-release": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/8記事「手毬・美鈴の新曲きょう配信」で既報"
+  },
+  "gaku-steampunk-gearbeat-goods-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/8記事と同内容"
+  },
+  "gaku-season-solo-collection-order": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-season-solo-collection-2027",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-final-venue-goods-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "会場物販はDAY2終了済み。11/7・11/8記事で既報"
+  },
+  "curtain-damashii-new-goods-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/7記事までで既報、新事実なし"
+  },
+  "producer-seminar-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-asari-produce-seminar-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-contest-season-55-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/3記事で既報。素材factsに本日起きることの記載なし(続報予約は記事にしない)"
+  },
+  "gaku-asari-produce-seminar-2026": {
+   "action": "article",
+   "angle": "あさり先生のプロデュースゼミは本日10時59分で終了、最終日",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同ゼミの3主題を統合"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "gaku-30ms-saki-you-and-ai-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "30MS 花海咲季(20th Anniv. YOU AND アイ!)が11月21日発売、価格5,060円",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "30ms-saki-you-and-ai-2026",
+    "candidate_ids": [
+     "202611081834-watch-1"
+    ]
+   },
+   {
+    "slug": "gaku-gakuen-hatsuboshi-hr-2-5th-sp-2026",
+    "brand": "gaku",
+    "rank": "medium",
+    "angle": "初星学園HR 2.5thアニバーサリーSPが11月15日19時から生配信、香名江と乖轟の情報を発表",
+    "purpose": "新情報",
+    "lead_score": 25,
+    "dedup_key": "gakuen-hatsuboshi-hr-2-5th-sp-2026",
+    "candidate_ids": [
+     "202611082337-watch-1",
+     "202611090235-grok-141",
+     "202611090235-grok-34"
+    ]
+   },
+   {
+    "slug": "gaku-gakuen-kanae-debut-2026",
+    "brand": "gaku",
+    "rank": "large",
+    "angle": "氷渡香名江が11月16日からプロデュース開始、エピソード0公開中、14日に特別TVCM",
+    "purpose": "新情報",
+    "lead_score": 30,
+    "dedup_key": "gakuen-kanae-debut-2026",
+    "candidate_ids": [
+     "202611082337-watch-2",
+     "202611082337-watch-21",
+     "202611090235-grok-45",
+     "202611090235-grok-140",
+     "202611082337-explore-26",
+     "202611090235-explore-5",
+     "202611090235-grok-32",
+     "202611090235-grok-112",
+     "202611090235-grok-120",
+     "202611090235-grok-121",
+     "202611090235-grok-33",
+     "202611090235-grok-37"
+    ]
+   },
+   {
+    "slug": "gaku-gakuen-kanae-amazon-gift-campaign-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "香名江実装記念のAmazonギフトカード抽選とリマインドいいねキャンペーン、参加は11月15日23時59分まで",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "gakuen-kanae-amazon-gift-campaign-2026",
+    "candidate_ids": [
+     "202611082337-watch-19",
+     "202611090235-grok-142",
+     "202611090235-grok-55",
+     "202611090235-grok-119"
+    ]
+   },
+   {
+    "slug": "gaku-gakuen-3rd-period-2027",
+    "brand": "gaku",
+    "rank": "large",
+    "angle": "学園アイドルマスター The 3rd Periodが2027年6月12日・13日にKアリーナ横浜で開催決定",
+    "purpose": "新情報",
+    "lead_score": 85,
+    "dedup_key": "gakuen-3rd-period-2027",
+    "candidate_ids": [
+     "202611082337-watch-20"
+    ]
+   },
+   {
+    "slug": "gaku-duet-song-collection-2-2026",
+    "brand": "gaku",
+    "rank": "medium",
+    "angle": "Duet Song Collection第2弾の3作品が2027年3月17日発売、特装盤はASOBI STORE限定",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "gaku-duet-song-collection-2-2026",
+    "candidate_ids": [
+     "202611082337-explore-28",
+     "202611090235-grok-113"
+    ]
+   },
+   {
+    "slug": "gaku-season-solo-collection-2027",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "Season Solo Collection4種の予約は2027年1月10日まで、発売は3月3日",
+    "purpose": "新情報",
+    "lead_score": 8,
+    "dedup_key": "gaku-season-solo-collection-2027",
+    "candidate_ids": [
+     "202611082337-explore-29",
+     "202611090235-grok-114"
+    ]
+   },
+   {
+    "slug": "gaku-nurebairo-release-2026",
+    "brand": "gaku",
+    "rank": "medium",
+    "angle": "標ファイナルDAY2で披露の新曲「濡羽色の薄明」「クロスファイア」「FANTASTIC GATHERING!」が本日11月9日から配信・DL販売開始",
+    "purpose": "新情報",
+    "lead_score": 28,
+    "dedup_key": "gaku-nurebairo-release-2026",
+    "candidate_ids": [
+     "202611090235-grok-39",
+     "202611090235-grok-40",
+     "202611090235-grok-41"
+    ]
+   },
+   {
+    "slug": "gaku-shirube-final-stream-ticket-2026",
+    "brand": "gaku",
+    "rank": "medium",
+    "angle": "標ファイナル最速版アーカイブ視聴は本日18時まで、配信券は11月23日18時まで",
+    "purpose": "期日の知らせ",
+    "lead_score": 28,
+    "dedup_key": "shirube-final-stream-ticket-2026",
+    "candidate_ids": [
+     "202611090235-grok-42",
+     "202611090235-grok-122",
+     "202611090235-grok-123",
+     "202611090235-grok-124",
+     "202611090235-grok-125",
+     "202611090235-grok-133",
+     "202611090235-grok-134",
+     "202611090235-grok-135",
+     "202611090235-grok-136",
+     "202611090235-grok-139",
+     "202611090235-grok-143",
+     "sched-2026-11-09-shirube-final-stream-ticket-2026-終了",
+     "sched-2026-11-09-shirube-final-stream-ticket-2026-終了-src1",
+     "sched-2026-11-09-shirube-final-stream-ticket-2026-終了-src2",
+     "202611090235-grok-56"
+    ]
+   },
+   {
+    "slug": "gaku-crossfire-performance-2026",
+    "brand": "gaku",
+    "rank": "medium",
+    "angle": "標ファイナルDAY2で新曲3曲をサプライズ披露、セットリストも公開",
+    "purpose": "新情報",
+    "lead_score": 30,
+    "dedup_key": "gaku-crossfire-performance-2026",
+    "candidate_ids": [
+     "202611090235-grok-48",
+     "202611090235-watch-0",
+     "202611090235-grok-47",
+     "202611090235-grok-49"
+    ]
+   },
+   {
+    "slug": "gaku-memory-goods-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "標開催記念グッズの受注販売は11月23日まで、フォトフレームセット3,700円・アイドルセット4,800円",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "gaku-memory-goods-2026",
+    "candidate_ids": [
+     "202611090235-grok-54",
+     "202611090235-grok-118"
+    ]
+   },
+   {
+    "slug": "gaku-hatsuboshi-conceptual-single-collection-2026",
+    "brand": "gaku",
+    "rank": "medium",
+    "angle": "Conceptual Single Collection、予約は11月15日まで、11,000円・2027年1月27日発売、DAY2披露曲も収録",
+    "purpose": "新情報",
+    "lead_score": 18,
+    "dedup_key": "hatsuboshi-conceptual-single-collection-2026",
+    "candidate_ids": [
+     "202611090235-grok-57",
+     "202611090235-grok-115",
+     "202611090235-grok-63"
+    ]
+   },
+   {
+    "slug": "gaku-bluray-shirube-final-2026",
+    "brand": "gaku",
+    "rank": "medium",
+    "angle": "標ファイナル公演Blu-rayが発売決定、3枚組29,700円で2027年11月中旬お届け",
+    "purpose": "新情報",
+    "lead_score": 22,
+    "dedup_key": "gaku-bluray-shirube-final-2026",
+    "candidate_ids": [
+     "202611090235-grok-59",
+     "202611090235-grok-117"
+    ]
+   },
+   {
+    "slug": "gaku-asari-produce-seminar-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "あさり先生のプロデュースゼミは本日10時59分で終了、最終日",
+    "purpose": "期日の知らせ",
+    "lead_score": 15,
+    "dedup_key": "gaku-asari-produce-seminar-2026",
+    "candidate_ids": [
+     "sched-2026-11-09-gaku-asari-produce-seminar-2026-締切",
+     "sched-2026-11-09-gaku-asari-produce-seminar-2026-締切-src1",
+     "sched-2026-11-09-gaku-asari-produce-seminar-2026-締切-src2",
+     "sched-2026-11-09-gaku-asari-produce-seminar-2026-締切-src3",
+     "sched-2026-11-09-gaku-asari-produce-seminar-2026-締切-src4",
+     "sched-2026-11-09-gaku-asari-produce-seminar-2026-締切-src5",
+     "sched-2026-11-09-gaku-asari-produce-seminar-2026-締切-src6",
+     "sched-2026-11-09-gaku-asari-produce-seminar-2026-締切-src7",
+     "sched-2026-11-09-gaku-asari-produce-seminar-2026-終了",
+     "sched-2026-11-09-gaku-asari-produce-seminar-2026-終了-src1",
+     "sched-2026-11-09-gaku-asari-produce-seminar-2026-終了-src2",
+     "sched-2026-11-09-gaku-asari-produce-seminar-2026-終了-src3",
+     "sched-2026-11-09-gaku-asari-produce-seminar-2026-終了-src4",
+     "202611090235-grok-61",
+     "sched-2026-11-09-producer-seminar-2026-終了"
+    ]
+   },
+   {
+    "slug": "gaku-ops-roundup",
+    "brand": "gaku",
+    "rank": "roundup",
+    "angle": "開催中の標ファイナル記念ガシャ(DAY1・DAY2)、前夜祭パック、ガラクタロードガシャ",
+    "lead_score": 0,
+    "dedup_key": "gaku-shirube-final-day1-gasha",
+    "candidate_ids": [
+     "202611090235-grok-51",
+     "202611090235-grok-52",
+     "202611090235-grok-53",
+     "202611090235-grok-62"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "gaku-gearbeat-concerto-popup-2026",
+    "reason": "既報",
+    "note": "11/8記事「Gearbeat 11月10日受注開始」に受注・発売日・ポップアップ日程すべて既出。受注開始は明日で当日トリガーなし"
+   },
+   {
+    "dedup_key": "gaku-lalaport-collab-2027",
+    "reason": "既報",
+    "note": "題は乖轟の発表で、11/8記事で既報(ららぽーとも既報)"
+   },
+   {
+    "dedup_key": "gakumas-kyogo-unit-announcement",
+    "reason": "既報",
+    "note": "乖轟と慟哭のコンチェルトは11/8記事で既報。SNS反響のみ"
+   },
+   {
+    "dedup_key": "eclipse-light-animate-fair-2026",
+    "reason": "既報",
+    "note": "GOLD RUSH(8)への更新は11/8記事「対象商品が更新」で既報。表示の更新のみ"
+   },
+   {
+    "dedup_key": "gaku-shirube-final-day1-setlist-2026",
+    "reason": "既報",
+    "note": "DAY1全30曲と乖轟初披露は11/8記事で既報"
+   },
+   {
+    "dedup_key": "gaku-kai-go-unit-2026",
+    "reason": "既報",
+    "note": "11/8記事で既報"
+   },
+   {
+    "dedup_key": "gaku-gravure-solo-agitato-2026",
+    "reason": "既報",
+    "note": "予約は11/8で終了済み。11/8記事で既報"
+   },
+   {
+    "dedup_key": "gaku-final-day2-iida-change-2026",
+    "reason": "個人の話題",
+    "note": "11/8の公演当日の出演者体調告知で終了済み"
+   },
+   {
+    "dedup_key": "gaku-final-day2-entry-policy-2026",
+    "reason": "その他",
+    "note": "11/8のDAY2入場案内で終了済みイベント"
+   },
+   {
+    "dedup_key": "gaku-dokoku-concerto-release",
+    "reason": "既報",
+    "note": "11/8記事「手毬・美鈴の新曲きょう配信」で既報"
+   },
+   {
+    "dedup_key": "gaku-steampunk-gearbeat-goods-2026",
+    "reason": "既報",
+    "note": "11/8記事と同内容"
+   },
+   {
+    "dedup_key": "gaku-final-venue-goods-2026",
+    "reason": "既報",
+    "note": "会場物販はDAY2終了済み。11/7・11/8記事で既報"
+   },
+   {
+    "dedup_key": "curtain-damashii-new-goods-2026",
+    "reason": "既報",
+    "note": "11/7記事までで既報、新事実なし"
+   },
+   {
+    "dedup_key": "gaku-contest-season-55-2026",
+    "reason": "既報",
+    "note": "11/3記事で既報。素材factsに本日起きることの記載なし(続報予約は記事にしない)"
+   }
+  ],
+  "cross_brand": [
+   {
+    "slug": "joint-tours-tentative-resumption-2026-11",
+    "dedup_key": "tours-trial-restart-2026",
+    "note": ""
+   }
+  ]
+ }
+}

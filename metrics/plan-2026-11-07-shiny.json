@@ -1,0 +1,228 @@
+{
+ "decisions": {
+  "shiny-jr-tabi-kyoto-2026": {
+   "action": "article",
+   "angle": "「推し旅」×JR東海キャンペーンが12月8日〜2027年3月7日に開催。新幹線車内ボイスドラマ、ゲーム連動、スタンプラリー、グッズ販売を実施。",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 70,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公式出典。jr-tokai-kyoto の素材(ログボ、クリアチケットケース等)も統合"
+  },
+  "shiny-jr-tokai-kyoto-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-jr-tabi-kyoto-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ推し旅×JR東海の企画。二次情報の詳細を素材に統合"
+  },
+  "shiny-orchestra-concert-2027": {
+   "action": "article",
+   "angle": "Radiant Chord公式グッズのうち、襟付きプロデューサーシャツ(S〜XL、税込8,900円)など既報にない商品情報を伝える。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "11/6号の本文にあるキーホルダー価格・受注11/15・発送時期は既報。シャツの価格とサイズが新しい"
+  },
+  "shiny-tsutaya-yujo-fumetsu-popup-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/31号に全グッズ・会場・日程が既報。開幕は11/11で当日・3日以内のトリガー無し"
+  },
+  "shiny-hbtk-clip-2026-11": {
+   "action": "article",
+   "angle": "シャニラジHBTKの切り抜きが公開。ささやきボイス収録時のエピソードを紹介。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公式Xの告知。事実は少ないため短い記事"
+  },
+  "shiny-shaniradi-password-deadline-extension-2026-11": {
+   "action": "article",
+   "angle": "シャニラジ#405・#406の「あいことば」入力は11月10日23:59まで。締切まであと3日。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(締切前)。11/6号で期限延長は既報、今回は期日の再通知"
+  },
+  "shiny-song-prism-mei-another-costume-2026-11": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/6号「開催中ガシャと販売中アイテム」に同内容。新事実・トリガー無し"
+  },
+  "shiny-song-prism-hat-packs-2026-11": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/6号に帽子パック3種販売中と既報。新事実無し"
+  },
+  "shiny-hachiban-collab-final-2026": {
+   "action": "article",
+   "angle": "8番らーめん玉島店・連島店のコラボ最終企画。本日11/7と11/8に連島店で鈴木羽那との記念撮影会、お出迎え&お見送りを実施。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "11/5号は終了予告のみ。撮影会の日時は新情報で本日開催。出典は店舗の投稿(unconfirmed)のため校閲で確認"
+  },
+  "shiny-hyakkiyako-pop-up-after-sales-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "事後通販は11/5 23:59に受付終了済み。商品情報は10/22・11/2・11/5号で既報"
+  },
+  "shiny-hate-ni-fureru-no-nara-2026": {
+   "action": "article",
+   "angle": "シーズのシナリオイベント「果てにふれるのなら」は11月10日11時59分まで。終了まであと3日、報酬交換とミッション消化を確認。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(締切前)。報酬内容は10/29・10/30号で既報"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "shiny-jr-tabi-kyoto-2026",
+    "brand": "shiny",
+    "rank": "medium",
+    "angle": "「推し旅」×JR東海キャンペーンが12月8日〜2027年3月7日に開催。新幹線車内ボイスドラマ、ゲーム連動、スタンプラリー、グッズ販売を実施。",
+    "purpose": "新情報",
+    "lead_score": 70,
+    "dedup_key": "shiny-jr-tabi-kyoto-2026",
+    "candidate_ids": [
+     "202611061836-watch-2",
+     "202611070232-explore-1"
+    ]
+   },
+   {
+    "slug": "shiny-orchestra-concert-2027",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "Radiant Chord公式グッズのうち、襟付きプロデューサーシャツ(S〜XL、税込8,900円)など既報にない商品情報を伝える。",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "shiny-orchestra-concert-2027",
+    "candidate_ids": [
+     "202611061836-explore-14",
+     "202611062337-explore-21"
+    ]
+   },
+   {
+    "slug": "shiny-hbtk-clip-2026-11",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "シャニラジHBTKの切り抜きが公開。ささやきボイス収録時のエピソードを紹介。",
+    "purpose": "新情報",
+    "lead_score": 5,
+    "dedup_key": "shiny-hbtk-clip-2026-11",
+    "candidate_ids": [
+     "202611070232-grok-15"
+    ]
+   },
+   {
+    "slug": "shiny-shaniradi-password-deadline-extension-2026-11",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "シャニラジ#405・#406の「あいことば」入力は11月10日23:59まで。締切まであと3日。",
+    "purpose": "期日の知らせ",
+    "lead_score": 15,
+    "dedup_key": "shiny-shaniradi-password-deadline-extension-2026-11",
+    "candidate_ids": [
+     "202611070232-grok-16",
+     "sched-2026-11-07-shiny-shaniradi-password-deadline-extension-2026-11-締切前"
+    ]
+   },
+   {
+    "slug": "shiny-hachiban-collab-final-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "8番らーめん玉島店・連島店のコラボ最終企画。本日11/7と11/8に連島店で鈴木羽那との記念撮影会、お出迎え&お見送りを実施。",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "shiny-hachiban-collab-final-2026",
+    "candidate_ids": [
+     "202611070232-grok-19"
+    ]
+   },
+   {
+    "slug": "shiny-hate-ni-fureru-no-nara-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "シーズのシナリオイベント「果てにふれるのなら」は11月10日11時59分まで。終了まであと3日、報酬交換とミッション消化を確認。",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "shiny-hate-ni-fureru-no-nara-2026",
+    "candidate_ids": [
+     "sched-2026-11-07-shiny-hate-ni-fureru-no-nara-2026-締切前",
+     "sched-2026-11-07-shiny-hate-ni-fureru-no-nara-2026-締切前-src1"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "shiny-tsutaya-yujo-fumetsu-popup-2026",
+    "reason": "既報",
+    "note": "10/31号に全グッズ・会場・日程が既報。開幕は11/11で当日・3日以内のトリガー無し"
+   },
+   {
+    "dedup_key": "shiny-song-prism-mei-another-costume-2026-11",
+    "reason": "既報",
+    "note": "11/6号「開催中ガシャと販売中アイテム」に同内容。新事実・トリガー無し"
+   },
+   {
+    "dedup_key": "shiny-song-prism-hat-packs-2026-11",
+    "reason": "既報",
+    "note": "11/6号に帽子パック3種販売中と既報。新事実無し"
+   },
+   {
+    "dedup_key": "shiny-hyakkiyako-pop-up-after-sales-2026",
+    "reason": "既報",
+    "note": "事後通販は11/5 23:59に受付終了済み。商品情報は10/22・11/2・11/5号で既報"
+   }
+  ],
+  "cross_brand": []
+ }
+}

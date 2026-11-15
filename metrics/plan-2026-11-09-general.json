@@ -1,0 +1,62 @@
+{
+ "decisions": {
+  "allnet-aime-outage-test-restart-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "重複",
+   "note": "アイマスTOURSの試験稼働再開は合同面の joint-tours-tentative-resumption-2026-11 が記事化済み。"
+  },
+  "fan-kaitou-v-wind-orchestra-arrangement-2026": {
+   "action": "article",
+   "angle": "「快盗Vを見逃すな」の大編成吹奏楽アレンジ動画や痛車など、ファン創作の広がりをまとめて紹介する。",
+   "purpose": "新情報",
+   "rank": "culture",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ファン創作の細切れ話題を1本にまとめる。誰か1人を主役にしない。"
+  },
+  "765pro-itasha-share-2026-11-07": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "fan-kaitou-v-wind-orchestra-arrangement-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ファン創作(痛車)として、culture の1本にまとめる。"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "general-fan-kaitou-v-wind-orchestra-arrangement-2026",
+    "brand": "general",
+    "rank": "culture",
+    "angle": "「快盗Vを見逃すな」の大編成吹奏楽アレンジ動画や痛車など、ファン創作の広がりをまとめて紹介する。",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "fan-kaitou-v-wind-orchestra-arrangement-2026",
+    "candidate_ids": [
+     "202611090235-grok-27",
+     "202611080229-grok-14"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "allnet-aime-outage-test-restart-2026",
+    "reason": "重複",
+    "note": "アイマスTOURSの試験稼働再開は合同面の joint-tours-tentative-resumption-2026-11 が記事化済み。"
+   }
+  ],
+  "cross_brand": []
+ }
+}

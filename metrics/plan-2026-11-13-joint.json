@@ -1,0 +1,222 @@
+{
+ "decisions": {
+  "letora-birthday-online-live-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "終演済み。セットリスト・アーカイブ・グッズは11/11〜12号の記事に既出。新事実なし"
+  },
+  "sidem-shinycolors-sparkle-showdown-2027-06": {
+   "action": "article",
+   "angle": "SideM×シャニマス合同ライブ(2027年6月5・6日、横浜アリーナ)にSideMから菊池勇成さん・山谷祥生さん・熊谷健太郎さんの追加出演が決定した。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "追加出演者は過去記事に無い新事実。両ブランド共同主催のためjoint"
+  },
+  "cinderella-cosmoworld-air-cabin-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "シンデレラガールズ単独のコラボ。共同主催ではないためシンデレラ面で扱う(本日11/13開始)"
+  },
+  "cinderella-yamanashi-walk-wander-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "シンデレラガールズ単独の周遊企画。シンデレラ面で扱う"
+  },
+  "fureaka-radio-2026": {
+   "action": "article",
+   "angle": "デレミリ合同ライブ記念の第1回「フレあかラジオ」(宮本フレデリカ・野々原茜)が本日20時からYouTubeでプレミア公開される。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(開始)を兼ねる。シンデレラ×ミリオンの合同企画のためjoint"
+  },
+  "imas-year-end-thanks-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/7号で出演者・アンケート(11/30締切)を既報。新事実も当日のトリガーも無い"
+  },
+  "tours-rhythm-live-festival-2027": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "予選期間・楽曲・エントリー条件は11/11号に既出。source_changeの変更点はfactsから読み取れず、締切(12/10)も3日以内でない"
+  },
+  "tours-rhythm-live-festival-qualifier-extension-2027": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "予選開始・延長・両部門の内容は11/11号に既出。プロデューサーレター告知のみで新事実なし"
+  },
+  "tours-rhythm-live-festival-2027-qualifier": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/23号・11/11号に既出(予選11/12開始、部門と難易度)"
+  },
+  "tours-rhythm-live-festival-qualifier-maintenance-2027": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/6号で既報。11/9号でメンテ後の稼働再開も報じ済み。新事実なし"
+  },
+  "demirimi-clash-radio-yoshichizu-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "fureaka-radio-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(開始)の対象は本日20時の第1回フレあかラジオ。よしちづラジオ(12/4配信、おたより締切済み)は既報で、今日の素材はフレあかラジオ記事に統合"
+  },
+  "tours-shiina-birthday-2026": {
+   "action": "article",
+   "angle": "紫雲清夏の誕生日をセンターにしたライブで称号を獲れる対象期間は、本日25時59分(14日1時59分)まで。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(締切)。11/11号の既報の期日を伝え直す"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "joint-sidem-shinycolors-sparkle-showdown-2027-06",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "SideM×シャニマス合同ライブ(2027年6月5・6日、横浜アリーナ)にSideMから菊池勇成さん・山谷祥生さん・熊谷健太郎さんの追加出演が決定した。",
+    "purpose": "新情報",
+    "lead_score": 60,
+    "dedup_key": "sidem-shinycolors-sparkle-showdown-2027-06",
+    "candidate_ids": [
+     "202611121236-watch-8",
+     "202611121836-explore-12",
+     "202611130231-grok-85"
+    ]
+   },
+   {
+    "slug": "joint-fureaka-radio-2026",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "デレミリ合同ライブ記念の第1回「フレあかラジオ」(宮本フレデリカ・野々原茜)が本日20時からYouTubeでプレミア公開される。",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "fureaka-radio-2026",
+    "candidate_ids": [
+     "202611130231-grok-52",
+     "sched-2026-11-13-demirimi-clash-radio-yoshichizu-2026-開始"
+    ]
+   },
+   {
+    "slug": "joint-tours-shiina-birthday-2026",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "紫雲清夏の誕生日をセンターにしたライブで称号を獲れる対象期間は、本日25時59分(14日1時59分)まで。",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "tours-shiina-birthday-2026",
+    "candidate_ids": [
+     "sched-2026-11-13-tours-shiina-birthday-2026-締切"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "letora-birthday-online-live-2026",
+    "reason": "既報",
+    "note": "終演済み。セットリスト・アーカイブ・グッズは11/11〜12号の記事に既出。新事実なし"
+   },
+   {
+    "dedup_key": "cinderella-cosmoworld-air-cabin-2026",
+    "reason": "面違い",
+    "note": "シンデレラガールズ単独のコラボ。共同主催ではないためシンデレラ面で扱う(本日11/13開始)"
+   },
+   {
+    "dedup_key": "cinderella-yamanashi-walk-wander-2026",
+    "reason": "面違い",
+    "note": "シンデレラガールズ単独の周遊企画。シンデレラ面で扱う"
+   },
+   {
+    "dedup_key": "imas-year-end-thanks-2026",
+    "reason": "既報",
+    "note": "11/7号で出演者・アンケート(11/30締切)を既報。新事実も当日のトリガーも無い"
+   },
+   {
+    "dedup_key": "tours-rhythm-live-festival-2027",
+    "reason": "既報",
+    "note": "予選期間・楽曲・エントリー条件は11/11号に既出。source_changeの変更点はfactsから読み取れず、締切(12/10)も3日以内でない"
+   },
+   {
+    "dedup_key": "tours-rhythm-live-festival-qualifier-extension-2027",
+    "reason": "既報",
+    "note": "予選開始・延長・両部門の内容は11/11号に既出。プロデューサーレター告知のみで新事実なし"
+   },
+   {
+    "dedup_key": "tours-rhythm-live-festival-2027-qualifier",
+    "reason": "既報",
+    "note": "10/23号・11/11号に既出(予選11/12開始、部門と難易度)"
+   },
+   {
+    "dedup_key": "tours-rhythm-live-festival-qualifier-maintenance-2027",
+    "reason": "既報",
+    "note": "11/6号で既報。11/9号でメンテ後の稼働再開も報じ済み。新事実なし"
+   }
+  ],
+  "cross_brand": []
+ }
+}

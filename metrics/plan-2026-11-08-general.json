@@ -1,0 +1,62 @@
+{
+ "decisions": {
+  "765pro-itasha-share-2026-11-07": {
+   "action": "article",
+   "angle": "765PROのメンバーをデザインした痛車の共有や、POPPIN' PLANET公開後のイラスト急増など、ファンの創作の盛り上がりをまとめる。",
+   "purpose": "新情報",
+   "rank": "culture",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ファン面。POPPIN' PLANETの主題をここへ統合。個人を主役にしない。"
+  },
+  "youtube-subscriber-emoji-picker-extension-2026-11-07": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "アイマスと無関係な個人開発のChrome拡張機能の公開で、記事にする話題ではない。"
+  },
+  "poppin-planet-fan-art-surge-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "765pro-itasha-share-2026-11-07",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ファン創作の盛り上がりとして、culture記事1本にまとめる。"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "general-765pro-itasha-share-2026-11-07",
+    "brand": "general",
+    "rank": "culture",
+    "angle": "765PROのメンバーをデザインした痛車の共有や、POPPIN' PLANET公開後のイラスト急増など、ファンの創作の盛り上がりをまとめる。",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "765pro-itasha-share-2026-11-07",
+    "candidate_ids": [
+     "202611080229-grok-14",
+     "202611060418-grok-41"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "youtube-subscriber-emoji-picker-extension-2026-11-07",
+    "reason": "面違い",
+    "note": "アイマスと無関係な個人開発のChrome拡張機能の公開で、記事にする話題ではない。"
+   }
+  ],
+  "cross_brand": []
+ }
+}

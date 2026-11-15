@@ -1,0 +1,336 @@
+{
+ "decisions": {
+  "valiv-3rd-live-ticket-first-presale-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "重複",
+   "note": "最速先行の締切は合同面 joint-v-aliv-3rd-live-ticket-2026 が記事化済み。4コマ第36話は valiv-comic-episode-36 で扱う"
+  },
+  "letora-birthday-online-live-2026-report": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "ゲストのジュリア出演・セットリストは11-12号のアーカイブ記事に既出。新事実なし"
+  },
+  "valiv-3rd-live-hashtag-campaign": {
+   "action": "article",
+   "angle": "3rdLIVE＆MEETING開催決定記念の引用リポストCP(サイン入りポスター5名)は本日23時59分が応募の最終日",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "当日締切。チケット申込とは別の行動(X応募)"
+  },
+  "valiv-3rdlive-meeting-ticket-early-2027": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "valiv-2nd-live-premiere-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "2ndLIVE期間限定公開と入門番組の案内。限定公開の終了記事へ統合。チケット締切は合同面が記事化済み"
+  },
+  "dsva-cosmo-ace-combat-8-stream-2026-11-14": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "dsva-cosmo-ace-combat-8-clear-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "11-14号に配信予告が既出。最終回の結果(クリア報告)へ統合"
+  },
+  "dsva-cosmo-rain-patterson-made-my-night-2026": {
+   "action": "article",
+   "angle": "上水流宇宙とレイン・パターソンの「Made My Night」踊ってみたショート動画がYouTube・TikTokで公開された",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "11-14号の「Happiness」動画とは別の動画"
+  },
+  "dsva-cosmo-membership-golf-stream-2026-11-14": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "メンバー限定配信で14日に終了済み。読者が見に行ける催しではない"
+  },
+  "dsva-3rd-live-meeting-qonnect-as-one": {
+   "action": "article",
+   "angle": "東京公演(3月21・22日)のバンド出演者が、ドラムス中村\"マーボー\"真行、キーボード川路玲奈、ベースカワノアキ、ギター佐々木侑太と判明した",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "バンドメンバーは既報本文に無い新事実。最速先行の締切は合同面が記事化済みなので触れる程度に留める"
+  },
+  "dsva-katsumata-2nd-live-watchalong-2026-11-14": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "同時視聴スペースは14日の出来事で終了済み。単体では記事にならない"
+  },
+  "dsva-cosmo-ace-combat-8-clear-2026": {
+   "action": "article",
+   "angle": "上水流宇宙が『ACE COMBAT 8』をクリアし、翌週11月21日21時からオンラインモードに挑戦すると告知した",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "最終回配信(ace-combat-8-stream)の結果を統合。次回配信は新しい事実"
+  },
+  "dsva-cosmo-membership-golf-wrap-2026-11-14": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "メンバー限定配信の終了報告のみ。ACE8最終回は既報で、新事実なし"
+  },
+  "va-liv-3rdlive-meeting-2027": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "重複",
+   "note": "一般会員先行の締切は合同面 joint-v-aliv-3rd-live-ticket-2026 が記事化済み。公演日程・会場は既報"
+  },
+  "valiv-3rd-live-meeting-2027": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "重複",
+   "note": "最速先行の締切は合同面が記事化済み。公演情報は既報"
+  },
+  "valiv-3rdlive-meeting-2027": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "重複",
+   "note": "アソビストア一般会員先行の締切は合同面が記事化済み。入金期間・結果発表日は11-01号に既出"
+  },
+  "valiv-2nd-live-premiere-2026": {
+   "action": "article",
+   "angle": "ヴイアラ2ndLIVEの限定プレミア公開(特別番組「ヴイアライベント入門」の案内を含む)は本日23時59分で視聴の最終日",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "当日終了。視聴という別の行動。チケット締切は合同面の記事に任せ、本記事では触れる程度"
+  },
+  "v-alive-3rd-live-meeting-ticket-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "重複",
+   "note": "最速先行の締切は合同面 joint-v-aliv-3rd-live-ticket-2026 が記事化済み。日程・出演者は既報"
+  },
+  "valiv-comic-episode-36": {
+   "action": "article",
+   "angle": "ヴイアラ公式4コマの第36話「こえのちから きゅうをすえる」が公開された",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "これまで記事化されていない。チケット締切は合同面が記事化済みのため触れない"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "dsva-valiv-3rd-live-hashtag-campaign",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "3rdLIVE＆MEETING開催決定記念の引用リポストCP(サイン入りポスター5名)は本日23時59分が応募の最終日",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "valiv-3rd-live-hashtag-campaign",
+    "candidate_ids": [
+     "202611150227-grok-58",
+     "202611150227-grok-118",
+     "sched-2026-11-15-valiv-3rd-live-hashtag-campaign-締切"
+    ]
+   },
+   {
+    "slug": "dsva-cosmo-rain-patterson-made-my-night-2026",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "上水流宇宙とレイン・パターソンの「Made My Night」踊ってみたショート動画がYouTube・TikTokで公開された",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "dsva-cosmo-rain-patterson-made-my-night-2026",
+    "candidate_ids": [
+     "202611150227-grok-61",
+     "202611150227-grok-120"
+    ]
+   },
+   {
+    "slug": "dsva-3rd-live-meeting-qonnect-as-one",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "東京公演(3月21・22日)のバンド出演者が、ドラムス中村\"マーボー\"真行、キーボード川路玲奈、ベースカワノアキ、ギター佐々木侑太と判明した",
+    "purpose": "新情報",
+    "lead_score": 25,
+    "dedup_key": "dsva-3rd-live-meeting-qonnect-as-one",
+    "candidate_ids": [
+     "202611150227-grok-64",
+     "202611150227-grok-137",
+     "sched-2026-11-15-dsva-3rd-live-meeting-qonnect-as-one-締切"
+    ]
+   },
+   {
+    "slug": "dsva-cosmo-ace-combat-8-clear-2026",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "上水流宇宙が『ACE COMBAT 8』をクリアし、翌週11月21日21時からオンラインモードに挑戦すると告知した",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "dsva-cosmo-ace-combat-8-clear-2026",
+    "candidate_ids": [
+     "202611150227-grok-66",
+     "202611150227-grok-60",
+     "202611150227-grok-121"
+    ]
+   },
+   {
+    "slug": "dsva-valiv-2nd-live-premiere-2026",
+    "brand": "dsva",
+    "rank": "medium",
+    "angle": "ヴイアラ2ndLIVEの限定プレミア公開(特別番組「ヴイアライベント入門」の案内を含む)は本日23時59分で視聴の最終日",
+    "purpose": "期日の知らせ",
+    "lead_score": 60,
+    "dedup_key": "valiv-2nd-live-premiere-2026",
+    "candidate_ids": [
+     "sched-2026-11-15-valiv-2nd-live-premiere-2026-終了",
+     "sched-2026-11-15-valiv-2nd-live-premiere-2026-終了-src1",
+     "sched-2026-11-15-valiv-2nd-live-premiere-2026-締切",
+     "sched-2026-11-15-valiv-2nd-live-premiere-2026-締切-src1",
+     "202611150227-grok-59",
+     "202611150227-grok-63",
+     "202611150227-grok-123",
+     "202611150227-grok-124",
+     "202611150227-grok-125",
+     "202611150227-grok-130",
+     "202611150227-grok-132",
+     "202611150227-grok-134",
+     "202611150227-grok-135",
+     "sched-2026-11-15-valiv-3rdlive-meeting-ticket-early-2027-締切"
+    ]
+   },
+   {
+    "slug": "dsva-valiv-comic-episode-36",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "ヴイアラ公式4コマの第36話「こえのちから きゅうをすえる」が公開された",
+    "purpose": "新情報",
+    "lead_score": 5,
+    "dedup_key": "valiv-comic-episode-36",
+    "candidate_ids": [
+     "sched-2026-11-15-valiv-comic-episode-36-締切",
+     "sched-2026-11-15-valiv-comic-episode-36-締切-src1"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "valiv-3rd-live-ticket-first-presale-2026",
+    "reason": "重複",
+    "note": "最速先行の締切は合同面 joint-v-aliv-3rd-live-ticket-2026 が記事化済み。4コマ第36話は valiv-comic-episode-36 で扱う"
+   },
+   {
+    "dedup_key": "letora-birthday-online-live-2026-report",
+    "reason": "既報",
+    "note": "ゲストのジュリア出演・セットリストは11-12号のアーカイブ記事に既出。新事実なし"
+   },
+   {
+    "dedup_key": "dsva-cosmo-membership-golf-stream-2026-11-14",
+    "reason": "その他",
+    "note": "メンバー限定配信で14日に終了済み。読者が見に行ける催しではない"
+   },
+   {
+    "dedup_key": "dsva-katsumata-2nd-live-watchalong-2026-11-14",
+    "reason": "その他",
+    "note": "同時視聴スペースは14日の出来事で終了済み。単体では記事にならない"
+   },
+   {
+    "dedup_key": "dsva-cosmo-membership-golf-wrap-2026-11-14",
+    "reason": "その他",
+    "note": "メンバー限定配信の終了報告のみ。ACE8最終回は既報で、新事実なし"
+   },
+   {
+    "dedup_key": "va-liv-3rdlive-meeting-2027",
+    "reason": "重複",
+    "note": "一般会員先行の締切は合同面 joint-v-aliv-3rd-live-ticket-2026 が記事化済み。公演日程・会場は既報"
+   },
+   {
+    "dedup_key": "valiv-3rd-live-meeting-2027",
+    "reason": "重複",
+    "note": "最速先行の締切は合同面が記事化済み。公演情報は既報"
+   },
+   {
+    "dedup_key": "valiv-3rdlive-meeting-2027",
+    "reason": "重複",
+    "note": "アソビストア一般会員先行の締切は合同面が記事化済み。入金期間・結果発表日は11-01号に既出"
+   },
+   {
+    "dedup_key": "v-alive-3rd-live-meeting-ticket-2026",
+    "reason": "重複",
+    "note": "最速先行の締切は合同面 joint-v-aliv-3rd-live-ticket-2026 が記事化済み。日程・出演者は既報"
+   }
+  ],
+  "cross_brand": []
+ }
+}

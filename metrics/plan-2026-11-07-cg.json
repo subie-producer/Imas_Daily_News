@@ -1,0 +1,371 @@
+{
+ "decisions": {
+  "cg-marine-tower-2026-event": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/6号で日程・アンバサダー・チケット(11/6発売)を既報。新事実なし、開幕は11/26でトリガー外"
+  },
+  "cg-motomachidoria-momopeaberry-2026": {
+   "action": "article",
+   "angle": "元町ドリアとのコラボで櫻井桃華・橘ありす・的場梨沙の限定メニューが登場し、横浜3店の席予約は11月6日18時に開始、グッズは11月20日からヴィレヴァン横浜ワールドポーターズ店で販売。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公式ニュース出典。momopberry側(X投稿)を統合"
+  },
+  "cg-naha-dejimas-collab-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/5号でスタンプラリー・グッズ・第2弾まで既報。新事実・トリガーなし"
+  },
+  "cg-15th-anniversary-party-2026-general": {
+   "action": "article",
+   "angle": "15周年公演の現地チケット一般販売(先着)が本日12時に開始、15時からは公式リセール(抽選)も受付開始。",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 80,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約の発売・開始。リセール(cg-15th-party-resale-2026)と一般販売X投稿を統合して1本に"
+  },
+  "cinderella-girls-yokohama-marine-tower-trend-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "未確認のまとめ記事。Xトレンド入りのみで新事実なく、コラボ自体は既報"
+  },
+  "cg-hub-the-last-order-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/6号で期間・店舗・予約開始を既報。facts に新事実なし"
+  },
+  "cg-apple-of-my-ai-goods-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/6号でグッズ全品目・価格・11月29日締切を既報。トリガーは未到来"
+  },
+  "cg-sousenkyo-2026-15th-popup": {
+   "action": "article",
+   "angle": "「シンデレラガール総選挙＆15th Invitational P@rty!!」が11月21日〜29日に横浜ランドマークホールで開催され、入場は無料の事前予約制(抽選、申込は11月12日23時59分まで)。",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "既報なしの新発表"
+  },
+  "cg-cinderella-party-cd5-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/2号で発売日・価格・特典・予約キャンペーンを既報。11/6にジャケット公開も記事化済み"
+  },
+  "cg-hourglass-radio-premiere-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "出典の変更はコロムビアのトップのCD第5弾ジャケット告知の表示で、既報。HOURGLASS自体の締切・条件の変更なし"
+  },
+  "cg-popn-toybox-revival-2026": {
+   "action": "article",
+   "angle": "「Pop'n ToyBox!! もういっかい！」(12月13日、オリックス劇場)の一般会員先行は明日11月8日23時59分が締切、結果発表は11月14日13時。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "締切まで1日。11/1号と同じ施策だが締切のトリガーあり"
+  },
+  "cg-cinderella-15th-party-general-sale-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-15th-anniversary-party-2026-general",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ一般販売の公式X投稿(SideMの無関係投稿を含む)"
+  },
+  "cg-memory-pict-january-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/31・11/2号で第8弾と11月15日締切を既報。締切まで8日でトリガー外"
+  },
+  "765-961-xr-lighttag-2027": {
+   "action": "article",
+   "angle": "「シンデレラガールズの日常」で、HOURGLASSをテーマにしたコミック「これまでとこれからと〜HOURGLASS〜」が公開された。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "キーの765×961部分は765面の話題で先行締切も既報のため扱わない。コミック公開のみ。MV11/18 21時は既報"
+  },
+  "cg-athome-xr-apple-of-my-ai-ticket-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/3号で一般会員先行(11月15日締切・11月28日当落)を既報。締切まで8日でトリガー外"
+  },
+  "cinderella-yokohama-cosmoworld-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-cosmoworld-air-cabin-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じコスモワールドのコラボ。物販抽選は11/3〜5号で既報"
+  },
+  "cg-cosmoworld-air-cabin-2026": {
+   "action": "article",
+   "angle": "よこはまコスモワールドの定休日(11月19日・26日、12月3日)とYOKOHAMA AIR CABINの運休日(12月9日)が判明。コラボは11月13日開幕で入園は無料。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "出典の更新あり。定休日の具体日が既報に無い新事実。cinderella-yokohama-cosmoworld-2026を統合"
+  },
+  "momopberry-motomachi-doria-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-motomachidoria-momopeaberry-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ元町ドリアコラボ(店舗X投稿)。メニュー価格を統合"
+  },
+  "cinderella-15th-orchestra-concert": {
+   "action": "article",
+   "angle": "15周年記念オーケストラコンサートのアソビストアプレミアム会員2次先行の当落が本日13時から確認でき、当選者の入金は11月11日23時59分まで。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約の結果発表"
+  },
+  "cg-15th-party-resale-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-15th-anniversary-party-2026-general",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ15周年公演の本日のチケット手続き。一般販売の記事に15時のリセール開始も入れる"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "cg-motomachidoria-momopeaberry-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "元町ドリアとのコラボで櫻井桃華・橘ありす・的場梨沙の限定メニューが登場し、横浜3店の席予約は11月6日18時に開始、グッズは11月20日からヴィレヴァン横浜ワールドポーターズ店で販売。",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "cg-motomachidoria-momopeaberry-2026",
+    "candidate_ids": [
+     "202611061234-explore-4",
+     "202611060418-grok-71"
+    ]
+   },
+   {
+    "slug": "cg-15th-anniversary-party-2026-general",
+    "brand": "cg",
+    "rank": "medium",
+    "angle": "15周年公演の現地チケット一般販売(先着)が本日12時に開始、15時からは公式リセール(抽選)も受付開始。",
+    "purpose": "期日の知らせ",
+    "lead_score": 80,
+    "dedup_key": "cg-15th-anniversary-party-2026-general",
+    "candidate_ids": [
+     "202611061234-explore-6",
+     "sched-2026-11-07-cg-15th-anniversary-party-2026-general-発売",
+     "202611070232-grok-9",
+     "202611070232-grok-51",
+     "sched-2026-11-07-cg-15th-party-resale-2026-開始"
+    ]
+   },
+   {
+    "slug": "cg-sousenkyo-2026-15th-popup",
+    "brand": "cg",
+    "rank": "medium",
+    "angle": "「シンデレラガール総選挙＆15th Invitational P@rty!!」が11月21日〜29日に横浜ランドマークホールで開催され、入場は無料の事前予約制(抽選、申込は11月12日23時59分まで)。",
+    "purpose": "新情報",
+    "lead_score": 30,
+    "dedup_key": "cg-sousenkyo-2026-15th-popup",
+    "candidate_ids": [
+     "202611062337-watch-0"
+    ]
+   },
+   {
+    "slug": "cg-popn-toybox-revival-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "「Pop'n ToyBox!! もういっかい！」(12月13日、オリックス劇場)の一般会員先行は明日11月8日23時59分が締切、結果発表は11月14日13時。",
+    "purpose": "期日の知らせ",
+    "lead_score": 15,
+    "dedup_key": "cg-popn-toybox-revival-2026",
+    "candidate_ids": [
+     "202611070232-grok-8"
+    ]
+   },
+   {
+    "slug": "cg-765-961-xr-lighttag-2027",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "「シンデレラガールズの日常」で、HOURGLASSをテーマにしたコミック「これまでとこれからと〜HOURGLASS〜」が公開された。",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "765-961-xr-lighttag-2027",
+    "candidate_ids": [
+     "202611070232-grok-11",
+     "202611070232-grok-12",
+     "202611070232-grok-41",
+     "202611070232-grok-43",
+     "202611070232-grok-46",
+     "202611070232-grok-50"
+    ]
+   },
+   {
+    "slug": "cg-cosmoworld-air-cabin-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "よこはまコスモワールドの定休日(11月19日・26日、12月3日)とYOKOHAMA AIR CABINの運休日(12月9日)が判明。コラボは11月13日開幕で入園は無料。",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "cg-cosmoworld-air-cabin-2026",
+    "candidate_ids": [
+     "202611051838-explore-15",
+     "202611051234-explore-9"
+    ]
+   },
+   {
+    "slug": "cg-cinderella-15th-orchestra-concert",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "15周年記念オーケストラコンサートのアソビストアプレミアム会員2次先行の当落が本日13時から確認でき、当選者の入金は11月11日23時59分まで。",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "cinderella-15th-orchestra-concert",
+    "candidate_ids": [
+     "sched-2026-11-07-cinderella-15th-orchestra-concert-結果"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "cg-marine-tower-2026-event",
+    "reason": "既報",
+    "note": "11/6号で日程・アンバサダー・チケット(11/6発売)を既報。新事実なし、開幕は11/26でトリガー外"
+   },
+   {
+    "dedup_key": "cg-naha-dejimas-collab-2026",
+    "reason": "既報",
+    "note": "11/5号でスタンプラリー・グッズ・第2弾まで既報。新事実・トリガーなし"
+   },
+   {
+    "dedup_key": "cinderella-girls-yokohama-marine-tower-trend-2026",
+    "reason": "出典不足",
+    "note": "未確認のまとめ記事。Xトレンド入りのみで新事実なく、コラボ自体は既報"
+   },
+   {
+    "dedup_key": "cg-hub-the-last-order-2026",
+    "reason": "既報",
+    "note": "11/6号で期間・店舗・予約開始を既報。facts に新事実なし"
+   },
+   {
+    "dedup_key": "cg-apple-of-my-ai-goods-2026",
+    "reason": "既報",
+    "note": "11/6号でグッズ全品目・価格・11月29日締切を既報。トリガーは未到来"
+   },
+   {
+    "dedup_key": "cg-cinderella-party-cd5-2026",
+    "reason": "既報",
+    "note": "11/2号で発売日・価格・特典・予約キャンペーンを既報。11/6にジャケット公開も記事化済み"
+   },
+   {
+    "dedup_key": "cg-hourglass-radio-premiere-2026",
+    "reason": "既報",
+    "note": "出典の変更はコロムビアのトップのCD第5弾ジャケット告知の表示で、既報。HOURGLASS自体の締切・条件の変更なし"
+   },
+   {
+    "dedup_key": "cg-memory-pict-january-2026",
+    "reason": "既報",
+    "note": "10/31・11/2号で第8弾と11月15日締切を既報。締切まで8日でトリガー外"
+   },
+   {
+    "dedup_key": "cg-athome-xr-apple-of-my-ai-ticket-2026",
+    "reason": "既報",
+    "note": "11/3号で一般会員先行(11月15日締切・11月28日当落)を既報。締切まで8日でトリガー外"
+   }
+  ],
+  "cross_brand": []
+ }
+}

@@ -1,0 +1,45 @@
+{
+ "decisions": {
+  "765as-961-idol-ultimate-2027": {
+   "action": "article",
+   "angle": "765×961 IDOL ULTIMATE ONCE AND FOR ALL の現地チケット受付は11月8日23:59(あす)締切。公式が「あと2日」と告知している。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "過去号は先行受付の案内。締切が翌日に迫る当日のトリガーで伝え直す。"
+  },
+  "765-961-idol-ultimate-ticket-reminder-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "765as-961-idol-ultimate-2027",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ公演・同じ現地チケット受付(11/8 23:59締切)の二次情報。公式の主題へ統合。"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "765-765as-961-idol-ultimate-2027",
+    "brand": "765",
+    "rank": "small",
+    "angle": "765×961 IDOL ULTIMATE ONCE AND FOR ALL の現地チケット受付は11月8日23:59(あす)締切。公式が「あと2日」と告知している。",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "765as-961-idol-ultimate-2027",
+    "candidate_ids": [
+     "202611070232-grok-42",
+     "202611061234-explore-2"
+    ]
+   }
+  ],
+  "dropped": [],
+  "cross_brand": []
+ }
+}

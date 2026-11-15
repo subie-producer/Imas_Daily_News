@@ -1,0 +1,347 @@
+{
+ "decisions": {
+  "valiv-3rd-live-qonnect-as-one-2027": {
+   "action": "article",
+   "angle": "3rdLIVE＆MEETING公式ページの更新で、ゲストに土佐兄弟と電音部・外神田文芸高校(日高零奈・東雲和音・茅野ふたば)が加わった。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "出典変更。既報の本文にゲストの記載なし。"
+  },
+  "valiv-cosmo-ace-combat-8-stream-report-2026-10-21": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "letora-birthday-online-live-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "実体はレトラ誕生日ライブ当日の公式投稿。"
+  },
+  "valiv-letora-birthday-live-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "LivePocketの表示変化(受付終了・支払い方法)のみ。公演は終了済みで読者の行動もない。"
+  },
+  "manaka-clips-weekly-tuesday-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/11号「動画と配信アーカイブを公開」に同内容。"
+  },
+  "letora-birthday-online-live-2026": {
+   "action": "article",
+   "angle": "レトラ BIRTHDAY ONLINE LIVE 2026が開催され、ジュリアと『スタートリップ』を披露し全9曲、セットリスト公開。最速版アーカイブは本日18時まで、18時から視聴コメント付きに切り替わる。",
+   "purpose": "新情報",
+   "rank": "large",
+   "lead_score": 85,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(終了・開始)も同記事に含める。素材11件。"
+  },
+  "cosmo-morning-stream-2026-11-11": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "終了済みの朝配信1件。単体では記事にならず、まとめの対象も足りない。"
+  },
+  "cosmo-wa-da-da-dance-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/11号に同じ動画(YouTube・TikTok)の記事あり。"
+  },
+  "valiv-3rdlive-ticket-early-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "重複",
+   "note": "最速先行の締切は合同面が記事化済み(joint-v-aliv-3rd-live-ticket-2026)。"
+  },
+  "fan-letora-birthday-buzz-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "ファン投稿は culture(general面)の対象。dsva面では扱わない。未確認。"
+  },
+  "letora-birthday-goods-2026": {
+   "action": "article",
+   "angle": "レトラのバースデー記念グッズ5点セットが期間限定の受注販売に決定。テーマは新アイドル衣装で、森倉円さんの描き下ろし。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ライブ記事とは読者の行動が別(グッズの受注)。受注期間・価格は素材に無い。"
+  },
+  "valiv-3rdlive-qonnect-as-one-2027-ticket": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "重複",
+   "note": "最速先行の締切(15日)は合同面が記事化済み。"
+  },
+  "va-liv-letora-birthday-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "letora-birthday-online-live-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ公演。続報予約(アーカイブ最速版の視聴期限18:00)は統合先の記事で扱う。"
+  },
+  "va-liv-3rdlive-meeting-2027": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "重複",
+   "note": "続報予約は名古屋公演の先行締切(15日23:59)。同じ先行受付で、合同面が記事化済み。"
+  },
+  "dsva-3rd-live-meeting-qonnect-as-one": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "重複",
+   "note": "最速先行の締切は合同面が記事化済み。"
+  },
+  "valiv-3rd-live-meeting-2027": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "重複",
+   "note": "最速先行の締切は合同面が記事化済み。"
+  },
+  "valiv-3rdlive-meeting-2027": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "重複",
+   "note": "同じ受付ページ(アソビストア先行)の締切。合同面が記事化済み。"
+  },
+  "valiv-3rd-live-hashtag-campaign": {
+   "action": "article",
+   "angle": "ヴイアラ3rd記念の引用リポストキャンペーン(サイン入りポスターが抽選で5名)は、15日23時59分の締切まであと3日。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "チケット先行とは別の施策で、読者の行動(フォローと引用リポスト)が別。"
+  },
+  "valiv-2nd-live-premiere-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "限定公開の日程は11/5号が既報。続報予約はチケット先行の締切で、合同面が記事化済み。"
+  },
+  "v-alive-3rd-live-meeting-ticket-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "重複",
+   "note": "最速先行の締切は合同面が記事化済み。"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "dsva-valiv-3rd-live-qonnect-as-one-2027",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "3rdLIVE＆MEETING公式ページの更新で、ゲストに土佐兄弟と電音部・外神田文芸高校(日高零奈・東雲和音・茅野ふたば)が加わった。",
+    "purpose": "新情報",
+    "lead_score": 30,
+    "dedup_key": "valiv-3rd-live-qonnect-as-one-2027",
+    "candidate_ids": [
+     "update-7d52d75671e2"
+    ]
+   },
+   {
+    "slug": "dsva-letora-birthday-online-live-2026",
+    "brand": "dsva",
+    "rank": "large",
+    "angle": "レトラ BIRTHDAY ONLINE LIVE 2026が開催され、ジュリアと『スタートリップ』を披露し全9曲、セットリスト公開。最速版アーカイブは本日18時まで、18時から視聴コメント付きに切り替わる。",
+    "purpose": "新情報",
+    "lead_score": 85,
+    "dedup_key": "letora-birthday-online-live-2026",
+    "candidate_ids": [
+     "202611120230-grok-86",
+     "202611120230-grok-164",
+     "202611120230-grok-166",
+     "202611120230-grok-167",
+     "202611120230-grok-168",
+     "202611120230-grok-173",
+     "202611120230-grok-178",
+     "202611120230-grok-183",
+     "sched-2026-11-12-letora-birthday-online-live-2026-開始",
+     "sched-2026-11-12-letora-birthday-online-live-2026-開始-src1",
+     "sched-2026-11-12-letora-birthday-online-live-2026-開始-src2",
+     "202611112333-watch-0",
+     "202611120230-grok-87",
+     "202611120230-grok-176",
+     "sched-2026-11-12-va-liv-letora-birthday-2026-終了"
+    ]
+   },
+   {
+    "slug": "dsva-letora-birthday-goods-2026",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "レトラのバースデー記念グッズ5点セットが期間限定の受注販売に決定。テーマは新アイドル衣装で、森倉円さんの描き下ろし。",
+    "purpose": "新情報",
+    "lead_score": 25,
+    "dedup_key": "letora-birthday-goods-2026",
+    "candidate_ids": [
+     "202611120230-grok-165"
+    ]
+   },
+   {
+    "slug": "dsva-valiv-3rd-live-hashtag-campaign",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "ヴイアラ3rd記念の引用リポストキャンペーン(サイン入りポスターが抽選で5名)は、15日23時59分の締切まであと3日。",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "valiv-3rd-live-hashtag-campaign",
+    "candidate_ids": [
+     "sched-2026-11-12-valiv-3rd-live-hashtag-campaign-締切前"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "valiv-letora-birthday-live-2026",
+    "reason": "既報",
+    "note": "LivePocketの表示変化(受付終了・支払い方法)のみ。公演は終了済みで読者の行動もない。"
+   },
+   {
+    "dedup_key": "manaka-clips-weekly-tuesday-2026",
+    "reason": "既報",
+    "note": "11/11号「動画と配信アーカイブを公開」に同内容。"
+   },
+   {
+    "dedup_key": "cosmo-morning-stream-2026-11-11",
+    "reason": "その他",
+    "note": "終了済みの朝配信1件。単体では記事にならず、まとめの対象も足りない。"
+   },
+   {
+    "dedup_key": "cosmo-wa-da-da-dance-2026",
+    "reason": "既報",
+    "note": "11/11号に同じ動画(YouTube・TikTok)の記事あり。"
+   },
+   {
+    "dedup_key": "valiv-3rdlive-ticket-early-2026",
+    "reason": "重複",
+    "note": "最速先行の締切は合同面が記事化済み(joint-v-aliv-3rd-live-ticket-2026)。"
+   },
+   {
+    "dedup_key": "fan-letora-birthday-buzz-2026",
+    "reason": "面違い",
+    "note": "ファン投稿は culture(general面)の対象。dsva面では扱わない。未確認。"
+   },
+   {
+    "dedup_key": "valiv-3rdlive-qonnect-as-one-2027-ticket",
+    "reason": "重複",
+    "note": "最速先行の締切(15日)は合同面が記事化済み。"
+   },
+   {
+    "dedup_key": "va-liv-3rdlive-meeting-2027",
+    "reason": "重複",
+    "note": "続報予約は名古屋公演の先行締切(15日23:59)。同じ先行受付で、合同面が記事化済み。"
+   },
+   {
+    "dedup_key": "dsva-3rd-live-meeting-qonnect-as-one",
+    "reason": "重複",
+    "note": "最速先行の締切は合同面が記事化済み。"
+   },
+   {
+    "dedup_key": "valiv-3rd-live-meeting-2027",
+    "reason": "重複",
+    "note": "最速先行の締切は合同面が記事化済み。"
+   },
+   {
+    "dedup_key": "valiv-3rdlive-meeting-2027",
+    "reason": "重複",
+    "note": "同じ受付ページ(アソビストア先行)の締切。合同面が記事化済み。"
+   },
+   {
+    "dedup_key": "valiv-2nd-live-premiere-2026",
+    "reason": "既報",
+    "note": "限定公開の日程は11/5号が既報。続報予約はチケット先行の締切で、合同面が記事化済み。"
+   },
+   {
+    "dedup_key": "v-alive-3rd-live-meeting-ticket-2026",
+    "reason": "重複",
+    "note": "最速先行の締切は合同面が記事化済み。"
+   }
+  ],
+  "cross_brand": []
+ }
+}

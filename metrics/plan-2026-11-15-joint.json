@@ -1,0 +1,240 @@
+{
+ "decisions": {
+  "sidem-shinycolors-sparkle-showdown-2027-06": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/13号に追加出演者と11/29までの2次先行が既出。新事実も当日のトリガーも無い"
+  },
+  "tours-prime-match-fes-2026-11": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/14号に開催内容が既出。開始は19日で当日・3日以内のトリガーではない"
+  },
+  "cg-ml-clash-match-2027-goods-preorder": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "demirimi-clash-goods-preorder-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じグッズ受注締切(11/15)の別ソース"
+  },
+  "tours-producers-station-nakano-event-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/14号に12/2の店舗イベントが既出。新事実も当日のトリガーも無い"
+  },
+  "demirimi-clash-goods-preorder-2026": {
+   "action": "article",
+   "angle": "デレミリ合同ライブ「CLASH M@TCH!!」の公式グッズ事前販売(受注のみ)は本日11月15日が受注の最終日",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 50,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "cg-ml-clash-match-2027-goods-preorder と clash-match-preorder-2027 を統合"
+  },
+  "tours-season-2-active-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "「S2弾が稼働中」と呼びかけるだけの投稿で、新しい事実も当日のトリガーも無い"
+  },
+  "fureaka-radio-2026": {
+   "action": "article",
+   "angle": "デレミリ合同ライブ開催記念ラジオの次回は依田芳乃さん・二階堂千鶴さんの「よしちづラジオ」",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "「フレあかラジオ」の配信は11/14号で既報。次回パーソナリティと番組名が新しい事実"
+  },
+  "v-aliv-3rd-live-ticket-2026": {
+   "action": "article",
+   "angle": "vα-liv 3rdLIVE＆MEETINGの現地チケット最速先行は本日23時59分が申込の最終日",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(締切)。グッズ付きチケットの特典はおすわりぬいぐるみ"
+  },
+  "dememiri-clash-match-ticket-2027": {
+   "action": "article",
+   "angle": "デレミリ合同ライブ先行の当選者は、入金締切の11月18日23時59分まであと3日",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(締切前)。clash-match-new-song-2027 の入金締切の素材を統合"
+  },
+  "clash-match-new-song-2027": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "dememiri-clash-match-ticket-2027",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ先行チケットの入金締切(続報予約)。新曲の制作は11/2号で既報"
+  },
+  "clash-match-preorder-2027": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "demirimi-clash-goods-preorder-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じグッズ受注締切(11/15)。続報予約(締切)も同記事で扱う"
+  },
+  "xr-live-revival-asobistore-general-advance-2026": {
+   "action": "article",
+   "angle": "xR LIVE REVIVAL一般会員先行の当選者は、入金締切の11月18日23時59分まであと3日",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(締切前)。当落は11/14号で既報、入金締切3日前がトリガー"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "joint-demirimi-clash-goods-preorder-2026",
+    "brand": "joint",
+    "rank": "medium",
+    "angle": "デレミリ合同ライブ「CLASH M@TCH!!」の公式グッズ事前販売(受注のみ)は本日11月15日が受注の最終日",
+    "purpose": "期日の知らせ",
+    "lead_score": 50,
+    "dedup_key": "demirimi-clash-goods-preorder-2026",
+    "candidate_ids": [
+     "202611150227-grok-14",
+     "202611150227-grok-83",
+     "202611150227-grok-89",
+     "202611150227-grok-93",
+     "202611150227-grok-94",
+     "202611150227-grok-129",
+     "sched-2026-11-15-demirimi-clash-goods-preorder-2026-締切",
+     "sched-2026-11-15-demirimi-clash-goods-preorder-2026-締切-src1",
+     "202611141234-watch-2",
+     "sched-2026-11-15-clash-match-preorder-2027-締切",
+     "sched-2026-11-15-clash-match-preorder-2027-締切-src1"
+    ]
+   },
+   {
+    "slug": "joint-fureaka-radio-2026",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "デレミリ合同ライブ開催記念ラジオの次回は依田芳乃さん・二階堂千鶴さんの「よしちづラジオ」",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "fureaka-radio-2026",
+    "candidate_ids": [
+     "202611150227-grok-73",
+     "202611150227-grok-74",
+     "202611150227-grok-126",
+     "202611150227-grok-136"
+    ]
+   },
+   {
+    "slug": "joint-v-aliv-3rd-live-ticket-2026",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "vα-liv 3rdLIVE＆MEETINGの現地チケット最速先行は本日23時59分が申込の最終日",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "v-aliv-3rd-live-ticket-2026",
+    "candidate_ids": [
+     "sched-2026-11-15-v-aliv-3rd-live-ticket-2026-締切"
+    ]
+   },
+   {
+    "slug": "joint-dememiri-clash-match-ticket-2027",
+    "brand": "joint",
+    "rank": "medium",
+    "angle": "デレミリ合同ライブ先行の当選者は、入金締切の11月18日23時59分まであと3日",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "dememiri-clash-match-ticket-2027",
+    "candidate_ids": [
+     "sched-2026-11-15-dememiri-clash-match-ticket-2027-締切前",
+     "sched-2026-11-15-dememiri-clash-match-ticket-2027-締切前-src1",
+     "sched-2026-11-15-clash-match-new-song-2027-締切前"
+    ]
+   },
+   {
+    "slug": "joint-xr-live-revival-asobistore-general-advance-2026",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "xR LIVE REVIVAL一般会員先行の当選者は、入金締切の11月18日23時59分まであと3日",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "xr-live-revival-asobistore-general-advance-2026",
+    "candidate_ids": [
+     "sched-2026-11-15-xr-live-revival-asobistore-general-advance-2026-締切前",
+     "sched-2026-11-15-xr-live-revival-asobistore-general-advance-2026-締切前-src1",
+     "sched-2026-11-15-xr-live-revival-asobistore-general-advance-2026-締切前-src2"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "sidem-shinycolors-sparkle-showdown-2027-06",
+    "reason": "既報",
+    "note": "11/13号に追加出演者と11/29までの2次先行が既出。新事実も当日のトリガーも無い"
+   },
+   {
+    "dedup_key": "tours-prime-match-fes-2026-11",
+    "reason": "既報",
+    "note": "11/14号に開催内容が既出。開始は19日で当日・3日以内のトリガーではない"
+   },
+   {
+    "dedup_key": "tours-producers-station-nakano-event-2026",
+    "reason": "既報",
+    "note": "11/14号に12/2の店舗イベントが既出。新事実も当日のトリガーも無い"
+   },
+   {
+    "dedup_key": "tours-season-2-active-2026",
+    "reason": "その他",
+    "note": "「S2弾が稼働中」と呼びかけるだけの投稿で、新しい事実も当日のトリガーも無い"
+   }
+  ],
+  "cross_brand": []
+ }
+}

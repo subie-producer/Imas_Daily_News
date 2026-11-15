@@ -1,0 +1,342 @@
+{
+ "decisions": {
+  "shiny-upcoming-idol-teaser-2026-11": {
+   "action": "article",
+   "angle": "11月10日15時に予告されていた新アイドルが登場する日",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 70,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "二次情報を含むため、名前は公式で確認できた場合のみ書く"
+  },
+  "shiny-upcoming-idol-tease-2026-11-10": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-upcoming-idol-teaser-2026-11",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ予告アイドルの知らせ"
+  },
+  "shiny-idol-teaser-2026-11-10": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-upcoming-idol-teaser-2026-11",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ予告アイドルの知らせ"
+  },
+  "shiny-3rd-anniversary-live-results-2026": {
+   "action": "article",
+   "angle": "シャニソン3周年記念ライブイベントのアイドル別観客数ランキング最終結果が発表された",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公式発表。上位10位入賞Pの個人名は載せず、結果発表の事実を中心に"
+  },
+  "shiny-yunera-collab-2026": {
+   "action": "article",
+   "angle": "シャニマス×新習志野駅前温泉 湯～ねるコラボが11月21日から2027年1月20日まで開催",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "出典は二次情報のみ。出典の確認は執筆と校閲で"
+  },
+  "fan-shiny-30-music-challenge-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿。ファン面は general 面のみ"
+  },
+  "fan-shiny-aikatsu-cover-song-concept-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "同人・ファン主催",
+   "note": "ファン創作の個人投稿"
+  },
+  "shiny-noctchill-live-2027-presale": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/8号が受付期間・当落・入金日程を既報。締切は12/1で3日以内でもなく新事実も無い"
+  },
+  "shiny-noctchill-live-general-presale-2027": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/8号と同じ一般会員先行の知らせ。新事実・当日のトリガー無し"
+  },
+  "shiny-hyakkiyako-pop-up-after-sales-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "事後通販は11/5に受付終了済みで、11/5号が既報"
+  },
+  "auto-73": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-hate-ni-fureru-no-nara-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ「果てにふれるのなら」終了の知らせ"
+  },
+  "shiny-hate-ni-fureru-no-nara-2026": {
+   "action": "article",
+   "angle": "シーズのシナリオイベント「果てにふれるのなら」は本日11時59分まで。ミッションと報酬交換の最終日",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 40,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "終了は正午前なので朝の記事にする"
+  },
+  "shiny-hate-ni-fureru-nonara-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-hate-ni-fureru-no-nara-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じイベントの終了の知らせ"
+  },
+  "masters-fes-nov-2026": {
+   "action": "article",
+   "angle": "11月マスターズフェスが本日開幕。参加はフェスグレードLV.6以上",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "開幕が当日のトリガー"
+  },
+  "shiny-shaniradi-password-deadline-extension-2026-11": {
+   "action": "article",
+   "angle": "シャニラジ#405・#406の「あいことば」入力は本日23時59分が最終日",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "締切が当日"
+  },
+  "shiny-radio-keyword-deadline-2026-11": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-shaniradi-password-deadline-extension-2026-11",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ「あいことば」入力締切"
+  },
+  "shiny-autumn-maple-box-2026": {
+   "action": "article",
+   "angle": "プロデュースイベント「オータム・メイプル・ボックス」が本日開始",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "開始が当日のトリガー。9/18号の報酬アイドル(SRサポート緋田美琴)は既報"
+  },
+  "shiny-maintenance-2026-11-10": {
+   "action": "article",
+   "angle": "本日12時から15時のメンテ前に、10連無料スタンプガシャを引き、中断中のプロデュースと283ステージを済ませる",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "メンテ開始が当日のトリガー"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "shiny-upcoming-idol-teaser-2026-11",
+    "brand": "shiny",
+    "rank": "medium",
+    "angle": "11月10日15時に予告されていた新アイドルが登場する日",
+    "purpose": "期日の知らせ",
+    "lead_score": 70,
+    "dedup_key": "shiny-upcoming-idol-teaser-2026-11",
+    "candidate_ids": [
+     "202611091233-explore-5",
+     "202611092333-explore-2",
+     "sched-2026-11-10-shiny-upcoming-idol-teaser-2026-11-開始",
+     "202611091835-explore-4",
+     "202611100230-grok-23"
+    ]
+   },
+   {
+    "slug": "shiny-3rd-anniversary-live-results-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "シャニソン3周年記念ライブイベントのアイドル別観客数ランキング最終結果が発表された",
+    "purpose": "新情報",
+    "lead_score": 30,
+    "dedup_key": "shiny-3rd-anniversary-live-results-2026",
+    "candidate_ids": [
+     "202611100230-grok-22"
+    ]
+   },
+   {
+    "slug": "shiny-yunera-collab-2026",
+    "brand": "shiny",
+    "rank": "medium",
+    "angle": "シャニマス×新習志野駅前温泉 湯～ねるコラボが11月21日から2027年1月20日まで開催",
+    "purpose": "新情報",
+    "lead_score": 25,
+    "dedup_key": "shiny-yunera-collab-2026",
+    "candidate_ids": [
+     "202611100230-grok-25"
+    ]
+   },
+   {
+    "slug": "shiny-hate-ni-fureru-no-nara-2026",
+    "brand": "shiny",
+    "rank": "medium",
+    "angle": "シーズのシナリオイベント「果てにふれるのなら」は本日11時59分まで。ミッションと報酬交換の最終日",
+    "purpose": "期日の知らせ",
+    "lead_score": 40,
+    "dedup_key": "shiny-hate-ni-fureru-no-nara-2026",
+    "candidate_ids": [
+     "sched-2026-11-10-shiny-hate-ni-fureru-no-nara-2026-終了",
+     "sched-2026-11-10-shiny-hate-ni-fureru-no-nara-2026-終了-src1",
+     "sched-2026-11-10-shiny-hate-ni-fureru-no-nara-2026-締切",
+     "sched-2026-11-10-shiny-hate-ni-fureru-no-nara-2026-締切-src1",
+     "sched-2026-11-10-auto-73-終了",
+     "sched-2026-11-10-shiny-hate-ni-fureru-nonara-2026-終了",
+     "sched-2026-11-10-shiny-hate-ni-fureru-nonara-2026-終了-src1"
+    ]
+   },
+   {
+    "slug": "shiny-masters-fes-nov-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "11月マスターズフェスが本日開幕。参加はフェスグレードLV.6以上",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "masters-fes-nov-2026",
+    "candidate_ids": [
+     "sched-2026-11-10-masters-fes-nov-2026-開幕"
+    ]
+   },
+   {
+    "slug": "shiny-shaniradi-password-deadline-extension-2026-11",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "シャニラジ#405・#406の「あいことば」入力は本日23時59分が最終日",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "shiny-shaniradi-password-deadline-extension-2026-11",
+    "candidate_ids": [
+     "sched-2026-11-10-shiny-shaniradi-password-deadline-extension-2026-11-締切",
+     "sched-2026-11-10-shiny-radio-keyword-deadline-2026-11-締切"
+    ]
+   },
+   {
+    "slug": "shiny-autumn-maple-box-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "プロデュースイベント「オータム・メイプル・ボックス」が本日開始",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "shiny-autumn-maple-box-2026",
+    "candidate_ids": [
+     "sched-2026-11-10-shiny-autumn-maple-box-2026-開始",
+     "sched-2026-11-10-shiny-autumn-maple-box-2026-開始-src1"
+    ]
+   },
+   {
+    "slug": "shiny-maintenance-2026-11-10",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "本日12時から15時のメンテ前に、10連無料スタンプガシャを引き、中断中のプロデュースと283ステージを済ませる",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "shiny-maintenance-2026-11-10",
+    "candidate_ids": [
+     "sched-2026-11-10-shiny-maintenance-2026-11-10-開始"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "fan-shiny-30-music-challenge-2026",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿。ファン面は general 面のみ"
+   },
+   {
+    "dedup_key": "fan-shiny-aikatsu-cover-song-concept-2026",
+    "reason": "同人・ファン主催",
+    "note": "ファン創作の個人投稿"
+   },
+   {
+    "dedup_key": "shiny-noctchill-live-2027-presale",
+    "reason": "既報",
+    "note": "11/8号が受付期間・当落・入金日程を既報。締切は12/1で3日以内でもなく新事実も無い"
+   },
+   {
+    "dedup_key": "shiny-noctchill-live-general-presale-2027",
+    "reason": "既報",
+    "note": "11/8号と同じ一般会員先行の知らせ。新事実・当日のトリガー無し"
+   },
+   {
+    "dedup_key": "shiny-hyakkiyako-pop-up-after-sales-2026",
+    "reason": "既報",
+    "note": "事後通販は11/5に受付終了済みで、11/5号が既報"
+   }
+  ],
+  "cross_brand": []
+ }
+}

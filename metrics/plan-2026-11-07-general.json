@@ -1,0 +1,67 @@
+{
+ "decisions": {
+  "imas-year-end-livestream-2026": {
+   "action": "cross_brand",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "joint-imas-year-end-thanks-2026",
+   "reason": "",
+   "note": "全ブランド共同の年末配信(12月24日19時)。合同面が既に記事化済み。"
+  },
+  "poppin-planet-fan-art-surge-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "個人1人のSNS投稿のみで未確認。個人の投稿は単体で記事にしない。"
+  },
+  "imas-birthdays-2026-11-06": {
+   "action": "article",
+   "angle": "アイマスchが11月6日生まれの間中美里と周防桃子を公式YouTube Shortsの動画で祝福した。",
+   "purpose": "新情報",
+   "rank": "culture",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "記念日の盛り上がり。公式出典で確認済み。他に culture 素材が無いため単独の短い culture 記事。"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "general-imas-birthdays-2026-11-06",
+    "brand": "general",
+    "rank": "culture",
+    "angle": "アイマスchが11月6日生まれの間中美里と周防桃子を公式YouTube Shortsの動画で祝福した。",
+    "purpose": "新情報",
+    "lead_score": 5,
+    "dedup_key": "imas-birthdays-2026-11-06",
+    "candidate_ids": [
+     "202611060418-grok-77"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "poppin-planet-fan-art-surge-2026",
+    "reason": "出典不足",
+    "note": "個人1人のSNS投稿のみで未確認。個人の投稿は単体で記事にしない。"
+   }
+  ],
+  "cross_brand": [
+   {
+    "slug": "joint-imas-year-end-thanks-2026",
+    "dedup_key": "imas-year-end-livestream-2026",
+    "note": "全ブランド共同の年末配信(12月24日19時)。合同面が既に記事化済み。"
+   }
+  ]
+ }
+}

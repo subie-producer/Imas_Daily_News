@@ -1,0 +1,115 @@
+{
+ "decisions": {
+  "imas-year-end-thanks-2026": {
+   "action": "article",
+   "angle": "アイマス年末感謝祭が12月24日19時から配信予定と判明。各ブランドの出演者と、11月30日締切の事前アンケートも併せて伝える。",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "survey を統合。出典は二次情報(未確認)なので、執筆・校閲で公式確認を取る。"
+  },
+  "imas-year-end-survey-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "imas-year-end-thanks-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ年末感謝祭の生配信に付く事前アンケート(締切11/30)。感謝祭の記事に統合。公式出典はこちらを使う。"
+  },
+  "imas-radio-stamas-5th-2026": {
+   "action": "article",
+   "angle": "IM＠S RADIO第5回(11月10日)のテーマが「学マスの魅力」と決まり、お便りとファンアート(#アイマスch_FA)を募集。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "既報の日時・ゲスト・MCは新情報に数えず、テーマと募集を切り口にする。"
+  },
+  "starlight-dining-chinese-maid-plush-2027": {
+   "action": "article",
+   "angle": "中華風メイドぬいぐるみ・餃子ぬいぐるみのASOBI STORE事前受注(受注生産)は11月9日23時59分まで、締切まであと2日。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "carried。受注締切が3日以内に迫るのが当日のトリガー。10/31の既報と同じ事実は伝え直しに留める。"
+  },
+  "tours-halloween-commu-2026": {
+   "action": "article",
+   "angle": "ツアマスのハロウィンログインボーナスは本日11月7日23時59分が最終日。お菓子を受け取るにはそれまでにログイン。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約2件(締切・終了)は同じ日の同じ出来事なので1記事にする。コミュ再生は6日に終了済みで、ログボのみ扱う。"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "joint-imas-year-end-thanks-2026",
+    "brand": "joint",
+    "rank": "medium",
+    "angle": "アイマス年末感謝祭が12月24日19時から配信予定と判明。各ブランドの出演者と、11月30日締切の事前アンケートも併せて伝える。",
+    "purpose": "新情報",
+    "lead_score": 60,
+    "dedup_key": "imas-year-end-thanks-2026",
+    "candidate_ids": [
+     "202611070232-grok-37",
+     "202611070232-grok-38"
+    ]
+   },
+   {
+    "slug": "joint-imas-radio-stamas-5th-2026",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "IM＠S RADIO第5回(11月10日)のテーマが「学マスの魅力」と決まり、お便りとファンアート(#アイマスch_FA)を募集。",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "imas-radio-stamas-5th-2026",
+    "candidate_ids": [
+     "202611070232-grok-40"
+    ]
+   },
+   {
+    "slug": "joint-starlight-dining-chinese-maid-plush-2027",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "中華風メイドぬいぐるみ・餃子ぬいぐるみのASOBI STORE事前受注(受注生産)は11月9日23時59分まで、締切まであと2日。",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "starlight-dining-chinese-maid-plush-2027",
+    "candidate_ids": [
+     "sched-2026-11-06-starlight-dining-chinese-maid-plush-2027-締切前"
+    ]
+   },
+   {
+    "slug": "joint-tours-halloween-commu-2026",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "ツアマスのハロウィンログインボーナスは本日11月7日23時59分が最終日。お菓子を受け取るにはそれまでにログイン。",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "tours-halloween-commu-2026",
+    "candidate_ids": [
+     "sched-2026-11-07-tours-halloween-commu-2026-締切",
+     "sched-2026-11-07-tours-halloween-commu-2026-終了"
+    ]
+   }
+  ],
+  "dropped": [],
+  "cross_brand": []
+ }
+}

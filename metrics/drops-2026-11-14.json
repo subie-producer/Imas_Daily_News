@@ -1,0 +1,45 @@
+{
+ "million-ringo-festival-goods-ec-2026": {
+  "title": "木下ひなたの壮瞥りんごまつりの公式グッズが、現地販売分のEC販売を11月11日19時から開始(数量限定、売切れ次第終了)。",
+  "stage": "執筆で見送り",
+  "why": "NOT_NEWS EC販売の開始は11月11日で、11月14日06:00時点に販売が続いているかを確認できる出典もありません。記事で伝えられる新しい出来事や、これからの期日は確認できませんでした。",
+  "candidate_ids": [
+   "202611120230-grok-29"
+  ]
+ },
+ "gaku-asari-produce-seminar-2026-10": {
+  "title": "Conceptual Single Collectionのショップ別特典デザインが公開され、LIVE TOUR -標-の新曲をVol.1〜Vol.3に収録する",
+  "stage": "執筆で見送り",
+  "why": "SOURCE_MISMATCH 素材の現在版では、ショップ別特典デザイン公開の投稿が確認できません。準公式のレーベル告知と販売ページでは商品の内容や予約期限は確認できましたが、特典デザインの公開とLIVE TOUR -標-の新曲収録を結び付ける事実は確かめられず、記事の切",
+  "candidate_ids": [
+   "202611130733-explore-4"
+  ]
+ },
+ "gaku-b2-tapestry-juo-sena": {
+  "title": "学マス新作グッズ、予約は15日23時59分まで",
+  "stage": "書き直しで見送り",
+  "why": "NO_PRIMARY_SOURCE 公式告知または公式発表を伝えた報道を確認できませんでした。検索では公式の告知を見つけられず、カーテン魂の公式商品一覧（https://www.curtain-damashii.com/item/tag/gkmas/）を fetch_page.py で確認しましたが、出典の種別は「当事",
+  "candidate_ids": [
+   "202610260412-watch-0",
+   "202610260417-watch-0",
+   "202610241231-explore-11",
+   "202610260411-watch-0"
+  ]
+ },
+ "gaku-sweets-acrylic-stand-saki-2026": {
+  "title": "学マス咲季のスイーツver.スタンド、22日まで予約",
+  "stage": "書き直しで見送り",
+  "why": "NO_PRIMARY_SOURCE ASOBI STOREの商品ページ（https://shop.asobistore.jp/products/detail/236700-7_gk-c001-00-00）は準公式ですが、別商品「アクリルフィギュアスタンド」の掲載で、対象商品の価格・予約期間を裏付けません。中外鉱業の商品",
+  "candidate_ids": [
+   "202611140226-grok-59"
+  ]
+ },
+ "sidem-teddys-collection-ii-goods": {
+  "title": "SideM「Teddy’s Collection II」あす予約締切",
+  "stage": "書き直しで見送り",
+  "why": "NO_PRIMARY_SOURCE I1の指摘どおり、Anime Store.JPの現在の版ではTeddy's Collection IIの商品と予約締切を確認できません。指定URLを scripts/fetch_page.py で読み直しました。現在の版では掲載内容が変わり、Teddy's Collection II",
+  "candidate_ids": [
+   "202611010510-explore-2"
+  ]
+ }
+}

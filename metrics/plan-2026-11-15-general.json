@@ -1,0 +1,45 @@
+{
+ "decisions": {
+  "fan-cg-post-19-2026-11": {
+   "action": "article",
+   "angle": "ファンが「こいかぜ」を歌った投稿と、氷渡香名江の新CMへの好意的な反応を、界隈の声としてまとめる",
+   "purpose": "新情報",
+   "rank": "culture",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "個人の投稿者を主役にせず、界隈の反応として1本にまとめる"
+  },
+  "gaku-kananae-cm-fan-reaction-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "fan-cg-post-19-2026-11",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じファン面の細切れ話題。culture記事に統合"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "general-fan-cg-post-19-2026-11",
+    "brand": "general",
+    "rank": "culture",
+    "angle": "ファンが「こいかぜ」を歌った投稿と、氷渡香名江の新CMへの好意的な反応を、界隈の声としてまとめる",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "fan-cg-post-19-2026-11",
+    "candidate_ids": [
+     "202611150227-grok-20",
+     "202611150227-grok-56"
+    ]
+   }
+  ],
+  "dropped": [],
+  "cross_brand": []
+ }
+}

@@ -1,0 +1,140 @@
+{
+ "decisions": {
+  "starlight-dining-chinese-maid-plush-2027": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "変更後の行は受注締切11月9日など既報のまま。締切も過ぎ、新事実なし"
+  },
+  "idolmaster-tours-test-restart-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11月9日号『ツアマス、11月8日から試験稼働再開』と同内容"
+  },
+  "imas-radio-stamas-5th-2026": {
+   "action": "article",
+   "angle": "IM＠S RADIO次回(11月24日)のゲストが三瓶由布子さん(SideM 秋月涼役)に決まり、OP生ジングルチャレンジも告知された",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "出典の更新。前回記事に無い次回ゲストと企画が新事実"
+  },
+  "tours-shiina-birthday-2026": {
+   "action": "article",
+   "angle": "ツアマスで紫雲清夏の誕生日コミュが11日25時59分まで公開、バースデーライブで回数に応じた称号を獲得できる",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "当日開始の施策。対象期間は13日25時59分まで"
+  },
+  "tours-producer-letter-3-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "tours-rhythm-live-festival-qualifier-extension-2027",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "レターの要点は予選開始と期間延長で同じ出来事"
+  },
+  "tours-rhythm-live-festival-qualifier-extension-2027": {
+   "action": "article",
+   "angle": "『RHYTHM LIVE FESTIVAL 2027』予選・エントリーは12日開始、終了を12月10日25時59分へ延長(決勝日程は変更なし)",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "プロデューサーレターNo.3の素材を統合。ランキング更新日・部門の参加条件を含める"
+  },
+  "imas-year-end-streaming-survey-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11月7日号に12月24日配信・11月30日締切・アーカイブ期間まで掲載済み。韓国語ページ版で新事実なし、当日トリガーも無い"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "joint-imas-radio-stamas-5th-2026",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "IM＠S RADIO次回(11月24日)のゲストが三瓶由布子さん(SideM 秋月涼役)に決まり、OP生ジングルチャレンジも告知された",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "imas-radio-stamas-5th-2026",
+    "candidate_ids": [
+     "update-45a330ce41ff"
+    ]
+   },
+   {
+    "slug": "joint-tours-shiina-birthday-2026",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "ツアマスで紫雲清夏の誕生日コミュが11日25時59分まで公開、バースデーライブで回数に応じた称号を獲得できる",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "tours-shiina-birthday-2026",
+    "candidate_ids": [
+     "202611110233-grok-98"
+    ]
+   },
+   {
+    "slug": "joint-tours-rhythm-live-festival-qualifier-extension-2027",
+    "brand": "joint",
+    "rank": "medium",
+    "angle": "『RHYTHM LIVE FESTIVAL 2027』予選・エントリーは12日開始、終了を12月10日25時59分へ延長(決勝日程は変更なし)",
+    "purpose": "新情報",
+    "lead_score": 60,
+    "dedup_key": "tours-rhythm-live-festival-qualifier-extension-2027",
+    "candidate_ids": [
+     "202611110233-grok-100",
+     "202611110233-grok-99"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "starlight-dining-chinese-maid-plush-2027",
+    "reason": "既報",
+    "note": "変更後の行は受注締切11月9日など既報のまま。締切も過ぎ、新事実なし"
+   },
+   {
+    "dedup_key": "idolmaster-tours-test-restart-2026",
+    "reason": "既報",
+    "note": "11月9日号『ツアマス、11月8日から試験稼働再開』と同内容"
+   },
+   {
+    "dedup_key": "imas-year-end-streaming-survey-2026",
+    "reason": "既報",
+    "note": "11月7日号に12月24日配信・11月30日締切・アーカイブ期間まで掲載済み。韓国語ページ版で新事実なし、当日トリガーも無い"
+   }
+  ],
+  "cross_brand": []
+ }
+}

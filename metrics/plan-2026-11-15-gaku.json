@@ -1,0 +1,601 @@
+{
+ "decisions": {
+  "gaku-asari-produce-seminar-2026-10": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "過年度",
+   "note": "11/14放映のTVCM告知で既に終了(dedup_keyは別件の名前)。gaku-kananae-cm-airingと同内容"
+  },
+  "gakuen-kanae-poster-campaign": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "応募期限は11/14 23:59で終了済み"
+  },
+  "kan-anae-manners-quiz-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "重複",
+   "note": "kanae-manners-quiz-2026と同じ知らせ。11/14に記事化済み"
+  },
+  "eclipse-light-animate-fair-2026": {
+   "action": "article",
+   "angle": "アニメイト通販「ECLIPSE LIGHT」対象商品欄に『GOLD RUSH(8)』特装版アニメイトセット(税込3,190円)が戻り、通常版(880円)が外れた",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "出典の更新。11/13記事の逆方向の品目変更"
+  },
+  "gkmas-lawson-2026-campaign": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "変更後の差分はサイト側の関連記事欄で、学マス×ローソン自体の締切・条件・品目の変更ではない"
+  },
+  "gakumas-kanae-cm-poster-campaign-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "応募期限11/14 23:59で終了済み"
+  },
+  "gakuen-hatsuboshi-hr-2-5th-sp-2026": {
+   "action": "article",
+   "angle": "初星学園HR 2.5thアニバーサリーSPが本日19時30分から生配信。香名江と新ユニット「乖轟」の情報を告知する",
+   "purpose": "期日の知らせ",
+   "rank": "large",
+   "lead_score": 90,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "gaku-hr-25th-2026を統合。当日開始"
+  },
+  "gaku-kananae-cm-airing-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "放映は11/14で終了済み"
+  },
+  "gaku-kananae-cm-release-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/14に特別CM放映は記事化済み。プロデュース開始16日は既知"
+  },
+  "gaku-shirube-final-stream-ticket-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "配信券の販売は11/8号で記事化済み。新事実・当日のトリガー無し"
+  },
+  "gaku-conceptual-single-collection-vol3-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-conceptual-single-collection-2027",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "CD予約締切の同一記事に統合"
+  },
+  "kanae-manners-quiz-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/14に記事化済み。新事実・トリガー無し"
+  },
+  "gaku-live-tour-shirube-final-sponsor-goods-order-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gakumas-live-tour-hyo-final-tsukuriyo-goods",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "協賛グッズ受注の同一記事に統合"
+  },
+  "gakumas-kananae-cm-campaign-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "応募期限11/14 23:59で終了済み"
+  },
+  "gaku-live-tour-shirube-final-tsukuri-goods-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gakumas-live-tour-hyo-final-tsukuriyo-goods",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "協賛グッズ受注の同一記事に統合"
+  },
+  "gaku-3rd-single-finish-goods-2026": {
+   "action": "article",
+   "angle": "3rdシングル完走記念グッズの受注(アソビストア・アニメイト)は本日が最終日",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "当日締切"
+  },
+  "gaku-kananae-introduction-content-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "香名江紹介コンテンツとポスター抽選は11/9号で記事化済み。キャンペーンは11/14で終了"
+  },
+  "gaku-b2-tapestry-juo-sena": {
+   "action": "article",
+   "angle": "カーテン魂の学マス新作グッズ(Anime Store.JP)の予約受付は本日が最終日",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "curtain-damashii-new-goods-2026を統合。当日締切"
+  },
+  "sweets-acrylic-stand-saki-2026": {
+   "action": "article",
+   "angle": "スイーツver. 花海咲季のアクリルコレクションスタンドが1,980円(税込)で予約受付中、11月22日まで",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 8,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "carried。既報なし"
+  },
+  "gaku-conceptual-single-collection-2027": {
+   "action": "article",
+   "angle": "初星学園 Conceptual Single Collection(2027年1月27日発売)のCD予約は本日が最終日。アソビストア特典のステッカーは無くなり次第終了",
+   "purpose": "期日の知らせ",
+   "rank": "large",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "CD予約締切の同一施策6主題を統合"
+  },
+  "hatsuboshi-conceptual-single-collection-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-conceptual-single-collection-2027",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "CD予約締切の同一記事に統合"
+  },
+  "anniversary-login-2026": {
+   "action": "article",
+   "angle": "2.5thアニバーサリー前夜祭ログインボーナスは11月16日4時59分終了。本日中がガシャチケットを受け取れる最終日",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "選べるログボ(gaku-logon-bonus-choice-2026)を統合"
+  },
+  "conceptual-single-collection-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-conceptual-single-collection-2027",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "CD予約締切の同一記事に統合"
+  },
+  "curtain-damashii-new-goods-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-b2-tapestry-juo-sena",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "カーテン魂予約締切の同一記事に統合"
+  },
+  "gaku-conceptual-single-collection-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-conceptual-single-collection-2027",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "CD予約締切の同一記事に統合"
+  },
+  "gaku-logon-bonus-choice-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "anniversary-login-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ16日4:59終了のログボ、取る行動は同じ"
+  },
+  "gakuen-kanae-amazon-gift-campaign-2026": {
+   "action": "article",
+   "angle": "氷渡香名江 実装記念のAmazonギフトカードキャンペーンは本日23時59分が応募の最終日",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 28,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "リマインダー投稿(gaku-kananae-reminder-2026)を統合"
+  },
+  "gaku-kananae-reminder-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gakuen-kanae-amazon-gift-campaign-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "香名江CPの同一締切記事に統合"
+  },
+  "gaku-conceptual-collection-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-conceptual-single-collection-2027",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "CD予約締切の同一記事に統合"
+  },
+  "gaku-kananae-shinjuku-ad-2026": {
+   "action": "article",
+   "angle": "氷渡香名江の新宿駅広告(メトロ 新宿スーパープレミアムセット)の掲出は本日が最終日",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "当日終了"
+  },
+  "gaku-producer-ranking-season4-2026": {
+   "action": "article",
+   "angle": "プロデューサーランキング シーズン4の集計期間は本日10時59分に終了し、最終順位を確認できる",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "当日終了"
+  },
+  "gaku-hr-25th-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gakuen-hatsuboshi-hr-2-5th-sp-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ生配信の記事に統合"
+  },
+  "gakumas-live-tour-hyo-final-tsukuriyo-goods": {
+   "action": "article",
+   "angle": "標ファイナル協賛3商品のASOBI STORE受注は本日が最終日(他店は12月7日まで)",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "協賛グッズ3主題を統合。ASOBI STORE締切は当日"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "gaku-eclipse-light-animate-fair-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "アニメイト通販「ECLIPSE LIGHT」対象商品欄に『GOLD RUSH(8)』特装版アニメイトセット(税込3,190円)が戻り、通常版(880円)が外れた",
+    "purpose": "新情報",
+    "lead_score": 5,
+    "dedup_key": "eclipse-light-animate-fair-2026",
+    "candidate_ids": [
+     "update-7cd23abb7383"
+    ]
+   },
+   {
+    "slug": "gaku-gakuen-hatsuboshi-hr-2-5th-sp-2026",
+    "brand": "gaku",
+    "rank": "large",
+    "angle": "初星学園HR 2.5thアニバーサリーSPが本日19時30分から生配信。香名江と新ユニット「乖轟」の情報を告知する",
+    "purpose": "期日の知らせ",
+    "lead_score": 90,
+    "dedup_key": "gakuen-hatsuboshi-hr-2-5th-sp-2026",
+    "candidate_ids": [
+     "202611150227-explore-6",
+     "sched-2026-11-15-gakuen-hatsuboshi-hr-2-5th-sp-2026-開始",
+     "sched-2026-11-15-gaku-hr-25th-2026-開始",
+     "sched-2026-11-15-gaku-hr-25th-2026-開始-src1",
+     "sched-2026-11-15-gaku-hr-25th-2026-開始-src2"
+    ]
+   },
+   {
+    "slug": "gaku-3rd-single-finish-goods-2026",
+    "brand": "gaku",
+    "rank": "medium",
+    "angle": "3rdシングル完走記念グッズの受注(アソビストア・アニメイト)は本日が最終日",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "gaku-3rd-single-finish-goods-2026",
+    "candidate_ids": [
+     "202611150227-grok-106",
+     "202611150227-grok-107",
+     "202611150227-grok-108",
+     "202611150227-grok-109",
+     "202611150227-grok-110",
+     "202611150227-grok-111",
+     "202611150227-grok-112",
+     "sched-2026-11-15-gaku-3rd-single-finish-goods-2026-締切"
+    ]
+   },
+   {
+    "slug": "gaku-b2-tapestry-juo-sena",
+    "brand": "gaku",
+    "rank": "medium",
+    "angle": "カーテン魂の学マス新作グッズ(Anime Store.JP)の予約受付は本日が最終日",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "gaku-b2-tapestry-juo-sena",
+    "candidate_ids": [
+     "202610260417-watch-0",
+     "202610241231-explore-11",
+     "202610260412-watch-0",
+     "202610260411-watch-0",
+     "sched-2026-11-15-gaku-b2-tapestry-juo-sena-締切",
+     "sched-2026-11-15-gaku-b2-tapestry-juo-sena-締切-src1",
+     "sched-2026-11-15-gaku-b2-tapestry-juo-sena-締切-src2",
+     "sched-2026-11-15-gaku-b2-tapestry-juo-sena-締切-src3",
+     "sched-2026-11-15-gaku-b2-tapestry-juo-sena-締切-src4",
+     "sched-2026-11-15-curtain-damashii-new-goods-2026-締切",
+     "sched-2026-11-15-curtain-damashii-new-goods-2026-締切-src1"
+    ]
+   },
+   {
+    "slug": "gaku-sweets-acrylic-stand-saki-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "スイーツver. 花海咲季のアクリルコレクションスタンドが1,980円(税込)で予約受付中、11月22日まで",
+    "purpose": "新情報",
+    "lead_score": 8,
+    "dedup_key": "sweets-acrylic-stand-saki-2026",
+    "candidate_ids": [
+     "202611140226-grok-59"
+    ]
+   },
+   {
+    "slug": "gaku-conceptual-single-collection-2027",
+    "brand": "gaku",
+    "rank": "large",
+    "angle": "初星学園 Conceptual Single Collection(2027年1月27日発売)のCD予約は本日が最終日。アソビストア特典のステッカーは無くなり次第終了",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "gaku-conceptual-single-collection-2027",
+    "candidate_ids": [
+     "sched-2026-11-15-gaku-conceptual-single-collection-2027-締切",
+     "202611150227-grok-53",
+     "sched-2026-11-15-hatsuboshi-conceptual-single-collection-2026-締切",
+     "sched-2026-11-15-conceptual-single-collection-2026-締切",
+     "sched-2026-11-15-gaku-conceptual-single-collection-2026-締切",
+     "sched-2026-11-15-gaku-conceptual-single-collection-2026-締切-src1",
+     "sched-2026-11-15-gaku-conceptual-collection-2026-締切",
+     "sched-2026-11-15-gaku-conceptual-collection-2026-締切-src1",
+     "sched-2026-11-15-gaku-conceptual-collection-2026-締切-src2"
+    ]
+   },
+   {
+    "slug": "gaku-anniversary-login-2026",
+    "brand": "gaku",
+    "rank": "medium",
+    "angle": "2.5thアニバーサリー前夜祭ログインボーナスは11月16日4時59分終了。本日中がガシャチケットを受け取れる最終日",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "anniversary-login-2026",
+    "candidate_ids": [
+     "sched-2026-11-15-anniversary-login-2026-終了",
+     "sched-2026-11-15-anniversary-login-2026-締切",
+     "sched-2026-11-15-anniversary-login-2026-締切-src1",
+     "sched-2026-11-15-gaku-logon-bonus-choice-2026-終了"
+    ]
+   },
+   {
+    "slug": "gaku-gakuen-kanae-amazon-gift-campaign-2026",
+    "brand": "gaku",
+    "rank": "medium",
+    "angle": "氷渡香名江 実装記念のAmazonギフトカードキャンペーンは本日23時59分が応募の最終日",
+    "purpose": "期日の知らせ",
+    "lead_score": 28,
+    "dedup_key": "gakuen-kanae-amazon-gift-campaign-2026",
+    "candidate_ids": [
+     "sched-2026-11-15-gakuen-kanae-amazon-gift-campaign-2026-締切",
+     "sched-2026-11-15-gakuen-kanae-amazon-gift-campaign-2026-締切-src1",
+     "sched-2026-11-15-gakuen-kanae-amazon-gift-campaign-2026-締切-src2",
+     "sched-2026-11-15-gaku-kananae-reminder-2026-締切",
+     "sched-2026-11-15-gaku-kananae-reminder-2026-締切-src1",
+     "sched-2026-11-15-gaku-kananae-reminder-2026-締切-src2"
+    ]
+   },
+   {
+    "slug": "gaku-kananae-shinjuku-ad-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "氷渡香名江の新宿駅広告(メトロ 新宿スーパープレミアムセット)の掲出は本日が最終日",
+    "purpose": "期日の知らせ",
+    "lead_score": 10,
+    "dedup_key": "gaku-kananae-shinjuku-ad-2026",
+    "candidate_ids": [
+     "sched-2026-11-15-gaku-kananae-shinjuku-ad-2026-終了"
+    ]
+   },
+   {
+    "slug": "gaku-producer-ranking-season4-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "プロデューサーランキング シーズン4の集計期間は本日10時59分に終了し、最終順位を確認できる",
+    "purpose": "期日の知らせ",
+    "lead_score": 10,
+    "dedup_key": "gaku-producer-ranking-season4-2026",
+    "candidate_ids": [
+     "sched-2026-11-15-gaku-producer-ranking-season4-2026-終了"
+    ]
+   },
+   {
+    "slug": "gaku-gakumas-live-tour-hyo-final-tsukuriyo-goods",
+    "brand": "gaku",
+    "rank": "medium",
+    "angle": "標ファイナル協賛3商品のASOBI STORE受注は本日が最終日(他店は12月7日まで)",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "gakumas-live-tour-hyo-final-tsukuriyo-goods",
+    "candidate_ids": [
+     "sched-2026-11-15-gakumas-live-tour-hyo-final-tsukuriyo-goods-締切",
+     "sched-2026-11-15-gakumas-live-tour-hyo-final-tsukuriyo-goods-締切-src1",
+     "202611150227-grok-57",
+     "202611150227-grok-80"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "gaku-asari-produce-seminar-2026-10",
+    "reason": "過年度",
+    "note": "11/14放映のTVCM告知で既に終了(dedup_keyは別件の名前)。gaku-kananae-cm-airingと同内容"
+   },
+   {
+    "dedup_key": "gakuen-kanae-poster-campaign",
+    "reason": "その他",
+    "note": "応募期限は11/14 23:59で終了済み"
+   },
+   {
+    "dedup_key": "kan-anae-manners-quiz-2026",
+    "reason": "重複",
+    "note": "kanae-manners-quiz-2026と同じ知らせ。11/14に記事化済み"
+   },
+   {
+    "dedup_key": "gkmas-lawson-2026-campaign",
+    "reason": "その他",
+    "note": "変更後の差分はサイト側の関連記事欄で、学マス×ローソン自体の締切・条件・品目の変更ではない"
+   },
+   {
+    "dedup_key": "gakumas-kanae-cm-poster-campaign-2026",
+    "reason": "その他",
+    "note": "応募期限11/14 23:59で終了済み"
+   },
+   {
+    "dedup_key": "gaku-kananae-cm-airing-2026",
+    "reason": "その他",
+    "note": "放映は11/14で終了済み"
+   },
+   {
+    "dedup_key": "gaku-kananae-cm-release-2026",
+    "reason": "既報",
+    "note": "11/14に特別CM放映は記事化済み。プロデュース開始16日は既知"
+   },
+   {
+    "dedup_key": "gaku-shirube-final-stream-ticket-2026",
+    "reason": "既報",
+    "note": "配信券の販売は11/8号で記事化済み。新事実・当日のトリガー無し"
+   },
+   {
+    "dedup_key": "kanae-manners-quiz-2026",
+    "reason": "既報",
+    "note": "11/14に記事化済み。新事実・トリガー無し"
+   },
+   {
+    "dedup_key": "gakumas-kananae-cm-campaign-2026",
+    "reason": "その他",
+    "note": "応募期限11/14 23:59で終了済み"
+   },
+   {
+    "dedup_key": "gaku-kananae-introduction-content-2026",
+    "reason": "既報",
+    "note": "香名江紹介コンテンツとポスター抽選は11/9号で記事化済み。キャンペーンは11/14で終了"
+   }
+  ],
+  "cross_brand": []
+ }
+}

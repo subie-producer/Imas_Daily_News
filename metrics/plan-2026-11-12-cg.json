@@ -1,0 +1,288 @@
+{
+ "decisions": {
+  "cinderella-girls-yokohama-marine-tower-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/11号に同内容を掲載済み。新事実・当日のトリガーなし(開幕は11/26)"
+  },
+  "cg-momopeaberry-motomachi-doria-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/7号に期間・メニュー・店舗・グッズ等を掲載済み。新事実なし"
+  },
+  "cg-yokohama-marine-tower-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/11号に掲載済みのマリンタワーコラボと同じ"
+  },
+  "cg-invitational-party-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-sousenkyo-2026-15th-popup",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じPOP UP SHOPの入場抽選締切"
+  },
+  "cinderella-girls-motomachi-doria-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/7号に3店舗メニュー・価格・住所・スタンディパネルまで掲載済み"
+  },
+  "cg-apple-of-my-ai-goods-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/6号に価格・11/29締切まで掲載済み。締切は17日先でトリガーなし"
+  },
+  "demirimi-clash-goods-preorder-2026": {
+   "action": "article",
+   "angle": "デレミリ「CLASH M@TCH!!」の事前グッズ受注は11月15日まで、締切まであと3日",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "締切3日前。法被6,600円・タオル3,000円など。チケットとは別の行動(グッズ受注)"
+  },
+  "memory-pict-8th-january-2026": {
+   "action": "article",
+   "angle": "Memory Pict.第8弾(蘭子・梨沙の着物姿)のASOBI STORE受注は11月15日まで、あと3日",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(締切前)。cg-memory-pict-8th-2026を統合"
+  },
+  "cg-athome-xr-apple-of-my-ai-ticket-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cinderella-athome-xr-live-apple-of-my-ai",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ一般会員先行の締切"
+  },
+  "cg-mika-birthday-fan-celebration-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "ファン投稿による誕生日祝いで公式発表ではない。cg面では単体記事にせず、ファン面(general)の対象"
+  },
+  "cg-yoku-no-dokusoka-fan-mv-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "同人・ファン主催",
+   "note": "ファン投稿のデレステMV動画の告知"
+  },
+  "cg-election-15th-popup-shop-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-sousenkyo-2026-15th-popup",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じPOP UP SHOP。個人の投稿が出典のため単体では扱わない"
+  },
+  "cinderella-athome-xr-live-apple-of-my-ai": {
+   "action": "article",
+   "angle": "「Apple of my アイ」現地チケットのアソビストア一般会員先行は11月15日23時59分まで、あと3日(当落は28日13時)",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(締切前)。cg-athome-xr-apple-of-my-ai-ticket-2026を統合"
+  },
+  "cg-sousenkyo-2026-15th-popup": {
+   "action": "article",
+   "angle": "シンデレラガール総選挙＆15th POP UP SHOPの入場事前予約(抽選)は本日23時59分が最終日。当落は16日18時、先着予約は17日18時",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 75,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "当日締切。invitational-party系3主題を統合(素材4件)"
+  },
+  "cg-election-15th-invitational-party-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-sousenkyo-2026-15th-popup",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じPOP UP SHOPの入場抽選締切"
+  },
+  "cg-memory-pict-8th-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "memory-pict-8th-january-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じMemory Pict.第8弾の受注締切"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "cg-demirimi-clash-goods-preorder-2026",
+    "brand": "cg",
+    "rank": "medium",
+    "angle": "デレミリ「CLASH M@TCH!!」の事前グッズ受注は11月15日まで、締切まであと3日",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "demirimi-clash-goods-preorder-2026",
+    "candidate_ids": [
+     "202611120230-grok-15",
+     "202611120230-grok-16",
+     "202611120230-grok-130",
+     "202611120230-grok-134",
+     "202611120230-grok-136",
+     "sched-2026-11-12-demirimi-clash-goods-preorder-2026-締切前",
+     "sched-2026-11-12-demirimi-clash-goods-preorder-2026-締切前-src1"
+    ]
+   },
+   {
+    "slug": "cg-memory-pict-8th-january-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "Memory Pict.第8弾(蘭子・梨沙の着物姿)のASOBI STORE受注は11月15日まで、あと3日",
+    "purpose": "期日の知らせ",
+    "lead_score": 15,
+    "dedup_key": "memory-pict-8th-january-2026",
+    "candidate_ids": [
+     "202611120230-grok-17",
+     "202611120230-grok-135",
+     "sched-2026-11-12-memory-pict-8th-january-2026-締切前",
+     "sched-2026-11-12-memory-pict-8th-january-2026-締切前-src1",
+     "sched-2026-11-12-cg-memory-pict-8th-2026-締切前",
+     "sched-2026-11-12-cg-memory-pict-8th-2026-締切前-src1"
+    ]
+   },
+   {
+    "slug": "cg-cinderella-athome-xr-live-apple-of-my-ai",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "「Apple of my アイ」現地チケットのアソビストア一般会員先行は11月15日23時59分まで、あと3日(当落は28日13時)",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "cinderella-athome-xr-live-apple-of-my-ai",
+    "candidate_ids": [
+     "sched-2026-11-12-cinderella-athome-xr-live-apple-of-my-ai-締切前",
+     "sched-2026-11-12-cinderella-athome-xr-live-apple-of-my-ai-締切前-src1",
+     "sched-2026-11-12-cinderella-athome-xr-live-apple-of-my-ai-締切前-src2",
+     "202611120230-grok-18",
+     "202611120230-grok-131"
+    ]
+   },
+   {
+    "slug": "cg-sousenkyo-2026-15th-popup",
+    "brand": "cg",
+    "rank": "medium",
+    "angle": "シンデレラガール総選挙＆15th POP UP SHOPの入場事前予約(抽選)は本日23時59分が最終日。当落は16日18時、先着予約は17日18時",
+    "purpose": "期日の知らせ",
+    "lead_score": 75,
+    "dedup_key": "cg-sousenkyo-2026-15th-popup",
+    "candidate_ids": [
+     "sched-2026-11-12-cg-sousenkyo-2026-15th-popup-締切",
+     "202611112333-explore-5",
+     "202611120230-grok-21",
+     "sched-2026-11-12-cg-election-15th-invitational-party-2026-締切"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "cinderella-girls-yokohama-marine-tower-2026",
+    "reason": "既報",
+    "note": "11/11号に同内容を掲載済み。新事実・当日のトリガーなし(開幕は11/26)"
+   },
+   {
+    "dedup_key": "cg-momopeaberry-motomachi-doria-2026",
+    "reason": "既報",
+    "note": "11/7号に期間・メニュー・店舗・グッズ等を掲載済み。新事実なし"
+   },
+   {
+    "dedup_key": "cg-yokohama-marine-tower-2026",
+    "reason": "既報",
+    "note": "11/11号に掲載済みのマリンタワーコラボと同じ"
+   },
+   {
+    "dedup_key": "cinderella-girls-motomachi-doria-2026",
+    "reason": "既報",
+    "note": "11/7号に3店舗メニュー・価格・住所・スタンディパネルまで掲載済み"
+   },
+   {
+    "dedup_key": "cg-apple-of-my-ai-goods-2026",
+    "reason": "既報",
+    "note": "11/6号に価格・11/29締切まで掲載済み。締切は17日先でトリガーなし"
+   },
+   {
+    "dedup_key": "cg-mika-birthday-fan-celebration-2026",
+    "reason": "その他",
+    "note": "ファン投稿による誕生日祝いで公式発表ではない。cg面では単体記事にせず、ファン面(general)の対象"
+   },
+   {
+    "dedup_key": "cg-yoku-no-dokusoka-fan-mv-2026",
+    "reason": "同人・ファン主催",
+    "note": "ファン投稿のデレステMV動画の告知"
+   }
+  ],
+  "cross_brand": []
+ }
+}

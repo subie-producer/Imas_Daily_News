@@ -1,0 +1,744 @@
+{
+ "verdict": "block",
+ "blockers": [
+  {
+   "file": "docs/_posts/2026-11-12-765-imas-mor-424-2026.md",
+   "issue": "フォームの必須項目・コーナー選択肢・メールアドレスの任意は、根拠の F4(送付先 URL だけを述べる事実)から導けない。出典の form ページには書かれているが、執筆の new_facts は空で、N の控えも無い。直接送付先(imasmusic@columbia.co.jp)も F16(番組内使用の案内だけ)から導けない。事実自体は krs.bz のフォームページ(本日読み直した原本)と一致するが、根拠の id が付いていない。",
+   "quote": "専用フォーム（https://krs.bz/columbia/m/morform）では、プロデューサーネーム、コーナー、メッセージ本文が必須で、メールアドレスは任意です。",
+   "rule_id": "R1",
+   "repair": "rewrite_claim",
+   "fact_ids": [
+    "F4"
+   ],
+   "expected": "フォームの必須項目・コーナー選択肢・メールアドレス任意の各記述が、krs.bz フォームページを読んで確かめた new_facts(url 付き)の id で根拠づけられているか、書かないかのどちらかになっている。",
+   "scope": "article:2026-11-12-765-imas-mor-424-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-11-12-765-imas-mor-424-2026.md",
+   "issue": "フォームを使わない直接送付(添付ファイル・機種依存文字の場合、imasmusic@columbia.co.jp)は、根拠の F16(番組内使用の案内)から導けない。フォームページの本文には記載があるが、new_facts・N の控えが無い。",
+   "quote": "添付ファイルを使う場合や機種依存文字を使う場合など、フォームを使わないメッセージは imasmusic@columbia.co.jp へ直接送れます。",
+   "rule_id": "R1",
+   "repair": "rewrite_claim",
+   "fact_ids": [
+    "F16"
+   ],
+   "expected": "直接送付の記述が、krs.bz フォームページを読んで確かめた new_facts(url 付き)の id で根拠づけられているか、書かないかのどちらかになっている。",
+   "scope": "article:2026-11-12-765-imas-mor-424-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-11-12-cg-memory-pict-8th-january-2026.md",
+   "issue": "verified_facts N2 の url(shop.asobistore.jp/feature/cg_mp)を開いても、「購入・決済はASOBI STOREにログインして行う」「配送料は注文ごとに発生する」は書かれていない(ページにはログインの導線しか無い)。この2点は idolmaster-official.jp/news/01_20300.html の注意事項にある。",
+   "quote": "- id: N2\n  text: グッズの購入・決済はASOBI STOREにログインして行う。配送料は注文ごとに発生する。\n  url: https://shop.asobistore.jp/feature/cg_mp\n\n本文: 注文・決済はASOBI STOREにログインして行う。配送料は注文ごとにかかる。",
+   "rule_id": "R2",
+   "repair": "rewrite_claim",
+   "fact_ids": [
+    "N2"
+   ],
+   "expected": "N2 の url は、購入・決済のログインと注文ごとの配送料が書かれたページ(idolmaster-official.jp/news/01_20300.html)を指しており、その url を開けば本文の 2 文が確認できる状態にする。",
+   "scope": "article:2026-11-12-cg-memory-pict-8th-january-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-11-12-cg-memory-pict-8th-january-2026.md",
+   "issue": "sources の 4 つ目の label が途中で切れており、「」が閉じていない(ページ名の「 | ASOBI STORE」以降が欠けている)。読者に見える出典名が機械的に壊れている。",
+   "quote": "- label: ASOBI STORE「THE IDOLM@STER CINDERELLAGIRLS Memory Pict.",
+   "rule_id": "R16",
+   "repair": "rewrite_claim",
+   "fact_ids": [],
+   "expected": "ASOBI STORE の出典 label が「」で閉じ、ページのタイトル(THE IDOLM@STER CINDERELLAGIRLS Memory Pict. など)を途中で切らずに示している。",
+   "scope": "article:2026-11-12-cg-memory-pict-8th-january-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-11-12-dsva-letora-birthday-online-live-2026.md",
+   "issue": "本文2段落目の「最速版アーカイブの公開予定」「視聴コメント付きアーカイブは本日18時から12月13日23時59分まで」「配信チケット購入者は…この期間中にアーカイブを視聴できる」の根拠は、素材 sched-2026-11-12-letora-birthday-online-live-2026-開始-src2(F206・F207 を含む)で、その url https://idolmaster-official.jp/news/01_20286 が sources に無い。根拠にした公式ページの url が出典に載っていない(R3)。01_20286 は公式で、本文を読むと上の時刻・期間を記載しており、内容は一致する。",
+   "quote": "最速版アーカイブの公開予定は、本編終了1時間後から本日18時まで。視聴コメント付きアーカイブは本日18時から12月13日23時59分まで視聴できる。配信チケット購入者は公演当日のリアルタイム配信に加え、この期間中にアーカイブを視聴できる。",
+   "rule_id": "R3",
+   "repair": "add_source",
+   "fact_ids": [
+    "F206",
+    "F207"
+   ],
+   "expected": "sources に https://idolmaster-official.jp/news/01_20286（種別: 公式）を加え、アーカイブの時刻・期間の根拠がその出典で読める状態にする。",
+   "scope": "article:2026-11-12-dsva-letora-birthday-online-live-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-11-12-gaku-lawson-store-goods-2026.md",
+   "issue": "sources が当事者(ローソンのFAQ)1件だけで、公式・準公式、または公式の発表を報じた報道が無い。学マス公式が関わるローソンのコラボ・キャンペーンなので R5 に当たる。前号(2026-11-11)の sources には学マス公式X(x.com/gkmas_official/status/2119961057427099649)があったが、今号では落ちている。",
+   "quote": "label: ローソン「学園アイドルマスターキャンペーン：【店頭販売】概要は？」(2026年11月10日)",
+   "rule_id": "R5",
+   "repair": "add_source",
+   "fact_ids": [
+    "sched-2026-11-12-gaku-lawson-store-goods-2026-発売-src5"
+   ],
+   "expected": "sources に学マス公式Xの投稿(https://x.com/gkmas_official/status/2119961057427099649、種別「公式」)が入っており、その facts(ローソンで学園アイドルマスターキャンペーンを開始、オリジナルグッズの展開)と記事の内容が照合できる状態。",
+   "scope": "article:2026-11-12-gaku-lawson-store-goods-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-11-12-gaku-ops-roundup.md",
+   "issue": "リードが、まだ終わっていない前夜祭ログインボーナスを終了済みとして書いている。素材の開催期間は11/6 11:00〜11/16(月) 4:59まで(予定)で、発行日の2026-11-12時点では続いている。",
+   "quote": "リード「…前夜祭ログインボーナスは11月16日4時59分に終了した。」",
+   "rule_id": "R1",
+   "repair": "rewrite_claim",
+   "fact_ids": [
+    "F15",
+    "F17"
+   ],
+   "expected": "前夜祭ログインボーナスを『11月16日4時59分まで（予定）』の期限として書き、終了したとは書かない。",
+   "scope": "article:2026-11-12-gaku-ops-roundup.md"
+  },
+  {
+   "file": "docs/_posts/2026-11-12-gaku-ops-roundup.md",
+   "issue": "リードの前夜祭ログインボーナスの期間・内容は、sources に無い url(https://x.com/gkmas_official/status/2112510074933432669)の素材(F15・F17)を根拠にしている。出典隠しになっている。",
+   "quote": "リード「…前夜祭ログインボーナスは11月16日4時59分に終了した。」",
+   "rule_id": "R3",
+   "repair": "add_source",
+   "fact_ids": [
+    "F15",
+    "F17"
+   ],
+   "expected": "前夜祭ログインボーナスの期間・内容の根拠になる公式投稿(https://x.com/gkmas_official/status/2112510074933432669)が sources に入っている。",
+   "scope": "article:2026-11-12-gaku-ops-roundup.md"
+  },
+  {
+   "file": "docs/_posts/2026-11-12-joint-tours-rhythm-live-festival-qualifier-extension-2027.md",
+   "issue": "予選ランキングの更新日(11月16日・20日・27日・12月4日)が、verified_facts N2 の url(公式大会ページ)に無い。ページ全体を確認したが、更新日の記載は無い(公式X投稿 2120080271126987075 の『ランキング更新日』には記載あり。この投稿は sources にある)。N2 の url は、書かれた事実を確かめられる出典ではない。",
+   "quote": "ランキングは11月16日、20日、27日、12月4日に更新予定。",
+   "rule_id": "R2",
+   "repair": "rewrite_claim",
+   "fact_ids": [
+    "N2"
+   ],
+   "expected": "ランキング更新日の根拠を、その日付が書かれた出典(sources にある公式X投稿 https://x.com/TOURS_imas/status/2120080271126987075)に付け替える、または公式大会ページで確かめられる範囲に書き直す。",
+   "scope": "article:2026-11-12-joint-tours-rhythm-live-festival-qualifier-extension-2027.md"
+  },
+  {
+   "file": "docs/_posts/2026-11-12-million-ova-onkyo-earphone-charger-2026.md",
+   "issue": "イヤホンの録り下ろしボイス数が誤り。公式は3モデル合わせて計31ワードとしているのに、記事はモデルごとに31ワードと書いている。誤りの元は演者のXを要約した素材(F22「各31ワード収録」、未確認)。",
+   "quote": "各モデルに新規録り下ろしボイス31ワードを搭載",
+   "rule_id": "R1",
+   "repair": "rewrite_claim",
+   "fact_ids": [
+    "F8",
+    "F22"
+   ],
+   "expected": "イヤホンのボイスは3モデル合わせて計31ワード(電源オン・オフ、ペアリング時、タップ音など)と書かれ、モデルごとの数とはしていない状態。",
+   "scope": "article:2026-11-12-million-ova-onkyo-earphone-charger-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-11-12-sidem-315-night-letter-call-2026-11.md",
+   "issue": "本文が、矢野奨吾・古畑恵介・伊能幸輝の3人を「もふもふえん」の所属メンバーとして書いている。素材はパーソナリティを「もふもふえん、矢野奨吾、古畑恵介、伊能幸輝」と並べているだけで、3人がもふもふえんの一員だとは書いていない。台帳でも矢野奨吾は別の役(岡村直央役)として扱われている。",
+   "quote": "番組では、もふもふえんの矢野奨吾さん、古畑恵介さん、伊能幸輝さんをパーソナリティに迎え",
+   "rule_id": "R1",
+   "repair": "rewrite_claim",
+   "fact_ids": [
+    "F1",
+    "F8"
+   ],
+   "expected": "本文が、パーソナリティを「もふもふえん」と矢野奨吾・古畑恵介・伊能幸輝の各人として並べて書き、3人がもふもふえんの所属だとは書いていない状態。",
+   "scope": "article:2026-11-12-sidem-315-night-letter-call-2026-11.md"
+  },
+  {
+   "file": "docs/_posts/2026-11-12-sidem-fbfes-movie-stage-greeting-shinjuku-2026.md",
+   "issue": "本会場チケットの販売期間の終わり（11月19日23:59）を、記事の出典（公式ポータルの告知ページ）から読めない。このページで「販売期間：2026年11月19日(木)23:59まで」と書かれているのは、アソビストアのグッズ・ムビチケ商品の販売期間で、本会場の舞台挨拶チケットの欄には期間の記載がない。素材 F114 はこのラベルを本会場チケットの期間として取り違えている。一方、当事者の新宿ピカデリーのページ（smt-cinema.com 098243）には、本会場の一般先着（ローソン・ミニストップ店頭Loppi／WEB）の「受付期間：11月11日(水)12:00～11月19日(木)23:59」と「料金 3,500円、お1人様2枚まで」が載っており、日付はこちらで裏づけられる。記事はこのページを出典に入れていない。",
+   "quote": "本文「販売期間は11月19日（木）午後11時59分まで。」",
+   "rule_id": "R4",
+   "repair": "add_source",
+   "fact_ids": [
+    "F114",
+    "F130"
+   ],
+   "expected": "本会場の期限を、新宿ピカデリーの当事者ページ（受付期間 11/11 12:00〜11/19 23:59、Loppi・WEB）を出典に加えたうえで書き、出典に無い「販売期間」の語を公式ページの商品期間から取らない（受付期間として書き直すか、出典に加えて裏づけを示す）。",
+   "scope": "article:2026-11-12-sidem-fbfes-movie-stage-greeting-shinjuku-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-11-12-sidem-fbfes-wanna-step-in-goods-2026.md",
+   "issue": "イベントグッズ・ユニットグッズ・アイドルグッズの価格は、出典 url(idolmaster-official.jp/news/01_20301)の本文に無い。2026-11-12 03:24 に読み直したところ、本文は告知の文面と注意事項だけで、価格の記載も、一部サンプル画像の紹介のみ。価格は ASOBI STORE 特設サイト(shop.asobistore.jp/feature/sidem_fbfes_wsi)の商品一覧に全件あり、記事の値(パンフ4,200・マルチカラーライト3,200・キーホルダー1,700×2・カードA/B 700・缶バッジA/B 400・バングル1,800・タオル3,000・Tシャツ3,600・ロングT4,500・トート3,800・バンダナ1,300・シューレース1,500・ソックス2,500・ショルダー3,500・リボン1,500・フラッグ1,300・ステッカー1,500・アクリルスタンドセット4,500・ジャンボうちわ1,000・アクリルスタンド1,500・ネームキー1,100・アクリルチャーム1,000)とは一致する。ただし sources にこの特設サイトが無く、N2・N3・N4 の根拠 url で確かめられない。",
+   "quote": "公式パンフレット：4,200円（税込）",
+   "rule_id": "R2",
+   "repair": "add_source",
+   "fact_ids": [
+    "N2",
+    "N3",
+    "N4"
+   ],
+   "expected": "価格を書いた根拠の url(ASOBI STORE 特設サイト)を sources に加え、その url で各価格と販売期間が確かめられる状態にする。",
+   "scope": "article:2026-11-12-sidem-fbfes-wanna-step-in-goods-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-11-12-sidem-fbfes-wanna-step-in-goods-2026.md",
+   "issue": "ユニットグッズの8ユニット名(Jupiter・Altessimo・Beit・W・Cafe Parade・もふもふえん・S.E.M・C.FIRST)は、sources のどちらの page にも無い(01_20301 も ASOBI STORE 特設サイトも、ユニット名を載せていない)。N3 はこの url を根拠にしているが、ユニット名はここからは導けない。素材の sched 事実にも無い。同じ8ユニットは別件の既報台帳(sidem-fantastic-battle-fes-2026、2026-09-03)にあるが、この記事の出典ではない。",
+   "quote": "ユニットグッズはJupiter、Altessimo、Beit、W、Cafe Parade、もふもふえん、S.E.M、C.FIRSTのデザイン。",
+   "rule_id": "R1",
+   "repair": "add_source",
+   "fact_ids": [
+    "N3"
+   ],
+   "expected": "ユニット名の一覧を、sources のどれかで確かめられる状態にする。確かめられる出典が無ければ一覧を書かない。",
+   "scope": "article:2026-11-12-sidem-fbfes-wanna-step-in-goods-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-11-12-sidem-fbfes-wanna-step-in-goods-2026.md",
+   "issue": "アイドル別グッズの対象25名は、sources のどれにも無い。01_20301 本文にも、ASOBI STORE 特設サイトの商品一覧にも名前は無い(商品名はアイテム種別のみ)。sched 素材の facts にも無い。名前の一覧は 2026-10-16 の候補 202610151833-watch-3(出典 url idolmaster-official.jp/news/01_20165)の facts にあるが、その url は 10/15 の告知で、読み直した本文にも名前の一覧は無い。出典を足すか、一覧を消すかのどちらかが必要。",
+   "quote": "対象は天ヶ瀬冬馬、御手洗翔太、伊集院北斗、都築圭、神楽麗、鷹城恭二、ピエール＆カエール、渡辺みのり、蒼井悠介、蒼井享介、神谷幸広、東雲荘一郎、アスラン=ベルゼビュートII世、卯月巻緒、水嶋咲、岡村直央、橘志狼、姫野かのん、硲道夫、舞田類、山下次郎、天峰秀、花園百々人、眉見鋭心。",
+   "rule_id": "R1",
+   "repair": "drop_claim",
+   "fact_ids": [
+    "N4"
+   ],
+   "expected": "対象アイドルの一覧は、sources のどれかで名前ごとに確かめられる場合だけ書く。確かめられないなら一覧を消し、「全アイドルのグッズを販売」の一文に留める。",
+   "scope": "article:2026-11-12-sidem-fbfes-wanna-step-in-goods-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-11-12-sidem-gotoken-christmas-party-set-2026.md",
+   "issue": "SideM×五島軒のコラボ(Mフェス2026への言及、©Bandai Namco表記あり)の記事なのに、sources が当事者(五島軒の販売ページ)1件だけで、公式・準公式、または公式の発表を報じた報道が無い。R5 は公式が関わるコラボに公式・準公式か報道を求める。素材(candidates の 2026-11-06 / 11-07 / 11-08 / 11-12 の同じ話題の素材)にも公式・準公式・報道の素材は見当たらない。",
+   "quote": "五島軒のSideMクリスマスセット商品ページに地域別送料が加わり、北海道は1,100円、沖縄県は2,970円など、届け先に応じた金額が示された。",
+   "rule_id": "R5",
+   "repair": "add_source",
+   "fact_ids": [
+    "F1",
+    "F2",
+    "F3",
+    "F14",
+    "F15",
+    "N1"
+   ],
+   "expected": "sources に、この話題(SideM×五島軒クリスマスセットの送料・予約)を公式・準公式が告知した、または公式の発表を報じた報道が少なくとも1件あり、記事の送料の記述がそれで確かめられている状態。素材にそれが無いなら、記事は成立しないので drop_article が必要。",
+   "scope": "article:2026-11-12-sidem-gotoken-christmas-party-set-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-11-12-sidem-joypolis-screening-2026-12-05.md",
+   "issue": "先行抽選の申込受付期間（10月16日12時〜11月8日23時59分）は既に終わった受付の日程で、読者が今日できることを増やさず、今日の出来事（本日15時の当選発表）を理解するのにも要らない。R12 の例（終わった受付・販売・抽選の日程）に当たる。",
+   "quote": "先行抽選の申込受付は10月16日12時から11月8日23時59分までだった。",
+   "rule_id": "R12",
+   "repair": "drop_claim",
+   "fact_ids": [
+    "N5"
+   ],
+   "expected": "終わった先行抽選の申込受付の日程を記事から外し、本日15時の当選発表と一般販売期間（11月19日12時〜12月5日18時）だけを残す。",
+   "scope": "article:2026-11-12-sidem-joypolis-screening-2026-12-05.md"
+  },
+  {
+   "file": "docs/_posts/2026-11-12-sidem-mfes-bakudanyaki-2026.md",
+   "issue": "「Mフェス 2026 in Winter Wonderland」(SideM公式のイベント)とのコラボ(IP を使った特典ブロマイド・グッズ・フード)を扱うのに、sources に公式・準公式、または公式の発表を報じた報道がない。出典は二次情報のまとめブログ(ファン向け情報集積のため報道に当たらない)と、ばくだん焼本舗の公式X(当事者)の2件だけ。素材(202611112333-explore-10 / 202611120230-grok-69・70)も公式の告知を含まない。",
+   "quote": "見出し「SideM×ばくだん焼本舗、5店舗でコラボ」 リード「「Mフェス 2026 in Winter Wonderland」とばくだん焼本舗のコラボが12月1日から27日まで5店舗で開催され、コラボフードやグッズを販売する。」",
+   "rule_id": "R5",
+   "repair": "add_source",
+   "fact_ids": [
+    "F1",
+    "F2",
+    "F3",
+    "F9"
+   ],
+   "expected": "公式(SideM・Mフェス運営の告知)か、その公式の発表を報じた報道を sources に加え、リードの開催・販売の事実をその出典で確かめられる状態にする。見つからないなら、この話題は記事にせず drop_article とする。",
+   "scope": "article:2026-11-12-sidem-mfes-bakudanyaki-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-11-12-sidem-spicy-sharing-guidance-2026.md",
+   "issue": "本文第1段が、同作について部分的なシェアを認めるのは315 PASSION CONTENTSのFAQだと書いている。開いたFAQ(bnfaq.channel.or.jp/faq/detail/3055/7699)は作品名を挙げておらず、『密着・スパイシー！？』について述べているのは公式X投稿(F7、素材 202611120230-grok-145)である。FAQ(N1)は一般の取り決めとして書かれている。出典の取り違え(R4)。",
+   "quote": "315 PASSION CONTENTSのFAQは、同作について、部分的なキャプチャや実況、解説、感想のシェアを目的とした投稿・共有を認めている。",
+   "rule_id": "R4",
+   "repair": "rewrite_claim",
+   "fact_ids": [
+    "F7",
+    "N1"
+   ],
+   "expected": "同作について部分的なシェアを認めるのはSideM公式X投稿(F7)と書き、FAQ(N1)は作品名に触れない一般の取り決めとして別の文で書く。",
+   "scope": "article:2026-11-12-sidem-spicy-sharing-guidance-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-11-12-sidem-kirio-birthday-2026.md",
+   "issue": "P1: 同じ知らせの重複。猫柳キリオの11月12日の誕生日を公式が祝福した投稿を、SideM公式(本記事)とアイマス公式チャンネル(docs/_posts/2026-11-12-general-official-birthday-nov12-2026.md)が別々に伝えている。どちらも「11/12のキリオ誕生日を公式が祝う」という同じ事実を軸にしており、読者ができることも同じ(祝福を見る)。号の digest に載っているのは general 側なので、こちらを落とす。",
+   "quote": "SideM公式アカウントが猫柳キリオの誕生日を祝い、くろークン、ちょうちょさん、プロデューサーへの感謝を伝えるメッセージを投稿した。",
+   "rule_id": "P1",
+   "repair": "drop_article",
+   "fact_ids": [
+    "F1",
+    "F2"
+   ],
+   "expected": "11月12日の猫柳キリオ誕生日の公式祝福は1本(general-official-birthday-nov12-2026)だけが紙面に載り、sidem-kirio-birthday-2026 は落ちている。",
+   "scope": "paper"
+  }
+ ],
+ "comments": [
+  {
+   "file": "docs/_posts/2026-11-12-765-imas-mor-424-2026.md",
+   "issue": "リードで「11月25日放送」の直後に「本日11月12日まで」と、本日と絶対日付を同じ文に併用している。日付の内容は正しい(R6 には当たらない)が、執筆規程の『本日と絶対日付を同じ文で併用しない』に反する。『本日まで』か『11月12日まで』のどちらかに寄せるとよい。",
+   "scope": "article:2026-11-12-765-imas-mor-424-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-11-12-765-imas-mor-424-2026.md",
+   "issue": "機械の所見『時制矛盾(lede)』は外れ。『11月25日』は放送日(未来)、『本日』は 2026-11-12 基準で正しく、矛盾はない。対応不要。",
+   "scope": "article:2026-11-12-765-imas-mor-424-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-11-12-765-imas-mor-424-2026.md",
+   "issue": "締切の記述は、本日読み直した出典(X 投稿の原本・フォームページ)と一致した: 放送 11/25、白戸さんゲスト、メール 11/12 まで、送付先 URL。締切が本日のため R10・R11 の例外に当たり、ブロックしない。",
+   "scope": "article:2026-11-12-765-imas-mor-424-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-11-12-765-imas-radio-2026-nov-10-archive.md",
+   "issue": "本文の「番組ページでは、平田さんは菊地真役、若林さんは秋月律子役、天音さんは学園アイドルマスターの雨夜燕役として紹介されている」は、実際には本編動画の説明欄（N1）に載っている記載。「動画の説明欄では」と書けば出典と一致が明確になる（事実としては誤りではない）。",
+   "scope": "article:2026-11-12-765-imas-radio-2026-nov-10-archive.md"
+  },
+  {
+   "file": "docs/_posts/2026-11-12-765-imas-radio-2026-nov-10-archive.md",
+   "issue": "根拠の確認: 本編・アフタートークの YouTube 2本は fetch_page.py で開き、出演者・配信日（2026-11-10 Streamed live）・メンバー限定の記載を確認できた。X の 4 投稿は開けないため素材の facts（F2・F3・F7・F9・F16・F21・F26〜F30）と照合し、一致した。台帳 imas-radio-2026 には 11月10日放送回の既報事実が無く、R10 には当たらない。",
+   "scope": "article:2026-11-12-765-imas-radio-2026-nov-10-archive.md"
+  },
+  {
+   "file": "docs/_posts/2026-11-12-cg-cinderella-athome-xr-live-apple-of-my-ai.md",
+   "issue": "公演日が「2月13日」「2月14日」と年なしで書かれている(公演は2027年2月13日・14日。出典は 2027 年と明記)。記事は2026年11月の発行なので、読者が年を取り違えないよう初出の公演日程の段落に「2027年」を補うとよい。",
+   "scope": "article:2026-11-12-cg-cinderella-athome-xr-live-apple-of-my-ai.md"
+  },
+  {
+   "file": "docs/_posts/2026-11-12-cg-memory-pict-8th-january-2026.md",
+   "issue": "sources 1 件目の x.com 投稿(2120441409421627431)は機械から開けないため、素材 202611120230-grok-17 の facts(オーロラ缶バッジ・B2タペストリーの受注期間は 11/15 まで)と照合した。ブロックしていない。",
+   "scope": "article:2026-11-12-cg-memory-pict-8th-january-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-11-12-cg-memory-pict-8th-january-2026.md",
+   "issue": "本文・リードの事実(受注 10/30〜11/15、23:59 締切、着物・初詣、税込 5,900/500/5,000/16,000 円、2027 年 1 月下旬以降の発送)は、公式ページ(01_20171・01_20300・ASOBI STORE 特設ページ)で確かめられた。締切 3 日前の告知なので R10・R11 の対象外。",
+   "scope": "article:2026-11-12-cg-memory-pict-8th-january-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-11-12-dsva-letora-birthday-online-live-2026.md",
+   "issue": "分量不足(rank: lead・目安1000字)。本文は約300字で、出典にある会場・時間・価格・配信特典(冒頭無料枠 YouTube、アフタートーク配信 21:30〜、現地LV 9,000円ほか)を拾えば埋まる。一般論での水増しは不要。",
+   "scope": "article:2026-11-12-dsva-letora-birthday-online-live-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-11-12-dsva-letora-birthday-online-live-2026.md",
+   "issue": "1段落目の「スペシャルゲストのジュリアと「スタートリップ」を披露」は素材 F6 から来ており、出典 X 投稿の facts で確認できた。問題はないが、段落末の根拠 F1 F4 F5 では「ジュリア」「スタートリップ」の部分が指されていない(控えの表記のみ。本文の問題ではない)。",
+   "scope": "article:2026-11-12-dsva-letora-birthday-online-live-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-11-12-dsva-letora-birthday-online-live-2026.md",
+   "issue": "確認済み: セットリスト9曲は素材 grok-86 の本人投稿の facts と一致。公演日(11/11)・会場(ASOBI STAGE)・ジュリア出演・最速版アーカイブ 18時までは 01_20286 と照合して一致。R1・R2・R4・R5・R6・R7・R8・R9・R10・R11・R12・R13・R14・R15 に該当なし。",
+   "scope": "article:2026-11-12-dsva-letora-birthday-online-live-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-11-12-gaku-3rd-single-finish-goods-2026.md",
+   "issue": "リードの「締切まであと3日」は 11/12→11/15 の日数計算としては正しい。ただしアソビストアの商品一覧ページ(03:19 読み直し時点)の締切カウンターは「あと4日!」と表示している。読者が店頭表示と照らすと食い違って見えるため、日数ではなく「11月15日(日)まで」と日付で示す書き方も検討の余地がある(判定には影響しない)。",
+   "scope": "article:2026-11-12-gaku-3rd-single-finish-goods-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-11-12-gaku-3rd-single-finish-goods-2026.md",
+   "issue": "出典の確認: 公式ポータル(idolmaster-official.jp/news/01_20235)は収集時点から変わっているが、変わったのは RECOMMEND 欄と別記事の日付だけで、受注期間(2026年10月20日〜11月15日)・ASOBI STORE/アニメイトの受注・11月15日締切の記述は現在の版にもある。アソビストアの商品一覧(7件)と価格(B2タペストリー5,000円、アクリルスタンド2,200円、トレーディングCD型キーホルダー1,100円)も記事どおり一致した。",
+   "scope": "article:2026-11-12-gaku-3rd-single-finish-goods-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-11-12-gaku-3rd-single-finish-goods-2026.md",
+   "issue": "続報予約の素材(締切前)は既報台帳 metrics/stories-before-2026-11-12.yml に同じ話題の記載が無いため、R10 には当たらない。締切3日前の案内として R10・R11 の例外に入る。",
+   "scope": "article:2026-11-12-gaku-3rd-single-finish-goods-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-11-12-gaku-b2-tapestry-juo-sena.md",
+   "issue": "確認した範囲: 本文の商品種別・人数・価格・サイズ・発売時期(2027年2月)・お届け(2027年3月上旬)・予約受付期間(〜11/15)は、当事者の商品ページ4件・カーテン魂の商品一覧・二次情報の素材と一致し、R1〜R5・R6〜R9 の指摘はない。締切まで3日は11/12基準で正しい。続報予約(締切前)の記事は R10 の『3日以内に迫った締切』に当たりブロックしない。補足: 商品ページには『すでに予約は終了しました。』の文言もあるが、『予約締切 11/15』『予約受付期間：〜2026年11月15日』と同じページにあり、非表示の状態表示と見られる。判定には影響しないが、公開前に予約ボタンが押せる状態か一度確かめるとよい。",
+   "scope": "article:2026-11-12-gaku-b2-tapestry-juo-sena.md"
+  },
+  {
+   "file": "docs/_posts/2026-11-12-gaku-gakuen-kanae-amazon-gift-campaign-2026.md",
+   "issue": "締切（2026/11/15 23:59）は公式ページで「（予定）」と付いている期間の終わりだが、リードと本文は断定で書いている。「予定」を補うか、出典どおりの書き方にすると安全。判定には影響しない。",
+   "scope": "article:2026-11-12-gaku-gakuen-kanae-amazon-gift-campaign-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-11-12-gaku-gakuen-kanae-amazon-gift-campaign-2026.md",
+   "issue": "出典の公式ページは収集時点から版が変わっているが、変わった箇所はナビゲーションと別記事の一覧のみで、キャンペーン本文・当選条件・抽選対象外の条件は変わっていない。記事の内容は現行の版と一致している。",
+   "scope": "article:2026-11-12-gaku-gakuen-kanae-amazon-gift-campaign-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-11-12-gaku-lawson-print-15-bromides-2026-10.md",
+   "issue": "分量不足(コメント): rank small の目安 250字に対して本文は約100字。出典にある追加内容(243〜326の84種、2026/11/10付の掲載、商品一覧から選んで購入できること)は既に書かれており、残りは出典に無い内容で埋めるしかないため、水増しは勧めない。",
+   "scope": "article:2026-11-12-gaku-lawson-print-15-bromides-2026-10.md"
+  },
+  {
+   "file": "docs/_posts/2026-11-12-gaku-ops-roundup.md",
+   "issue": "分量不足: 本文は箇条書き3つで、リードが触れる前夜祭ログインボーナスの段落が本文に無い。リードだけの話題は本文で補うとよい(出典にある期間・対象・選択肢は根拠がある)。",
+   "scope": "article:2026-11-12-gaku-ops-roundup.md"
+  },
+  {
+   "file": "docs/_posts/2026-11-12-gaku-ops-roundup.md",
+   "issue": "GOLD RUSHの無料公開は、公式投稿は『2巻完全無料』、準公式の championcross.jp ページは『70話分無料』・期限 2026/11/21 18:00 まで。期限は両方で一致し、ページは本日03:21に読み直して確認できた。本文は公式の『2巻』だけを書いていて矛盾はないが、『70話分』の表記を出典として併記するか検討の余地がある(準公式の出典は sources に入っていない)。",
+   "scope": "article:2026-11-12-gaku-ops-roundup.md"
+  },
+  {
+   "file": "docs/_posts/2026-11-12-gaku-ops-roundup.md",
+   "issue": "既報との重複: ジュエル250個配布(定常運営)は既報台帳にもあるが、今日の配布中の状態を伝えるため R10 の対象外とした。GOLD RUSH の8巻発売記念(第72話掲載)も既報と内容が重なるが、ロールアップ記事なので R11 の対象外とした。",
+   "scope": "article:2026-11-12-gaku-ops-roundup.md"
+  },
+  {
+   "file": "docs/_posts/2026-11-12-general-official-birthday-nov11-b-2026.md",
+   "issue": "出典の確認: 3本の Shorts(9ZVOmQ8umTg・1__-z6GKQDs・WFkeFP72e6Y)の原本は、タイトルと掲載日(2024-11-10・2025-11-10・2024-11-10)が N1〜N3 と一致。X の投稿は、3人の名・祝福文・各 Shorts へのリンクが素材 F1〜F4 と一致。相川千夏・大石泉が cg、天空橋朋花が million で、名鑑 docs/_data/idols.json とも一致。ブロック項目はなし。",
+   "scope": "article:2026-11-12-general-official-birthday-nov11-b-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-11-12-general-official-birthday-nov11-b-2026.md",
+   "issue": "リードの「それぞれのShortsを案内した」は投稿の内容どおりで問題ないが、リンク先は2024年・2025年に掲載された過去のShortsである。Shortsの一覧には掲載年が無いので、読者が今回の新作と取り違えるおそれがある。「2024年・2025年に公開された誕生日Shorts」のように年を添えると明確になる。",
+   "scope": "article:2026-11-12-general-official-birthday-nov11-b-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-11-12-general-official-birthday-nov11-b-2026.md",
+   "issue": "出典ラベルの日付は 2026-11-11 だが、X の表示は「3:00 PM · Nov 10, 2026」。表示のタイムゾーンは確かめられなかった。本文の「11月11日」は JST の 11/11 0時台と読めば矛盾しないので、直す必要は薄い。念のため確かめておくとよい。",
+   "scope": "article:2026-11-12-general-official-birthday-nov11-b-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-11-12-general-official-birthday-nov11-b-2026.md",
+   "issue": "rank small に対して本文が短い(目安 250字)。投稿には3人それぞれへの「お祝いムービー」が付いていた(素材 quotes・X 本文)。その旨を本文に書けば、出典にある事実で分量を補える。",
+   "scope": "article:2026-11-12-general-official-birthday-nov11-b-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-11-12-general-official-birthday-nov12-2026.md",
+   "issue": "分量不足: rank small の目安250字に対し本文は約240字。出典にある『動画が2024年11月11日公開』『チャンネル名 THE IDOLM@STER CHANNEL』『SideMのキャラクター紹介』などを一文ずつ足せば埋まる(一般論での水増しは不要)。",
+   "scope": "article:2026-11-12-general-official-birthday-nov12-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-11-12-general-official-birthday-nov12-2026.md",
+   "issue": "リンク先の2本は2024年11月11日公開の既存動画(N1・N2、出典ラベルにも2024-11-11)。本文はその事実に触れていないため、読者が新しい動画と受け取りかねない。『2024年公開の動画を再掲した』と一言書くと、新規性の誤解を防げる(R8の書き方の注意で、ブロックではない)。",
+   "scope": "article:2026-11-12-general-official-birthday-nov12-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-11-12-general-official-birthday-nov12-2026.md",
+   "issue": "「美嘉の動画では『TOKIMEKIエスカレート』が流れ」は、YouTube の概要欄の楽曲欄(Tokimeki Escalate · Mika Jougasaki)から読める範囲を超えて、動画内で流れていると断定している。『楽曲欄には「TOKIMEKIエスカレート」が記載され』と書けば、出典の範囲に収まる。",
+   "scope": "article:2026-11-12-general-official-birthday-nov12-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-11-12-general-tomoka-birthday-fan-art-2026.md",
+   "issue": "本文「ミリオンが注目浴びてきて助かる」との反応が寄せられた」は、素材(F4・grok-32)では1件のX投稿に基づく。「寄せられた」と複数の反応のように読めるため、『1件のファン投稿で反応があった』程度に書き分けるとよい(数や件数の断定はしない)。",
+   "scope": "article:2026-11-12-general-tomoka-birthday-fan-art-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-11-12-general-tomoka-birthday-fan-art-2026.md",
+   "issue": "本文冒頭「それぞれの誕生日を祝うファンイラスト」は、素材(F1・grok-30)の投稿が朋花と清夏を1枚のイラストで祝うもの(「朋花さまと清夏のお誕生日お祝い支援イラスト」)。「それぞれ」は別々のイラストと読めるので、『2人の誕生日を祝うファンイラスト』などに直すと出典どおりになる。",
+   "scope": "article:2026-11-12-general-tomoka-birthday-fan-art-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-11-12-general-tomoka-birthday-fan-art-2026.md",
+   "issue": "本文が2段落で短い(素材はエンゲージメント『低』の2件のX投稿と、YouTubeの掲載情報のみ)。出典にない内容で水増しはしなくてよいが、YouTube動画の内容(上水流宇宙とのコラボ・Kizuna AI - A.I.Channelによる公開日)は本文に既に入っており、これ以上拾える事実は素材に無い。",
+   "scope": "article:2026-11-12-general-tomoka-birthday-fan-art-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-11-12-joint-tours-rhythm-live-festival-qualifier-extension-2027.md",
+   "issue": "最終予選の扱いが抜けている。公式ページは、上位8名を超える同位者がいる場合、2027年1月16日に最大20名で最終予選を行うと定めている(例: 8位が3名いる場合は8位の3名で最終予選)。本文の『上位8人が選抜され』だけでは、同位のとき決勝の選抜方法が読者に伝わらない。ルール説明として1文足すとよい(出典は公式ページ)。",
+   "scope": "article:2026-11-12-joint-tours-rhythm-live-festival-qualifier-extension-2027.md"
+  },
+  {
+   "file": "docs/_posts/2026-11-12-joint-tours-rhythm-live-festival-qualifier-extension-2027.md",
+   "issue": "機械の所見『時制矛盾(lede)』は外れ。lede の『本日7時』は 2026-11-12 基準で正しく、『12月10日』は締切日の記述で、時制の矛盾はない。対応不要。",
+   "scope": "article:2026-11-12-joint-tours-rhythm-live-festival-qualifier-extension-2027.md"
+  },
+  {
+   "file": "docs/_posts/2026-11-12-joint-tours-rhythm-live-festival-qualifier-extension-2027.md",
+   "issue": "R10 の観点: 延長そのもの(予選期間・エントリー期間の延長)は 2026-11-11 号で既報。今号の新しいトリガーは『本日7時に予選が開始する』ことで、これは開幕にあたるため R10・R11 ではブロックしない。見出し・リードでは、既報の延長を新しい決定として書かず、開始日として書くのが読者に分かりやすい。",
+   "scope": "article:2026-11-12-joint-tours-rhythm-live-festival-qualifier-extension-2027.md"
+  },
+  {
+   "file": "docs/_posts/2026-11-12-joint-v-aliv-3rd-live-ticket-2026.md",
+   "issue": "見出し「vα-liv先行、申込期限まであと3日」に催しの名前(3rdLIVE＆MEETING)が入っておらず、何の先行かが見出しだけでは分からない。例: 「vα-liv 3rdLIVE先行、申込期限まであと3日」など。",
+   "scope": "article:2026-11-12-joint-v-aliv-3rd-live-ticket-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-11-12-million-ova-onkyo-earphone-charger-2026.md",
+   "issue": "3モデルのCV(桐谷蝶々・小岩井ことり・諏訪彩花)は、公式ページには書かれておらず、素材は未確認の要約(F19〜F21)だけ。出典に載せた x.com の投稿は機械から開けず照合できなかった。公式ページの確認で塞がらないので、執筆側で見出し・リードの「CV判明」を支える根拠として扱いを確かめてほしい(ブロックはしない)。",
+   "scope": "article:2026-11-12-million-ova-onkyo-earphone-charger-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-11-12-million-ova-onkyo-earphone-charger-2026.md",
+   "issue": "確認した範囲で他の事実は公式ページ(idolmaster-official.jp/news/01_20257.html、2026-11-12 03:23 読み直し)と一致した。受注締切11月13日(金)15:00(13日は実際に金曜)、イヤホン22,000円、充電器6,600円(税・送料込)、3モデル、充電器各4ワード、音アニ1号店での展示・試聴・店舗QRでの予約、CP-OWS01A、QCC3072、片側約6g、IPX4、充電ケースの非防水、ケースと左右ハウジングの配置。公式ページの変更は別のニュースの差し替えで、この記事には影響しない。",
+   "scope": "article:2026-11-12-million-ova-onkyo-earphone-charger-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-11-12-shiny-ops-roundup.md",
+   "issue": "見出し「シャニソン、はるき限定ガシャなど開催中の運営情報」の『はるき限定ガシャ』は、素材の事実（限定★3【旅するねじまき少女】郁田はるきが新ピックアップガシャに登場）より狭く読める。ガシャ全体がはるき専用に見えるので、『はるき限定★3』など素材どおりの言い方が望ましい（見出しの分かりやすさ・正確さの指摘で、verdict には影響しない）。",
+   "scope": "article:2026-11-12-shiny-ops-roundup.md"
+  },
+  {
+   "file": "docs/_posts/2026-11-12-shiny-ops-roundup.md",
+   "issue": "本文の『限定★3【旅するねじまき少女】郁田はるきが新ピックアップガシャに登場。』と『新ピックアップガシャ「夢と出逢えるワンコール」を開催中。』は、どちらも『新ピックアップガシャ』とだけ書いてあり、同じガシャかどうかが読者に分からない。素材（grok-34・grok-43）は同一ガシャとは明言していないので、同じガシャと読める書き方は避けたい（verdict に影響しない）。",
+   "scope": "article:2026-11-12-shiny-ops-roundup.md"
+  },
+  {
+   "file": "docs/_posts/2026-11-12-shiny-ops-roundup.md",
+   "issue": "WEB STORE の『ログインボーナスパス』（¥1,000、2500個＋シーズンメダル25個、購入日を含む最大30日間）が同じページにあり、記事の『I'm a Cutie Finderログインボーナスパス』（素材は X 公式投稿）と名前が近い。記事は別商品として区別して書けているが、読者が混同しないよう、必要なら『I'm a Cutie Finder』を名前に含めたままにしておく（verdict に影響しない）。",
+   "scope": "article:2026-11-12-shiny-ops-roundup.md"
+  },
+  {
+   "file": "docs/_posts/2026-11-12-sidem-315-night-letter-call-2026-11.md",
+   "issue": "確認できた事項: N1(タイムシフト2026/11/13 23:59まで、事前予約なしはプレミアム必要)・N2(番組表示)・N3(日本国内のみ、1回視聴、中断後24時間加算の再視聴)はニコニコ番組ページで確認。ランティス番組ページにメールフォームの『投稿はこちら』があり、本文の投稿先の記述と合う。ただし、ランティスのページに締切の日付・『今週中』の記載は無く、締切は素材のXの投稿(x.comのため機械からは開けず、素材の facts と照合のみ)に基づく。『今週中』が何日までを指すかは出典に書かれていない。",
+   "scope": "article:2026-11-12-sidem-315-night-letter-call-2026-11.md"
+  },
+  {
+   "file": "docs/_posts/2026-11-12-sidem-315-night-letter-call-2026-11.md",
+   "issue": "ニコニコ番組ページ(原本から内容が変わっている版)の画面は、番組表示・視聴条件とも本文の記述と一致する。内容の変化はタイムシフト以外のサイドバー(他の生放送)のみで、本件に影響しない。",
+   "scope": "article:2026-11-12-sidem-315-night-letter-call-2026-11.md"
+  },
+  {
+   "file": "docs/_posts/2026-11-12-sidem-birthday-celebration-bouquet-2026-feb.md",
+   "issue": "「タキシード姿で花束を持つ描き下ろしイラスト」は公式ポータルの本文に書かれているが、この記事の根拠控え(F・N)には対応する事実が無い(段落末は N1〜N6 F4〜F7)。直すなら、公式ポータルの該当文を根拠に付ける。ブロックではない。",
+   "scope": "article:2026-11-12-sidem-birthday-celebration-bouquet-2026-feb.md"
+  },
+  {
+   "file": "docs/_posts/2026-11-12-sidem-birthday-celebration-bouquet-2026-feb.md",
+   "issue": "受注期間・販売元・対象・ポーチ・発送・生産の都合の段落は 11-06 号の記事と同じ内容の再掲。新しいのは 4 人の商品別価格と締切の告知。締切まで3日なので R10 の対象外として通すが、締切の告知が前面に出るよう見出しや冒頭で示すとよい。",
+   "scope": "article:2026-11-12-sidem-birthday-celebration-bouquet-2026-feb.md"
+  },
+  {
+   "file": "docs/_posts/2026-11-12-sidem-birthday-celebration-bouquet-2026-feb.md",
+   "issue": "確認済み: 受注期間 2026-11-05 18:00〜11-15 23:59、ASOBI STORE の価格(N1〜N6)、ログインして購入・決済、生産予定数を超過した場合の扱いは公式ポータルと ASOBI STORE の本文どおり。公式ポータルは 503 で今は読み直せないが、収集時の原本と照合済みとして扱った(第7項)。",
+   "scope": "article:2026-11-12-sidem-birthday-celebration-bouquet-2026-feb.md"
+  },
+  {
+   "file": "docs/_posts/2026-11-12-sidem-fbfes-movie-stage-greeting-shinjuku-2026.md",
+   "issue": "ライブビューイングの販売開始の「17日（火）午後12時」は、24時制の午後12時を0時の意味で読ませる表記で紛らわしい。出典どおり「11月17日（火）午後24時」か「11月18日（水）午前0時」のみにすると読みやすい。",
+   "scope": "article:2026-11-12-sidem-fbfes-movie-stage-greeting-shinjuku-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-11-12-sidem-fbfes-movie-stage-greeting-shinjuku-2026.md",
+   "issue": "分量（rank: medium、目安450字）は本文が約700字あり、不足ではない。見出しは「SideM舞台挨拶」で作品名の主体は入っている。",
+   "scope": "article:2026-11-12-sidem-fbfes-movie-stage-greeting-shinjuku-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-11-12-sidem-fbfes-wanna-step-in-goods-2026.md",
+   "issue": "出典 url(01_20301)は、収集時点からいまの版まで本文が同じ。変わったのは右欄の関連記事と日付だけで、記事の事実には影響しない。",
+   "scope": "article:2026-11-12-sidem-fbfes-wanna-step-in-goods-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-11-12-sidem-fbfes-wanna-step-in-goods-2026.md",
+   "issue": "締切は11/12から3日後(11/15 23:59)で、R10 の『3日以内に迫った締切』に当たり、既報と同じ内容でも扱ってよい。R7・R9 も問題なし(販売期間の表記は出典のラベルどおり)。",
+   "scope": "article:2026-11-12-sidem-fbfes-wanna-step-in-goods-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-11-12-sidem-gotoken-christmas-party-set-2026.md",
+   "issue": "R1・R2・R4 は問題なし。五島軒の商品ページ(2026-11-12 03:24 に読み直した版)の『変わったところ』の地域別送料表(北海道1,100円、1,540円・1,870円エリアの都道府県、沖縄県2,970円)と記事の F1〜F16 の記述が一致する。商品名・16,200円・予約期間・12月21〜23日・N4〜N9 も一致する。",
+   "scope": "article:2026-11-12-sidem-gotoken-christmas-party-set-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-11-12-sidem-gotoken-christmas-party-set-2026.md",
+   "issue": "前回版(2026-11-08号の台帳)には『早期予約で全国送料無料(11月21日まで)』の記載があったが、今の商品ページには無い。送料が無料から地域別に変わった話だと読者が分かるように、リードか本文で『これまでの全国送料無料(早期予約)に代わって』などと一言触れると、前号との違いが伝わる。(R7・R11 の指摘ではなく表現の提案)",
+   "scope": "article:2026-11-12-sidem-gotoken-christmas-party-set-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-11-12-sidem-joypolis-screening-2026-12-05.md",
+   "issue": "本文の事実（一般販売期間の変更、参加券3,500円・税込、Lコード33331、申込上限2枚、12月5日19時集合・19時45分開演、全16ユニット上映、対象楽曲17曲、閉館後の利用範囲）は、出典の公式ページを読み直して一致を確認した（原本の照合: 2026-11-11版と同一）。出典 url は公式で、ページは現に開ける。",
+   "scope": "article:2026-11-12-sidem-joypolis-screening-2026-12-05.md"
+  },
+  {
+   "file": "docs/_posts/2026-11-12-sidem-kirio-birthday-2026.md",
+   "issue": "分量不足（comment only）: rank small の目安250字に対し本文は約100字。素材の facts は「#猫柳キリオBD2026 での誕生日メッセージ投稿」と「くろークン・ちょうちょさん・プロデューサーへの感謝」の2点だけで、出典から足せる事実は無い。水増しは勧めない。",
+   "scope": "article:2026-11-12-sidem-kirio-birthday-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-11-12-sidem-mfes-animate-winter-wonderland-2026.md",
+   "issue": "本文1段落目で「Legenders Mフェス2026」クリアファイルを「以前は掲載されていた」と書いたあと、同じ段落で「JupiterとLegendersのクリアファイル…も掲載されている」と書いているため、Legendersが外れたのか残ったのか読者に分かりにくい。変更は「FRAMEのクリアファイル→アクリルブロック」と「315プロNight!缶バッジの追加」だと一文で明示すると分かりやすい(出典の現版では Legenders は掲載中で、以前版との差は FRAME のクリアファイルの削除と缶バッジの追加。出典と食い違いはない)。",
+   "scope": "article:2026-11-12-sidem-mfes-animate-winter-wonderland-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-11-12-sidem-mfes-bakudanyaki-2026.md",
+   "issue": "本文の「フードは「ばくだん焼＋コースターセット」と「ばくだん焼パッケージ」」は素材の facts に従う。ただし開いた店の公式X(ツリー2件目)では「コラボフード注文毎に特典コースター1枚」とあり、コースターは注文についてくる特典に読める。販売商品名なのか、注文時の特典なのかを、店舗の販売商品の画像(X ツリーの各店販売商品)で確かめて書き分けること。",
+   "scope": "article:2026-11-12-sidem-mfes-bakudanyaki-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-11-12-sidem-mfes-bakudanyaki-2026.md",
+   "issue": "R1〜R4・R6〜R16 は問題なし。開催期間(12/1〜12/27)・5店舗の店名・1,100円ごとの特典ブロマイド(ランダム、会計ごと、レシート合算不可)は、二次情報ブログと店舗公式Xの本文に一致。ただし、ブロマイドの受け渡しを「会計ごと」と書く本文の範囲は、店の X 投稿どおりで正しい。",
+   "scope": "article:2026-11-12-sidem-mfes-bakudanyaki-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-11-12-sidem-spicy-sharing-guidance-2026.md",
+   "issue": "確認した範囲: 本文第2〜4段はFAQ(開いた原本と同内容)と一致し、N1〜N5は正しい。見出し・リードはSideM公式X投稿(F7)と一致する。X(x.com)は機械から開けないため、素材の facts(verify: confirmed)と照合した。区分(無料公開/有償・プレミアム)が同作にどれかは出典のどちらにも書かれていないため、記事では段落3の制限が同作に当たるかどうか読者に分からない。ブロックではない。",
+   "scope": "article:2026-11-12-sidem-spicy-sharing-guidance-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-11-12-sidem-spicy-sharing-guidance-2026.md",
+   "issue": "本文が約420字で、rank: medium の目安450字をやや下回る。出典の『密着・スパイシー！？』が無料公開作品か有償作品かが分かるなら、そこを補うと埋まる(一般論での水増しは不要)。",
+   "scope": "article:2026-11-12-sidem-spicy-sharing-guidance-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-11-12-sidem-spicy-sharing-guidance-2026.md",
+   "issue": "依頼の記述では『続報予約の素材』が末尾に載っているとされていたが、読んだ指示ファイル(metrics/work/2026-11-12/review-4e201bf3.md)には該当節が無かった。この記事は candidate_ids に sched- の素材を含まないため、判定には影響しない。",
+   "scope": "article:2026-11-12-sidem-spicy-sharing-guidance-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-11-12-sidem-teddys-collection-ii-goods.md",
+   "issue": "出典 URL（Anime Store.JP のグッズ一覧の1ページ目）を開いても Teddy's Collection II の商品は見えない。商品は ?page=2（ワイヤー3連アクリルチャーム9種、マフラータオル04〜18）と ?page=3（マフラータオル01〜03）にある。記事の内容（9種・18種・各価格・予約締切 11/15・サイズ・素材・発売元）は page 2・3 の現在の版と一致しており、ブロックはしない。読者が出典から商品を探せるよう、読みやすさの面で注意したい。",
+   "scope": "article:2026-11-12-sidem-teddys-collection-ii-goods.md"
+  },
+  {
+   "file": "docs/_posts/2026-11-12-sidem-teddys-collection-ii-goods.md",
+   "issue": "既報台帳（teddys-collection-ii-goods, first_published 2026-10-30）と同じ商品・締切の話。締切が3日後に迫っているため R10 の対象外として扱った。新しい点（締切の3日前）が記事の目的になっており、問題は無い。",
+   "scope": "article:2026-11-12-sidem-teddys-collection-ii-goods.md"
+  },
+  {
+   "file": "docs/_posts/2026-11-12-sidem-wgf-general-ticket-sale-2026.md",
+   "issue": "確認内容: 本文の販売期間(2026-10-16 10:00〜11-19 23:59)、数量限定・予定数量で終了、税込9,300円、セット内容(ムビチケ4枚・アクリルスタンド本体3個と台座3個・KVポストカード1枚・証明写真風ブロマイド1枚)、11/12以降の注文は順次発送・お届け7〜20日前後、対象作品の11月20日公開、紙製ムビチケのサイズ、アクリルスタンド・ポストカード・ブロマイドのサイズを、準公式の商品ページ(収集時点と同じ原本を再取得)と照合して一致。X投稿は開けないため素材の facts と照合したが、記事は投稿の内容に依存していない。",
+   "scope": "article:2026-11-12-sidem-wgf-general-ticket-sale-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-11-12-sidem-wgf-general-ticket-sale-2026.md",
+   "issue": "frontmatter の event_date は 2026-11-19(販売終了日)で、素材の候補 202611120230-grok-67 の event_date 2026-11-21 とは違う。素材の deadline 2026-11-19 と一致するので R8 にはしないが、event_date の意味(販売終了か、対象作品の公開か、舞台挨拶か)を執筆が確認するとよい。",
+   "scope": "article:2026-11-12-sidem-wgf-general-ticket-sale-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-11-12-sidem-wgf-general-ticket-sale-2026.md",
+   "issue": "商品仕様の寸法(ムビチケのサイズ、アクリルスタンドの本体・台座、ポストカード、ブロマイド)は購入判断の材料になるため R12 にはしていないが、今日の出来事の理解に必要な事実ではないので、残すか削るかは執筆が判断する。残す場合は段落の順序を変えず、リードの内容と重複させないこと。",
+   "scope": "article:2026-11-12-sidem-wgf-general-ticket-sale-2026.md"
+  },
+  {
+   "file": "-",
+   "issue": "面のバランス: 45本のうち学マス12本・SideM12本で半数を超え、765プロ(IM@S RADIO・MOR424)とミリオン(BD・OVA)が各2本、シャニマスは4本。",
+   "scope": "paper"
+  },
+  {
+   "file": "-",
+   "issue": "candidates にある公式発表が紙面に無い: 星井美希のANIMONIUM 2027ソロ公演(765, 2027/2/14)、天空橋朋花Birthdayガシャ・セット(million)、紫雲清夏の誕生日記念セット・生誕記念配信(gaku)、学マス Duet Song Collection 第2弾(2027)、IM@S RADIO 11月24日出演者発表(765)。",
+   "scope": "paper"
+  },
+  {
+   "file": "-",
+   "issue": "digest に、その日の大きい話題の候補が見当たらない: シャニマス初の単独オーケストラコンサート(2027)は記事として紙面にあるが digest の4群のどこにもなく、digest にシャニマスが1行も出ていない。",
+   "scope": "paper"
+  }
+ ],
+ "reviewed": [
+  "article:2026-11-12-765-imas-mor-424-2026.md",
+  "article:2026-11-12-765-imas-radio-2026-nov-10-archive.md",
+  "article:2026-11-12-cg-cinderella-athome-xr-live-apple-of-my-ai.md",
+  "article:2026-11-12-cg-demirimi-clash-goods-preorder-2026.md",
+  "article:2026-11-12-cg-memory-pict-8th-january-2026.md",
+  "article:2026-11-12-cg-sousenkyo-2026-15th-popup.md",
+  "article:2026-11-12-dsva-letora-birthday-goods-2026.md",
+  "article:2026-11-12-dsva-letora-birthday-online-live-2026.md",
+  "article:2026-11-12-dsva-valiv-3rd-live-hashtag-campaign.md",
+  "article:2026-11-12-dsva-valiv-3rd-live-qonnect-as-one-2027.md",
+  "article:2026-11-12-gaku-3rd-single-finish-goods-2026.md",
+  "article:2026-11-12-gaku-b2-tapestry-juo-sena.md",
+  "article:2026-11-12-gaku-conceptual-single-collection-2027.md",
+  "article:2026-11-12-gaku-gakuen-hatsuboshi-hr-2-5th-sp-2026.md",
+  "article:2026-11-12-gaku-gakuen-kanae-amazon-gift-campaign-2026.md",
+  "article:2026-11-12-gaku-gakumas-espresto-prize-kuramoto-shinozawa.md",
+  "article:2026-11-12-gaku-gold-rush-vol8-code-2026.md",
+  "article:2026-11-12-gaku-kotone-endless-dance-graphic-tee.md",
+  "article:2026-11-12-gaku-lawson-print-15-bromides-2026-10.md",
+  "article:2026-11-12-gaku-lawson-store-goods-2026.md",
+  "article:2026-11-12-gaku-ops-roundup.md",
+  "article:2026-11-12-gaku-radio-2026-11-18.md",
+  "article:2026-11-12-general-official-birthday-nov11-b-2026.md",
+  "article:2026-11-12-general-official-birthday-nov12-2026.md",
+  "article:2026-11-12-general-tomoka-birthday-fan-art-2026.md",
+  "article:2026-11-12-joint-tours-rhythm-live-festival-qualifier-extension-2027.md",
+  "article:2026-11-12-joint-v-aliv-3rd-live-ticket-2026.md",
+  "article:2026-11-12-million-12th-bluray-order-extension-2026.md",
+  "article:2026-11-12-million-ova-onkyo-earphone-charger-2026.md",
+  "article:2026-11-12-shiny-alstroemeria-gotoken-xmas-2026.md",
+  "article:2026-11-12-shiny-lisani-tokyo-2027.md",
+  "article:2026-11-12-shiny-ops-roundup.md",
+  "article:2026-11-12-shiny-orchestra-concert-2027.md",
+  "article:2026-11-12-sidem-315-night-letter-call-2026-11.md",
+  "article:2026-11-12-sidem-birthday-celebration-bouquet-2026-feb.md",
+  "article:2026-11-12-sidem-fbfes-movie-stage-greeting-shinjuku-2026.md",
+  "article:2026-11-12-sidem-fbfes-wanna-step-in-goods-2026.md",
+  "article:2026-11-12-sidem-gotoken-christmas-party-set-2026.md",
+  "article:2026-11-12-sidem-joypolis-screening-2026-12-05.md",
+  "article:2026-11-12-sidem-kirio-birthday-2026.md",
+  "article:2026-11-12-sidem-mfes-animate-winter-wonderland-2026.md",
+  "article:2026-11-12-sidem-mfes-bakudanyaki-2026.md",
+  "article:2026-11-12-sidem-spicy-sharing-guidance-2026.md",
+  "article:2026-11-12-sidem-teddys-collection-ii-goods.md",
+  "article:2026-11-12-sidem-wgf-general-ticket-sale-2026.md",
+  "paper"
+ ],
+ "checked": {
+  "article:2026-11-12-million-12th-bluray-order-extension-2026.md": "5c3006aca187a714d0f691c9da10e4041e88c9a8dac12e0b77520ac5447b4325",
+  "article:2026-11-12-shiny-orchestra-concert-2027.md": "8acb509cf8bea7f662d3b397a4ce6a8261a7ebcfe587009074d30da66f82b7e4",
+  "article:2026-11-12-general-official-birthday-nov12-2026.md": "6767e93538414f55269dafb3b58c3d824dd1211501edd82a94b2d673c2d24c6d",
+  "article:2026-11-12-gaku-lawson-print-15-bromides-2026-10.md": "ff697cf2af9c3f959df69041513f5ba79f7801346cf7e35218c46b4a1895e067",
+  "article:2026-11-12-shiny-alstroemeria-gotoken-xmas-2026.md": "02b8d752b96ec7c1bf397bceda85a6a831fa91501cad261650f140bf85e6184b",
+  "article:2026-11-12-sidem-mfes-animate-winter-wonderland-2026.md": "821813bac2b6cb3cfd4755c31624d37b610bf18e31a2e2dc854925b6d9fa6da2",
+  "article:2026-11-12-gaku-kotone-endless-dance-graphic-tee.md": "29b620d72cd717b64b272384f8482a788f0835a329db110292e5a64a4ffac18e",
+  "article:2026-11-12-general-tomoka-birthday-fan-art-2026.md": "f0c7173162e0e1bea89402f7ad6944b56b24cb912a446463f7c86b84aaa71f79",
+  "article:2026-11-12-dsva-letora-birthday-goods-2026.md": "d80c35d000d085219ece49d0d54f4bc04317aa31a1d4834ac0075a8a2757c8f8",
+  "article:2026-11-12-sidem-fbfes-movie-stage-greeting-shinjuku-2026.md": "9702db2030605444e3981483d0d6aedbbc634d1c086a2a0d05a7f1e404d289b3",
+  "article:2026-11-12-gaku-ops-roundup.md": "db2dd5be91e9a13597419f415b3a5cf5c5b5a8a700cda81c31ab91e390791f48",
+  "article:2026-11-12-joint-v-aliv-3rd-live-ticket-2026.md": "3c2c0732615dbb2950635304c7cc9c1b180968a14277f54d9c4e3f339b77db3f",
+  "article:2026-11-12-sidem-joypolis-screening-2026-12-05.md": "dcee5c5cb657e471433acdd75ef313d383f0a357b61525abf09b4bacc354fe2b",
+  "article:2026-11-12-dsva-letora-birthday-online-live-2026.md": "5483d10766ef92b82b476a0cdf8bc228300b3c35a06260bc52d317bbfe2476d5",
+  "article:2026-11-12-cg-demirimi-clash-goods-preorder-2026.md": "a912a45f2b573634275ef5cb1c674af4506442334b450b96b68eba60b02fb2a6",
+  "article:2026-11-12-sidem-wgf-general-ticket-sale-2026.md": "fb71aeb2327cc1fc2ef463804313793d7266dac1890c93bdd9ee4e32fad5d6d0",
+  "paper": "19c58c4c9df90952741235f9f2ee5732c9ae51d02af1cde6904a4206466a495d",
+  "article:2026-11-12-shiny-lisani-tokyo-2027.md": "cb96e2b76d3a7a44a1857e745b46893d439906d19ba1200d0abd2d4cfe8de803",
+  "article:2026-11-12-cg-memory-pict-8th-january-2026.md": "3ce9d6bead79ed264559c49985d7ee4266ca9a214cdef216854ca20707dffd87",
+  "article:2026-11-12-sidem-teddys-collection-ii-goods.md": "6deda145c7618ef91c2b248870e97d88efcf502867edadd6403c0532cd628cdf",
+  "article:2026-11-12-shiny-ops-roundup.md": "f85a1999e678c7a639ac1a406d5a11fefb61412f8bd74abbe93575396a45871c",
+  "article:2026-11-12-sidem-spicy-sharing-guidance-2026.md": "7f1b88278067ff188dfc887f7c6caa2ecd9f0018c215b417368c4070ecb581fa",
+  "article:2026-11-12-sidem-mfes-bakudanyaki-2026.md": "45c06b5e77a1f63ddfd691c021730bf414e0fd64de7aa924dad8e35c92c57264",
+  "article:2026-11-12-765-imas-radio-2026-nov-10-archive.md": "b42011ab26c944b20f011ecff8a7d861690ea006c51e88887be86d9d024dbbd8",
+  "article:2026-11-12-cg-sousenkyo-2026-15th-popup.md": "e48ec6f73b9fe49ebd7fb39575265c5d0eec513aa82429bf5ee7cd9bb80d9f0f",
+  "article:2026-11-12-sidem-gotoken-christmas-party-set-2026.md": "f3a33b0278ff05eddd60ebe44e75f1f886b97212bfa725b2c81a4cbf2c81fc33",
+  "article:2026-11-12-sidem-fbfes-wanna-step-in-goods-2026.md": "0b6bea871523cec4e07b95b495dc3331828f34e27ce6862b99d9ab40e1b279f4",
+  "article:2026-11-12-765-imas-mor-424-2026.md": "8b73f85b7474e27fef2a2197c386c26a4ff6a9c6b71d28d08febceb92ebb3c79",
+  "article:2026-11-12-gaku-b2-tapestry-juo-sena.md": "6aa641fb83638212b0beffb73ea3aa985b15d3e45d92cbf3c494773e4d25a47c",
+  "article:2026-11-12-gaku-gakuen-hatsuboshi-hr-2-5th-sp-2026.md": "73c6e67e2a289c8033e9c2fe0ee61dc9a76e1e1beb0eb73dc2c21b20db9c6ec2",
+  "article:2026-11-12-gaku-conceptual-single-collection-2027.md": "a028700db2a2ed15e3cb63ad55791da9f907f41a989a88d20a5e3fb765c5b2d2",
+  "article:2026-11-12-general-official-birthday-nov11-b-2026.md": "6ad21eb138bbdc40afe01409928616b1557c06c5b197196853c83119ae5fb78e",
+  "article:2026-11-12-million-ova-onkyo-earphone-charger-2026.md": "33e8709ac815e50acb031332902cee52c0951faa4bc07b93473394d7b5f07fc9",
+  "article:2026-11-12-joint-tours-rhythm-live-festival-qualifier-extension-2027.md": "e65f2f0f408790b8b66fe0bbc2ca9eec7e49415ed43fc442dee2360f06eb2e86",
+  "article:2026-11-12-sidem-315-night-letter-call-2026-11.md": "77ece2994ba683179be4572f24329c415d753ef43cfd93bbfa66cba9c243276c",
+  "article:2026-11-12-gaku-gakumas-espresto-prize-kuramoto-shinozawa.md": "7f72c660dc7d89ea00f41011863a0f5ddaaeb83a8f97e6fc89d9174ea6f0bd39",
+  "article:2026-11-12-gaku-lawson-store-goods-2026.md": "8ea1145cd67a97d03149bc0b6afa3faae7eb1f25ba29d261aae99a44241764f5",
+  "article:2026-11-12-sidem-birthday-celebration-bouquet-2026-feb.md": "87b9c643f3c6c2dd4d7373f604402ed134d25cb923a200ab4fa29a4687aa1a20",
+  "article:2026-11-12-gaku-3rd-single-finish-goods-2026.md": "9b0c704bcbe3867e6456cd827539cdf018577632e5732817a742a3f99f67d168",
+  "article:2026-11-12-cg-cinderella-athome-xr-live-apple-of-my-ai.md": "a6d03899fde3fcc779a22e656af0dfc7bc04f3ff7cda8dc658502f1fc5d26d93",
+  "article:2026-11-12-gaku-gakuen-kanae-amazon-gift-campaign-2026.md": "677fcb6d4e19b3668c93d65f899925b01bc19619bcb5af60f6d62140f7d1ab8a",
+  "article:2026-11-12-sidem-kirio-birthday-2026.md": "b24a89b9d0012aa618f108975df2965679794496299002093ea21b2eb7768da7",
+  "article:2026-11-12-dsva-valiv-3rd-live-qonnect-as-one-2027.md": "c04dd8f340ca2f347283c1d4cbe878ba7f5e0802686997e6e3f9978dfd940bd8",
+  "article:2026-11-12-dsva-valiv-3rd-live-hashtag-campaign.md": "5da1f3af1b479268fa7c1a91e369c4cd93629e8e67b543b9e50cdd7facee288b",
+  "article:2026-11-12-gaku-radio-2026-11-18.md": "81d96f3d1d3d3fe2d4ac730d087a570ae5b1e4fea5487cd181839837cbe72494",
+  "article:2026-11-12-gaku-gold-rush-vol8-code-2026.md": "7265cefd669253496580345cf7d6c120b9c025e1c9ba19a7fd6008be1d3ab1b3"
+ },
+ "hashes": {
+  "docs/_posts/2026-11-12-765-imas-mor-424-2026.md": "8b73f85b7474e27fef2a2197c386c26a4ff6a9c6b71d28d08febceb92ebb3c79",
+  "docs/_posts/2026-11-12-765-imas-radio-2026-nov-10-archive.md": "b42011ab26c944b20f011ecff8a7d861690ea006c51e88887be86d9d024dbbd8",
+  "docs/_posts/2026-11-12-cg-cinderella-athome-xr-live-apple-of-my-ai.md": "a6d03899fde3fcc779a22e656af0dfc7bc04f3ff7cda8dc658502f1fc5d26d93",
+  "docs/_posts/2026-11-12-cg-demirimi-clash-goods-preorder-2026.md": "a912a45f2b573634275ef5cb1c674af4506442334b450b96b68eba60b02fb2a6",
+  "docs/_posts/2026-11-12-cg-memory-pict-8th-january-2026.md": "3ce9d6bead79ed264559c49985d7ee4266ca9a214cdef216854ca20707dffd87",
+  "docs/_posts/2026-11-12-cg-sousenkyo-2026-15th-popup.md": "e48ec6f73b9fe49ebd7fb39575265c5d0eec513aa82429bf5ee7cd9bb80d9f0f",
+  "docs/_posts/2026-11-12-dsva-letora-birthday-goods-2026.md": "d80c35d000d085219ece49d0d54f4bc04317aa31a1d4834ac0075a8a2757c8f8",
+  "docs/_posts/2026-11-12-dsva-letora-birthday-online-live-2026.md": "5483d10766ef92b82b476a0cdf8bc228300b3c35a06260bc52d317bbfe2476d5",
+  "docs/_posts/2026-11-12-dsva-valiv-3rd-live-hashtag-campaign.md": "5da1f3af1b479268fa7c1a91e369c4cd93629e8e67b543b9e50cdd7facee288b",
+  "docs/_posts/2026-11-12-dsva-valiv-3rd-live-qonnect-as-one-2027.md": "c04dd8f340ca2f347283c1d4cbe878ba7f5e0802686997e6e3f9978dfd940bd8",
+  "docs/_posts/2026-11-12-gaku-3rd-single-finish-goods-2026.md": "9b0c704bcbe3867e6456cd827539cdf018577632e5732817a742a3f99f67d168",
+  "docs/_posts/2026-11-12-gaku-b2-tapestry-juo-sena.md": "6aa641fb83638212b0beffb73ea3aa985b15d3e45d92cbf3c494773e4d25a47c",
+  "docs/_posts/2026-11-12-gaku-conceptual-single-collection-2027.md": "a028700db2a2ed15e3cb63ad55791da9f907f41a989a88d20a5e3fb765c5b2d2",
+  "docs/_posts/2026-11-12-gaku-gakuen-hatsuboshi-hr-2-5th-sp-2026.md": "73c6e67e2a289c8033e9c2fe0ee61dc9a76e1e1beb0eb73dc2c21b20db9c6ec2",
+  "docs/_posts/2026-11-12-gaku-gakuen-kanae-amazon-gift-campaign-2026.md": "677fcb6d4e19b3668c93d65f899925b01bc19619bcb5af60f6d62140f7d1ab8a",
+  "docs/_posts/2026-11-12-gaku-gakumas-espresto-prize-kuramoto-shinozawa.md": "7f72c660dc7d89ea00f41011863a0f5ddaaeb83a8f97e6fc89d9174ea6f0bd39",
+  "docs/_posts/2026-11-12-gaku-gold-rush-vol8-code-2026.md": "7265cefd669253496580345cf7d6c120b9c025e1c9ba19a7fd6008be1d3ab1b3",
+  "docs/_posts/2026-11-12-gaku-kotone-endless-dance-graphic-tee.md": "29b620d72cd717b64b272384f8482a788f0835a329db110292e5a64a4ffac18e",
+  "docs/_posts/2026-11-12-gaku-lawson-print-15-bromides-2026-10.md": "ff697cf2af9c3f959df69041513f5ba79f7801346cf7e35218c46b4a1895e067",
+  "docs/_posts/2026-11-12-gaku-lawson-store-goods-2026.md": "8ea1145cd67a97d03149bc0b6afa3faae7eb1f25ba29d261aae99a44241764f5",
+  "docs/_posts/2026-11-12-gaku-ops-roundup.md": "db2dd5be91e9a13597419f415b3a5cf5c5b5a8a700cda81c31ab91e390791f48",
+  "docs/_posts/2026-11-12-gaku-radio-2026-11-18.md": "81d96f3d1d3d3fe2d4ac730d087a570ae5b1e4fea5487cd181839837cbe72494",
+  "docs/_posts/2026-11-12-general-official-birthday-nov11-b-2026.md": "6ad21eb138bbdc40afe01409928616b1557c06c5b197196853c83119ae5fb78e",
+  "docs/_posts/2026-11-12-general-official-birthday-nov12-2026.md": "6767e93538414f55269dafb3b58c3d824dd1211501edd82a94b2d673c2d24c6d",
+  "docs/_posts/2026-11-12-general-tomoka-birthday-fan-art-2026.md": "f0c7173162e0e1bea89402f7ad6944b56b24cb912a446463f7c86b84aaa71f79",
+  "docs/_posts/2026-11-12-joint-tours-rhythm-live-festival-qualifier-extension-2027.md": "e65f2f0f408790b8b66fe0bbc2ca9eec7e49415ed43fc442dee2360f06eb2e86",
+  "docs/_posts/2026-11-12-joint-v-aliv-3rd-live-ticket-2026.md": "3c2c0732615dbb2950635304c7cc9c1b180968a14277f54d9c4e3f339b77db3f",
+  "docs/_posts/2026-11-12-million-12th-bluray-order-extension-2026.md": "5c3006aca187a714d0f691c9da10e4041e88c9a8dac12e0b77520ac5447b4325",
+  "docs/_posts/2026-11-12-million-ova-onkyo-earphone-charger-2026.md": "33e8709ac815e50acb031332902cee52c0951faa4bc07b93473394d7b5f07fc9",
+  "docs/_posts/2026-11-12-shiny-alstroemeria-gotoken-xmas-2026.md": "02b8d752b96ec7c1bf397bceda85a6a831fa91501cad261650f140bf85e6184b",
+  "docs/_posts/2026-11-12-shiny-lisani-tokyo-2027.md": "cb96e2b76d3a7a44a1857e745b46893d439906d19ba1200d0abd2d4cfe8de803",
+  "docs/_posts/2026-11-12-shiny-ops-roundup.md": "f85a1999e678c7a639ac1a406d5a11fefb61412f8bd74abbe93575396a45871c",
+  "docs/_posts/2026-11-12-shiny-orchestra-concert-2027.md": "8acb509cf8bea7f662d3b397a4ce6a8261a7ebcfe587009074d30da66f82b7e4",
+  "docs/_posts/2026-11-12-sidem-315-night-letter-call-2026-11.md": "77ece2994ba683179be4572f24329c415d753ef43cfd93bbfa66cba9c243276c",
+  "docs/_posts/2026-11-12-sidem-birthday-celebration-bouquet-2026-feb.md": "87b9c643f3c6c2dd4d7373f604402ed134d25cb923a200ab4fa29a4687aa1a20",
+  "docs/_posts/2026-11-12-sidem-fbfes-movie-stage-greeting-shinjuku-2026.md": "9702db2030605444e3981483d0d6aedbbc634d1c086a2a0d05a7f1e404d289b3",
+  "docs/_posts/2026-11-12-sidem-fbfes-wanna-step-in-goods-2026.md": "0b6bea871523cec4e07b95b495dc3331828f34e27ce6862b99d9ab40e1b279f4",
+  "docs/_posts/2026-11-12-sidem-gotoken-christmas-party-set-2026.md": "f3a33b0278ff05eddd60ebe44e75f1f886b97212bfa725b2c81a4cbf2c81fc33",
+  "docs/_posts/2026-11-12-sidem-joypolis-screening-2026-12-05.md": "dcee5c5cb657e471433acdd75ef313d383f0a357b61525abf09b4bacc354fe2b",
+  "docs/_posts/2026-11-12-sidem-kirio-birthday-2026.md": "b24a89b9d0012aa618f108975df2965679794496299002093ea21b2eb7768da7",
+  "docs/_posts/2026-11-12-sidem-mfes-animate-winter-wonderland-2026.md": "821813bac2b6cb3cfd4755c31624d37b610bf18e31a2e2dc854925b6d9fa6da2",
+  "docs/_posts/2026-11-12-sidem-mfes-bakudanyaki-2026.md": "45c06b5e77a1f63ddfd691c021730bf414e0fd64de7aa924dad8e35c92c57264",
+  "docs/_posts/2026-11-12-sidem-spicy-sharing-guidance-2026.md": "7f1b88278067ff188dfc887f7c6caa2ecd9f0018c215b417368c4070ecb581fa",
+  "docs/_posts/2026-11-12-sidem-teddys-collection-ii-goods.md": "6deda145c7618ef91c2b248870e97d88efcf502867edadd6403c0532cd628cdf",
+  "docs/_posts/2026-11-12-sidem-wgf-general-ticket-sale-2026.md": "fb71aeb2327cc1fc2ef463804313793d7266dac1890c93bdd9ee4e32fad5d6d0",
+  "docs/_editions/2026-11-12.md": "0bc7d2b063be1f12b14cbe78009ad6885463e816ad65054188d1a7cd96ce0c7e",
+  "metrics/stories-before-2026-11-12.yml": "0dadd5f26b5726d8a910f558d7b938d6e9c66bca5d8bf7877d54476efd06ee94"
+ },
+ "run": "20261112T030045.882943"
+}

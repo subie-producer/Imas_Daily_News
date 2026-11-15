@@ -151,6 +151,7 @@
   subject: SideM Mフェス2026テーマソングCD予約・公開録音
   watch: CD発売日の年・価格・収録曲・応募シリアルの応募期間(判明次第 triggers へ)
   added_on: '2026-09-29'
+  removed_on: '2026-11-07'
 - dedup_key: gaku-bigface-plush-vol4-2026
   brand: gaku
   subject: 学マスBIGフェイスぬいぐるみvol.4
@@ -403,6 +404,7 @@
   subject: ツアマス ALL.Net緊急メンテナンスの終了
   watch: メンテナンス終了時刻・オンラインモードとマイページの再開(公式が「あらためて知らせる」とした各コンテンツの再開状況)
   added_on: '2026-11-03'
+  removed_on: '2026-11-14'
 - dedup_key: gaku-amayo-tsubame-training-acrylic-stand-2027
   brand: gaku
   subject: 雨夜燕(トレーニング服)特大アクリルスタンド
@@ -418,3 +420,40 @@
   subject: ミリオン「たぴぴょん」ぬいぐるみ
   watch: 2027年5月上旬とされた正式な発売日(判明次第 triggers へ)
   added_on: '2026-11-05'
+- dedup_key: sidem-m-fes-winter-wonderland-bonus-2026
+  brand: sidem
+  subject: Mフェス2026 in winter wonderland 特典ブロマイドの配布条件・場所
+  watch: 条件や配布場所は店舗ごとに異なり、各店舗から詳細告知予定。判明次第 triggers へ
+  added_on: '2026-11-07'
+  removed_on: '2026-11-12'
+- dedup_key: another-event-cue-2026
+  brand: shiny
+  subject: シャニソン アナザーイベント「キュー！」
+  watch: 「近日開催」とされた開催日・期間(判明次第 triggers へ)
+  added_on: '2026-11-11'
+  removed_on: '2026-11-12'
+- dedup_key: l-antica-xr-mv-2026
+  brand: shiny
+  subject: アンティーカ3曲のxRライブVer.・フルサイズ版MV追加
+  watch: 「月影のアンシェネ」など3曲のxRライブVer.とフルサイズ版MVの正式な追加日(追加予定とのみ告知)
+  added_on: '2026-11-11'
+- dedup_key: rinze-hana-rerun-gasha-2026
+  brand: shiny
+  subject: シャニソン 凛世・羽那の限定★3復刻ピックアップガシャ
+  watch: 復刻ピックアップガシャの開催期間・開始日(予告のみで期間は未記載。判明次第 triggers へ)
+  added_on: '2026-11-11'
+- dedup_key: million-rio-momose-true-ending-reward-design-2026
+  brand: million
+  subject: ミリシタ 百瀬莉緒のTrue Ending報酬デザイン変更
+  watch: 「近日中」とされた称号・BG GrafiXのシルエット解除とデザイン変更の実施日(判明次第 triggers へ)
+  added_on: '2026-11-13'
+- dedup_key: hatsuboshi-twinkle-rabbit-theme-2026-11
+  brand: gaku
+  subject: ハツボシストア新テーマ「トゥインクルラビット」
+  watch: 全員のビジュアルと詳細(近日公開予定)、11月内の正式登場日(判明次第 triggers へ)
+  added_on: '2026-11-14'
+- dedup_key: cg-sega-lucky-kuji-vol1-purchase-period-2026
+  brand: cg
+  subject: セガ ラッキーくじ シンデレラガールズ Vol.1キュート 購入期間再設定
+  watch: メンテナンス終了後に設けられる購入期間の日程(未定。判明次第 triggers へ)
+  added_on: '2026-11-15'

@@ -1,0 +1,497 @@
+{
+ "decisions": {
+  "shiny-colors-new-single-2027-tokuten": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-11号の記事に同じ店舗特典・価格・発売日が全て載っている"
+  },
+  "shiny-antica-xr-live-mv-second-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-11号「アンティーカ3曲にxR版とフルMV追加へ」と同じ施策"
+  },
+  "shiny-antica-xr-live-mv-second": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-11号の記事と同じ施策(URL違いの同じ知らせ)"
+  },
+  "shiny-orchestra-concert-2027-radiant-chord": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "ゲーム先行の期間・当落・入金・公演情報は11-11号に全て載り、締切は12/1で3日以内ではない"
+  },
+  "shiny-song-prism-3rd-login-bonus-2-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-11号「第2弾ログボは11月30日まで」と同じ施策"
+  },
+  "shiny-song-haruki-traveling-clockwork-girl-2026": {
+   "action": "roundup",
+   "angle": "シャニソンの開催中ガシャ・ログインボーナス・販売中アイテムのまとめ(郁田はるき限定★3の新ピックアップ)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-song-cute-finder-queue-2026": {
+   "action": "roundup",
+   "angle": "シャニソンの開催中ガシャ・ログインボーナス・販売中アイテムのまとめ(「キュー！」開催中、羽那が報酬)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-song-cutie-finder-login-pass-2026": {
+   "action": "roundup",
+   "angle": "シャニソンの開催中ガシャ・ログインボーナス・販売中アイテムのまとめ(Cutie Finderログボパスは11/30まで)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-meguru-encouragement-aerial-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "めぐるP-SSRの登場は11-11号の開催中イベント記事に既出。動画紹介のみで新事実なし"
+  },
+  "shiny-autumn-maple-box-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "報酬の和泉愛依は11-11号に既出、開始は11-10号で既報"
+  },
+  "shiny-song-3rd-jewel-sale-2026": {
+   "action": "roundup",
+   "angle": "シャニソンの開催中ガシャ・ログインボーナス・販売中アイテムのまとめ(3周年記念プリズムジュエルセールは11/30まで)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-song-antica-xr-mv-2-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-11号の記事と同じ施策。追加の事実なし"
+  },
+  "shiny-song-jewels-in-moonlight-stepup-2026": {
+   "action": "roundup",
+   "angle": "シャニソンの開催中ガシャ・ログインボーナス・販売中アイテムのまとめ(復刻「月夜に揺れる宝石は」ステップアップ)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-song-rerun-rinze-hana-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-11号「凛世・羽那の限定★3を復刻」と同じ施策"
+  },
+  "shiny-song-one-call-stepup-2026": {
+   "action": "roundup",
+   "angle": "シャニソンの開催中ガシャ・ログインボーナス・販売中アイテムのまとめ(「夢と出逢えるワンコール」ステップアップ)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "hina-wonderful-stamp-gasha-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-11号「雛菜の特別ピンナップS-SSR登場」と同じ内容"
+  },
+  "koito-birthday-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-11号の誕生日施策記事に全施策が載っている。セール終了日の明記も無い"
+  },
+  "shiny-web4koma-667-2026": {
+   "action": "roundup",
+   "angle": "シャニマス・シャニソンの定常運営まとめ(web4コマ第667話は果穂)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-orchestra-2027-game-lottery": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-11号「Radiant Chord ゲーム先行開始」と同じ施策"
+  },
+  "kaho-twilight-piece-pack-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "価格・購入回数・内容とも11-11号の開催中イベント記事に既出"
+  },
+  "meguru-twilight-piece-pack-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-11号の開催中イベント記事に既出"
+  },
+  "mano-shiny-act-piece-pack-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-11号の開催中イベント記事に既出"
+  },
+  "shiny-mattari-hbtk-archive-2026-11-10": {
+   "action": "roundup",
+   "angle": "シャニマス・シャニソンの定常運営まとめ(まったりHBTKのアーカイブ公開、来週は23時から)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-mattari-hbtk-november-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "おたより締切は11/11頃で終了済み。出演者情報は放送済みの案内"
+  },
+  "shiny-song-3rd-select-ticket-pack-2026": {
+   "action": "roundup",
+   "angle": "シャニソンの開催中ガシャ・ログインボーナス・販売中アイテムのまとめ(3周年記念セレチケパックの対象紹介)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-first-refrac7ions-still-blue-2026-gift": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-11号「Still blue 贈り物はメッセージ類のみ」と同じ内容"
+  },
+  "lisani-tokyo-2027": {
+   "action": "article",
+   "angle": "LISANI！TOKYO 2027(ストレイライト出演の2/21 SUNDAY STAGE)のチケット最速先行は11月15日23時59分までで、締切まであと3日。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(締切前)"
+  },
+  "shiny-alstroemeria-gotoken-xmas-2026": {
+   "action": "article",
+   "angle": "アルストロメリア×五島軒のクリスマスオードブルは、全国送料無料の早期予約が11月15日まで、あと3日。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(締切前)。予約自体は11/30まで"
+  },
+  "shiny-orchestra-concert-2027": {
+   "action": "article",
+   "angle": "「Radiant Chord」公式グッズの事前販売(ASOBI STORE受注)は11月15日まで、締切まであと3日。",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "グッズ受注の主題3件を1記事に統合。チケット先行とは別行動のため別記事"
+  },
+  "shiny-orchestra-radiant-chord-goods-2027": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-orchestra-concert-2027",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じグッズ受注締切"
+  },
+  "shiny-orchestra-2027-goods-order": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-orchestra-concert-2027",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じグッズ受注締切"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "shiny-lisani-tokyo-2027",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "LISANI！TOKYO 2027(ストレイライト出演の2/21 SUNDAY STAGE)のチケット最速先行は11月15日23時59分までで、締切まであと3日。",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "lisani-tokyo-2027",
+    "candidate_ids": [
+     "sched-2026-11-12-lisani-tokyo-2027-締切前"
+    ]
+   },
+   {
+    "slug": "shiny-alstroemeria-gotoken-xmas-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "アルストロメリア×五島軒のクリスマスオードブルは、全国送料無料の早期予約が11月15日まで、あと3日。",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "shiny-alstroemeria-gotoken-xmas-2026",
+    "candidate_ids": [
+     "sched-2026-11-12-shiny-alstroemeria-gotoken-xmas-2026-締切前"
+    ]
+   },
+   {
+    "slug": "shiny-orchestra-concert-2027",
+    "brand": "shiny",
+    "rank": "medium",
+    "angle": "「Radiant Chord」公式グッズの事前販売(ASOBI STORE受注)は11月15日まで、締切まであと3日。",
+    "purpose": "期日の知らせ",
+    "lead_score": 60,
+    "dedup_key": "shiny-orchestra-concert-2027",
+    "candidate_ids": [
+     "sched-2026-11-12-shiny-orchestra-concert-2027-締切前",
+     "sched-2026-11-12-shiny-orchestra-concert-2027-締切前-src1",
+     "sched-2026-11-12-shiny-orchestra-radiant-chord-goods-2027-締切前",
+     "sched-2026-11-12-shiny-orchestra-radiant-chord-goods-2027-締切前-src1",
+     "sched-2026-11-12-shiny-orchestra-2027-goods-order-締切前"
+    ]
+   },
+   {
+    "slug": "shiny-ops-roundup",
+    "brand": "shiny",
+    "rank": "roundup",
+    "angle": "シャニソンの開催中ガシャ・ログインボーナス・販売中アイテムのまとめ(郁田はるき限定★3の新ピックアップ)",
+    "lead_score": 0,
+    "dedup_key": "shiny-song-haruki-traveling-clockwork-girl-2026",
+    "candidate_ids": [
+     "202611120230-grok-34",
+     "202611120230-grok-35",
+     "202611120230-grok-36",
+     "202611120230-grok-39",
+     "202611120230-grok-139",
+     "202611120230-grok-41",
+     "202611120230-grok-43",
+     "202611120230-grok-49",
+     "202611120230-grok-58",
+     "202611120230-grok-61"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "shiny-colors-new-single-2027-tokuten",
+    "reason": "既報",
+    "note": "11-11号の記事に同じ店舗特典・価格・発売日が全て載っている"
+   },
+   {
+    "dedup_key": "shiny-antica-xr-live-mv-second-2026",
+    "reason": "既報",
+    "note": "11-11号「アンティーカ3曲にxR版とフルMV追加へ」と同じ施策"
+   },
+   {
+    "dedup_key": "shiny-antica-xr-live-mv-second",
+    "reason": "既報",
+    "note": "11-11号の記事と同じ施策(URL違いの同じ知らせ)"
+   },
+   {
+    "dedup_key": "shiny-orchestra-concert-2027-radiant-chord",
+    "reason": "既報",
+    "note": "ゲーム先行の期間・当落・入金・公演情報は11-11号に全て載り、締切は12/1で3日以内ではない"
+   },
+   {
+    "dedup_key": "shiny-song-prism-3rd-login-bonus-2-2026",
+    "reason": "既報",
+    "note": "11-11号「第2弾ログボは11月30日まで」と同じ施策"
+   },
+   {
+    "dedup_key": "shiny-meguru-encouragement-aerial-2026",
+    "reason": "既報",
+    "note": "めぐるP-SSRの登場は11-11号の開催中イベント記事に既出。動画紹介のみで新事実なし"
+   },
+   {
+    "dedup_key": "shiny-autumn-maple-box-2026",
+    "reason": "既報",
+    "note": "報酬の和泉愛依は11-11号に既出、開始は11-10号で既報"
+   },
+   {
+    "dedup_key": "shiny-song-antica-xr-mv-2-2026",
+    "reason": "既報",
+    "note": "11-11号の記事と同じ施策。追加の事実なし"
+   },
+   {
+    "dedup_key": "shiny-song-rerun-rinze-hana-2026",
+    "reason": "既報",
+    "note": "11-11号「凛世・羽那の限定★3を復刻」と同じ施策"
+   },
+   {
+    "dedup_key": "hina-wonderful-stamp-gasha-2026",
+    "reason": "既報",
+    "note": "11-11号「雛菜の特別ピンナップS-SSR登場」と同じ内容"
+   },
+   {
+    "dedup_key": "koito-birthday-2026",
+    "reason": "既報",
+    "note": "11-11号の誕生日施策記事に全施策が載っている。セール終了日の明記も無い"
+   },
+   {
+    "dedup_key": "shiny-orchestra-2027-game-lottery",
+    "reason": "既報",
+    "note": "11-11号「Radiant Chord ゲーム先行開始」と同じ施策"
+   },
+   {
+    "dedup_key": "kaho-twilight-piece-pack-2026",
+    "reason": "既報",
+    "note": "価格・購入回数・内容とも11-11号の開催中イベント記事に既出"
+   },
+   {
+    "dedup_key": "meguru-twilight-piece-pack-2026",
+    "reason": "既報",
+    "note": "11-11号の開催中イベント記事に既出"
+   },
+   {
+    "dedup_key": "mano-shiny-act-piece-pack-2026",
+    "reason": "既報",
+    "note": "11-11号の開催中イベント記事に既出"
+   },
+   {
+    "dedup_key": "shiny-mattari-hbtk-november-2026",
+    "reason": "その他",
+    "note": "おたより締切は11/11頃で終了済み。出演者情報は放送済みの案内"
+   },
+   {
+    "dedup_key": "shiny-first-refrac7ions-still-blue-2026-gift",
+    "reason": "既報",
+    "note": "11-11号「Still blue 贈り物はメッセージ類のみ」と同じ内容"
+   }
+  ],
+  "cross_brand": []
+ }
+}

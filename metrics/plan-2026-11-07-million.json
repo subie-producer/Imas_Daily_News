@@ -1,0 +1,285 @@
+{
+ "decisions": {
+  "million-seasonal-snapshot-2026-02-valentine": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/6号で同内容を記事化済み。受注締切11/22は3日以内でもない"
+  },
+  "hinata-good-apple-day-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "11/5の公式Xの一言告知で終了済み、出典も未確認。読者の行動に結びつく事実なし"
+  },
+  "cyber-planet-popup-osaka-2026": {
+   "action": "article",
+   "angle": "Cyber Planet POP UP SHOP大阪会場がきょう11月7日にアベノラクバスで開幕、15日まで。購入特典の配布とOSMOスタンプ作成が始まる。",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "大阪の開幕5主題をこの1本に統合"
+  },
+  "million-momoko-birthday-gacha-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/6限りで終了済み。11/6号で桃子誕生日ガシャを記事化済み"
+  },
+  "million-momoko-birthday-set-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/6限りで終了済み。11/6号で2026セットを記事化済み"
+  },
+  "million-premium-pickup-sr-gacha-2026-11": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/6号で4人の新シリーズを記事化済み。新しい事実なし"
+  },
+  "general-momoko-birthday-fan-celebration-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿1件で、ファン面の対象でもない"
+  },
+  "million-platinum-star-tune-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-platinum-star-tune-yoru-to-akari-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じイベント。最終日の記事に統合"
+  },
+  "million-kyomaf-after-sales-2026": {
+   "action": "article",
+   "angle": "京まふ2026のミリオンライブPOP UP SHOPの事後通販で、くのいちverのカードケースセットやタペストリーなど7品目の価格が判明。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "既報なし。過去2回の繰り越し。出典は当事者の通販ページ"
+  },
+  "medicos-cyberplanet-popup-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cyber-planet-popup-osaka-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "大阪会場の開幕。同じ出来事"
+  },
+  "x-com-43": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cyber-planet-popup-osaka-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "大阪会場の開幕。同じ出来事"
+  },
+  "million-cyber-planet-popup-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cyber-planet-popup-osaka-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "大阪会場の開幕。同じ出来事"
+  },
+  "million-cyber-planet-popup-osaka-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cyber-planet-popup-osaka-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "大阪会場の開幕。星井美希キーホルダーの特典付き購入の素材を統合"
+  },
+  "million-sherry-n-cherry-gasha-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-platinum-star-tune-yoru-to-akari-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "イベントと同じ20:59終了。最終日の記事に統合"
+  },
+  "million-platinum-star-tune-yoru-to-akari-2026": {
+   "action": "article",
+   "angle": "ミリシタ「夜と、明かりと。」とSherry 'n Cherryガシャが、きょう11月7日20時59分で終了する最終日。",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "イベント走破・ガシャ・最終日のショップ制限をまとめる。5主題が素材"
+  },
+  "million-platinum-starchune-yorutoakari-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-platinum-star-tune-yoru-to-akari-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じイベントの終了。最終日の記事に統合"
+  },
+  "platinum-stune-yoru-akari-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-platinum-star-tune-yoru-to-akari-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じイベントの終了。最終日の記事に統合"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "million-cyber-planet-popup-osaka-2026",
+    "brand": "million",
+    "rank": "medium",
+    "angle": "Cyber Planet POP UP SHOP大阪会場がきょう11月7日にアベノラクバスで開幕、15日まで。購入特典の配布とOSMOスタンプ作成が始まる。",
+    "purpose": "期日の知らせ",
+    "lead_score": 60,
+    "dedup_key": "cyber-planet-popup-osaka-2026",
+    "candidate_ids": [
+     "202611061836-watch-8",
+     "sched-2026-11-07-cyber-planet-popup-osaka-2026-開幕",
+     "sched-2026-11-07-medicos-cyberplanet-popup-2026-開幕",
+     "sched-2026-11-07-x-com-43-開幕",
+     "sched-2026-11-07-x-com-43-開幕-src1",
+     "sched-2026-11-07-million-cyber-planet-popup-2026-開幕",
+     "sched-2026-11-07-million-cyber-planet-popup-2026-開幕-src1",
+     "sched-2026-11-07-million-cyber-planet-popup-2026-開幕-src2",
+     "sched-2026-11-07-million-cyber-planet-popup-osaka-2026-開幕",
+     "sched-2026-11-07-million-cyber-planet-popup-osaka-2026-開幕-src1"
+    ]
+   },
+   {
+    "slug": "million-kyomaf-after-sales-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "京まふ2026のミリオンライブPOP UP SHOPの事後通販で、くのいちverのカードケースセットやタペストリーなど7品目の価格が判明。",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "million-kyomaf-after-sales-2026",
+    "candidate_ids": [
+     "202611050230-grok-16"
+    ]
+   },
+   {
+    "slug": "million-platinum-star-tune-yoru-to-akari-2026",
+    "brand": "million",
+    "rank": "medium",
+    "angle": "ミリシタ「夜と、明かりと。」とSherry 'n Cherryガシャが、きょう11月7日20時59分で終了する最終日。",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "million-platinum-star-tune-yoru-to-akari-2026",
+    "candidate_ids": [
+     "sched-2026-11-07-million-platinum-star-tune-yoru-to-akari-2026-締切",
+     "sched-2026-11-07-million-platinum-star-tune-yoru-to-akari-2026-締切-src1",
+     "sched-2026-11-07-million-platinum-star-tune-yoru-to-akari-2026-締切-src2",
+     "sched-2026-11-07-million-platinum-star-tune-yoru-to-akari-2026-締切-src3",
+     "202610311835-watch-0",
+     "sched-2026-11-07-million-sherry-n-cherry-gasha-2026-締切",
+     "sched-2026-11-07-million-sherry-n-cherry-gasha-2026-締切-src1",
+     "sched-2026-11-07-million-sherry-n-cherry-gasha-2026-締切-src2",
+     "sched-2026-11-07-million-sherry-n-cherry-gasha-2026-締切-src3",
+     "sched-2026-11-07-million-platinum-starchune-yorutoakari-2026-終了",
+     "sched-2026-11-07-million-platinum-starchune-yorutoakari-2026-終了-src1",
+     "sched-2026-11-07-platinum-stune-yoru-akari-2026-終了",
+     "sched-2026-11-07-platinum-stune-yoru-akari-2026-終了-src1"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "million-seasonal-snapshot-2026-02-valentine",
+    "reason": "既報",
+    "note": "11/6号で同内容を記事化済み。受注締切11/22は3日以内でもない"
+   },
+   {
+    "dedup_key": "hinata-good-apple-day-2026",
+    "reason": "その他",
+    "note": "11/5の公式Xの一言告知で終了済み、出典も未確認。読者の行動に結びつく事実なし"
+   },
+   {
+    "dedup_key": "million-momoko-birthday-gacha-2026",
+    "reason": "既報",
+    "note": "11/6限りで終了済み。11/6号で桃子誕生日ガシャを記事化済み"
+   },
+   {
+    "dedup_key": "million-momoko-birthday-set-2026",
+    "reason": "既報",
+    "note": "11/6限りで終了済み。11/6号で2026セットを記事化済み"
+   },
+   {
+    "dedup_key": "million-premium-pickup-sr-gacha-2026-11",
+    "reason": "既報",
+    "note": "11/6号で4人の新シリーズを記事化済み。新しい事実なし"
+   },
+   {
+    "dedup_key": "general-momoko-birthday-fan-celebration-2026",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿1件で、ファン面の対象でもない"
+   }
+  ],
+  "cross_brand": []
+ }
+}

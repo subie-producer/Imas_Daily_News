@@ -1,0 +1,26 @@
+{
+ "decisions": {
+  "idolmaster-tours-test-restart-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "2026-11-09「ツアマス、11月8日から試験稼働再開(合同面)」と同じ施策。出典URLが違うだけで、新しい事実も当日のトリガーも無い。"
+  }
+ },
+ "plan": {
+  "articles": [],
+  "dropped": [
+   {
+    "dedup_key": "idolmaster-tours-test-restart-2026",
+    "reason": "既報",
+    "note": "2026-11-09「ツアマス、11月8日から試験稼働再開(合同面)」と同じ施策。出典URLが違うだけで、新しい事実も当日のトリガーも無い。"
+   }
+  ],
+  "cross_brand": []
+ }
+}

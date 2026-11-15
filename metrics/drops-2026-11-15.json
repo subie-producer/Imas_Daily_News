@@ -1,0 +1,77 @@
+{
+ "gaku-b2-tapestry-juo-sena": {
+  "title": "カーテン魂の学マス新作グッズ(Anime Store.JP)の予約受付は本日が最終日",
+  "stage": "執筆で見送り",
+  "why": "NOT_NEWS Anime Store.JPの商品ページは受付期間を11月15日までと表示する一方、対象のタペストリーを含む確認した商品ページには「すでに予約は終了しました」と表示されていました。06:00の配信時点で予約できることを確認できず、「本日が最",
+  "candidate_ids": [
+   "202610260417-watch-0",
+   "202610241231-explore-11",
+   "202610260412-watch-0",
+   "202610260411-watch-0",
+   "sched-2026-11-15-gaku-b2-tapestry-juo-sena-締切",
+   "sched-2026-11-15-gaku-b2-tapestry-juo-sena-締切-src1",
+   "sched-2026-11-15-gaku-b2-tapestry-juo-sena-締切-src2",
+   "sched-2026-11-15-gaku-b2-tapestry-juo-sena-締切-src3",
+   "sched-2026-11-15-gaku-b2-tapestry-juo-sena-締切-src4",
+   "sched-2026-11-15-curtain-damashii-new-goods-2026-締切",
+   "sched-2026-11-15-curtain-damashii-new-goods-2026-締切-src1"
+  ]
+ },
+ "sidem-teddys-collection-ii-goods": {
+  "title": "「Teddy's Collection II」のワイヤー3連アクリルチャーム等、Anime Store.JPでの予約は本日が最終日",
+  "stage": "執筆で見送り",
+  "why": "SOURCE_MISMATCH Anime Store.JPの商品一覧は現在の版に更新されており、素材にある「Teddy's Collection II」のチャームとマフラータオル、11月15日の予約締切を現行ページで確認できませんでした。予約最終日を記事の核として確かめ",
+  "candidate_ids": [
+   "sched-2026-11-15-sidem-teddys-collection-ii-goods-締切",
+   "202611010510-explore-2"
+  ]
+ },
+ "million-kyomaf-after-sales-2026": {
+  "title": "ミリオンライブ京まふ通販、締切まであと3日",
+  "stage": "書き直しで見送り",
+  "why": "NO_PRIMARY_SOURCE 公式・準公式の告知または公式発表を報じた報道の出典を確認できませんでした。関連語で検索しましたが、見つかった商品ページは当事者の出典でした。素材の一覧 https://www.the-chara.com/view/search?search_category=ct4940 も scr",
+  "candidate_ids": [
+   "sched-2026-11-15-million-kyomaf-after-sales-2026-締切前"
+  ]
+ },
+ "million-seasonal-snapshot-valentine": {
+  "title": "ミリオン、バレンタイン受注は22日まで",
+  "stage": "書き直しで見送り",
+  "why": "OTHER 指摘I1のとおり、記事の中核は2026年11月6日号で既報の受注情報の再掲であり、今回の素材に新たな受注開始・商品内容変更・締切接近などの掲載理由となる事実がありません。",
+  "candidate_ids": [
+   "202611141834-watch-3"
+  ]
+ },
+ "dsva-3rd-live-meeting-qonnect-as-one": {
+  "title": "ヴイアラ東京公演、最速先行は本日締切",
+  "stage": "校閲ブロック",
+  "why": "P1 同じ主題の記事が2本以上ある。vα-liv 3rdLIVE＆MEETING QONNECT AS ONE のアソビストア一般会員先行（ASOBI TICKET の同じ受付ページ、受付10/17 21:30〜11/15 23:59、同じ締切）",
+  "candidate_ids": [
+   "202611150227-grok-64",
+   "202611150227-grok-137",
+   "sched-2026-11-15-dsva-3rd-live-meeting-qonnect-as-one-締切"
+  ],
+  "settled": {
+   "rule": "P1",
+   "dup_of": [
+    "dsva-valiv-comic-episode-36",
+    "joint-v-aliv-3rd-live-ticket-2026"
+   ]
+  }
+ },
+ "joint-v-aliv-3rd-live-ticket-2026": {
+  "title": "vα-liv現地先行、申込は本日23時59分まで",
+  "stage": "校閲ブロック",
+  "why": "P1 同じ主題の記事が2本以上ある。同じ先行（ASOBI TICKET の同じ受付、受付10/17 21:30〜11/15 23:59、同じ締切、同じ申込条件）を dsva-valiv-comic-episode-36（名古屋・東京）と dsva",
+  "candidate_ids": [
+   "sched-2026-11-15-v-aliv-3rd-live-ticket-2026-締切"
+  ],
+  "settled": {
+   "rule": "P1",
+   "dup_of": [
+    "dsva-3rd-live-meeting-qonnect-as-one",
+    "dsva-valiv-comic-episode-36"
+   ]
+  }
+ }
+}

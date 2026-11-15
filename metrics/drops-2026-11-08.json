@@ -1,0 +1,94 @@
+{
+ "gaku-cycle-jersey-restock-2026": {
+  "title": "サイクルジャージ全13種の再受注は本日11月8日が申込締切",
+  "stage": "執筆で見送り",
+  "why": "NO_PRIMARY_SOURCE 公式のUZM商品ページでは13種の仕様・価格は確認できましたが、申込締切日の記載を確認できませんでした。締切日を確認できる出典はファンサイトのみのため、期日の知らせとして記事にできません。",
+  "candidate_ids": [
+   "sched-2026-11-08-gaku-cycle-jersey-restock-2026-締切"
+  ]
+ },
+ "sidem-teddys-collection-ii-goods": {
+  "title": "「Teddy's Collection II」にボールチェーンマスコット・ミニカチューシャ・缶バッジ・クリアカード・クリアファイルなどの予約商品が並んだ。",
+  "stage": "執筆で見送り",
+  "why": "NOT_NEWS 「Teddy's Collection II」の公式通販予約期間は2026年9月4日から9月27日までで、発行時刻までに終了しています。素材外の読める販売ページでも、切り口にあるボールチェーンマスコット、ミニカチューシャ、缶バッジ、クリアカ",
+  "candidate_ids": [
+   "202611010510-explore-0",
+   "202611010510-explore-1-r1",
+   "202611010510-explore-2"
+  ]
+ },
+ "million-premium-pickup-sr-gasha-2026-11": {
+  "title": "プレミアムピックアップSRガシャ(おもてなしガール！シリーズ)は11月9日23:59まで。プレミアムスター150個で春香・千鶴のSRを入手できる。",
+  "stage": "執筆で見送り",
+  "why": "NO_PRIMARY_SOURCE 素材の二次情報ページは読めましたが、プレミアムピックアップSRガシャの期間やプレミアムスター、対象カードを確認できる公式・準公式の出典を取得できませんでした。公式告知のリンク先も本文を確認できず、公式情報を裏付けられないため見送ります。",
+  "candidate_ids": [
+   "202611070733-explore-2"
+  ]
+ },
+ "joint-cg-million-clash-match-2027": {
+  "title": "デレミリ合同グッズ、事前受注は15日まで",
+  "stage": "書き直しで見送り",
+  "why": "NOT_NEWS 素材に既報（2026-10-31号）にない新事実はなく、11月7日の告知も同じ内容の再掲です。記事として出しません。",
+  "candidate_ids": [
+   "202611071833-watch-0",
+   "202611080229-grok-119",
+   "202611080229-grok-15"
+  ]
+ },
+ "shiny-hitohira-gacha-2026": {
+  "title": "シャニソン「ひとひら」ガシャ開催中",
+  "stage": "書き直しで見送り",
+  "why": "NOT_NEWS 素材にあるのは既報の「ひとひら」ガシャが開催中という状態のみで、新しい発表や当日のトリガーはありません。この記事は掲載しません。",
+  "candidate_ids": [
+   "202611080229-grok-28"
+  ]
+ },
+ "sidem-mfes-winter-wonderland-decotto-2026": {
+  "title": "SideM「Mフェス」DECOTTOで12月開催",
+  "stage": "書き直しで見送り",
+  "why": "NO_PRIMARY_SOURCE R5を満たすDECOTTOコラボの公式・準公式告知または公式発表を報じた報道を確認できませんでした。指定された https://bandainamco-am.co.jp/c は fetch_page.py で404。Mフェス2026×315!!!SHOPの準公式ページ https:/",
+  "candidate_ids": [
+   "202611061836-explore-15"
+  ]
+ },
+ "shiny-hachiban-box-ramen-set-2026": {
+  "title": "シャニマス×8番箱らーめん、受注は本日23時59分まで",
+  "stage": "書き直しで見送り",
+  "why": "NOT_NEWS I1に従い、ハチバンeSHOPの同じ注文期限を伝える記事が別稿に掲載されるため、この記事を取り下げます。",
+  "candidate_ids": [
+   "sched-2026-11-08-shiny-hachiban-box-ramen-set-2026-締切",
+   "sched-2026-11-08-shiny-hachiban-box-ramen-set-2026-締切-src1"
+  ],
+  "settled": {
+   "rule": "P1",
+   "dup_of": [
+    "shiny-hachiban-collab-2026"
+   ]
+  }
+ },
+ "cg-popn-toybox-revival-2026": {
+  "title": "シンデレラガールズ「トイボ」先行は今夜締切",
+  "stage": "校閲ブロック",
+  "why": "P1 同じ知らせが2本ある。cg-popn-toybox-revival-2026 と joint-xr-live-revival-2026-presale-extension は、同じアソビストア受付（receptions/d0d5822a…、",
+  "candidate_ids": [
+   "sched-2026-11-08-cg-popn-toybox-revival-2026-締切",
+   "sched-2026-11-08-cg-popntoybox-revival-general-lottery-2026-締切",
+   "sched-2026-11-08-cg-popntoybox-revival-general-lottery-2026-締切-src1"
+  ],
+  "settled": {
+   "rule": "P1",
+   "dup_of": [
+    "joint-xr-live-revival-2026-presale-extension"
+   ]
+  }
+ },
+ "general-765pro-itasha-share-2026-11-07": {
+  "title": "765PROやSideMで広がるファンの創作",
+  "stage": "校閲ブロック",
+  "why": "R4 POPPIN' PLANET の投稿の日付が日本時間と合わない。素材の投稿 status 2118367512073261563 は、status ID の時刻から計算すると 2026-11-06 00:39 JST(UTC では 2026",
+  "candidate_ids": [
+   "202611080229-grok-14",
+   "202611060418-grok-41"
+  ]
+ }
+}

@@ -1,0 +1,365 @@
+{
+ "decisions": {
+  "sidem-315nyao-mini-goods-latte-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-14号の本文に日時・場所・缶バッジ12/1まで全て既出。発売の19日は3日超先でトリガー無し"
+  },
+  "sidem-315-episode-idol-one-panel-update-2026-10": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "出典変更の facts はページ表示の揺れのみ。読者に関わる変更なし。「うつろう景色」は11-14号で記事済み"
+  },
+  "fantastic-combination-live-retrospective-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "facts は無関係な他記事の見出し等で、特集の内容変更は無い(11-13・11-14号で記事済み)"
+  },
+  "sidem-birthday-bouquet-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-birthday-celebration-bouquet-2026-feb",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ受注締切の知らせ"
+  },
+  "sidem-315nyao-asobi-store-order-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-14号で受付期間・商品を記事済み。締切は30日で3日超先"
+  },
+  "sidem-idol-1koma-utsurou-keshiki-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-14号「うつろう景色」公開と同じ更新"
+  },
+  "sidem-aji-na-yatsura-preview-2026": {
+   "action": "article",
+   "angle": "ストーリー「AJIなヤツら」の試し読み動画がYouTubeで公開され、本編はASOBI STORYで読める",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "第2話公開(11-11号)とは別の新しい動画"
+  },
+  "sidem-refrain-atrium-2dmv-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-14号で11月25日21時公開を記事済み。当日トリガー無し"
+  },
+  "cafe-parade-chocolate-special-2dmv-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-14号で公開済みを記事化済み。新事実無し"
+  },
+  "sidem-fan-renaissance-collab-experience-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿のみ。ファン面(culture)は general 面の扱い"
+  },
+  "sidem-fan-seibuen-collab-visit-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿のみ。ファン面(culture)は general 面の扱い"
+  },
+  "sidem-mfes-winter-wonderland-theme-song-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10-31・11-01号ほか複数の過去記事で発売日12/2・価格等を記事済み。新事実もトリガーも無い"
+  },
+  "sidem-renaissance-campaign2-2026": {
+   "action": "article",
+   "angle": "315 Fitness Project のSNSキャンペーン第2弾が11月13日〜29日に実施、コラボ店舗のウォールステッカー全4種が計4名に当たる",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "第2弾は過去記事に無い新しい施策"
+  },
+  "sidem-birthday-celebration-bouquet-2026-feb": {
+   "action": "article",
+   "angle": "2月生まれ4人の記念グッズ「315 Celebration Bouquet」のASOBI STORE受注は本日23時59分が最終日",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "素材8件超の主題に3キーを統合"
+  },
+  "teddys-collection-ii-goods": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-teddys-collection-ii-goods",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ商品の予約締切。出典変更は読者に関わる変更なし"
+  },
+  "sidem-cardfolio-vol2-2026": {
+   "action": "article",
+   "angle": "カードフォリオ SideM ver.vol.2「パシャっとチャレンジ」の応募は本日23時59分が締切",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "シリアル入力で315名に当たる抽選"
+  },
+  "sidem-cardfolio-pasha-challenge-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-cardfolio-vol2-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じキャンペーンの締切"
+  },
+  "sidem-fbfes-wanna-step-in-goods-2026": {
+   "action": "article",
+   "angle": "「Wanna step in」イベント公式グッズの追加直前販売は本日23時59分が最終日(ASOBI STORE特設サイト、数量限定)",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約の締切。当日トリガーあり"
+  },
+  "sidem-teddys-collection-ii-goods": {
+   "action": "article",
+   "angle": "「Teddy's Collection II」のワイヤー3連アクリルチャーム等、Anime Store.JPでの予約は本日が最終日",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約の締切。carriedの同商品を統合"
+  },
+  "sidem-315-celebration-bouquet-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-birthday-celebration-bouquet-2026-feb",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ受注締切の知らせ"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "sidem-aji-na-yatsura-preview-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "ストーリー「AJIなヤツら」の試し読み動画がYouTubeで公開され、本編はASOBI STORYで読める",
+    "purpose": "新情報",
+    "lead_score": 5,
+    "dedup_key": "sidem-aji-na-yatsura-preview-2026",
+    "candidate_ids": [
+     "202611150227-grok-42"
+    ]
+   },
+   {
+    "slug": "sidem-renaissance-campaign2-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "315 Fitness Project のSNSキャンペーン第2弾が11月13日〜29日に実施、コラボ店舗のウォールステッカー全4種が計4名に当たる",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "sidem-renaissance-campaign2-2026",
+    "candidate_ids": [
+     "202611150227-grok-78"
+    ]
+   },
+   {
+    "slug": "sidem-birthday-celebration-bouquet-2026-feb",
+    "brand": "sidem",
+    "rank": "medium",
+    "angle": "2月生まれ4人の記念グッズ「315 Celebration Bouquet」のASOBI STORE受注は本日23時59分が最終日",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "sidem-birthday-celebration-bouquet-2026-feb",
+    "candidate_ids": [
+     "202611150227-grok-97",
+     "202611150227-grok-98",
+     "202611150227-grok-99",
+     "202611150227-grok-100",
+     "202611150227-grok-104",
+     "202611150227-grok-105",
+     "sched-2026-11-15-sidem-birthday-celebration-bouquet-2026-feb-締切",
+     "sched-2026-11-15-sidem-birthday-celebration-bouquet-2026-feb-締切-src1",
+     "202611142334-watch-0",
+     "sched-2026-11-15-sidem-315-celebration-bouquet-2026-締切"
+    ]
+   },
+   {
+    "slug": "sidem-cardfolio-vol2-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "カードフォリオ SideM ver.vol.2「パシャっとチャレンジ」の応募は本日23時59分が締切",
+    "purpose": "期日の知らせ",
+    "lead_score": 15,
+    "dedup_key": "sidem-cardfolio-vol2-2026",
+    "candidate_ids": [
+     "sched-2026-11-15-sidem-cardfolio-vol2-2026-締切",
+     "sched-2026-11-15-sidem-cardfolio-vol2-2026-締切-src1",
+     "sched-2026-11-15-sidem-cardfolio-pasha-challenge-2026-締切"
+    ]
+   },
+   {
+    "slug": "sidem-fbfes-wanna-step-in-goods-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "「Wanna step in」イベント公式グッズの追加直前販売は本日23時59分が最終日(ASOBI STORE特設サイト、数量限定)",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "sidem-fbfes-wanna-step-in-goods-2026",
+    "candidate_ids": [
+     "sched-2026-11-15-sidem-fbfes-wanna-step-in-goods-2026-締切"
+    ]
+   },
+   {
+    "slug": "sidem-teddys-collection-ii-goods",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "「Teddy's Collection II」のワイヤー3連アクリルチャーム等、Anime Store.JPでの予約は本日が最終日",
+    "purpose": "期日の知らせ",
+    "lead_score": 15,
+    "dedup_key": "sidem-teddys-collection-ii-goods",
+    "candidate_ids": [
+     "sched-2026-11-15-sidem-teddys-collection-ii-goods-締切",
+     "202611010510-explore-2"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "sidem-315nyao-mini-goods-latte-2026",
+    "reason": "既報",
+    "note": "11-14号の本文に日時・場所・缶バッジ12/1まで全て既出。発売の19日は3日超先でトリガー無し"
+   },
+   {
+    "dedup_key": "sidem-315-episode-idol-one-panel-update-2026-10",
+    "reason": "既報",
+    "note": "出典変更の facts はページ表示の揺れのみ。読者に関わる変更なし。「うつろう景色」は11-14号で記事済み"
+   },
+   {
+    "dedup_key": "fantastic-combination-live-retrospective-2026",
+    "reason": "既報",
+    "note": "facts は無関係な他記事の見出し等で、特集の内容変更は無い(11-13・11-14号で記事済み)"
+   },
+   {
+    "dedup_key": "sidem-315nyao-asobi-store-order-2026",
+    "reason": "既報",
+    "note": "11-14号で受付期間・商品を記事済み。締切は30日で3日超先"
+   },
+   {
+    "dedup_key": "sidem-idol-1koma-utsurou-keshiki-2026",
+    "reason": "既報",
+    "note": "11-14号「うつろう景色」公開と同じ更新"
+   },
+   {
+    "dedup_key": "sidem-refrain-atrium-2dmv-2026",
+    "reason": "既報",
+    "note": "11-14号で11月25日21時公開を記事済み。当日トリガー無し"
+   },
+   {
+    "dedup_key": "cafe-parade-chocolate-special-2dmv-2026",
+    "reason": "既報",
+    "note": "11-14号で公開済みを記事化済み。新事実無し"
+   },
+   {
+    "dedup_key": "sidem-fan-renaissance-collab-experience-2026",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿のみ。ファン面(culture)は general 面の扱い"
+   },
+   {
+    "dedup_key": "sidem-fan-seibuen-collab-visit-2026",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿のみ。ファン面(culture)は general 面の扱い"
+   },
+   {
+    "dedup_key": "sidem-mfes-winter-wonderland-theme-song-2026",
+    "reason": "既報",
+    "note": "10-31・11-01号ほか複数の過去記事で発売日12/2・価格等を記事済み。新事実もトリガーも無い"
+   }
+  ],
+  "cross_brand": []
+ }
+}

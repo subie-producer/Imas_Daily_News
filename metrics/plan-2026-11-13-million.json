@@ -1,0 +1,346 @@
+{
+ "decisions": {
+  "million-12th-bluray-order-extension-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "facts はログイン案内の文言だけで読者に関わる変更なし。受注は12日で終了済み"
+  },
+  "million-11th-kokura-fan-trip-report-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人の旅行記投稿で、単体では記事にしない"
+  },
+  "million-12th-live-bluray-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "受注は11/12で終了済み。11/12号に既報"
+  },
+  "million-theater-days-update-2026-11-12": {
+   "action": "article",
+   "angle": "ミリシタVer.9.0.400の強制アップデートが本日13時頃に実施される。アイグラのSSR・SRカード獲得演出も変わる。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "Ver.9.0.400配信とアイグラ演出変更をここに統合"
+  },
+  "demirimi-clash-goods-preorder-2026": {
+   "action": "article",
+   "angle": "CLASH M@TCH!!の公式グッズ事前受注はASOBI STOREで11月15日まで。締切が2日後に迫っている。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "締切3日以内のトリガー。価格などの既報事項は繰り返さず期日を中心にする"
+  },
+  "million-idol-grand-prix-card-acquisition-effects-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-theater-days-update-2026-11-12",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じVer.9.0.400アップデートの内容"
+  },
+  "million-theaterdays-version-9-0-400-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-theater-days-update-2026-11-12",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じアップデートの配信告知"
+  },
+  "million-rio-momose-true-ending-reward-design-2026": {
+   "action": "article",
+   "angle": "アイグラで百瀬莉緒のTrue Ending達成時の称号とBG GrafiXが、近日中にシルエットを解除してTrue Endのデザインに変わる。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "設定中の場合はデータ更新後に自動で切り替わる"
+  },
+  "million-arc-flags-popup-visit-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "声優個人のSNS投稿で、単体では記事にしない。ポップアップ自体は11/6に既報"
+  },
+  "million-cyber-planet-popup-2026": {
+   "action": "article",
+   "angle": "Cyber Planet POP UPの等身大パネルプレゼント応募は11月16日23:59まで。大阪会場の開催は15日までで、残りわずか。",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "締切3日前のトリガー。medicos-e-net-44 と cyber-planet-popup-osaka-2026 を統合"
+  },
+  "million-opera-seria-popup-after-sale-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-opera-seria-popup-mail-order-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ事後通販で、受付期間も同じ"
+  },
+  "million-platinum-star-tune-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "イベントは11/7に終了済みで、11/7号までに既報"
+  },
+  "million-ringo-festival-goods-ec-2026": {
+   "action": "article",
+   "angle": "木下ひなたの壮瞥りんごまつりの公式グッズが、11月11日19時からECで販売中。数に限りがあり、売り切れ次第終了する。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "前の号で記事にならなかった主題。出典が足りるかは執筆と校閲が判断する"
+  },
+  "million-anime-onkyo-earphone-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-ova-onkyo-earphone-charger-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じオンキヨーコラボ商品の受注締切"
+  },
+  "medicos-e-net-44": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-cyber-planet-popup-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ等身大パネル応募の締切前の知らせ"
+  },
+  "million-opera-seria-popup-mail-order-2026": {
+   "action": "article",
+   "angle": "POP UP SHOP「オペラセリア」の事後通販は、Animoで11月16日17時まで受注中。締切まであと3日。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "締切3日前のトリガー。after-sale を統合。EC購入には店舗特典が付かない点は新情報に数えない"
+  },
+  "cyber-planet-popup-osaka-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-cyber-planet-popup-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ大阪会場と応募期間の知らせ"
+  },
+  "million-ova-onkyo-earphone-charger-2026": {
+   "action": "article",
+   "angle": "ミリオンOVA記念の録り下ろしボイス搭載イヤホンとワイヤレス充電器の受注は、本日15時が最終期限。",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "本日締切のトリガー。anime-onkyo-earphone と ova-wireless-audio を統合"
+  },
+  "million-ova-wireless-audio-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-ova-onkyo-earphone-charger-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ商品・同じ受注の締切"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "million-theater-days-update-2026-11-12",
+    "brand": "million",
+    "rank": "small",
+    "angle": "ミリシタVer.9.0.400の強制アップデートが本日13時頃に実施される。アイグラのSSR・SRカード獲得演出も変わる。",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "million-theater-days-update-2026-11-12",
+    "candidate_ids": [
+     "202611122334-explore-2",
+     "202611130231-grok-18",
+     "202611130231-grok-19"
+    ]
+   },
+   {
+    "slug": "million-demirimi-clash-goods-preorder-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "CLASH M@TCH!!の公式グッズ事前受注はASOBI STOREで11月15日まで。締切が2日後に迫っている。",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "demirimi-clash-goods-preorder-2026",
+    "candidate_ids": [
+     "202611130231-grok-17",
+     "202611130231-grok-56",
+     "202611130231-grok-63",
+     "202611130231-grok-64",
+     "202611130231-grok-65",
+     "202611130231-grok-66"
+    ]
+   },
+   {
+    "slug": "million-rio-momose-true-ending-reward-design-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "アイグラで百瀬莉緒のTrue Ending達成時の称号とBG GrafiXが、近日中にシルエットを解除してTrue Endのデザインに変わる。",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "million-rio-momose-true-ending-reward-design-2026",
+    "candidate_ids": [
+     "202611130231-grok-20"
+    ]
+   },
+   {
+    "slug": "million-cyber-planet-popup-2026",
+    "brand": "million",
+    "rank": "medium",
+    "angle": "Cyber Planet POP UPの等身大パネルプレゼント応募は11月16日23:59まで。大阪会場の開催は15日までで、残りわずか。",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "million-cyber-planet-popup-2026",
+    "candidate_ids": [
+     "202611130231-grok-22",
+     "sched-2026-11-13-million-cyber-planet-popup-2026-締切前",
+     "sched-2026-11-13-million-cyber-planet-popup-2026-締切前-src1",
+     "sched-2026-11-13-million-cyber-planet-popup-2026-締切前-src2",
+     "sched-2026-11-13-medicos-e-net-44-締切前",
+     "sched-2026-11-13-cyber-planet-popup-osaka-2026-締切前"
+    ]
+   },
+   {
+    "slug": "million-ringo-festival-goods-ec-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "木下ひなたの壮瞥りんごまつりの公式グッズが、11月11日19時からECで販売中。数に限りがあり、売り切れ次第終了する。",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "million-ringo-festival-goods-ec-2026",
+    "candidate_ids": [
+     "202611120230-grok-29"
+    ]
+   },
+   {
+    "slug": "million-opera-seria-popup-mail-order-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "POP UP SHOP「オペラセリア」の事後通販は、Animoで11月16日17時まで受注中。締切まであと3日。",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "million-opera-seria-popup-mail-order-2026",
+    "candidate_ids": [
+     "sched-2026-11-13-million-opera-seria-popup-mail-order-2026-締切前",
+     "202611130231-grok-23"
+    ]
+   },
+   {
+    "slug": "million-ova-onkyo-earphone-charger-2026",
+    "brand": "million",
+    "rank": "medium",
+    "angle": "ミリオンOVA記念の録り下ろしボイス搭載イヤホンとワイヤレス充電器の受注は、本日15時が最終期限。",
+    "purpose": "期日の知らせ",
+    "lead_score": 60,
+    "dedup_key": "million-ova-onkyo-earphone-charger-2026",
+    "candidate_ids": [
+     "sched-2026-11-13-million-ova-onkyo-earphone-charger-2026-締切",
+     "sched-2026-11-13-million-anime-onkyo-earphone-2026-締切",
+     "sched-2026-11-13-million-anime-onkyo-earphone-2026-締切-src1",
+     "sched-2026-11-13-million-ova-wireless-audio-2026-締切",
+     "sched-2026-11-13-million-ova-wireless-audio-2026-締切-src1"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "million-12th-bluray-order-extension-2026",
+    "reason": "既報",
+    "note": "facts はログイン案内の文言だけで読者に関わる変更なし。受注は12日で終了済み"
+   },
+   {
+    "dedup_key": "million-11th-kokura-fan-trip-report-2026",
+    "reason": "個人の話題",
+    "note": "個人の旅行記投稿で、単体では記事にしない"
+   },
+   {
+    "dedup_key": "million-12th-live-bluray-2026",
+    "reason": "既報",
+    "note": "受注は11/12で終了済み。11/12号に既報"
+   },
+   {
+    "dedup_key": "million-arc-flags-popup-visit-2026",
+    "reason": "個人の話題",
+    "note": "声優個人のSNS投稿で、単体では記事にしない。ポップアップ自体は11/6に既報"
+   },
+   {
+    "dedup_key": "million-platinum-star-tune-2026",
+    "reason": "既報",
+    "note": "イベントは11/7に終了済みで、11/7号までに既報"
+   }
+  ],
+  "cross_brand": []
+ }
+}

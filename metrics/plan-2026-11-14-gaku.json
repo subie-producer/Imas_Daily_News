@@ -1,0 +1,284 @@
+{
+ "decisions": {
+  "gaku-asari-produce-seminar-2026-10": {
+   "action": "article",
+   "angle": "Conceptual Single Collectionのショップ別特典デザインが公開され、LIVE TOUR -標-の新曲をVol.1〜Vol.3に収録する",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "放送部感想回・GOLD RUSHコードは既報なので触れない。特典デザインと収録内容に絞る"
+  },
+  "gaku-kotone-endless-dance-graphic-tee": {
+   "action": "article",
+   "angle": "藤田ことねENDLESS DANCEグラフィックTシャツのDMM予約受付が終了し、注文後のキャンセルもできなくなった",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "source_change。前回の「受付中」から「受付終了」への変更が新しい事実。価格・仕様は既報なので書かない"
+  },
+  "kannae-implementation-special-tv-cm-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-tv-cm-kananae-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ特別TVCM。続報予約の主題へ統合。16日10時メンテ(データ破棄)は既報だが一言触れてよい"
+  },
+  "gakumas-live-tour-hyo-final-tsukuriyo-goods": {
+   "action": "article",
+   "angle": "標ファイナル協賛のつくりより商品(REVERSI応援法被7,700円、A3クリアポスター1,100円など)の一般受注が11月13日から12月7日まで始まった",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ASOBI STOREは15日まで受注。販売サイトにより早期終了あり"
+  },
+  "gakumas-kanae-manners-quiz-campaign-2026-11": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "kanae-manners-quiz-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じクイズの施策。応募は13日23:59で終了済みなので、応募を促さず過去の事実として触れる程度に"
+  },
+  "kanae-manners-quiz-2026": {
+   "action": "article",
+   "angle": "2.5周年特設サイトで「香名江のお作法クイズ」が公開され、氷渡香名江と一緒に知識を学べる",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公開記念ポスター抽選(13日締切で終了)の素材を統合"
+  },
+  "gakuen-hatsuboshi-hr-2-5th-sp-2026": {
+   "action": "article",
+   "angle": "11月15日19時30分の「初星学園HR 2.5thアニバーサリーSP」のニコニコ生放送とYouTube LiveのURLが公開された",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "source_change。配信URL公開が新事実。時刻変更・ミラー条件は既報"
+  },
+  "hatsuboshi-broadcast-clip-2026-11-13": {
+   "action": "article",
+   "angle": "初星学園放送部の標ファイナル振り返り回の切り抜きが公式Xで公開された",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "放送自体と全編アーカイブは既報。切り抜き公開のみ短く"
+  },
+  "hatsuboshi-twinkle-rabbit-theme-2026-11": {
+   "action": "article",
+   "angle": "ハツボシストアが11月登場予定の新テーマ「トゥインクルラビット」のシルエットを公開した",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "詳細・全員のビジュアルは近日公開。当事者アカウントの投稿"
+  },
+  "kananae-implementation-special-tvcm-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-tv-cm-kananae-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ特別TVCM。続報予約の主題へ統合"
+  },
+  "sweets-acrylic-stand-saki-2026": {
+   "action": "article",
+   "angle": "コレクイズがスイーツver.花海咲季のアクリルコレクションスタンド(1,980円税込)を11月22日まで予約受付",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "当事者アカウントの投稿"
+  },
+  "gaku-b2-tapestry-juo-sena": {
+   "action": "article",
+   "angle": "カーテン魂の学マス新作グッズ(B2タペストリー、特大アクリルスタンドなど)のAnime Store.JP予約が明日11月15日で締切",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "carried。締切が3日以内でトリガーあり。価格・商品は既報なので締切と、予約後キャンセル不可の注意が中心"
+  },
+  "gaku-tv-cm-kananae-2026": {
+   "action": "article",
+   "angle": "氷渡香名江実装決定記念の特別TVCMが今夜19時からの「ジョブチューン」20時台に放映される",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約。当日のトリガー。一部地域は視聴不可。16日プロデュース開始、15日HRで詳細と軽く触れる"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "gaku-asari-produce-seminar-2026-10",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "Conceptual Single Collectionのショップ別特典デザインが公開され、LIVE TOUR -標-の新曲をVol.1〜Vol.3に収録する",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "gaku-asari-produce-seminar-2026-10",
+    "candidate_ids": [
+     "202611130733-explore-4"
+    ]
+   },
+   {
+    "slug": "gaku-kotone-endless-dance-graphic-tee",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "藤田ことねENDLESS DANCEグラフィックTシャツのDMM予約受付が終了し、注文後のキャンセルもできなくなった",
+    "purpose": "新情報",
+    "lead_score": 5,
+    "dedup_key": "gaku-kotone-endless-dance-graphic-tee",
+    "candidate_ids": [
+     "update-66449c2c12ac"
+    ]
+   },
+   {
+    "slug": "gaku-gakumas-live-tour-hyo-final-tsukuriyo-goods",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "標ファイナル協賛のつくりより商品(REVERSI応援法被7,700円、A3クリアポスター1,100円など)の一般受注が11月13日から12月7日まで始まった",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "gakumas-live-tour-hyo-final-tsukuriyo-goods",
+    "candidate_ids": [
+     "202611131839-watch-1",
+     "202611140226-grok-78"
+    ]
+   },
+   {
+    "slug": "gaku-kanae-manners-quiz-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "2.5周年特設サイトで「香名江のお作法クイズ」が公開され、氷渡香名江と一緒に知識を学べる",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "kanae-manners-quiz-2026",
+    "candidate_ids": [
+     "202611132333-explore-14",
+     "202611140226-grok-57",
+     "202611140226-grok-112",
+     "202611131839-watch-2"
+    ]
+   },
+   {
+    "slug": "gaku-gakuen-hatsuboshi-hr-2-5th-sp-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "11月15日19時30分の「初星学園HR 2.5thアニバーサリーSP」のニコニコ生放送とYouTube LiveのURLが公開された",
+    "purpose": "新情報",
+    "lead_score": 30,
+    "dedup_key": "gakuen-hatsuboshi-hr-2-5th-sp-2026",
+    "candidate_ids": [
+     "update-224564f07b9c"
+    ]
+   },
+   {
+    "slug": "gaku-hatsuboshi-broadcast-clip-2026-11-13",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "初星学園放送部の標ファイナル振り返り回の切り抜きが公式Xで公開された",
+    "purpose": "新情報",
+    "lead_score": 5,
+    "dedup_key": "hatsuboshi-broadcast-clip-2026-11-13",
+    "candidate_ids": [
+     "202611140226-grok-54"
+    ]
+   },
+   {
+    "slug": "gaku-hatsuboshi-twinkle-rabbit-theme-2026-11",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "ハツボシストアが11月登場予定の新テーマ「トゥインクルラビット」のシルエットを公開した",
+    "purpose": "新情報",
+    "lead_score": 5,
+    "dedup_key": "hatsuboshi-twinkle-rabbit-theme-2026-11",
+    "candidate_ids": [
+     "202611140226-grok-56"
+    ]
+   },
+   {
+    "slug": "gaku-sweets-acrylic-stand-saki-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "コレクイズがスイーツver.花海咲季のアクリルコレクションスタンド(1,980円税込)を11月22日まで予約受付",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "sweets-acrylic-stand-saki-2026",
+    "candidate_ids": [
+     "202611140226-grok-59"
+    ]
+   },
+   {
+    "slug": "gaku-b2-tapestry-juo-sena",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "カーテン魂の学マス新作グッズ(B2タペストリー、特大アクリルスタンドなど)のAnime Store.JP予約が明日11月15日で締切",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "gaku-b2-tapestry-juo-sena",
+    "candidate_ids": [
+     "202610260412-watch-0",
+     "202610260417-watch-0",
+     "202610241231-explore-11",
+     "202610260411-watch-0"
+    ]
+   },
+   {
+    "slug": "gaku-tv-cm-kananae-2026",
+    "brand": "gaku",
+    "rank": "medium",
+    "angle": "氷渡香名江実装決定記念の特別TVCMが今夜19時からの「ジョブチューン」20時台に放映される",
+    "purpose": "期日の知らせ",
+    "lead_score": 60,
+    "dedup_key": "gaku-tv-cm-kananae-2026",
+    "candidate_ids": [
+     "sched-2026-11-14-gaku-tv-cm-kananae-2026-その他",
+     "sched-2026-11-14-gaku-tv-cm-kananae-2026-その他-src1",
+     "sched-2026-11-14-gaku-tv-cm-kananae-2026-その他-src2",
+     "202611131234-explore-7",
+     "202611140226-grok-58"
+    ]
+   }
+  ],
+  "dropped": [],
+  "cross_brand": []
+ }
+}

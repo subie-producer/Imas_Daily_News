@@ -793,5 +793,30 @@
   "src_candidate_id": "202611060418-grok-26",
   "companion_of": "sched-2026-11-22-million-seasonal-snapshot-2026-02-valentine-締切",
   "src_dedup_key": "seasonal-snapshot-february-goods-2027"
+ },
+ {
+  "id": "sched-2026-11-22-sweets-acrylic-stand-saki-2026-締切",
+  "dedup_key": "sweets-acrylic-stand-saki-2026",
+  "brand": "gaku",
+  "subject": "花海咲季 アクリルコレクションスタンド スイーツver.予約",
+  "kind": "締切",
+  "note": "colleizeでの予約の最終日、カートから予約できる",
+  "reserved_on": "2026-11-15",
+  "occurs_on": "2026-11-22",
+  "title": "スイーツver. 花海咲季 アクリルコレクションスタンド予約",
+  "url": "https://x.com/colleize/status/2121219025489571882",
+  "source_type": "当事者",
+  "facts": [
+   "商品名: 学園アイドルマスター_アクリルコレクションスタンド スイーツver. 花海咲季。",
+   "価格: 1,800円（税抜）、1,980円（税込）。",
+   "予約期間: 2026/11/22まで。",
+   "リンク: https://colleize.com/lineup/400/438244?utm_source=X&utm_medium=social&utm_campaign=aimasu&utm_term=20261113",
+   "エンゲージメント: 低",
+   "言及アイドル: 花海咲季"
+  ],
+  "via": "grok",
+  "verify": "unconfirmed",
+  "deadline": "2026-11-22",
+  "src_candidate_id": "202611140226-grok-59"
  }
 ]

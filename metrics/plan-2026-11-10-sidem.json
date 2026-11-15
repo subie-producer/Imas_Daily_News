@@ -1,0 +1,230 @@
+{
+ "decisions": {
+  "sidem-howanu-i-vol-6-7-2026": {
+   "action": "article",
+   "angle": "バンプレストのSideMほわぬいvol.6・vol.7が11月28日に登場予定",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "出典は景品情報サイト(未確認)。出典の足りるかは執筆・校閲で判断"
+  },
+  "sidem-birthday-celebration-bouquet-2026-feb": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "出典の変更後はログイン画面の文言のみで、締切・条件の変更なし。11/15締切は既報で、今日は3日以内でもない"
+  },
+  "memory-pict-8th-january-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "変更後は待機画面の文言のみで読者に関わる変更なし。内容もシンデレラのMemory Pict.で、劇場版SideMの既報と無関係"
+  },
+  "sidem-fbfes-wanna-step-in-goods-2026": {
+   "action": "article",
+   "angle": "「Wanna step in」公式グッズの追加直前販売が11月9日〜15日23:59に実施される",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "10/25終了の直前販売とは別の追加販売。発送は12月中旬以降"
+  },
+  "sidem-fantastic-battle-fes-film-2026": {
+   "action": "article",
+   "angle": "劇場版SideM(11/20公開)の出演ユニットと、天道輝役・仲村宗悟ら25名の声優キャストが紹介された",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 50,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "既報本文に声優キャストの記載なし。出典は個人Xの投稿(未確認)なので裏取りは校閲で"
+  },
+  "sidem-collab-photo-fan-reaction-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿1件のみ"
+  },
+  "sidem-knick-knacks-yokohama-lottery-2026": {
+   "action": "article",
+   "angle": "ハンズ横浜店がknick-knacks Vol.2の購入時間帯事前WEB抽選の結果を発表し、催事は11月13日開幕",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "既報は北千住店の抽選のみで横浜店は新しい。Vol.2の全国15店開催の知らせもここに統合"
+  },
+  "sidem-knick-knacks-vol-2-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-knick-knacks-yokohama-lottery-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "15店・11/13開幕・12/6までは既報。ハンズ創業50周年特別企画の一文のみ新しい"
+  },
+  "teddys-collection-ii-goods": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/30の記事と同内容(11/15締切、商品・価格)。締切は5日先で当日のトリガーなし"
+  },
+  "sidem-daimaru-vol2-2026": {
+   "action": "article",
+   "angle": "SideM×大丸松坂屋 第2弾の大丸東京店が本日20時で最終日。次は11月18日から大丸梅田店",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(千秋楽)。同じ催しの3主題を統合。東京は3F、10:00〜20:00"
+  },
+  "sidem-daimaru-matsuzakaya-popup-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-daimaru-vol2-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ大丸東京店最終日の続報予約。梅田店の日程と整理券情報を素材に統合"
+  },
+  "sidem-daimaru-tokyo-vol-2-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-daimaru-vol2-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ大丸東京店最終日の続報予約。商品と価格の素材を統合"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "sidem-howanu-i-vol-6-7-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "バンプレストのSideMほわぬいvol.6・vol.7が11月28日に登場予定",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "sidem-howanu-i-vol-6-7-2026",
+    "candidate_ids": [
+     "202611090732-explore-1"
+    ]
+   },
+   {
+    "slug": "sidem-fbfes-wanna-step-in-goods-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "「Wanna step in」公式グッズの追加直前販売が11月9日〜15日23:59に実施される",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "sidem-fbfes-wanna-step-in-goods-2026",
+    "candidate_ids": [
+     "202611091835-watch-1",
+     "202611100230-grok-111"
+    ]
+   },
+   {
+    "slug": "sidem-fantastic-battle-fes-film-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "劇場版SideM(11/20公開)の出演ユニットと、天道輝役・仲村宗悟ら25名の声優キャストが紹介された",
+    "purpose": "新情報",
+    "lead_score": 50,
+    "dedup_key": "sidem-fantastic-battle-fes-film-2026",
+    "candidate_ids": [
+     "202611100230-grok-35"
+    ]
+   },
+   {
+    "slug": "sidem-knick-knacks-yokohama-lottery-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "ハンズ横浜店がknick-knacks Vol.2の購入時間帯事前WEB抽選の結果を発表し、催事は11月13日開幕",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "sidem-knick-knacks-yokohama-lottery-2026",
+    "candidate_ids": [
+     "202611100230-grok-37",
+     "202611100230-grok-95"
+    ]
+   },
+   {
+    "slug": "sidem-daimaru-vol2-2026",
+    "brand": "sidem",
+    "rank": "medium",
+    "angle": "SideM×大丸松坂屋 第2弾の大丸東京店が本日20時で最終日。次は11月18日から大丸梅田店",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "sidem-daimaru-vol2-2026",
+    "candidate_ids": [
+     "sched-2026-11-10-sidem-daimaru-vol2-2026-千秋楽",
+     "sched-2026-11-10-sidem-daimaru-vol2-2026-千秋楽-src1",
+     "sched-2026-11-10-sidem-daimaru-vol2-2026-千秋楽-src2",
+     "sched-2026-11-10-sidem-daimaru-matsuzakaya-popup-2026-終了",
+     "sched-2026-11-10-sidem-daimaru-matsuzakaya-popup-2026-終了-src1",
+     "sched-2026-11-10-sidem-daimaru-tokyo-vol-2-2026-千秋楽"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "sidem-birthday-celebration-bouquet-2026-feb",
+    "reason": "既報",
+    "note": "出典の変更後はログイン画面の文言のみで、締切・条件の変更なし。11/15締切は既報で、今日は3日以内でもない"
+   },
+   {
+    "dedup_key": "memory-pict-8th-january-2026",
+    "reason": "既報",
+    "note": "変更後は待機画面の文言のみで読者に関わる変更なし。内容もシンデレラのMemory Pict.で、劇場版SideMの既報と無関係"
+   },
+   {
+    "dedup_key": "sidem-collab-photo-fan-reaction-2026",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿1件のみ"
+   },
+   {
+    "dedup_key": "teddys-collection-ii-goods",
+    "reason": "既報",
+    "note": "10/30の記事と同内容(11/15締切、商品・価格)。締切は5日先で当日のトリガーなし"
+   }
+  ],
+  "cross_brand": []
+ }
+}

@@ -1,0 +1,235 @@
+{
+ "decisions": {
+  "cg-apple-of-my-ai-goods-2026": {
+   "action": "article",
+   "angle": "出典の更新で、11月16日付でメッシュプリントグラスとアップルレザーキーケースが数量限定販売の商品として更新された点を伝える(受注は29日まで)",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "前回記事では両品は受注扱いだった。変更点だけを書く"
+  },
+  "isetan-osechi-2027-cinderella": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-isetan-osechi-2027",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じおせちの予約〆切17日23時59分"
+  },
+  "cg-15th-party-venue-cd-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-15th-anniversary-party-2026-venue-goods",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "CD・映像の整理券も同じ受付(17日23時59分締切)。HOURGLASS Premiere MVの18日21時は既報(11/7)で当日のトリガーなし"
+  },
+  "fan-komatsu-ibuki-birthday-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "ibuki-komatsu-birthday-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ファン投稿は単体で記事にせず、公式の誕生日動画の記事へ"
+  },
+  "fan-twin-kuru-ru-tail-mv-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人の動画投稿で、cg面の対象外(ファン面はgeneral面だけ)"
+  },
+  "cg-sousenkyo-2026-15th-popup": {
+   "action": "article",
+   "angle": "総選挙＆15周年POP UP SHOPの入場予約は、抽選後の空き枠を対象に本日18時から先着受付が始まる",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "Invitational P@rtyの先着予約(合同面)とは別の催し"
+  },
+  "ibuki-komatsu-birthday-2026": {
+   "action": "article",
+   "angle": "アイドルマスターチャンネルが11月17日の小松伊吹の誕生日を祝うショート動画を公開した",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ファン側の祝う投稿は素材として統合"
+  },
+  "cg-isetan-osechi-2027": {
+   "action": "article",
+   "angle": "伊勢丹コラボおせち2027は本日23時59分が最終締切で、三越伊勢丹オンラインストアでの購入は今日まで",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 35,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(締切・終了)を1記事にまとめる。予約主題のisetan-osechi-2027-cinderellaも統合"
+  },
+  "cg-isetan-osechi-campaign-2027": {
+   "action": "article",
+   "angle": "茄子BIGアクリルスタンドが当たるフォロー＆リポストキャンペーンの応募は本日23時59分まで",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "おせち購入とは読者の行動が別(抽選応募)"
+  },
+  "cg-sweet-melty-whip-after-sale-2026": {
+   "action": "article",
+   "angle": "「Sweet Melty Whip」POP UP SHOPの会場商品の事後通販は、MEDICOS ONLINE SHOPで本日が受注最終日",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "cg-15th-anniversary-party-2026-venue-goods": {
+   "action": "article",
+   "angle": "15周年PARTYの会場物販(グッズ・CD・映像)の事前抽選整理券は、本日23時59分で受付終了",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "CD・映像整理券(cg-15th-party-venue-cd-2026)も同じ受付なので統合"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "cg-apple-of-my-ai-goods-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "出典の更新で、11月16日付でメッシュプリントグラスとアップルレザーキーケースが数量限定販売の商品として更新された点を伝える(受注は29日まで)",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "cg-apple-of-my-ai-goods-2026",
+    "candidate_ids": [
+     "update-58a6ebade0bb",
+     "202611170220-grok-65",
+     "202611170220-grok-66"
+    ]
+   },
+   {
+    "slug": "cg-sousenkyo-2026-15th-popup",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "総選挙＆15周年POP UP SHOPの入場予約は、抽選後の空き枠を対象に本日18時から先着受付が始まる",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "cg-sousenkyo-2026-15th-popup",
+    "candidate_ids": [
+     "202611170220-grok-11",
+     "sched-2026-11-17-cg-sousenkyo-2026-15th-popup-開始"
+    ]
+   },
+   {
+    "slug": "cg-ibuki-komatsu-birthday-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "アイドルマスターチャンネルが11月17日の小松伊吹の誕生日を祝うショート動画を公開した",
+    "purpose": "新情報",
+    "lead_score": 5,
+    "dedup_key": "ibuki-komatsu-birthday-2026",
+    "candidate_ids": [
+     "202611170220-grok-59",
+     "202611170220-grok-9"
+    ]
+   },
+   {
+    "slug": "cg-isetan-osechi-2027",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "伊勢丹コラボおせち2027は本日23時59分が最終締切で、三越伊勢丹オンラインストアでの購入は今日まで",
+    "purpose": "期日の知らせ",
+    "lead_score": 35,
+    "dedup_key": "cg-isetan-osechi-2027",
+    "candidate_ids": [
+     "sched-2026-11-17-cg-isetan-osechi-2027-締切",
+     "sched-2026-11-17-cg-isetan-osechi-2027-締切-src1",
+     "sched-2026-11-17-cg-isetan-osechi-2027-終了",
+     "sched-2026-11-17-cg-isetan-osechi-2027-終了-src1",
+     "202611162334-watch-1"
+    ]
+   },
+   {
+    "slug": "cg-isetan-osechi-campaign-2027",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "茄子BIGアクリルスタンドが当たるフォロー＆リポストキャンペーンの応募は本日23時59分まで",
+    "purpose": "期日の知らせ",
+    "lead_score": 15,
+    "dedup_key": "cg-isetan-osechi-campaign-2027",
+    "candidate_ids": [
+     "sched-2026-11-17-cg-isetan-osechi-campaign-2027-締切"
+    ]
+   },
+   {
+    "slug": "cg-sweet-melty-whip-after-sale-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "「Sweet Melty Whip」POP UP SHOPの会場商品の事後通販は、MEDICOS ONLINE SHOPで本日が受注最終日",
+    "purpose": "期日の知らせ",
+    "lead_score": 15,
+    "dedup_key": "cg-sweet-melty-whip-after-sale-2026",
+    "candidate_ids": [
+     "sched-2026-11-17-cg-sweet-melty-whip-after-sale-2026-締切"
+    ]
+   },
+   {
+    "slug": "cg-15th-anniversary-party-2026-venue-goods",
+    "brand": "cg",
+    "rank": "medium",
+    "angle": "15周年PARTYの会場物販(グッズ・CD・映像)の事前抽選整理券は、本日23時59分で受付終了",
+    "purpose": "期日の知らせ",
+    "lead_score": 60,
+    "dedup_key": "cg-15th-anniversary-party-2026-venue-goods",
+    "candidate_ids": [
+     "sched-2026-11-17-cg-15th-anniversary-party-2026-venue-goods-締切",
+     "202611162334-explore-2",
+     "202611170220-grok-7",
+     "202611170220-grok-64",
+     "202611170220-grok-67",
+     "sched-2026-11-17-cg-15th-party-venue-cd-2026-締切",
+     "sched-2026-11-17-cg-15th-party-venue-cd-2026-締切-src1"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "fan-twin-kuru-ru-tail-mv-2026",
+    "reason": "個人の話題",
+    "note": "個人の動画投稿で、cg面の対象外(ファン面はgeneral面だけ)"
+   }
+  ],
+  "cross_brand": []
+ }
+}

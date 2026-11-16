@@ -1,0 +1,98 @@
+{
+ "decisions": {
+  "cinderella-15th-invitational-party-2026": {
+   "action": "article",
+   "angle": "シンデレラガールズ15周年Invitational P@rtyの抽選結果発表(16日)を受け、本日18時から先着予約が始まる",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "既報なし。先着予約の開始が今日、会期は11月21日から"
+  },
+  "cg-million-clash-match-2027-goods-presale": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "受注期限は11月15日で終了済み。14日・15日に記事化済みで新事実なし"
+  },
+  "tours-prime-match-fes-2026": {
+   "action": "article",
+   "angle": "19日開幕のプライムマッチフェスについて、第1〜第8マッチングの開催期間(第1は11月19日7時〜29日25時59分)を日程表として伝える",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "既報本文に各マッチングの期間は無く、開幕まで2日"
+  },
+  "tours-rhythm-live-festival-2027-preliminaries": {
+   "action": "article",
+   "angle": "RHYTHM LIVE FESTIVAL 2027予選ランキングが11月15日時点に更新、マスター部門は上位が同スコアで並び次回更新は20日",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "prior・events無し。ランキング更新は新しい事実"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "joint-cinderella-15th-invitational-party-2026",
+    "brand": "joint",
+    "rank": "medium",
+    "angle": "シンデレラガールズ15周年Invitational P@rtyの抽選結果発表(16日)を受け、本日18時から先着予約が始まる",
+    "purpose": "期日の知らせ",
+    "lead_score": 60,
+    "dedup_key": "cinderella-15th-invitational-party-2026",
+    "candidate_ids": [
+     "202611161233-explore-10"
+    ]
+   },
+   {
+    "slug": "joint-tours-prime-match-fes-2026",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "19日開幕のプライムマッチフェスについて、第1〜第8マッチングの開催期間(第1は11月19日7時〜29日25時59分)を日程表として伝える",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "tours-prime-match-fes-2026",
+    "candidate_ids": [
+     "202611170220-grok-57",
+     "202611170220-grok-76"
+    ]
+   },
+   {
+    "slug": "joint-tours-rhythm-live-festival-2027-preliminaries",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "RHYTHM LIVE FESTIVAL 2027予選ランキングが11月15日時点に更新、マスター部門は上位が同スコアで並び次回更新は20日",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "tours-rhythm-live-festival-2027-preliminaries",
+    "candidate_ids": [
+     "202611170220-grok-58",
+     "202611170220-grok-77"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "cg-million-clash-match-2027-goods-presale",
+    "reason": "既報",
+    "note": "受注期限は11月15日で終了済み。14日・15日に記事化済みで新事実なし"
+   }
+  ],
+  "cross_brand": []
+ }
+}

@@ -1,0 +1,88 @@
+{
+ "decisions": {
+  "va-liv-online-1on1-14th-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "valiv-14th-online-one-on-one-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ第14回オンライン1on1の公式告知。素材を統合"
+  },
+  "cosmo-ace-combat-8-stream-2026-11-14": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "ACE8配信は11/14・11/15に記事済み。新事実なし、出典も未確認で反響低"
+  },
+  "valiv-14th-online-one-on-one-2026": {
+   "action": "article",
+   "angle": "第14回オンライン1on1の抽選受付が11月23日23時59分まで。灯里愛夏は12/19、宇宙とレトラは12/27開催、当落は27日見込み。",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公式告知と当事者投稿の2主題を統合。券種ごとの価格・時間枠を含める"
+  },
+  "valiv-cosmo-ymca-short-2026-11": {
+   "action": "article",
+   "angle": "宇宙がレイン・パターソンと「YMCA 踊ってみた」ショート動画をYouTubeとTikTokで公開した。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "過去のダンスコラボ記事とは別の新作動画。素材は少なく短い記事"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "dsva-valiv-14th-online-one-on-one-2026",
+    "brand": "dsva",
+    "rank": "medium",
+    "angle": "第14回オンライン1on1の抽選受付が11月23日23時59分まで。灯里愛夏は12/19、宇宙とレトラは12/27開催、当落は27日見込み。",
+    "purpose": "新情報",
+    "lead_score": 60,
+    "dedup_key": "valiv-14th-online-one-on-one-2026",
+    "candidate_ids": [
+     "202611170220-explore-4",
+     "202611170220-grok-56",
+     "202611170220-grok-74",
+     "202611161834-watch-2"
+    ]
+   },
+   {
+    "slug": "dsva-valiv-cosmo-ymca-short-2026-11",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "宇宙がレイン・パターソンと「YMCA 踊ってみた」ショート動画をYouTubeとTikTokで公開した。",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "valiv-cosmo-ymca-short-2026-11",
+    "candidate_ids": [
+     "202611170220-grok-55",
+     "202611170220-grok-75"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "cosmo-ace-combat-8-stream-2026-11-14",
+    "reason": "既報",
+    "note": "ACE8配信は11/14・11/15に記事済み。新事実なし、出典も未確認で反響低"
+   }
+  ],
+  "cross_brand": []
+ }
+}

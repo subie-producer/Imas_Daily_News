@@ -275,6 +275,7 @@ party_paths:
   - item.rakuten.co.jp/f272078-takatsuki        # 高槻市ふるさと納税
 
 party_domains:
+  - medicos-e-shop.net    # 合議で追加: 販売業者はメディコス・エンタテインメント。ライセンス商品の販売元
   - sma.co.jp             # 合議で追加: 楽曲提供の告知。所属事務所が出しても、演じる人でない竹内は演者ではない
   - www-stage.aac.pref.aichi.jp # 合議で追加: 愛知県芸術劇場の公式サイト。会場と自主事業の運営元
   - neec.ac.jp            # 合議で追加: 学校が運営する会場(アリーナ)の施設紹介ページ
@@ -688,6 +689,8 @@ x_accounts:
     - imasnews765
     - zutapoke
   ファン:
+    - nakasima9876        # 合議で追加: 個人アカウントによるPOPUP SHOP当選報告
+    - Natsumero1993       # 合議で追加: 個人アカウントによる小松伊吹の誕生日祝い投稿
     - tonko0725           # 合議で追加: 個人らしいハンドルのコラボ準備ガイド。個人発信なのでファン扱い
     - curaai000           # 合議で追加: 個人アカウントのAIイラスト投稿。個人の創作なのでファン
     - DB_takuto           # 合議で追加: 個人アカウント。作品公開へのファンの購買反応を投稿している
@@ -1072,6 +1075,9 @@ x_accounts:
     - procinen1
     - yutaleP
   当事者:
+    - joshincddvd         # 合議で追加: 家電量販店のCD予約受付。販売元としての発信
+    - cinecitta_jp        # 合議で追加: 映画館の上映告知。会場・催しの運営側
+    - bushi_capsule       # 合議で追加: ライセンス商品(カプセルトイ)の販売元の発売告知
     - tukurifigure        # 合議で追加: 公式ライセンスのグッズを受注販売する会社、販売元
     - bkdanikebukuro      # 合議で追加: ばくだん焼本舗池袋店のMフェス特典(コラボ店舗の発信)
     - animatekuzuha       # 合議で追加: グッズ入荷の告知。店舗の発信と読める(個人の可能性も)
@@ -1274,6 +1280,15 @@ x_posts:
 
 # --- リンク元から引き継いだ種別(リンク先1つずつ。キーは pipelib.link_key)。合議がリンク元の告知と関係していると確かめたものだけ(classify_sources.inherit_from_links)。リンク先そのものの種別より強いときだけ効く ---
 link_types:
+  youtube.com/watch?v=O9oCfxSJXTY: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/gkmas_official/status/2122260892909756684(公式)。告知された「ガラクタロード」MVの本体(500万再生の対象)
+  youtube.com/watch?v=EhqVIoPgCSA: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/valiv_official/status/2122253358404915234(公式)。告知された宇宙の「YMCA踊ってみた」ショート動画の本体
+  youtube.com/watch?v=DigASA6R05g: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/imas_ch/status/2122343940942901592(公式)。告知された小松伊吹の誕生日を祝うショート動画の本体
+  nicovideo.jp/watch/sm47054030: ファン           # リンク元から引き継ぎ(合議で関係を確認): https://x.com/Goh_Goh/status/2122340855545729175(ファン)。告知で紹介された「CHANGE!!!!」真美・律子のもふM@S MVの動画そのも
+  livepocket.jp/e/kvrez: 公式                   # リンク元から引き継ぎ(合議で関係を確認): https://x.com/valiv_official/status/2122162995858186561(公式)。同じ第14回ヴイアライヴ1on1の上水流宇宙分のチケット購入ページ
+  livepocket.jp/e/2oub-: 公式                   # リンク元から引き継ぎ(合議で関係を確認): https://x.com/valiv_official/status/2122162995858186561(公式)。同じ第14回ヴイアライヴ1on1のレトラ分のチケット購入ページ
+  cinecitta.co.jp/event/545: 当事者               # リンク元から引き継ぎ(合議で関係を確認): https://x.com/cinecitta_jp/status/2122301366832132536(当事者)。同じ劇場版SideMのLIVEサウンド上映の案内ページで、告知と同じ企画
+  livepocket.jp/e/xww9k: 公式                   # リンク元から引き継ぎ(合議で関係を確認): https://x.com/valiv_official/status/2122162995858186561(公式)。リンク元は愛夏の1on1販売URL。リンク先も同じ企画のチケット販売ページ
+  youtube.com/watch?v=P2og8_pWoy4: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/valiv_official/status/2121543664304595148(公式)。ACE COMBAT 8の配信告知で、リンク先は同じ最終回配信の動画
   shop.asobistore.jp/category/gakuen_kne_of_gd: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://x.com/gkmas_official/status/2121936937833607178(公式)。氷渡香名江の公式グッズ・1st Single販売ページで、告知と一致
   shop.asobistore.jp/category/gakuen_2nd_half: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://x.com/gkmas_official/status/2121936797743907248(公式)。2.5周年記念公式グッズの販売カテゴリで、告知の商品と一致
   lnk.to/TCruNo: 公式                           # リンク元から引き継ぎ(合議で関係を確認): https://x.com/gkmas_official/status/2121932232449560770(公式)。新曲「メタモルフォーゼ」の事前予約・配信ページで、告知と同じ企画

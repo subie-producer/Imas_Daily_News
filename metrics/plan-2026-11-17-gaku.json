@@ -1,0 +1,719 @@
+{
+ "decisions": {
+  "gakuen-kanae-debut-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "16日号で開始済みを記事化"
+  },
+  "gaku-kanae-1st-single": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "16日号に価格・特典・予約期限とも掲載済み"
+  },
+  "hatsuboshi-store-cheer-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "出典の変化は商品ページの表示で、読者に関わる変更ではない"
+  },
+  "gaku-kaigou-1st-single": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "16日号に価格・予約期限・特典まで掲載済み"
+  },
+  "gaku-kanae-hajime-prize-figure-2027": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "16日号「初」衣装でフィギュア化と同じ"
+  },
+  "eclipse-light-animate-fair-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "対象商品欄の入れ替わりは13日・15日号で既報、新事実なし"
+  },
+  "3rd-single-completion-goods-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "受注は15日で終了済み、ページが空になっただけ"
+  },
+  "gakumas-mugyumini-figure-vol3": {
+   "action": "article",
+   "angle": "むぎゅみにコレクションフィギュアvol.3が2027年5月下旬にカプセルトイ、6月25日にBUSHIROAD THE BOXで登場する",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "vol.3の素材2件を統合"
+  },
+  "gakumas-kanae-release-amazon-giftcard-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "応募は16日23時59分で終了済み"
+  },
+  "gaku-kanae-first-costume-prize-figure": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "16日号「初」衣装でフィギュア化と同じ"
+  },
+  "gaku-hiwatari-kanae-metamorphose-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-update-2026-26",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "作詞作曲は配信記事に含める"
+  },
+  "gakumas-25th-anniversary-stream-trending-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "二次情報の再生数・順位のみ、配信は15日号で既報"
+  },
+  "metamorphose-hires-mora": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-update-2026-26",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "moraのハイレゾ配信を配信記事に含める"
+  },
+  "kan-nae-metamorphose-ep": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-update-2026-26",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "11月24日0時のEP配信を配信記事に含める"
+  },
+  "metamorphose-song-release": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-update-2026-26",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ配信の告知"
+  },
+  "metamorphose-mv-release": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-update-2026-26",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "MV公開(16日)とスタッフを配信記事に含める"
+  },
+  "kanae-single-wallpaper": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "kanae-single-release-event",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "壁紙配布を1st Single記念施策の記事に含める"
+  },
+  "gaku-agitato-mv-million-views-2026": {
+   "action": "article",
+   "angle": "「Agitato」のMusic Videoが300万再生を突破した",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "100万再生は10月7日号で既報、今回は300万"
+  },
+  "garakuta-road-5m-views-2026": {
+   "action": "article",
+   "angle": "「ガラクタロード」のMusic Videoが500万再生を突破した",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "mugyumin-collection-figure-vol-3": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gakumas-mugyumini-figure-vol3",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shirube-final-stream-ticket": {
+   "action": "roundup",
+   "angle": "標ファイナルの配信視聴チケット販売中(DAY2の新曲紹介)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "進行中の配信販売"
+  },
+  "gakumas-4koma-181": {
+   "action": "roundup",
+   "angle": "4コマ第181話「それもまた愛ゆえに」公開",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "music-feature-bgm-update": {
+   "action": "roundup",
+   "angle": "ゲーム内ミュージック機能のBGM追加",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "kanae-chibigurumi-pouch": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "16日号「ちびぐるみ予約は本日11時開始」で既報"
+  },
+  "kanae-produce-launch": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "16日号「プロデュース本日開始」で既報"
+  },
+  "kanae-implementation-gift": {
+   "action": "roundup",
+   "angle": "香名江登場記念プレゼント(ジュエル2,500個、12月1日まで)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "2-5th-produce-campaign": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "プロデュースキャンペーンは16日号に掲載済み"
+  },
+  "kanae-costume-shop": {
+   "action": "roundup",
+   "angle": "衣装ショップに香名江の髪型・衣装(12月1日まで)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "2-5th-anniversary-packs": {
+   "action": "roundup",
+   "angle": "2.5thアニバーサリーパック(各有償ジュエル5,000個、12月1日まで)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "anniversary-jewel-sale": {
+   "action": "roundup",
+   "angle": "ジュエル増量セール(12月15日まで)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "kanae-2-5th-login-bonus": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "16日号にログボ内容掲載済み"
+  },
+  "producer-ranking-season-5": {
+   "action": "roundup",
+   "angle": "プロデューサーランキングシーズン5(2027年2月15日まで)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "produce-ranking-season-2": {
+   "action": "roundup",
+   "angle": "プロデュースランキングシーズン2(16日11時から)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "maid-panel-mission": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "パネルミッションは16日号に掲載済み"
+  },
+  "anniversary-choice-login-bonus": {
+   "action": "roundup",
+   "angle": "2.5thどっち派ログインボーナス(12月1日4時59分まで)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shirube-limited-ssr-gacha": {
+   "action": "roundup",
+   "angle": "ライブツアー限定SSR確定ガシャ(11月27日まで)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gacha-32": {
+   "action": "roundup",
+   "angle": "SRサポカ「どたばた、おそうじ」ガシャ(11月27日まで)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gacha-33": {
+   "action": "roundup",
+   "angle": "SSRサポカ「お嬢様、失礼いたします」ガシャ(11月27日まで)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gacha-34": {
+   "action": "roundup",
+   "angle": "「メタモルフォーゼ」ガシャ(11月27日まで)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gacha-36": {
+   "action": "roundup",
+   "angle": "氷渡香名江の新プロデュースアイドルガシャ(11月27日まで)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "metamorphose-costume-gacha": {
+   "action": "roundup",
+   "angle": "香名江の衣装・髪型ガシャ(11月27日まで)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "kanae-single-release-event": {
+   "action": "article",
+   "angle": "香名江1st Singleのリリース記念イベント応募と、アニメイト特典A3クリアポスター・スマホ壁紙配布を伝える",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "イベント概要は16日号で既報、A3クリアポスター特典と壁紙が新規"
+  },
+  "metamorphose-mv-scheduled": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-update-2026-26",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "MVは16日22時に公開済み"
+  },
+  "gakumas-maintenance-2026-11-16": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "16日号で既報、メンテは終了済み"
+  },
+  "gakumas-mugyumin-collection-vol-3-2027": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gakumas-mugyumini-figure-vol3",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-jouo-seina-birthday-message-2026": {
+   "action": "article",
+   "angle": "十王星南の誕生日メッセージと質問の募集は11月20日(金)の締切まであと3日",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約・締切前"
+  },
+  "gaku-update-2026-26": {
+   "action": "article",
+   "angle": "氷渡香名江「メタモルフォーゼ」が本日サブスク配信・DL販売開始、ハイレゾ配信、MV公開済み、24日にEP配信",
+   "purpose": "期日の知らせ",
+   "rank": "large",
+   "lead_score": 70,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約・発売日。作詞作曲、MV、ハイレゾ、EP素材を統合"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "gaku-gakumas-mugyumini-figure-vol3",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "むぎゅみにコレクションフィギュアvol.3が2027年5月下旬にカプセルトイ、6月25日にBUSHIROAD THE BOXで登場する",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "gakumas-mugyumini-figure-vol3",
+    "candidate_ids": [
+     "202611161834-watch-0",
+     "202611170220-grok-30",
+     "202611170220-grok-61"
+    ]
+   },
+   {
+    "slug": "gaku-agitato-mv-million-views-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "「Agitato」のMusic Videoが300万再生を突破した",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "gaku-agitato-mv-million-views-2026",
+    "candidate_ids": [
+     "202611170220-grok-28"
+    ]
+   },
+   {
+    "slug": "gaku-garakuta-road-5m-views-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "「ガラクタロード」のMusic Videoが500万再生を突破した",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "garakuta-road-5m-views-2026",
+    "candidate_ids": [
+     "202611170220-grok-29"
+    ]
+   },
+   {
+    "slug": "gaku-kanae-single-release-event",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "香名江1st Singleのリリース記念イベント応募と、アニメイト特典A3クリアポスター・スマホ壁紙配布を伝える",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "kanae-single-release-event",
+    "candidate_ids": [
+     "202611170220-grok-52",
+     "202611170220-grok-27"
+    ]
+   },
+   {
+    "slug": "gaku-jouo-seina-birthday-message-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "十王星南の誕生日メッセージと質問の募集は11月20日(金)の締切まであと3日",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "gaku-jouo-seina-birthday-message-2026",
+    "candidate_ids": [
+     "sched-2026-11-17-gaku-jouo-seina-birthday-message-2026-締切前"
+    ]
+   },
+   {
+    "slug": "gaku-update-2026-26",
+    "brand": "gaku",
+    "rank": "large",
+    "angle": "氷渡香名江「メタモルフォーゼ」が本日サブスク配信・DL販売開始、ハイレゾ配信、MV公開済み、24日にEP配信",
+    "purpose": "期日の知らせ",
+    "lead_score": 70,
+    "dedup_key": "gaku-update-2026-26",
+    "candidate_ids": [
+     "sched-2026-11-17-gaku-update-2026-26-発売",
+     "sched-2026-11-17-gaku-update-2026-26-発売-src1",
+     "202611162334-explore-12",
+     "202611170220-grok-23",
+     "202611170220-grok-24",
+     "202611170220-grok-25",
+     "202611170220-grok-26",
+     "202611170220-grok-71",
+     "202611170220-grok-72",
+     "202611170220-grok-73",
+     "202611170220-grok-53"
+    ]
+   },
+   {
+    "slug": "gaku-ops-roundup",
+    "brand": "gaku",
+    "rank": "roundup",
+    "angle": "標ファイナルの配信視聴チケット販売中(DAY2の新曲紹介)",
+    "lead_score": 0,
+    "dedup_key": "shirube-final-stream-ticket",
+    "candidate_ids": [
+     "202611170220-grok-31",
+     "202611170220-grok-32",
+     "202611170220-grok-33",
+     "202611170220-grok-36",
+     "202611170220-grok-38",
+     "202611170220-grok-39",
+     "202611170220-grok-40",
+     "202611170220-grok-42",
+     "202611170220-grok-43",
+     "202611170220-grok-45",
+     "202611170220-grok-46",
+     "202611170220-grok-47",
+     "202611170220-grok-48",
+     "202611170220-grok-49",
+     "202611170220-grok-50",
+     "202611170220-grok-51"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "gakuen-kanae-debut-2026",
+    "reason": "既報",
+    "note": "16日号で開始済みを記事化"
+   },
+   {
+    "dedup_key": "gaku-kanae-1st-single",
+    "reason": "既報",
+    "note": "16日号に価格・特典・予約期限とも掲載済み"
+   },
+   {
+    "dedup_key": "hatsuboshi-store-cheer-2026",
+    "reason": "その他",
+    "note": "出典の変化は商品ページの表示で、読者に関わる変更ではない"
+   },
+   {
+    "dedup_key": "gaku-kaigou-1st-single",
+    "reason": "既報",
+    "note": "16日号に価格・予約期限・特典まで掲載済み"
+   },
+   {
+    "dedup_key": "gaku-kanae-hajime-prize-figure-2027",
+    "reason": "既報",
+    "note": "16日号「初」衣装でフィギュア化と同じ"
+   },
+   {
+    "dedup_key": "eclipse-light-animate-fair-2026",
+    "reason": "既報",
+    "note": "対象商品欄の入れ替わりは13日・15日号で既報、新事実なし"
+   },
+   {
+    "dedup_key": "3rd-single-completion-goods-2026",
+    "reason": "その他",
+    "note": "受注は15日で終了済み、ページが空になっただけ"
+   },
+   {
+    "dedup_key": "gakumas-kanae-release-amazon-giftcard-2026",
+    "reason": "既報",
+    "note": "応募は16日23時59分で終了済み"
+   },
+   {
+    "dedup_key": "gaku-kanae-first-costume-prize-figure",
+    "reason": "既報",
+    "note": "16日号「初」衣装でフィギュア化と同じ"
+   },
+   {
+    "dedup_key": "gakumas-25th-anniversary-stream-trending-2026",
+    "reason": "出典不足",
+    "note": "二次情報の再生数・順位のみ、配信は15日号で既報"
+   },
+   {
+    "dedup_key": "kanae-chibigurumi-pouch",
+    "reason": "既報",
+    "note": "16日号「ちびぐるみ予約は本日11時開始」で既報"
+   },
+   {
+    "dedup_key": "kanae-produce-launch",
+    "reason": "既報",
+    "note": "16日号「プロデュース本日開始」で既報"
+   },
+   {
+    "dedup_key": "2-5th-produce-campaign",
+    "reason": "既報",
+    "note": "プロデュースキャンペーンは16日号に掲載済み"
+   },
+   {
+    "dedup_key": "kanae-2-5th-login-bonus",
+    "reason": "既報",
+    "note": "16日号にログボ内容掲載済み"
+   },
+   {
+    "dedup_key": "maid-panel-mission",
+    "reason": "既報",
+    "note": "パネルミッションは16日号に掲載済み"
+   },
+   {
+    "dedup_key": "gakumas-maintenance-2026-11-16",
+    "reason": "既報",
+    "note": "16日号で既報、メンテは終了済み"
+   }
+  ],
+  "cross_brand": []
+ }
+}

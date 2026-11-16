@@ -1,0 +1,95 @@
+{
+ "decisions": {
+  "shiny-tomarikaze-no-harutachi-rerun-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-16号の記事に期間・報酬とも掲載済み。開始は明日で当日のトリガー無し、新事実も無し"
+  },
+  "shiny-3rd-anniversary-mosaic-art-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-15号「シャニソン3周年アート、思い出のスクショを4Kで探せる」と同じ話題。新事実無し"
+  },
+  "shiny-web4koma-664-2026": {
+   "action": "article",
+   "angle": "開催中のシャニマス無料10連ガシャは、18日12時からのメンテナンス前(11時59分頃)までしか引けない",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "題名は第664話だが素材はとまりかぜ復刻・コラボフェス・無料10連・メンテ時間。復刻・コラボフェスは既報なので、期限が明日に迫る無料10連だけを扱う"
+  },
+  "song-koito-birthday-gasha-2026": {
+   "action": "article",
+   "angle": "シャニソン小糸誕生日記念ガシャは本日23時59分で終了、小糸Pアイドルだけのガシャを引ける最終日",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 40,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約の締切。当日のトリガーあり"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "shiny-web4koma-664-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "開催中のシャニマス無料10連ガシャは、18日12時からのメンテナンス前(11時59分頃)までしか引けない",
+    "purpose": "期日の知らせ",
+    "lead_score": 10,
+    "dedup_key": "shiny-web4koma-664-2026",
+    "candidate_ids": [
+     "202611162334-explore-4"
+    ]
+   },
+   {
+    "slug": "shiny-song-koito-birthday-gasha-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "シャニソン小糸誕生日記念ガシャは本日23時59分で終了、小糸Pアイドルだけのガシャを引ける最終日",
+    "purpose": "期日の知らせ",
+    "lead_score": 40,
+    "dedup_key": "song-koito-birthday-gasha-2026",
+    "candidate_ids": [
+     "sched-2026-11-17-song-koito-birthday-gasha-2026-締切",
+     "sched-2026-11-17-song-koito-birthday-gasha-2026-締切-src1",
+     "sched-2026-11-17-song-koito-birthday-gasha-2026-締切-src2",
+     "sched-2026-11-17-song-koito-birthday-gasha-2026-締切-src3",
+     "sched-2026-11-17-song-koito-birthday-gasha-2026-締切-src4",
+     "sched-2026-11-17-song-koito-birthday-gasha-2026-締切-src5",
+     "sched-2026-11-17-song-koito-birthday-gasha-2026-締切-src6"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "shiny-tomarikaze-no-harutachi-rerun-2026",
+    "reason": "既報",
+    "note": "11-16号の記事に期間・報酬とも掲載済み。開始は明日で当日のトリガー無し、新事実も無し"
+   },
+   {
+    "dedup_key": "shiny-3rd-anniversary-mosaic-art-2026",
+    "reason": "既報",
+    "note": "11-15号「シャニソン3周年アート、思い出のスクショを4Kで探せる」と同じ話題。新事実無し"
+   }
+  ],
+  "cross_brand": []
+ }
+}

@@ -349,5 +349,55 @@
   "src_candidate_id": "202611160221-grok-109",
   "companion_of": "sched-2027-03-03-gaku-kanae-1st-single-発売",
   "src_dedup_key": "gaku-update-2026-25"
+ },
+ {
+  "id": "sched-2027-03-03-kanae-single-release-event-発売",
+  "dedup_key": "kanae-single-release-event",
+  "brand": "gaku",
+  "subject": "氷渡香名江1st Single「メタモルフォーゼ」発売",
+  "kind": "発売",
+  "note": "CDが発売され、店頭・通販で購入できる",
+  "reserved_on": "2026-11-17",
+  "occurs_on": "2027-03-03",
+  "title": "氷渡香名江1st Singleリリース記念イベント",
+  "url": "https://x.com/gkmas_official/status/2122286135191949692",
+  "source_type": "公式",
+  "facts": [
+   "学園アイドルマスター「氷渡香名江 1st Single」リリース記念イベントの開催決定",
+   "期間中に対象商品を予約（全額内金）した人に応募シリアルを配布",
+   "発売日：2027/3/3",
+   "アニメイト特典：A3クリアポスター",
+   "エンゲージメント: 中",
+   "言及アイドル: 氷渡香名江"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202611170220-grok-52"
+ },
+ {
+  "id": "sched-2027-03-03-kanae-single-release-event-発売-src1",
+  "dedup_key": "kanae-single-release-event",
+  "brand": "gaku",
+  "subject": "氷渡香名江1st Single「メタモルフォーゼ」発売",
+  "kind": "発売",
+  "note": "CDが発売され、店頭・通販で購入できる",
+  "reserved_on": "2026-11-17",
+  "occurs_on": "2027-03-03",
+  "title": "氷渡香名江1st Single予約・壁紙配布",
+  "url": "https://x.com/gkmas_official/status/2122283555006898345",
+  "source_type": "公式",
+  "facts": [
+   "氷渡香名江 1st Singleの予約受付中",
+   "CD発売記念の描き下ろしイラストのスマホ用壁紙を配布開始",
+   "リンク: https://lnk.to/bpDWBQ",
+   "リンク: https://www.youtube.com/watch?v=Y_I_NOHVwzI&feature=youtu.be",
+   "エンゲージメント: 中",
+   "言及アイドル: 氷渡香名江"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202611170220-grok-27",
+  "companion_of": "sched-2027-03-03-kanae-single-release-event-発売",
+  "src_dedup_key": "kanae-single-wallpaper"
  }
 ]

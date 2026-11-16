@@ -1,0 +1,216 @@
+{
+ "decisions": {
+  "million-cyber-planet-popup-atoshi-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "16日号で事後通販の開始を記事済み。締切は12月1日で3日以内でなく、新事実も無い"
+  },
+  "soutei-shinrigai-mv-2026": {
+   "action": "article",
+   "angle": "「想定心理外 -Outside Isotope-」MVの歌唱は北上麗花とジュリア、作詞は松井洋平、作曲・編曲は高橋諒と、出典の更新で判明した情報を伝える",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "source_change: 出演者・クレジットの追加。前の記事は公開日時のみ"
+  },
+  "million-mitsukoshi-osechi-2027": {
+   "action": "article",
+   "angle": "ミリオン×三越おせち2027の予約は本日23時59分が締切。三越伊勢丹オンラインストア限定、白石紬の特典付き",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約の締切日。Xフォロー＆リポストキャンペーンは既報に無い事実"
+  },
+  "million-platinum-start-trust-13-2026": {
+   "action": "article",
+   "angle": "ミリシタのイベント「プラチナスタートラスト13～想定心理外 -Outside Isotope-～」が本日15時に開始、ランキング報酬SRは北上麗花、累積pt報酬SRはジュリア",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 70,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "面でいちばん大きな新規ニュース。詳細は開催後に案内予定"
+  },
+  "million-arc-flags-popup-mizuki-acrylic-keychain-soldout-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "店舗アカウントの1投稿のみで未確認。個別商品の完売で読者の行動にも結びつかない"
+  },
+  "million-platinum-star-tune-yoruto-akari-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "イベントは11月7日に終了済み。セット販売も9日に終了、既報の内容"
+  },
+  "million-kyomaf-after-sales-2026": {
+   "action": "article",
+   "angle": "京まふ2026ミリオンライブ事後通販（THEキャラ）の受注は明日18日23時59分まで、101点を扱う",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "締切が翌日に迫る当日のトリガー。価格・商品は既報なので省き、締切を主眼にする"
+  },
+  "million-seasonal-snapshot-valentine": {
+   "action": "article",
+   "angle": "SEASONAL SNAPSHOT「バレンタイン」の星井美希・島原エレナのグッズをアソビストアで受注中、受注は11月22日まで",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "既報なし。特製BOX入りセット（アクスタ・アクリルパネル・ブロマイド）などを紹介"
+  },
+  "million-snapshot-memories-gasha-2026-11": {
+   "action": "article",
+   "angle": "Snapshot Memoriesガシャは本日14時59分で終了。徳川まつり・箱崎星梨花の期間限定SSRを引けるのは最終日の今日まで",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約の終了日。snapshot-memories-gacha-2026-11 を統合"
+  },
+  "snapshot-memories-gacha-2026-11": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-snapshot-memories-gasha-2026-11",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じガシャの終了日。カード紹介・4コマは既報で新事実なし"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "million-soutei-shinrigai-mv-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "「想定心理外 -Outside Isotope-」MVの歌唱は北上麗花とジュリア、作詞は松井洋平、作曲・編曲は高橋諒と、出典の更新で判明した情報を伝える",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "soutei-shinrigai-mv-2026",
+    "candidate_ids": [
+     "202611161834-explore-4",
+     "202611170220-grok-13",
+     "202611170220-grok-68",
+     "202611170220-grok-69"
+    ]
+   },
+   {
+    "slug": "million-mitsukoshi-osechi-2027",
+    "brand": "million",
+    "rank": "small",
+    "angle": "ミリオン×三越おせち2027の予約は本日23時59分が締切。三越伊勢丹オンラインストア限定、白石紬の特典付き",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "million-mitsukoshi-osechi-2027",
+    "candidate_ids": [
+     "202611162334-watch-0",
+     "sched-2026-11-17-million-mitsukoshi-osechi-2027-締切",
+     "sched-2026-11-17-million-mitsukoshi-osechi-2027-締切-src1"
+    ]
+   },
+   {
+    "slug": "million-platinum-start-trust-13-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "ミリシタのイベント「プラチナスタートラスト13～想定心理外 -Outside Isotope-～」が本日15時に開始、ランキング報酬SRは北上麗花、累積pt報酬SRはジュリア",
+    "purpose": "新情報",
+    "lead_score": 70,
+    "dedup_key": "million-platinum-start-trust-13-2026",
+    "candidate_ids": [
+     "202611170220-grok-12"
+    ]
+   },
+   {
+    "slug": "million-kyomaf-after-sales-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "京まふ2026ミリオンライブ事後通販（THEキャラ）の受注は明日18日23時59分まで、101点を扱う",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "million-kyomaf-after-sales-2026",
+    "candidate_ids": [
+     "sched-2026-11-15-million-kyomaf-after-sales-2026-締切前"
+    ]
+   },
+   {
+    "slug": "million-seasonal-snapshot-valentine",
+    "brand": "million",
+    "rank": "small",
+    "angle": "SEASONAL SNAPSHOT「バレンタイン」の星井美希・島原エレナのグッズをアソビストアで受注中、受注は11月22日まで",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "million-seasonal-snapshot-valentine",
+    "candidate_ids": [
+     "202611141834-watch-3"
+    ]
+   },
+   {
+    "slug": "million-snapshot-memories-gasha-2026-11",
+    "brand": "million",
+    "rank": "small",
+    "angle": "Snapshot Memoriesガシャは本日14時59分で終了。徳川まつり・箱崎星梨花の期間限定SSRを引けるのは最終日の今日まで",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "million-snapshot-memories-gasha-2026-11",
+    "candidate_ids": [
+     "sched-2026-11-17-million-snapshot-memories-gasha-2026-11-締切",
+     "sched-2026-11-17-million-snapshot-memories-gasha-2026-11-締切-src1",
+     "sched-2026-11-17-snapshot-memories-gacha-2026-11-終了",
+     "sched-2026-11-17-snapshot-memories-gacha-2026-11-終了-src1"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "million-cyber-planet-popup-atoshi-2026",
+    "reason": "既報",
+    "note": "16日号で事後通販の開始を記事済み。締切は12月1日で3日以内でなく、新事実も無い"
+   },
+   {
+    "dedup_key": "million-arc-flags-popup-mizuki-acrylic-keychain-soldout-2026",
+    "reason": "出典不足",
+    "note": "店舗アカウントの1投稿のみで未確認。個別商品の完売で読者の行動にも結びつかない"
+   },
+   {
+    "dedup_key": "million-platinum-star-tune-yoruto-akari-2026",
+    "reason": "既報",
+    "note": "イベントは11月7日に終了済み。セット販売も9日に終了、既報の内容"
+   }
+  ],
+  "cross_brand": []
+ }
+}

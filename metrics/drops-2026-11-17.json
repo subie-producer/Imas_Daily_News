@@ -1,0 +1,40 @@
+{
+ "sidem-knick-knacks-vol2-giveaway-2026": {
+  "title": "ANICLOSET.がハンズ創業50周年記念で「knick-knacks Vol.2」グッズの抽選プレゼントを告知",
+  "stage": "執筆で見送り",
+  "why": "OTHER ANICLOSET.のX投稿から、SideM knick-knacks Vol.2のグッズを抽選で贈るキャンペーンの告知は確認できましたが、応募方法・応募期間などは添付画像に記載されており、素材に画像の内容がありません。確認できた公式告知ペ",
+  "candidate_ids": [
+   "202611170220-grok-63"
+  ]
+ },
+ "shiny-web4koma-664-2026": {
+  "title": "開催中のシャニマス無料10連ガシャは、18日12時からのメンテナンス前(11時59分頃)までしか引けない",
+  "stage": "執筆で見送り",
+  "why": "NO_PRIMARY_SOURCE 無料10連の終了時刻とメンテナンス時間を載せた素材は、公式アカウントの投稿を転載した二次情報ページでした。公式・準公式または報道の出典で確認できませんでした。",
+  "candidate_ids": [
+   "202611162334-explore-4"
+  ]
+ },
+ "joint-cinderella-15th-invitational-party-2026": {
+  "title": "シンデレラガールズ15周年、17日18時から先着予約",
+  "stage": "書き直しで見送り",
+  "why": "OTHER I3の重複指摘に従い、joint側の記事を掲載対象から外します。同じ先着予約の告知は cg-sousenkyo-2026-15th-popup 側に残ります。I1の公式告知は https://idolmaster-official.jp/news/01_20309 で確認し、日程・会場・予約スケジュールが素",
+  "candidate_ids": [
+   "202611161233-explore-10"
+  ],
+  "settled": {
+   "rule": "P1",
+   "dup_of": [
+    "cg-sousenkyo-2026-15th-popup"
+   ]
+  }
+ },
+ "million-kyomaf-after-sales-2026": {
+  "title": "ミリオンライブ京まふ通販、18日23時59分まで",
+  "stage": "書き直しで見送り",
+  "why": "NO_PRIMARY_SOURCE https://idolmaster-official.jp/news を fetch_page.py で確認したが、京まふ2026 POP UP SHOP事後通販の告知は見当たらなかった。同一覧にはCyber Planet POP UP SHOP事後通販の告知が掲載されていた。TH",
+  "candidate_ids": [
+   "sched-2026-11-15-million-kyomaf-after-sales-2026-締切前"
+  ]
+ }
+}

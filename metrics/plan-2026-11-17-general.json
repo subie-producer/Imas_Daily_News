@@ -1,0 +1,33 @@
+{
+ "decisions": {
+  "765as-mofumas-change-mami-ritsuko-2026": {
+   "action": "article",
+   "angle": "ファン投稿の「もふM@S MV」『CHANGE!!!!』(真美・律子)が公開され、ミリシタ課題曲の難しさをきっかけに765ASの曲で作られた",
+   "purpose": "新情報",
+   "rank": "culture",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ファン創作。他にculture素材は無いので単独の短い記事。個人SNS投稿は単体では扱わず、ニコニコ動画の作品として紹介"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "general-765as-mofumas-change-mami-ritsuko-2026",
+    "brand": "general",
+    "rank": "culture",
+    "angle": "ファン投稿の「もふM@S MV」『CHANGE!!!!』(真美・律子)が公開され、ミリシタ課題曲の難しさをきっかけに765ASの曲で作られた",
+    "purpose": "新情報",
+    "lead_score": 0,
+    "dedup_key": "765as-mofumas-change-mami-ritsuko-2026",
+    "candidate_ids": [
+     "202611170220-grok-6"
+    ]
+   }
+  ],
+  "dropped": [],
+  "cross_brand": []
+ }
+}

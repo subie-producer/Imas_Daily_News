@@ -4,7 +4,7 @@
 
 ## 0. 実行環境と全体像
 
-**実行主体はローカルマシン(WSL)のスケジューラ(systemd user timer)。** 理由: 下記3つの CLI がこのマシンでセッション認証済みであり、API キー運用なしで日々の実行が完結するため。マージ判定はローカルで完結し、main へ直接 push する(§5)。**配信も同じマシンが担う**(Caddy + Cloudflare Tunnel、§11)。GitHub 側の役割は **push 後の lint CI(事後検査)と、Pages によるフォールバック配信のみ**。
+**実行主体はローカルマシン(WSL)のスケジューラ(systemd user timer)。** 理由: 下記3つの CLI がこのマシンでセッション認証済みであり、API キー運用なしで日々の実行が完結するため。マージ判定はローカルで完結し、main へ直接 push する(§5)。**配信も同じマシンが担う**(Caddy + Cloudflare Tunnel、§11)。GitHub 側の役割は **push 後の lint CI(事後検査)のみ**(Pages の予備の配信は 2026-11-16 にやめた。§9.6)。
 
 - 記事執筆 = Codex(`codex exec -m gpt-6-luna`、CODEX_WRITE_MODEL)/ **社説執筆 = Codex(gpt-6.1-sol、EDITORIAL_MODEL)** / 記事計画・組版 = Claude(`claude -p`、CLAUDE_MODEL)/ 収集・探索 = Claude(COLLECT_MODEL=haiku)/ X 動向収集 = Grok(`grok -p`)/ **校閲・検品 = Claude(REVIEW_MODEL=haiku)**。**紙面に載る文章はすべて Codex が書き、Claude が校閲する**構成で、執筆(OpenAI)と校閲(Anthropic)が別ベンダーとなり要件 4.5 を満たす。社説を Claude で書くとそこだけ同一ベンダーの自己校閲になるため Codex 側に置いている。記事と社説でモデルを分けているのは、求めるものが違うため(事実の要約 / 人格と文章)。
 - ヘッドレス実行の作法(実測済み): `codex exec` は stdin を閉じる(`< /dev/null`)・`--output-schema` は全プロパティを required に含める。`claude -p --json-schema` は draft-07 の schema しか読めない(`"$schema"` に draft 2020-12 を名乗ると起動せず終了 1。2026-10-28、出典の変更の校閲が全部起動しなかった)。`grok` はヘッドレスでは `--always-approve` が必須(無いと承認待ちで Cancelled になる)。**結果は標準出力ではなくファイルに書かせる**(`--prompt-file` + 出力先をプロンプトで指定)。grok はエージェント型 CLI なので、面ごとにファイルを更新させれば1応答の出力上限に縛られない。`--json-schema` が max_tokens 切りで全滅したのも、応答本文に全件を載せさせる使い方そのものが原因だったとみている(いずれも実測)。
@@ -286,33 +286,35 @@ scripts/collect.py                   collect.py        scripts/publish.py
 | scheduled/ | `YYYY-MM-DD.json`(発火日) | 日付キーで衝突なし。発行日のファイルしか読まないため蓄積しても走査コストが増えない。過去分は予約記録として残す |
 | stories.yml | 追記型 | **未解決**: 月次で `stock/archive/stories-YYYY-MM.yml` へ closed 分を退避するローテーションを創刊後に導入する |
 | ブランチ | `edition/YYYY-MM-DD` / `correction/YYYY-MM-DD-<slug>` | 日付キー |
-| 記事 tags | **機能化済み**(2026-08-23)。記事末に表示し、動的ページ `/tags/`・`/tags/<タグ>/`・`/search` の絞り込み軸に使う(§9.6) | 語彙は `docs/_data/tags.yml` が単一ソース。①執筆プロンプトへ語彙を注入(compose.py)し表記ゆれの発生源を断つ ②既発行分のゆれは `alias` で吸収する(記事ページは Liquid、索引は indexer.py が同じ辞書を適用)。**過去記事の tags は書き換えない**(`docs/_posts/` は append-only 検査対象)。移行時点で 220種→183種に収斂 |
-| **既知の負債** | Liquid テンプレが `site.posts` を全走査(号ページ・アーカイブ) | 記事 4,000 本規模(約1年)で Pages ビルドが分単位に劣化する見込み。ビルド3分超過を watch の監視項目にし、超えたら「号スナップショットに記事リストを持たせて参照を局所化」する改修を行う |
+| 記事 tags | **機能化済み**(2026-08-23)。記事末に表示し、動的ページ `/tags/`・`/tags/<タグ>/`・`/search` の絞り込み軸に使う(§9.6) | 語彙は `docs/_data/tags.yml` が単一ソース。①執筆プロンプトへ語彙を注入(compose.py)し表記ゆれの発生源を断つ ②既発行分のゆれは `alias` で吸収する(記事ページは webapp、索引は indexer.py が同じ辞書を適用)。**過去記事の tags は書き換えない**(`docs/_posts/` は append-only 検査対象)。移行時点で 220種→183種に収斂 |
+| 紙面の描画(旧・既知の負債) | **解消(2026-11-16。ビルドをやめた §9.6)**。Liquid テンプレが記事ページ1枚ごとに `site.posts` を6回全走査し、ビルドが記事数の2乗で伸びていた(11/6 に17分) | いまは webapp が版を1回読み、号ごとの記事の並び・続報の関係を索引にして持つ。どのページも記事数によらず数ミリ秒で描く |
 
 ## 9.6 配信(2026-08-23 に GitHub Pages からサーバー化)
 
 **GitHub Pages をやめた理由は、動的ページを出せるようにするため。** Pages は静的ファイルしか置けず、問い合わせに応じて形が変わるページ(タグ索引・全文検索・今後の横断クエリ)を実装する余地がない。公開URLは `https://imas-news.ofa.tokyo`。
 
-紙面は**性質で二層に分ける**。事前生成するのは「発行後に二度と変わらないもの」だけで、問い合わせ次第で変わるものはリクエスト時に組み立てる。
+**紙面はビルドしない(編集長の決定 2026-11-16)。** 以前は記事・号・社説・アーカイブ・feed・sitemap を発行のたびに Jekyll で全部作り直していたが、テンプレートが記事ページ1枚ごとに全記事を走査するため、ビルドが記事数の2乗で伸びた(11/6 に17分。約2,900本で約5,000万回の走査)。いまは**全ページを webapp が要求のたびに描く**。発行は「版(Markdown 一式)を写す → 全ページを描いて検証 → 差し替え」で、約14秒。同時に GitHub Pages の予備の配信もやめた(Pages は同じ Jekyll のビルドで、同じ2乗の遅さを抱えていた)。
 
-| 層 | 対象 | 生成 | 理由 |
-|----|------|------|------|
-| 静的 | 記事・号・社説・アーカイブ・feed・sitemap | 発行時に Jekyll | append-only で不変。リクエストごとに作り直す意味がない |
-| **動的** | `/tags/`・`/tags/<タグ>/`・`/search` | リクエスト時に webapp が SQLite を引く | 絞り込みの組み合わせは無限にあり、事前生成できない |
+| 対象 | 描き方 | データ |
+|------|--------|--------|
+| 記事・号・トップ・社説・アーカイブ・about・404・feed・sitemap・robots | 要求のたびに webapp(`webapp/templates/paper/`)が描く | `current` が指す版(`releases/<日時>/` の `_posts`・`_editions`・`_editorials`・`_data`・`about`)を `webapp/paper.py` が1回読んでメモリに持つ。版が切り替わったら次の要求で読み直す |
+| `/tags/`・`/tags/<タグ>/`・`/search` | 要求のたびに webapp | `scripts/indexer.py` が作る SQLite(FTS5) |
+| `/assets/`(CSS・JS・フォント) | Caddy がそのまま配る | 版の `assets/` |
 
 ```
 release.py(main へ squash merge & push)
       ↓
-deploy.py ── jekyll build(素の Jekyll。静的層のみ)
-      ├── 検証(必須ファイル・記事数・baseurl 残留。落ちたら配信しない)
-      ├── releases/<日時>/ へ配置 → current symlink を原子的に張替
-      ├── indexer.py … SQLite(FTS5)を差分更新 ← 動的層のデータ
+deploy.py ── アプリの依存(webapp/requirements.txt)を確かめる
+      ├── 版を写す(docs の _posts・_editions・_editorials・_data・about・assets → releases/.staging-<日時>/)
+      ├── 検証: これから配るコード(webapp/verify.py)をアプリの python で走らせ、全ページを描く(落ちたら配信しない)
+      ├── releases/<日時>/ へ配置 → current symlink を原子的に張替(アプリは次の要求で新しい版を読む)
+      ├── indexer.py … SQLite(FTS5)を差分更新
       ├── webapp/ を同期(変更時のみアプリ再起動)
       └── Cloudflare キャッシュをパージ
       ↓
-Caddy(127.0.0.1:8080・ループバック限定・systemd user: imas-web)
-      ├── /tags/* /search /healthz → reverse_proxy 127.0.0.1:8081(imas-app)
-      └── それ以外 → current/ の静的ファイル
+Caddy(127.0.0.1:8080・ループバック限定・systemd user: imas-web。設定は ops/caddy/Caddyfile)
+      ├── /assets/* → current/assets の静的ファイル
+      └── それ以外 → reverse_proxy 127.0.0.1:8081(imas-app)
       ↓
 cloudflared(外向き接続のみ・systemd user: imas-tunnel)
       ↓
@@ -321,21 +323,22 @@ Cloudflare エッジ(TLS 終端・キャッシュ・CDN) → 読者
 
 | 論点 | 設計 |
 |------|------|
-| 動的層の実体 | `webapp/app.py`(Flask + waitress、`~/srv/imas-news/venv`)。データは `scripts/indexer.py` が作る SQLite。日本語検索は FTS5 の **trigram** トークナイザ(分かち書き不要・部分一致が効く)。3文字未満の語は trigram で引けないため `LIKE` に落とす |
+| アプリの実体 | `webapp/app.py`(Flask + waitress、`~/srv/imas-news/venv`。依存は `webapp/requirements.txt` で版を固定し、変わった配信のときだけ deploy が入れ直す)。日本語検索は FTS5 の **trigram** トークナイザ(分かち書き不要・部分一致が効く)。3文字未満の語は trigram で引けないため `LIKE` に落とす |
+| 紙面の描画の速さ | 版の読み込みは全記事で約2秒(front matter は libyaml で読む。Python 実装では7秒)。版が切り替わった最初の要求だけが待つ。描くのは1ページ数ミリ秒(記事 6ms・号 4ms・アーカイブ 13ms・sitemap 11ms) |
+| 以前の見た目との同一性 | Markdown は markdown-it で変換し、以前の変換(Jekyll の kramdown・GFM 入力)と違うところを kramdown の規則に合わせた: 引用符・`--`・`...` の活字への置き換え(kramdown の smart_quotes・typographic_syms の規則。markdown-it の置き換えは「!!!!」を「!!!」に縮めるので使わない)、見出しの id(GFM の作り方。末尾の根拠の印 `<!-- F1 -->` は入れない)、箇条書きの `<p>`(kramdown の list.rb の規則で項目ごとに決める)、インラインのコードの class。切り替えの前に `webapp/compare.py` で全ページ(3,007)を以前の静的版と比べ、違いは次の意図した差だけにした: 「Series X\|S」を表に化けさせていた1本、入れ子の番号付き箇条書きの番号(以前は全部 1 になっていた)1本、構造化データ(JSON-LD)の引用符のエスケープ(以前は壊れた JSON)1本、社説・feed・sitemap の時刻(以前はビルドを始めた時刻、いまは版の名前の時刻で1秒ずれる) |
+| 版の読み直しの失敗 | 新しい版が読めなければ、アプリは前の版で答え続け、同じ版を読み直さない(`/healthz` の `paper.unreadable` に出る)。配信は差し替える前に同じ読み込みで全ページを描いて確かめるので、通常はここまで来ない |
 | 索引の更新コスト | 記事は不変なので**内容ハッシュが変わったファイルだけ**を入れ直す。実測 154本で全構築 0.35秒 / 差分 0.04秒。記事が数万本になっても日々の更新はその日の増分だけ。タグ辞書(alias・drop)の指紋が変わった更新だけは、全記事のタグと全文検索のタグを付け直す |
-| ビルド系 | **bundler を経由しない**。Gemfile の `github-pages` gem は safe モードを強制するため、`JEKYLL_NO_BUNDLER_REQUIRE=true` で素の Jekyll を使う。`deploy.py` は `baseurl` の残留を検出して誤配信を止める |
-| 設定の二重化 | `_config.yml`(Pages 互換・触らない)+ `_config.production.yml`(baseurl 除去・sitemap)。`url` は `.env` の `SITE_URL` から一時設定として渡し、ドメインを git に置かない |
-| 更新順序 | **静的 → 索引** の順。逆順だと、索引に載った記事へのリンクが 404 になる時間帯ができる |
+| 更新順序 | **版 → 索引** の順。逆順だと、索引に載った記事へのリンクが 404 になる時間帯ができる |
 | 原子性・切り戻し | `current` symlink の張替のみで切替。中途半端なツリーは配信されない。`releases/` に既定5世代を保持し、`ln -sfn` で即時に前号へ戻せる。索引の更新は1つの取引で、取り込んだリリースの名前(`run_id`)を索引に残す。再試行しても通らなければ、`current` を索引が取り込んだリリースへ戻してパージする(記録が無ければこの配信の前の版へ戻し、揃っているとは言わない)。deploy は release の打ち切り(40分)より短い予算(`--budget-sec`)のうちに戻す・知らせるまで終える。最後に出す「配信の状態」を release が通知に載せる |
 | アプリ再起動の吸収 | Caddy はアクティブヘルスチェックを**使わない**。upstream は1台だけで、一度 down 判定されると復帰済みでも次回チェックまで 503 を返し続けるため。代わりに `lb_try_duration 5s` で接続失敗を再試行し、再起動(約1秒)を透過させる |
-| 障害の切り分け | アプリが落ちても静的な紙面(記事・号・アーカイブ)は配信され続ける。読めなくなるのはタグ・検索だけ |
+| 障害の切り分け | **アプリが落ちると紙面ごと読めなくなる**(以前は静的な紙面だけは読めた)。アプリは systemd が起動し直し、watch が `/healthz` を見る。紙面の応答は `stale-if-error=604800` を付けており、エッジのキャッシュ(下)を入れれば、オリジンが落ちている間もエッジの古い版で答える |
 | **可用性** | オリジンは自宅PCだが**24時間稼働**させる運用で担保する。`loginctl` の Linger が有効なので、ログアウトしても systemd user サービスは動き続ける(これが切れると配信ごと止まるため、環境を作り直したときは `loginctl enable-linger` を確認すること)。Windows の再起動に備えるなら WSL の自動起動を Windows 側で設定する |
 | キャッシュの現状 | **Cloudflare のエッジキャッシュは効いていない**(`cf-cache-status: DYNAMIC`)。Cloudflare は既定で静的拡張子しかキャッシュせず、HTML を載せるには「Cache Everything」の Cache Rule が要る。したがって全リクエストがオリジンに来る。アプリが返す `s-maxage` は**将来 Cache Rule を入れたときに効く先回りの設定**で、現時点では無視されている |
 | キャッシュを有効にする場合 | Cache Rule を入れた瞬間に、**発行のたびのパージが必須**になる(`CF_API_TOKEN`/`CF_ZONE_ID` 未設定だと最大1日更新が届かない)。`deploy.py` のパージ処理は実装済みなので、トークンを `.env` に入れるだけで連動する。この2つはセットで、片方だけ入れると事故になる |
-| フォールバック | GitHub Pages は main への push で従来どおり追従する。**動的ページは動かない**(タグ・検索は 404)が、記事・号・アーカイブは読める |
+| フォールバック | **持たない**(2026-11-16 に GitHub Pages の予備の配信をやめた。編集長の決定)。docs/ には Jekyll の設定・テンプレートを置いていない |
 | 権限 | Caddy・cloudflared・アプリとも **root 不要**(`~/.local/bin`・非特権ポート・`systemctl --user`)。ポート開放も固定IPも不要 |
 
-systemd user unit は `imas-web`(Caddy)・`imas-app`(動的ページ)・`imas-tunnel`(Cloudflare)の3つ。
+systemd user unit は `imas-web`(Caddy)・`imas-app`(紙面・タグ・検索のページ)・`imas-tunnel`(Cloudflare)の3つ。
 トンネル構築は `scripts/tunnel_setup.sh imas-news.ofa.tokyo`(事前に `cloudflared tunnel login` をブラウザで実施)。
 
 **cloudflared の更新(2026-10-28)**: `~/.local/bin/cloudflared` は手で置いた実行ファイルで、自動更新は切ってある(`--no-autoupdate`)。毎月1日 01:00 に `imas-cloudflared.timer` が `scripts/update_cloudflared.py` を回し、GitHub の最新の release を、本文に載った sha256 と照らし、新しい実行ファイルが自分の版を名乗るのを確かめてから入れ替える。旧版は `cloudflared.<版>.bak` に直近2個残す。トンネルを再起動し、今回の起動(InvocationID)の cloudflared の `/ready` が今張れている接続4本を返すことと外からの 200 を確かめ、だめなら旧版に戻して異常として通知する(当番がなぜなぜ。途中の例外・戻しの失敗でも通知する)。再起動で数秒落ちるので、組版・発行と重ならない時刻に置く。01:00 に止まっていた月は復帰の時に追いつくが、02:30〜07:00 に当たったら 07:00 まで待ってから上げる(取るのに時間がかかったときのため、差し替えの直前にも見直す)。`--check` は表示だけ(通知しない)。2026-10-27 に Cloudflare から「中間証明書の侵害で 2026.10.2 未満は使えなくなる」と告知が来るまで 2026.8.2 のままだった。告知から期限まで2か月あったので月1回とした(編集長)。

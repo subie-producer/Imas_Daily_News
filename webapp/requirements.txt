@@ -1,0 +1,6 @@
+# 配信のアプリ(~/srv/imas-news/venv)の依存。版を固定する(Markdown の変換結果を版で変えない)
+Flask==3.1.3
+waitress==3.0.2
+PyYAML==6.0.3
+markdown-it-py==4.3.0
+mdurl==0.1.2

@@ -2,7 +2,7 @@
 
 アイドルマスター関連ニュースを**毎日自動発行**する非公式ファン新聞。全記事を AI 編集部が執筆し、別ベンダーの AI が校閲する。人間は校閲しない——この体制を隠さないことが本紙のアイデンティティである。
 
-- 配信: <https://subie-producer.github.io/Imas_Daily_News/>(GitHub Pages / main ブランチ `/docs`)
+- 配信: <https://imas-news.ofa.tokyo/>(自前オリジン + Cloudflare Tunnel。紙面はビルドせずアプリが描く。PIPELINE.md §9.6)
 - 要件書: [REQUIREMENTS.md](REQUIREMENTS.md)(データ契約・パイプライン・編集規程の正)
 - 確定モック: [base-design/](base-design/)(トップ/記事/社説/バックナンバー。デザインの正)
 
@@ -19,7 +19,7 @@ collect(コード・毎日数回) → verify(コード) → compose(発行日 03
  → lint(ローカルゲート) → review(校閲=Codex) → main へ squash push → 06:00 JST 発行
 ```
 
-実行主体はローカルの systemd user timer(`claude`/`grok`/`codex` CLI のセッション認証がローカルにあるため)。GitHub 側は Pages 配信と push 後の lint CI(事後検査)のみ。号ごとに `edition/YYYY-MM-DD` ブランチで収集・生成し、発行時にローカルで squash merge して main へ直接 push(main は1号=1コミット)。秘匿値は `.env`(gitignore 済み、雛形 `.env.example`)。運用設計の詳細は [PIPELINE.md](PIPELINE.md)。
+実行主体はローカルの systemd user timer(`claude`/`grok`/`codex` CLI のセッション認証がローカルにあるため)。GitHub 側は push 後の lint CI(事後検査)のみ。号ごとに `edition/YYYY-MM-DD` ブランチで収集・生成し、発行時にローカルで squash merge して main へ直接 push(main は1号=1コミット)。秘匿値は `.env`(gitignore 済み、雛形 `.env.example`)。運用設計の詳細は [PIPELINE.md](PIPELINE.md)。
 
 現在の進捗: **Step 1 完了**(骨格・スキーマ・lint CI)+ 収集・発行の運用設計確定。次は Step 2(モックの Jekyll 移植)。全ステップは REQUIREMENTS.md 7章。
 
@@ -29,16 +29,16 @@ collect(コード・毎日数回) → verify(コード) → compose(発行日 03
 ├── REQUIREMENTS.md          # システム要件書(正)
 ├── base-design/             # 確定デザインモック(参照用・配信されない)
 ├── birthdays.json           # 誕生日マスタ(原本)。名鑑の源泉
-├── docs/                    # Jekyll ソース = GitHub Pages 配信ルート
-│   ├── _config.yml
-│   ├── _posts/              # 記事: YYYY-MM-DD-<slug>.md → /articles/<slug>/
+├── docs/                    # 紙面のデータ(webapp が読んで描く。配信は scripts/deploy.py が版として写す)
+│   ├── _posts/              # 記事: YYYY-MM-DD-<slug>.md → /articles/YYYY-MM-DD-<slug>/
 │   ├── _editions/           # 号スナップショット(frontmatter のみ): YYYY-MM-DD.md → /editions/YYYY-MM-DD/
 │   ├── _editorials/         # 社説: YYYY-MM-DD.md → /editorials/YYYY-MM-DD/
 │   ├── _data/
 │   │   ├── brands.yml       # ブランド定義(表示名・カラートークン)
 │   │   └── idols.json       # 名鑑(生成物。手編集しない)
-│   ├── _layouts/ _includes/ assets/   # テンプレート(Step 2 で移植)
+│   ├── assets/              # CSS・JS(Caddy がそのまま配る)
 │   └── about/               # 編集方針と免責
+├── webapp/                  # 配信のアプリ(紙面・タグ・検索のページを描く。テンプレートは templates/paper/)
 ├── schema/                  # JSON Schema(データ契約の機械可読形)
 ├── scripts/
 │   ├── build_idols.py       # birthdays.json → docs/_data/idols.json
@@ -98,24 +98,16 @@ ops/systemd/install.sh   # ユニット配置+timer 有効化+linger 有効化
 
 ## ローカルプレビュー
 
-初回セットアップ(Ubuntu / WSL):
+紙面はビルドしない。配信のアプリ(webapp)が docs をそのまま読んで描く(PIPELINE.md §9.6)。
 
 ```sh
-sudo apt install -y ruby-full build-essential zlib1g-dev
-gem install --user-install bundler   # ~/.local/share/gem/ruby/<ver>/bin に入る。PATH を通すこと
-cd docs
-bundle config set --local path vendor/bundle   # gem をプロジェクト内(git 管理外)に閉じ込める
-bundle install
+python3 -m venv .venv-app && .venv-app/bin/pip install -r webapp/requirements.txt
+SITE_ROOT=docs PAPER_DB=/tmp/paper.db .venv-app/bin/python scripts/indexer.py --db /tmp/paper.db   # タグ・検索を見るときだけ
+SITE_ROOT=docs PAPER_DB=/tmp/paper.db BIND_PORT=8081 .venv-app/bin/python webapp/app.py
+# → http://127.0.0.1:8081/(CSS は /assets/ を Caddy が配るので、プレビューでは素の HTML になる)
 ```
 
-以後のプレビュー:
-
-```sh
-cd docs && bundle exec jekyll serve --baseurl /Imas_Daily_News
-# → http://127.0.0.1:4000/Imas_Daily_News/
-```
-
-(本番ビルドは GitHub Pages 側で行われるため、ローカル Ruby は必須ではない)
+以前の静的版(Jekyll の出力)と全ページを比べるときは `webapp/compare.py --site docs --static <出力>`。
 
 ## 免責
 

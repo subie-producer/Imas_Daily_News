@@ -12651,16 +12651,14 @@ def test_deploy_notice(tmp: Path):
     releases, current = srv / "releases", srv / "current"
     notes, served = [], {"id": None}
     names = iter([f"20261031T{m:02d}0000" for m in range(6, 13)])
-    saved = {k: getattr(deploy, k) for k in ("ROOT", "SRV", "RELEASES", "CURRENT", "build", "purge_cache", "notify", "sync_app",
+    saved = {k: getattr(deploy, k) for k in ("ROOT", "SRV", "RELEASES", "CURRENT", "verify", "ensure_deps", "SOURCES", "DOCS",
+                                             "purge_cache", "notify", "sync_app",
                                              "now_jst", "reindex", "served_release_id", "restart_app", "SERVED_RETRY_SEC")
              if hasattr(deploy, k)}
     saved_argv = sys.argv
 
-    def fake_build(dest: Path, timeout=None):
-        for rel in deploy.REQUIRED + [f"articles/{p.stem}/index.html" for p in posts.glob("*.md")]:
-            p = dest / rel
-            p.parent.mkdir(parents=True, exist_ok=True)
-            p.write_text("版", encoding="utf-8")
+    def fake_verify(dest: Path, timeout=None):     # 全ページの検証(アプリの python で描く。test_webapp_paper で検める)の代わり
+        return [], len(list((dest / "_posts").glob("*.md")))
 
     def run(*argv):
         notes.clear()
@@ -12668,7 +12666,9 @@ def test_deploy_notice(tmp: Path):
         return deploy.main()
     try:
         deploy.ROOT, deploy.SRV, deploy.RELEASES, deploy.CURRENT = root, srv, releases, current
-        deploy.build, deploy.sync_app, deploy.purge_cache = fake_build, (lambda: False), (lambda: "")
+        deploy.DOCS = root / "docs"
+        deploy.verify, deploy.sync_app, deploy.purge_cache = fake_verify, (lambda: False), (lambda: "")
+        deploy.ensure_deps, deploy.SOURCES = (lambda timeout=None: ""), ("_posts",)
         deploy.notify = lambda job, msg, ok=True, **k: notes.append((ok, msg)) or True
         deploy.now_jst = lambda: datetime.datetime.strptime(next(names), "%Y%m%dT%H%M%S")
         deploy.reindex = lambda run_id, timeout=None: len(list(posts.glob("*.md")))
@@ -12808,6 +12808,127 @@ def test_deploy_served_retry(tmp: Path):
             setattr(deploy, k, v)
 
 
+WEBAPP_CHECK = r'''
+import json, os, shutil, sys
+from pathlib import Path
+site_dir, other, broken = Path(sys.argv[1]), Path(sys.argv[2]), Path(sys.argv[3])
+cur = site_dir.parent / "current"
+os.environ["SITE_ROOT"] = str(cur)
+sys.path.insert(0, sys.argv[4])
+import paper, app
+out = {}
+s = paper.smartify
+out["smart"] = [s('「"アイ"のキセキ」'), s("Pop'n"), s('"Still blue"追加'), s("ゆずれない...！"), s("A -- B --- C")]
+r = paper.render_markdown
+out["bang"] = r("YearZ!!!!!!!!!!!! 生配信")
+out["escaped"] = r('REFRAC7IONS \\"Still blue\\"』')
+out["heading"] = r("## 9月20日11時から販売 <!-- F3 F4 -->\n\n## 全記事をAIが執筆し、別モデル\n")
+out["tight"] = r("- a\n- b <!-- F1 -->\n\n後の段落\n")
+out["loose"] = r("- a\n\n- b\n\n- c\n")
+out["mixed"] = r("- a\n- b\n- c\n\n- d\n- e\n")
+out["code"] = r("`#すりーぷすきっぷ`")
+c = app.app.test_client()
+g = lambda u: c.get(u)
+out["front"] = g("/").get_data(as_text=True)
+out["edition"] = g("/editions/2026-11-02/").get_data(as_text=True)
+out["article"] = g("/articles/2026-11-02-m1/").get_data(as_text=True)
+out["follow"] = g("/articles/2026-11-01-old/").get_data(as_text=True)
+out["missing"] = g("/articles/2026-11-02-none/").status_code
+out["feed"] = g("/feed.xml").get_data(as_text=True)
+out["rid"] = g("/release-id.txt").get_data(as_text=True)
+# 版の切り替え: 読めない版に切り替わっても前の版で答え、読める版に切り替われば読み直す
+cur.unlink(); cur.symlink_to(broken)
+out["broken_front"] = g("/").status_code
+cur.unlink(); cur.symlink_to(other)
+out["other_front"] = g("/").get_data(as_text=True)
+print(json.dumps(out, ensure_ascii=False))
+'''
+
+
+def _webapp_site(d: Path, number: int, extra: str = "") -> Path:
+    """アプリが読む版のフォルダ(docs と同じ並び)を作る。"""
+    for sub in ("_posts", "_editions", "_editorials", "_data", "about"):
+        (d / sub).mkdir(parents=True, exist_ok=True)
+    (d / "_data" / "brands.yml").write_text('- id: cg\n  label: シンデレラ\n  color: "#2681c8"\n', encoding="utf-8")
+    (d / "_data" / "tags.yml").write_text("drop: [公式]\nalias:\n  デレ: シンデレラ\n", encoding="utf-8")
+    (d / "about" / "index.md").write_text("---\ntitle: 編集方針と免責 — アイマスNEWS(α)\n---\n# 編集方針\n", encoding="utf-8")
+    (d / "_editions" / "2026-11-01.md").write_text(
+        "---\nnumber: 1\ndate: '2026-11-01'\nweekday: 日\npages: 1\narticle_count: 1\ncorrected_count: 0\nlead_slug: old\n---\n", encoding="utf-8")
+    (d / "_editions" / "2026-11-02.md").write_text(
+        f"---\nnumber: {number}\ndate: '2026-11-02'\nweekday: 月\npages: 1\narticle_count: 3\ncorrected_count: 0\nlead_slug: lead\n"
+        "digest:\n- label: 本日\n  rows:\n  - k: 開\n    t: 見出し\n    d: 説明\n    brand: cg\n    slug: lead\n---\n", encoding="utf-8")
+    def post(name, fm, body="本文。"):
+        (d / "_posts" / name).write_text(f"---\n{fm}---\n{body}\n", encoding="utf-8")
+    post("2026-11-01-old.md", "slug: old\nedition: '2026-11-01'\nbrand: cg\nsrc: 公式\nrank: lead\ntitle: 前の記事\nlede: 前\n")
+    post("2026-11-02-lead.md", "slug: lead\nedition: '2026-11-02'\nbrand: cg\nsrc: 公式\nrank: lead\ntitle: トップ記事\nlede: リード\n"
+         "sources:\n- label: 出典A\n  url: https://example.org/a\n  type: 公式\n")
+    post("2026-11-02-m1.md", "slug: m1\nedition: '2026-11-02'\nbrand: cg\nsrc: 報道\nrank: medium\ntitle: 中の記事\nlede: 中\n"
+         "tags: [デレ, 公式, CD]\nfollows: [2026-11-01-old]\n")
+    post("2026-11-02-s1.md", "slug: s1\nedition: '2026-11-02'\nbrand: cg\nsrc: 公式\nrank: small\ntitle: 小の記事" + extra + "\nlede: 小\n")
+    return d
+
+
+def test_webapp_paper(tmp: Path):
+    """紙面はビルドせずアプリが描く(編集長 2026-11-16)。アプリと同じ python で、本物の paper・app を一時の版で走らせる:
+    引用符・記号・見出しの id・箇条書きの <p> は以前の変換(kramdown)と同じ規則(全ページを以前の静的版と比べて合わせた規則)、
+    号の記事の並び・前後の記事・続報・タグの正規化・404・feed、版の切り替え(読めない版では前の版で答え、読める版で読み直す)、
+    配信前の検証(verify.py)が壊れた版を通さないこと。"""
+    import deploy
+    app_py = os.environ.get("APP_PYTHON") or str(deploy.APP_PY)
+    check(Path(app_py).exists(), f"アプリの python が無い({app_py})。webapp/requirements.txt を入れた python を APP_PYTHON で渡す")
+    if not Path(app_py).exists():
+        return
+    webapp = Path(__file__).resolve().parent.parent / "webapp"
+    rel = tmp / "releases"
+    a = _webapp_site(rel / "20261102T060000", 2)
+    (a / "release-id.txt").write_text("20261102T060000\n", encoding="utf-8")
+    b = _webapp_site(rel / "20261102T070000", 3, extra="(差し替え)")
+    broken = _webapp_site(rel / "20261102T080000", 4)
+    (broken / "_data" / "brands.yml").unlink()
+    (rel / "current").symlink_to(a)
+    script = tmp / "check.py"
+    script.write_text(WEBAPP_CHECK, encoding="utf-8")
+    r = subprocess.run([app_py, str(script), str(a), str(b), str(broken), str(webapp)], capture_output=True, text=True, timeout=120)
+    check(r.returncode == 0, f"アプリの検めが落ちた: {r.stderr[-800:]}")
+    if r.returncode != 0:
+        return
+    o = json.loads(r.stdout.strip().splitlines()[-1])
+    check(o["smart"] == ["「”アイ”のキセキ」", "Pop’n", "“Still blue”追加", "ゆずれない…！", "A – B — C"],
+          f"引用符・記号の置き換えが以前(kramdown)と違う: {o['smart']}")
+    check("YearZ!!!!!!!!!!!! 生配信" in o["bang"], f"「!」の連なりを縮めた(本文を変えた): {o['bang']}")
+    check('\\"' not in o["escaped"] and "“" not in o["escaped"] and ("&quot;Still blue&quot;" in o["escaped"] or '"Still blue"' in o["escaped"]),
+          f"エスケープした引用符を置き換えた: {o['escaped']}")
+    check('id="9月20日11時から販売-"' in o["heading"] and 'id="全記事をaiが執筆し別モデル"' in o["heading"],
+          f"見出しの id が以前と違う(根拠の印を入れた・読点を残した): {o['heading']}")
+    check("<li>a</li>" in o["tight"] and "<li>b <!-- F1 --></li>" in o["tight"], f"詰めた箇条書きに <p> を付けた: {o['tight']}")
+    check(o["loose"].count("<p>") == 3, f"空行で区切った箇条書きの全項目に <p> を付けない: {o['loose']}")
+    check("<li>a</li>" in o["mixed"] and "<li>\n<p>c</p>\n</li>" in o["mixed"] and "<li>e</li>" in o["mixed"],
+          f"空行のあとの項目だけ <p> を付ける規則が以前と違う: {o['mixed']}")
+    check('<code class="language-plaintext highlighter-rouge">' in o["code"], f"インラインのコードの class が以前と違う: {o['code']}")
+    ed = o["edition"]
+    check(ed.index("トップ記事") < ed.index("中の記事") < ed.index("小の記事") and "第2号" in ed,
+          "号のページの記事が段の順(lead → medium → small)に並ばない")
+    check("第2号" in o["front"] and "トップ記事" in o["front"], "トップに最新号が出ない")
+    art = o["article"]
+    check("← 前の記事" in art and "トップ記事" in art and "次の記事 →" in art and "小の記事" in art,
+          "記事の前後の記事(号の中の並び)が出ない")
+    check(">シンデレラ</a>" in art and ">CD</a>" in art and ">公式</a>" not in art and "/tags/%E3%82%B7" in art,
+          "タグの正規化(alias・drop)・リンクが以前と違う")
+    check("この記事は" in art and "前の記事" in art and "の続報です" in art, "続報の元の記事が出ない")
+    check("その後の動き" in o["follow"] and "続報" in o["follow"] and "中の記事" in o["follow"], "元の記事に続報が出ない")
+    check(o["missing"] == 404, f"無い記事が 404 にならない: {o['missing']}")
+    check("<entry>" in o["feed"] and "https://imas-news.ofa.tokyo/articles/m1" in o["feed"], "feed の項目・id が以前と違う")
+    check(o["rid"].strip() == "20261102T060000", f"配信の版の印を返さない: {o['rid']!r}")
+    check(o["broken_front"] == 200, f"読めない版に切り替わったとき、前の版で答えない: {o['broken_front']}")
+    check("小の記事(差し替え)" in o["other_front"], "読める版に切り替わっても読み直さない")
+    # 配信前の検証: 読める版は通し、壊れた版は通さない
+    ok = subprocess.run([app_py, str(webapp / "verify.py"), "--site", str(a)], capture_output=True, text=True, timeout=120)
+    ng = subprocess.run([app_py, str(webapp / "verify.py"), "--site", str(broken)], capture_output=True, text=True, timeout=120)
+    check(ok.returncode == 0 and json.loads(ok.stdout.strip().splitlines()[-1])["articles"] == 4,
+          f"読める版を検証が通さない: {ok.stdout[-400:]} {ok.stderr[-400:]}")
+    check(ng.returncode == 1 and "ERROR:" in ng.stdout, f"壊れた版(brands.yml が無い)を検証が通した: {ng.stdout[-400:]}")
+
+
 def test_deploy_index_failure(tmp: Path):
     """current を切り替えた後に索引の更新が落ちたら、current を索引が取り込んだリリース(索引の run_id)へ戻してパージし、
     実態どおりに知らせる(監査指摘 ar7-4: 新しい静的と古い索引が残り、取り下げた記事が検索に残った)。前の配信が索引の状態を
@@ -12847,17 +12968,14 @@ def test_deploy_index_failure(tmp: Path):
     current.symlink_to(old)
     slow_build = []
 
-    def fake_build(dest: Path, timeout=None):     # 今の記事から静的な記事ページを作る(slow_build があればその秒だけ掛ける)
+    def fake_verify(dest: Path, timeout=None):    # 全ページの検証(アプリの python で描く)の代わり。slow_build があればその秒だけ掛ける
         import time
         need = slow_build[-1] if slow_build else 0
-        if timeout is not None and need > timeout:  # 本物の build と同じく、渡された上限で打ち切られる
+        if timeout is not None and need > timeout:  # 本物の verify と同じく、渡された上限で打ち切られ、問題として返る
             time.sleep(timeout)
-            raise subprocess.TimeoutExpired("jekyll", timeout)
+            return [f"全ページの検証が {timeout:.0f}秒で終わらない"], 0
         time.sleep(need)
-        for rel in deploy.REQUIRED + [f"articles/{p.stem}/index.html" for p in posts.glob("*.md")]:
-            p = dest / rel
-            p.parent.mkdir(parents=True, exist_ok=True)
-            p.write_text("新しい版", encoding="utf-8")
+        return [], len(list((dest / "_posts").glob("*.md")))
 
     def guarded_run(cmd, *a, **k):
         # 索引の子プロセスには試験の DB を必ず渡させる(渡さないと本番の既定の DB に書く)
@@ -12873,7 +12991,8 @@ def test_deploy_index_failure(tmp: Path):
     notes, purges = [], []
     names = [f"20261014T{6 + m:02d}0000" for m in range(12)]       # 配信ごとのリリースの名前(時刻順)
     stamps = iter(names)
-    saved = {k: getattr(deploy, k) for k in ("ROOT", "SRV", "RELEASES", "CURRENT", "build", "purge_cache", "notify", "sync_app",
+    saved = {k: getattr(deploy, k) for k in ("ROOT", "SRV", "RELEASES", "CURRENT", "verify", "ensure_deps", "SOURCES", "DOCS", "purge_cache",
+                                             "notify", "sync_app",
                                              "now_jst", "INDEX_ATTEMPTS", "INDEX_RETRY_SEC", "reindex", "indexed_run",
                                              "INDEX_TIMEOUT_SEC", "INDEX_MIN_SEC", "RESERVE_SEC", "served_release_id") if hasattr(deploy, k)}
     saved_db, saved_argv = getattr(deploy, "DB", None), sys.argv
@@ -12883,7 +13002,8 @@ def test_deploy_index_failure(tmp: Path):
         deploy.DB = db
         # 外から見える版は、試験の current の印を読む(本物の公開の URL を叩かない)
         deploy.served_release_id = lambda timeout=None: (current / deploy.RELEASE_ID).read_text(encoding="utf-8").strip()
-        deploy.build, deploy.sync_app = fake_build, (lambda: False)
+        deploy.verify, deploy.sync_app, deploy.ensure_deps, deploy.SOURCES = fake_verify, (lambda: False), (lambda timeout=None: ""), ("_posts",)
+        deploy.DOCS = root / "docs"         # 版は試験の docs から写す(本物の docs を写さない)
         deploy.purge_cache = lambda: purges.append(True) or "パージ(試験)"
         deploy.notify = lambda job, msg, ok=True, **k: notes.append((ok, msg)) or True
         deploy.now_jst = lambda: datetime.datetime.strptime(next(stamps), "%Y%m%dT%H%M%S")
@@ -12963,8 +13083,8 @@ def test_deploy_index_failure(tmp: Path):
         c.close()
         check(rc == 0 and cur() == names[6] and ran == names[6],
               f"索引が新しい版まで進んだのに current を戻した: rc={rc!r} current={cur()}")
-        # S8 予算: ビルドが長引き、索引が毎回時間切れまで掛かっても、予算のうちに戻す・知らせるまで終える
-        # (秒を縮めて試す。予算 3秒・後始末に残す 1秒・ビルド 0.5秒)
+        # S8 予算: 検証が長引き、索引が毎回時間切れまで掛かっても、予算のうちに戻す・知らせるまで終える
+        # (秒を縮めて試す。予算 3秒・後始末に残す 1秒・検証 0.5秒)
         import time
 
         def hang(run_id, timeout=None):
@@ -12979,14 +13099,14 @@ def test_deploy_index_failure(tmp: Path):
         took = time.time() - t0
         check(rc == 1 and took < 3.0 and cur() == names[6] and "戻した" in state(),
               f"予算のうちに戻す・知らせるまで終えない: rc={rc!r} {took:.1f}秒 current={cur()} {state()!r}")
-        # S9 ビルドが予算を食い尽くす: 渡した上限で打ち切り、current は差し替えない(予算 2秒・ビルド 3秒掛かる)
+        # S9 検証が予算を食い尽くす: 渡した上限で打ち切り、current は差し替えない(予算 2秒・検証 3秒掛かる)
         slow_build.append(3.0)
         sys.argv = ["deploy.py", "--budget-sec", "2"]
         t0 = time.time()
         rc = run_main()
         took = time.time() - t0
         check(rc == 1 and took < 2.0 and cur() == names[6] and "前の版のまま" in state(),
-              f"ビルドを予算の残りで打ち切らない(か、差し替えた): rc={rc!r} {took:.1f}秒 current={cur()} {state()!r}")
+              f"検証を予算の残りで打ち切らない(か、差し替えた): rc={rc!r} {took:.1f}秒 current={cur()} {state()!r}")
         slow_build.clear()
         sys.argv = ["deploy.py"]
         # S10 索引の状態が読めずに新しい版(b2 を足した版)が残る → 手で索引を直す(--run-id なし) → 次の配信も失敗:
@@ -20856,17 +20976,16 @@ def test_source_watch(tmp: Path):
 
 
 def test_article_updates_render(tmp: Path):
-    """記事の「その後の動き」(updates)と続報(follows)が紙面に出る: 本物の Jekyll で記事の型(docs/_layouts/article.html)を描き、
-    元の記事に日付・種類・文・出典のリンクと続報の記事へのリンク、続報の記事に元の記事へのリンクが出ることを検める。
+    """記事の「その後の動き」(updates)と続報(follows)が紙面に出る: 本物のアプリ(webapp。紙面はビルドせずアプリが描く)で
+    記事のページを描き、元の記事に日付・種類・文・出典のリンクと続報の記事へのリンク、続報の記事に元の記事へのリンクが出ることを検める。
     append-only の本物の lint が updates の追記を通し、本文の書き換えは止めることも検める"""
     import contextlib, io
+    import deploy
     import source_watch as sw
     repo = Path(__file__).resolve().parent.parent
     site = tmp / "site"
     site.mkdir(parents=True)
-    shutil.copy(repo / "docs" / "_config.yml", site / "_config.yml")
-    for d in ("_layouts", "_includes", "_data"):
-        shutil.copytree(repo / "docs" / d, site / d)
+    shutil.copytree(repo / "docs" / "_data", site / "_data")
     (site / "_posts").mkdir()
     (site / "_editions").mkdir()
     old_id, new_id = "2026-10-20-orig", "2026-10-27-followup"
@@ -20894,12 +21013,15 @@ def test_article_updates_render(tmp: Path):
         compose.ROOT = saved_croot
     check(yaml_fm((site / "_posts" / f"{new_id}.md").read_text(encoding="utf-8")).get("follows") == [old_id],
           "組版が続報の記事に元の記事(follows)を付けない")
-    if not shutil.which("jekyll"):
-        print("  (jekyll が無いので紙面の描画は確かめない)")
-    else:
-        r = subprocess.run(["jekyll", "build", "-q", "-s", str(site), "-d", str(site / "_out")], capture_output=True, text=True,
-                           timeout=600, stdin=subprocess.DEVNULL)
-        pages = {p.parent.name: p.read_text(encoding="utf-8") for p in (site / "_out").rglob("index.html") if "articles" in p.parts}
+    app_py = os.environ.get("APP_PYTHON") or str(deploy.APP_PY)
+    check(Path(app_py).exists(), f"アプリの python が無い({app_py})ので紙面の描画を確かめられない")
+    if Path(app_py).exists():
+        render = ("import json, os, sys\nos.environ['SITE_ROOT'] = sys.argv[1]\nsys.path.insert(0, sys.argv[2])\nimport app\n"
+                  "c = app.app.test_client()\n"
+                  "print(json.dumps({k: c.get(f'/articles/{k}/').get_data(as_text=True) for k in sys.argv[3:]}, ensure_ascii=False))\n")
+        r = subprocess.run([app_py, "-c", render, str(site), str(repo / "webapp"), old_id, new_id], capture_output=True, text=True,
+                           timeout=120, stdin=subprocess.DEVNULL)
+        pages = json.loads(r.stdout.strip().splitlines()[-1]) if r.returncode == 0 and r.stdout.strip() else {}
         o, n = pages.get(old_id, ""), pages.get(new_id, "")
         check(r.returncode == 0 and "その後の動き" in o and entry["text"] in o and "2026.10.27" in o and "・ 変更" in o
               and entry["source"] in o and "続報の記事" in o and "元の記事" in n and "の続報です" in n
@@ -21926,6 +22048,7 @@ def main() -> int:
     test_release_squash_conflict(tmp / "rsc")
     test_release_dry_run_no_push(tmp / "rdr")
     test_deploy_index_failure(tmp / "dif")
+    test_webapp_paper(tmp / "wap")
     test_deploy_notice(tmp / "dn")
     test_deploy_served_retry(tmp / "dsr")
     test_correction_append_only(tmp / "cao")

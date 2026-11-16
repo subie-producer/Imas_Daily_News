@@ -3,22 +3,20 @@
 
   python3 scripts/deploy.py [--skip-purge] [--dry-run] [--budget-sec 秒]
 
-紙面は二層で配信する:
-  静的 — 記事・号・社説・アーカイブ。発行後に変わらないので Jekyll で生成して置く
-  動的 — /tags/ と /search。問い合わせで形が変わるので webapp が SQLite を引いて描く
+紙面はビルドしない(編集長の決定 2026-11-16。Jekyll のビルドは記事数の2乗で伸び、11/6 は17分かかった):
+  版 — docs の Markdown 一式(_posts・_editions・_editorials・_data・about)と assets を releases/<日時> に写したもの
+  描く — webapp(imas-app)が current の版を読み、全ページを要求のたびに描く(記事・号・社説・アーカイブ・feed・sitemap)
+  索引 — /tags/ と /search は webapp が SQLite を引いて描く
 
-手順: 本番ビルド → 出力検証 → releases/<日時> へ配置 → current を原子的入替
-      → インデックス更新(動的ページのデータ) → アプリのコード同期
+手順: アプリの依存の確認 → 版を写す → これから配るコードで全ページを描いて検証 → releases/<日時> へ配置
+      → current を原子的入替(アプリは次の要求で新しい版を読む) → インデックス更新 → アプリのコード同期
       → 旧リリースの世代整理 → Cloudflare キャッシュパージ
 
 設計上の要点:
-- ビルドは **素の Jekyll**(bundler 非経由)。Gemfile の github-pages gem は safe
-  モードとプラグイン制限を強制するため、本番ビルドでは経由しない。
-- 静的側は symlink の張り替えだけで切り替わる。中途半端なツリーは配信されず、
-  切り戻しも symlink を戻すだけで済む。
-- 検証に通らないビルドは配信しない(壊れた紙面を世界に出さないためのゲート)。
-- 静的 → 索引 の順で更新する。逆順だと、索引に載った記事のリンクが 404 になる
-  時間帯ができる。
+- 版は symlink の張り替えだけで切り替わる。中途半端なツリーは配信されず、切り戻しも symlink を戻すだけで済む。
+- 検証に通らない版は配信しない(壊れた紙面を世界に出さないためのゲート)。検証は**これから配るコード**(webapp/)を
+  アプリの python で走らせ、全ページを描く(配信中のコードで確かめても、新しいコードの不具合は捕まらない)。
+- 版 → 索引 の順で更新する。逆順だと、索引に載った記事のリンクが 404 になる時間帯ができる。
 - 索引の更新は1つの取引で、取り込んだリリースの名前を索引に残す。失敗すれば索引は前の取り込みのまま
   残る。再試行しても通らなければ、current を索引が取り込んだリリースへ戻して静的と索引を揃える
   (新しい静的と古い索引を残さない)。
@@ -34,7 +32,6 @@ import shutil
 import sqlite3
 import subprocess
 import sys
-import tempfile
 import threading
 import time
 import urllib.error
@@ -52,7 +49,10 @@ KEEP_RELEASES = int(ENV.get("KEEP_RELEASES", "5"))
 
 WEBAPP_SRC = ROOT / "webapp"
 APP_DIR = SRV / "app"
+APP_PY = Path(ENV.get("APP_PYTHON", str(SRV / "venv" / "bin" / "python")))
 DB = SRV / "data" / "paper.db"
+# 版に写すもの(docs の中の、アプリが読むデータと、Caddy が配る assets)
+SOURCES = ("_posts", "_editions", "_editorials", "_data", "about", "assets")
 
 # 索引の更新の再試行(書き込みの競合 database is locked は待てば通ることがある)。1回の上限は INDEX_TIMEOUT_SEC
 # (全記事の付け直しでも実測 5.5秒)。残りの予算が足りなければ、それより短く切る・再試行をやめる
@@ -60,8 +60,9 @@ INDEX_ATTEMPTS = 3
 INDEX_RETRY_SEC = 20
 INDEX_TIMEOUT_SEC = 300
 INDEX_MIN_SEC = 10
-BUILD_TIMEOUT_SEC = 1800
-# 配信の時間の予算(--budget-sec)。release は deploy を打ち切るので、その手前で必ず終える。ビルドと索引の試行は、残りが
+VERIFY_TIMEOUT_SEC = 600      # 全ページを描く検証(実測: 約3,000ページで数十秒)
+DEPS_TIMEOUT_SEC = 300        # アプリの依存の取り込み(requirements.txt が変わったときだけ)
+# 配信の時間の予算(--budget-sec)。release は deploy を打ち切るので、その手前で必ず終える。検証と索引の試行は、残りが
 # RESERVE_SEC を切る前にやめる(戻す・アプリの再起動・旧版の整理・パージ・通知に残す時間。再起動の上限 130秒+パージ 30秒+通知)
 # 2026-10-14 監査指摘: ビルド 1800秒+索引 300秒×3+待ち 60秒が release の待つ 2400秒を越え、戻す前に打ち切られた
 BUDGET_SEC = 2340
@@ -93,11 +94,11 @@ def manifest_path() -> Path:
     return SRV / "state" / "posts-manifest.json"
 
 
-def post_manifest() -> dict[str, list]:
-    """いまの記事の控え {ファイル名: [元の md の指紋, 訂正の数, 見出し]}。"""
+def post_manifest(posts: Path | None = None) -> dict[str, list]:
+    """記事の控え {ファイル名: [元の md の指紋, 訂正の数, 見出し]}。posts は版の _posts(省略時は docs/_posts)。"""
     import yaml
     out = {}
-    for p in sorted((ROOT / "docs" / "_posts").glob("*.md")):
+    for p in sorted((posts or ROOT / "docs" / "_posts").glob("*.md")):
         text = p.read_text(encoding="utf-8")
         fm = {}
         if text.startswith("---\n") and "\n---\n" in text[4:]:
@@ -215,61 +216,49 @@ def say_state(s: str) -> None:
     global STATE
     STATE = s
 
-# 配信前の最低限の健全性チェック(ここに無いものが欠けている紙面は出さない)。
-# /tags/ と /search は動的アプリが描くのでビルド成果物には含まれない。
-REQUIRED = ["index.html", "archive/index.html", "404.html"]
+def stage(dest: Path) -> None:
+    """版を写す(docs の SOURCES を dest へ)。ビルドはしない。"""
+    dest.mkdir(parents=True)
+    for name in SOURCES:
+        src = DOCS / name
+        if not src.exists():
+            raise RuntimeError(f"版に写すものが無い: docs/{name}")
+        shutil.copytree(src, dest / name) if src.is_dir() else shutil.copy2(src, dest / name)
 
 
-def build(dest: Path, timeout: float = BUILD_TIMEOUT_SEC) -> None:
-    """本番設定でビルドする。url は .env の SITE_URL から一時設定として渡す。"""
-    site_url = ENV.get("SITE_URL", "").rstrip("/")
-    if not site_url:
-        raise RuntimeError(".env に SITE_URL が未設定(例: SITE_URL=https://example.com)")
-
-    with tempfile.NamedTemporaryFile("w", suffix=".yml", delete=False, encoding="utf-8") as f:
-        f.write(f'url: "{site_url}"\n')
-        url_cfg = f.name
-
-    # bundler を経由すると github-pages gem が safe モードを強制し _plugins/ が無効になる。
-    # JEKYLL_NO_BUNDLER_REQUIRE で Jekyll 側の Gemfile 自動読込も止める。
-    env = {k: v for k, v in os.environ.items() if k not in ("BUNDLE_GEMFILE", "RUBYOPT")}
-    env["JEKYLL_NO_BUNDLER_REQUIRE"] = "true"
-    env["JEKYLL_ENV"] = "production"
-    try:
-        r = subprocess.run(
-            ["jekyll", "build",
-             "--config", f"_config.yml,_config.production.yml,{url_cfg}",
-             "--destination", str(dest)],
-            cwd=DOCS, capture_output=True, text=True, timeout=timeout, env=env,
-        )
-    finally:
-        os.unlink(url_cfg)
-
+def ensure_deps(timeout: float = DEPS_TIMEOUT_SEC) -> str:
+    """アプリの python に webapp/requirements.txt の依存を入れる(前回入れた内容と同じなら何もしない)。
+    入らなければ RuntimeError(検証の前に止め、current は差し替えない)。入れたときだけ説明を返す。"""
+    req = WEBAPP_SRC / "requirements.txt"
+    mark = SRV / "state" / "app-requirements.txt"
+    if mark.exists() and mark.read_bytes() == req.read_bytes():
+        return ""
+    r = subprocess.run([str(APP_PY), "-m", "pip", "install", "-q", "-r", str(req)],
+                       capture_output=True, text=True, timeout=timeout)
     if r.returncode != 0:
-        raise RuntimeError(f"jekyll build 失敗(exit {r.returncode}):\n{(r.stderr or r.stdout)[-800:]}")
-    for line in r.stdout.splitlines():
-        if "done in" in line:
-            print(line.strip(), flush=True)
+        raise RuntimeError(f"アプリの依存を入れられない:\n{(r.stderr or r.stdout)[-600:]}")
+    mark.parent.mkdir(parents=True, exist_ok=True)
+    mark.write_bytes(req.read_bytes())
+    return "アプリの依存を入れ直しました"
 
 
-def verify(dest: Path) -> list[str]:
-    """配信して良いビルドかを機械検査する。"""
-    errors = []
-    for rel in REQUIRED:
-        p = dest / rel
-        if not p.exists() or p.stat().st_size == 0:
-            errors.append(f"必須ファイルが無い/空: {rel}")
-
-    posts = list((dest / "articles").glob("*/index.html")) if (dest / "articles").exists() else []
-    if len(posts) < 1:
-        errors.append("記事ページが1本も生成されていない")
-
-    # baseurl が残っていると自前ドメイン配下でリンクが全部壊れる。
-    # _config.production.yml を渡し忘れた場合をここで捕まえる
-    idx = (dest / "index.html").read_text(encoding="utf-8") if (dest / "index.html").exists() else ""
-    if '"/Imas_Daily_News/' in idx or "'/Imas_Daily_News/" in idx:
-        errors.append("baseurl(/Imas_Daily_News)が残っている(_config.production.yml 未適用)")
-    return errors
+def verify(dest: Path, timeout: float = VERIFY_TIMEOUT_SEC) -> tuple[list[str], int]:
+    """配信して良い版かを、これから配るコード(webapp/verify.py)で全ページ描いて確かめる。戻りは (問題の一覧, 記事数)。"""
+    try:
+        r = subprocess.run([str(APP_PY), str(WEBAPP_SRC / "verify.py"), "--site", str(dest)],
+                           capture_output=True, text=True, timeout=timeout,
+                           env={**os.environ, "SITE_URL": ENV.get("SITE_URL", "https://imas-news.ofa.tokyo")})
+    except subprocess.TimeoutExpired:
+        return [f"全ページの検証が {timeout:.0f}秒で終わらない"], 0
+    errors = [ln[len("ERROR: "):] for ln in r.stdout.splitlines() if ln.startswith("ERROR: ")]
+    try:
+        n_posts = int(json.loads(r.stdout.strip().splitlines()[-1])["articles"])
+    except (IndexError, ValueError, KeyError, TypeError):
+        n_posts = 0
+        errors.append(f"検証の結果を読めない(exit {r.returncode}):\n{(r.stderr or r.stdout)[-600:]}")
+    if r.returncode != 0 and not errors:
+        errors.append(f"検証が異常終了(exit {r.returncode}):\n{(r.stderr or r.stdout)[-600:]}")
+    return errors, n_posts
 
 
 def reindex(run_id: str, timeout: float = INDEX_TIMEOUT_SEC) -> int:
@@ -438,7 +427,7 @@ def purge_cache() -> str:
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--skip-purge", action="store_true", help="Cloudflare のキャッシュパージを行わない")
-    ap.add_argument("--dry-run", action="store_true", help="ビルドと検証だけ行い、配信は差し替えない")
+    ap.add_argument("--dry-run", action="store_true", help="版を写して検証するだけで、配信は差し替えない")
     ap.add_argument("--budget-sec", type=float, default=BUDGET_SEC,
                     help="この秒数のうちに必ず終える(release が打ち切る時間より短く渡す)")
     ap.add_argument("--from-release", action="store_true",
@@ -455,28 +444,28 @@ def main() -> int:
     staging = RELEASES / f".staging-{stamp}"
     release = RELEASES / stamp
 
-    print(f"ビルド中 → {staging}", flush=True)
-    shutil.rmtree(staging, ignore_errors=True)
-    # ビルドが長引いても、索引の1回と後始末の分は残す(足りなければ時間切れで止め、current は差し替えない)
-    build_limit = max(1.0, min(BUILD_TIMEOUT_SEC, left() - RESERVE_SEC - INDEX_MIN_SEC))
     try:
-        build(staging, timeout=build_limit)
-    except subprocess.TimeoutExpired:
-        shutil.rmtree(staging, ignore_errors=True)
-        notify("deploy", f"配信を中止(ビルドが予算のうちに終わらない。上限 {build_limit:.0f}秒)。{STATE}", ok=False)
+        deps_msg = ensure_deps(timeout=max(1.0, min(DEPS_TIMEOUT_SEC, left() - RESERVE_SEC - INDEX_MIN_SEC)))
+    except (RuntimeError, subprocess.TimeoutExpired) as e:
+        notify("deploy", f"配信を中止(アプリの依存を入れられない)。{STATE}\n{str(e)[-600:]}", ok=False)
         return 1
+    if deps_msg:
+        print(deps_msg, flush=True)
 
-    errors = verify(staging)
+    print(f"版を写す → {staging}", flush=True)
+    shutil.rmtree(staging, ignore_errors=True)
+    stage(staging)
+    # 検証が長引いても、索引の1回と後始末の分は残す(足りなければ時間切れで止め、current は差し替えない)
+    verify_limit = max(1.0, min(VERIFY_TIMEOUT_SEC, left() - RESERVE_SEC - INDEX_MIN_SEC))
+    errors, n_posts = verify(staging, timeout=verify_limit)
     if errors:
         shutil.rmtree(staging, ignore_errors=True)
-        notify("deploy", "配信を中止(ビルド検証に失敗):\n- " + "\n- ".join(errors[:6]), ok=False)
+        notify("deploy", "配信を中止(全ページの検証に失敗。current は前の版のまま):\n- " + "\n- ".join(e[:300] for e in errors[:6]), ok=False)
         return 1
-
-    n_posts = len(list((staging / "articles").glob("*/index.html")))
-    print(f"検証OK: 静的ページ 記事{n_posts}本", flush=True)
-    # 外から新しい版が見えるかを確かめる印。記事の控えはビルドの直後に取る(ビルドの元と同じ記事)
+    print(f"検証OK: 全ページを描けた(記事{n_posts}本)", flush=True)
+    # 外から新しい版が見えるかを確かめる印(アプリが /release-id.txt で返す)。記事の控えは版に写した記事から取る
     (staging / RELEASE_ID).write_text(stamp + "\n", encoding="utf-8")
-    manifest = post_manifest()
+    manifest = post_manifest(staging / "_posts")
 
     if args.dry_run:
         print(f"[dry-run] {staging} は配信せず残置します", flush=True)

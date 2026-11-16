@@ -1,0 +1,56 @@
+{% extends "paper/default.html" %}
+{% from "paper/_macros.html" import small_header %}
+{% block content %}
+{%- set eds = site.editions | reverse | list -%}
+{%- set months = eds | groupby_month -%}
+
+<div style="max-width:860px;margin:0 auto;padding:0 20px 48px;box-sizing:border-box">
+
+  <!-- 小型ヘッダー -->
+  {{ small_header("ARCHIVE — 全" ~ (eds | length) ~ "号") }}
+
+  <!-- ページ見出し -->
+  <div style="margin-top:22px;display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap">
+    <h1 style="margin:0;font-family:var(--font-serif);font-weight:800;font-size:clamp(22px,4vw,30px);letter-spacing:.06em">バックナンバー</h1>
+    <span style="font-size:11.5px;color:#55524b">全号を発行当時の紙面のまま保存しています。訂正も当時の表示で残ります。</span>
+  </div>
+
+  <div style="margin-top:12px;font-size:11.5px;font-weight:700"><a href="/tags/">タグ・見出しから横断検索する →</a></div>
+
+  <!-- 月ジャンプ -->
+  <div style="margin-top:14px;display:flex;gap:6px;flex-wrap:wrap;font-family:var(--font-mono);font-size:10.5px">
+    {% for name, items in months %}
+    {% if loop.first %}
+    <a href="#m{{ name | replace('.', '') }}" style="padding:4px 10px;background:#1c1b18;color:#fbfaf7;font-weight:600">{{ name }}</a>
+    {% else %}
+    <a href="#m{{ name | replace('.', '') }}" style="padding:4px 10px;border:1px solid #d9d4c8;color:#55524b">{{ name }}</a>
+    {% endif %}
+    {% endfor %}
+  </div>
+
+  {% for name, items in months %}
+  <div style="margin-top:24px" id="m{{ name | replace('.', '') }}">
+    <div style="display:flex;align-items:baseline;gap:10px;border-bottom:2px solid #1c1b18;padding-bottom:6px">
+      <span style="font-family:var(--font-serif);font-weight:800;font-size:17px;letter-spacing:.1em">{{ fmt(items[0].date, "%Y年%-m月") }}</span>
+      <span style="font-family:var(--font-mono);font-size:9.5px;color:#8a857a">{{ items | length }} EDITIONS</span>
+    </div>
+    <div style="display:flex;flex-direction:column">
+      {% for e in items %}
+      {%- set leadp = (site.edition_posts.get(e.date, []) | selectattr("slug", "equalto", e.lead_slug) | list | first) -%}
+      <a href="{{ e.url }}" style="display:flex;flex-wrap:wrap;gap:4px 14px;align-items:baseline;padding:13px 2px;border-bottom:1px solid #e8e4d9">
+        <span style="flex:none;width:66px;font-family:var(--font-mono);font-size:11px;color:#8a857a">NO.{{ ("0000" ~ e.number)[-4:] }}</span>
+        <span style="flex:none;font-size:12.5px;font-weight:700;white-space:nowrap">{{ fmt(e.date, "%-m月%-d日") }}({{ e.weekday }})</span>
+        <span style="flex:none;margin-left:auto;font-family:var(--font-mono);font-size:10px;color:#8a857a;white-space:nowrap">{{ e.article_count }}件{% if (e.corrected_count or 0) > 0 %}<span style="color:#b0483f"> ・訂正{{ e.corrected_count }}</span>{% endif %}</span>
+        <span style="flex:1 1 300px;min-width:0;font-family:var(--font-serif);font-weight:700;font-size:13.5px;line-height:1.6;color:#33312c">{% if leadp %}{{ leadp.title }}{% endif %}</span>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+  {% endfor %}
+
+  <!-- フッター -->
+  <div style="margin-top:36px;border-top:2px solid #1c1b18;padding-top:12px;font-size:11px;color:#55524b;line-height:1.8">
+    号ページは発行時のスナップショットから描画され、発行後のデータ変更の影響を受けません。<a href="/about/" style="font-weight:700">編集方針と免責 →</a>
+  </div>
+</div>
+{% endblock %}

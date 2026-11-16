@@ -1,0 +1,58 @@
+# アイマスNEWS(α) 配信オリジン。置き場所: ~/srv/imas-news/etc/Caddyfile(imas-web.service が読む)
+#
+# 前段は Cloudflare Tunnel(cloudflared)なので、ここは 127.0.0.1 だけで待ち受け、
+# TLS も自前では張らない(TLS は Cloudflare エッジが終端する)。ポートを外に開けない
+# ため、ルーター側のポート開放も固定IPも不要。
+#
+# 紙面はビルドしない(2026-11-16)。ページは全部アプリ(imas-app)が描き、ここが配るのは
+# 版の /assets/(CSS・JS・フォント)だけ。current は releases/<日時> への symlink で、
+# 配信は symlink の張り替えだけで切り替わる(アプリは次の要求で新しい版を読む)。
+{
+	admin off
+	auto_https off
+	log {
+		output file /home/akabanep/srv/imas-news/etc/caddy.log {
+			roll_size 10MiB
+			roll_keep 5
+		}
+		format console
+		level INFO
+	}
+}
+
+:8080 {
+	# ループバックだけで待ち受ける。LAN の他端末からは見えず、到達経路は
+	# cloudflared のトンネルだけになる。Host はトンネルが転送する本番ドメインが
+	# 入るため、サイトアドレス側でホスト名を固定しない。
+	bind 127.0.0.1
+	encode zstd gzip
+
+	header {
+		X-Content-Type-Options nosniff
+		Referrer-Policy strict-origin-when-cross-origin
+		-Server
+	}
+
+	# ---- 静的ファイル(版の assets)----
+	@assets path /assets/*
+	handle @assets {
+		root * /home/akabanep/srv/imas-news/current
+		header Cache-Control "public, max-age=604800"
+		@immutable path /assets/fonts/*
+		header @immutable Cache-Control "public, max-age=31536000, immutable"
+		file_server
+	}
+
+	# ---- ページは全部アプリ ----
+	# Cache-Control はアプリ側が付ける(紙面はエッジで1日・発行と訂正でパージ・オリジンが落ちていればエッジの古い版で答える)。
+	handle {
+		reverse_proxy 127.0.0.1:8081 {
+			# upstream はローカルの1台だけなので、アクティブなヘルスチェックは使わない。
+			# 一度 down と判定されると復帰済みでも次回チェックまで 503 を返し続け、
+			# デプロイ時のアプリ再起動が数十秒の停止に見えてしまうため。
+			# 代わりに接続失敗を数秒間リトライして、再起動(1秒程度)を吸収する。
+			lb_try_duration 5s
+			lb_try_interval 250ms
+		}
+	}
+}

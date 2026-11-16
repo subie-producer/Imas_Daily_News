@@ -1,0 +1,26 @@
+{
+ "decisions": {
+  "765-961-idol-ultimate-once-and-for-all-2027": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "続報予約の当落16日13時は延長前の旧日程。10/29延長で当落・入金は11/25、11/30に変更済み(既報)。今日は何も起きない"
+  }
+ },
+ "plan": {
+  "articles": [],
+  "dropped": [
+   {
+    "dedup_key": "765-961-idol-ultimate-once-and-for-all-2027",
+    "reason": "その他",
+    "note": "続報予約の当落16日13時は延長前の旧日程。10/29延長で当落・入金は11/25、11/30に変更済み(既報)。今日は何も起きない"
+   }
+  ],
+  "cross_brand": []
+ }
+}

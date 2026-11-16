@@ -1,36 +1,116 @@
 #!/usr/bin/env python3
 """アイマスNEWS(α) 動的ページのアプリ。
 
-紙面そのもの(記事・号・社説)は発行後に変わらないため静的配信のままで、
-**問い合わせに応じて形が変わるページ**だけをここが担う:
+紙面のページは全部ここが描く(ビルドしない。編集長の決定 2026-11-16):
 
+  /  /editions/<日付>/  /articles/<日付-slug>/  /editorials/<日付>/  /archive/  /about/
+  /feed.xml  /sitemap.xml  /robots.txt  /release-id.txt  /404.html
   /tags/            タグ索引
   /tags/<タグ>/      タグ別の記事一覧(ページ送り)
   /search           全文検索 + タグ/ブランド絞り込み(FTS5)
   /healthz          稼働確認
 
-データは scripts/indexer.py が作る SQLite(FTS5)。発行のたびに追記され、
-アプリは読み取り専用で開く。前段は Caddy → Cloudflare。
+紙面のデータは配信の版(current が指す releases/<日時>/ の Markdown 一式)を paper.load で読んで持つ。
+current が別の版に切り替わったら読み直す。タグ・検索は scripts/indexer.py が作る SQLite(FTS5)を読み取り専用で開く。
+静的ファイルは /assets/ だけ(Caddy が配る)。前段は Caddy → Cloudflare。
 """
+import datetime
+import json
 import os
 import sqlite3
 import time
 from pathlib import Path
-from urllib.parse import urlencode
+from urllib.parse import quote, urlencode
 
-from flask import Flask, abort, g, redirect, render_template, request, url_for
+from flask import Flask, Response, abort, g, redirect, render_template, request, url_for
+
+import paper
 
 DB_PATH = Path(os.environ.get("PAPER_DB", str(Path.home() / "srv" / "imas-news" / "data" / "paper.db")))
 SITE_URL = os.environ.get("SITE_URL", "https://imas-news.ofa.tokyo").rstrip("/")
+SITE_ROOT = Path(os.environ.get("SITE_ROOT", str(Path.home() / "srv" / "imas-news" / "current")))
+SITE_TITLE = "アイマスNEWS(α)"
+SITE_DESC = "AI編集部が毎日自動発行する非公式アイドルマスターファン新聞"
+RELEASE_ID = "release-id.txt"
 PER_PAGE = 50
-# タグページは発行時にしか変わらないのでエッジで長く持たせる(発行時にパージ)。
+# 紙面とタグページは発行・訂正のときにしか変わらないのでエッジで長く持たせる(発行・訂正の配信でパージする)。
+# オリジン(このアプリ)が落ちているときは、エッジが持っている古い版で1週間まで答える(stale-if-error。
+# ビルドした静的ファイルを Caddy が配っていたときは、アプリが落ちても紙面は読めた)。
 # 検索は任意クエリでキャッシュが際限なく増えるため短めにする。
-CACHE_TAGS = "public, max-age=600, s-maxage=86400"
+CACHE_PAGES = "public, max-age=600, s-maxage=86400, stale-if-error=604800"
+CACHE_TAGS = CACHE_PAGES
 CACHE_SEARCH = "public, max-age=60, s-maxage=600"
+JST = datetime.timezone(datetime.timedelta(hours=9))
 
 app = Flask(__name__)
 app.jinja_env.trim_blocks = True
 app.jinja_env.lstrip_blocks = True
+HOLDER = paper.Holder(SITE_ROOT)
+
+
+def site() -> paper.Site:
+    if "site" not in g:
+        try:
+            g.site = HOLDER.get()
+        except FileNotFoundError:
+            abort(503)
+    return g.site
+
+
+# ---- テンプレートの道具(以前の Liquid のフィルタと同じ結果を返す) ----
+
+def fmt(v, f: str) -> str:
+    d = paper.as_date(v)
+    if d is None and isinstance(v, str):
+        try:
+            d = datetime.datetime.fromisoformat(v.strip())
+        except ValueError:
+            return v
+    return d.strftime(f) if d is not None else ""
+
+
+def trunc(s, n: int) -> str:
+    """Liquid の truncate: n 文字を超えたら、末尾の ... を含めて n 文字にする。"""
+    s = "" if s is None else str(s)
+    return s if len(s) <= n else s[: max(0, n - 3)] + "..."
+
+
+def uri_escape(s: str) -> str:
+    return quote(str(s), safe="!#$&'()*+,/:;=?@[]~-._")
+
+
+def norm_tags(tags) -> list:
+    """タグの正規化(docs/_data/tags.yml の alias・drop。表記ゆれを寄せ、重複を落とす)。"""
+    spec = site().tags or {}
+    alias, drop, out = spec.get("alias") or {}, spec.get("drop") or [], []
+    for raw in tags or []:
+        t = alias.get(raw, raw)
+        if t not in drop and t not in out:
+            out.append(t)
+    return out
+
+
+def neighbors(eposts: list, page) -> dict:
+    urls = [p.url for p in eposts]
+    if page.url not in urls:
+        return {"prev": eposts[-1] if eposts else None, "next": None}
+    i = urls.index(page.url)
+    return {"prev": eposts[i - 1] if i > 0 else None, "next": eposts[i + 1] if i + 1 < len(eposts) else None}
+
+
+def groupby_month(eds) -> list:
+    out: list = []
+    for e in eds:
+        name = fmt(e.date, "%Y.%m")
+        if not out or out[-1][0] != name:
+            out.append((name, []))
+        out[-1][1].append(e)
+    return out
+
+
+app.jinja_env.globals.update(fmt=fmt, trunc=trunc, uri_escape=uri_escape, norm_tags=norm_tags, neighbors=neighbors,
+                             page_date=paper.as_date, brand=lambda bid: site().brand(bid))
+app.jinja_env.filters["groupby_month"] = groupby_month
 
 
 def db() -> sqlite3.Connection:
@@ -73,12 +153,20 @@ def fts_query(q: str) -> str:
 
 @app.route("/healthz")
 def healthz():
+    """稼働確認。索引と、紙面の版(配信中の版・読めなかった版)を返す。紙面の版が読めなければ 503。"""
     try:
         n = db().execute("SELECT COUNT(*) FROM articles").fetchone()[0]
         at = db().execute("SELECT value FROM meta WHERE key='indexed_at'").fetchone()
-        return {"ok": True, "articles": n, "indexed_at": at[0] if at else None}
     except sqlite3.Error as e:
         return {"ok": False, "error": str(e)}, 503
+    try:
+        s = HOLDER.get()
+    except Exception as e:      # noqa: BLE001 — 版が1つも読めない
+        return {"ok": False, "error": f"紙面の版を読めない: {type(e).__name__}: {str(e)[:200]}"}, 503
+    target = str(SITE_ROOT.resolve())
+    paper_info = {"release": Path(s.root).name, "posts": len(s.posts), "editions": len(s.editions),
+                  "current": Path(target).name, "unreadable": HOLDER.failed.get(target)}
+    return {"ok": not paper_info["unreadable"], "articles": n, "indexed_at": at[0] if at else None, "paper": paper_info}
 
 
 @app.route("/tags/")
@@ -212,13 +300,172 @@ def search():
     return resp
 
 
+# ---- 紙面のページ ----
+
+def iso(d, t: str = "00:00:00") -> str:
+    return f"{d:%Y-%m-%d}T{t}+09:00" if d else ""
+
+
+def released_at() -> str:
+    """この版を配信に出した時刻(feed の updated・社説の公開時刻)。版の名前(YYYYmmddTHHMMSS)から。"""
+    try:
+        return datetime.datetime.strptime(Path(site().root).name[:15], "%Y%m%dT%H%M%S").strftime("%Y-%m-%dT%H:%M:%S+09:00")
+    except ValueError:
+        return datetime.datetime.now(JST).strftime("%Y-%m-%dT%H:%M:%S+09:00")
+
+
+def seo_for(path: str, title: str = "", description: str = "", published: str = "", kind: str = "WebPage") -> dict:
+    url = SITE_URL + path
+    title = paper.smartify(title or SITE_TITLE)     # 見出しの引用符は活字に(以前の jekyll-seo-tag の smartify と同じ)
+    description = description or SITE_DESC
+    ld = {"@context": "https://schema.org", "@type": kind}
+    if published:
+        ld.update({"@type": "BlogPosting", "dateModified": published, "datePublished": published, "description": description,
+                   "headline": title, "mainEntityOfPage": {"@type": "WebPage", "@id": url}, "url": url})
+    else:
+        ld.update({"description": description, "headline": title})
+        if kind == "WebSite":
+            ld["name"] = SITE_TITLE
+        ld["url"] = url
+    return {"title": title, "title_tag": f"{SITE_TITLE} | {SITE_DESC}" if path == "/" else f"{title} | {SITE_TITLE}",
+            "description": description, "url": url, "published": published,
+            "ld_json": json.dumps(ld, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")}
+
+
+def page(template: str, status: int = 200, **ctx):
+    resp = app.make_response((render_template(template, site=site(), site_url=SITE_URL, **ctx), status))
+    resp.headers["Cache-Control"] = CACHE_PAGES
+    return resp
+
+
+@app.route("/")
+def front():
+    s = site()
+    if not s.editions:
+        return page("paper/about.html", doc=paper.Doc(data={}, url="/", path="", content="<main style=\"max-width:720px;margin:40px auto;padding:0 20px\"><p>準備中。</p></main>"),
+                    seo=seo_for("/", kind="WebSite"))
+    return page("paper/edition.html", ed=s.editions[-1], seo=seo_for("/", kind="WebSite"))
+
+
+@app.route("/editions/<name>/")
+def edition(name: str):
+    ed = site().by_url.get(f"/editions/{name}/")
+    if ed is None:
+        abort(404)
+    # 号のページの見出しは、以前と同じくファイル名から(2026-11-16 → "2026 11 16")
+    return page("paper/edition.html", ed=ed, seo=seo_for(ed.url, title=name.replace("-", " "), published=iso(ed.date)))
+
+
+@app.route("/articles/<name>/")
+def article(name: str):
+    doc = site().by_url.get(f"/articles/{name}/")
+    if doc is None:
+        abort(404)
+    return page("paper/article.html", page=doc,
+                seo=seo_for(doc.url, title=str(doc.title or ""), description=paper.strip_html(doc.excerpt), published=iso(doc.date)))
+
+
+@app.route("/editorials/<name>/")
+def editorial(name: str):
+    doc = site().by_url.get(f"/editorials/{name}/")
+    if doc is None:
+        abort(404)
+    return page("paper/editorial.html", page=doc,
+                seo=seo_for(doc.url, title=str(doc.title or ""), description=str(doc.data.get("excerpt") or paper.strip_html(doc.excerpt)),
+                            published=released_at()))
+
+
+@app.route("/archive/")
+def archive():
+    return page("paper/archive.html", seo=seo_for("/archive/", title=f"バックナンバー — {SITE_TITLE}"))
+
+
+@app.route("/about/")
+def about():
+    doc = site().about
+    if doc is None:
+        abort(404)
+    return page("paper/about.html", doc=doc, seo=seo_for("/about/", title=str(doc.title or ""), kind="WebSite"))
+
+
+@app.route("/404.html")
+def page_404():
+    return page("paper/404.html", seo=seo_for("/404.html", title=f"ページが見つかりません — {SITE_TITLE}"))
+
+
+def xml(body: str) -> Response:
+    resp = Response(body, mimetype="application/xml")
+    resp.headers["Cache-Control"] = CACHE_PAGES
+    return resp
+
+
+def x(s) -> str:
+    return paper.escape(s)
+
+
+@app.route("/feed.xml")
+def feed():
+    """Atom の feed(最新10本。以前の jekyll-feed と同じ id・項目)。"""
+    s = site()
+    posts = sorted(s.posts, key=lambda p: p.path)
+    posts = sorted(posts, key=lambda p: p.date, reverse=True)[:10]
+    out = ['<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="ja">',
+           f'<link href="{SITE_URL}/feed.xml" rel="self" type="application/atom+xml" />',
+           f'<link href="{SITE_URL}/" rel="alternate" type="text/html" hreflang="ja" />',
+           f"<updated>{released_at()}</updated><id>{SITE_URL}/feed.xml</id>",
+           f'<title type="html">{x(SITE_TITLE)}</title><subtitle>{x(SITE_DESC)}</subtitle>']
+    for p in posts:
+        url = SITE_URL + p.url
+        out.append(
+            f'<entry><title type="html">{x(p.title)}</title><link href="{url}" rel="alternate" type="text/html" title="{x(p.title)}" />'
+            f"<published>{iso(p.date)}</published><updated>{iso(p.date)}</updated>"
+            f"<id>{SITE_URL}/articles/{p.stem[11:]}</id>"
+            f'<content type="html" xml:base="{url}"><![CDATA[{p.content.replace("]]>", "]]&gt;")}]]></content>'
+            "<author><name></name></author>"
+            + "".join(f'<category term="{x(t)}" />' for t in (p.tags or []))
+            + f'<summary type="html"><![CDATA[{paper.strip_html(p.excerpt).replace("]]>", "]]&gt;")}]]></summary></entry>')
+    out.append("</feed>")
+    return xml("".join(out))
+
+
+@app.route("/sitemap.xml")
+def sitemap():
+    s = site()
+    rows = [(e.url, iso(e.date)) for e in s.editions]
+    rows += [(e.url, released_at()) for e in s.editorials]
+    rows += [(p.url, iso(p.date)) for p in sorted(s.posts, key=lambda p: p.url)]
+    rows += [("/archive/", ""), ("/", ""), ("/about/", "")]
+    out = ['<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" '
+           'xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" '
+           'xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
+    for loc, mod in rows:
+        out.append(f"<url>\n<loc>{SITE_URL}{x(loc)}</loc>\n" + (f"<lastmod>{mod}</lastmod>\n" if mod else "") + "</url>")
+    out.append("</urlset>\n")
+    return xml("\n".join(out))
+
+
+@app.route("/robots.txt")
+def robots():
+    resp = Response(f"Sitemap: {SITE_URL}/sitemap.xml\n", mimetype="text/plain")
+    resp.headers["Cache-Control"] = CACHE_PAGES
+    return resp
+
+
+@app.route("/" + RELEASE_ID)
+def release_id():
+    """配信中の版の名前(外から新しい版が見えるかを deploy が確かめる)。キャッシュさせない。"""
+    p = Path(site().root) / RELEASE_ID
+    resp = Response(p.read_text(encoding="utf-8") if p.exists() else "", mimetype="text/plain")
+    resp.headers["Cache-Control"] = "no-store"
+    return resp
+
+
 @app.errorhandler(404)
 def not_found(_e):
-    # 静的側の 404 ページに寄せて見た目を揃える
-    p = Path(os.environ.get("STATIC_ROOT", str(Path.home() / "srv" / "imas-news" / "current"))) / "404.html"
-    if p.exists():
-        return p.read_text(encoding="utf-8"), 404
-    return "404 Not Found", 404
+    try:
+        return page("paper/404.html", status=404, seo=seo_for("/404.html", title=f"ページが見つかりません — {SITE_TITLE}"))
+    except Exception:   # noqa: BLE001 — 版が読めないときも 404 は返す
+        return "404 Not Found", 404
 
 
 @app.errorhandler(503)

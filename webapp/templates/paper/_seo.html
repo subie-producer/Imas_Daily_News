@@ -1,0 +1,15 @@
+{#- 検索・共有用の head(以前の jekyll-seo-tag と同じ項目)。seo = app.seo_for(...) が組む -#}
+<title>{{ seo.title_tag }}</title>
+<meta property="og:title" content="{{ seo.title }}" />
+<meta property="og:locale" content="ja" />
+<meta name="description" content="{{ seo.description }}" />
+<meta property="og:description" content="{{ seo.description }}" />
+<link rel="canonical" href="{{ seo.url }}" />
+<meta property="og:url" content="{{ seo.url }}" />
+<meta property="og:site_name" content="アイマスNEWS(α)" />
+<meta property="og:type" content="{{ 'article' if seo.published else 'website' }}" />
+{% if seo.published %}<meta property="article:published_time" content="{{ seo.published }}" />
+{% endif %}<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="{{ seo.title }}" />
+<script type="application/ld+json">
+{{ seo.ld_json | safe }}</script>

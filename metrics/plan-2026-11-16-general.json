@@ -1,0 +1,33 @@
+{
+ "decisions": {
+  "million-miricolle-harvest-reactions-2026": {
+   "action": "article",
+   "angle": "ミリコレ終了後、参加者がイベント中のキュウリの収穫量を語り合う反応が界隈に広がった",
+   "purpose": "新情報",
+   "rank": "culture",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ファン面の盛り上がり。出典は二次情報(まとめ記事)のため、執筆・校閲で出典の足りを確認"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "general-million-miricolle-harvest-reactions-2026",
+    "brand": "general",
+    "rank": "culture",
+    "angle": "ミリコレ終了後、参加者がイベント中のキュウリの収穫量を語り合う反応が界隈に広がった",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "million-miricolle-harvest-reactions-2026",
+    "candidate_ids": [
+     "202611152337-explore-51"
+    ]
+   }
+  ],
+  "dropped": [],
+  "cross_brand": []
+ }
+}

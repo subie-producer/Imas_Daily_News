@@ -981,5 +981,36 @@
   "src_candidate_id": "update-a803d33a8050",
   "companion_of": "sched-2026-12-01-medicos-cyberplanet-popup-2026-締切",
   "src_dedup_key": "medicos-e-net-44"
+ },
+ {
+  "id": "sched-2026-12-01-million-cyber-planet-popup-shop-mail-order-2026-締切",
+  "dedup_key": "million-cyber-planet-popup-shop-mail-order-2026",
+  "brand": "million",
+  "subject": "ミリオン「Cyber Planet」事後通販",
+  "kind": "締切",
+  "note": "MEDICOS ONLINE SHOPの事後通販の受注最終日。注文できる",
+  "reserved_on": "2026-11-16",
+  "occurs_on": "2026-12-01",
+  "title": "ミリオンライブ Cyber Planet POP UP SHOP事後通販",
+  "url": "https://www.medicos-e.net/newsdetail/imas_millionlive_popup/",
+  "source_type": "当事者",
+  "facts": [
+   "「アイドルマスター ミリオンライブ！」Cyber Planet POP UP SHOPで販売した商品は、MEDICOS ONLINE SHOPで事後通販を実施する。",
+   "受注期間: 2026年11月16日（月）正午～2026年12月1日（火）。",
+   "事後通販でも、特典クリアカードをプレゼントする。",
+   "販売場所はMEDICOS ONLINE SHOP。",
+   "OSMOスタンプは事後通販で販売しない。",
+   "各会場限定特典イラストカードは事後通販では配布しない。",
+   "会場限定等身大パネルプレゼントキャンペーンの応募券は事後通販では配布しない。",
+   "ブラインド商品はBOX販売と単品販売がある。",
+   "事後通販は数量限定の先着販売ではなく、受注販売である。",
+   "受注期間中に予約すれば、商品が必ず手元に届く。",
+   "エンゲージメント: 中"
+  ],
+  "via": "explore",
+  "verify": "confirmed",
+  "event_date": "2026-11-16",
+  "deadline": "2026-12-01",
+  "src_candidate_id": "202611151234-explore-7"
  }
 ]

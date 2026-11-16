@@ -275,6 +275,7 @@ party_paths:
   - item.rakuten.co.jp/f272078-takatsuki        # 高槻市ふるさと納税
 
 party_domains:
+  - sma.co.jp             # 合議で追加: 楽曲提供の告知。所属事務所が出しても、演じる人でない竹内は演者ではない
   - www-stage.aac.pref.aichi.jp # 合議で追加: 愛知県芸術劇場の公式サイト。会場と自主事業の運営元
   - neec.ac.jp            # 合議で追加: 学校が運営する会場(アリーナ)の施設紹介ページ
   - chugai-contents.jp    # 合議で追加: 同社運営のグッズ通販。アニメ等の商品の販売元
@@ -504,6 +505,7 @@ video_ids:
     - sm18526341          # 機械で追加: nicovideo.jp/user/17835786「iM@S 6th Anniversary Live - キラ」
     - LSkzNm3AzHk         # 機械で追加: @TogawaNonoha「〖 世界のアソビ大全51 〗遊び…？いいえ、ののは vs ま」
   公式:
+    - 2WDYoLT7bJQ         # 機械で追加: @imas-official「【学マス】CM「11月16日　氷渡香名江、プロデュース開始！」
     - jDCmFezjYxE         # 機械で追加: @project_imas_va-liv「【期間限定公開】#ヴイアラ 2ndLIVE -BEYOND 」
     - I_EuyjX03zY         # 機械で追加: @imas-official「ゲーム【ミリシタ】高山 紗代子 スペシャル動画【アイドルマス」
     - iVOtp0VZh8g         # 機械で追加: @TomoriManaka「【ハロウィン】苦手なカボチャ、丸々1個食う。【灯里愛夏 / 」
@@ -686,6 +688,9 @@ x_accounts:
     - imasnews765
     - zutapoke
   ファン:
+    - tonko0725           # 合議で追加: 個人らしいハンドルのコラボ準備ガイド。個人発信なのでファン扱い
+    - curaai000           # 合議で追加: 個人アカウントのAIイラスト投稿。個人の創作なのでファン
+    - DB_takuto           # 合議で追加: 個人アカウント。作品公開へのファンの購買反応を投稿している
     - sanasan528          # 合議で追加: 個人アカウントによるルネサンス×SideMコラボ体験の共有
     - sagisawaria         # 合議で追加: 個人アカウントによる「こいかぜ」のファン歌唱投稿
     - mmamonmo            # 合議で追加: 個人アカウントによるシャニマス衣装のファンイラスト
@@ -1269,6 +1274,10 @@ x_posts:
 
 # --- リンク元から引き継いだ種別(リンク先1つずつ。キーは pipelib.link_key)。合議がリンク元の告知と関係していると確かめたものだけ(classify_sources.inherit_from_links)。リンク先そのものの種別より強いときだけ効く ---
 link_types:
+  shop.asobistore.jp/category/gakuen_kne_of_gd: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://x.com/gkmas_official/status/2121936937833607178(公式)。氷渡香名江の公式グッズ・1st Single販売ページで、告知と一致
+  shop.asobistore.jp/category/gakuen_2nd_half: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://x.com/gkmas_official/status/2121936797743907248(公式)。2.5周年記念公式グッズの販売カテゴリで、告知の商品と一致
+  lnk.to/TCruNo: 公式                           # リンク元から引き継ぎ(合議で関係を確認): https://x.com/gkmas_official/status/2121932232449560770(公式)。新曲「メタモルフォーゼ」の事前予約・配信ページで、告知と同じ企画
+  www.famitsu.com/article/202611/94029: 公式    # リンク元から引き継ぎ(合議で関係を確認): https://x.com/UtagawaLetora/status/2121798938097598616(公式)。告知もリンク先も、レトラのバースデーオンラインライブのレポート記事
   youtube.com/watch?v=K3MBIJ4TABk: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/valiv_official/status/2121528563316961631(公式)。上水流宇宙とレイン・パターソンの踊ってみた動画で、告知と同じ
   youtube.com/watch?v=HgSwILKG9_k: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/SideM_official/status/2121516735304012147(公式)。AJIなヤツら試し読み動画で、告知と同じ動画
   youtube.com/watch?v=BYebSlBe8Z4: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/imas_official/status/2120804538315923602(公式)。フレあかラジオのプレミア公開先で、告知と同じ番組

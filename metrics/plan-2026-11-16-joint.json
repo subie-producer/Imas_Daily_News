@@ -1,0 +1,131 @@
+{
+ "decisions": {
+  "retrora-birthday-live-julia-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "レトラ個人のバースデーライブ(11日終了)。ジュリアはゲスト出演のみで共同主催ではない"
+  },
+  "cg-ml-clash-match-2027-goods": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "受注は11/15で終了。11/12〜11/15に同じ内容の記事が出ており、新事実なし"
+  },
+  "tours-prime-match-fes-2026-11": {
+   "action": "article",
+   "angle": "ツアマスのプライムマッチフェスが11月19日7時に開幕。ツアーモードのプレイで自動エントリーされ、詳細な遊び方は16日公開予定",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 50,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "開幕まで3日以内の当日トリガー。facts は11/14の既報と同内容のため新事実は扱わない"
+  },
+  "demirimi-clash-goods-preorder-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "受注は11/15終了。prior に同じ内容の記事が複数あり、新事実なし"
+  },
+  "joint-cg-ml-clash-match-2027": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "公演概要とグッズ受注11/15までの告知のみ。前の号までに記事済みで、新事実も当日のトリガーも無い"
+  },
+  "deremilli-clash-match-goods-deadline-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "締切は11/15で過ぎている。既報と同じ内容"
+  },
+  "765-961-xr-live-2027": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "続報予約だが、素材の facts に当落発表が今日あるとは書かれていない。11/7の記事では受付が11/8まで、当落は11/25とされ、10/25までの記事の日程と食い違う"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "joint-tours-prime-match-fes-2026-11",
+    "brand": "joint",
+    "rank": "medium",
+    "angle": "ツアマスのプライムマッチフェスが11月19日7時に開幕。ツアーモードのプレイで自動エントリーされ、詳細な遊び方は16日公開予定",
+    "purpose": "期日の知らせ",
+    "lead_score": 50,
+    "dedup_key": "tours-prime-match-fes-2026-11",
+    "candidate_ids": [
+     "202611151234-explore-12",
+     "202611160221-grok-111"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "retrora-birthday-live-julia-2026",
+    "reason": "個人の話題",
+    "note": "レトラ個人のバースデーライブ(11日終了)。ジュリアはゲスト出演のみで共同主催ではない"
+   },
+   {
+    "dedup_key": "cg-ml-clash-match-2027-goods",
+    "reason": "既報",
+    "note": "受注は11/15で終了。11/12〜11/15に同じ内容の記事が出ており、新事実なし"
+   },
+   {
+    "dedup_key": "demirimi-clash-goods-preorder-2026",
+    "reason": "既報",
+    "note": "受注は11/15終了。prior に同じ内容の記事が複数あり、新事実なし"
+   },
+   {
+    "dedup_key": "joint-cg-ml-clash-match-2027",
+    "reason": "既報",
+    "note": "公演概要とグッズ受注11/15までの告知のみ。前の号までに記事済みで、新事実も当日のトリガーも無い"
+   },
+   {
+    "dedup_key": "deremilli-clash-match-goods-deadline-2026",
+    "reason": "既報",
+    "note": "締切は11/15で過ぎている。既報と同じ内容"
+   },
+   {
+    "dedup_key": "765-961-xr-live-2027",
+    "reason": "その他",
+    "note": "続報予約だが、素材の facts に当落発表が今日あるとは書かれていない。11/7の記事では受付が11/8まで、当落は11/25とされ、10/25までの記事の日程と食い違う"
+   }
+  ],
+  "cross_brand": []
+ }
+}

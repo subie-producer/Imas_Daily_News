@@ -1,0 +1,32 @@
+{#- ソース種別バッジ(REQUIREMENTS 2.5)。size: lead / それ以外 -#}
+{% macro badge(src, size="") -%}
+{%- set fs = "10px" if size == "lead" else "9.5px" -%}
+{%- set pd = "3px 0" if size == "lead" else "2px 0" -%}
+{%- set base = "width:58px;box-sizing:border-box;text-align:center;font-size:" ~ fs ~ ";font-weight:700;letter-spacing:.08em;padding:" ~ pd ~ ";" -%}
+{%- set look = {
+  "公式": "background:#1c1b18;color:#fbfaf7;border:1px solid #1c1b18;",
+  "準公式": "background:#e8e4d9;color:#1c1b18;border:1px solid #1c1b18;",
+  "当事者": "color:#55524b;border:1px solid #55524b;",
+  "演者": "color:#55524b;border:1px dashed #55524b;",
+  "報道": "color:#1c1b18;border:1px solid #1c1b18;",
+  "ファン": "color:#55524b;border:1px solid #8a857a;",
+  "二次情報": "color:#55524b;border:1px dotted #8a857a;",
+  "もちより": "color:#55524b;border:1px dashed #8a857a;",
+  "未確認": "color:#8a6d14;border:1px dashed #b08d2a;",
+} -%}
+{%- if src in look -%}
+<span style="{{ base }}{{ look[src] }}display:inline-block;flex:none">{{ src }}</span>
+{%- endif -%}
+{%- endmacro %}
+
+{#- 小型ヘッダー(記事・社説・アーカイブ・404) -#}
+{% macro small_header(right) -%}
+  <div style="padding-top:14px;display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap">
+    <a href="/" style="display:flex;align-items:baseline;gap:6px">
+      <span style="font-family:var(--font-serif);font-weight:800;font-size:20px;letter-spacing:.06em">アイマスNEWS</span>
+      <span style="font-family:var(--font-mono);font-size:11px;font-weight:600;color:#8a857a">(α)</span>
+    </a>
+    <span style="font-family:var(--font-mono);font-size:10px;color:#8a857a;letter-spacing:.06em">{{ right }}</span>
+  </div>
+  <div style="margin-top:10px;height:5px;border-top:2px solid #1c1b18;border-bottom:1px solid #1c1b18"></div>
+{%- endmacro %}

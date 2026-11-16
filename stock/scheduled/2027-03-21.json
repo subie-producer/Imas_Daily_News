@@ -247,5 +247,30 @@
   "via": "watch",
   "verify": "confirmed",
   "src_candidate_id": "update-7d52d75671e2"
+ },
+ {
+  "id": "sched-2027-03-21-valiv-3rdlive-tokyo-band-2026-開幕",
+  "dedup_key": "valiv-3rdlive-tokyo-band-2026",
+  "brand": "dsva",
+  "subject": "ヴイアラ3rdLIVE at TOKYO DAY1 開催",
+  "kind": "開幕",
+  "note": "日本工学院アリーナで東京プロデューサーミーティングとDay1が開催され、バンドの演奏を見に行ける。",
+  "reserved_on": "2026-11-16",
+  "occurs_on": "2027-03-21",
+  "title": "ヴイアラ3rdLIVE東京公演のバンドメンバー発表",
+  "url": "https://x.com/valiv_official",
+  "source_type": "公式",
+  "facts": [
+   "東京公演は2027年3月21日・22日開催の「3rdLIVE at TOKYO DAY1＆DAY2」と発表された。",
+   "東京公演のバンド出演者として、ドラムスの中村”マーボー”真行、キーボードの川路玲奈、ベースのカワノアキ、ギターの佐々木侑太が発表された。",
+   "エンゲージメント: 中",
+   "名古屋公演は2027年1月30日の「PRODUCER MEETING」と発表された。",
+   "同公演のゲストとして佐藤貴文、TAMU、Fra、矢野圭将が発表された。",
+   "ヴイアラ公式チャンネルで、ヴイアラ2ndLIVEの期間限定公開が2026年11月14日14時に始まると告知された。"
+  ],
+  "via": "explore",
+  "verify": "unconfirmed",
+  "event_date": "2027-03-21",
+  "src_candidate_id": "202611151832-explore-9"
  }
 ]

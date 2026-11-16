@@ -1,6 +1,6 @@
 # タグ語彙(PIPELINE.md §9.5)。単一ソースで2つの用途を持つ。
 #   用途1: 執筆プロンプトへの語彙注入 — 表記ゆれの発生源を断つ(compose.py が読む)
-#   用途2: タグ索引の正規化 — 過去のゆれを索引側で吸収する(Jekyll が site.data.tags で読む)
+#   用途2: タグ索引の正規化 — 過去のゆれを索引側で吸収する(記事ページは webapp、索引は indexer.py が読む)
 #
 # ※ 過去記事の frontmatter tags は絶対に書き換えないこと。
 #    docs/_posts/ は lint.py の append-only 検査対象であり、訂正フロー以外の変更は違反になる。

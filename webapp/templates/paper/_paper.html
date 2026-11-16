@@ -1,0 +1,306 @@
+{#- 紙面(トップ/号ページ共用)。ed = 号の Doc。base-design/PH トップ.dc.html 移植 -#}
+{% from "paper/_macros.html" import badge %}
+{%- set date_s = fmt(ed.date, "%Y-%m-%d") -%}
+{%- set no4 = ("0000" ~ ed.number)[-4:] -%}
+{%- set eposts = site.edition_posts.get(ed.date, []) -%}
+{%- set lead = (eposts | selectattr("rank", "equalto", "lead") | list | first) -%}
+{%- set larges = eposts | selectattr("rank", "equalto", "large") | list -%}
+{%- set mediums = eposts | selectattr("rank", "equalto", "medium") | list -%}
+{%- set smalls = eposts | selectattr("rank", "equalto", "small") | list -%}
+{%- set roundups = eposts | selectattr("rank", "equalto", "roundup") | list -%}
+{%- set culture = (eposts | selectattr("rank", "equalto", "culture") | list | first) -%}
+{%- set editorial = site.editorial_by_date.get(ed.date) -%}
+
+<div style="max-width:1200px;margin:0 auto;padding:0 20px 48px;box-sizing:border-box">
+
+  <!-- ========== ヘッダー ========== -->
+  <div style="padding-top:16px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-family:var(--font-mono);font-size:10px;color:#8a857a;letter-spacing:.06em">
+    <span>NO.{{ no4 }} — {{ fmt(ed.date, "%Y.%m.%d") }} {{ ed.weekday }} 06:00 JST</span>
+    <span>非公式ファンメディア / AI編集部発行・AI校閲</span>
+  </div>
+
+  <div style="margin-top:14px;display:flex;align-items:flex-end;justify-content:center;gap:10px">
+    <a href="/" style="display:flex;align-items:flex-end;gap:10px">
+      <span style="font-family:var(--font-serif);font-weight:800;font-size:clamp(34px,6vw,52px);line-height:1;letter-spacing:.06em">アイマスNEWS</span>
+      <span style="font-family:var(--font-mono);font-size:clamp(13px,2vw,18px);font-weight:600;color:#8a857a;padding-bottom:3px">(α)</span>
+    </a>
+  </div>
+  <div style="margin-top:8px;text-align:center;font-size:11px;letter-spacing:.08em;color:#55524b">{{ fmt(ed.date, "%Y年%-m月%-d日") }} {{ ed.weekday }}曜日 ・ 第{{ ed.number }}号 ・ 全{{ ed.pages }}面 ── AI編集部が毎日自動発行する非公式ファン新聞です</div>
+  <div style="margin-top:12px;height:6px;border-top:2px solid #1c1b18;border-bottom:1px solid #1c1b18"></div>
+
+  <!-- ========== 面ナビ / 推しフィルタ ========== -->
+  <div style="margin-top:10px;display:flex;gap:2px 6px;flex-wrap:wrap;justify-content:center">
+    <span data-chip="all" data-color="#1c1b18" style="cursor:pointer;padding:6px 8px 4px;font-size:11px;font-weight:700;color:#1c1b18;border-bottom:3px solid #1c1b18;letter-spacing:.02em;white-space:nowrap">すべて</span>
+    {% for b in site.brands %}
+    <span data-chip="{{ b.id }}" data-color="{{ b.color }}" style="cursor:pointer;padding:6px 8px 4px;font-size:11px;font-weight:500;color:#8a857a;border-bottom:3px solid transparent;letter-spacing:.02em;white-space:nowrap">{{ b.label }}</span>
+    {% endfor %}
+  </div>
+  <div style="margin-top:8px;border-bottom:1px solid #dedad0"></div>
+
+  <!-- ========== SP: 格納ダイジェストバー ========== -->
+  <div class="only-sp">
+    <div id="digest-open" style="margin-top:14px;border:1px solid #1c1b18;background:#fff;padding:11px 14px;display:flex;align-items:center;justify-content:space-between;gap:10px;cursor:pointer">
+      <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap">
+        <span style="font-family:var(--font-serif);font-weight:700;font-size:13.5px;letter-spacing:.1em">本日の紙面</span>
+        <span style="font-size:11px;color:#55524b">{% for g in ed.digest or [] %}{{ g.label }}{{ (g.rows or []) | length }}{% if not loop.last %} ・ {% endif %}{% endfor %}</span>
+      </div>
+      <span style="font-family:var(--font-mono);font-size:10px;color:#6f6a60;flex:none">一覧 ▾</span>
+    </div>
+  </div>
+
+  <!-- ========== TB: ダイジェストを紙面冒頭に常設 ========== -->
+  <div class="only-tb">
+    <div style="margin-top:16px;border:1px solid #1c1b18;background:#fff;padding:16px 18px 14px">
+      <div style="display:flex;align-items:baseline;justify-content:space-between">
+        <span style="font-family:var(--font-serif);font-weight:800;font-size:16px;letter-spacing:.1em">本日の紙面</span>
+        <span style="font-family:var(--font-mono);font-size:9px;color:#8a857a">DIGEST — 紙面の目次</span>
+      </div>
+      <div style="margin-top:9px;border-top:2px solid #1c1b18"></div>
+      <div style="margin-top:4px;display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:4px 26px">
+        {% for g in ed.digest or [] %}
+        {% set gink = "#1c1b18" if g.label in ("本日", "明日") else "#77726a" %}
+        <div style="margin-top:10px" data-digest-group>
+          <div style="font-family:var(--font-serif);font-weight:700;font-size:11.5px;letter-spacing:.16em;color:{{ gink }};border-bottom:1px solid #e8e4d9;padding-bottom:3px">{{ g.label }} <span style="font-family:var(--font-mono);font-size:8.5px;color:#8a857a;letter-spacing:0" data-group-count>{{ (g.rows or []) | length }}</span></div>
+          <div style="margin-top:7px;display:flex;flex-direction:column;gap:8px">
+            {% for r in g.rows or [] %}
+            <div style="display:flex;gap:9px;align-items:flex-start" data-brand="{{ r.brand }}">
+              <span style="flex:none;width:17px;height:17px;border:1px solid {{ gink }};color:{{ gink }};font-family:var(--font-serif);font-size:10px;display:flex;align-items:center;justify-content:center;margin-top:2px">{{ r.k }}</span>
+              <div style="flex:1;min-width:0">
+                <div style="font-size:12.5px;line-height:1.55;font-weight:700;color:{{ gink }}">{% if r.slug %}<a href="/articles/{{ date_s }}-{{ r.slug }}/" style="color:{{ gink }}">{{ r.t }}</a>{% else %}{{ r.t }}{% endif %}</div>
+                <div style="font-size:11px;line-height:1.6;color:#8a857a">{{ r.d }}</div>
+              </div>
+              <span style="flex:none;width:7px;height:7px;background:{{ brand(r.brand).color }};margin-top:6px"></span>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== 本文 2カラム(SP/TBは縦積み) ========== -->
+  <div style="margin-top:18px;display:flex;flex-wrap:wrap;gap:28px;align-items:flex-start">
+
+    <!-- ---- 主コラム ---- -->
+    <div style="flex:10 1 560px;min-width:0">
+
+      {% if lead %}
+      {% set bdef = brand(lead.brand) %}
+      <div style="padding-bottom:20px;border-bottom:2px solid #1c1b18" data-brand="{{ lead.brand }}">
+        <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+          {{ badge(lead.src, "lead") }}
+          <span style="font-size:11px;font-weight:700;border-bottom:3px solid {{ bdef.color }};padding-bottom:1px">{{ bdef.label }}</span>
+        </div>
+        <a href="{{ lead.url }}"><div style="margin-top:12px;font-family:var(--font-serif);font-weight:800;font-size:clamp(22px,3.4vw,32px);line-height:1.55;letter-spacing:.01em">{{ lead.title }}</div></a>
+        <div style="margin-top:10px;font-size:14px;line-height:2;color:#44413a;max-width:640px">{{ lead.lede }}</div>
+        <div style="margin-top:10px;font-family:var(--font-mono);font-size:10px;color:#8a857a">出典: {{ trunc(((lead.sources or [{}])[0] or {}).label, 60) }}</div>
+      </div>
+      {% endif %}
+
+      <!-- large カード 2列 -->
+      <div style="margin-top:20px;display:flex;flex-wrap:wrap;gap:22px">
+        {% for a in larges %}
+        {% set bdef = brand(a.brand) %}
+        <div style="flex:1 1 250px;min-width:0;padding-bottom:16px;border-bottom:1px solid #dedad0" data-brand="{{ a.brand }}">
+          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+            {{ badge(a.src) }}
+            <span style="font-size:10.5px;font-weight:700;border-bottom:3px solid {{ bdef.color }};padding-bottom:1px">{{ bdef.label }}</span>
+          </div>
+          <a href="{{ a.url }}"><div style="margin-top:9px;font-family:var(--font-serif);font-weight:700;font-size:18px;line-height:1.6">{{ a.title }}</div></a>
+          <div style="margin-top:7px;font-size:12.5px;line-height:1.9;color:#55524b">{{ trunc(a.lede, 80) }}</div>
+        </div>
+        {% endfor %}
+      </div>
+
+      <!-- medium リスト -->
+      <div style="margin-top:4px;display:flex;flex-direction:column">
+        {% for a in mediums %}
+        {% set bdef = brand(a.brand) %}
+        <div style="display:flex;gap:12px;align-items:flex-start;padding:14px 0;border-bottom:1px solid #e8e4d9" data-brand="{{ a.brand }}">
+          {{ badge(a.src) }}
+          <div style="flex:1;min-width:0">
+            <a href="{{ a.url }}"><div style="font-family:var(--font-serif);font-weight:700;font-size:15.5px;line-height:1.65">{{ a.title }}</div></a>
+          </div>
+          <span style="flex:none;font-size:10px;font-weight:700;border-bottom:3px solid {{ bdef.color }};padding-bottom:1px;margin-top:5px">{{ bdef.label }}</span>
+        </div>
+        {% endfor %}
+      </div>
+
+      <!-- small 2列詰め -->
+      <div style="margin-top:14px;display:flex;flex-wrap:wrap;gap:0 26px">
+        {% for a in smalls %}
+        <div style="flex:1 1 250px;min-width:0;display:flex;gap:9px;align-items:baseline;padding:8px 0;border-bottom:1px dotted #d9d4c8" data-brand="{{ a.brand }}">
+          <span style="flex:none;width:8px;height:8px;background:{{ brand(a.brand).color }};align-self:center"></span>
+          <a href="{{ a.url }}" style="flex:1;font-size:12.5px;line-height:1.7;font-weight:500">{{ a.title }}</a>
+        </div>
+        {% endfor %}
+      </div>
+
+      <!-- roundup(面別の定常運営まとめ。規程13の例外) -->
+      {% if roundups %}
+      <div style="margin-top:20px;border-top:1px solid #dedad0;padding-top:12px">
+        <div style="font-family:var(--font-mono);font-size:9px;color:#8a857a;letter-spacing:.12em">運営メモ ・ ONGOING</div>
+        <div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:0 26px">
+          {% for a in roundups %}
+          <div style="flex:1 1 250px;min-width:0;display:flex;gap:9px;align-items:baseline;padding:7px 0;border-bottom:1px dotted #d9d4c8" data-brand="{{ a.brand }}">
+            <span style="flex:none;width:8px;height:8px;background:{{ brand(a.brand).color }};align-self:center"></span>
+            <a href="{{ a.url }}" style="flex:1;font-size:12px;line-height:1.7;color:#55524b">{{ a.title }}</a>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+
+      <!-- ファン面(規程4の例外。個人ではなくその日の傾向を扱う) -->
+      {% if culture %}
+      <div style="margin-top:20px;border-top:1px solid #dedad0;padding-top:12px" data-brand="{{ culture.brand }}">
+        <div style="font-family:var(--font-mono);font-size:9px;color:#8a857a;letter-spacing:.12em">ファン面 ・ FAN CULTURE</div>
+        <div style="margin-top:6px;display:flex;gap:9px;align-items:baseline">
+          <span style="flex:none;width:8px;height:8px;background:{{ brand(culture.brand).color }};align-self:center"></span>
+          <a href="{{ culture.url }}" style="flex:1;font-family:var(--font-serif);font-weight:700;font-size:15px;line-height:1.6">{{ culture.title }}</a>
+        </div>
+        <div style="margin-top:4px;font-size:12px;line-height:1.9;color:#55524b">{{ culture.lede }}</div>
+      </div>
+      {% endif %}
+
+      <!-- 社説 -->
+      {% if editorial %}
+      <div style="margin-top:24px;background:#fff;border:1px solid #dedad0;padding:18px 20px">
+        <div style="display:flex;align-items:baseline;justify-content:space-between">
+          <span style="font-family:var(--font-serif);font-weight:700;font-size:13px;letter-spacing:.16em">社説</span>
+          <span style="font-family:var(--font-mono);font-size:9px;color:#8a857a">EDITORIAL ・ AI疑似プロデューサー</span>
+        </div>
+        <div style="margin-top:8px;font-family:var(--font-serif);font-weight:700;font-size:18px;line-height:1.6">{{ editorial.title }}</div>
+        <div style="margin-top:6px;font-size:12.5px;line-height:2;color:#55524b">{{ editorial.data.excerpt }}</div>
+        <div style="margin-top:10px;font-size:11.5px;font-weight:700;letter-spacing:.06em"><a href="{{ editorial.url }}">全文を読む(社説面) →</a></div>
+      </div>
+      {% endif %}
+
+    </div>
+
+    <!-- ---- 右カラム(PC) / 後続ブロック(SP・TB) ---- -->
+    <div style="flex:1 1 280px;max-width:100%;display:flex;flex-direction:column;gap:22px">
+
+      <!-- ダイジェスト(PCのみ常設) -->
+      <div class="only-pc">
+        <div style="border:1px solid #1c1b18;background:#fff;padding:16px 16px 12px">
+          <div style="display:flex;align-items:baseline;justify-content:space-between">
+            <span style="font-family:var(--font-serif);font-weight:800;font-size:15px;letter-spacing:.1em">本日の紙面</span>
+            <span style="font-family:var(--font-mono);font-size:9px;color:#8a857a">DIGEST</span>
+          </div>
+          <div style="margin-top:8px;border-top:2px solid #1c1b18"></div>
+          {% for g in ed.digest or [] %}
+          {% set gink = "#1c1b18" if g.label in ("本日", "明日") else "#77726a" %}
+          <div style="margin-top:11px" data-digest-group>
+            <div style="font-family:var(--font-serif);font-weight:700;font-size:11px;letter-spacing:.16em;color:{{ gink }};border-bottom:1px solid #e8e4d9;padding-bottom:3px">{{ g.label }} <span style="font-family:var(--font-mono);font-size:8.5px;color:#8a857a;letter-spacing:0" data-group-count>{{ (g.rows or []) | length }}</span></div>
+            <div style="margin-top:6px;display:flex;flex-direction:column;gap:7px">
+              {% for r in g.rows or [] %}
+              <div style="display:flex;gap:8px;align-items:flex-start" data-brand="{{ r.brand }}">
+                <span style="flex:none;width:16px;height:16px;border:1px solid {{ gink }};color:{{ gink }};font-family:var(--font-serif);font-size:9px;display:flex;align-items:center;justify-content:center;margin-top:2px">{{ r.k }}</span>
+                <div style="flex:1;min-width:0">
+                  <div style="font-size:11.5px;line-height:1.5;font-weight:700;color:{{ gink }}">{% if r.slug %}<a href="/articles/{{ date_s }}-{{ r.slug }}/" style="color:{{ gink }}">{{ r.t }}</a>{% else %}{{ r.t }}{% endif %}</div>
+                  <div style="font-size:10px;line-height:1.55;color:#8a857a">{{ r.d }}</div>
+                </div>
+                <span style="flex:none;width:6px;height:6px;background:{{ brand(r.brand).color }};margin-top:5px"></span>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- 24hランキング -->
+      <div style="border-top:2px solid #1c1b18;padding-top:10px">
+        <div style="display:flex;align-items:baseline;justify-content:space-between">
+          <span style="font-family:var(--font-serif);font-weight:700;font-size:13px;letter-spacing:.12em">24時間ランキング</span>
+          <span style="font-family:var(--font-mono);font-size:9px;color:#8a857a">前日比</span>
+        </div>
+        <div style="margin-top:9px;display:flex;flex-direction:column;gap:7px">
+          {% for r in ed.ranking or [] %}
+          <div style="display:flex;gap:9px;align-items:center;font-size:12.5px">
+            <span style="flex:none;width:16px;font-family:var(--font-mono);font-size:11px;color:#8a857a">{{ r.n }}</span>
+            <span style="flex:none;width:8px;height:8px;background:{{ brand(r.brand).color }}"></span>
+            <span style="flex:1;min-width:0;font-weight:500">{{ r.name }}</span>
+            {% if r.delta == "up" %}<span style="flex:none;font-size:10px;color:#b0483f">▲</span>
+            {% elif r.delta == "down" %}<span style="flex:none;font-size:10px;color:#3f6ab0">▼</span>
+            {% elif r.delta == "stay" %}<span style="flex:none;font-size:10px;color:#8a857a">─</span>
+            {% else %}<span style="flex:none;font-family:var(--font-mono);font-size:9px;color:#8a857a">NEW</span>
+            {% endif %}
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- 誕生日 -->
+      <div style="border-top:2px solid #1c1b18;padding-top:10px">
+        <div style="font-family:var(--font-serif);font-weight:700;font-size:13px;letter-spacing:.12em">きょうの誕生日</div>
+        {% if ed.birthdays %}
+        {% for b in ed.birthdays %}
+        {% set bdef = brand(b.brand) %}
+        <div style="margin-top:8px;display:flex;gap:4px 9px;align-items:center;font-size:12.5px;flex-wrap:wrap">
+          <span style="flex:none;width:8px;height:8px;background:{{ bdef.color }}"></span>
+          <span style="font-weight:700;white-space:nowrap">{{ b.name }}</span>
+          <span style="font-size:10.5px;color:#55524b">{{ bdef.label }}{% if b.note %} ── {{ b.note }}{% endif %}</span>
+        </div>
+        {% endfor %}
+        {% else %}
+        <div style="margin-top:8px;font-size:11.5px;color:#8a857a">きょうが誕生日のアイドルはいません</div>
+        {% endif %}
+      </div>
+
+      <!-- バックナンバー -->
+      <div style="border-top:2px solid #1c1b18;padding-top:10px">
+        <div style="font-family:var(--font-serif);font-weight:700;font-size:13px;letter-spacing:.12em">バックナンバー</div>
+        <div style="margin-top:8px;display:flex;flex-direction:column;gap:6px;font-size:12px">
+          {% for e in (site.editions | reverse | rejectattr("date", "equalto", ed.date) | list)[:3] %}
+          <a href="{{ e.url }}" style="display:flex;justify-content:space-between;gap:8px"><span>第{{ e.number }}号 {{ fmt(e.date, "%-m月%-d日") }}({{ e.weekday }})</span><span style="font-family:var(--font-mono);font-size:10px;color:#8a857a">{{ e.article_count }}件</span></a>
+          {% endfor %}
+        </div>
+        <div style="margin-top:9px;font-size:11.5px;font-weight:700"><a href="/archive/">アーカイブ(全{{ site.editions | length }}号) →</a></div>
+        <div style="margin-top:5px;font-size:11.5px;font-weight:700"><a href="/tags/">タグ・全文検索で探す →</a></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ========== フッター ========== -->
+  <div style="margin-top:36px;border-top:2px solid #1c1b18;padding-top:14px;display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;font-size:11px;color:#55524b;line-height:1.8">
+    <span>アイマスNEWS(α)はAIが執筆・校閲する非公式ファンメディアです。記事は削除せず、誤りは「おわびと訂正」で残します。<a href="/about/" style="font-weight:700">編集方針と免責 →</a></span>
+    <span style="font-family:var(--font-mono);font-size:10px;color:#8a857a">© {{ fmt(ed.date, "%Y") }} アイマスNEWS(α) — UNOFFICIAL</span>
+  </div>
+</div>
+
+<!-- ========== SP: ダイジェスト全画面 ========== -->
+<div id="digest-overlay" style="position:fixed;inset:0;background:#fbfaf7;z-index:50;flex-direction:column;padding:20px 22px 16px;box-sizing:border-box;overflow:hidden">
+  <div style="display:flex;align-items:baseline;justify-content:space-between">
+    <div style="display:flex;align-items:baseline;gap:10px">
+      <span style="font-family:var(--font-serif);font-weight:800;font-size:19px;letter-spacing:.1em">本日の紙面</span>
+      <span style="font-family:var(--font-mono);font-size:9.5px;color:#8a857a">NO.{{ no4 }} / {{ fmt(ed.date, "%-m.%-d") }} {{ ed.weekday }}</span>
+    </div>
+    <span id="digest-close" style="cursor:pointer;font-size:15px;line-height:1;padding:6px 9px;border:1px solid #1c1b18">✕</span>
+  </div>
+  <div style="margin-top:10px;height:5px;border-top:2px solid #1c1b18;border-bottom:1px solid #1c1b18"></div>
+  <div style="margin-top:6px;flex:1;min-height:0;display:flex;flex-direction:column;justify-content:space-evenly">
+    {% for g in ed.digest or [] %}
+    {% set gink = "#1c1b18" if g.label in ("本日", "明日") else "#77726a" %}
+    <div data-digest-group>
+      <div style="font-family:var(--font-serif);font-weight:700;font-size:12px;letter-spacing:.16em;color:{{ gink }};border-bottom:1px solid #dedad0;padding-bottom:4px">{{ g.label }} <span style="font-family:var(--font-mono);font-size:9px;color:#8a857a;letter-spacing:0" data-group-count>{{ (g.rows or []) | length }}</span></div>
+      <div style="margin-top:7px;display:flex;flex-direction:column;gap:6px">
+        {% for r in g.rows or [] %}
+        <div style="display:flex;gap:9px;align-items:center;font-size:12.5px;line-height:1.5;color:{{ gink }}" data-brand="{{ r.brand }}">
+          <span style="flex:none;width:17px;height:17px;border:1px solid {{ gink }};font-family:var(--font-serif);font-size:10px;display:flex;align-items:center;justify-content:center">{{ r.k }}</span>
+          {% if r.slug %}<a href="/articles/{{ date_s }}-{{ r.slug }}/" style="flex:1;min-width:0;color:{{ gink }}">{{ r.t }}</a>{% else %}<span style="flex:1;min-width:0">{{ r.t }}</span>{% endif %}
+          <span style="flex:none;width:7px;height:7px;background:{{ brand(r.brand).color }}"></span>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  <div style="border-top:1px solid #dedad0;padding-top:9px;display:flex;justify-content:space-between;font-size:10px;color:#8a857a">
+    <span>各行タップで記事へ</span>
+  </div>
+</div>
+<script src="/assets/js/paper.js"></script>

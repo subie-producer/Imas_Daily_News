@@ -1,0 +1,1133 @@
+{
+ "decisions": {
+  "gakuen-kanae-debut-2026": {
+   "action": "article",
+   "angle": "氷渡香名江のプロデュースが本日11月16日に始まり、前日譚イベント・CM・エピソード0・プロフィールもそろう",
+   "purpose": "期日の知らせ",
+   "rank": "large",
+   "lead_score": 90,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "実装当日の開始。CM・プロフィール・年末感謝祭の告知・同時視聴会等を統合"
+  },
+  "gaku-kanae-produce-cm-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gakuen-kanae-debut-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gakumas-kanae-interview-campaign-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "応募期間は11/15 23:59で終了済み"
+  },
+  "imas-year-end-thanks-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gakuen-kanae-debut-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "香名江の登場告知。年末感謝祭自体は別の既報"
+  },
+  "gaku-hatsuboshi-hr-2-5th-signed-card-campaign": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "応募期間は11/15 23:59で終了済み"
+  },
+  "gaku-kaigou-1st-single": {
+   "action": "article",
+   "angle": "「乖轟」1st Single「アンバランス」が2027年4月7日発売、予約は1月10日まで、MV・配信日・予約特典も判明",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "update-20/22/23を統合"
+  },
+  "gaku-kanae-1st-single": {
+   "action": "article",
+   "angle": "氷渡香名江の1st Singleが2027年3月3日発売決定、ASOBI STORE予約特典とリリースイベント実施",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "update-24/25を統合"
+  },
+  "gaku-hiwatari-kanae-metamorphose-2026": {
+   "action": "article",
+   "angle": "香名江の新曲「メタモルフォーゼ」は竹内アンナ作詞作曲、11月17日にサブスク配信とDL販売開始",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "update-26を統合"
+  },
+  "gaku-update-2026-01": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gakuen-kanae-debut-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "香名江エピソード0に触れる記念イラスト"
+  },
+  "gaku-update-2026-02": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gakuen-kanae-debut-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-update-2026-03": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gakuen-kanae-debut-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-jouo-seina-birthday-message-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/8の記事と同じ内容(締切11/20)。新事実・当日のトリガー無し"
+  },
+  "gaku-update-2026-05": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "GOLD RUSH8巻は11/12に記事化済み"
+  },
+  "gaku-update-2026-06": {
+   "action": "article",
+   "angle": "初星学園放送部の次回放送は11月18日(水)",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-update-2026-08": {
+   "action": "article",
+   "angle": "氷渡香名江実装記念の公式グッズ、通常衣装とトレーニング服などのアクリルスタンドが登場",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-update-2026-09": {
+   "action": "article",
+   "angle": "2.5周年記念グッズにカレッジリングやアチーブメントピンバッジが登場",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-update-2026-10": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-update-2026-11",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ハツボシストア関連の特典追加"
+  },
+  "gaku-update-2026-11": {
+   "action": "article",
+   "angle": "ハツボシストアで11月27日から香名江のクラシカル制服・AutumnVer.グッズなどを発売、スタンプカード特典にも香名江デザイン、トゥインクルラビット商品も同日",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "update-10/12を統合"
+  },
+  "gaku-update-2026-12": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-update-2026-11",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-update-2026-13": {
+   "action": "article",
+   "angle": "学マス×バトルスピリッツの描き下ろしイラスト全14名分が初公開、バトスピ公式Xでも順次公開",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-update-2026-14": {
+   "action": "article",
+   "angle": "氷渡香名江が「初」衣装でフィギュア化、2027年秋頃にクレーンゲーム登場",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-update-2026-15": {
+   "action": "article",
+   "angle": "香名江のちびぐるみ&ポーチセットの予約が11月16日11時からプレミアムバンダイで開始",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-memory-goods-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/9記事と同内容、締切は11/23で3日以内でもない"
+  },
+  "shion-shiina-birthday-goods-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/11記事と同内容、締切11/29は先"
+  },
+  "gaku-update-2026-18": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "標ファイナルのアーカイブ視聴は11/9・11/10に記事化済み"
+  },
+  "gaku-bluray-shirube-final-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/9記事と同内容"
+  },
+  "gaku-update-2026-22": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-kaigou-1st-single",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-update-2026-23": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-kaigou-1st-single",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-update-2026-24": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-kanae-1st-single",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-update-2026-26": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-hiwatari-kanae-metamorphose-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-update-2026-27": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-update-2026-28",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-update-2026-28": {
+   "action": "article",
+   "angle": "新プレイコンテンツ「TOPS」が追加予定、試験突破で等級が上がりスキルカードスキンなどの報酬を得られる",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "追加時期は続報待ち"
+  },
+  "gaku-update-2026-29": {
+   "action": "article",
+   "angle": "H.I.F編にアシストモード導入予定、全試験でライバルの獲得スコアが下がる",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "追加時期は続報待ち"
+  },
+  "gaku-update-2026-30": {
+   "action": "roundup",
+   "angle": "氷渡香名江登場・2.5周年に合わせた本日からのゲーム内施策(定期公演「初」レジェンド更新ほか)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-update-2026-31": {
+   "action": "roundup",
+   "angle": "氷渡香名江登場・2.5周年に合わせた本日からのゲーム内施策(確定10連ガシャ)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-update-2026-32": {
+   "action": "roundup",
+   "angle": "氷渡香名江登場・2.5周年に合わせた本日からのゲーム内施策(アイドル/サポートパック)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-update-2026-33": {
+   "action": "roundup",
+   "angle": "氷渡香名江登場・2.5周年に合わせた本日からのゲーム内施策(前夜祭パック販売中)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-update-2026-34": {
+   "action": "roundup",
+   "angle": "氷渡香名江登場・2.5周年に合わせた本日からのゲーム内施策(2.5周年ログインボーナス)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-update-2026-35": {
+   "action": "roundup",
+   "angle": "氷渡香名江登場・2.5周年に合わせた本日からのゲーム内施策(ジュエルセール)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-update-2026-36": {
+   "action": "roundup",
+   "angle": "氷渡香名江登場・2.5周年に合わせた本日からのゲーム内施策(開催中ジュエルセール、12月1日まで)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-update-2026-37": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-update-2026-39",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-update-2026-38": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-update-2026-39",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-update-2026-39": {
+   "action": "article",
+   "angle": "新ストーリーイベント「乖轟」が11月27日開催予定、有村麻央・雨夜燕の新SSR、サポートカード、思い出衣装、ライブシーンなどが判明",
+   "purpose": "新情報",
+   "rank": "large",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "update-37〜50を統合"
+  },
+  "gaku-update-2026-40": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-update-2026-39",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-update-2026-41": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-update-2026-39",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-update-2026-42": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-update-2026-39",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-update-2026-43": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-update-2026-39",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-update-2026-44": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-update-2026-39",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-update-2026-45": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-update-2026-39",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-update-2026-46": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-update-2026-39",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-update-2026-47": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-update-2026-39",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-update-2026-48": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-update-2026-39",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-update-2026-49": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-update-2026-39",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-update-2026-50": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-update-2026-39",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-update-2026-51": {
+   "action": "roundup",
+   "angle": "氷渡香名江登場・2.5周年に合わせた本日からのゲーム内施策(パネルミッション)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-update-2026-52": {
+   "action": "roundup",
+   "angle": "氷渡香名江登場・2.5周年に合わせた本日からのゲーム内施策(プロデュースキャンペーン)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-update-2026-53": {
+   "action": "roundup",
+   "angle": "氷渡香名江登場・2.5周年に合わせた本日からのゲーム内施策(登場記念ログインボーナス)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-update-2026-54": {
+   "action": "roundup",
+   "angle": "氷渡香名江登場・2.5周年に合わせた本日からのゲーム内施策(ログインプレゼント)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-fan-illustration-2026-11-16": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のAIイラスト投稿"
+  },
+  "gakumas-battlespirits-fan-reaction-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿。コラボ自体はgaku-update-2026-13で記事化"
+  },
+  "gaku-update-2026-20": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-kaigou-1st-single",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-update-2026-25": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-kanae-1st-single",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-b2-tapestry-juo-sena": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/12記事と同内容。予約は11/15で終了済み"
+  },
+  "garakuta-china-misuzu-gacha-2026": {
+   "action": "article",
+   "angle": "ガラクタロードvol.7の千奈・美鈴ガシャが本日9時59分で終了",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約の終了・締切を統合"
+  },
+  "gkmas-misuzu-garakuta-present-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "garakuta-china-misuzu-gacha-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "プレゼント企画は11/4で終了。続報予約の美鈴ガシャ終了は統合"
+  },
+  "gaku-gacha-day1-2026": {
+   "action": "article",
+   "angle": "標ファイナル公演記念ガシャDAY1・DAY2が本日9時59分で終了",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "DAY2を統合"
+  },
+  "gaku-gacha-day2-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-gacha-day1-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-hiwatari-kanae-profile-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gakuen-kanae-debut-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-lawson-quote-campaign-2026": {
+   "action": "article",
+   "angle": "ローソン×学マスの引用ポストキャンペーン(QUOカード1万円分)は本日23時59分まで",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-maintenance-2026-11-16": {
+   "action": "article",
+   "angle": "学マスは本日10時からメンテナンス、開始時に進行中のプロデュースと「アイドルへの道」のデータが破棄される",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-tv-cm-kananae-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gakuen-kanae-debut-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "gaku-kaigou-1st-single",
+    "brand": "gaku",
+    "rank": "medium",
+    "angle": "「乖轟」1st Single「アンバランス」が2027年4月7日発売、予約は1月10日まで、MV・配信日・予約特典も判明",
+    "purpose": "新情報",
+    "lead_score": 30,
+    "dedup_key": "gaku-kaigou-1st-single",
+    "candidate_ids": [
+     "202611152337-watch-48",
+     "202611160221-grok-52",
+     "202611160221-grok-53",
+     "202611160221-grok-106",
+     "202611160221-grok-107",
+     "202611160221-grok-108"
+    ]
+   },
+   {
+    "slug": "gaku-kanae-1st-single",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "氷渡香名江の1st Singleが2027年3月3日発売決定、ASOBI STORE予約特典とリリースイベント実施",
+    "purpose": "新情報",
+    "lead_score": 25,
+    "dedup_key": "gaku-kanae-1st-single",
+    "candidate_ids": [
+     "202611152337-watch-49",
+     "202611160221-grok-54",
+     "202611160221-grok-109"
+    ]
+   },
+   {
+    "slug": "gaku-hiwatari-kanae-metamorphose-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "香名江の新曲「メタモルフォーゼ」は竹内アンナ作詞作曲、11月17日にサブスク配信とDL販売開始",
+    "purpose": "新情報",
+    "lead_score": 25,
+    "dedup_key": "gaku-hiwatari-kanae-metamorphose-2026",
+    "candidate_ids": [
+     "202611152337-explore-53",
+     "202611160221-grok-56"
+    ]
+   },
+   {
+    "slug": "gaku-update-2026-06",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "初星学園放送部の次回放送は11月18日(水)",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "gaku-update-2026-06",
+    "candidate_ids": [
+     "202611160221-grok-36"
+    ]
+   },
+   {
+    "slug": "gaku-update-2026-08",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "氷渡香名江実装記念の公式グッズ、通常衣装とトレーニング服などのアクリルスタンドが登場",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "gaku-update-2026-08",
+    "candidate_ids": [
+     "202611160221-grok-38"
+    ]
+   },
+   {
+    "slug": "gaku-update-2026-09",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "2.5周年記念グッズにカレッジリングやアチーブメントピンバッジが登場",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "gaku-update-2026-09",
+    "candidate_ids": [
+     "202611160221-grok-39"
+    ]
+   },
+   {
+    "slug": "gaku-update-2026-11",
+    "brand": "gaku",
+    "rank": "medium",
+    "angle": "ハツボシストアで11月27日から香名江のクラシカル制服・AutumnVer.グッズなどを発売、スタンプカード特典にも香名江デザイン、トゥインクルラビット商品も同日",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "gaku-update-2026-11",
+    "candidate_ids": [
+     "202611160221-grok-41",
+     "202611160221-grok-40",
+     "202611160221-grok-42"
+    ]
+   },
+   {
+    "slug": "gaku-update-2026-13",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "学マス×バトルスピリッツの描き下ろしイラスト全14名分が初公開、バトスピ公式Xでも順次公開",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "gaku-update-2026-13",
+    "candidate_ids": [
+     "202611160221-grok-43"
+    ]
+   },
+   {
+    "slug": "gaku-update-2026-14",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "氷渡香名江が「初」衣装でフィギュア化、2027年秋頃にクレーンゲーム登場",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "gaku-update-2026-14",
+    "candidate_ids": [
+     "202611160221-grok-44"
+    ]
+   },
+   {
+    "slug": "gaku-update-2026-15",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "香名江のちびぐるみ&ポーチセットの予約が11月16日11時からプレミアムバンダイで開始",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "gaku-update-2026-15",
+    "candidate_ids": [
+     "202611160221-grok-45"
+    ]
+   },
+   {
+    "slug": "gaku-update-2026-28",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "新プレイコンテンツ「TOPS」が追加予定、試験突破で等級が上がりスキルカードスキンなどの報酬を得られる",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "gaku-update-2026-28",
+    "candidate_ids": [
+     "202611160221-grok-58",
+     "202611160221-grok-57"
+    ]
+   },
+   {
+    "slug": "gaku-update-2026-29",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "H.I.F編にアシストモード導入予定、全試験でライバルの獲得スコアが下がる",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "gaku-update-2026-29",
+    "candidate_ids": [
+     "202611160221-grok-59"
+    ]
+   },
+   {
+    "slug": "gaku-update-2026-39",
+    "brand": "gaku",
+    "rank": "large",
+    "angle": "新ストーリーイベント「乖轟」が11月27日開催予定、有村麻央・雨夜燕の新SSR、サポートカード、思い出衣装、ライブシーンなどが判明",
+    "purpose": "新情報",
+    "lead_score": 30,
+    "dedup_key": "gaku-update-2026-39",
+    "candidate_ids": [
+     "202611160221-grok-69",
+     "202611160221-grok-67",
+     "202611160221-grok-68",
+     "202611160221-grok-70",
+     "202611160221-grok-71",
+     "202611160221-grok-72",
+     "202611160221-grok-73",
+     "202611160221-grok-74",
+     "202611160221-grok-75",
+     "202611160221-grok-76",
+     "202611160221-grok-77",
+     "202611160221-grok-78",
+     "202611160221-grok-79",
+     "202611160221-grok-80"
+    ]
+   },
+   {
+    "slug": "gaku-garakuta-china-misuzu-gacha-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "ガラクタロードvol.7の千奈・美鈴ガシャが本日9時59分で終了",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "garakuta-china-misuzu-gacha-2026",
+    "candidate_ids": [
+     "sched-2026-11-16-garakuta-china-misuzu-gacha-2026-終了",
+     "sched-2026-11-16-garakuta-china-misuzu-gacha-2026-締切",
+     "sched-2026-11-16-garakuta-china-misuzu-gacha-2026-締切-src1",
+     "sched-2026-11-16-gkmas-misuzu-garakuta-present-2026-終了"
+    ]
+   },
+   {
+    "slug": "gaku-gakuen-kanae-debut-2026",
+    "brand": "gaku",
+    "rank": "large",
+    "angle": "氷渡香名江のプロデュースが本日11月16日に始まり、前日譚イベント・CM・エピソード0・プロフィールもそろう",
+    "purpose": "期日の知らせ",
+    "lead_score": 90,
+    "dedup_key": "gakuen-kanae-debut-2026",
+    "candidate_ids": [
+     "sched-2026-11-16-gakuen-kanae-debut-2026-開始",
+     "sched-2026-11-16-gakuen-kanae-debut-2026-開始-src1",
+     "sched-2026-11-16-gakuen-kanae-debut-2026-開始-src2",
+     "202611150733-explore-4",
+     "202611152337-watch-0",
+     "202611160221-grok-37",
+     "202611160221-grok-31",
+     "202611160221-grok-32",
+     "202611160221-grok-101",
+     "202611160221-grok-33",
+     "sched-2026-11-16-gaku-hiwatari-kanae-profile-2026-開始",
+     "sched-2026-11-16-gaku-hiwatari-kanae-profile-2026-開始-src1",
+     "sched-2026-11-16-gaku-hiwatari-kanae-profile-2026-開始-src2",
+     "sched-2026-11-16-gaku-tv-cm-kananae-2026-開始",
+     "sched-2026-11-16-gaku-tv-cm-kananae-2026-開始-src1"
+    ]
+   },
+   {
+    "slug": "gaku-gacha-day1-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "標ファイナル公演記念ガシャDAY1・DAY2が本日9時59分で終了",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "gaku-gacha-day1-2026",
+    "candidate_ids": [
+     "sched-2026-11-16-gaku-gacha-day1-2026-終了",
+     "sched-2026-11-16-gaku-gacha-day1-2026-終了-src1",
+     "sched-2026-11-16-gaku-gacha-day1-2026-終了-src2",
+     "sched-2026-11-16-gaku-gacha-day1-2026-終了-src3",
+     "sched-2026-11-16-gaku-gacha-day1-2026-締切",
+     "sched-2026-11-16-gaku-gacha-day2-2026-終了",
+     "sched-2026-11-16-gaku-gacha-day2-2026-終了-src1",
+     "sched-2026-11-16-gaku-gacha-day2-2026-終了-src2",
+     "sched-2026-11-16-gaku-gacha-day2-2026-終了-src3"
+    ]
+   },
+   {
+    "slug": "gaku-lawson-quote-campaign-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "ローソン×学マスの引用ポストキャンペーン(QUOカード1万円分)は本日23時59分まで",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "gaku-lawson-quote-campaign-2026",
+    "candidate_ids": [
+     "sched-2026-11-16-gaku-lawson-quote-campaign-2026-締切"
+    ]
+   },
+   {
+    "slug": "gaku-maintenance-2026-11-16",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "学マスは本日10時からメンテナンス、開始時に進行中のプロデュースと「アイドルへの道」のデータが破棄される",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "gaku-maintenance-2026-11-16",
+    "candidate_ids": [
+     "sched-2026-11-16-gaku-maintenance-2026-11-16-開始"
+    ]
+   },
+   {
+    "slug": "gaku-ops-roundup",
+    "brand": "gaku",
+    "rank": "roundup",
+    "angle": "氷渡香名江登場・2.5周年に合わせた本日からのゲーム内施策(定期公演「初」レジェンド更新ほか)",
+    "lead_score": 0,
+    "dedup_key": "gaku-update-2026-30",
+    "candidate_ids": [
+     "202611160221-grok-60",
+     "202611160221-grok-61",
+     "202611160221-grok-62",
+     "202611160221-grok-63",
+     "202611160221-grok-64",
+     "202611160221-grok-65",
+     "202611160221-grok-66",
+     "202611160221-grok-81",
+     "202611160221-grok-82",
+     "202611160221-grok-83",
+     "202611160221-grok-84"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "gakumas-kanae-interview-campaign-2026",
+    "reason": "その他",
+    "note": "応募期間は11/15 23:59で終了済み"
+   },
+   {
+    "dedup_key": "gaku-hatsuboshi-hr-2-5th-signed-card-campaign",
+    "reason": "その他",
+    "note": "応募期間は11/15 23:59で終了済み"
+   },
+   {
+    "dedup_key": "gaku-jouo-seina-birthday-message-2026",
+    "reason": "既報",
+    "note": "11/8の記事と同じ内容(締切11/20)。新事実・当日のトリガー無し"
+   },
+   {
+    "dedup_key": "gaku-update-2026-05",
+    "reason": "既報",
+    "note": "GOLD RUSH8巻は11/12に記事化済み"
+   },
+   {
+    "dedup_key": "gaku-memory-goods-2026",
+    "reason": "既報",
+    "note": "11/9記事と同内容、締切は11/23で3日以内でもない"
+   },
+   {
+    "dedup_key": "shion-shiina-birthday-goods-2026",
+    "reason": "既報",
+    "note": "11/11記事と同内容、締切11/29は先"
+   },
+   {
+    "dedup_key": "gaku-update-2026-18",
+    "reason": "既報",
+    "note": "標ファイナルのアーカイブ視聴は11/9・11/10に記事化済み"
+   },
+   {
+    "dedup_key": "gaku-bluray-shirube-final-2026",
+    "reason": "既報",
+    "note": "11/9記事と同内容"
+   },
+   {
+    "dedup_key": "gaku-fan-illustration-2026-11-16",
+    "reason": "個人の話題",
+    "note": "個人のAIイラスト投稿"
+   },
+   {
+    "dedup_key": "gakumas-battlespirits-fan-reaction-2026",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿。コラボ自体はgaku-update-2026-13で記事化"
+   },
+   {
+    "dedup_key": "gaku-b2-tapestry-juo-sena",
+    "reason": "既報",
+    "note": "11/12記事と同内容。予約は11/15で終了済み"
+   }
+  ],
+  "cross_brand": []
+ }
+}

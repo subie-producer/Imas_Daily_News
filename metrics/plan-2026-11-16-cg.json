@@ -1,0 +1,151 @@
+{
+ "decisions": {
+  "cg-15th-party-venue-cd-2026": {
+   "action": "article",
+   "angle": "15周年記念CD「HOURGLASS」が11月18日発売。コロムビアミュージックショップとアソビストア限定で、収録曲とソロ・リミックスが判明、アソビストアの予約は終了済み",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "会場オリジナルCD(11/15報)とは別商品。Premiere MV(11/18 21時)を同じ記事に統合"
+  },
+  "cg-yamanashi-walk-wander-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/13号の記事に品目・価格・フード・景品・事後通販まで掲載済み。新事実も当日のトリガーも無い(開幕は11/21)"
+  },
+  "cinderella-15th-anniversary-party-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "出典の変化は公式ニュース一覧の更新。会場物販・カードフォリオの件は11/13・11/14の物販記事で既報、整理券の締切も既報。読者に関わる新しい変更は見当たらない"
+  },
+  "cg-memory-pict-8th-pict": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "受注は11月15日23時59分で終了済み。11/15号で最終日を案内済み"
+  },
+  "cg-hourglass-premiere-mv-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-15th-party-venue-cd-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ「HOURGLASS」の施策。MVの11月18日21時公開は11/07号で既報だが、CD発売日と同日のため同じ記事で触れる"
+  },
+  "fan-cg-song-presentation-site-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "ファン個人のSNS投稿。単体では記事にしない"
+  },
+  "fan-asuka-fujiwara-cg-collaboration-guide-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "ファン個人のnote記事で公式の出典が無い。コラボ期間も未確認"
+  },
+  "cg-sousenkyo-2026-15th-popup": {
+   "action": "article",
+   "angle": "総選挙POP UP SHOPの入場事前予約の当落が本日18時頃から順次発表され、メールで確認できる。先着予約は17日18時開始",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(結果)。会期11月21〜29日、横浜ランドマークホール、入場無料"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "cg-15th-party-venue-cd-2026",
+    "brand": "cg",
+    "rank": "medium",
+    "angle": "15周年記念CD「HOURGLASS」が11月18日発売。コロムビアミュージックショップとアソビストア限定で、収録曲とソロ・リミックスが判明、アソビストアの予約は終了済み",
+    "purpose": "新情報",
+    "lead_score": 30,
+    "dedup_key": "cg-15th-party-venue-cd-2026",
+    "candidate_ids": [
+     "202611150733-explore-0",
+     "202611160221-grok-13",
+     "202611160221-grok-91",
+     "202611160221-grok-93"
+    ]
+   },
+   {
+    "slug": "cg-sousenkyo-2026-15th-popup",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "総選挙POP UP SHOPの入場事前予約の当落が本日18時頃から順次発表され、メールで確認できる。先着予約は17日18時開始",
+    "purpose": "期日の知らせ",
+    "lead_score": 60,
+    "dedup_key": "cg-sousenkyo-2026-15th-popup",
+    "candidate_ids": [
+     "sched-2026-11-16-cg-sousenkyo-2026-15th-popup-結果"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "cg-yamanashi-walk-wander-2026",
+    "reason": "既報",
+    "note": "11/13号の記事に品目・価格・フード・景品・事後通販まで掲載済み。新事実も当日のトリガーも無い(開幕は11/21)"
+   },
+   {
+    "dedup_key": "cinderella-15th-anniversary-party-2026",
+    "reason": "既報",
+    "note": "出典の変化は公式ニュース一覧の更新。会場物販・カードフォリオの件は11/13・11/14の物販記事で既報、整理券の締切も既報。読者に関わる新しい変更は見当たらない"
+   },
+   {
+    "dedup_key": "cg-memory-pict-8th-pict",
+    "reason": "その他",
+    "note": "受注は11月15日23時59分で終了済み。11/15号で最終日を案内済み"
+   },
+   {
+    "dedup_key": "fan-cg-song-presentation-site-2026",
+    "reason": "個人の話題",
+    "note": "ファン個人のSNS投稿。単体では記事にしない"
+   },
+   {
+    "dedup_key": "fan-asuka-fujiwara-cg-collaboration-guide-2026",
+    "reason": "出典不足",
+    "note": "ファン個人のnote記事で公式の出典が無い。コラボ期間も未確認"
+   }
+  ],
+  "cross_brand": []
+ }
+}

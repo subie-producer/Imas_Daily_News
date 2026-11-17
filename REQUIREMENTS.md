@@ -379,7 +379,7 @@ compose は毎朝、発行日のファイルだけを機械的に受け取り、
 ## 6. 非機能要件
 
 - 紙面はビルドせず、配信のアプリ(webapp)が要求のたびに描く(2026-11-16 まで静的サイト(Jekyll))。自前オリジン(Caddy)から Cloudflare 経由で配信する。JS は推しフィルタ・SP ダイジェスト開閉・タグ索引の絞り込み(`/tags/`)のみで、いずれも JS 無効でも記事本文とタグページには到達できる。
-- リポジトリ: `https://github.com/subie-producer/Imas_Daily_News`(初期化済み)を使用。配信 URL は `https://imas-news.ofa.tokyo/`(当初の `https://subie-producer.github.io/Imas_Daily_News/` は 2026-11-16 に配信をやめた)。内部リンクはサイトの根からの相対、OGP・canonical の絶対 URL は配信のアプリの `SITE_URL` から作る。
+- リポジトリ: `https://github.com/subie-producer/Imas_Daily_News`(初期化済み)を使用。配信 URL は `https://news.imas.fans/`(2026-11-17 から。旧 `https://imas-news.ofa.tokyo/` でも当面同じ紙面を配る。当初の `https://subie-producer.github.io/Imas_Daily_News/` は 2026-11-16 に配信をやめた)。内部リンクはサイトの根からの相対、OGP・canonical の絶対 URL は配信のアプリの `SITE_URL` から作る。
 - OGP: 記事・号ごとにタイポグラフィベースの OGP 画像をビルド時生成(写真素材不使用)。
 - RSS/Atom フィード(号単位・記事単位)。
 - メトリクス: 毎実行の candidates 件数・verify 落ち・lint 違反・レビュー往復数・トークンコストを `metrics/` に記録。異常閾値で Discord 通知。

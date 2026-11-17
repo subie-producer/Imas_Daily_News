@@ -291,7 +291,7 @@ scripts/collect.py                   collect.py        scripts/publish.py
 
 ## 9.6 配信(2026-08-23 に GitHub Pages からサーバー化)
 
-**GitHub Pages をやめた理由は、動的ページを出せるようにするため。** Pages は静的ファイルしか置けず、問い合わせに応じて形が変わるページ(タグ索引・全文検索・今後の横断クエリ)を実装する余地がない。公開URLは `https://imas-news.ofa.tokyo`。
+**GitHub Pages をやめた理由は、動的ページを出せるようにするため。** Pages は静的ファイルしか置けず、問い合わせに応じて形が変わるページ(タグ索引・全文検索・今後の横断クエリ)を実装する余地がない。公開URLは `https://news.imas.fans`(2026-11-17 に `https://imas-news.ofa.tokyo` から移った。当面は旧ドメインでも同じ紙面を配る。正規の URL・feed・sitemap のリンクは `.env` の `SITE_URL` = 新ドメイン。feed の id だけは購読者の既読を崩さないよう旧ドメインのまま固定)。
 
 **紙面はビルドしない(編集長の決定 2026-11-16)。** 以前は記事・号・社説・アーカイブ・feed・sitemap を発行のたびに Jekyll で全部作り直していたが、テンプレートが記事ページ1枚ごとに全記事を走査するため、ビルドが記事数の2乗で伸びた(11/6 に17分。約2,900本で約5,000万回の走査)。いまは**全ページを webapp が要求のたびに描く**。発行は「版(Markdown 一式)を写す → 全ページを描いて検証 → 差し替え」で、約14秒。同時に GitHub Pages の予備の配信もやめた(Pages は同じ Jekyll のビルドで、同じ2乗の遅さを抱えていた)。
 
@@ -333,13 +333,13 @@ Cloudflare エッジ(TLS 終端・キャッシュ・CDN) → 読者
 | アプリ再起動の吸収 | Caddy はアクティブヘルスチェックを**使わない**。upstream は1台だけで、一度 down 判定されると復帰済みでも次回チェックまで 503 を返し続けるため。代わりに `lb_try_duration 5s` で接続失敗を再試行し、再起動(約1秒)を透過させる |
 | 障害の切り分け | **アプリが落ちると紙面ごと読めなくなる**(以前は静的な紙面だけは読めた)。アプリは systemd が起動し直し、watch が `/healthz` を見る。紙面の応答は `stale-if-error=604800` を付けており、エッジのキャッシュ(下)があるので、オリジンが落ちている間もエッジの古い版で答える |
 | **可用性** | オリジンは自宅PCだが**24時間稼働**させる運用で担保する。`loginctl` の Linger が有効なので、ログアウトしても systemd user サービスは動き続ける(これが切れると配信ごと止まるため、環境を作り直したときは `loginctl enable-linger` を確認すること)。Windows の再起動に備えるなら WSL の自動起動を Windows 側で設定する |
-| エッジキャッシュ | 2026-11-17 から有効。ゾーンの Cache Rule(phase `http_request_cache_settings`)で `imas-news.ofa.tokyo` の全パスをキャッシュ対象にし、期間はオリジンの `Cache-Control` に従う(紙面は `s-maxage=86400` で1日、検索は10分)。`/healthz` と `/release-id.txt` は対象外(配信の確認と監視が常にオリジンを見るため) |
-| パージとの組 | 1日保持するので、**発行・訂正のたびのパージが必須**。`deploy.py` が差し替えの後に `purge_everything` を呼ぶ(`.env` の `CF_API_TOKEN`/`CF_ZONE_ID`。トークンの権限は Cache Purge と Cache Rules: Edit)。トークンが空・失効だと新しい号が最大1日届かないので、パージの失敗は deploy の通知で異常として出る。Cache Rule とトークンはセットで、片方だけにしない |
+| エッジキャッシュ | 2026-11-17 から有効。配っているドメインのゾーンごと(`imas.fans`・`ofa.tokyo`)に Cache Rule(phase `http_request_cache_settings`)を置き、そのホスト名の全パスをキャッシュ対象にし、期間はオリジンの `Cache-Control` に従う(紙面は `s-maxage=86400` で1日、検索は10分)。`/healthz` と `/release-id.txt` は対象外(配信の確認と監視が常にオリジンを見るため) |
+| パージとの組 | 1日保持するので、**発行・訂正のたびのパージが必須**。`deploy.py` が差し替えの後に `purge_everything` を呼ぶ(`.env` の `CF_API_TOKEN`/`CF_ZONE_ID`。`CF_ZONE_ID` はカンマ区切りで、配っているドメインのゾーンを全部書く。トークンの権限は両ゾーンの Cache Purge・Cache Rules: Edit・DNS: Edit)。トークンが空・失効だと新しい号が最大1日届かないので、パージの失敗(1ゾーンでも)は deploy の通知で異常として出る。Cache Rule とトークンはセットで、片方だけにしない |
 | フォールバック | **持たない**(2026-11-16 に GitHub Pages の予備の配信をやめた。編集長の決定)。docs/ には Jekyll の設定・テンプレートを置いていない |
 | 権限 | Caddy・cloudflared・アプリとも **root 不要**(`~/.local/bin`・非特権ポート・`systemctl --user`)。ポート開放も固定IPも不要 |
 
 systemd user unit は `imas-web`(Caddy)・`imas-app`(紙面・タグ・検索のページ)・`imas-tunnel`(Cloudflare)の3つ。
-トンネル構築は `scripts/tunnel_setup.sh imas-news.ofa.tokyo`(事前に `cloudflared tunnel login` をブラウザで実施)。
+トンネル構築は `scripts/tunnel_setup.sh imas-news.ofa.tokyo`(事前に `cloudflared tunnel login` をブラウザで実施)。`news.imas.fans` は同じトンネルに後から足した: `~/srv/imas-news/etc/cloudflared.yml` の ingress にホスト名を1行足し、`imas.fans` ゾーンの DNS に `news` → `<トンネルID>.cfargotunnel.com`(proxied)の CNAME を API で作った(`cloudflared tunnel route dns` は login した証明書のゾーンにしか正しく作れないので使わない)。
 
 **cloudflared の更新(2026-10-28)**: `~/.local/bin/cloudflared` は手で置いた実行ファイルで、自動更新は切ってある(`--no-autoupdate`)。毎月1日 01:00 に `imas-cloudflared.timer` が `scripts/update_cloudflared.py` を回し、GitHub の最新の release を、本文に載った sha256 と照らし、新しい実行ファイルが自分の版を名乗るのを確かめてから入れ替える。旧版は `cloudflared.<版>.bak` に直近2個残す。トンネルを再起動し、今回の起動(InvocationID)の cloudflared の `/ready` が今張れている接続4本を返すことと外からの 200 を確かめ、だめなら旧版に戻して異常として通知する(当番がなぜなぜ。途中の例外・戻しの失敗でも通知する)。再起動で数秒落ちるので、組版・発行と重ならない時刻に置く。01:00 に止まっていた月は復帰の時に追いつくが、02:30〜07:00 に当たったら 07:00 まで待ってから上げる(取るのに時間がかかったときのため、差し替えの直前にも見直す)。`--check` は表示だけ(通知しない)。2026-10-27 に Cloudflare から「中間証明書の侵害で 2026.10.2 未満は使えなくなる」と告知が来るまで 2026.8.2 のままだった。告知から期限まで2か月あったので月1回とした(編集長)。
 

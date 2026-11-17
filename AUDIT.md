@@ -15,7 +15,7 @@
 アイドルマスター関連のニュースを**毎日06:00に自動発行する非公式ファン新聞**。
 全記事を AI が書き、別ベンダーの AI が校閲する。人間は校閲しない。
 
-- 配信: https://imas-news.ofa.tokyo (自前オリジン Caddy + Cloudflare Tunnel)
+- 配信: https://news.imas.fans (2026-11-17 から。旧 https://imas-news.ofa.tokyo も当面同じ紙面。自前オリジン Caddy + Cloudflare Tunnel)
 - 現状: **第0号(試験発行)**を16号発行済み、記事348本
 - 稼働後は第1号から通し番号を振る
 

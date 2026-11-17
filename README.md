@@ -2,7 +2,7 @@
 
 アイドルマスター関連ニュースを**毎日自動発行**する非公式ファン新聞。全記事を AI 編集部が執筆し、別ベンダーの AI が校閲する。人間は校閲しない——この体制を隠さないことが本紙のアイデンティティである。
 
-- 配信: <https://imas-news.ofa.tokyo/>(自前オリジン + Cloudflare Tunnel。紙面はビルドせずアプリが描く。PIPELINE.md §9.6)
+- 配信: <https://news.imas.fans/>(2026-11-17 から。旧 <https://imas-news.ofa.tokyo/> でも当面同じ紙面を配る。自前オリジン + Cloudflare Tunnel。紙面はビルドせずアプリが描く。PIPELINE.md §9.6)
 - 要件書: [REQUIREMENTS.md](REQUIREMENTS.md)(データ契約・パイプライン・編集規程の正)
 - 確定モック: [base-design/](base-design/)(トップ/記事/社説/バックナンバー。デザインの正)
 

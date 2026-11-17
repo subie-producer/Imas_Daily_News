@@ -247,7 +247,7 @@ def verify(dest: Path, timeout: float = VERIFY_TIMEOUT_SEC) -> tuple[list[str], 
     try:
         r = subprocess.run([str(APP_PY), str(WEBAPP_SRC / "verify.py"), "--site", str(dest)],
                            capture_output=True, text=True, timeout=timeout,
-                           env={**os.environ, "SITE_URL": ENV.get("SITE_URL", "https://imas-news.ofa.tokyo")})
+                           env={**os.environ, "SITE_URL": ENV.get("SITE_URL", "https://news.imas.fans")})
     except subprocess.TimeoutExpired:
         return [f"全ページの検証が {timeout:.0f}秒で終わらない"], 0
     errors = [ln[len("ERROR: "):] for ln in r.stdout.splitlines() if ln.startswith("ERROR: ")]
@@ -405,23 +405,30 @@ def prune(keep: int) -> list[str]:
 def purge_cache() -> str:
     """Cloudflare のエッジキャッシュを落として新しい紙面を反映させる。
     s-maxage を長く取っている(オリジン停止時もエッジで読める)ため、
-    発行のたびにここでパージしないと更新が届かない。"""
+    発行のたびにここでパージしないと更新が届かない。
+    CF_ZONE_ID はカンマ区切りで複数書ける(同じ紙面を複数のドメインで配っている間は、全部のゾーンを落とす)。"""
     token = ENV.get("CF_API_TOKEN", "")
-    zone = ENV.get("CF_ZONE_ID", "")
-    if not token or not zone:
+    zones = [z.strip() for z in ENV.get("CF_ZONE_ID", "").split(",") if z.strip()]
+    if not token or not zones:
         return ""       # パージを使っていない(エッジのキャッシュも効かせていない)。毎回言っても情報にならない
-    req = urllib.request.Request(
-        f"https://api.cloudflare.com/client/v4/zones/{zone}/purge_cache",
-        data=json.dumps({"purge_everything": True}).encode(),
-        headers={"Authorization": f"Bearer {token}", "Content-Type": "application/json"},
-        method="POST",
-    )
-    try:
-        with urllib.request.urlopen(req, timeout=30) as resp:
-            body = json.loads(resp.read(1_000_000).decode())     # API の短い答え。上限まで(終わらない応答を溜め込まない。2026-10-27)
-        return "キャッシュパージ完了" if body.get("success") else f"パージ失敗: {body.get('errors')}"
-    except (urllib.error.URLError, TimeoutError, json.JSONDecodeError) as e:
-        return f"パージ失敗: {e}"
+    failed = []
+    for zone in zones:
+        req = urllib.request.Request(
+            f"https://api.cloudflare.com/client/v4/zones/{zone}/purge_cache",
+            data=json.dumps({"purge_everything": True}).encode(),
+            headers={"Authorization": f"Bearer {token}", "Content-Type": "application/json"},
+            method="POST",
+        )
+        try:
+            with urllib.request.urlopen(req, timeout=30) as resp:
+                body = json.loads(resp.read(1_000_000).decode())     # API の短い答え。上限まで(終わらない応答を溜め込まない。2026-10-27)
+            if not body.get("success"):
+                failed.append(f"{zone}: {body.get('errors')}")
+        except (urllib.error.URLError, TimeoutError, json.JSONDecodeError) as e:
+            failed.append(f"{zone}: {e}")
+    if failed:
+        return f"パージ失敗({len(failed)}/{len(zones)} ゾーン): " + " / ".join(failed)
+    return "キャッシュパージ完了" + (f"({len(zones)} ゾーン)" if len(zones) > 1 else "")
 
 
 def main() -> int:

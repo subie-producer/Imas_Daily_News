@@ -27,7 +27,9 @@ from flask import Flask, Response, abort, g, redirect, render_template, request,
 import paper
 
 DB_PATH = Path(os.environ.get("PAPER_DB", str(Path.home() / "srv" / "imas-news" / "data" / "paper.db")))
-SITE_URL = os.environ.get("SITE_URL", "https://imas-news.ofa.tokyo").rstrip("/")
+SITE_URL = os.environ.get("SITE_URL", "https://news.imas.fans").rstrip("/")
+# feed の id は購読者の既読の目印なので、ドメインを移っても変えない(2026-11-17 に imas-news.ofa.tokyo から移った)
+FEED_ID_BASE = "https://imas-news.ofa.tokyo"
 SITE_ROOT = Path(os.environ.get("SITE_ROOT", str(Path.home() / "srv" / "imas-news" / "current")))
 SITE_TITLE = "アイマスNEWS(α)"
 SITE_DESC = "AI編集部が毎日自動発行する非公式アイドルマスターファン新聞"
@@ -412,14 +414,14 @@ def feed():
     out = ['<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="ja">',
            f'<link href="{SITE_URL}/feed.xml" rel="self" type="application/atom+xml" />',
            f'<link href="{SITE_URL}/" rel="alternate" type="text/html" hreflang="ja" />',
-           f"<updated>{released_at()}</updated><id>{SITE_URL}/feed.xml</id>",
+           f"<updated>{released_at()}</updated><id>{FEED_ID_BASE}/feed.xml</id>",
            f'<title type="html">{x(SITE_TITLE)}</title><subtitle>{x(SITE_DESC)}</subtitle>']
     for p in posts:
         url = SITE_URL + p.url
         out.append(
             f'<entry><title type="html">{x(p.title)}</title><link href="{url}" rel="alternate" type="text/html" title="{x(p.title)}" />'
             f"<published>{iso(p.date)}</published><updated>{iso(p.date)}</updated>"
-            f"<id>{SITE_URL}/articles/{p.stem[11:]}</id>"
+            f"<id>{FEED_ID_BASE}/articles/{p.stem[11:]}</id>"
             f'<content type="html" xml:base="{url}"><![CDATA[{p.content.replace("]]>", "]]&gt;")}]]></content>'
             "<author><name></name></author>"
             + "".join(f'<category term="{x(t)}" />' for t in (p.tags or []))

@@ -1,0 +1,259 @@
+{
+ "decisions": {
+  "sidem-howanuui-vol-6-7-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/17号の記事と同内容。新事実・当日トリガー無し"
+  },
+  "sidem-gotoken-christmas-party-set-2026": {
+   "action": "article",
+   "angle": "五島軒のSideMクリスマスセットは、送料無料となる早期予約の期限が11月21日に迫る(予約自体は12月5日まで)。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "出典の変更はポイント表示のみで選ばない。続報予約の締切前(3日以内)で記事にする"
+  },
+  "sidem-m-fes-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/17号に期間・店舗・コースター・ブロマイド特典まで掲載済み"
+  },
+  "sidem-idolish7-collab-screening-2026-12": {
+   "action": "article",
+   "angle": "劇場版SideMと劇場版アイドリッシュセブンの一夜限りの応援上映が12月10日18時30分から新宿・なんば・名古屋で開催、3,800円均一。",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 65,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "SideM公式の新発表で既報なし。他ブランドは上映作品としての名前のみで面はsidem"
+  },
+  "sidem-m-fes-2026-gratte": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "sidem-m-fes-2026と同内容で11/17号に掲載済み。新事実無し"
+  },
+  "sidem-mfes-animate-winter-wonderland-2026": {
+   "action": "article",
+   "angle": "アニメイトMフェス2026の対象商品にTeddy's Collection IIクリアファイル(Beit)と天道輝のミニアクスタが加わり、漣のアクスタvol.2が外れた。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "source_change: 品目の追加・差し替え。Jupiter等の既報分は新事実に数えない"
+  },
+  "sidem-daimaru-matsuzakaya-2026": {
+   "action": "article",
+   "angle": "SideM×大丸松坂屋の大丸梅田店ポップアップが本日開幕(24日まで)。初日は終日事前整理券の対象で、案内ページに申込ボタンが載った。",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 40,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "梅田の3主題(本件・vol2・popup)を統合。source_change: 梅田の申込URLが更新予定から掲載へ。オンライン受注は11/27開始で今日ではない"
+  },
+  "sidem-film-opening-day-ticketing-fans-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿でエンゲージメントも低い。単体では記事にしない"
+  },
+  "teddys-collection-ii-goods": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "予約締切は11/15で終了済み。出典の変更もSKU番号の追加のみ"
+  },
+  "sidem-knick-knacks-vol2-giveaway-2026": {
+   "action": "article",
+   "angle": "ANICLOSET.がハンズ創業50周年を記念し、SideM knick-knacks Vol.2グッズが抽選で当たるプレゼントキャンペーンを告知した。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "carried(1回目)。応募方法・期間は画像内のみ。出典が足りるかは執筆・校閲が判断"
+  },
+  "sidem-daimaru-vol2-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-daimaru-matsuzakaya-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ大丸梅田店の開幕。続報予約(10時から購入可)の素材も統合"
+  },
+  "sidem-daimaru-matsuzakaya-popup-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-daimaru-matsuzakaya-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ大丸梅田店の開幕。続報予約(初日は終日整理券対象)の素材も統合"
+  },
+  "sidem-fbfes-movie-stage-greeting-shinjuku-2026": {
+   "action": "article",
+   "angle": "劇場版SideM公開記念舞台挨拶(11/21新宿ピカデリー)のLVチケットが、本日0時以降、各劇場のチケットシステムで順次発売。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約の発売。開始時刻は劇場ごとに異なる。本会場の先着は19日23時59分まで"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "sidem-gotoken-christmas-party-set-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "五島軒のSideMクリスマスセットは、送料無料となる早期予約の期限が11月21日に迫る(予約自体は12月5日まで)。",
+    "purpose": "期日の知らせ",
+    "lead_score": 10,
+    "dedup_key": "sidem-gotoken-christmas-party-set-2026",
+    "candidate_ids": [
+     "update-185ba8da74ee",
+     "sched-2026-11-18-sidem-gotoken-christmas-party-set-2026-締切前"
+    ]
+   },
+   {
+    "slug": "sidem-idolish7-collab-screening-2026-12",
+    "brand": "sidem",
+    "rank": "medium",
+    "angle": "劇場版SideMと劇場版アイドリッシュセブンの一夜限りの応援上映が12月10日18時30分から新宿・なんば・名古屋で開催、3,800円均一。",
+    "purpose": "新情報",
+    "lead_score": 65,
+    "dedup_key": "sidem-idolish7-collab-screening-2026-12",
+    "candidate_ids": [
+     "202611171835-watch-0",
+     "202611180226-grok-81"
+    ]
+   },
+   {
+    "slug": "sidem-mfes-animate-winter-wonderland-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "アニメイトMフェス2026の対象商品にTeddy's Collection IIクリアファイル(Beit)と天道輝のミニアクスタが加わり、漣のアクスタvol.2が外れた。",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "sidem-mfes-animate-winter-wonderland-2026",
+    "candidate_ids": [
+     "update-bc8ed3117903"
+    ]
+   },
+   {
+    "slug": "sidem-daimaru-matsuzakaya-2026",
+    "brand": "sidem",
+    "rank": "medium",
+    "angle": "SideM×大丸松坂屋の大丸梅田店ポップアップが本日開幕(24日まで)。初日は終日事前整理券の対象で、案内ページに申込ボタンが載った。",
+    "purpose": "期日の知らせ",
+    "lead_score": 40,
+    "dedup_key": "sidem-daimaru-matsuzakaya-2026",
+    "candidate_ids": [
+     "update-86916a00c78d",
+     "sched-2026-11-18-sidem-daimaru-matsuzakaya-2026-開幕",
+     "sched-2026-11-18-sidem-daimaru-vol2-2026-開幕",
+     "sched-2026-11-18-sidem-daimaru-vol2-2026-開幕-src1",
+     "sched-2026-11-18-sidem-daimaru-vol2-2026-開幕-src2",
+     "sched-2026-11-18-sidem-daimaru-matsuzakaya-popup-2026-開幕",
+     "sched-2026-11-18-sidem-daimaru-matsuzakaya-popup-2026-開幕-src1"
+    ]
+   },
+   {
+    "slug": "sidem-knick-knacks-vol2-giveaway-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "ANICLOSET.がハンズ創業50周年を記念し、SideM knick-knacks Vol.2グッズが抽選で当たるプレゼントキャンペーンを告知した。",
+    "purpose": "新情報",
+    "lead_score": 5,
+    "dedup_key": "sidem-knick-knacks-vol2-giveaway-2026",
+    "candidate_ids": [
+     "202611170220-grok-63"
+    ]
+   },
+   {
+    "slug": "sidem-fbfes-movie-stage-greeting-shinjuku-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "劇場版SideM公開記念舞台挨拶(11/21新宿ピカデリー)のLVチケットが、本日0時以降、各劇場のチケットシステムで順次発売。",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "sidem-fbfes-movie-stage-greeting-shinjuku-2026",
+    "candidate_ids": [
+     "sched-2026-11-18-sidem-fbfes-movie-stage-greeting-shinjuku-2026-発売"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "sidem-howanuui-vol-6-7-2026",
+    "reason": "既報",
+    "note": "11/17号の記事と同内容。新事実・当日トリガー無し"
+   },
+   {
+    "dedup_key": "sidem-m-fes-2026",
+    "reason": "既報",
+    "note": "11/17号に期間・店舗・コースター・ブロマイド特典まで掲載済み"
+   },
+   {
+    "dedup_key": "sidem-m-fes-2026-gratte",
+    "reason": "既報",
+    "note": "sidem-m-fes-2026と同内容で11/17号に掲載済み。新事実無し"
+   },
+   {
+    "dedup_key": "sidem-film-opening-day-ticketing-fans-2026",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿でエンゲージメントも低い。単体では記事にしない"
+   },
+   {
+    "dedup_key": "teddys-collection-ii-goods",
+    "reason": "その他",
+    "note": "予約締切は11/15で終了済み。出典の変更もSKU番号の追加のみ"
+   }
+  ],
+  "cross_brand": []
+ }
+}

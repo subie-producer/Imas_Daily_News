@@ -23,7 +23,7 @@ sources:
     type: 公式
   - label: LivePocket主催者ページ
     url: https://livepocket.jp/p/webz5
-    type: 当事者
+    type: 公式
   - label: 灯里愛夏のチケットページ
     url: https://livepocket.jp/e/c_iet
     type: 当事者

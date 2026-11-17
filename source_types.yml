@@ -135,6 +135,8 @@ discovery_only_domains:
 # --- 二次情報: 他所の発表を写して伝えている情報源(規程2.5) ---
 # 法人運営か個人運営かは問わない。自ら取材・発表していないものはここ。
 secondary_domains:
+  - nitter.gq             # 合議で追加: X上の他者の投稿を代理表示する閲覧サイト。自らの発表はなし
+  - san-tatsu.jp          # 合議で追加: あみあみ・大網社のプレスリリースを転載。運営は街情報の媒体社
   - mainichikirei.jp      # 合議で追加: PR TIMESのプレスリリースを本文ごと転載、自社取材の形跡なし
   - release.traicy.com    # 合議で追加: PR TIMESの発表文を転載。自社取材の形跡なし
   - news.dellows.jp       # 合議で追加: 主催の発表をもとに、編集部名で書いた記事
@@ -245,6 +247,7 @@ performer_domains:
 # --- ファン: ファン・サークル活動等の**当事者発信** ---
 # 自分の営みを自分で発信しているもの。他所の発表を写しているものは 二次情報 へ。
 fan_domains:
+  - kitayan.games         # 合議で追加: プロフィールで個人のアナリストが運営と明記。個人に紐づくのでファン
   - oshikatsu.ldblog.jp   # 合議で追加: 個人運営のブログ。内容が紹介・まとめでも個人はファン
   - art-pi.com            # 合議で追加: 個人運営のフリーランスサイト。個人の発信はファン。公式引用だけでは二次情報でない
   - crow-diary.com        # 合議で追加: 「本ブログについて」で個人カラスの雑記ブログと明記。個人に紐づく発信
@@ -275,6 +278,7 @@ party_paths:
   - item.rakuten.co.jp/f272078-takatsuki        # 高槻市ふるさと納税
 
 party_domains:
+  - play.google.com       # 合議で追加: 多数の作品を扱う一般の配信・販売サービス(ストアページ)
   - medicos-e-shop.net    # 合議で追加: 販売業者はメディコス・エンタテインメント。ライセンス商品の販売元
   - sma.co.jp             # 合議で追加: 楽曲提供の告知。所属事務所が出しても、演じる人でない竹内は演者ではない
   - www-stage.aac.pref.aichi.jp # 合議で追加: 愛知県芸術劇場の公式サイト。会場と自主事業の運営元
@@ -642,6 +646,7 @@ x_accounts:
     - asobistore
     - imas_musicradio
   演者:
+    - official_kep1er     # 合議で追加: Kep1er公式。ヴイアラ楽曲を踊る出演者側の発信
     - todamegumi          # 合議で追加: 出演者本人の発信。ARC-FLAGSのPOP UP訪問を自ら投稿
     - yukari_amane_       # 合議で追加: 天音ゆかり本人名義で、ラジオ出演への感謝を投稿
     - T_Larissa_T         # 合議で追加: 武田羅梨沙本人の発信。喜多見柚への思いと公演の意気込みを投稿
@@ -689,6 +694,9 @@ x_accounts:
     - imasnews765
     - zutapoke
   ファン:
+    - nk_nemumi           # 合議で追加: 個人のファンが劇場版公開初日の座席確保を報告
+    - darupon2002         # 合議で追加: 個人のファンが現地訪問の様子を報告
+    - HDMI3777            # 合議で追加: 個人アカウントのファン投稿。シャニソンMVを紹介
     - nakasima9876        # 合議で追加: 個人アカウントによるPOPUP SHOP当選報告
     - Natsumero1993       # 合議で追加: 個人アカウントによる小松伊吹の誕生日祝い投稿
     - tonko0725           # 合議で追加: 個人らしいハンドルのコラボ準備ガイド。個人発信なのでファン扱い
@@ -1280,6 +1288,16 @@ x_posts:
 
 # --- リンク元から引き継いだ種別(リンク先1つずつ。キーは pipelib.link_key)。合議がリンク元の告知と関係していると確かめたものだけ(classify_sources.inherit_from_links)。リンク先そのものの種別より強いときだけ効く ---
 link_types:
+  youtube.com/watch?v=bXNYvgOWwX0: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/valiv_official/status/2122623280901480632(公式)。告知された愛夏の野菜料理の切り抜き動画本体
+  youtube.com/watch?v=TL2HCzz0FCI: ファン         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/HDMI3777/status/2122724291557097815(ファン)。投稿で紹介されている『Tokyo自由系*ガール』のシャニソンMV本体
+  youtube.com/watch?v=ClMzCy9KVKQ: ファン         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/HDMI3777/status/2122723768904868001(ファン)。投稿で紹介されている『アイノウ』のシャニソンMV本体
+  youtube.com/watch?v=58veP-4zgUk: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/imas_CGofficial/status/2121936263192432941(公式)。告知のPremiere MVと同じ楽曲のMV本体ページ
+  world.nol.com/ja/ticket/products/26016535: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://x.com/shinyc_official/status/2122615740834680832(公式)。同じ公演のチケット予約ページで、告知の販売案内と一致
+  x.com/i/status/2122344188851163632: 公式      # リンク元から引き継ぎ(合議で関係を確認): https://x.com/gkmas_official/status/2122525139828892139(公式)。「メタモルフォーゼ」EP配信の告知。リンク元と同じ作品の情報
+  gakuen-label.idolmaster-official.jp/news/3vl33tsoeuk: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://x.com/gkmas_official/status/2122613114466361673(公式)。「メタモルフォーゼ」インスト音源データの公開ページで、告知と同じ企画
+  youtube.com/watch?v=Y_I_NOHVwzI: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/gkmas_official/status/2122316254304256211(公式)。元の告知がこのMV公開。リンク先は同じMVのYouTube動画
+  youtube.com/watch?v=oZz02ianHeo: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://idolmaster-official.jp/news/01_20328(公式)。YouTube題名が告知の番組『初星学園HR ～2.5thアニバーサリーSP～』
+  livepocket.jp/p/webz5: 公式                   # リンク元から引き継ぎ(合議で関係を確認): https://idolmaster-official.jp/news/01_19435(公式)。第12回1on1の販売ページ。同じシリーズの一覧に告知の回がある
   youtube.com/watch?v=O9oCfxSJXTY: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/gkmas_official/status/2122260892909756684(公式)。告知された「ガラクタロード」MVの本体(500万再生の対象)
   youtube.com/watch?v=EhqVIoPgCSA: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/valiv_official/status/2122253358404915234(公式)。告知された宇宙の「YMCA踊ってみた」ショート動画の本体
   youtube.com/watch?v=DigASA6R05g: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/imas_ch/status/2122343940942901592(公式)。告知された小松伊吹の誕生日を祝うショート動画の本体

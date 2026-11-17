@@ -1,0 +1,455 @@
+{
+ "decisions": {
+  "kanae-single-release-event": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/16・11/17の記事に価格・特典・予約12/25まで掲載済み。新事実・当日トリガーなし"
+  },
+  "metamorphose-gasha-kanae-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/16プロデュース開始・11/17施策まとめで掲載済み(11/27まで)"
+  },
+  "kanae-prize-figure-2027": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/16『初』衣装でフィギュア化の記事と同内容"
+  },
+  "kanae-chibigurumi-pouch-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/16ちびぐるみ予約開始の記事と同じ施策"
+  },
+  "gaku-update-2026-26": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "出典の変更は曲名表記など表示のみ。読者に関わる変更なし"
+  },
+  "gakuen-hatsuboshi-hr-2-5th-sp-2026": {
+   "action": "article",
+   "angle": "11月15日に生配信された『初星学園HR 2.5thアニバーサリーSP』が約31万回視聴されたことを伝える。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "視聴数は既報の告知記事に無い新事実"
+  },
+  "gaku-kanae-chibigurumi-pouch-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/16『ちびぐるみ予約は本日11時開始』と同じ商品"
+  },
+  "gakuen-kanae-debut-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/16プロデュース本日開始の記事と同内容"
+  },
+  "metamorphose-streaming-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/17『本日配信開始』で掲載済み"
+  },
+  "metamorphose-mv-2026": {
+   "action": "article",
+   "angle": "氷渡香名江「メタモルフォーゼ」のOfficial Music Videoが11月16日に公開され、50万再生を突破した。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "50万再生突破の主題を統合"
+  },
+  "gakumas-mugyumini-figure-vol3": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/17むぎゅみにvol.3の記事で掲載済み"
+  },
+  "gaku-tsubame-garaku-road-gasha-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "出典の変更は数値表示のみで、ガシャは11/6に終了済み"
+  },
+  "metamorphose-instrumental-2026": {
+   "action": "article",
+   "angle": "「メタモルフォーゼ」のインスト音源データが11月17日に公開され、利用規約を確認のうえ使える。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公式Xのリポスト主題を統合"
+  },
+  "gakumas-app-store-rank-second-2026-11-17": {
+   "action": "article",
+   "angle": "学マスが11月17日のApp Storeセールスランキングで前日比18ランク上昇の2位になった。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "要因は2.5周年と香名江実装との記事の見立て"
+  },
+  "gaku-gearbeat-concerto-program-2026": {
+   "action": "article",
+   "angle": "Gearbeat Concertoのポップアップストア紹介番組が12月22日22時に配信され、伊藤舞音・川村玲奈が出演、お便りも募集中。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-kanegae-metamorphose-ep-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/17の記事に11月24日0時のEP配信が掲載済み"
+  },
+  "gaku-metamorphose-500k-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "metamorphose-mv-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "MV公開と同じ話題"
+  },
+  "gaku-agitato-mv-million-views-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/17の300万再生突破の記事と同内容"
+  },
+  "garakuta-road-5m-views-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/17の500万再生突破の記事と同内容"
+  },
+  "gaku-niconico-ssg-271-2026": {
+   "action": "article",
+   "angle": "『今井麻美のニコニコSSG』第271回が12月1日20時から配信され、川村玲奈・七瀬つむぎが学マスのライブシーンを見ながら語る。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "学マスのライブシーンが題材の番組"
+  },
+  "anniversary-choice-login-bonus": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/17の開催中施策まとめに12/1 4:59までの内容が掲載済み"
+  },
+  "gaku-metamorphose-instrumental-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "metamorphose-instrumental-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じインスト音源公開の知らせ"
+  },
+  "gakumas-gravure-solo-collection-vol1-2026": {
+   "action": "article",
+   "angle": "「Gravure Solo Collection」Vol.1『ねえ、言っちゃうよ。』(3,500円、全15曲)が本日11月18日に発売される。",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 70,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(発売日)"
+  },
+  "gaku-radio-2026-11-18-guests": {
+   "action": "article",
+   "angle": "「初星学園放送部」の新回が本日18日に放送され、飯田ヒカル・七瀬つむぎ・陽高真白がゲストでライブを振り返る。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(開始)。次回放送の主題を統合"
+  },
+  "gaku-update-2026-06": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-radio-2026-11-18-guests",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ11月18日放送回の予告"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "gaku-gakuen-hatsuboshi-hr-2-5th-sp-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "11月15日に生配信された『初星学園HR 2.5thアニバーサリーSP』が約31万回視聴されたことを伝える。",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "gakuen-hatsuboshi-hr-2-5th-sp-2026",
+    "candidate_ids": [
+     "202611171233-explore-11"
+    ]
+   },
+   {
+    "slug": "gaku-metamorphose-mv-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "氷渡香名江「メタモルフォーゼ」のOfficial Music Videoが11月16日に公開され、50万再生を突破した。",
+    "purpose": "新情報",
+    "lead_score": 25,
+    "dedup_key": "metamorphose-mv-2026",
+    "candidate_ids": [
+     "202611172334-explore-12",
+     "202611180226-grok-38"
+    ]
+   },
+   {
+    "slug": "gaku-metamorphose-instrumental-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "「メタモルフォーゼ」のインスト音源データが11月17日に公開され、利用規約を確認のうえ使える。",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "metamorphose-instrumental-2026",
+    "candidate_ids": [
+     "202611180226-explore-8",
+     "202611180226-grok-71"
+    ]
+   },
+   {
+    "slug": "gaku-gakumas-app-store-rank-second-2026-11-17",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "学マスが11月17日のApp Storeセールスランキングで前日比18ランク上昇の2位になった。",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "gakumas-app-store-rank-second-2026-11-17",
+    "candidate_ids": [
+     "202611180226-explore-9"
+    ]
+   },
+   {
+    "slug": "gaku-gearbeat-concerto-program-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "Gearbeat Concertoのポップアップストア紹介番組が12月22日22時に配信され、伊藤舞音・川村玲奈が出演、お便りも募集中。",
+    "purpose": "新情報",
+    "lead_score": 25,
+    "dedup_key": "gaku-gearbeat-concerto-program-2026",
+    "candidate_ids": [
+     "202611180226-grok-34"
+    ]
+   },
+   {
+    "slug": "gaku-niconico-ssg-271-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "『今井麻美のニコニコSSG』第271回が12月1日20時から配信され、川村玲奈・七瀬つむぎが学マスのライブシーンを見ながら語る。",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "gaku-niconico-ssg-271-2026",
+    "candidate_ids": [
+     "202611180226-grok-41"
+    ]
+   },
+   {
+    "slug": "gaku-gakumas-gravure-solo-collection-vol1-2026",
+    "brand": "gaku",
+    "rank": "medium",
+    "angle": "「Gravure Solo Collection」Vol.1『ねえ、言っちゃうよ。』(3,500円、全15曲)が本日11月18日に発売される。",
+    "purpose": "期日の知らせ",
+    "lead_score": 70,
+    "dedup_key": "gakumas-gravure-solo-collection-vol1-2026",
+    "candidate_ids": [
+     "sched-2026-11-18-gakumas-gravure-solo-collection-vol1-2026-発売"
+    ]
+   },
+   {
+    "slug": "gaku-radio-2026-11-18-guests",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "「初星学園放送部」の新回が本日18日に放送され、飯田ヒカル・七瀬つむぎ・陽高真白がゲストでライブを振り返る。",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "gaku-radio-2026-11-18-guests",
+    "candidate_ids": [
+     "sched-2026-11-18-gaku-radio-2026-11-18-guests-開始",
+     "sched-2026-11-18-gaku-update-2026-06-開始"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "kanae-single-release-event",
+    "reason": "既報",
+    "note": "11/16・11/17の記事に価格・特典・予約12/25まで掲載済み。新事実・当日トリガーなし"
+   },
+   {
+    "dedup_key": "metamorphose-gasha-kanae-2026",
+    "reason": "既報",
+    "note": "11/16プロデュース開始・11/17施策まとめで掲載済み(11/27まで)"
+   },
+   {
+    "dedup_key": "kanae-prize-figure-2027",
+    "reason": "既報",
+    "note": "11/16『初』衣装でフィギュア化の記事と同内容"
+   },
+   {
+    "dedup_key": "kanae-chibigurumi-pouch-2026",
+    "reason": "既報",
+    "note": "11/16ちびぐるみ予約開始の記事と同じ施策"
+   },
+   {
+    "dedup_key": "gaku-update-2026-26",
+    "reason": "既報",
+    "note": "出典の変更は曲名表記など表示のみ。読者に関わる変更なし"
+   },
+   {
+    "dedup_key": "gaku-kanae-chibigurumi-pouch-2026",
+    "reason": "既報",
+    "note": "11/16『ちびぐるみ予約は本日11時開始』と同じ商品"
+   },
+   {
+    "dedup_key": "gakuen-kanae-debut-2026",
+    "reason": "既報",
+    "note": "11/16プロデュース本日開始の記事と同内容"
+   },
+   {
+    "dedup_key": "metamorphose-streaming-2026",
+    "reason": "既報",
+    "note": "11/17『本日配信開始』で掲載済み"
+   },
+   {
+    "dedup_key": "gakumas-mugyumini-figure-vol3",
+    "reason": "既報",
+    "note": "11/17むぎゅみにvol.3の記事で掲載済み"
+   },
+   {
+    "dedup_key": "gaku-tsubame-garaku-road-gasha-2026",
+    "reason": "その他",
+    "note": "出典の変更は数値表示のみで、ガシャは11/6に終了済み"
+   },
+   {
+    "dedup_key": "gaku-kanegae-metamorphose-ep-2026",
+    "reason": "既報",
+    "note": "11/17の記事に11月24日0時のEP配信が掲載済み"
+   },
+   {
+    "dedup_key": "gaku-agitato-mv-million-views-2026",
+    "reason": "既報",
+    "note": "11/17の300万再生突破の記事と同内容"
+   },
+   {
+    "dedup_key": "garakuta-road-5m-views-2026",
+    "reason": "既報",
+    "note": "11/17の500万再生突破の記事と同内容"
+   },
+   {
+    "dedup_key": "anniversary-choice-login-bonus",
+    "reason": "既報",
+    "note": "11/17の開催中施策まとめに12/1 4:59までの内容が掲載済み"
+   }
+  ],
+  "cross_brand": []
+ }
+}

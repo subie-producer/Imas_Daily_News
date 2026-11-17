@@ -313,6 +313,7 @@
   subject: シャニマス 近日登場アイドルのチラ見せ
   watch: 10月20日15時のチラ見せで明かされる登場アイドルと登場時期(判明次第 triggers へ)
   added_on: '2026-10-20'
+  removed_on: '2026-11-18'
 - dedup_key: shiny-song-for-prism-dmm-maintenance-2026-10-21
   brand: shiny
   subject: シャニソンDMM版 臨時メンテナンスの終了時刻
@@ -459,3 +460,8 @@
   subject: セガ ラッキーくじ シンデレラガールズ Vol.1キュート 購入期間再設定
   watch: メンテナンス終了後に設けられる購入期間の日程(未定。判明次第 triggers へ)
   added_on: '2026-11-15'
+- dedup_key: tachibana-arisu-seaside-memory-figure-2026
+  brand: cg
+  subject: 橘ありす「シーサイド・メモリー」1/7フィギュア(プラム)
+  watch: 2027年1月予定の正式発売日(判明次第 triggers へ)
+  added_on: '2026-11-18'

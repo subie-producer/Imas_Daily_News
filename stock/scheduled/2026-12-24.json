@@ -225,5 +225,54 @@
   "src_candidate_id": "202611092333-explore-6",
   "companion_of": "sched-2026-12-24-gaku-gearbeat-concerto-2026-開幕",
   "src_dedup_key": "gaku-gearbeat-concerto-2026"
+ },
+ {
+  "id": "sched-2026-12-24-gaku-gearbeat-concerto-program-2026-開幕",
+  "dedup_key": "gaku-gearbeat-concerto-program-2026",
+  "brand": "gaku",
+  "subject": "学マス ポップアップストア Gearbeat Concerto 開幕",
+  "kind": "開幕",
+  "note": "日本の各オフィシャルショップと上海会場でポップアップストアを訪れられる",
+  "reserved_on": "2026-11-18",
+  "occurs_on": "2026-12-24",
+  "title": "Gearbeat Concerto紹介番組を12月22日に配信",
+  "url": "https://x.com/gkmas_official/status/2122631078473314571",
+  "source_type": "公式",
+  "facts": [
+   "ポップアップストア開催に向けた紹介番組を配信する。",
+   "配信日時: 2026年12月22日(火) 22:00～（日本時間）",
+   "出演者: 伊藤舞音（倉本千奈役）、川村玲奈（篠澤広役）",
+   "収録番組。",
+   "プロデューサーからのお便りを募集中。ハッシュタグ「#学マスGearbeatConcerto」を付けて投稿する。",
+   "リンク: https://t.co/IaiEV7EGPF",
+   "エンゲージメント: 中",
+   "言及アイドル: 倉本千奈、篠澤広"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "event_date": "2026-12-22",
+  "src_candidate_id": "202611180226-grok-34"
+ },
+ {
+  "id": "sched-2026-12-24-gaku-gearbeat-concerto-program-2026-開幕-src1",
+  "dedup_key": "gaku-gearbeat-concerto-program-2026",
+  "brand": "gaku",
+  "subject": "学マス ポップアップストア Gearbeat Concerto 開幕",
+  "kind": "開幕",
+  "note": "日本の各オフィシャルショップと上海会場でポップアップストアを訪れられる",
+  "reserved_on": "2026-11-18",
+  "occurs_on": "2026-12-24",
+  "title": "アイドルマスター ポータル「【学マス】スチームパンクテーマの新作グッズ ～Gearbeat Concerto～ 発売決定！日本・中国にて本グッズのポップアップストアを同時開催♪」(2026-11-07)",
+  "url": "https://idolmaster-official.jp/news/01_20322",
+  "source_type": "公式",
+  "facts": [
+   "日本会場の実施期間は2026年12月24日から2027年1月11日。開催場所はアイドルマスター オフィシャルショップ各店舗（315!!!SHOPを除く）。",
+   "上海会場の開催期間は2026年12月24日から2027年1月3日。場所は上海・新世界城4F（住所：上海市黄浦区南京西路2-68号）。"
+  ],
+  "via": "verified_fact",
+  "verify": "unconfirmed",
+  "src_candidate_id": "202611180226-grok-34",
+  "companion_of": "sched-2026-12-24-gaku-gearbeat-concerto-program-2026-開幕",
+  "src_dedup_key": "gaku-gearbeat-concerto-program-2026"
  }
 ]

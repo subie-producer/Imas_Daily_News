@@ -1,0 +1,140 @@
+{
+ "decisions": {
+  "million-platinum-star-trust-13-outside-isotope-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-platinum-start-trust-13-outside-isotope-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "dedup_keyの綴り違い(star/start)。同じイベントの開催告知で二次情報のため、公式の主題へ統合"
+  },
+  "soutei-shinrigai-mv-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/17号が歌唱5人とクレジットを掲載済み。新事実・当日のトリガーなし"
+  },
+  "million-x-stream-radio-playlist-letters-2026-11": {
+   "action": "article",
+   "angle": "X-STREAM THEATERシリーズCDドラマパート「ラジオ#プレイリスト」のお便り募集が11月24日23時59分まで行われ、採用分はCDのドラマパートに使われる。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "読者の行動(お便り投稿)が別なのでイベント記事とは分ける"
+  },
+  "million-platinum-start-trust-13-outside-isotope-2026": {
+   "action": "article",
+   "angle": "プラチナスタートラスト13は11月24日20時59分まで。「想定心理外」はAngelタイプで、21日15時から公演折り返し、報酬SRは麗花とジュリア。",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 70,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "既報は開始と報酬SRのみ。期間・楽曲タイプ・ボーナス・折り返し日が新情報。star-trust(二次)とstart-trust-13(X告知)を統合"
+  },
+  "million-kyomaf-after-sales-2026": {
+   "action": "article",
+   "angle": "京まふ2026ミリオンライブPOP UP SHOP事後通販(101点)は本日23時59分が最終日。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約の締切。当日のトリガーあり。他の面は未記事化"
+  },
+  "million-platinum-start-trust-13-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-platinum-start-trust-13-outside-isotope-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公式Xの開催中告知のみ。同じイベントなので統合"
+  },
+  "million-platinum-star-tune-yoruto-akari-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "イベントは11/7に終了済み。10/31の告知で既報も複数あり、新事実・当日のトリガーなし"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "million-x-stream-radio-playlist-letters-2026-11",
+    "brand": "million",
+    "rank": "small",
+    "angle": "X-STREAM THEATERシリーズCDドラマパート「ラジオ#プレイリスト」のお便り募集が11月24日23時59分まで行われ、採用分はCDのドラマパートに使われる。",
+    "purpose": "新情報",
+    "lead_score": 25,
+    "dedup_key": "million-x-stream-radio-playlist-letters-2026-11",
+    "candidate_ids": [
+     "202611171835-watch-5",
+     "202611180226-grok-80"
+    ]
+   },
+   {
+    "slug": "million-platinum-start-trust-13-outside-isotope-2026",
+    "brand": "million",
+    "rank": "medium",
+    "angle": "プラチナスタートラスト13は11月24日20時59分まで。「想定心理外」はAngelタイプで、21日15時から公演折り返し、報酬SRは麗花とジュリア。",
+    "purpose": "新情報",
+    "lead_score": 70,
+    "dedup_key": "million-platinum-start-trust-13-outside-isotope-2026",
+    "candidate_ids": [
+     "202611171835-watch-7",
+     "202611172334-explore-0",
+     "202611170732-explore-1",
+     "202611171233-explore-5",
+     "202611180226-grok-82"
+    ]
+   },
+   {
+    "slug": "million-kyomaf-after-sales-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "京まふ2026ミリオンライブPOP UP SHOP事後通販(101点)は本日23時59分が最終日。",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "million-kyomaf-after-sales-2026",
+    "candidate_ids": [
+     "202611180226-grok-20",
+     "sched-2026-11-18-million-kyomaf-after-sales-2026-締切"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "soutei-shinrigai-mv-2026",
+    "reason": "既報",
+    "note": "11/17号が歌唱5人とクレジットを掲載済み。新事実・当日のトリガーなし"
+   },
+   {
+    "dedup_key": "million-platinum-star-tune-yoruto-akari-2026",
+    "reason": "その他",
+    "note": "イベントは11/7に終了済み。10/31の告知で既報も複数あり、新事実・当日のトリガーなし"
+   }
+  ],
+  "cross_brand": []
+ }
+}

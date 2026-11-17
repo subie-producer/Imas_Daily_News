@@ -1135,5 +1135,53 @@
   "src_candidate_id": "202611140226-grok-78",
   "companion_of": "sched-2026-12-04-gakumas-live-tour-hyo-final-tsukuriyo-goods-締切前",
   "src_dedup_key": "gakumasu-tour-shirube-merch-2026"
+ },
+ {
+  "id": "sched-2026-12-04-gaku-gearbeat-concerto-program-2026-締切前",
+  "dedup_key": "gaku-gearbeat-concerto-program-2026",
+  "brand": "gaku",
+  "subject": "ASOBI STORE Gearbeat Concerto 受注生産の締切前",
+  "kind": "締切前",
+  "note": "3日後の12/7 23:59までのASOBI STORE受注生産に間に合うよう注文できる",
+  "reserved_on": "2026-11-18",
+  "occurs_on": "2026-12-07",
+  "title": "Gearbeat Concerto紹介番組を12月22日に配信",
+  "url": "https://x.com/gkmas_official/status/2122631078473314571",
+  "source_type": "公式",
+  "facts": [
+   "ポップアップストア開催に向けた紹介番組を配信する。",
+   "配信日時: 2026年12月22日(火) 22:00～（日本時間）",
+   "出演者: 伊藤舞音（倉本千奈役）、川村玲奈（篠澤広役）",
+   "収録番組。",
+   "プロデューサーからのお便りを募集中。ハッシュタグ「#学マスGearbeatConcerto」を付けて投稿する。",
+   "リンク: https://t.co/IaiEV7EGPF",
+   "エンゲージメント: 中",
+   "言及アイドル: 倉本千奈、篠澤広"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "event_date": "2026-12-22",
+  "src_candidate_id": "202611180226-grok-34"
+ },
+ {
+  "id": "sched-2026-12-04-gaku-gearbeat-concerto-program-2026-締切前-src1",
+  "dedup_key": "gaku-gearbeat-concerto-program-2026",
+  "brand": "gaku",
+  "subject": "ASOBI STORE Gearbeat Concerto 受注生産の締切前",
+  "kind": "締切前",
+  "note": "3日後の12/7 23:59までのASOBI STORE受注生産に間に合うよう注文できる",
+  "reserved_on": "2026-11-18",
+  "occurs_on": "2026-12-07",
+  "title": "アイドルマスター ポータル「【学マス】スチームパンクテーマの新作グッズ ～Gearbeat Concerto～ 発売決定！日本・中国にて本グッズのポップアップストアを同時開催♪」(2026-11-07)",
+  "url": "https://idolmaster-official.jp/news/01_20322",
+  "source_type": "公式",
+  "facts": [
+   "ASOBI STOREでは2026年12月7日23時59分までの注文は受注生産、それ以降は数量限定販売。"
+  ],
+  "via": "verified_fact",
+  "verify": "unconfirmed",
+  "src_candidate_id": "202611180226-grok-34",
+  "companion_of": "sched-2026-12-04-gaku-gearbeat-concerto-program-2026-締切前",
+  "src_dedup_key": "gaku-gearbeat-concerto-program-2026"
  }
 ]

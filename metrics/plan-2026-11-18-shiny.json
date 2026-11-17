@@ -1,0 +1,379 @@
+{
+ "decisions": {
+  "shiny-song-for-prism-ver-2-20-0-penlight": {
+   "action": "article",
+   "angle": "シャニソンVer.2.20.0で、PJ: REFRAC7IONSの3DMVのペンライトカラーがメンバーカラーに連動し、ガシャ画面等で特訓状況も確認できるようになった。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "二次情報のため執筆・校閲で出典確認"
+  },
+  "shiny-still-blue-tickets": {
+   "action": "article",
+   "angle": "「Still blue」現地チケット一般発売(先着)が11月21日12時に始まる。12月12日23:59まで、1公演2枚まで。あわせて12月5日からの公式リセールも案内する。",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 70,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "asobipremium-lottery の公式リセール情報を統合"
+  },
+  "shiny-twilight-collection-2026-11": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-tomarikaze-no-harutachi-rerun-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ復刻イベントの素材"
+  },
+  "shiny-tomarikaze-no-haru-tachi-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-tomarikaze-no-harutachi-rerun-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ復刻イベントの素材"
+  },
+  "shiny-song-for-prism-3rd-anniversary-login-bonus-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-song-for-prism-ver-2-20-0-penlight",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じVer.2.20.0アップデートの情報"
+  },
+  "shiny-hbtk-clip-2026-11": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "出典の変更は再生数などの表示のみで、読者に関わる変更なし"
+  },
+  "shiny-stillblue-asobipremium-lottery": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-still-blue-tickets",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ公演の一般発売と公式リセール"
+  },
+  "shiny-habataki-radio-2026-11-17": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "11月17日放送分は終了済み"
+  },
+  "shiny-habataki-radio-archive-2026-11-17": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "終了済み放送のアーカイブ案内のみで新しい事実なし"
+  },
+  "shiny-style-collection-higanryu-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/13のStyle COLLECTION第3弾(受注11月29日まで)と同じ施策で、新事実・当日トリガーなし"
+  },
+  "shiny-style-collection-fumage-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/13のStyle COLLECTION第3弾と同じ施策で、新事実・当日トリガーなし"
+  },
+  "shiny-kimchikura-anisama-seoul-2027": {
+   "action": "article",
+   "angle": "KIMCHIKURA × ANISAMA SEOUL 2027(2027年1月23・24日、ソウル)にイルミネーションスターズとシーズが出演し、チケットが本日19時(DAY1)・20時(DAY2)から販売される。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "当日販売開始のトリガーあり"
+  },
+  "shiny-song-for-prism-2dmv-teaser-2026-11": {
+   "action": "roundup",
+   "angle": "シャニソン・シャニマスの近日実装・登場の予告と開催中施策(2DMV予告、羽那復刻ガシャ、18日15時登場アイドル)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-idol-arrival-teaser-2026-11-18": {
+   "action": "roundup",
+   "angle": "シャニソン・シャニマスの近日実装・登場の予告と開催中施策(2DMV予告、羽那復刻ガシャ、18日15時登場アイドル)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-song-for-prism-hana-rerun-gacha-2026-11": {
+   "action": "roundup",
+   "angle": "シャニソン・シャニマスの近日実装・登場の予告と開催中施策(2DMV予告、羽那復刻ガシャ、18日15時登場アイドル)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-30ms-cometik-products-2026-11": {
+   "action": "article",
+   "angle": "BANDAI SPIRITSが30MSでCoMETIKの斑鳩ルカ(2027年6月、4,180円)、羽那/はるきのオプションセット、シグマシスターズパラドクス3[カラーB]の商品化を発表した。",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 40,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "cometik-2027 の当事者発表を統合"
+  },
+  "shiny-pj-refrac7ions-chibigurumi-arrival-2026-11": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/13にちびぐるみvol.1・2発売を記事化済み。店舗の入荷投稿のみ・未確認"
+  },
+  "shiny-30ms-cometik-2027": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-30ms-cometik-products-2026-11",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ新商品発表"
+  },
+  "shiny-collab-fes-2026-11": {
+   "action": "article",
+   "angle": "シャニマス「コラボフェス」が本日11月18日に開幕し、27日11時59分までゲーム内で参加できる。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(開幕)"
+  },
+  "shiny-maintenance-2026-11-18": {
+   "action": "article",
+   "angle": "無料10連ガシャを引けるのは本日12時のメンテナンス開始前まで(メンテは15時まで)。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(終了)"
+  },
+  "shiny-tomarikaze-no-harutachi-rerun-2026": {
+   "action": "article",
+   "angle": "「とまりかぜの春たちは」復刻が本日15時のメンテ明けから始まり、27日11時59分まで限定コミュやSSR浅倉透を獲得できる。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(開幕)。twilight-collection と tomarikaze-no-haru-tachi を統合"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "shiny-song-for-prism-ver-2-20-0-penlight",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "シャニソンVer.2.20.0で、PJ: REFRAC7IONSの3DMVのペンライトカラーがメンバーカラーに連動し、ガシャ画面等で特訓状況も確認できるようになった。",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "shiny-song-for-prism-ver-2-20-0-penlight",
+    "candidate_ids": [
+     "202611170732-explore-2",
+     "202611171835-explore-20"
+    ]
+   },
+   {
+    "slug": "shiny-still-blue-tickets",
+    "brand": "shiny",
+    "rank": "medium",
+    "angle": "「Still blue」現地チケット一般発売(先着)が11月21日12時に始まる。12月12日23:59まで、1公演2枚まで。あわせて12月5日からの公式リセールも案内する。",
+    "purpose": "新情報",
+    "lead_score": 70,
+    "dedup_key": "shiny-still-blue-tickets",
+    "candidate_ids": [
+     "202611171233-watch-0",
+     "202611180226-grok-26",
+     "202611180226-grok-84",
+     "202611180226-explore-5"
+    ]
+   },
+   {
+    "slug": "shiny-kimchikura-anisama-seoul-2027",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "KIMCHIKURA × ANISAMA SEOUL 2027(2027年1月23・24日、ソウル)にイルミネーションスターズとシーズが出演し、チケットが本日19時(DAY1)・20時(DAY2)から販売される。",
+    "purpose": "新情報",
+    "lead_score": 30,
+    "dedup_key": "shiny-kimchikura-anisama-seoul-2027",
+    "candidate_ids": [
+     "202611180226-grok-25"
+    ]
+   },
+   {
+    "slug": "shiny-30ms-cometik-products-2026-11",
+    "brand": "shiny",
+    "rank": "medium",
+    "angle": "BANDAI SPIRITSが30MSでCoMETIKの斑鳩ルカ(2027年6月、4,180円)、羽那/はるきのオプションセット、シグマシスターズパラドクス3[カラーB]の商品化を発表した。",
+    "purpose": "新情報",
+    "lead_score": 40,
+    "dedup_key": "shiny-30ms-cometik-products-2026-11",
+    "candidate_ids": [
+     "202611180226-grok-30",
+     "202611180226-grok-58"
+    ]
+   },
+   {
+    "slug": "shiny-collab-fes-2026-11",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "シャニマス「コラボフェス」が本日11月18日に開幕し、27日11時59分までゲーム内で参加できる。",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "shiny-collab-fes-2026-11",
+    "candidate_ids": [
+     "sched-2026-11-18-shiny-collab-fes-2026-11-開幕"
+    ]
+   },
+   {
+    "slug": "shiny-maintenance-2026-11-18",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "無料10連ガシャを引けるのは本日12時のメンテナンス開始前まで(メンテは15時まで)。",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "shiny-maintenance-2026-11-18",
+    "candidate_ids": [
+     "sched-2026-11-18-shiny-maintenance-2026-11-18-終了"
+    ]
+   },
+   {
+    "slug": "shiny-tomarikaze-no-harutachi-rerun-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "「とまりかぜの春たちは」復刻が本日15時のメンテ明けから始まり、27日11時59分まで限定コミュやSSR浅倉透を獲得できる。",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "shiny-tomarikaze-no-harutachi-rerun-2026",
+    "candidate_ids": [
+     "sched-2026-11-18-shiny-tomarikaze-no-harutachi-rerun-2026-開幕",
+     "sched-2026-11-18-shiny-tomarikaze-no-harutachi-rerun-2026-開幕-src1",
+     "202611171233-explore-6",
+     "202611172334-explore-4",
+     "202611162334-explore-4",
+     "202611171835-explore-17"
+    ]
+   },
+   {
+    "slug": "shiny-ops-roundup",
+    "brand": "shiny",
+    "rank": "roundup",
+    "angle": "シャニソン・シャニマスの近日実装・登場の予告と開催中施策(2DMV予告、羽那復刻ガシャ、18日15時登場アイドル)",
+    "lead_score": 0,
+    "dedup_key": "shiny-song-for-prism-2dmv-teaser-2026-11",
+    "candidate_ids": [
+     "202611180226-grok-27",
+     "202611180226-grok-28",
+     "202611180226-grok-29"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "shiny-hbtk-clip-2026-11",
+    "reason": "その他",
+    "note": "出典の変更は再生数などの表示のみで、読者に関わる変更なし"
+   },
+   {
+    "dedup_key": "shiny-habataki-radio-2026-11-17",
+    "reason": "その他",
+    "note": "11月17日放送分は終了済み"
+   },
+   {
+    "dedup_key": "shiny-habataki-radio-archive-2026-11-17",
+    "reason": "その他",
+    "note": "終了済み放送のアーカイブ案内のみで新しい事実なし"
+   },
+   {
+    "dedup_key": "shiny-style-collection-higanryu-2026",
+    "reason": "既報",
+    "note": "11/13のStyle COLLECTION第3弾(受注11月29日まで)と同じ施策で、新事実・当日トリガーなし"
+   },
+   {
+    "dedup_key": "shiny-style-collection-fumage-2026",
+    "reason": "既報",
+    "note": "11/13のStyle COLLECTION第3弾と同じ施策で、新事実・当日トリガーなし"
+   },
+   {
+    "dedup_key": "shiny-pj-refrac7ions-chibigurumi-arrival-2026-11",
+    "reason": "既報",
+    "note": "11/13にちびぐるみvol.1・2発売を記事化済み。店舗の入荷投稿のみ・未確認"
+   }
+  ],
+  "cross_brand": []
+ }
+}

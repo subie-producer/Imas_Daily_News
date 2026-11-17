@@ -99,5 +99,32 @@
   "src_candidate_id": "202611160221-grok-109",
   "companion_of": "sched-2026-12-22-gaku-kanae-1st-single-締切前",
   "src_dedup_key": "gaku-update-2026-25"
+ },
+ {
+  "id": "sched-2026-12-22-gaku-gearbeat-concerto-program-2026-開始",
+  "dedup_key": "gaku-gearbeat-concerto-program-2026",
+  "brand": "gaku",
+  "subject": "Gearbeat Concerto紹介番組の配信",
+  "kind": "開始",
+  "note": "22時から伊藤舞音さん・川村玲奈さん出演の紹介番組を視聴できる",
+  "reserved_on": "2026-11-18",
+  "occurs_on": "2026-12-22",
+  "title": "Gearbeat Concerto紹介番組を12月22日に配信",
+  "url": "https://x.com/gkmas_official/status/2122631078473314571",
+  "source_type": "公式",
+  "facts": [
+   "ポップアップストア開催に向けた紹介番組を配信する。",
+   "配信日時: 2026年12月22日(火) 22:00～（日本時間）",
+   "出演者: 伊藤舞音（倉本千奈役）、川村玲奈（篠澤広役）",
+   "収録番組。",
+   "プロデューサーからのお便りを募集中。ハッシュタグ「#学マスGearbeatConcerto」を付けて投稿する。",
+   "リンク: https://t.co/IaiEV7EGPF",
+   "エンゲージメント: 中",
+   "言及アイドル: 倉本千奈、篠澤広"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "event_date": "2026-12-22",
+  "src_candidate_id": "202611180226-grok-34"
  }
 ]

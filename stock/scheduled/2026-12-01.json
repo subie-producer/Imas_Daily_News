@@ -1752,5 +1752,32 @@
   "src_candidate_id": "202611170220-grok-51",
   "companion_of": "sched-2026-12-01-kanae-implementation-gift-締切",
   "src_dedup_key": "metamorphose-costume-gacha"
+ },
+ {
+  "id": "sched-2026-12-01-gaku-niconico-ssg-271-2026-開始",
+  "dedup_key": "gaku-niconico-ssg-271-2026",
+  "brand": "gaku",
+  "subject": "今井麻美のニコニコSSG第271回",
+  "kind": "開始",
+  "note": "20時から川村玲奈さん・七瀬つむぎさんゲスト回をニコ生/YouTubeで視聴できる",
+  "reserved_on": "2026-11-18",
+  "occurs_on": "2026-12-01",
+  "title": "川村玲奈さん・七瀬つむぎさんが今井麻美のSSGに出演",
+  "url": "https://www.famitsu.com/article/202611/94239",
+  "source_type": "報道",
+  "facts": [
+   "配信日: 2026年12月1日(火)",
+   "配信時間: 20:00～",
+   "番組: 『今井麻美のニコニコSSG』第271回（ニコニコ生放送／YouTube）",
+   "ゲスト: 川村玲奈、七瀬つむぎ",
+   "川村玲奈と七瀬つむぎのお気に入りの学マスゲーム内ライブシーンを3人で視聴しながら話す。",
+   "オマケ放送: 21時から。チャンネル会員・メンバーシップ限定。",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "event_date": "2026-12-01",
+  "link_from": "https://x.com/famitsu/status/2122669184597553371",
+  "src_candidate_id": "202611180226-grok-41"
  }
 ]

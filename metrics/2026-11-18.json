@@ -1,0 +1,157 @@
+{
+ "collect": [
+  {
+   "at": "2026-11-18T02:28:41+09:00",
+   "edition": "2026-11-18",
+   "started_at": "2026-11-18T02:00:45+09:00",
+   "trigger": "timer",
+   "watch": {
+    "stats": {
+     "imas-portal": {
+      "found": 12,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-sidem": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-shiny": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-million": {
+      "found": 8,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "lantis-shiny": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "lantis-sidem": {
+      "found": 5,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "columbia-imas": {
+      "found": 354,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "bnam-tours": {
+      "found": 70,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "imasnews765": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     }
+    },
+    "new": 0,
+    "facted": 0,
+    "deferred": 0,
+    "blocked": 0,
+    "unavailable": 0
+   },
+   "per_query": {
+    "explore:765as": 0,
+    "explore:cinderella": 1,
+    "explore:million": 4,
+    "explore:shiny": 1,
+    "explore:sidem": 1,
+    "explore:gakuen": 2,
+    "explore:dsva": 0,
+    "explore:joint-other": 0,
+    "explore:trend": 1,
+    "grok_week_searches": 506,
+    "grok:765as": 0,
+    "grok:cinderella": 18,
+    "grok:million": 8,
+    "grok:shiny": 16,
+    "grok:sidem": 3,
+    "grok:gakuen": 16,
+    "grok:dsva": 12,
+    "grok:joint-other": 4,
+    "grok:trend": 4,
+    "grok_searches:765": 5,
+    "grok_searches:general": 7,
+    "grok_searches:gaku": 7,
+    "grok_searches:sidem": 9,
+    "grok_searches:cg": 6,
+    "grok_searches:dsva": 5,
+    "grok_searches:million": 8,
+    "grok_searches:shiny": 6,
+    "grok_searches:joint": 16
+   },
+   "normalized": 91,
+   "added": 72,
+   "verify": {
+    "confirmed": 70,
+    "unconfirmed": 16,
+    "failed": 5
+   },
+   "duration_s": 1675
+  }
+ ],
+ "collect_required": [
+  {
+   "at": "2026-11-18T02:30:59+09:00",
+   "edition": "2026-11-18",
+   "started_at": "2026-11-18T02:00:45+09:00",
+   "trigger": "timer",
+   "reserve_s": 420,
+   "left_s": 980,
+   "elapsed_s": 139
+  }
+ ],
+ "compose": [
+  {
+   "at": "2026-11-18T03:27:14+09:00",
+   "edition": "2026-11-18",
+   "rounds": 3,
+   "approved": true,
+   "lint_green": true,
+   "planned": 37,
+   "written": 35,
+   "roundups": 1,
+   "dropped": 0,
+   "coverage": {
+    "subjects": 99,
+    "covered": 99,
+    "missing": 0,
+    "missing_keys": []
+   },
+   "dropped_by_review": [],
+   "stages_min": {
+    "選定": 1.5798929731051128,
+    "執筆": 8.527123320102692,
+    "出典の判定": 1.093849003314972,
+    "組版": 1.0160885334014893,
+    "校閲": 1.0514353275299073,
+    "校閲1波": 1.0514353275299073
+   },
+   "target_min": 60,
+   "over_target": false,
+   "aborted": [
+    "sidem-gotoken-christmas-party-set-2026",
+    "gaku-gakuen-hatsuboshi-hr-2-5th-sp-2026"
+   ],
+   "duration_s": 1588
+  }
+ ]
+}

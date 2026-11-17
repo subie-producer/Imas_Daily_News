@@ -1,0 +1,45 @@
+{
+ "decisions": {
+  "765as-shiny-song-tokyo-jiyukei-girl-fan-mv-2026": {
+   "action": "article",
+   "angle": "765PRO ALLSTARS楽曲を学マスならぬシャニソンのMVに見立てたファン投稿2本(『Tokyo自由系*ガール』『アイノウ』)を、ファン創作として紹介する。",
+   "purpose": "新情報",
+   "rank": "culture",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ投稿者の2本をファン面1本にまとめる。個人1人を主役にしない。"
+  },
+  "765as-shiny-song-i-know-fan-mv-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "765as-shiny-song-tokyo-jiyukei-girl-fan-mv-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ投稿者・同じ系統のファンMV。1本のculture記事に統合。"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "general-765as-shiny-song-tokyo-jiyukei-girl-fan-mv-2026",
+    "brand": "general",
+    "rank": "culture",
+    "angle": "765PRO ALLSTARS楽曲を学マスならぬシャニソンのMVに見立てたファン投稿2本(『Tokyo自由系*ガール』『アイノウ』)を、ファン創作として紹介する。",
+    "purpose": "新情報",
+    "lead_score": 5,
+    "dedup_key": "765as-shiny-song-tokyo-jiyukei-girl-fan-mv-2026",
+    "candidate_ids": [
+     "202611180226-grok-10",
+     "202611180226-grok-11"
+    ]
+   }
+  ],
+  "dropped": [],
+  "cross_brand": []
+ }
+}

@@ -1,0 +1,140 @@
+{
+ "decisions": {
+  "tours-rhythm-live-festival-2027-preliminaries": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/17号に同じ11/15時点ランキングと次回11/20更新を掲載済み。新事実・当日のトリガー無し"
+  },
+  "tours-prime-match-fes-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/14号・11/17号で開催期間と8日程を掲載済み。開幕は明日で今日のトリガーではなく新事実も無い"
+  },
+  "tours-sumika-shiun-birthday-2026": {
+   "action": "article",
+   "angle": "紫雲清夏のバースデーページが公開され、11月17日から筐体ログインでバースデーライブの称号を獲得できる。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "11/11・11/13号は別の施策(コミュ・称号の期限)。このページ公開とログイン称号は未報"
+  },
+  "dememiri-clash-match-ticket-2027": {
+   "action": "article",
+   "angle": "デレミリ合同ライブ「CLASH M@TCH!!」アソビストア一般会員先行の当選分の入金は、本日23時59分が最終期限。",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約の締切。新曲制作の主題を統合"
+  },
+  "clash-match-new-song-2027": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "dememiri-clash-match-ticket-2027",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ公演・同じ入金締切。新曲制作は11/2号で既報、素材は入金締切の記事に統合"
+  },
+  "xr-live-revival-2026-presale-extension": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "xr-live-revival-asobistore-general-advance-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ先行・同じ入金締切。受付延長は10/30号で既報、入金締切の記事に統合"
+  },
+  "xr-live-revival-asobistore-general-advance-2026": {
+   "action": "article",
+   "angle": "xR LIVE REVIVAL(オリックス劇場、12月12・13日)アソビストア一般会員先行の当選分の入金は、本日23時59分が最終期限。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 50,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約の締切。受付期間延長の主題を統合"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "joint-tours-sumika-shiun-birthday-2026",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "紫雲清夏のバースデーページが公開され、11月17日から筐体ログインでバースデーライブの称号を獲得できる。",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "tours-sumika-shiun-birthday-2026",
+    "candidate_ids": [
+     "202611180226-grok-50"
+    ]
+   },
+   {
+    "slug": "joint-dememiri-clash-match-ticket-2027",
+    "brand": "joint",
+    "rank": "medium",
+    "angle": "デレミリ合同ライブ「CLASH M@TCH!!」アソビストア一般会員先行の当選分の入金は、本日23時59分が最終期限。",
+    "purpose": "期日の知らせ",
+    "lead_score": 60,
+    "dedup_key": "dememiri-clash-match-ticket-2027",
+    "candidate_ids": [
+     "sched-2026-11-18-dememiri-clash-match-ticket-2027-締切",
+     "sched-2026-11-18-dememiri-clash-match-ticket-2027-締切-src1",
+     "sched-2026-11-18-clash-match-new-song-2027-締切"
+    ]
+   },
+   {
+    "slug": "joint-xr-live-revival-asobistore-general-advance-2026",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "xR LIVE REVIVAL(オリックス劇場、12月12・13日)アソビストア一般会員先行の当選分の入金は、本日23時59分が最終期限。",
+    "purpose": "期日の知らせ",
+    "lead_score": 50,
+    "dedup_key": "xr-live-revival-asobistore-general-advance-2026",
+    "candidate_ids": [
+     "sched-2026-11-18-xr-live-revival-asobistore-general-advance-2026-締切",
+     "sched-2026-11-18-xr-live-revival-asobistore-general-advance-2026-締切-src1",
+     "sched-2026-11-18-xr-live-revival-asobistore-general-advance-2026-締切-src2",
+     "sched-2026-11-18-xr-live-revival-2026-presale-extension-締切",
+     "sched-2026-11-18-xr-live-revival-2026-presale-extension-締切-src1"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "tours-rhythm-live-festival-2027-preliminaries",
+    "reason": "既報",
+    "note": "11/17号に同じ11/15時点ランキングと次回11/20更新を掲載済み。新事実・当日のトリガー無し"
+   },
+   {
+    "dedup_key": "tours-prime-match-fes-2026",
+    "reason": "既報",
+    "note": "11/14号・11/17号で開催期間と8日程を掲載済み。開幕は明日で今日のトリガーではなく新事実も無い"
+   }
+  ],
+  "cross_brand": []
+ }
+}

@@ -1,0 +1,331 @@
+{
+ "decisions": {
+  "tachibana-arisu-seaside-memory-figure-2026": {
+   "action": "article",
+   "angle": "橘ありす「シーサイド・メモリー」衣装の1/7スケールフィギュア(プラム、22,000円、2027年1月予定、あみあみ限定特典B2タペストリー)が告知された。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "出典は未確認。校閲で出典を確認"
+  },
+  "cinderella-memory-pict-9th-2026": {
+   "action": "article",
+   "angle": "Memory Pict.第9弾「February」(一ノ瀬志希・成宮由愛)の受注が始まり、11月29日まで。2027年2月上旬以降に順次発送。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "cg-memory-pict-february-2026 を統合"
+  },
+  "cinderella-election-15th-invitational-party-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "先着予約は11/17の記事「総選挙POP UP、空き枠予約は本日18時」で既報。新事実なし"
+  },
+  "cg-memory-pict-february-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cinderella-memory-pict-9th-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ第9弾の受注開始"
+  },
+  "cg-15th-anniversary-party-2026-venue-goods": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-hourglass-full-mv-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "主題は Premiere MV 18日21時配信。MV公開の記事に統合"
+  },
+  "cg-hourglass-cd-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-15th-anniversary-song-hourglass-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じCDの発売日"
+  },
+  "cg-apple-of-my-ai-goods-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/6・11/17の記事で全品目と11/29締切まで既報。締切まで11日で新事実なし"
+  },
+  "fan-cinderella-cosmo-world-collab-visit-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿。単体では記事にしない"
+  },
+  "cg-cinderella-party-10th-cd-2026": {
+   "action": "article",
+   "angle": "デレパ第5弾CD『でれぱ 拾年の宴＆デレパの神曲』のコロムビアミュージックショップ予約(限定特典・直筆サイン抽選)が本日23時59分まで。",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "master-album・神曲試聴・ジャケットを統合"
+  },
+  "cinderella-party-master-album-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-cinderella-party-10th-cd-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じデレパCDの予約締切"
+  },
+  "cinderella-15th-anniversary-hourglass-cd-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-15th-anniversary-song-hourglass-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じCDの発売日"
+  },
+  "cg-hourglass-radio-premiere-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-15th-anniversary-song-hourglass-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ曲・CDの発売日(10/28放送の初公開は過去の話)"
+  },
+  "cg-15th-anniversary-song-hourglass-2026": {
+   "action": "article",
+   "angle": "15周年記念曲CD「HOURGLASS」(全10曲、2,500円)が本日発売。コロムビアミュージックショップとアソビストアの2社限定で、店頭・通販で買える。",
+   "purpose": "期日の知らせ",
+   "rank": "large",
+   "lead_score": 80,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "cd-2026・15th-hourglass-cd・radio-premiere・Brand new!を統合。MVは別記事"
+  },
+  "cg-hourglass-full-mv-2026": {
+   "action": "article",
+   "angle": "「HOURGLASS」のFull Size MVとPremiere MVが本日21時に公開され、視聴できる。",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "視聴という別の行動のためCDとは別記事。premiere-mv・venue-goods を統合"
+  },
+  "derepa-no-kamikyoku-preview-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-cinderella-party-10th-cd-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じデレパCDのキャンペーン受付締切"
+  },
+  "derepa-cd-jacket-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-cinderella-party-10th-cd-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じデレパCDの予約・サイン抽選締切"
+  },
+  "cg-hourglass-premiere-mv-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-hourglass-full-mv-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ21時のMV公開"
+  },
+  "cg-popn-toybox-revival-2026": {
+   "action": "cross_brand",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "joint-xr-live-revival-asobistore-general-advance-2026",
+   "reason": "",
+   "note": "12/13オリックス劇場の同じ先行で、当選者入金は本日23:59。合同面の記事と同じ施策"
+  },
+  "brand-new-unicus-listen-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-15th-anniversary-song-hourglass-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "CD「HOURGLASS」収録曲の試聴は11/14に既報。発売の記事に含める"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "cg-tachibana-arisu-seaside-memory-figure-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "橘ありす「シーサイド・メモリー」衣装の1/7スケールフィギュア(プラム、22,000円、2027年1月予定、あみあみ限定特典B2タペストリー)が告知された。",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "tachibana-arisu-seaside-memory-figure-2026",
+    "candidate_ids": [
+     "202611170732-explore-0"
+    ]
+   },
+   {
+    "slug": "cg-cinderella-memory-pict-9th-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "Memory Pict.第9弾「February」(一ノ瀬志希・成宮由愛)の受注が始まり、11月29日まで。2027年2月上旬以降に順次発送。",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "cinderella-memory-pict-9th-2026",
+    "candidate_ids": [
+     "202611171233-watch-2",
+     "202611180226-grok-65",
+     "202611180226-grok-83",
+     "202611180226-explore-0"
+    ]
+   },
+   {
+    "slug": "cg-cinderella-party-10th-cd-2026",
+    "brand": "cg",
+    "rank": "medium",
+    "angle": "デレパ第5弾CD『でれぱ 拾年の宴＆デレパの神曲』のコロムビアミュージックショップ予約(限定特典・直筆サイン抽選)が本日23時59分まで。",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "cg-cinderella-party-10th-cd-2026",
+    "candidate_ids": [
+     "202611180226-grok-79",
+     "sched-2026-11-18-cg-cinderella-party-10th-cd-2026-締切",
+     "sched-2026-11-18-cinderella-party-master-album-2026-締切",
+     "sched-2026-11-18-derepa-no-kamikyoku-preview-2026-締切",
+     "sched-2026-11-18-derepa-no-kamikyoku-preview-2026-締切-src1",
+     "sched-2026-11-18-derepa-cd-jacket-2026-締切",
+     "sched-2026-11-18-derepa-cd-jacket-2026-締切-src1"
+    ]
+   },
+   {
+    "slug": "cg-15th-anniversary-song-hourglass-2026",
+    "brand": "cg",
+    "rank": "large",
+    "angle": "15周年記念曲CD「HOURGLASS」(全10曲、2,500円)が本日発売。コロムビアミュージックショップとアソビストアの2社限定で、店頭・通販で買える。",
+    "purpose": "期日の知らせ",
+    "lead_score": 80,
+    "dedup_key": "cg-15th-anniversary-song-hourglass-2026",
+    "candidate_ids": [
+     "sched-2026-11-18-cg-15th-anniversary-song-hourglass-2026-発売",
+     "sched-2026-11-18-cg-15th-anniversary-song-hourglass-2026-発売-src1",
+     "sched-2026-11-18-cg-15th-anniversary-song-hourglass-2026-発売-src2",
+     "sched-2026-11-18-cg-15th-anniversary-song-hourglass-2026-その他",
+     "sched-2026-11-18-cg-15th-anniversary-song-hourglass-2026-その他-src1",
+     "sched-2026-11-18-cg-15th-anniversary-song-hourglass-2026-その他-src2",
+     "202611180226-grok-13",
+     "202611180226-grok-69",
+     "202611180226-grok-85",
+     "sched-2026-11-18-cg-hourglass-cd-2026-発売",
+     "sched-2026-11-18-cinderella-15th-anniversary-hourglass-cd-2026-発売",
+     "sched-2026-11-18-cinderella-15th-anniversary-hourglass-cd-2026-発売-src1",
+     "sched-2026-11-18-cg-hourglass-radio-premiere-2026-発売",
+     "sched-2026-11-18-brand-new-unicus-listen-2026-発売",
+     "sched-2026-11-18-brand-new-unicus-listen-2026-発売-src1"
+    ]
+   },
+   {
+    "slug": "cg-hourglass-full-mv-2026",
+    "brand": "cg",
+    "rank": "medium",
+    "angle": "「HOURGLASS」のFull Size MVとPremiere MVが本日21時に公開され、視聴できる。",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "cg-hourglass-full-mv-2026",
+    "candidate_ids": [
+     "sched-2026-11-18-cg-hourglass-full-mv-2026-開始",
+     "sched-2026-11-18-cg-hourglass-full-mv-2026-開始-src1",
+     "sched-2026-11-18-cg-hourglass-full-mv-2026-開始-src2",
+     "202611180226-grok-12",
+     "202611180226-grok-61",
+     "202611180226-grok-64",
+     "sched-2026-11-18-cg-hourglass-premiere-mv-2026-開始",
+     "sched-2026-11-18-cg-hourglass-premiere-mv-2026-開始-src1"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "cinderella-election-15th-invitational-party-2026",
+    "reason": "既報",
+    "note": "先着予約は11/17の記事「総選挙POP UP、空き枠予約は本日18時」で既報。新事実なし"
+   },
+   {
+    "dedup_key": "cg-apple-of-my-ai-goods-2026",
+    "reason": "既報",
+    "note": "11/6・11/17の記事で全品目と11/29締切まで既報。締切まで11日で新事実なし"
+   },
+   {
+    "dedup_key": "fan-cinderella-cosmo-world-collab-visit-2026",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿。単体では記事にしない"
+   }
+  ],
+  "cross_brand": [
+   {
+    "slug": "joint-xr-live-revival-asobistore-general-advance-2026",
+    "dedup_key": "cg-popn-toybox-revival-2026",
+    "note": "12/13オリックス劇場の同じ先行で、当選者入金は本日23:59。合同面の記事と同じ施策"
+   }
+  ]
+ }
+}

@@ -12732,6 +12732,48 @@ def test_deploy_notice(tmp: Path):
           and release.DEPLOY_RESULT_MARK == deploy.RESULT_MARK, f"release が配信の結果を載せない・発行からと伝えない: {out!r} {asked}")
 
 
+def test_deploy_purge_zones(tmp: Path):
+    """同じ紙面を複数のドメインで配っている間は、全部のゾーンのエッジキャッシュを落とす(2026-11-17 news.imas.fans へ移る)。
+    1つでも落とせなければ「パージ失敗」で返す(新しい号が最大1日届かないので、deploy の通知で異常として出る)。"""
+    import deploy
+
+    class Resp:
+        def __init__(self, ok): self.body = json.dumps({"success": ok, "errors": [] if ok else [{"code": 9109}]}).encode()
+        def __enter__(self): return self
+        def __exit__(self, *a): return False
+        def read(self, n=-1): return self.body
+
+    calls, failing = [], set()
+
+    def fake(req, timeout=30):
+        zone = req.full_url.split("/zones/")[1].split("/")[0]
+        calls.append((zone, req.get_method(), json.loads(req.data)))
+        return Resp(zone not in failing)
+
+    saved = (deploy.urllib.request.urlopen, dict(deploy.ENV))
+    try:
+        deploy.urllib.request.urlopen = fake
+        deploy.ENV.update(CF_API_TOKEN="t", CF_ZONE_ID="zold, znew")
+        msg = deploy.purge_cache()
+        check([c[0] for c in calls] == ["zold", "znew"] and all(c[1] == "POST" and c[2] == {"purge_everything": True} for c in calls),
+              f"全部のゾーンを落とさない: {calls}")
+        check(msg.startswith("キャッシュパージ完了"), f"全部落とせたのに完了と言わない: {msg}")
+        calls.clear()
+        failing.add("zold")
+        msg = deploy.purge_cache()
+        check(len(calls) == 2, f"1つ目のゾーンで失敗したら残りを落とさない: {calls}")
+        check(msg.startswith("パージ失敗") and "zold" in msg and "znew" not in msg, f"落とせなかったゾーンを異常として言わない: {msg}")
+        calls.clear()
+        deploy.ENV.update(CF_ZONE_ID="zone1")
+        failing.clear()
+        msg = deploy.purge_cache()
+        check([c[0] for c in calls] == ["zone1"] and msg == "キャッシュパージ完了", f"ゾーン1つのときの動きが以前と違う: {calls} {msg}")
+    finally:
+        deploy.urllib.request.urlopen = saved[0]
+        deploy.ENV.clear()
+        deploy.ENV.update(saved[1])
+
+
 def test_deploy_served_retry(tmp: Path):
     """外からの確認は、読めない・古い版が見えたら間を空けて読み直し、全部だめなときだけ「見えない」と言う。待ちと読みは
     配信の予算(left())の残りに収める(2026-10-31: この機械の DNS は断続的に落ちる。1回の失敗で異常にすると誤報で当番が起きる)。"""
@@ -12814,6 +12856,7 @@ from pathlib import Path
 site_dir, other, broken = Path(sys.argv[1]), Path(sys.argv[2]), Path(sys.argv[3])
 cur = site_dir.parent / "current"
 os.environ["SITE_ROOT"] = str(cur)
+os.environ["SITE_URL"] = "https://news.example.test"
 sys.path.insert(0, sys.argv[4])
 import paper, app
 out = {}
@@ -12917,7 +12960,11 @@ def test_webapp_paper(tmp: Path):
     check("この記事は" in art and "前の記事" in art and "の続報です" in art, "続報の元の記事が出ない")
     check("その後の動き" in o["follow"] and "続報" in o["follow"] and "中の記事" in o["follow"], "元の記事に続報が出ない")
     check(o["missing"] == 404, f"無い記事が 404 にならない: {o['missing']}")
-    check("<entry>" in o["feed"] and "https://imas-news.ofa.tokyo/articles/m1" in o["feed"], "feed の項目・id が以前と違う")
+    check("<entry>" in o["feed"] and "<id>https://imas-news.ofa.tokyo/articles/m1</id>" in o["feed"]
+          and "<id>https://imas-news.ofa.tokyo/feed.xml</id>" in o["feed"],
+          "feed の項目・id が以前と違う(id はドメインを移っても変えない。購読者の既読の目印)")
+    check('href="https://news.example.test/articles/' in o["feed"] and 'href="https://news.example.test/feed.xml"' in o["feed"],
+          "feed のリンクが配信のドメイン(SITE_URL)を指さない")
     check(o["rid"].strip() == "20261102T060000", f"配信の版の印を返さない: {o['rid']!r}")
     check(o["broken_front"] == 200, f"読めない版に切り替わったとき、前の版で答えない: {o['broken_front']}")
     check("小の記事(差し替え)" in o["other_front"], "読める版に切り替わっても読み直さない")
@@ -22050,6 +22097,7 @@ def main() -> int:
     test_deploy_index_failure(tmp / "dif")
     test_webapp_paper(tmp / "wap")
     test_deploy_notice(tmp / "dn")
+    test_deploy_purge_zones(tmp / "dpz")
     test_deploy_served_retry(tmp / "dsr")
     test_correction_append_only(tmp / "cao")
     test_indexer_tag_dictionary(tmp / "itd")

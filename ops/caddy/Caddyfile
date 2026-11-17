@@ -27,9 +27,17 @@
 	bind 127.0.0.1
 	encode zstd gzip
 
+	# http では配らない(2026-11-17 編集長)。読者と Cloudflare のあいだが http だった要求は、
+	# Cloudflare が付ける X-Forwarded-Proto で見分けて https へ送る。Cloudflare のゾーン設定
+	# (Always Use HTTPS・HSTS)はゾーンの全サブドメインにかかるので使わず、紙面のホストだけでここが行う。
+	@plain_http header X-Forwarded-Proto http
+	redir @plain_http https://{host}{uri} 301
+
 	header {
 		X-Content-Type-Options nosniff
 		Referrer-Policy strict-origin-when-cross-origin
+		# 180日。サブドメイン(includeSubDomains)・preload は付けない(同じゾーンのほかの用途を縛らない)
+		Strict-Transport-Security "max-age=15552000"
 		-Server
 	}
 

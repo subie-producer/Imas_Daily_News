@@ -247,6 +247,7 @@ performer_domains:
 # --- ファン: ファン・サークル活動等の**当事者発信** ---
 # 自分の営みを自分で発信しているもの。他所の発表を写しているものは 二次情報 へ。
 fan_domains:
+  - salinabo.doorblog.jp  # 合議で追加: 運営者情報なし。個人ブログとみて、内容によらずファン
   - kitayan.games         # 合議で追加: プロフィールで個人のアナリストが運営と明記。個人に紐づくのでファン
   - oshikatsu.ldblog.jp   # 合議で追加: 個人運営のブログ。内容が紹介・まとめでも個人はファン
   - art-pi.com            # 合議で追加: 個人運営のフリーランスサイト。個人の発信はファン。公式引用だけでは二次情報でない
@@ -510,6 +511,9 @@ video_ids:
     - sm18526341          # 機械で追加: nicovideo.jp/user/17835786「iM@S 6th Anniversary Live - キラ」
     - LSkzNm3AzHk         # 機械で追加: @TogawaNonoha「〖 世界のアソビ大全51 〗遊び…？いいえ、ののは vs ま」
   公式:
+    - mdRv_Zk5Scw         # 機械で追加: @TomoriManaka「#4【Japanese Ramen Simulator】福岡」
+    - PoNEj7tUdLk         # 機械で追加: @KamizuruCosmo「【朝活】初見さん大歓迎！高評価数でお昼ご飯の値段が決まる朝の」
+    - -tgTxEgOmRQ         # 機械で追加: @KamizuruCosmo「ULTRA C 踊ってみた with レイン・パターソン さ」
     - 2WDYoLT7bJQ         # 機械で追加: @imas-official「【学マス】CM「11月16日　氷渡香名江、プロデュース開始！」
     - jDCmFezjYxE         # 機械で追加: @project_imas_va-liv「【期間限定公開】#ヴイアラ 2ndLIVE -BEYOND 」
     - I_EuyjX03zY         # 機械で追加: @imas-official「ゲーム【ミリシタ】高山 紗代子 スペシャル動画【アイドルマス」
@@ -646,6 +650,7 @@ x_accounts:
     - asobistore
     - imas_musicradio
   演者:
+    - inoue_honokuma      # 合議で追加: 出演者本人の発信。シンデレラガールズ特別ステージ出演告知
     - official_kep1er     # 合議で追加: Kep1er公式。ヴイアラ楽曲を踊る出演者側の発信
     - todamegumi          # 合議で追加: 出演者本人の発信。ARC-FLAGSのPOP UP訪問を自ら投稿
     - yukari_amane_       # 合議で追加: 天音ゆかり本人名義で、ラジオ出演への感謝を投稿
@@ -694,6 +699,11 @@ x_accounts:
     - imasnews765
     - zutapoke
   ファン:
+    - yashiroku           # 合議で追加: 個人のまつりルームのファン漫画投稿
+    - otya_kei            # 合議で追加: 個人の北上麗花ファンイラスト投稿
+    - nigomatsu           # 合議で追加: 個人が山下次郎3Dモデルとの交流を楽しむ投稿
+    - iiiiii_410ru        # 合議で追加: 個人の劇場版SideM公開を楽しみにする投稿
+    - _marutima           # 合議で追加: 個人アカウントによる氷渡香名江のファンアート投稿
     - nk_nemumi           # 合議で追加: 個人のファンが劇場版公開初日の座席確保を報告
     - darupon2002         # 合議で追加: 個人のファンが現地訪問の様子を報告
     - HDMI3777            # 合議で追加: 個人アカウントのファン投稿。シャニソンMVを紹介
@@ -1083,6 +1093,9 @@ x_accounts:
     - procinen1
     - yutaleP
   当事者:
+    - ShochikuGames       # 合議で追加: 松竹ゲームズ(ゲーム発売元)の一次発信。要約は途切れ、IM@S関係未確認
+    - maron_akiba         # 合議で追加: ツアマスS2カードの入荷を告知するカードショップ(販売元)
+    - cocollabo           # 合議で追加: 学マス標ツアーファイナル協賛グッズを一般販売する販売元
     - joshincddvd         # 合議で追加: 家電量販店のCD予約受付。販売元としての発信
     - cinecitta_jp        # 合議で追加: 映画館の上映告知。会場・催しの運営側
     - bushi_capsule       # 合議で追加: ライセンス商品(カプセルトイ)の販売元の発売告知
@@ -1288,6 +1301,9 @@ x_posts:
 
 # --- リンク元から引き継いだ種別(リンク先1つずつ。キーは pipelib.link_key)。合議がリンク元の告知と関係していると確かめたものだけ(classify_sources.inherit_from_links)。リンク先そのものの種別より強いときだけ効く ---
 link_types:
+  youtube.com/watch?v=v9KAmlDayS0: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/imas_ch/status/2123068726274596952(公式)。リンク元は的場梨沙の誕生日祝い告知。リンク先はそのお祝い動画
+  youtube.com/watch?v=ZpA_nERiA74: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/gkmas_official/status/2123037254365167778(公式)。リンク元は11月18日放送回の終了・アーカイブ告知。リンク先は同じ放送回の動画
+  youtube.com/watch?v=Q0I9tWqvtgY: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/imas_ch/status/2123040555135541529(公式)。リンク元は11月メンバー限定ラジオのアーカイブ案内。リンク先は同じ配信の動画
   youtube.com/watch?v=bXNYvgOWwX0: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/valiv_official/status/2122623280901480632(公式)。告知された愛夏の野菜料理の切り抜き動画本体
   youtube.com/watch?v=TL2HCzz0FCI: ファン         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/HDMI3777/status/2122724291557097815(ファン)。投稿で紹介されている『Tokyo自由系*ガール』のシャニソンMV本体
   youtube.com/watch?v=ClMzCy9KVKQ: ファン         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/HDMI3777/status/2122723768904868001(ファン)。投稿で紹介されている『アイノウ』のシャニソンMV本体

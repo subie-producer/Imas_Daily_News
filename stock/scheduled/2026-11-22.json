@@ -818,5 +818,29 @@
   "verify": "unconfirmed",
   "deadline": "2026-11-22",
   "src_candidate_id": "202611140226-grok-59"
+ },
+ {
+  "id": "sched-2026-11-22-manaka-onimusha-way-of-the-sword-stream-2026-11-22-開始",
+  "dedup_key": "manaka-onimusha-way-of-the-sword-stream-2026-11-22",
+  "brand": "dsva",
+  "subject": "灯里愛夏『鬼武者 Way of the Sword』配信",
+  "kind": "開始",
+  "note": "21時から灯里愛夏のYouTubeチャンネルで配信を視聴できる",
+  "reserved_on": "2026-11-19",
+  "occurs_on": "2026-11-22",
+  "title": "『鬼武者 Way of the Sword』配信予告",
+  "url": "https://x.com/TomoriManaka/status/2123088023114134003",
+  "source_type": "公式",
+  "facts": [
+   "灯里愛夏が11月22日21:00から『鬼武者 Way of the Sword』を開始すると告知した。",
+   "配信先として灯里愛夏のYouTubeチャンネルを案内している: https://www.youtube.com/channel/UCuWoH9mx0EgT69UyVxaw1NQ",
+   "リンク: https://www.youtube.com/channel/UCuWoH9mx0EgT69UyVxaw1NQ",
+   "エンゲージメント: 低",
+   "言及アイドル: 灯里愛夏"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "event_date": "2026-11-22",
+  "src_candidate_id": "202611190229-grok-60"
  }
 ]

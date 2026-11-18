@@ -1,0 +1,45 @@
+{
+ "decisions": {
+  "tourmas-fan-play-yamashita-jiro-2026": {
+   "action": "article",
+   "angle": "ツアマスの山下次郎の3Dモデルとの交流や氷渡香名江のファンアートなど、ファンの投稿をまとめて紹介する",
+   "purpose": "新情報",
+   "rank": "culture",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ファン面は細切れの投稿を1本にまとめる。個別の投稿を単体記事にしない"
+  },
+  "kanae-fanart-2026-11": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "tourmas-fan-play-yamashita-jiro-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ファン面の1本(culture)に統合"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "general-tourmas-fan-play-yamashita-jiro-2026",
+    "brand": "general",
+    "rank": "culture",
+    "angle": "ツアマスの山下次郎の3Dモデルとの交流や氷渡香名江のファンアートなど、ファンの投稿をまとめて紹介する",
+    "purpose": "新情報",
+    "lead_score": 5,
+    "dedup_key": "tourmas-fan-play-yamashita-jiro-2026",
+    "candidate_ids": [
+     "202611190229-grok-69",
+     "202611190229-grok-76"
+    ]
+   }
+  ],
+  "dropped": [],
+  "cross_brand": []
+ }
+}

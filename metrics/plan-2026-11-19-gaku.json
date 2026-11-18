@@ -1,0 +1,419 @@
+{
+ "decisions": {
+  "gaku-kanae-hatsu-prize-figure": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-16に「初」衣装でフィギュア化の記事あり。新事実なし"
+  },
+  "gaku-kanae-chibiguru-and-pouch": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-16に予約開始の記事あり。新事実なし"
+  },
+  "eclipse-light-animate-fair-2026": {
+   "action": "article",
+   "angle": "アニメイト通販「ECLIPSE LIGHT」フェア(11月23日まで)の対象商品欄が更新され、GOLD RUSH(8)通常版が外れてGravure Solo Collection Vol.1や雨夜燕1st Singleなどが載った",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "source_change。品目の入れ替えで読者に関わる"
+  },
+  "gaku-niconico-ssg-271-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-18に同内容の記事あり"
+  },
+  "hiwatari-kanae-chibigurumi-pouch-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-16に予約開始の記事あり。新事実なし"
+  },
+  "gakumas-mugyumini-figure-vol3": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-17に同内容の記事あり"
+  },
+  "metamorphose-mv-million-views-2026": {
+   "action": "article",
+   "angle": "氷渡香名江「メタモルフォーゼ」のMVが公開から約2日で100万再生を突破し、YouTube音楽急上昇チャートで3位まで上がった",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "50万再生の記事(11-18)より後の新しい節目。million-2026を統合"
+  },
+  "gaku-cedec-kyushu-ui-hif-2026": {
+   "action": "article",
+   "angle": "CEDEC＋KYUSHU 2026で、QualiArtsが学マスのUI演出の設計思想と内製ツール「Titan」、H.I.F制作事例を語った",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "講演の内容を報じるもので新情報。素材は報道"
+  },
+  "hoshigakuen-radio-archive-2026-11-18": {
+   "action": "article",
+   "angle": "初星学園放送部の11月18日放送回が終わり、YouTubeでアーカイブを見られる。次回も21時から放送",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "final-reviewを統合。「本日放送」の記事は既出だがアーカイブ公開は新しい"
+  },
+  "hoshigakuen-radio-guest-2026-11-25": {
+   "action": "article",
+   "angle": "11月25日の初星学園放送部のゲストは安倍彩野夏さんと伊藤舞音さん。安倍さんへの質問は金曜午前まで受け付ける",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "募集締切が金曜午前(11/20)で3日以内"
+  },
+  "hoshigakuen-radio-final-review-2026-11-18": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "hoshigakuen-radio-archive-2026-11-18",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ放送回。出演者と視聴URLを統合"
+  },
+  "metamorphose-mv-million-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "metamorphose-mv-million-views-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ100万再生の話題"
+  },
+  "gakumas-wednesday-ticket-2026-11-18": {
+   "action": "article",
+   "angle": "今週の「学マ水曜日ガシャチケット」を配布中で、ログインで「メタモルフォーゼガシャ」を1回引ける",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "定常運営だが、まとめに入る件が3件に満たないため small の通常記事"
+  },
+  "metamorphose-instrumental-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-18に「メタモルフォーゼ」インスト公開の記事あり"
+  },
+  "gaku-hiwatari-kanae-single-release-event-2026": {
+   "action": "article",
+   "angle": "氷渡香名江 1st Singleのリリース記念イベントが告知され、対象商品を予約して全額内金を支払うと応募シリアルがもらえる",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "既報のCD発売・予約記事に、イベント応募の条件は無い。日時・締切は素材に無いので執筆側で確認を"
+  },
+  "gaku-shirube-tour-final-sponsor-goods-general-sale-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-14に「標ファイナル協賛3商品、一般受注開始」の記事あり"
+  },
+  "gaku-gearbeat-concerto-program-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-18に同内容の記事あり"
+  },
+  "metamorphose-mv-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "MV公開は11-16から記事が続いており、新事実なし"
+  },
+  "gaku-tour-final-sponsor-goods-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-14の一般受注開始の記事と同じ施策。締切12/15は当日のトリガーに当たらない"
+  },
+  "gakuen-hatsuboshi-hr-2-5th-sp-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "carried。終了済み配信の視聴回数が中心で、新事実もトリガーも無い"
+  },
+  "gakumas-suntory-oolong-towel-set-2026": {
+   "action": "article",
+   "angle": "学マス×サントリー烏龍茶のタオルセットの注文締切(11月22日23時59分)まであと3日",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(締切前)"
+  },
+  "sweets-acrylic-stand-saki-2026": {
+   "action": "article",
+   "angle": "花海咲季のスイーツver.アクリルコレクションスタンドのcolleize予約が、11月22日の締切まであと3日",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(締切前)"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "gaku-eclipse-light-animate-fair-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "アニメイト通販「ECLIPSE LIGHT」フェア(11月23日まで)の対象商品欄が更新され、GOLD RUSH(8)通常版が外れてGravure Solo Collection Vol.1や雨夜燕1st Singleなどが載った",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "eclipse-light-animate-fair-2026",
+    "candidate_ids": [
+     "update-a47be8da46aa"
+    ]
+   },
+   {
+    "slug": "gaku-metamorphose-mv-million-views-2026",
+    "brand": "gaku",
+    "rank": "medium",
+    "angle": "氷渡香名江「メタモルフォーゼ」のMVが公開から約2日で100万再生を突破し、YouTube音楽急上昇チャートで3位まで上がった",
+    "purpose": "新情報",
+    "lead_score": 60,
+    "dedup_key": "metamorphose-mv-million-views-2026",
+    "candidate_ids": [
+     "202611182334-explore-20",
+     "202611190229-grok-52"
+    ]
+   },
+   {
+    "slug": "gaku-cedec-kyushu-ui-hif-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "CEDEC＋KYUSHU 2026で、QualiArtsが学マスのUI演出の設計思想と内製ツール「Titan」、H.I.F制作事例を語った",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "gaku-cedec-kyushu-ui-hif-2026",
+    "candidate_ids": [
+     "202611190229-explore-13"
+    ]
+   },
+   {
+    "slug": "gaku-hoshigakuen-radio-archive-2026-11-18",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "初星学園放送部の11月18日放送回が終わり、YouTubeでアーカイブを見られる。次回も21時から放送",
+    "purpose": "新情報",
+    "lead_score": 5,
+    "dedup_key": "hoshigakuen-radio-archive-2026-11-18",
+    "candidate_ids": [
+     "202611190229-grok-49",
+     "202611190229-grok-51"
+    ]
+   },
+   {
+    "slug": "gaku-hoshigakuen-radio-guest-2026-11-25",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "11月25日の初星学園放送部のゲストは安倍彩野夏さんと伊藤舞音さん。安倍さんへの質問は金曜午前まで受け付ける",
+    "purpose": "期日の知らせ",
+    "lead_score": 10,
+    "dedup_key": "hoshigakuen-radio-guest-2026-11-25",
+    "candidate_ids": [
+     "202611190229-grok-50"
+    ]
+   },
+   {
+    "slug": "gaku-gakumas-wednesday-ticket-2026-11-18",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "今週の「学マ水曜日ガシャチケット」を配布中で、ログインで「メタモルフォーゼガシャ」を1回引ける",
+    "purpose": "新情報",
+    "lead_score": 5,
+    "dedup_key": "gakumas-wednesday-ticket-2026-11-18",
+    "candidate_ids": [
+     "202611190229-grok-53"
+    ]
+   },
+   {
+    "slug": "gaku-hiwatari-kanae-single-release-event-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "氷渡香名江 1st Singleのリリース記念イベントが告知され、対象商品を予約して全額内金を支払うと応募シリアルがもらえる",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "gaku-hiwatari-kanae-single-release-event-2026",
+    "candidate_ids": [
+     "202611190229-grok-55"
+    ]
+   },
+   {
+    "slug": "gaku-gakumas-suntory-oolong-towel-set-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "学マス×サントリー烏龍茶のタオルセットの注文締切(11月22日23時59分)まであと3日",
+    "purpose": "期日の知らせ",
+    "lead_score": 15,
+    "dedup_key": "gakumas-suntory-oolong-towel-set-2026",
+    "candidate_ids": [
+     "sched-2026-11-19-gakumas-suntory-oolong-towel-set-2026-締切前",
+     "sched-2026-11-19-gakumas-suntory-oolong-towel-set-2026-締切前-src1"
+    ]
+   },
+   {
+    "slug": "gaku-sweets-acrylic-stand-saki-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "花海咲季のスイーツver.アクリルコレクションスタンドのcolleize予約が、11月22日の締切まであと3日",
+    "purpose": "期日の知らせ",
+    "lead_score": 15,
+    "dedup_key": "sweets-acrylic-stand-saki-2026",
+    "candidate_ids": [
+     "sched-2026-11-19-sweets-acrylic-stand-saki-2026-締切前"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "gaku-kanae-hatsu-prize-figure",
+    "reason": "既報",
+    "note": "11-16に「初」衣装でフィギュア化の記事あり。新事実なし"
+   },
+   {
+    "dedup_key": "gaku-kanae-chibiguru-and-pouch",
+    "reason": "既報",
+    "note": "11-16に予約開始の記事あり。新事実なし"
+   },
+   {
+    "dedup_key": "gaku-niconico-ssg-271-2026",
+    "reason": "既報",
+    "note": "11-18に同内容の記事あり"
+   },
+   {
+    "dedup_key": "hiwatari-kanae-chibigurumi-pouch-2026",
+    "reason": "既報",
+    "note": "11-16に予約開始の記事あり。新事実なし"
+   },
+   {
+    "dedup_key": "gakumas-mugyumini-figure-vol3",
+    "reason": "既報",
+    "note": "11-17に同内容の記事あり"
+   },
+   {
+    "dedup_key": "metamorphose-instrumental-2026",
+    "reason": "既報",
+    "note": "11-18に「メタモルフォーゼ」インスト公開の記事あり"
+   },
+   {
+    "dedup_key": "gaku-shirube-tour-final-sponsor-goods-general-sale-2026",
+    "reason": "既報",
+    "note": "11-14に「標ファイナル協賛3商品、一般受注開始」の記事あり"
+   },
+   {
+    "dedup_key": "gaku-gearbeat-concerto-program-2026",
+    "reason": "既報",
+    "note": "11-18に同内容の記事あり"
+   },
+   {
+    "dedup_key": "metamorphose-mv-2026",
+    "reason": "既報",
+    "note": "MV公開は11-16から記事が続いており、新事実なし"
+   },
+   {
+    "dedup_key": "gaku-tour-final-sponsor-goods-2026",
+    "reason": "既報",
+    "note": "11-14の一般受注開始の記事と同じ施策。締切12/15は当日のトリガーに当たらない"
+   },
+   {
+    "dedup_key": "gakuen-hatsuboshi-hr-2-5th-sp-2026",
+    "reason": "既報",
+    "note": "carried。終了済み配信の視聴回数が中心で、新事実もトリガーも無い"
+   }
+  ],
+  "cross_brand": []
+ }
+}

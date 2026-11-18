@@ -1,0 +1,337 @@
+{
+ "decisions": {
+  "sidem-idolish7-collab-screening-2026-12": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/18号が日程・会場・料金・11/21 22時販売・特典まで掲載済み。新事実も当日トリガーも無い"
+  },
+  "sidem-zenryoku-heatup-live-2026-11": {
+   "action": "article",
+   "angle": "SideMが11月25日19時から咲・次郎・大吾・百々人出演の「全力ヒートアップ!!!」生配信を行う(YouTube Live・ニコ生)",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公式出典。同じ配信の3主題を統合"
+  },
+  "sidem-producer-meeting-ajewelholic-2027-premium-advance-2": {
+   "action": "article",
+   "angle": "プロミ2027で参加型企画「プロデューサー業務報告書2027」の募集が11月30日23時59分まで始まり、回答の一部が公式パンフレットに載る",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "既報の2次先行とは別の新企画。個人情報記入を控える注意も入れる"
+  },
+  "sidem-315nyaoshop-mini-guidance-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-315nyao-mini-goods-latte-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ発売の購入制限(各柄2個まで)の案内。発売記事に統合"
+  },
+  "sidem-heatup-live-2026-11-25": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-zenryoku-heatup-live-2026-11",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ生配信の二次情報"
+  },
+  "sidem-wgf-general-ticket-sale-2026": {
+   "action": "article",
+   "angle": "アソビストア限定ムビチケ「315Pro FRAMEコンプリートセット」(9,300円)の販売が本日23時59分で終わる(数量限定)",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約。当日が締切。舞台挨拶チケットとは購入行動が別"
+  },
+  "sidem-spicy-sharing-guidance-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-amusement-of-315-story-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じCD特典ストーリーの投稿・共有ルール。公開記事に統合"
+  },
+  "sidem-amusement-of-315-story-2026": {
+   "action": "article",
+   "angle": "Jupiter CD特典ストーリー「アミューズメント・オブ・315!」が公開され、動画・静止画の投稿・共有は不可と公式が案内した",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "CD発売は11月25日。投稿ルールの案内を同じ記事で扱う"
+  },
+  "jupiter-monthly-theme-song-13-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/11号が価格・収録曲・シリアルコード・初回特典まで掲載済み。発売は25日で当日トリガー無し"
+  },
+  "sidem-movie-fan-anticipation-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "未確認の個人SNS投稿1件のみで新事実なし"
+  },
+  "sidem-full-heat-up-stream-2026-11": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-zenryoku-heatup-live-2026-11",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ生配信の告知"
+  },
+  "shiny-kawaii-season-chibiguru-2027": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "SideMほわぬいvol.6・7(11/28登場)は11/17号で記事化済み。新事実なし。dedup_keyはシャニマスだが内容はSideM"
+  },
+  "sidem-zenryoku-heatup-stream-2026-11": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-zenryoku-heatup-live-2026-11",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ生配信の公式X投稿"
+  },
+  "sidem-gotoken-christmas-party-set-2026": {
+   "action": "article",
+   "angle": "SideM×五島軒クリスマスパーティセットの早期予約(送料無料対象)が11月21日までと迫っている",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "期日が2日後。予約は12月5日まで、定数に達すれば早期終了"
+  },
+  "sidem-fbfes-wgf-2026-stage-greeting": {
+   "action": "article",
+   "angle": "劇場版SideM公開記念舞台挨拶(11月21日・新宿ピカデリー)の一般先着受付が本日23時59分で締め切られる",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約の締切。本会場の先着受付終了の主題を統合。LV販売は別行動なので含めない"
+  },
+  "sidem-fbfes-movie-stage-greeting-shinjuku-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-fbfes-wgf-2026-stage-greeting",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ舞台挨拶の本会場先着受付終了"
+  },
+  "sidem-joypolis-screening-2026-12-05": {
+   "action": "article",
+   "angle": "SideMジョイポリス貸切上映会(12月5日)の参加券一般販売が本日12時からローソンチケットで始まる(先行で完売なら実施なし)",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約の発売日。販売終了は12月5日18時に変更済み(既報)"
+  },
+  "sidem-315nyao-mini-goods-latte-2026": {
+   "action": "article",
+   "angle": "315!!!SHOP「にゃお店屋さんmini ver.」のグッズとフォーチューンラテが本日10時に発売。新商品は購入制限(各柄2個まで)の対象で、缶バッジは12月1日発売",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約の発売日。購入制限の案内を統合"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "sidem-zenryoku-heatup-live-2026-11",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "SideMが11月25日19時から咲・次郎・大吾・百々人出演の「全力ヒートアップ!!!」生配信を行う(YouTube Live・ニコ生)",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "sidem-zenryoku-heatup-live-2026-11",
+    "candidate_ids": [
+     "202611181235-watch-0",
+     "202611182334-explore-19",
+     "202611190229-watch-0",
+     "202611190229-grok-79",
+     "202611190229-grok-104",
+     "202611190229-grok-105"
+    ]
+   },
+   {
+    "slug": "sidem-producer-meeting-ajewelholic-2027-premium-advance-2",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "プロミ2027で参加型企画「プロデューサー業務報告書2027」の募集が11月30日23時59分まで始まり、回答の一部が公式パンフレットに載る",
+    "purpose": "新情報",
+    "lead_score": 25,
+    "dedup_key": "sidem-producer-meeting-ajewelholic-2027-premium-advance-2",
+    "candidate_ids": [
+     "202611181835-watch-0"
+    ]
+   },
+   {
+    "slug": "sidem-wgf-general-ticket-sale-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "アソビストア限定ムビチケ「315Pro FRAMEコンプリートセット」(9,300円)の販売が本日23時59分で終わる(数量限定)",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "sidem-wgf-general-ticket-sale-2026",
+    "candidate_ids": [
+     "202611190229-grok-42",
+     "202611190229-grok-103",
+     "sched-2026-11-19-sidem-wgf-general-ticket-sale-2026-締切"
+    ]
+   },
+   {
+    "slug": "sidem-amusement-of-315-story-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "Jupiter CD特典ストーリー「アミューズメント・オブ・315!」が公開され、動画・静止画の投稿・共有は不可と公式が案内した",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "sidem-amusement-of-315-story-2026",
+    "candidate_ids": [
+     "202611190229-grok-44",
+     "202611190229-grok-43"
+    ]
+   },
+   {
+    "slug": "sidem-gotoken-christmas-party-set-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "SideM×五島軒クリスマスパーティセットの早期予約(送料無料対象)が11月21日までと迫っている",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "sidem-gotoken-christmas-party-set-2026",
+    "candidate_ids": [
+     "sched-2026-11-18-sidem-gotoken-christmas-party-set-2026-締切前"
+    ]
+   },
+   {
+    "slug": "sidem-fbfes-wgf-2026-stage-greeting",
+    "brand": "sidem",
+    "rank": "medium",
+    "angle": "劇場版SideM公開記念舞台挨拶(11月21日・新宿ピカデリー)の一般先着受付が本日23時59分で締め切られる",
+    "purpose": "期日の知らせ",
+    "lead_score": 60,
+    "dedup_key": "sidem-fbfes-wgf-2026-stage-greeting",
+    "candidate_ids": [
+     "sched-2026-11-19-sidem-fbfes-wgf-2026-stage-greeting-締切",
+     "sched-2026-11-19-sidem-fbfes-wgf-2026-stage-greeting-締切-src1",
+     "sched-2026-11-19-sidem-fbfes-movie-stage-greeting-shinjuku-2026-締切"
+    ]
+   },
+   {
+    "slug": "sidem-joypolis-screening-2026-12-05",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "SideMジョイポリス貸切上映会(12月5日)の参加券一般販売が本日12時からローソンチケットで始まる(先行で完売なら実施なし)",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "sidem-joypolis-screening-2026-12-05",
+    "candidate_ids": [
+     "sched-2026-11-19-sidem-joypolis-screening-2026-12-05-発売"
+    ]
+   },
+   {
+    "slug": "sidem-315nyao-mini-goods-latte-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "315!!!SHOP「にゃお店屋さんmini ver.」のグッズとフォーチューンラテが本日10時に発売。新商品は購入制限(各柄2個まで)の対象で、缶バッジは12月1日発売",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "sidem-315nyao-mini-goods-latte-2026",
+    "candidate_ids": [
+     "sched-2026-11-19-sidem-315nyao-mini-goods-latte-2026-発売",
+     "sched-2026-11-19-sidem-315nyao-mini-goods-latte-2026-発売-src1",
+     "202611181835-explore-8"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "sidem-idolish7-collab-screening-2026-12",
+    "reason": "既報",
+    "note": "11/18号が日程・会場・料金・11/21 22時販売・特典まで掲載済み。新事実も当日トリガーも無い"
+   },
+   {
+    "dedup_key": "jupiter-monthly-theme-song-13-2026",
+    "reason": "既報",
+    "note": "10/11号が価格・収録曲・シリアルコード・初回特典まで掲載済み。発売は25日で当日トリガー無し"
+   },
+   {
+    "dedup_key": "sidem-movie-fan-anticipation-2026",
+    "reason": "個人の話題",
+    "note": "未確認の個人SNS投稿1件のみで新事実なし"
+   },
+   {
+    "dedup_key": "shiny-kawaii-season-chibiguru-2027",
+    "reason": "既報",
+    "note": "SideMほわぬいvol.6・7(11/28登場)は11/17号で記事化済み。新事実なし。dedup_keyはシャニマスだが内容はSideM"
+   }
+  ],
+  "cross_brand": []
+ }
+}

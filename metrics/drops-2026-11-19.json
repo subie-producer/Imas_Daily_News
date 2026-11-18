@@ -1,0 +1,19 @@
+{
+ "765-765allstars-never-end-idol-bluray": {
+  "title": "765AS「NEVER END IDOL」BD、特装版と特典",
+  "stage": "書き直しで見送り",
+  "why": "NOT_NEWS I1: 公式告知の発売日・特装版・収録内容は既報の再掲で、新しい事実を記事の中核にできませんでした。I2: 指定の公式商品ページを fetch_page.py で確認しましたが、取得本文に「販売終了」の表示はありませんでした。販売終了とは確認できず、既報の受付期間とも照合できないため、販売状況を根拠付",
+  "candidate_ids": [
+   "202611181835-watch-3",
+   "202611190229-grok-87"
+  ]
+ },
+ "sidem-gotoken-christmas-party-set-2026": {
+  "title": "SideM×五島軒、5倍表示から通常ポイントに",
+  "stage": "校閲ブロック",
+  "why": "R1 「ギフト対応・のし」の非対応は、商品ページには書かれているが、根拠の F・N のどれにも無い。本文の具体的な事実で、根拠から導けない。",
+  "candidate_ids": [
+   "sched-2026-11-18-sidem-gotoken-christmas-party-set-2026-締切前"
+  ]
+ }
+}

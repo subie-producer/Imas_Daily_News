@@ -120,5 +120,48 @@
   "src_candidate_id": "202611160221-grok-54",
   "companion_of": "sched-2027-02-23-gaku-update-2026-24-開幕",
   "src_dedup_key": "gaku-update-2026-24"
+ },
+ {
+  "id": "sched-2027-02-23-gaku-hiwatari-kanae-single-release-event-2026-開幕",
+  "dedup_key": "gaku-hiwatari-kanae-single-release-event-2026",
+  "brand": "gaku",
+  "subject": "氷渡香名江 リリース記念トークショー(東京・池袋)",
+  "kind": "開幕",
+  "note": "animate hall BLACKで2回開催(12時・15時開演)",
+  "reserved_on": "2026-11-19",
+  "occurs_on": "2027-02-23",
+  "title": "氷渡香名江 1st Single リリース記念イベントの応募受付告知",
+  "url": "https://x.com/gkmas_official/status/2122912326638768320",
+  "source_type": "公式",
+  "facts": [
+   "学園アイドルマスター『氷渡香名江 1st Single』のリリース記念イベントが告知された。",
+   "対象商品を予約し、全額内金を支払った顧客に応募シリアルを渡す。",
+   "エンゲージメント: 中",
+   "言及アイドル: 氷渡香名江"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202611190229-grok-55"
+ },
+ {
+  "id": "sched-2027-02-23-gaku-hiwatari-kanae-single-release-event-2026-開幕-src1",
+  "dedup_key": "gaku-hiwatari-kanae-single-release-event-2026",
+  "brand": "gaku",
+  "subject": "氷渡香名江 リリース記念トークショー(東京・池袋)",
+  "kind": "開幕",
+  "note": "animate hall BLACKで2回開催(12時・15時開演)",
+  "reserved_on": "2026-11-19",
+  "occurs_on": "2027-02-23",
+  "title": "アニメイト「学園アイドルマスター 『氷渡香名江 1st Single』 リリース記念イベント」(2026年11月12日)",
+  "url": "https://www.club-animate.jp/entries/index1/type%3A31/name%3Ae4b88be9878e",
+  "source_type": "当事者",
+  "facts": [
+   "2027年2月23日（火・祝）、animate hall BLACK（アニメイト池袋本店 北館9F）で開催。1回目は開場11時・開演12時、2回目は開場14時・開演15時。出演者は両回とも安倍彩野夏さん、伊藤舞音さん。"
+  ],
+  "via": "verified_fact",
+  "verify": "unconfirmed",
+  "src_candidate_id": "202611190229-grok-55",
+  "companion_of": "sched-2027-02-23-gaku-hiwatari-kanae-single-release-event-2026-開幕",
+  "src_dedup_key": "gaku-hiwatari-kanae-single-release-event-2026"
  }
 ]

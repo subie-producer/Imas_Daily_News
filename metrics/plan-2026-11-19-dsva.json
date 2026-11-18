@@ -1,0 +1,174 @@
+{
+ "decisions": {
+  "valiv-online-one-on-one-14-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/17号の1on1記事と同内容。締切23日は4日先でトリガー無し"
+  },
+  "valiv-tomori-birthday-live-2026-screening": {
+   "action": "article",
+   "angle": "灯里愛夏の延期バースデーオンラインLIVEの同時視聴上映会が11月23日13時からZ-aNで開かれ、視聴には配信チケットが必要で、本人もコメントで参加する",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "アーカイブ販売・期間(11/29)も含める"
+  },
+  "valiv-manaka-japanese-ramen-simulator-2026-11-18": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "終了済みの配信で新情報なし"
+  },
+  "manaka-birthday-watchalong-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "valiv-tomori-birthday-live-2026-screening",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ同時視聴上映会。本人参加・アーカイブ期限の素材を統合"
+  },
+  "valiv-14th-online-one-on-one-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "prior本文に全事実あり。締切は4日先でトリガー無し"
+  },
+  "manaka-onimusha-way-of-the-sword-stream-2026-11-22": {
+   "action": "article",
+   "angle": "灯里愛夏が11月22日21時から『鬼武者 Way of the Sword』の配信を行うと告知した",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "cosmo-its-me-100m-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿1件のみで単体記事にしない"
+  },
+  "virtual-music-award-2026-letora": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/18号に日程・チケット・価格とも掲載済み"
+  },
+  "mugen-sakuraro-kakaku-crowdfunding-2026": {
+   "action": "article",
+   "angle": "『夢幻桜楼閣』発売応援クラウドファンディングの支援期間が本日11月19日でCAMPFIREでの最終日",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(締切)。レトラのグッズ付きコースは2,800円から"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "dsva-valiv-tomori-birthday-live-2026-screening",
+    "brand": "dsva",
+    "rank": "medium",
+    "angle": "灯里愛夏の延期バースデーオンラインLIVEの同時視聴上映会が11月23日13時からZ-aNで開かれ、視聴には配信チケットが必要で、本人もコメントで参加する",
+    "purpose": "新情報",
+    "lead_score": 60,
+    "dedup_key": "valiv-tomori-birthday-live-2026-screening",
+    "candidate_ids": [
+     "202611182334-watch-0",
+     "202611190229-grok-112",
+     "202611190229-grok-58",
+     "202611190229-grok-109"
+    ]
+   },
+   {
+    "slug": "dsva-manaka-onimusha-way-of-the-sword-stream-2026-11-22",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "灯里愛夏が11月22日21時から『鬼武者 Way of the Sword』の配信を行うと告知した",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "manaka-onimusha-way-of-the-sword-stream-2026-11-22",
+    "candidate_ids": [
+     "202611190229-grok-60"
+    ]
+   },
+   {
+    "slug": "dsva-mugen-sakuraro-kakaku-crowdfunding-2026",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "『夢幻桜楼閣』発売応援クラウドファンディングの支援期間が本日11月19日でCAMPFIREでの最終日",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "mugen-sakuraro-kakaku-crowdfunding-2026",
+    "candidate_ids": [
+     "sched-2026-11-19-mugen-sakuraro-kakaku-crowdfunding-2026-締切"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "valiv-online-one-on-one-14-2026",
+    "reason": "既報",
+    "note": "11/17号の1on1記事と同内容。締切23日は4日先でトリガー無し"
+   },
+   {
+    "dedup_key": "valiv-manaka-japanese-ramen-simulator-2026-11-18",
+    "reason": "その他",
+    "note": "終了済みの配信で新情報なし"
+   },
+   {
+    "dedup_key": "valiv-14th-online-one-on-one-2026",
+    "reason": "既報",
+    "note": "prior本文に全事実あり。締切は4日先でトリガー無し"
+   },
+   {
+    "dedup_key": "cosmo-its-me-100m-2026",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿1件のみで単体記事にしない"
+   },
+   {
+    "dedup_key": "virtual-music-award-2026-letora",
+    "reason": "既報",
+    "note": "11/18号に日程・チケット・価格とも掲載済み"
+   }
+  ],
+  "cross_brand": []
+ }
+}

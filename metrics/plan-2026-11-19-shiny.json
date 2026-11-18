@@ -1,0 +1,367 @@
+{
+ "decisions": {
+  "shiny-tomarikaze-no-harutachi-rerun-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/18の予告投稿。11/18付の復刻記事で既報"
+  },
+  "shiny-upcoming-idol-teaser-2026-11": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-prelude-collection-chiyuki-2026-11",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "予告アイドルは桑山千雪。プレコレの記事に統合"
+  },
+  "shiny-song-for-prism-ver-2-20-0-penlight": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "日時のない2DMV予告のみ。Ver.2.20.0は11/18に既報"
+  },
+  "shiny-30ms-cometik-products-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/18付「CoMETIK、30MS新商品3種」と同じ商品"
+  },
+  "shiny-song-im-a-cutie-finder-rerun-2026": {
+   "action": "roundup",
+   "angle": "開催中のガシャ(Cutie Finder復刻PUは11/30まで、有償ステップアップ2種)をまとめる",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-style-collection-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/13に第3弾11/29までを記事化済み。締切は3日以内でなく新事実もなし"
+  },
+  "shiny-support-hazuki-package-2026-11": {
+   "action": "article",
+   "angle": "「SSR特訓はづきさん」サポート・プロデュースの特別パッケージ(各×2と10連ガシャチケット×2)の販売が始まった",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "produce版を統合した1記事"
+  },
+  "shiny-produce-hazuki-package-2026-11": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-support-hazuki-package-2026-11",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ施策のプロデュース版"
+  },
+  "shiny-prelude-chiyuki-piece-package-2026-11": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-prelude-collection-chiyuki-2026-11",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "千雪ピース付きパッケージ(1人4回まで)をプレコレ記事に統合"
+  },
+  "shiny-web4koma-669-2026": {
+   "action": "article",
+   "angle": "web4コマ第669話「はやくこれになりたい」が公開され、桑山千雪の話が描かれた",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-prelude-collection-chiyuki-2026-11": {
+   "action": "article",
+   "angle": "プレリュードコレクションにSSRサポート桑山千雪が登場し、ミッションやスタンプ報酬、千雪ピース付きパッケージも始まった",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "予告・パッケージを統合"
+  },
+  "shiny-paid-10-ssr-stepup-2026-11": {
+   "action": "roundup",
+   "angle": "開催中のガシャ(有償限定SSR以上10枚確定ステップアップ)をまとめる",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-unit-select-paracolle-stepup-2026-11": {
+   "action": "roundup",
+   "angle": "開催中のガシャ(パラコレ&期間限定入りユニットセレクトステップアップ)をまとめる",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-tomarikaze-rerun-2026-11": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/16・11/18に復刻を記事化済みで新事実なし"
+  },
+  "shiny-collab-fes-2026-11": {
+   "action": "article",
+   "angle": "コラボフェスにSRサポート【そよかぜのあそび】三峰結華が新登場している",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "既報本文に無い新登場アイドルが新事実"
+  },
+  "shiny-hbtk-chain-advice-2026-11": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "おたより募集は11/18頃で終了済み"
+  },
+  "shiny-free-draw-maintenance-2026-11-18": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/18に記事化済みで、メンテも終了済み"
+  },
+  "shiny-kimchikura-anisama-seoul-2027": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/18付記事に全事実あり。新事実なし"
+  },
+  "shiny-countdown-love-cast-tiktok-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "未確認のキャスト個人のSNS動画"
+  },
+  "shiny-karaoke-tetsujin-refrac7ions-2026": {
+   "action": "article",
+   "angle": "「シャニマス×カラオケの鉄人 PJ:REFRAC7IONS」コラボが本日19日に開始。12月31日まで、コンセプトルームは秋葉原電気街店以外の6店舗で今日から利用できる(秋葉原は26日から)",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 70,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約の開始。コンセプトルームを統合"
+  },
+  "shiny-karaoke-tetsujin-concept-room-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-karaoke-tetsujin-refrac7ions-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じコラボの開幕。1記事にまとめる"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "shiny-support-hazuki-package-2026-11",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "「SSR特訓はづきさん」サポート・プロデュースの特別パッケージ(各×2と10連ガシャチケット×2)の販売が始まった",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "shiny-support-hazuki-package-2026-11",
+    "candidate_ids": [
+     "202611190229-grok-29",
+     "202611190229-grok-30"
+    ]
+   },
+   {
+    "slug": "shiny-web4koma-669-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "web4コマ第669話「はやくこれになりたい」が公開され、桑山千雪の話が描かれた",
+    "purpose": "新情報",
+    "lead_score": 5,
+    "dedup_key": "shiny-web4koma-669-2026",
+    "candidate_ids": [
+     "202611190229-grok-32"
+    ]
+   },
+   {
+    "slug": "shiny-prelude-collection-chiyuki-2026-11",
+    "brand": "shiny",
+    "rank": "medium",
+    "angle": "プレリュードコレクションにSSRサポート桑山千雪が登場し、ミッションやスタンプ報酬、千雪ピース付きパッケージも始まった",
+    "purpose": "新情報",
+    "lead_score": 30,
+    "dedup_key": "shiny-prelude-collection-chiyuki-2026-11",
+    "candidate_ids": [
+     "202611190229-grok-33",
+     "202611190229-grok-99",
+     "202611181235-explore-6",
+     "202611190229-grok-38",
+     "202611190229-grok-31"
+    ]
+   },
+   {
+    "slug": "shiny-collab-fes-2026-11",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "コラボフェスにSRサポート【そよかぜのあそび】三峰結華が新登場している",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "shiny-collab-fes-2026-11",
+    "candidate_ids": [
+     "202611190229-grok-37"
+    ]
+   },
+   {
+    "slug": "shiny-karaoke-tetsujin-refrac7ions-2026",
+    "brand": "shiny",
+    "rank": "medium",
+    "angle": "「シャニマス×カラオケの鉄人 PJ:REFRAC7IONS」コラボが本日19日に開始。12月31日まで、コンセプトルームは秋葉原電気街店以外の6店舗で今日から利用できる(秋葉原は26日から)",
+    "purpose": "期日の知らせ",
+    "lead_score": 70,
+    "dedup_key": "shiny-karaoke-tetsujin-refrac7ions-2026",
+    "candidate_ids": [
+     "sched-2026-11-19-shiny-karaoke-tetsujin-refrac7ions-2026-開始",
+     "sched-2026-11-19-shiny-karaoke-tetsujin-concept-room-2026-開幕",
+     "sched-2026-11-19-shiny-karaoke-tetsujin-concept-room-2026-開幕-src1"
+    ]
+   },
+   {
+    "slug": "shiny-ops-roundup",
+    "brand": "shiny",
+    "rank": "roundup",
+    "angle": "開催中のガシャ(Cutie Finder復刻PUは11/30まで、有償ステップアップ2種)をまとめる",
+    "lead_score": 0,
+    "dedup_key": "shiny-song-im-a-cutie-finder-rerun-2026",
+    "candidate_ids": [
+     "202611190229-grok-27",
+     "202611190229-grok-34",
+     "202611190229-grok-35"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "shiny-tomarikaze-no-harutachi-rerun-2026",
+    "reason": "既報",
+    "note": "11/18の予告投稿。11/18付の復刻記事で既報"
+   },
+   {
+    "dedup_key": "shiny-song-for-prism-ver-2-20-0-penlight",
+    "reason": "出典不足",
+    "note": "日時のない2DMV予告のみ。Ver.2.20.0は11/18に既報"
+   },
+   {
+    "dedup_key": "shiny-30ms-cometik-products-2026",
+    "reason": "既報",
+    "note": "11/18付「CoMETIK、30MS新商品3種」と同じ商品"
+   },
+   {
+    "dedup_key": "shiny-style-collection-2026",
+    "reason": "既報",
+    "note": "11/13に第3弾11/29までを記事化済み。締切は3日以内でなく新事実もなし"
+   },
+   {
+    "dedup_key": "shiny-tomarikaze-rerun-2026-11",
+    "reason": "既報",
+    "note": "11/16・11/18に復刻を記事化済みで新事実なし"
+   },
+   {
+    "dedup_key": "shiny-hbtk-chain-advice-2026-11",
+    "reason": "その他",
+    "note": "おたより募集は11/18頃で終了済み"
+   },
+   {
+    "dedup_key": "shiny-free-draw-maintenance-2026-11-18",
+    "reason": "既報",
+    "note": "11/18に記事化済みで、メンテも終了済み"
+   },
+   {
+    "dedup_key": "shiny-kimchikura-anisama-seoul-2027",
+    "reason": "既報",
+    "note": "11/18付記事に全事実あり。新事実なし"
+   },
+   {
+    "dedup_key": "shiny-countdown-love-cast-tiktok-2026",
+    "reason": "出典不足",
+    "note": "未確認のキャスト個人のSNS動画"
+   }
+  ],
+  "cross_brand": []
+ }
+}

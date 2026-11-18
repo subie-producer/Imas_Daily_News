@@ -1,0 +1,173 @@
+{
+ "decisions": {
+  "imas-radio-stamas-5th-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-11号の記事に「BATTLE」のお便りとOPジングル募集が既出。新事実・当日のトリガー無し"
+  },
+  "imas-channel-members-radio-archive-2026-11": {
+   "action": "article",
+   "angle": "アイマスchが11月のメンバー限定ラジオのアーカイブと出演者からのメッセージを案内した",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公式発信。視聴にはメンバー登録が必要"
+  },
+  "imas-channel-fan-art-call-2026-11": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "#アイマスch_FA の募集は11-07号・11-11号の記事に既出"
+  },
+  "popmas-costume-art-fan-discussion-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿で未確認。joint面では culture は使えない"
+  },
+  "popmas-fan-post-1000-likes-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿で未確認"
+  },
+  "tourmas-cards-shop-stock-2026-11-18": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "民間カードショップの入荷告知で、未確認の出典"
+  },
+  "imas-30ms-sticker-campaign-2026": {
+   "action": "article",
+   "angle": "30MSのアイマス20周年コラボ商品を買うと描きおろしステッカーがもらえる購入特典キャンペーンが11月21日に始まる",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "第一弾は11/21〜12/18、第二弾は12/19〜なくなり次第終了。出典は当事者(バンダイホビー)"
+  },
+  "tours-prime-match-fes-2026-11": {
+   "action": "article",
+   "angle": "ツアマスのプライムマッチフェスが本日7時に開幕する。ツアーモードを遊ぶだけで自動エントリーされ、第1マッチングは11月29日25時59分まで",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 70,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "開幕当日。本文は既報の期間・報酬の重ね書きを避け、開幕と第1マッチングの期限を中心にする"
+  },
+  "tours-prime-match-fes-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "tours-prime-match-fes-2026-11",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ開幕の知らせ(出典違い)"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "joint-imas-channel-members-radio-archive-2026-11",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "アイマスchが11月のメンバー限定ラジオのアーカイブと出演者からのメッセージを案内した",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "imas-channel-members-radio-archive-2026-11",
+    "candidate_ids": [
+     "202611190229-grok-64"
+    ]
+   },
+   {
+    "slug": "joint-imas-30ms-sticker-campaign-2026",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "30MSのアイマス20周年コラボ商品を買うと描きおろしステッカーがもらえる購入特典キャンペーンが11月21日に始まる",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "imas-30ms-sticker-campaign-2026",
+    "candidate_ids": [
+     "202611190229-grok-84"
+    ]
+   },
+   {
+    "slug": "joint-tours-prime-match-fes-2026-11",
+    "brand": "joint",
+    "rank": "medium",
+    "angle": "ツアマスのプライムマッチフェスが本日7時に開幕する。ツアーモードを遊ぶだけで自動エントリーされ、第1マッチングは11月29日25時59分まで",
+    "purpose": "期日の知らせ",
+    "lead_score": 70,
+    "dedup_key": "tours-prime-match-fes-2026-11",
+    "candidate_ids": [
+     "sched-2026-11-19-tours-prime-match-fes-2026-11-開始",
+     "sched-2026-11-19-tours-prime-match-fes-2026-開幕",
+     "sched-2026-11-19-tours-prime-match-fes-2026-開幕-src1"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "imas-radio-stamas-5th-2026",
+    "reason": "既報",
+    "note": "11-11号の記事に「BATTLE」のお便りとOPジングル募集が既出。新事実・当日のトリガー無し"
+   },
+   {
+    "dedup_key": "imas-channel-fan-art-call-2026-11",
+    "reason": "既報",
+    "note": "#アイマスch_FA の募集は11-07号・11-11号の記事に既出"
+   },
+   {
+    "dedup_key": "popmas-costume-art-fan-discussion-2026",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿で未確認。joint面では culture は使えない"
+   },
+   {
+    "dedup_key": "popmas-fan-post-1000-likes-2026",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿で未確認"
+   },
+   {
+    "dedup_key": "tourmas-cards-shop-stock-2026-11-18",
+    "reason": "その他",
+    "note": "民間カードショップの入荷告知で、未確認の出典"
+   }
+  ],
+  "cross_brand": []
+ }
+}

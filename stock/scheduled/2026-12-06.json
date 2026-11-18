@@ -500,5 +500,31 @@
   "src_candidate_id": "sched-2026-11-13-sidem-knick-knacks-vol-2-2026-開幕-src2",
   "companion_of": "sched-2026-12-06-sidem-knick-knacks-vol-2-2026-終了",
   "src_dedup_key": "sidem-knick-knacks-vol-2-2026"
+ },
+ {
+  "id": "sched-2026-12-06-cg-sweet-melty-whip-general-sales-2026-締切前",
+  "dedup_key": "cg-sweet-melty-whip-general-sales-2026",
+  "brand": "cg",
+  "subject": "Sweet Melty Whip 受注締切まであと3日",
+  "kind": "締切前",
+  "note": "ホビーショップやMEDICOS ONLINE SHOPで受注できる(12月9日まで)",
+  "reserved_on": "2026-11-19",
+  "occurs_on": "2026-12-09",
+  "title": "Sweet Melty Whip販売商品の一般販売開始",
+  "url": "https://x.com/medicos_et_02/status/2122887539174342863",
+  "source_type": "当事者",
+  "facts": [
+   "「アイドルマスター シンデレラガールズ」POP UP SHOP~Sweet Melty Whip~で販売した商品が、全国のホビーショップなどで予約受付開始。",
+   "MEDICOS ONLINE SHOPでも受注中。",
+   "受注期間: 2026-11-18(水)～2026-12-9(水)。",
+   "特典は付属しない。",
+   "販売商品ページ: https://medicos-e-shop.net/products/list?category_id=2037",
+   "リンク: https://medicos-e-shop.net/products/list?category_id=2037",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "unconfirmed",
+  "deadline": "2026-12-09",
+  "src_candidate_id": "202611190229-grok-21"
  }
 ]

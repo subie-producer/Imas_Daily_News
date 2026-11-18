@@ -963,5 +963,48 @@
   "src_candidate_id": "sched-2026-11-18-sidem-daimaru-vol2-2026-開幕",
   "companion_of": "sched-2026-12-20-sidem-daimaru-matsuzakaya-2026-締切前",
   "src_dedup_key": "sidem-daimaru-vol2-2026"
+ },
+ {
+  "id": "sched-2026-12-20-gaku-hiwatari-kanae-single-release-event-2026-締切",
+  "dedup_key": "gaku-hiwatari-kanae-single-release-event-2026",
+  "brand": "gaku",
+  "subject": "氷渡香名江 1st Single リリース記念イベント申込",
+  "kind": "締切",
+  "note": "23:59までイベント応募を申し込める最終日",
+  "reserved_on": "2026-11-19",
+  "occurs_on": "2026-12-20",
+  "title": "氷渡香名江 1st Single リリース記念イベントの応募受付告知",
+  "url": "https://x.com/gkmas_official/status/2122912326638768320",
+  "source_type": "公式",
+  "facts": [
+   "学園アイドルマスター『氷渡香名江 1st Single』のリリース記念イベントが告知された。",
+   "対象商品を予約し、全額内金を支払った顧客に応募シリアルを渡す。",
+   "エンゲージメント: 中",
+   "言及アイドル: 氷渡香名江"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202611190229-grok-55"
+ },
+ {
+  "id": "sched-2026-12-20-gaku-hiwatari-kanae-single-release-event-2026-締切-src1",
+  "dedup_key": "gaku-hiwatari-kanae-single-release-event-2026",
+  "brand": "gaku",
+  "subject": "氷渡香名江 1st Single リリース記念イベント申込",
+  "kind": "締切",
+  "note": "23:59までイベント応募を申し込める最終日",
+  "reserved_on": "2026-11-19",
+  "occurs_on": "2026-12-20",
+  "title": "アニメイト「学園アイドルマスター 『氷渡香名江 1st Single』 リリース記念イベント」(2026年11月12日)",
+  "url": "https://www.club-animate.jp/entries/index1/type%3A31/name%3Ae4b88be9878e",
+  "source_type": "当事者",
+  "facts": [
+   "申込期間は2026年11月15日（日）～2026年12月20日（日）23:59。当選通知は2027年1月下旬頃、CLUB animate内「申込・回答履歴」に表示予定。"
+  ],
+  "via": "verified_fact",
+  "verify": "unconfirmed",
+  "src_candidate_id": "202611190229-grok-55",
+  "companion_of": "sched-2026-12-20-gaku-hiwatari-kanae-single-release-event-2026-締切",
+  "src_dedup_key": "gaku-hiwatari-kanae-single-release-event-2026"
  }
 ]

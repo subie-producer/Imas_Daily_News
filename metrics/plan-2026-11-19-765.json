@@ -1,0 +1,75 @@
+{
+ "decisions": {
+  "765pro-allstars-never-end-idol-bluray-day1-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "Amazonの割引表示の値動き(15,040円→14,887円)のみ。公式の訂正・条件変更ではなく読者に関わる変更でない"
+  },
+  "765allstars-never-end-idol-bluray": {
+   "action": "article",
+   "angle": "765PRO ALLSTARS「NEVER END IDOL」LIVE Blu-rayに、アソビストアの数量限定特装版(BOX＆フォトブック付き4枚組)と購入店舗特典A4クリアファイルが決まった。発売は11月25日",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "既報は通常版DAY1(Amazon特典)。特装版とアソビストア特典は新事実"
+  },
+  "joint-topic-37": {
+   "action": "article",
+   "angle": "アイマスchの12月メンバー限定配信は12月17日、MCが宮﨑雅也さん、ゲストが中村繪里子さんと決まり、お便りを募集している",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "他の面の記事は11月配信のアーカイブの案内で、12月配信の出演者発表は別の新情報"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "765-765allstars-never-end-idol-bluray",
+    "brand": "765",
+    "rank": "small",
+    "angle": "765PRO ALLSTARS「NEVER END IDOL」LIVE Blu-rayに、アソビストアの数量限定特装版(BOX＆フォトブック付き4枚組)と購入店舗特典A4クリアファイルが決まった。発売は11月25日",
+    "purpose": "新情報",
+    "lead_score": 60,
+    "dedup_key": "765allstars-never-end-idol-bluray",
+    "candidate_ids": [
+     "202611181835-watch-3",
+     "202611190229-grok-87"
+    ]
+   },
+   {
+    "slug": "765-joint-topic-37",
+    "brand": "765",
+    "rank": "small",
+    "angle": "アイマスchの12月メンバー限定配信は12月17日、MCが宮﨑雅也さん、ゲストが中村繪里子さんと決まり、お便りを募集している",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "joint-topic-37",
+    "candidate_ids": [
+     "202611190229-grok-17",
+     "202611190229-grok-65"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "765pro-allstars-never-end-idol-bluray-day1-2026",
+    "reason": "その他",
+    "note": "Amazonの割引表示の値動き(15,040円→14,887円)のみ。公式の訂正・条件変更ではなく読者に関わる変更でない"
+   }
+  ],
+  "cross_brand": []
+ }
+}

@@ -12801,23 +12801,28 @@ def test_deploy_warm_cache(tmp: Path):
     top = ('<a href="/articles/a1/">A</a><a href="/articles/a1/">A again</a><a href="/editions/2026-11-19/">号</a>'
            '<a href="/articles/b2/">B</a><a href="/tags/x/">tag</a><a href="/archive/">arc</a>'
            '<link href="/assets/css/paper.css"><a href="https://other.example/articles/z/">外</a>').encode()
-    pages = {"/": top, "/articles/a1/": b"a" * 100, "/editions/2026-11-19/": b"e", "/articles/b2/": b"b"}
+    pages = {"/": top, "/articles/a1/": b"a" * 5000,"/editions/2026-11-19/": b"e", "/articles/b2/": b"b"}
     seen, reads, down = [], [], set()
+    claimed: dict[str, int] = {}        # 本文より長い Content-Length を名乗らせる(途中で接続が切れた応答)
 
     class Resp:
-        def __init__(self, body): self.body = body
+        """本物の応答と同じく、読んだ分だけ進み、途中で切れた本文は例外なしに短く返す(上限つきの read の振る舞い)。"""
+        def __init__(self, body, length):
+            self.body, self.pos, self.headers = body, 0, {"Content-Length": str(length)}
         def __enter__(self): return self
         def __exit__(self, *a): return False
         def read(self, n=-1):
             reads.append(n)
-            return self.body if n is None or n < 0 else self.body[:n]
+            end = len(self.body) if n is None or n < 0 else min(len(self.body), self.pos + n)
+            out, self.pos = self.body[self.pos:end], end
+            return out
 
     def fake(req, timeout=30):
         path = req.full_url[len("https://news.example.test"):]
         seen.append(path)
         if path in down or path not in pages:
             raise urllib.error.HTTPError(req.full_url, 502, "Bad Gateway", {}, None)
-        return Resp(pages[path])
+        return Resp(pages[path], claimed.get(path, len(pages[path])))
 
     saved = (deploy.urllib.request.urlopen, dict(deploy.ENV), deploy.DEADLINE)
     try:
@@ -12829,6 +12834,19 @@ def test_deploy_warm_cache(tmp: Path):
               f"トップから張った記事・号を重複なく全部読まない・ほかのページを読んだ: {seen}")
         check(all(isinstance(n, int) and 0 < n <= deploy.WARM_MAX_BYTES for n in reads), f"上限なしで読んだ: {reads}")
         check(msg == "キャッシュを温めた: トップと、そこから張った 3/3 ページ", f"温めた結果の文が違う: {msg}")
+        # 本文が途中で切れた(Content-Length より短い)ページ・上限を越えるページは、貯まったと言えないので読めない側に数える
+        claimed["/editions/2026-11-19/"] = 1000
+        msg = deploy.warm_cache()
+        check(msg.startswith(deploy.WARM_FAILED) and "/editions/2026-11-19/" in msg and "途中で切れた" in msg,
+              f"本文が途中で切れたページを温めたと言った: {msg}")
+        claimed.clear()
+        saved_max, deploy.WARM_MAX_BYTES = deploy.WARM_MAX_BYTES, 1000      # トップ(約330バイト)は収まり、a1(5000)は越える
+        try:
+            msg = deploy.warm_cache()
+        finally:
+            deploy.WARM_MAX_BYTES = saved_max
+        check(msg.startswith(deploy.WARM_FAILED) and "/articles/a1/" in msg and "上限" in msg and "トップを読めない" not in msg,
+              f"上限を越えるページを温めたと言った: {msg}")
         seen.clear()
         down.add("/articles/b2/")
         msg = deploy.warm_cache()

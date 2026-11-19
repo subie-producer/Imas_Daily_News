@@ -12804,11 +12804,12 @@ def test_deploy_warm_cache(tmp: Path):
     pages = {"/": top, "/articles/a1/": b"a" * 5000,"/editions/2026-11-19/": b"e", "/articles/b2/": b"b"}
     seen, reads, down = [], [], set()
     claimed: dict[str, int] = {}        # 本文より長い Content-Length を名乗らせる(途中で接続が切れた応答)
+    empty: set[str] = set()
 
     class Resp:
         """本物の応答と同じく、読んだ分だけ進み、途中で切れた本文は例外なしに短く返す(上限つきの read の振る舞い)。"""
-        def __init__(self, body, length):
-            self.body, self.pos, self.headers = body, 0, {"Content-Length": str(length)}
+        def __init__(self, body, length, status=200):
+            self.body, self.pos, self.headers, self.status = body, 0, {"Content-Length": str(length)}, status
         def __enter__(self): return self
         def __exit__(self, *a): return False
         def read(self, n=-1):
@@ -12822,6 +12823,8 @@ def test_deploy_warm_cache(tmp: Path):
         seen.append(path)
         if path in down or path not in pages:
             raise urllib.error.HTTPError(req.full_url, 502, "Bad Gateway", {}, None)
+        if path in empty:        # urlopen が例外にしない 2xx(本文の無い 204)
+            return Resp(b"", 0, status=204)
         return Resp(pages[path], claimed.get(path, len(pages[path])))
 
     saved = (deploy.urllib.request.urlopen, dict(deploy.ENV), deploy.DEADLINE)
@@ -12847,6 +12850,10 @@ def test_deploy_warm_cache(tmp: Path):
             deploy.WARM_MAX_BYTES = saved_max
         check(msg.startswith(deploy.WARM_FAILED) and "/articles/a1/" in msg and "上限" in msg and "トップを読めない" not in msg,
               f"上限を越えるページを温めたと言った: {msg}")
+        empty.add("/articles/b2/")
+        msg = deploy.warm_cache()
+        check(msg.startswith(deploy.WARM_FAILED) and "/articles/b2/" in msg and "204" in msg, f"200 でない応答(204)を温めたと言った: {msg}")
+        empty.clear()
         seen.clear()
         down.add("/articles/b2/")
         msg = deploy.warm_cache()

@@ -221,11 +221,14 @@ WARM_FAILED = "キャッシュの温めに失敗"
 
 
 def warm_page(url: str, timeout: float = WARM_TIMEOUT_SEC) -> bytes:
-    """外から1ページ読む(エッジに貯めさせる)。200 でなければ例外(urlopen が HTTPError を上げる)。
+    """外から1ページ読む(エッジに貯めさせる)。200 でなければ例外(4xx・5xx は urlopen が HTTPError を上げ、ほかはここで上げる)。
     本文は最後まで読めたときだけ返す: 上限つきの read は途中で接続が切れても例外を出さないので、Content-Length と
     読んだ長さを照らす。上限を越えるページも読み切れない(貯まったと言えない)ので例外(Sol 監査 r1)。"""
     req = urllib.request.Request(url, headers={"User-Agent": "ImasNewsBot/1.0"})
     with urllib.request.urlopen(req, timeout=timeout) as r:
+        status = getattr(r, "status", None)
+        if status != 200:      # urlopen は 2xx を例外にしない(204 は本文が無く、貯まるページが無い。Sol 監査 r2)
+            raise ValueError(f"200 でない応答({status})")
         body = r.read(WARM_MAX_BYTES)
         if len(body) >= WARM_MAX_BYTES and r.read(1):
             raise ValueError(f"本文が上限 {WARM_MAX_BYTES} バイトを越える")

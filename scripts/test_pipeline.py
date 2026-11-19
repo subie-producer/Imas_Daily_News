@@ -12650,9 +12650,9 @@ def test_deploy_notice(tmp: Path):
     post("2026-10-30-c.md", "記事C")
     releases, current = srv / "releases", srv / "current"
     notes, served = [], {"id": None}
-    names = iter([f"20261031T{m:02d}0000" for m in range(6, 13)])
+    names = iter([f"20261031T{m:02d}0000" for m in range(6, 24)])
     saved = {k: getattr(deploy, k) for k in ("ROOT", "SRV", "RELEASES", "CURRENT", "verify", "ensure_deps", "SOURCES", "DOCS",
-                                             "purge_cache", "notify", "sync_app",
+                                             "purge_cache", "notify", "sync_app", "warm_cache",
                                              "now_jst", "reindex", "served_release_id", "restart_app", "SERVED_RETRY_SEC")
              if hasattr(deploy, k)}
     saved_argv = sys.argv
@@ -12716,6 +12716,23 @@ def test_deploy_notice(tmp: Path):
         deploy.purge_cache = lambda: purged.append(True) or "キャッシュパージ完了"
         check(run("--skip-purge") == 0 and not purged and len(notes) == 1 and notes[0][0] and "パージ" not in notes[0][1],
               f"--skip-purge の配信の通知にパージのことを書いた: {notes} {purged}")
+        # 8回目以降: パージが通り外から新しい版が見えたら、キャッシュを温める。読めないページがあれば発行からの配信でも異常
+        # (2026-11-19 編集長「トップページの記事はできれば自動キャッシュ」)
+        warmed = []
+        deploy.warm_cache = lambda: warmed.append(True) or f"{deploy.WARM_FAILED}: トップから張ったページ 1/3 が外から読めない: /articles/x/"
+        check(run("--from-release") == 0 and warmed and any(not ok and "/articles/x/" in m for ok, m in notes),
+              f"パージの後に温めない・温めで読めないページを異常として知らせない: {warmed} {notes}")
+        warmed.clear()
+        deploy.warm_cache = lambda: warmed.append(True) or "キャッシュを温めた: トップと、そこから張った 3/3 ページ"
+        check(run() == 0 and warmed and len(notes) == 1 and notes[0][0] and "キャッシュを温めた" in notes[0][1],
+              f"温めた結果を手での配信の通知に書かない: {notes}")
+        warmed.clear()
+        deploy.purge_cache = lambda: "パージ失敗: 試験"
+        run("--from-release")
+        served["id"] = "20261031T060000"
+        deploy.purge_cache = lambda: "キャッシュパージ完了"
+        run("--from-release")
+        check(not warmed, "パージに失敗した・外から古い版が見えるのに温めた(古い版を貯め直す)")
     finally:
         for k, v in saved.items():
             setattr(deploy, k, v)
@@ -12772,6 +12789,119 @@ def test_deploy_purge_zones(tmp: Path):
         deploy.urllib.request.urlopen = saved[0]
         deploy.ENV.clear()
         deploy.ENV.update(saved[1])
+
+
+def test_deploy_warm_cache(tmp: Path):
+    """パージの後、トップとトップから張った記事・号のページを外から1回ずつ読んでエッジに貯める(編集長 2026-11-19)。
+    張られたページは重複なく全部読む(タグ・アーカイブ・CSS は読まない)、ページは最後まで読む(途中で切るとエッジに貯まらない)が上限は守る、
+    読めないページがあれば異常の文で返す、トップが読めなければそれ自体を言う、予算が残っていなければ読まずに省いたと言う。"""
+    import threading
+    import time
+    import urllib.error
+    import deploy
+    top = ('<a href="/articles/a1/">A</a><a href="/articles/a1/">A again</a><a href="/editions/2026-11-19/">号</a>'
+           '<a href="/articles/b2/">B</a><a href="/tags/x/">tag</a><a href="/archive/">arc</a>'
+           '<link href="/assets/css/paper.css"><a href="https://other.example/articles/z/">外</a>').encode()
+    pages = {"/": top, "/articles/a1/": b"a" * 5000,"/editions/2026-11-19/": b"e", "/articles/b2/": b"b"}
+    seen, reads, down = [], [], set()
+    claimed: dict[str, int] = {}        # 本文より長い Content-Length を名乗らせる(途中で接続が切れた応答)
+    empty: set[str] = set()
+
+    class Resp:
+        """本物の応答と同じく、読んだ分だけ進み、途中で切れた本文は例外なしに短く返す(上限つきの read の振る舞い)。"""
+        def __init__(self, body, length, status=200):
+            self.body, self.pos, self.headers, self.status = body, 0, {"Content-Length": str(length)}, status
+        def __enter__(self): return self
+        def __exit__(self, *a): return False
+        def read(self, n=-1):
+            reads.append(n)
+            end = len(self.body) if n is None or n < 0 else min(len(self.body), self.pos + n)
+            out, self.pos = self.body[self.pos:end], end
+            return out
+
+    gate, hang = threading.Event(), set()      # hang のページは名前解決で止まったように gate まで返らない
+    lock, flight = threading.Lock(), {"now": 0, "peak": 0}
+
+    def fake(req, timeout=30):
+        path = req.full_url[len("https://news.example.test"):]
+        seen.append(path)
+        if path in hang:
+            with lock:
+                flight["now"] += 1
+                flight["peak"] = max(flight["peak"], flight["now"])
+            try:
+                gate.wait(30)
+                raise urllib.error.URLError("名前解決で止まった(試験)")
+            finally:
+                with lock:
+                    flight["now"] -= 1
+        if path in down or path not in pages:
+            raise urllib.error.HTTPError(req.full_url, 502, "Bad Gateway", {}, None)
+        if path in empty:        # urlopen が例外にしない 2xx(本文の無い 204)
+            return Resp(b"", 0, status=204)
+        return Resp(pages[path], claimed.get(path, len(pages[path])))
+
+    saved = (deploy.urllib.request.urlopen, dict(deploy.ENV), deploy.DEADLINE)
+    try:
+        deploy.urllib.request.urlopen = fake
+        deploy.ENV["SITE_URL"] = "https://news.example.test/"
+        deploy.DEADLINE = time.time() + 600
+        msg = deploy.warm_cache()
+        check(seen[0] == "/" and sorted(seen[1:]) == ["/articles/a1/", "/articles/b2/", "/editions/2026-11-19/"],
+              f"トップから張った記事・号を重複なく全部読まない・ほかのページを読んだ: {seen}")
+        check(all(isinstance(n, int) and 0 < n <= deploy.WARM_MAX_BYTES for n in reads), f"上限なしで読んだ: {reads}")
+        check(msg == "キャッシュを温めた: トップと、そこから張った 3/3 ページ", f"温めた結果の文が違う: {msg}")
+        # 本文が途中で切れた(Content-Length より短い)ページ・上限を越えるページは、貯まったと言えないので読めない側に数える
+        claimed["/editions/2026-11-19/"] = 1000
+        msg = deploy.warm_cache()
+        check(msg.startswith(deploy.WARM_FAILED) and "/editions/2026-11-19/" in msg and "途中で切れた" in msg,
+              f"本文が途中で切れたページを温めたと言った: {msg}")
+        claimed.clear()
+        saved_max, deploy.WARM_MAX_BYTES = deploy.WARM_MAX_BYTES, 1000      # トップ(約330バイト)は収まり、a1(5000)は越える
+        try:
+            msg = deploy.warm_cache()
+        finally:
+            deploy.WARM_MAX_BYTES = saved_max
+        check(msg.startswith(deploy.WARM_FAILED) and "/articles/a1/" in msg and "上限" in msg and "トップを読めない" not in msg,
+              f"上限を越えるページを温めたと言った: {msg}")
+        empty.add("/articles/b2/")
+        msg = deploy.warm_cache()
+        check(msg.startswith(deploy.WARM_FAILED) and "/articles/b2/" in msg and "204" in msg, f"200 でない応答(204)を温めたと言った: {msg}")
+        empty.clear()
+        # 名前解決で止まったページがあっても、実際の読み取りは同時 WARM_WORKERS 本まで(時間切れで待つのをやめても読み取りの
+        # スレッドは残るので、その枠を次のページに渡さない)。時間切れが出たら残りは読みに行かず、全部を読めない側に数える
+        saved_top, saved_t, saved_min = pages["/"], deploy.WARM_TIMEOUT_SEC, deploy.SERVED_MIN_SEC
+        pages["/"] = "".join(f'<a href="/articles/h{i}/">h</a>' for i in range(8)).encode()
+        hang.update(f"/articles/h{i}/" for i in range(8))
+        deploy.WARM_TIMEOUT_SEC, deploy.SERVED_MIN_SEC = 0.3, 0.05
+        try:
+            msg = deploy.warm_cache()
+            peak = flight["peak"]
+        finally:
+            gate.set()
+            pages["/"], deploy.WARM_TIMEOUT_SEC, deploy.SERVED_MIN_SEC = saved_top, saved_t, saved_min
+            hang.clear()
+        check(0 < peak <= deploy.WARM_WORKERS, f"止まったページの読み取りが残ったまま、同時 {deploy.WARM_WORKERS} 本を越えて読んだ: {peak}")
+        check(msg.startswith(deploy.WARM_FAILED) and "8/8" in msg, f"止まったページ・読みに行かなかったページを読めない側に数えない: {msg}")
+        seen.clear()
+        down.add("/articles/b2/")
+        msg = deploy.warm_cache()
+        check(msg.startswith(deploy.WARM_FAILED) and "1/3" in msg and "/articles/b2/" in msg and "/articles/a1/" not in msg,
+              f"読めないページを異常の文で言わない: {msg}")
+        down.add("/")
+        msg = deploy.warm_cache()
+        check(msg.startswith(deploy.WARM_FAILED) and "トップを読めない" in msg, f"トップが読めないことを言わない: {msg}")
+        seen.clear()
+        deploy.DEADLINE = time.time() + deploy.SERVED_MARGIN_SEC
+        msg = deploy.warm_cache()
+        check(not seen and "省いた" in msg and not msg.startswith(deploy.WARM_FAILED), f"予算が無いのに読んだ・異常と言った: {seen} {msg}")
+        deploy.ENV.pop("SITE_URL")
+        check(deploy.warm_cache() == "", "SITE_URL が無いのに何か言った")
+    finally:
+        deploy.urllib.request.urlopen = saved[0]
+        deploy.ENV.clear()
+        deploy.ENV.update(saved[1])
+        deploy.DEADLINE = saved[2]
 
 
 def test_deploy_served_retry(tmp: Path):
@@ -22098,6 +22228,7 @@ def main() -> int:
     test_webapp_paper(tmp / "wap")
     test_deploy_notice(tmp / "dn")
     test_deploy_purge_zones(tmp / "dpz")
+    test_deploy_warm_cache(tmp / "dwc")
     test_deploy_served_retry(tmp / "dsr")
     test_correction_append_only(tmp / "cao")
     test_indexer_tag_dictionary(tmp / "itd")

@@ -335,6 +335,7 @@ Cloudflare エッジ(TLS 終端・キャッシュ・CDN) → 読者
 | **可用性** | オリジンは自宅PCだが**24時間稼働**させる運用で担保する。`loginctl` の Linger が有効なので、ログアウトしても systemd user サービスは動き続ける(これが切れると配信ごと止まるため、環境を作り直したときは `loginctl enable-linger` を確認すること)。Windows の再起動に備えるなら WSL の自動起動を Windows 側で設定する |
 | エッジキャッシュ | 2026-11-17 から有効。配っているドメインのゾーンごと(`imas.fans`・`ofa.tokyo`)に Cache Rule(phase `http_request_cache_settings`)を置き、そのホスト名の全パスをキャッシュ対象にし、期間はオリジンの `Cache-Control` に従う(紙面は `s-maxage=86400` で1日、検索は10分)。`/healthz` と `/release-id.txt` は対象外(配信の確認と監視が常にオリジンを見るため) |
 | パージとの組 | 1日保持するので、**発行・訂正のたびのパージが必須**。`deploy.py` が差し替えの後に `purge_everything` を呼ぶ(`.env` の `CF_API_TOKEN`/`CF_ZONE_ID`。`CF_ZONE_ID` はカンマ区切りで、配っているドメインのゾーンを全部書く。トークンの権限は両ゾーンの Cache Purge・Cache Rules: Edit・DNS: Edit)。トークンが空・失効だと新しい号が最大1日届かないので、パージの失敗(1ゾーンでも)は deploy の通知で異常として出る。Cache Rule とトークンはセットで、片方だけにしない |
+| キャッシュの温め | 2026-11-19 から。パージが通り外から新しい版が見えたら、`deploy.py` の `warm_cache` が `SITE_URL` のトップと、トップから張った記事・号のページ(約40本)を外から1回ずつ読み、エッジに貯める(実測1.3秒)。読めないページがあれば発行からの配信でも異常として通知する。貯まるのはこの機械がつながる Cloudflare の拠点(国内)だけで、ほかの拠点は最初の読者の要求でアプリが描く。旧ドメインは温めない |
 | フォールバック | **持たない**(2026-11-16 に GitHub Pages の予備の配信をやめた。編集長の決定)。docs/ には Jekyll の設定・テンプレートを置いていない |
 | 権限 | Caddy・cloudflared・アプリとも **root 不要**(`~/.local/bin`・非特権ポート・`systemctl --user`)。ポート開放も固定IPも不要 |
 

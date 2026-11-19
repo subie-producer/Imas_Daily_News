@@ -24,10 +24,12 @@
 - 最後に「配信の状態」(current と索引がどの版か)を1行出す。release はそれを通知に載せる。
 """
 import argparse
+import concurrent.futures
 import datetime
 import hashlib
 import json
 import os
+import re
 import shutil
 import sqlite3
 import subprocess
@@ -87,6 +89,13 @@ SERVED_RETRY_SEC = 10
 SERVED_TIMEOUT_SEC = 30
 SERVED_MARGIN_SEC = 15
 SERVED_MIN_SEC = 3
+# パージの後、読者が最初に開くページ(トップと、トップから張った記事・号)を外から1回ずつ読み、エッジに貯めておく
+# (編集長 2026-11-19「トップページの記事はできれば自動キャッシュ」)。貯まるのはこの機械がつながる Cloudflare の拠点だけ
+WARM_LINK = re.compile(r'href="(/(?:articles|editions)/[^"?#]+/)"')
+WARM_WORKERS = 4
+WARM_TIMEOUT_SEC = 20
+WARM_MAX_BYTES = 4_000_000          # 1ページの上限(トップで約80KB)。貯めさせるには最後まで読む
+WARM_SHOWN = 5                      # 通知に並べる読めなかったページの数
 
 
 def manifest_path() -> Path:
@@ -206,6 +215,86 @@ def check_served(stamp: str) -> tuple[bool, str]:
         print(f"外からの確認 {i + 1}/{SERVED_ATTEMPTS}: {msg}。{SERVED_RETRY_SEC}秒後に読み直す", flush=True)
         time.sleep(SERVED_RETRY_SEC)
     return False, f"{msg}({i + 1}回読んだ)" if SERVED_ATTEMPTS > 1 else msg
+
+
+WARM_FAILED = "キャッシュの温めに失敗"
+
+
+def warm_page(url: str, timeout: float = WARM_TIMEOUT_SEC) -> bytes:
+    """外から1ページ読む(エッジに貯めさせる)。200 でなければ例外(4xx・5xx は urlopen が HTTPError を上げ、ほかはここで上げる)。
+    本文は最後まで読めたときだけ返す: 上限つきの read は途中で接続が切れても例外を出さないので、Content-Length と
+    読んだ長さを照らす。上限を越えるページも読み切れない(貯まったと言えない)ので例外(Sol 監査 r1)。"""
+    req = urllib.request.Request(url, headers={"User-Agent": "ImasNewsBot/1.0"})
+    with urllib.request.urlopen(req, timeout=timeout) as r:
+        status = getattr(r, "status", None)
+        if status != 200:      # urlopen は 2xx を例外にしない(204 は本文が無く、貯まるページが無い。Sol 監査 r2)
+            raise ValueError(f"200 でない応答({status})")
+        body = r.read(WARM_MAX_BYTES)
+        if len(body) >= WARM_MAX_BYTES and r.read(1):
+            raise ValueError(f"本文が上限 {WARM_MAX_BYTES} バイトを越える")
+        length = r.headers.get("Content-Length")
+        if length is not None and length.strip().isdigit() and int(length) != len(body):
+            raise ValueError(f"本文が途中で切れた({len(body)}/{int(length)} バイト)")
+        return body
+
+
+def warm_cache() -> str:
+    """パージの後、トップとトップから張った記事・号のページを外から読み、エッジに貯める。戻りは通知の1文
+    (読めないページがあれば WARM_FAILED で始める。読者がそのページを開くと 200 が返らないかもしれないので異常に数える)。
+    時間の予算は外からの確認と同じく、通知の分(SERVED_MARGIN_SEC)を残して使う。"""
+    site = ENV.get("SITE_URL", "").rstrip("/")
+    if not site:
+        return ""
+
+    def budget() -> float:
+        return min(WARM_TIMEOUT_SEC, left() - SERVED_MARGIN_SEC)
+
+    if budget() < SERVED_MIN_SEC:
+        return "キャッシュの温めは省いた(配信の時間の予算が残っていない)"
+    try:
+        top = within(lambda timeout: warm_page(f"{site}/", timeout), budget()).decode("utf-8", errors="replace")
+    except Exception as e:      # noqa: BLE001  トップが読めないこと自体を異常として言う
+        return f"{WARM_FAILED}: トップを読めない({type(e).__name__}: {str(e)[:120]})"
+    paths = list(dict.fromkeys(WARM_LINK.findall(top)))
+    bad: list[str] = []
+    skipped = 0
+    # 実際の読み取りの同時数の枠。within は時間切れで待つのをやめても読み取りのスレッドは残る(名前解決で止まったまま)ので、
+    # 枠は読み取りのスレッドが終わるまで返さない。止まったスレッドが枠を埋めたら、次のページは枠を待って時間切れになる(Sol 監査 r3)
+    slots = threading.BoundedSemaphore(WARM_WORKERS)
+    stuck = threading.Event()      # 1ページでも時間切れになったら、残りは読みに行かない(同じ所で止まるのを待ち続けない)
+
+    def read_in_slot(url: str, timeout: float) -> bytes:
+        if not slots.acquire(timeout=timeout):
+            raise TimeoutError(f"{timeout:.0f}秒待っても、先に読み始めたページが終わらない")
+        try:
+            return warm_page(url, timeout)
+        finally:
+            slots.release()
+
+    def one(path: str) -> None:
+        nonlocal skipped
+        if stuck.is_set():
+            bad.append(f"{path}(先のページが時間切れのため読まない)")
+            return
+        t = budget()
+        if t < SERVED_MIN_SEC:
+            skipped += 1
+            return
+        try:
+            within(lambda timeout: read_in_slot(site + path, timeout), t)
+        except Exception as e:      # noqa: BLE001  どこで落ちても、そのページは読めないと言う
+            if isinstance(e, TimeoutError):
+                stuck.set()
+            bad.append(f"{path}({type(e).__name__}: {str(e)[:80]})")
+
+    with concurrent.futures.ThreadPoolExecutor(WARM_WORKERS) as ex:
+        list(ex.map(one, paths))
+    done = len(paths) - len(bad) - skipped
+    if bad:
+        return (f"{WARM_FAILED}: トップから張ったページ {len(bad)}/{len(paths)} が外から読めない: "
+                + " / ".join(sorted(bad)[:WARM_SHOWN]) + (" ほか" if len(bad) > WARM_SHOWN else ""))
+    tail = f"(予算が尽きて {skipped} ページは省いた)" if skipped else ""
+    return f"キャッシュを温めた: トップと、そこから張った {done}/{len(paths)} ページ{tail}"
 
 # 公開の状態。止まった所で実態が違うので、段ごとに言い直し、最後に STATE_MARK の行で出す(release が通知に載せる)
 STATE_MARK = "配信の状態: "
@@ -508,13 +597,18 @@ def main() -> int:
     changes = describe_changes(read_manifest(), manifest)
     write_manifest(manifest)
     served, served_msg = check_served(stamp)
+    # 温めるのは、パージが通り外から新しい版が見えたときだけ(古い版を貯め直さない・パージしていなければ貯まりっぱなし)
+    warm_msg = warm_cache() if served and purge_msg.startswith("キャッシュパージ完了") else ""
+    if warm_msg:
+        print(warm_msg, flush=True)
     mismatch = f"静的 {n_posts}本と索引 {n_indexed}本が食い違う" if n_posts != n_indexed else ""
-    # 異常: 食い違い・外から見えない(トンネル・オリジンの不調)・アプリの再起動やパージの失敗。発行からの配信でも知らせる
-    # (成功の通知は release に任せるので、ここで黙ると誰にも届かない)。手での配信は成功も異常も1通にまとめる
-    trouble = bool(mismatch) or not served or app_msg.startswith("⚠️") or purge_msg.startswith("パージ失敗")
+    # 異常: 食い違い・外から見えない(トンネル・オリジンの不調)・アプリの再起動やパージの失敗・トップから張ったページが読めない。
+    # 発行からの配信でも知らせる(成功の通知は release に任せるので、ここで黙ると誰にも届かない)。手での配信は成功も異常も1通にまとめる
+    trouble = (bool(mismatch) or not served or app_msg.startswith("⚠️") or purge_msg.startswith("パージ失敗")
+               or warm_msg.startswith(WARM_FAILED))
     print(f"{RESULT_MARK}{served_msg}", flush=True)
     if trouble or not args.from_release:
-        parts = [mismatch, served_msg, app_msg, purge_msg]
+        parts = [mismatch, served_msg, app_msg, purge_msg, warm_msg]
         if not served:
             parts.append(f"current・索引とも新しい版({release.name})")
         notify("deploy", "。".join([f"配信を更新: {changes}"] + [m for m in parts if m]), ok=not trouble)

@@ -258,16 +258,33 @@ def warm_cache() -> str:
     paths = list(dict.fromkeys(WARM_LINK.findall(top)))
     bad: list[str] = []
     skipped = 0
+    # 実際の読み取りの同時数の枠。within は時間切れで待つのをやめても読み取りのスレッドは残る(名前解決で止まったまま)ので、
+    # 枠は読み取りのスレッドが終わるまで返さない。止まったスレッドが枠を埋めたら、次のページは枠を待って時間切れになる(Sol 監査 r3)
+    slots = threading.BoundedSemaphore(WARM_WORKERS)
+    stuck = threading.Event()      # 1ページでも時間切れになったら、残りは読みに行かない(同じ所で止まるのを待ち続けない)
+
+    def read_in_slot(url: str, timeout: float) -> bytes:
+        if not slots.acquire(timeout=timeout):
+            raise TimeoutError(f"{timeout:.0f}秒待っても、先に読み始めたページが終わらない")
+        try:
+            return warm_page(url, timeout)
+        finally:
+            slots.release()
 
     def one(path: str) -> None:
         nonlocal skipped
+        if stuck.is_set():
+            bad.append(f"{path}(先のページが時間切れのため読まない)")
+            return
         t = budget()
         if t < SERVED_MIN_SEC:
             skipped += 1
             return
         try:
-            within(lambda timeout: warm_page(site + path, timeout), t)
+            within(lambda timeout: read_in_slot(site + path, timeout), t)
         except Exception as e:      # noqa: BLE001  どこで落ちても、そのページは読めないと言う
+            if isinstance(e, TimeoutError):
+                stuck.set()
             bad.append(f"{path}({type(e).__name__}: {str(e)[:80]})")
 
     with concurrent.futures.ThreadPoolExecutor(WARM_WORKERS) as ex:

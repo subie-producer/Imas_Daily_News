@@ -12795,6 +12795,7 @@ def test_deploy_warm_cache(tmp: Path):
     """パージの後、トップとトップから張った記事・号のページを外から1回ずつ読んでエッジに貯める(編集長 2026-11-19)。
     張られたページは重複なく全部読む(タグ・アーカイブ・CSS は読まない)、ページは最後まで読む(途中で切るとエッジに貯まらない)が上限は守る、
     読めないページがあれば異常の文で返す、トップが読めなければそれ自体を言う、予算が残っていなければ読まずに省いたと言う。"""
+    import threading
     import time
     import urllib.error
     import deploy
@@ -12818,9 +12819,22 @@ def test_deploy_warm_cache(tmp: Path):
             out, self.pos = self.body[self.pos:end], end
             return out
 
+    gate, hang = threading.Event(), set()      # hang のページは名前解決で止まったように gate まで返らない
+    lock, flight = threading.Lock(), {"now": 0, "peak": 0}
+
     def fake(req, timeout=30):
         path = req.full_url[len("https://news.example.test"):]
         seen.append(path)
+        if path in hang:
+            with lock:
+                flight["now"] += 1
+                flight["peak"] = max(flight["peak"], flight["now"])
+            try:
+                gate.wait(30)
+                raise urllib.error.URLError("名前解決で止まった(試験)")
+            finally:
+                with lock:
+                    flight["now"] -= 1
         if path in down or path not in pages:
             raise urllib.error.HTTPError(req.full_url, 502, "Bad Gateway", {}, None)
         if path in empty:        # urlopen が例外にしない 2xx(本文の無い 204)
@@ -12854,6 +12868,21 @@ def test_deploy_warm_cache(tmp: Path):
         msg = deploy.warm_cache()
         check(msg.startswith(deploy.WARM_FAILED) and "/articles/b2/" in msg and "204" in msg, f"200 でない応答(204)を温めたと言った: {msg}")
         empty.clear()
+        # 名前解決で止まったページがあっても、実際の読み取りは同時 WARM_WORKERS 本まで(時間切れで待つのをやめても読み取りの
+        # スレッドは残るので、その枠を次のページに渡さない)。時間切れが出たら残りは読みに行かず、全部を読めない側に数える
+        saved_top, saved_t, saved_min = pages["/"], deploy.WARM_TIMEOUT_SEC, deploy.SERVED_MIN_SEC
+        pages["/"] = "".join(f'<a href="/articles/h{i}/">h</a>' for i in range(8)).encode()
+        hang.update(f"/articles/h{i}/" for i in range(8))
+        deploy.WARM_TIMEOUT_SEC, deploy.SERVED_MIN_SEC = 0.3, 0.05
+        try:
+            msg = deploy.warm_cache()
+            peak = flight["peak"]
+        finally:
+            gate.set()
+            pages["/"], deploy.WARM_TIMEOUT_SEC, deploy.SERVED_MIN_SEC = saved_top, saved_t, saved_min
+            hang.clear()
+        check(0 < peak <= deploy.WARM_WORKERS, f"止まったページの読み取りが残ったまま、同時 {deploy.WARM_WORKERS} 本を越えて読んだ: {peak}")
+        check(msg.startswith(deploy.WARM_FAILED) and "8/8" in msg, f"止まったページ・読みに行かなかったページを読めない側に数えない: {msg}")
         seen.clear()
         down.add("/articles/b2/")
         msg = deploy.warm_cache()

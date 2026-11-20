@@ -1,0 +1,10 @@
+[Unit]
+Description=毎日 10:00 JST に配信サーバーの新しい版と脆弱性を見る(再起動で数秒落ちるため、発行の時間帯 02:30〜07:00 を外す)
+
+[Timer]
+OnCalendar=*-*-* 10:00:00 Asia/Tokyo
+# 10:00 に止まっていた日は復帰の時に追いつく。発行の時間帯に当たったら update_server.py が再起動の前に 07:00 まで待つ
+Persistent=true
+
+[Install]
+WantedBy=timers.target

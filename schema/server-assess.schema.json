@@ -1,0 +1,16 @@
+{
+  "$id": "server-assess.schema.json",
+  "title": "配信サーバーの脆弱性の評価(scripts/update_server.py の合議で Sol・Opus がそれぞれ返す答え)",
+  "type": "object",
+  "required": ["serious", "exposure", "update_risk", "leave_risk", "verdict", "targets", "why"],
+  "additionalProperties": false,
+  "properties": {
+    "serious": {"type": "boolean", "description": "この構成で重大な危険があるか"},
+    "exposure": {"type": "string", "description": "攻撃が成り立つ報告・成り立たない報告と、その根拠"},
+    "update_risk": {"type": "string", "description": "版を上げる危険"},
+    "leave_risk": {"type": "string", "description": "上げずに置く危険"},
+    "verdict": {"type": "string", "enum": ["apply", "hold"]},
+    "targets": {"type": "array", "items": {"type": "string"}, "description": "apply のときの上げる先(候補の「名前==版」)。hold なら空"},
+    "why": {"type": "string", "description": "判断の要約"}
+  }
+}

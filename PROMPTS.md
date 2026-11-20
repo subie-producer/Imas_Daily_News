@@ -42,6 +42,8 @@
 | oncall-review | 当番の PR のレビュー(差分の行にコメント。blocking は3種だけ、ほかは nit。2巡目は resolved / unresolved。`oncall.review_prompt`) | Codex sol | レビュー(schema `oncall-review`) |
 | oncall-anomalies | 止まった工程が記録したほかの異常の一覧(参考。直す対象ではない。`pipelib.escalate_reason`) | — | — |
 | oncall-reformat | 当番・監査のセッションが正常に終わったのに答えが読めない・schema のとおりでないとき、同じセッションを続けて答えの形だけを直させる(`oncall.run_claude` / `run_codex`。1回) | Claude opus / Codex sol(同じセッション) | 答え(最初と同じ schema) |
+| server-assess / server-assess-debate | 配信サーバー(Caddy・webapp の依存)の今の版に当たる脆弱性の評価と、割れたときの2巡目(`update_server.council`) | Codex sol + Claude opus | 重大か・上げるか・上げる先(schema `server-assess`) |
+| server-barrier / server-barrier-review | 上げられずに戻した更新の障壁の外し方の案と、その査読(`update_server.barrier_council`) | Codex sol(案)/ Claude opus(査読) | 外し方(schema `server-barrier`)/ 承認と指摘(schema `server-barrier-review`) |
 | oncall-parser | 持ち主を取るパーサが無い URL の種類について、当番へのパーサの依頼(`classify_sources.request_parsers` → oncall-fix の「何が起きたか」)。2026-11-06 から classify 工程では当番を起こさないので使われない | Claude opus(当番) | 修正(oncall-fix と同じ) |
 
 使っていないもの(社説は 2026-09-06 号で終了): columnist-core.md、review-editorial.md、brand-lenses.yml、Kassy_Prompt.md、AI_kassy_prompt_package_v1.md、`compose.editorial_prompt`。
@@ -324,6 +326,20 @@
   2026-10-21 号で、アイマスch 公式の配信告知が張ったお便りフォームが「準公式 / 不明」に割れて未確認のまま載った。
   classify-link はモデルに関係だけを答えさせ(運営が誰かは問わない)、強いほうを採るのはコード(pipelib.classify_source)。
   classify-site の文書の規則も同じにした(以前の「複数なら弱いほう」「第三者の受付を紹介しているだけなら第三者の種別」は、この決定と食い違う)
+
+### 配信サーバーの更新(server-*)
+- 編集長 2026-11-20: Caddy と webapp の依存を毎日見る。通常の更新は知らせるだけ。セキュリティ上重大な問題が疑われるときは、CVSS の有無や
+  数値だけに依存せず、今の版・構成・外からの攻撃可能性・修正版の信頼性を Sol と Opus がそれぞれ評価して協議し、両者が重大な危険を認め、
+  上げる危険より置く危険が大きいと合意したときだけ自動で上げる。上げた後は 200 を確かめ、だめなら戻す。版の固定・依存の制約などが
+  妨げるときは、戻した後に障壁の理由と外す影響を検討し、必要なら外して上げ直す。すべてを Discord に知らせる
+- 評価を2人で独立に出させ、割れたら相手の答えを見せて検証させる(分類の合議と同じ。同じベンダーは同じ誤りを共有するので codex と claude に分ける)。
+  合意の条件は「両者が serious=true・apply・同じ上げる先」。上げる先は候補(直った版の最小と最新)から選ばせ、候補に無い版はコードが捨てる
+- 障壁の外し方は、2人に全文を独立に書かせると一致しない(Caddyfile の全文・requirements の行)ので、Sol が案を出し Opus が査読する形にした。
+  外し方の形はコードが検める(webapp は名前と版の指定だけ、caddy は Caddyfile の全文だけ)。適用の前に Caddy は `caddy validate`、
+  webapp は pip の解決を通す
+- 素材に「影響を受ける関数」(Go の脆弱性DB の imports/symbols)を載せ、設定とコードの場所を示すのは、Caddy の公式の実行ファイルが
+  使っていないモジュール(FastCGI・gRPC・OpenTelemetry など)の報告を大量に含むため(2026-11-20 の時点で 2.11.4 に 67 件)。
+  この構成で届くかを確かめさせる
 
 ### 出典の変化(source-update / source-update-review)
 - 編集長 2026-10-26「履歴を全部追っているんだから、『訂正欄ではない(訂正欄は私たちが悪いものでやる)』。元のデータを出したヤツの責任として

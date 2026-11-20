@@ -1,0 +1,3199 @@
+{
+"read": {
+"202611190229-grok-87": {
+"url": "https://x.com/imas_official/status/2122932828690420018",
+"facts": [
+"871872c601ac"
+]
+},
+"202611200230-grok-108": {
+"url": "https://x.com/valiv_official/status/2123008331719884998",
+"facts": [
+"2636c9673658",
+"024fa2c0f0b1",
+"0a48c075c654",
+"7dc2e6a9582e",
+"4080863aa07c",
+"49f46c2e292b",
+"0a48c075c654",
+"6fb687e77266",
+"6ad6c951961c"
+]
+},
+"202611200230-grok-41": {
+"url": "https://www.amazon.co.jp/dp/B0HRYY1K5T/ref=nosim?tag=fujisummer0043-22",
+"facts": [
+"ed2445aac4b2",
+"409d6f244e3d",
+"087b83abbe01",
+"1c73fe15638d",
+"59e7e601c292",
+"9da13ac1f86a",
+"d223e9c279b8",
+"4aa1a0037e98",
+"1c3a80285028",
+"b262396b35a5",
+"3ac0004dc857"
+]
+},
+"202611200230-grok-53": {
+"url": "https://x.com/gkmas_official/status/2123249924041244874",
+"facts": [
+"0639b931635e",
+"b262396b35a5"
+]
+},
+"202611200230-grok-75": {
+"url": "https://x.com/TAGLIVELABEL/status/2123325407139365173",
+"facts": [
+"1c0aa073df9a",
+"cb2304c4fc69",
+"179fdf5c0fe7",
+"93db7d243fac",
+"13bfe46f87a4",
+"93f3ee5d8863",
+"538dd112c8af",
+"237d4d548156",
+"58765f9cd9d6",
+"00b3108a9ac2",
+"b262396b35a5"
+]
+},
+"202611200230-grok-83": {
+"url": "https://x.com/TomoriManaka/status/2123094035078512807",
+"facts": [
+"c4eb4bf0b3f2",
+"3891ccc1faf1",
+"21b57f0e86d7",
+"9a1d6425c29b",
+"cc84a7c1afc0",
+"835f2d6023b3",
+"74f13cc40eda"
+]
+},
+"202611201235-explore-10": {
+"url": "https://idolmaster-official.jp/news/01_20392",
+"facts": [
+"97e3187b8265",
+"4cfa128a3842",
+"ee6714e0ea66",
+"fe01d94c3dc7",
+"e50aef15582e",
+"1b391cb38652",
+"c120b3af3b6b",
+"b262396b35a5",
+"74f13cc40eda",
+"68861124153d"
+]
+},
+"202611201235-explore-11": {
+"url": "https://www.youtube.com/watch?v=58veP-4zgUk",
+"facts": [
+"2b7d5bb1a9ef",
+"31e1c1d75c54",
+"9e54b0e54ef5",
+"fd69da844060",
+"6a4fd4f97526",
+"1d0b5988b57e",
+"691f2f97a783"
+]
+},
+"202611201235-explore-5": {
+"url": "https://x.com/imassc_prism/status/2123249905825145281",
+"facts": [
+"ed25872e366f",
+"b262396b35a5"
+]
+},
+"202611201235-explore-6": {
+"url": "https://x.com/imassc_prism/status/2123250158192497004",
+"facts": [
+"f4ae277c4b95",
+"2a772392ed54",
+"5b62ad83cb0e",
+"db102cf7a279",
+"dbd064b9cb12",
+"b262396b35a5"
+]
+},
+"202611201235-explore-7": {
+"url": "https://x.com/SideM_official/status/2123328674565120477",
+"facts": [
+"67f64653d347",
+"fd69da844060"
+]
+},
+"202611201235-explore-8": {
+"url": "https://x.com/gkmas_official/status/2123290614733357346",
+"facts": [
+"8c13943e17f2",
+"e57eaa12417b",
+"18e0ce26c868",
+"f8abd672b910",
+"b262396b35a5",
+"db8fedc0e113"
+]
+},
+"202611201235-explore-9": {
+"url": "https://idolmaster-official.jp/news/01_20395",
+"facts": [
+"28013a93b8b4",
+"c9f1e57f5013",
+"2de8910e51b3",
+"3192a2b56391",
+"bf56ba9de914",
+"cff8dfd3040c",
+"bd7c5efc7225",
+"6d8128c91607",
+"b262396b35a5",
+"18b3fa8b33db",
+"01ca904bcd15",
+"c0dc3a1e8863",
+"d64dbbab7ac7",
+"8c84b72ef9bb",
+"3935db1c90a9",
+"3f95716ee446",
+"c5b0df821bec",
+"5020955709ae",
+"987aa5e43b22",
+"b2c253e3d054",
+"f6e1a7a0f768",
+"e53ef9a72ec2",
+"bbcbe3c0b5ae",
+"e5b869c392f2",
+"995f1e23a088",
+"7f3d7cd85683",
+"0df6eca62380",
+"5514ba0730e7",
+"f175c8930f8a",
+"97c9835d18b3",
+"29f7ed57ec69",
+"8b0aec5fdf1f",
+"ecc30f3dea0d",
+"e2e9663fa4aa",
+"2603bda24ab5",
+"f2106fcb0569",
+"5f60b47c1dc3",
+"f38b3fcfd16c",
+"1cd8f4a1c239",
+"3953cf961b18",
+"232fb7639a33",
+"a859b0371fdd",
+"831c1631e7ee",
+"0379e4f2439d",
+"cfa857b01ef1",
+"cc6559210c4b",
+"789616ed0bd2",
+"722974b3fd25",
+"24eb36fa10d0",
+"fd69da844060"
+]
+},
+"202611201235-watch-0": {
+"url": "https://idolmaster-official.jp/news/01_20365",
+"facts": [
+"ce70606d6971",
+"a9e404845897",
+"3bddb53bd10a",
+"a6bd816e918e",
+"1d49b72c6855",
+"0cf50376837f",
+"b8d718f917b0",
+"e1fe59855ba5",
+"1b1e3b5e3222",
+"07d05cdf5a18",
+"6839792ea727",
+"439964c70a5f",
+"b262396b35a5",
+"a5b120d3fd8a",
+"47f6a6b2b91d"
+]
+},
+"202611201235-watch-2": {
+"url": "https://idolmaster-official.jp/news/01_20401",
+"facts": [
+"73f7e70efaba",
+"79bf36d14599",
+"cd9f100ebff8",
+"678f069ac71e",
+"80ec0fd62506",
+"ad4c78b5dab9",
+"0f65a4351b8e",
+"669d90220f03",
+"f892c9d6d3e4",
+"619b07d35370",
+"febd0054500f",
+"c193c1d81ecb",
+"aba1d74a6bcf",
+"068134ea9bd2",
+"25b9f7cc32d3",
+"825190a6b6e4",
+"cd910d34f66b",
+"b262396b35a5",
+"c417e4a247a6",
+"df9530389d15",
+"cf3b5793c9fe",
+"9ff2e6c72fbd"
+]
+},
+"202611201235-watch-4": {
+"url": "https://idolmaster-official.jp/news/01_20348",
+"facts": [
+"a8ab7095fced",
+"e29520ab75bf",
+"d7afdd490f37",
+"f8cfaac22d6f",
+"59864d81996d",
+"aff8fef758ef",
+"b411befff59a",
+"64bc9fb8c32a",
+"d36f13b2f3ba",
+"c504363790fc",
+"87045e5170ed",
+"01527e7104d5",
+"7db49aa143f6",
+"a1c5d6f86d6a",
+"8b3033ae1917",
+"4d4ed6eda1af",
+"d6d816791c62",
+"78944ff1f2b9",
+"a4e2978c102b",
+"b262396b35a5",
+"887fbeee98c6"
+]
+},
+"202611201841-explore-29": {
+"url": "https://idolmaster-official.jp/news/01_20303",
+"facts": [
+"3a9037ecfb25",
+"ddb9872360c4",
+"8219e82f539f",
+"2d51e3f4d37e",
+"9cc3d985bc83",
+"d30839da855e",
+"c4713a3c8fb4",
+"bd1feb850a20",
+"2017b1d9825b",
+"20457292885a",
+"509d58a2dd3e",
+"b262396b35a5",
+"5d5db9b1c4cc",
+"877bee93aff6",
+"b6c7a057ae68",
+"89ca2e339262",
+"c1cd4cc23e5a",
+"9d48a83d764c",
+"5accb8dbc43f",
+"7814314cc4aa",
+"ae07034a8afe",
+"4ebd8d5ebb27",
+"ad579911d53c",
+"52bae9b6fd78",
+"cb164e6babfc",
+"c772dcafb2b1",
+"a7dc69a5905a",
+"aa635fdffeeb",
+"cb40a430c116",
+"626ab475a01c",
+"ba5e3e45a13b",
+"709333f24f6e",
+"6d369655fcaf",
+"d381cf58a8d2",
+"6305817c7d66",
+"7febdd5e6f0c",
+"9b2d5794ddf8",
+"7f68665c7d40",
+"7af35f7961f4",
+"52248d5fb75d",
+"401884a34e82",
+"8a9a287b7702",
+"08375895e7f0",
+"a55c68249f00",
+"34c089a66370",
+"c852cd986e92",
+"6ba49cc44457",
+"e5c88632a6da",
+"c2976b8f0209",
+"9f88a0e1a8b8",
+"69af1d2afedc",
+"9b12d96d9a12",
+"219076328f58",
+"398c65af31c9",
+"b6cec4e9d294",
+"7129e5305e9d",
+"75e503accace",
+"5a98a8b7ce42",
+"391f837c316d",
+"ae1c171006a8",
+"3c330365b1f2",
+"5fadcf1d7323",
+"73fa06fda2cf",
+"557f292e43bc",
+"7a3855ef3827",
+"ba041e6f946c",
+"01f117c7a150",
+"729e36b99407",
+"f77838eeb228",
+"9e24f82f7a40",
+"c7158f848c62",
+"fa7c4417191d",
+"0cd7631fb26b",
+"0fcccedfba11",
+"8eeec9385f60",
+"8f1df23bf080",
+"1bbe2364c8fd",
+"6aae14c9620a",
+"31d2af305ed7",
+"26f2b217c3ee",
+"58099cf55d7e",
+"a751cb13dbbd",
+"fd69da844060",
+"2f8680a56ed3",
+"3542ca1c4e8b",
+"f5d7112ee799",
+"fafc7d71edb3",
+"70e268d97801",
+"4ecd140e3cdd",
+"c97b74466726",
+"3e7238e439b9",
+"4b190e7d4b02",
+"7775453d31d9",
+"c14cb50d205e",
+"da0d1e55a345",
+"e9e60bbc0801",
+"3830d6634720",
+"3580aea59338",
+"710401051b05",
+"92a09fc29d2c",
+"d748569cddf1",
+"1fb039b058bf",
+"ac2dde2779a3",
+"8076895f44ec",
+"b742375fb7bd",
+"74856894da54",
+"25c43c3d234d",
+"1efd518704f3",
+"ff9863e8b047",
+"881690bb4dd3"
+]
+},
+"202611201841-explore-30": {
+"url": "https://rerizumo.doorblog.jp/archives/15859962.html",
+"facts": [
+"698df88eea8d",
+"88c724d56f05",
+"b262396b35a5"
+]
+},
+"202611201841-explore-31": {
+"url": "https://x.com/imas_official/status/2123249922598474015",
+"facts": [
+"85d577d397f1",
+"c3966c16a444",
+"4c01fb710ec4",
+"fd69da844060",
+"67bccfd8f442"
+]
+},
+"202611201841-explore-32": {
+"url": "https://x.com/imasml_theater/status/2123393353136107985",
+"facts": [
+"9bf2aee899c8",
+"1a76efab5324",
+"fd69da844060",
+"ed05b51a055e",
+"50ec54510c7b",
+"b262396b35a5"
+]
+},
+"202611201841-explore-33": {
+"url": "https://x.com/imasml_theater/status/2123393602902532460",
+"facts": [
+"4230fc73ca4e",
+"fd69da844060",
+"e0ab5586ca9d",
+"872e5df7377f",
+"b262396b35a5"
+]
+},
+"202611201841-explore-34": {
+"url": "https://gameo.jp/imassc/170681",
+"facts": [
+"dff7feaaacd1",
+"b262396b35a5",
+"dc8c16d192b6",
+"180522dbec7e",
+"5b62ad83cb0e",
+"db102cf7a279",
+"dbd064b9cb12",
+"7cd632f8355d",
+"169e0506aee2",
+"b82c6ec86660",
+"224c5e4ad943",
+"f4ae277c4b95",
+"ab9ac9b7baa4",
+"c6984f1b5337",
+"0e905ae1a0c0",
+"9e5fbfec3b40",
+"07d16af3b392"
+]
+},
+"202611201841-explore-37": {
+"url": "https://idolmaster-official.jp/news/01_20348.html",
+"facts": [
+"d66e7bde6566",
+"5cebecb55e5a",
+"3abd3ed18710",
+"b8d59b6c84c5",
+"73b5feefb124",
+"1d8a52f9525c",
+"f3e6bd11e900",
+"e744437c5567",
+"bcb9cb2cdae7",
+"15e446e09475",
+"01f45be2639e",
+"2133b72e3dc3",
+"9afbb9fd06b5",
+"fd69da844060"
+]
+},
+"202611201841-explore-38": {
+"url": "https://www.youtube.com/watch?v=ZpA_nERiA74",
+"facts": [
+"ec869bd8f775",
+"c012c2ac4929",
+"e992e33e6714",
+"609ccc70e7f2",
+"7569353a1123",
+"b262396b35a5",
+"d6e4d65458ac"
+]
+},
+"202611201841-explore-39": {
+"url": "https://shop.asobistore.jp/product/catalog/s/newer/n/120/shin/1/cf113/118/ic",
+"facts": [
+"dc13c62a4ce0",
+"30387534d0cc",
+"b2f838e31918",
+"2e13e739140b",
+"5d595d6c447d",
+"fcc8a19fe078",
+"18a33c39dc84",
+"3300d83d90dd",
+"07ad01978236",
+"779c2cbf7046",
+"835f2d6023b3",
+"18b3fa8b33db"
+]
+},
+"202611201841-watch-0": {
+"url": "https://idolmaster-official.jp/news/01_20398",
+"facts": [
+"145cfc34f52a",
+"bd8584a567fe",
+"77631d487e00",
+"023ee3a9ad1c",
+"8e2abdd2b66d",
+"fd69da844060",
+"e9effa0bbcfb",
+"018388a8a5f8",
+"c772baab40ea",
+"ee3729ca2017",
+"28751f5d32ad",
+"46b8bdc6ebc9",
+"82cf02236c51",
+"c01cad1472b8",
+"ad2a55d1cfcd",
+"a454930c9c0f"
+]
+},
+"202611201841-watch-1": {
+"url": "https://bandainamco-am.co.jp/chara_shop/idolmaster/extra/m-fes2026.html",
+"facts": [
+"6690e629de41",
+"f84a84eabe10",
+"8a2f38110462",
+"58886d4655c3",
+"3f694a30b525",
+"7faec3a355f0",
+"5210efdeb4eb",
+"b262396b35a5",
+"4895dae2d559",
+"470b86671550",
+"b962c61211e7",
+"340745dff46b",
+"e49300e6f308",
+"4912fb68b389",
+"c10381f3cd0c",
+"9eefcd8a7798",
+"bed3b55bbe49",
+"558a01b05571",
+"ee9751593489",
+"91280abe90b7",
+"7ecd491aff99",
+"c9f693b0167d",
+"e1086e9b8c29",
+"fdca7828ee9c",
+"e6fd43dd2920",
+"bfbd0661bb1f",
+"4584aabef6f7",
+"01c46b462af0",
+"f7f2fa5fc58e",
+"30230fd3817a",
+"44ddcd79d470",
+"50954dd0879c",
+"3b9346979c6c",
+"9dac77249a76",
+"3cc2e513467e",
+"17f6aca41ec8",
+"e0a423a4472c",
+"193c8207bf1a",
+"4830dc52cbb8",
+"90cecb60f3e5",
+"dc125211fc00",
+"4621ece66e01",
+"82c34e0352bb",
+"c1b8b1a784ec",
+"15a73931626f",
+"ba3a299e96c2",
+"dbebe83b3587",
+"b1a52cec27be",
+"3d951d67c61a",
+"635279bfe8dd",
+"6af94566dcab",
+"18ff9e764940",
+"ef049b49a67e",
+"64605ce56bfa",
+"a2d96d7c6c39",
+"40af846ae1c3",
+"a5169d8fb0dd",
+"e9baaa13760d",
+"f54379d39a33",
+"c73b381652bf",
+"73bd2e0b2363",
+"ac0bca3ffcf3",
+"b02408c9f2c0",
+"9da09efdf925",
+"eee180b2ebfb",
+"dadd2dd9b3e9",
+"3b20571b691c",
+"40e3d7845b39",
+"514e2c87c264",
+"c47282279637",
+"3c6b80f4b88c",
+"b5a6decca018",
+"c1c0d47b7727",
+"dd5c384ef92b",
+"ae28dcc35cca",
+"c159843a3fee",
+"cfb5711313fc",
+"a5b3a1a0a494",
+"e2173087b676",
+"6972666b41b7",
+"322762ef2c09",
+"d2b20322802b",
+"7fae99b991f2",
+"32bd49e247ec",
+"66d2313e4bfa",
+"5c3eaf94f476",
+"f76bc22621c4",
+"33f1fc6e310e",
+"72bc17f9de51",
+"d575dee00862",
+"61825a888388",
+"3397c445c4ea",
+"4e82818c3acf",
+"7bbab7c8b8ee",
+"75391c5ec9c8",
+"893d017ea1b9",
+"6cf248c39fd6",
+"63350ca01d4b",
+"f130c309dcf7",
+"9cb33ba7dfd5",
+"1250c785f720",
+"a11e837ddc8a"
+]
+},
+"202611201841-watch-10": {
+"url": "https://www.lantis.jp/sidem/index.html",
+"facts": [
+"197c8a6a9c80",
+"61925347493a",
+"b262396b35a5"
+]
+},
+"202611201841-watch-11": {
+"url": "https://idolmaster-official.jp/news/01_20393",
+"facts": [
+"49c39bfe44e0",
+"903b2ee7ade3",
+"121ab298e54b",
+"adb7abaf5100",
+"b1e71a33eade",
+"0383f216bf0c",
+"048d4f719fa1",
+"aac241fa2d62",
+"c8ffbff2f42b",
+"fd69da844060",
+"a0f304d57095",
+"a8480aa7dbe0",
+"5275a91c9024",
+"df300c83a2d6",
+"c18af14bab1a",
+"2405965dc99b",
+"209dc4e231f3",
+"1a19599fd496",
+"12bc177e2d46"
+]
+},
+"202611201841-watch-13": {
+"url": "https://idolmaster-official.jp/news/01_20396",
+"facts": [
+"486184176312",
+"e0ffd507c8f5",
+"3aa8325c83af",
+"0778813e4fa1",
+"209dc4e231f3",
+"0eb33d2141fe",
+"ae18fdb61d4d",
+"6727b2ba0ba7",
+"0d8b9a88ef2d",
+"fd69da844060",
+"51797899d53e",
+"316037009af8",
+"c2ea645a1b85",
+"feb6b9748f15",
+"2efb685730e3",
+"cdaaa458a107",
+"5cc2c59a5a4c",
+"bcb26c9e7c65",
+"b262396b35a5",
+"a0cb14b1703f",
+"f5a07b06ce04",
+"3d58df3140d5",
+"b0b53e261e05",
+"af6ad3d1df9f",
+"b150ff877116",
+"a12655aad052",
+"717d4aa094e1",
+"1e2423da5ac6",
+"e06015e154dc",
+"6afe2048c3ba",
+"dcf5b5d2b8e9",
+"92731e376bee",
+"53ecd4ccca7e",
+"e9cec8de9a41",
+"a989ad9169de",
+"44357639c8ae",
+"1112edf61ad3",
+"89630b5c2c38",
+"deed1ea1b1e7",
+"76819ff600f8",
+"0caf0b203d38",
+"0952936c338e",
+"d3296da085d3",
+"64d8087e832c",
+"f501bf040b33",
+"d0f66d14e0c5",
+"a4a2fea00005",
+"cd33c2bec1f4",
+"0ed1bb3e14a2",
+"0d35e794096c",
+"2235483aba29",
+"716bf50fa572",
+"7e8ecee9745b",
+"37a52e393854",
+"8f1cdabf5782",
+"40d1fe027b66",
+"9f689dbd853e",
+"8e3081df8b04",
+"209e64756d32",
+"f9acf3744118",
+"8acf1aa4b6e3",
+"7234b4dc1a4d",
+"b3e39973098a",
+"80da96f50194",
+"057a9ae2bd34",
+"51d2683998dc",
+"dfb334a5760b",
+"1a7a2fd34b4a",
+"52dca64f5040",
+"a9b4ab108d04",
+"119f57ebb894",
+"3f39e4db4f7b",
+"b18b2aa153ab",
+"d7c1f9a7ed6f",
+"c38cc995c794",
+"788a9c2a9dcc",
+"72f80db39093",
+"7613a1756239",
+"8a9e72ccdd2d",
+"3e5c0c764ab2",
+"95ac5e005958",
+"77055b27792c",
+"eb302e3acadb",
+"c95b42f49218",
+"227588a33c30",
+"7e2ba5c2dfd2",
+"90b65676d6a1",
+"d5cfce5bae76",
+"2d2c5e6e13bf",
+"ea0be4af0ac0",
+"7f00668c570d",
+"ea38927612e7",
+"575268976a89",
+"5e35a26149a7",
+"3762d9a97e7d",
+"552f47c3125a",
+"1468681a41a4",
+"c9a980ed140b",
+"8aab3d546fe1",
+"de10fda4c4c8",
+"e6607e08b9ff",
+"918942c5b63a",
+"7c9b241ba1b9",
+"06279b7c7920",
+"6257f164ceaa",
+"7350a0c162ac"
+]
+},
+"202611201841-watch-17": {
+"url": "https://idolmaster-official.jp/news/01_20406",
+"facts": [
+"8c460964d5ab",
+"c50a8a56d71b",
+"f638d222fc11",
+"281911ca9559",
+"54928d14532c",
+"c6f172e3aeab",
+"0706c08142e9",
+"c1b109ef4376",
+"8f9ffc5d57f5",
+"1a19599fd496",
+"27610f9a5fe9",
+"fd69da844060",
+"dbead9c7b07b",
+"0f1e429ae88d",
+"f55ce77974c2",
+"4e92e670c598",
+"17dfc002a4cd",
+"bc01ea63335b",
+"9933e1a4b130",
+"2f9117c91958",
+"d1bb13434bca",
+"8d5a986282c3",
+"7f736019d03e",
+"21597c23d576",
+"c25c32be1831",
+"5a394753c9dd",
+"80daff82550e",
+"29b4c0c0c2cb",
+"d80eac5760c4",
+"545ffcaf8e3b",
+"b7ef7bd072f9",
+"b262396b35a5",
+"3891161dd69a"
+]
+},
+"202611201841-watch-20": {
+"url": "https://idolmaster-official.jp/news/01_20402",
+"facts": [
+"88551999fbee",
+"120ccfca73f6",
+"28ccd3f9d931",
+"a7aa558f1491",
+"73b9582450d0",
+"b262396b35a5",
+"4b9f18c94bb9"
+]
+},
+"202611201841-watch-21": {
+"url": "https://k-arena-shop.com/news/195/",
+"facts": [
+"253d3f636c66",
+"d608b17bebfb",
+"43047e25c9ab",
+"9ebb11a780f7",
+"a6120933af4a",
+"daedfaf4b718",
+"7f5ad203ad66",
+"022a32aa1501",
+"8c51f4832f27",
+"b262396b35a5",
+"ac0b4ef15feb",
+"457afd23360a",
+"046c17da9255",
+"d12c1cb2a503",
+"39385e29c8a8",
+"745019b8ffa1",
+"f5dda07d7b07",
+"1a0615fa2fe5",
+"3f29330cafc0",
+"3462629d20c3",
+"d6fcc636b4f9",
+"8d31d734d779",
+"b07d23db6223",
+"d9a8b30fa0cb",
+"34b35f85115d",
+"7c13a0cd4381",
+"6883a76c0796",
+"b7406712d168",
+"b334424eab53",
+"adf7275a7cc5",
+"2b0928a80b67",
+"c62a265490af",
+"461bc77c6d8c",
+"e661e3d62d45",
+"dd2b3ba211ba",
+"a442df074c79",
+"c3ee6c526ee1",
+"93742bb3ddff",
+"0469f1a22fb0",
+"2a13e61a441c",
+"aea0f70cfeb0"
+]
+},
+"202611201841-watch-22": {
+"url": "https://k-arena.com/news/20261120-1/",
+"facts": [
+"2496b222d428",
+"657073d84871",
+"2a7312ae7c05",
+"395e96d16c42",
+"69d3283b3786",
+"e7dab4521c52",
+"88ff9be6f2a7",
+"1f43717123ae",
+"31280503fa6e",
+"ed627b272d5e",
+"7052b6e93913",
+"6e8a33c55bf5",
+"b262396b35a5"
+]
+},
+"202611201841-watch-23": {
+"url": "https://columbia.jp/idolmaster/imasnews/261120.html",
+"facts": [
+"8b2be465d759",
+"487ed98b7a4c",
+"4706f108776f",
+"7b055b179bce",
+"576cd9258172",
+"c3a6438cff82",
+"adcabb902464",
+"32e54613fa48",
+"b7f9e4cf2300",
+"4432c8d6ed15",
+"7090f5742e04",
+"60230d6e6c57",
+"1b7236e28405",
+"a394a1f59df8",
+"b262396b35a5",
+"1b58d4ae6b7f",
+"4f5d0e0f927f",
+"8a1580a31069",
+"972b506d35d8",
+"8a6241b369af",
+"f71bbb5a3927",
+"93138fbf8608",
+"eefe8cd4a3d1",
+"764824c39b4c",
+"ae1095569030",
+"cc32cbf06c0e",
+"6c16129eb169",
+"1eb49381c74b",
+"11be3bdebe3e",
+"f85c9acba853",
+"c7b29acba4aa",
+"62cafe60dcd4",
+"bfec7ff2485c",
+"c767c25ab66f",
+"0121d895eae5",
+"464e1d69657c",
+"4015710c671c",
+"254c55ce207c",
+"6b51f14aee30",
+"5bee623f80f0",
+"7f4022bca15d",
+"c8c5004d3a22",
+"38d6b91b309f",
+"ac0494c76fb8",
+"b0522d287864",
+"eda1d9cb87b7",
+"eab096c932e0",
+"3e5799a9fdc9",
+"b71dbd8e7559",
+"ca60912e1bce",
+"b2428952cfa8",
+"0a271fe91a1a",
+"738bf1ac2485",
+"5b8797eb04d8",
+"27b8ef2b792c",
+"54f28b623aa2",
+"fda836d0dcc6",
+"a15607a958c3",
+"2e2d9fc7498c",
+"f97c5bfa6bb2",
+"900e07972449",
+"7fce4457cc6a",
+"9d0a674065f8",
+"33a3490df6f1",
+"b20afa807b8b",
+"7fe91fd6739f",
+"d2b4db79d7b5",
+"a0874c2466d6",
+"f2cc53bc7864",
+"104f59d67e3c",
+"97b5c9a14217",
+"0d5159a64295",
+"e3477b04cb38",
+"7af09fbfb164",
+"05e82f60edda",
+"3b0172c79dab",
+"b24df36f29bc",
+"8b9edb1cb4d1",
+"5761d4a7007e",
+"1293d04a40e2",
+"a9077e0ea0b1",
+"a0d82849e86f",
+"e9d9b608a878",
+"ccb7644c6493",
+"92f1a0196a31",
+"7f7d538905b2",
+"2e40c2de0bc0",
+"a7ce841e269e",
+"39f13782f3f8",
+"f00a25e63362",
+"9ba0b5567b5e",
+"67a066a428aa",
+"a93b4cea4e2d",
+"960a00e5bf27",
+"2dd8a31f445e",
+"97793e9e088c",
+"81be64b6a948",
+"2f8b11e50733",
+"5a1f388acdc8",
+"178e60b82de9",
+"d64c128b4dcf",
+"d67ffa71794b",
+"deab2a7d9953",
+"6e2c2e3b79ea",
+"9736ac959b3a",
+"681b433c9961",
+"4385e2d3e65c",
+"831d70b7f4f7",
+"01409e7c29a3",
+"0886d71f8d1a",
+"f049a8c15859",
+"57307046bab2",
+"49e05a6d3edb",
+"41f5037c4e1d",
+"2ce2590ebf25",
+"c8dd3e790c78",
+"656002f815ac",
+"6d7f866f885a",
+"d45e7de25830",
+"1b50ac10266c",
+"4f899fb20d7f",
+"3b22839155b2",
+"0efef5c5baaa",
+"5e2a3a7824e1",
+"90cf1b156cf9",
+"cc8c7ba815f6",
+"d7af902bb188",
+"c5bda0fab5bf",
+"67179e898159",
+"8343c6818aeb",
+"48af985dcdc8",
+"d801c0e29306",
+"9fe9165667f3",
+"beb6c58bc59b",
+"4c275483f900",
+"bd23eb396223",
+"55a60a672b00",
+"d7e7d2298fa8",
+"b6d4cb20dca6",
+"a93a67791fac",
+"f08db0e697ce",
+"d6c89cdf55c3",
+"2b7b5e1113c4",
+"c94450ead690",
+"b446a2dbf311",
+"f3d0422f7c80",
+"c7ff991497ad",
+"069badd68721",
+"0ca125f55758",
+"3eb6f8716c76",
+"1c73fe15638d",
+"6ff2adba0586",
+"5740cb2fa065",
+"80f77de93da8",
+"d16c9dc5b768",
+"d73275168a64",
+"f66c1d55104d",
+"ea0cd1428819",
+"afdcfa4150bc",
+"31c2bc001f47",
+"551bd4f4762f",
+"36167c2cf31a",
+"5b08ba3a3aaf",
+"6dd68576c771",
+"7c2c5e9b1c09",
+"525a32cdacfb",
+"9b022d2cb8da",
+"67e200c8286b",
+"d2ac70e49b5e",
+"e5044b301b8e",
+"b746f489ca31"
+]
+},
+"202611201841-watch-4": {
+"url": "https://www.animatecafe.jp/event/ac000808",
+"facts": [
+"f63433d25ec4",
+"263280826631",
+"335ef2303c65",
+"b262396b35a5"
+]
+},
+"202611201841-watch-5": {
+"url": "https://travel.willer.co.jp/entertainment/sidem/christmas-cruise-2026/",
+"facts": [
+"f2c2207b5a2c",
+"6370ef90be56",
+"581ba3d8ef12",
+"69fa12754227",
+"35cec90b03b5",
+"df8e0d60caa6",
+"0ed51234b843",
+"c29745b5991f",
+"781d39322e82",
+"200eccc1fe6e",
+"27a4aabbd714",
+"48602d8959eb",
+"3214e16163a1",
+"7f6cad766a35",
+"57acc425a301",
+"12afb51b27d1",
+"8b6db327e7d2",
+"fd69da844060",
+"11ff80615038"
+]
+},
+"202611201841-watch-6": {
+"url": "https://gotoken-shop.jp/SHOP/109991.html",
+"facts": [
+"a1e1d98e11b1",
+"4d5f82f9bbdb",
+"50cffcbc03cb",
+"9f94d7fc66bd",
+"154370a87edf",
+"f5ca49f8598f",
+"d94e733d7547",
+"2c6f1a31549e",
+"9b83a33b82f2",
+"2886a05eeecb",
+"22c0722efa99",
+"b262396b35a5",
+"a989578c4cac",
+"b1bd8d074141",
+"12fc636f1934"
+]
+},
+"202611201841-watch-7": {
+"url": "https://x.com/bkdanikebukuro/status/2123371454314197417",
+"facts": [
+"6a798d71d84d",
+"af6c9618790d",
+"9ae0147dca04",
+"1c060ab56284",
+"3ac6ad4599fa",
+"04d7204faeda",
+"b262396b35a5"
+]
+},
+"202611201841-watch-8": {
+"url": "https://x.com/bkdanikebukuro/status/2120063924364267647",
+"facts": [
+"6a798d71d84d",
+"10ddb42b31c1",
+"c73394e64e66",
+"ad2e7bd192f3",
+"e258f9ff9df3",
+"f3cf7768bea9",
+"2e90a54215f5",
+"3f9e1a0fd2af",
+"b262396b35a5"
+]
+},
+"202611201841-watch-9": {
+"url": "https://www.tufave.com/",
+"facts": [
+"c62e0e345b5b",
+"853b209e5185",
+"5135a38b0f76",
+"b262396b35a5"
+]
+},
+"202611202334-explore-10": {
+"url": "https://www.teapawt.net/imassc_official/status/2122934577761239429",
+"facts": [
+"a806462e0ed7",
+"fd69da844060",
+"3086bb007861"
+]
+},
+"202611202334-explore-11": {
+"url": "https://www.teapawt.net/imassc_official/status/2122978119753544085",
+"facts": [
+"6787096d60e8",
+"6a7b73d5f072",
+"abdfd76afd69",
+"8744d95d1cba",
+"b262396b35a5",
+"3086bb007861"
+]
+},
+"202611202334-explore-12": {
+"url": "https://gameo.jp/imassc/170715",
+"facts": [
+"77634075f3ef",
+"be656d058149",
+"551ec9001115",
+"b262396b35a5",
+"c2a0a01bfcc5",
+"d956d1d508eb",
+"93fb6e5ce8de",
+"c24a2f8df9f0"
+]
+},
+"202611202334-explore-13": {
+"url": "https://www.youtube.com/watch?v=hZDHZ8SwPN4",
+"facts": [
+"f6377bc1084d",
+"55aef77d3a8e",
+"835f2d6023b3",
+"dc7c3c49e8d5"
+]
+},
+"202611202334-explore-14": {
+"url": "https://dengekionline.com/article/202611/91720",
+"facts": [
+"5ada8780415b",
+"d555c19b2641",
+"1080172010bd",
+"edeca872c439",
+"8a12762c14ad",
+"2ac77d9e2104",
+"eebc7cad0b21",
+"364c0ef22a52",
+"835f2d6023b3",
+"83396ad48baf"
+]
+},
+"202611202334-explore-15": {
+"url": "https://idolmaster-official.jp/news/01_20400",
+"facts": [
+"b9098f1aa1da",
+"71b533b42ce2",
+"a74f1632322b",
+"5f60b47c1dc3",
+"bf3f286779bd",
+"baac26896434",
+"517a5ac01465",
+"e1e794bf70c9",
+"7a7d1bb6631d",
+"2c11d1754853",
+"8243266fb5b5",
+"5a8b6013f42e",
+"d61a95af23b9",
+"04e025d1ecf1",
+"cbc7c7b7995f",
+"947dffc8af59",
+"a89fa1678c18",
+"27ad32b52066",
+"dcd9296e018f",
+"31b7d1789a44",
+"4fdbb9c728d1",
+"f264aefaefdd",
+"b262396b35a5",
+"18b3fa8b33db",
+"e5f071cd247a",
+"9a103899de12",
+"8388061ba922",
+"36d4d950898c",
+"a485d850b58b",
+"4be5a9badaf0",
+"73759395889f",
+"14962d6c0ee5",
+"fb2aecd54b8c",
+"e0cb4458f6e2",
+"97bd275f8bea",
+"982c0b2cc952",
+"bbcbe3c0b5ae",
+"924bc03ec152",
+"5e9b8584b334"
+]
+},
+"202611202334-explore-17": {
+"url": "https://hatmachida.tokyo/archives/2616",
+"facts": [
+"664d384a7a62",
+"7ea03046952b",
+"16bf69259038",
+"38bf4fcce659",
+"835f2d6023b3",
+"a0d9f9b42ac9"
+]
+},
+"202611202334-explore-7": {
+"url": "https://nitter.gq/imasml_theater",
+"facts": [
+"ddd1327e6b8c",
+"0db4d25490e1",
+"fd69da844060"
+]
+},
+"202611202334-explore-8": {
+"url": "https://www.teapawt.net/imassc_official/status/2122933068080029955",
+"facts": [
+"77011b1cb496",
+"6090594e2be2",
+"b262396b35a5",
+"4e85344f8703"
+]
+},
+"202611202334-explore-9": {
+"url": "https://www.teapawt.net/imassc_official/status/2122933320128360486",
+"facts": [
+"de382904644e",
+"174c80ff0c86",
+"b262396b35a5",
+"7264bdb0259e"
+]
+},
+"202611202334-watch-0": {
+"url": "https://prtimes.jp/main/html/rd/p/000000953.000052170.html",
+"facts": [
+"a74c00c02acb",
+"17093dcba62d",
+"40b548d5184e",
+"6808a883fdcc",
+"aad066d1f08c",
+"206c84f8afa8",
+"9fc997e100bf",
+"5b5be1b1a963",
+"b98fe5b1664d",
+"37bca254a298",
+"496f42918e79",
+"b262396b35a5",
+"a0d9f9b42ac9"
+]
+},
+"202611210225-explore-0": {
+"url": "https://gameo.jp/imassc/170752",
+"facts": [
+"40529e4ad2cd",
+"a6d75d69e12a",
+"26741dcbe20b",
+"b262396b35a5"
+]
+},
+"202611210225-explore-10": {
+"url": "https://teapawt.net/hatsuboshistore",
+"facts": [
+"16584cd3157c",
+"611730033ad1",
+"b262396b35a5",
+"3871f6c7688c"
+]
+},
+"202611210225-explore-4": {
+"url": "https://gameo.jp/imassc/170740",
+"facts": [
+"d201b67a2319",
+"51e2959517c1",
+"6d1eda064ede",
+"752101718e36",
+"b262396b35a5"
+]
+},
+"202611210225-explore-5": {
+"url": "https://gameo.jp/imassc/170735",
+"facts": [
+"054025e91aef",
+"3f0b3b108b14",
+"2bcfa0985e6a",
+"b262396b35a5"
+]
+},
+"202611210225-explore-7": {
+"url": "https://teapawt.net/gkmas_official?filter=posts",
+"facts": [
+"503657e491aa",
+"b262396b35a5",
+"bd4703f6b12e",
+"9500230c3837",
+"7a882b5ab958",
+"2932b456ff5d",
+"835f2d6023b3",
+"c703bdb766dc",
+"f368e4c76c65",
+"affa2bb89a65",
+"d941c1d05419",
+"fc5924fc5823",
+"d505ef1934f2",
+"24adb74d3a04",
+"7d69e38ca78b",
+"ff21f861e601",
+"76a9577cb674"
+]
+},
+"202611210225-grok-100": {
+"url": "https://x.com/imas_CGofficial/status/2123368728813531566",
+"facts": [
+"fcae419d9338",
+"f4ecac6e5c49",
+"a45c72384b25",
+"fcae419d9338",
+"1f1677bd013a",
+"4d10d25e2c94",
+"89650bf74f47",
+"e9ea2d8d65f4",
+"6e30c4696255",
+"c144dd282b7d",
+"4996516e792f",
+"fcae419d9338",
+"a007cd60dd35",
+"8e34d3c7d866",
+"fcae419d9338",
+"95cea1b1cc44",
+"d0e493e0321f",
+"420aa2d64ba0",
+"6e30c4696255",
+"f4ecac6e5c49"
+]
+},
+"202611210225-grok-101": {
+"url": "https://x.com/imas_CGofficial/status/2123363155502121028",
+"facts": [
+"6ea0019fa446",
+"f0fefe2159a9",
+"13b3744bcdf1",
+"b0025fb5e1a2",
+"0af05fdb80a4",
+"46979823bfd8",
+"5b5b4b8787c2",
+"6a40da941a3a"
+]
+},
+"202611210225-grok-102": {
+"url": "https://x.com/imas_CGofficial/status/2123340521183621617",
+"facts": [
+"0ac779184d2c",
+"c2b6cdf0b2d2",
+"b8c2e7f5450c",
+"dfed6d4266c1",
+"0ac779184d2c",
+"7a5c515f92eb",
+"9c5b901e3848",
+"7af5c328589e",
+"2473c5101da5",
+"994f3fed7193",
+"894e226a8cdb",
+"53c0f7318a6f",
+"7ea3c949d907",
+"4996516e792f",
+"0ac779184d2c",
+"c2b6cdf0b2d2",
+"b8c2e7f5450c",
+"dfed6d4266c1",
+"0ac779184d2c",
+"994f3fed7193",
+"5d2210dab406",
+"894e226a8cdb",
+"53c0f7318a6f"
+]
+},
+"202611210225-grok-103": {
+"url": "https://x.com/imas_CGofficial/status/2123325414135271792",
+"facts": [
+"24adbcf0fc28",
+"f1e3d20b0108",
+"831fa14c6da4",
+"24adbcf0fc28",
+"8396435fe724",
+"3b61bc2e6bba",
+"fa045948929c",
+"866142596a15",
+"ad91693240fb",
+"16d65c746e47",
+"74d7de081ed4",
+"4996516e792f",
+"24adbcf0fc28",
+"f1e3d20b0108",
+"24adbcf0fc28",
+"c834034e6074",
+"b499b3a4c712",
+"200782c5fdcc",
+"25308da0e1e4",
+"985a151f8961",
+"a423248b6b88"
+]
+},
+"202611210225-grok-104": {
+"url": "https://x.com/imasml_765PRO/status/2123644549583229300",
+"facts": [
+"f69ecb08ac57",
+"49f47b372618",
+"88488ba1c52f",
+"457d59a508c0",
+"2cafa44e2fcf",
+"1d394bc1d98a",
+"524eb45456d7"
+]
+},
+"202611210225-grok-105": {
+"url": "https://x.com/shinyc_official/status/2123718001031774279",
+"facts": [
+"005351b74030",
+"1b3bbdde1432",
+"674af36d1e39",
+"e138bf4620ce",
+"1b3bbdde1432",
+"4d16cab22091",
+"bf6089f4c5df"
+]
+},
+"202611210225-grok-106": {
+"url": "https://x.com/shinyc_official/status/2123707124392014295",
+"facts": [
+"90d435531fd3",
+"5a2a37c31d3a",
+"6e798eb41bba",
+"7eb21ba4fc80",
+"f0f37f9a3623",
+"f3c4b42c1412"
+]
+},
+"202611210225-grok-107": {
+"url": "https://x.com/imassc_prism/status/2123613049118454219",
+"facts": [
+"fabce914aa11",
+"69ca9b9b14c5",
+"ad7563c3d5bd",
+"818dc5db27e5",
+"185207bef46a",
+"8d0fdb7ac9cd",
+"132b2b13c557",
+"d644fab76cdd",
+"70f54b27db7d"
+]
+},
+"202611210225-grok-108": {
+"url": "https://x.com/shinyc_official/status/2123355607218704865",
+"facts": [
+"005351b74030",
+"1b3bbdde1432",
+"674af36d1e39",
+"e138bf4620ce",
+"1b3bbdde1432",
+"8dff3e543b96",
+"bf6089f4c5df"
+]
+},
+"202611210225-grok-109": {
+"url": "https://x.com/jimushiny_oa/status/2123793858018644360",
+"facts": [
+"a9c6f931cf13",
+"5cdab171b15d",
+"34295800e315",
+"d8b02bce5914",
+"3a09ba10114e"
+]
+},
+"202611210225-grok-110": {
+"url": "https://x.com/SideM_lantis/status/2123754984626074016",
+"facts": [
+"3cd556cd643b",
+"82c929ccc8b2",
+"b2a374412e51",
+"cdfb85cd2a68",
+"3cd556cd643b",
+"e367af9668f9"
+]
+},
+"202611210225-grok-111": {
+"url": "https://x.com/SideM_lantis/status/2123754984206725455",
+"facts": [
+"915cabcff129",
+"318ad07c4791",
+"566b5d7457ae",
+"0ad5a948adf8",
+"23871b5ce2ab",
+"566b5d7457ae",
+"ade6a2f61234",
+"c41ca0fd5cec",
+"566b5d7457ae",
+"57684cfbfe84",
+"e019977e93f3"
+]
+},
+"202611210225-grok-112": {
+"url": "https://x.com/SideM_lantis/status/2123754732061704675",
+"facts": [
+"4fa160ff4fb7",
+"fabce914aa11",
+"39e9c13c163a",
+"818dc5db27e5",
+"cf51fdc8e7b6",
+"7014de597fdb",
+"5ef836b86767",
+"dfcd74573a51",
+"3a6f1f334d0d",
+"7fad630e2b40",
+"ae97a86f11ca",
+"5a689e259a3d"
+]
+},
+"202611210225-grok-113": {
+"url": "https://x.com/gkmas_official/status/2123710442166186064",
+"facts": [
+"b02495d13d5c",
+"12049fb6bed9",
+"550083889bc3",
+"9e23edcb4a9c",
+"aebe3601e719",
+"918bb430f744",
+"d6d2a199b2b8"
+]
+},
+"202611210225-grok-114": {
+"url": "https://x.com/gkmas_official/status/2123340518944104499",
+"facts": [
+"b02495d13d5c",
+"12049fb6bed9",
+"1e19fa14c91e",
+"9e23edcb4a9c",
+"484bc96ea0bc",
+"057b78c61d2d",
+"a78fd445e3cd"
+]
+},
+"202611210225-grok-115": {
+"url": "https://x.com/valiv_official/status/2123303271549039039",
+"facts": [
+"5c0b7ab7de9a",
+"50a5670eebde",
+"23c8105be4f4",
+"a638b4d97f43",
+"bd5625110e3f",
+"f07f67900f4d",
+"bcd45c127bf8",
+"b15af8f7b9f4",
+"8962f34ae060",
+"71e5e64c1f77",
+"47e6bbaa25ba",
+"be21fd9f6a58"
+]
+},
+"202611210225-grok-116": {
+"url": "https://x.com/valiv_official/status/2123301838820913651",
+"facts": [
+"748972442a8b",
+"62ed1c84ef2b",
+"d5e4fddb69ea",
+"be21fd9f6a58",
+"e4b550e40d94",
+"8fd8f69c7299",
+"6b556bf059e0",
+"bb1b3818a8f7",
+"863bbdb090fd",
+"c3b61e32ddb2",
+"d243fb147a4b"
+]
+},
+"202611210225-grok-117": {
+"url": "https://x.com/TOURS_imas/status/2123761086596100221",
+"facts": [
+"d5d5b7af8bee",
+"2f3f9fae94bd",
+"32453fb91bdd",
+"142ad8e046eb",
+"ce3068b508bd",
+"b9bb2f932190",
+"5c3d70e5b46f",
+"bab8f09cea8f",
+"e10a6cd283c1",
+"eb9e083938dc",
+"10e85edcd346",
+"32453fb91bdd"
+]
+},
+"202611210225-grok-118": {
+"url": "https://x.com/TOURS_imas/status/2123612295196537219",
+"facts": [
+"a601fdf6f9b9",
+"cb1f536a78ff",
+"5c2dc3ae3ba0",
+"d394e7b4521e",
+"dbd0ca73037e",
+"e9e6397f1842",
+"c668ba7b7aad",
+"32453fb91bdd",
+"ca25d03c0bde",
+"4996516e792f",
+"58f44b9ed74f",
+"b26f3a610e6d",
+"dcb95c9f6277",
+"bb3b818c4362",
+"ec43722ae96d",
+"32453fb91bdd"
+]
+},
+"202611210225-grok-119": {
+"url": "https://x.com/imas_official/status/2123710456166789424",
+"facts": [
+"73aa6fcecb97"
+]
+},
+"202611210225-grok-120": {
+"url": "https://x.com/imas_official/status/2123689060317503810",
+"facts": [
+"58d433b3f23a"
+]
+},
+"202611210225-grok-121": {
+"url": "https://x.com/imas_official/status/2123687804064723155",
+"facts": [
+"e27afa55b304"
+]
+},
+"202611210225-grok-122": {
+"url": "https://x.com/imas_official/status/2123301004276015235",
+"facts": [
+"d1621172b7da"
+]
+},
+"202611210225-grok-123": {
+"url": "https://x.com/imas_official/status/2123027199423123632",
+"facts": [
+"17e2d36fe8ba"
+]
+},
+"202611210225-grok-124": {
+"url": "https://x.com/TomoriManaka/status/2123757581848248657",
+"facts": [
+"386267ecf438",
+"bcd8d9f354d1",
+"be21fd9f6a58",
+"737c01a7604a",
+"4996516e792f",
+"8fc1b6700801",
+"60f94e22500d",
+"8fc1b6700801",
+"d09d355bf928",
+"87727779b1a4",
+"34361b755f5e",
+"f6bfd17f775c",
+"015737b2d2d4",
+"63f0e267b628",
+"7a258661149e"
+]
+},
+"202611210225-grok-125": {
+"url": "https://x.com/KamizuruCosmo/status/2123733252896915498",
+"facts": [
+"cdb67c4f7760",
+"5ece061b55be"
+]
+},
+"202611210225-grok-16": {
+"url": "https://idolmaster-official.jp/lp/cinderellagirls-15th",
+"facts": [
+"e97c08768c92",
+"9aeb9c8090f8",
+"b262396b35a5"
+]
+},
+"202611210225-grok-17": {
+"url": "https://shop.asobistore.jp/feature/cg_apai",
+"facts": [
+"a3c764a1f8f2",
+"91a504028983",
+"c83098e7a164",
+"3cd9adc84f7a",
+"9260cccb3030",
+"18ce1099ac36",
+"e513b602f646",
+"c3e7e212d84d",
+"fd69da844060",
+"8e611a6243f7"
+]
+},
+"202611210225-grok-18": {
+"url": "https://shop.asobistore.jp/feature/cg_mp",
+"facts": [
+"166c10cbb57c",
+"8bab4e99feda",
+"074319232585",
+"144120b8fd19",
+"b262396b35a5",
+"a49dd9844180"
+]
+},
+"202611210225-grok-19": {
+"url": "https://idolmaster-official.jp/live_event/cg_15th_for_your_one/",
+"facts": [
+"ff05bac82f16",
+"a6b3d91f2954",
+"d2b99f762949",
+"d773f519fba6",
+"e6bf80b20d2f",
+"1d59f61ff6d2",
+"94af6329cb89",
+"9e8efec39d71",
+"92142af3cb4a",
+"18c8d300a406",
+"44b36e9d8962",
+"fd69da844060"
+]
+},
+"202611210225-grok-20": {
+"url": "https://x.com/imascg_stage/status/2123465411614412936",
+"facts": [
+"c32bcaa33fd6",
+"21583c849775",
+"b262396b35a5"
+]
+},
+"202611210225-grok-21": {
+"url": "https://x.com/imascg_stage/status/2123459202203156529",
+"facts": [
+"ca0a8f4df23a",
+"b262396b35a5"
+]
+},
+"202611210225-grok-22": {
+"url": "https://x.com/imas_CGofficial/status/2123355616303251826",
+"facts": [
+"4b18a21ec55d",
+"017a8f127c7b",
+"f8178072f455",
+"b262396b35a5"
+]
+},
+"202611210225-grok-23": {
+"url": "https://x.com/anteeeeeku1019/status/2123824750304927945",
+"facts": [
+"ac1f485fe187",
+"24831f8e609f",
+"0fc09b77f262",
+"b262396b35a5"
+]
+},
+"202611210225-grok-24": {
+"url": "https://x.com/SMILEBASETOKYO/status/2123687792060371125",
+"facts": [
+"9d15c4a744e3",
+"547ad9cec291",
+"ec392bef2b44",
+"b262396b35a5"
+]
+},
+"202611210225-grok-25": {
+"url": "https://x.com/imasml_theater/status/2123794243550327027",
+"facts": [
+"511ac4eb9faa",
+"d2b3cd469b22",
+"451575b89a01",
+"b262396b35a5",
+"8217ceeae424"
+]
+},
+"202611210225-grok-26": {
+"url": "https://x.com/imasml_theater/status/2123793991204536561",
+"facts": [
+"824f6a7e067d",
+"82ab3d5c19e1",
+"b4231abb041f",
+"408f24239605",
+"84aaef213ef7",
+"e0ff8f6db871",
+"fccef1df3fa0",
+"b262396b35a5",
+"8217ceeae424"
+]
+},
+"202611210225-grok-27": {
+"url": "https://x.com/imasml_theater/status/2123793740657578324",
+"facts": [
+"d3723ad38677",
+"8a369dc0c5a3",
+"62475f776173",
+"9cfeeb763e2e",
+"0e50a3d563fa",
+"11c29a2b70b1",
+"736525065092",
+"b262396b35a5",
+"8217ceeae424"
+]
+},
+"202611210225-grok-28": {
+"url": "https://x.com/imasml_theater/status/2123793498864587088",
+"facts": [
+"242d2963e687",
+"e403813febc5",
+"c660c06b9aac",
+"b262396b35a5",
+"8488f4fe24b3"
+]
+},
+"202611210225-grok-29": {
+"url": "https://shop.asobistore.jp/category/ml_sd_ssm02_b",
+"facts": [
+"fe9ed4d75fdf",
+"9da125b2b0a7",
+"5c108eb3822a",
+"ec9afb5fd90b",
+"bcf66c1f9ade",
+"cbd4b6c2e980",
+"b262396b35a5",
+"d0bcb4ed1e41"
+]
+},
+"202611210225-grok-31": {
+"url": "https://x.com/imasml_theater/status/2123612315098796061",
+"facts": [
+"207498731f5a",
+"a5ef161203ea",
+"b299de2bab85",
+"b262396b35a5",
+"8217ceeae424"
+]
+},
+"202611210225-grok-33": {
+"url": "https://x.com/imasml_theater/status/2123328355454050758",
+"facts": [
+"527a6dd85381",
+"533595be51b5",
+"26cb16d92679",
+"fd69da844060",
+"c94fb1dc9419"
+]
+},
+"202611210225-grok-34": {
+"url": "https://x.com/peace_of_azure/status/2123822950914953683",
+"facts": [
+"0cae1b1193bf",
+"835f2d6023b3",
+"8217ceeae424"
+]
+},
+"202611210225-grok-35": {
+"url": "https://x.com/imassc_prism/status/2123793504832766051",
+"facts": [
+"7b6fe951e705",
+"30986cb4716c",
+"58b8dffb555c",
+"b262396b35a5"
+]
+},
+"202611210225-grok-36": {
+"url": "https://x.com/shinyc_official/status/2123719252846985609",
+"facts": [
+"34ee1d669aaa",
+"cb8dfc000a8c",
+"b107b38c446d",
+"442f01ba5dc6",
+"835f2d6023b3",
+"b826d3abd90f"
+]
+},
+"202611210225-grok-37": {
+"url": "https://shop.asobistore.jp/feature/shiny_style_collection",
+"facts": [
+"316ade8755f6",
+"537e30400981",
+"8e3fb9d30ef5",
+"43e1a891a468",
+"6ac76dea66c6",
+"c934aa475829",
+"3bcb529ed2e0",
+"a103c3d0d654",
+"47745b2d6372",
+"50b0cb40e8af",
+"b03148a00441",
+"46a7bd7abae4",
+"d7e56e638584",
+"87c1713e715b",
+"a9816d0c09c8",
+"d8e64f82801b",
+"fd69da844060",
+"94077db8a6e7"
+]
+},
+"202611210225-grok-38": {
+"url": "https://x.com/imassc_prism/status/2123612546166833217",
+"facts": [
+"3875119a0f01",
+"64fffa2ff13e",
+"56993d337e52",
+"ae1a002d44b3",
+"de7487885c6c",
+"fd69da844060",
+"310f2524317b"
+]
+},
+"202611210225-grok-39": {
+"url": "https://x.com/imassc_prism/status/2123717993079435589",
+"facts": [
+"df1247a85fcc",
+"b262396b35a5",
+"310f2524317b"
+]
+},
+"202611210225-grok-40": {
+"url": "https://asobistage.asobistore.jp/event/shinycolors_refrac7ions_sb/ticket",
+"facts": [
+"3b9546c477dc",
+"eb4a255f4fd2",
+"fd69da844060"
+]
+},
+"202611210225-grok-41": {
+"url": "https://x.com/imassc_official/status/2123702906763247618",
+"facts": [
+"eaa9f291c60d",
+"d9e75af5e504",
+"6eb20a912834",
+"fd69da844060"
+]
+},
+"202611210225-grok-42": {
+"url": "https://x.com/imassc_prism/status/2123619844834676818",
+"facts": [
+"f1220f012e96",
+"866ab4f04ab4",
+"fbb97d8c81f8",
+"fd69da844060",
+"e1d66bee9588"
+]
+},
+"202611210225-grok-44": {
+"url": "https://x.com/imassc_prism/status/2123612797598626129",
+"facts": [
+"533674e3a390",
+"2b2341e61519",
+"fd69da844060",
+"60ce3ec65752"
+]
+},
+"202611210225-grok-45": {
+"url": "https://x.com/imassc_prism/status/2123612294584389743",
+"facts": [
+"7f49273aecf1",
+"b17b0b40630e",
+"00c6378b9ec2",
+"fd69da844060",
+"e1d66bee9588"
+]
+},
+"202611210225-grok-46": {
+"url": "https://x.com/shinyc_official/status/2123363159125754117",
+"facts": [
+"a941ddda958d",
+"b9129bed97f6",
+"d644a1e5b9ea",
+"dd46f796249a",
+"bbdc0fa30510",
+"23c43c1d849f",
+"ea9bd7e29851",
+"2101cadc1346",
+"088c60b1f642",
+"8317ae6cab9b",
+"0a9a98e48a33",
+"1bde54523397",
+"06b47b795d15",
+"05b1f308b5f6",
+"d03cf19f0cc1",
+"39d6580fe4fb",
+"76d7339813f0",
+"e423c05833b4",
+"fd69da844060",
+"410f71342250"
+]
+},
+"202611210225-grok-47": {
+"url": "https://x.com/shinyc_official/status/2123363158257520655",
+"facts": [
+"a3ff110c2327",
+"cd6d3f0ed2fe",
+"49fd25ab0aed",
+"76d7339813f0",
+"e423c05833b4",
+"fd69da844060",
+"410f71342250"
+]
+},
+"202611210225-grok-48": {
+"url": "https://x.com/imassc_official/status/2123295208242557105",
+"facts": [
+"0dfb7b58a454",
+"b262396b35a5",
+"4e85344f8703"
+]
+},
+"202611210225-grok-49": {
+"url": "https://www.sunday-webry.com/episode/12207421984549186405",
+"facts": [
+"d02b28f10f16",
+"b262396b35a5"
+]
+},
+"202611210225-grok-50": {
+"url": "https://x.com/lantis_imasSC/status/2123734389549084806",
+"facts": [
+"549a26f60b7d",
+"7847136a3a94",
+"91b75781b6a5",
+"558674e4eab6",
+"e5917ad45cf8",
+"b262396b35a5",
+"4cfcdc2d17c8"
+]
+},
+"202611210225-grok-51": {
+"url": "https://x.com/cos_aIRu/status/2123773064718811442",
+"facts": [
+"2357449787ea",
+"835f2d6023b3",
+"6ac1542b0752"
+]
+},
+"202611210225-grok-52": {
+"url": "https://x.com/kokeshi333/status/2123779229167079699",
+"facts": [
+"b64512748425",
+"835f2d6023b3",
+"fee86091ac5c"
+]
+},
+"202611210225-grok-53": {
+"url": "https://x.com/kurakura_8_/status/2123800458280284535",
+"facts": [
+"5bdc29700e97",
+"835f2d6023b3",
+"e1d66bee9588"
+]
+},
+"202611210225-grok-54": {
+"url": "https://x.com/nougyoudorei/status/2123759208088944754",
+"facts": [
+"b57d43da0e7a",
+"69122dd15eb0",
+"835f2d6023b3",
+"74d632fdb62d"
+]
+},
+"202611210225-grok-55": {
+"url": "https://x.com/yuzulemon64/status/2123763792387461371",
+"facts": [
+"1cd63c1c304e",
+"835f2d6023b3",
+"fee86091ac5c"
+]
+},
+"202611210225-grok-56": {
+"url": "https://x.com/jinbe283/status/2123755513825620056",
+"facts": [
+"5ee59e46b7c0",
+"835f2d6023b3",
+"7264bdb0259e"
+]
+},
+"202611210225-grok-57": {
+"url": "https://x.com/matono1AD/status/2123746930677129463",
+"facts": [
+"135cd962f16a",
+"835f2d6023b3"
+]
+},
+"202611210225-grok-58": {
+"url": "https://x.com/mirutomiruto_01/status/2123738877483495493",
+"facts": [
+"4488b51fffbb",
+"835f2d6023b3",
+"4cfcdc2d17c8"
+]
+},
+"202611210225-grok-59": {
+"url": "https://x.com/SideM_official/status/2123793507315810607",
+"facts": [
+"b73a3c7216a2",
+"75b607a052af",
+"9511570596b3",
+"b262396b35a5"
+]
+},
+"202611210225-grok-60": {
+"url": "https://x.com/SideM_lantis/status/2123765962428309858",
+"facts": [
+"00d1bbc2c519",
+"73cce7564c9c",
+"3e10d4c5c02b",
+"9aec753fd9d3",
+"8a5dec911393",
+"b262396b35a5",
+"96981a74c9aa",
+"57ea517a2e48",
+"5dc06a730f36",
+"099065aa9096",
+"ee7e68970975",
+"081df2b8f6ef"
+]
+},
+"202611210225-grok-61": {
+"url": "https://x.com/SideM_lantis/status/2123765806781858249",
+"facts": [
+"0328200ead97",
+"9d8800e84df0",
+"7e2e269b97eb",
+"8b720af70e17",
+"10d2a54b45a7",
+"b262396b35a5",
+"66353e703e55"
+]
+},
+"202611210225-grok-62": {
+"url": "https://x.com/SideM_lantis/status/2123755743262449997",
+"facts": [
+"d30742294df4",
+"b262396b35a5",
+"dc7c3c49e8d5"
+]
+},
+"202611210225-grok-63": {
+"url": "https://x.com/SideM_lantis/status/2123754983745363994",
+"facts": [
+"60835c2c31b5",
+"52795bc3b4ee",
+"f4277fbbce73",
+"b5dcad331fd7",
+"034fa9377bb2",
+"10ef47b9129c",
+"da43903be988",
+"fa91b3f96f66",
+"ba63b6a16099",
+"9b7bfd23a2e6",
+"1bb3ee00fa4d",
+"fd69da844060"
+]
+},
+"202611210225-grok-64": {
+"url": "https://x.com/SideM_official/status/2123551901807685723",
+"facts": [
+"20b5e22c8145",
+"f6bdfc5d95d2",
+"32fce4963174",
+"33f84d6d2009",
+"fd69da844060"
+]
+},
+"202611210225-grok-66": {
+"url": "https://x.com/gkmas_official/status/2123763288312090888",
+"facts": [
+"5d8465764fa9",
+"1e87bafbdaf3",
+"b1fe75079ca9",
+"f7f23a9d317a",
+"8159d3463642",
+"b262396b35a5",
+"bd4703f6b12e"
+]
+},
+"202611210225-grok-67": {
+"url": "https://x.com/gkmas_official/status/2123748192064053267",
+"facts": [
+"05b8353f2dbb",
+"22e520fd8e63",
+"a1e4b3797146",
+"835f2d6023b3"
+]
+},
+"202611210225-grok-68": {
+"url": "https://x.com/gkmas_official/status/2123719737939198052",
+"facts": [
+"97ccc16fb299",
+"e90eb7f5d0bd",
+"835f2d6023b3",
+"3871f6c7688c"
+]
+},
+"202611210225-grok-69": {
+"url": "https://x.com/gkmas_official/status/2123718004047258096",
+"facts": [
+"e4e5022f79ff",
+"3952bc6bafe8",
+"f7f23a9d317a",
+"b262396b35a5",
+"bd4703f6b12e"
+]
+},
+"202611210225-grok-70": {
+"url": "https://x.com/gkmas_official/status/2123714788253700495",
+"facts": [
+"dc6aa2ba7bd5",
+"345467527a92",
+"b262396b35a5"
+]
+},
+"202611210225-grok-71": {
+"url": "https://shop.asobistore.jp/feature/gkmas_livetourshirube_memorial",
+"facts": [
+"feb7acd2135e",
+"77650643b985",
+"6b0a422fb3ec",
+"6f36d37273d4",
+"49190e9bdf1f",
+"a1dd6903a488",
+"46a38ebb7023",
+"89392f95b363",
+"b262396b35a5"
+]
+},
+"202611210225-grok-72": {
+"url": "https://x.com/gkmas_official/status/2123702890673889607",
+"facts": [
+"9e4edbccab05",
+"7fdbc5d5c4e3",
+"7fda39d020eb",
+"b262396b35a5"
+]
+},
+"202611210225-grok-73": {
+"url": "https://x.com/gkmas_official/status/2123370702585663554",
+"facts": [
+"e61aa81559a4",
+"3b066c7ab595",
+"ae4954218967",
+"be0c1adae41c",
+"b262396b35a5",
+"bd4703f6b12e"
+]
+},
+"202611210225-grok-74": {
+"url": "https://x.com/gkmas_official/status/2123325411501433091",
+"facts": [
+"0c82c2c48c53",
+"62f180918cf7",
+"c56608620404",
+"b262396b35a5"
+]
+},
+"202611210225-grok-75": {
+"url": "https://x.com/Atto_HKP/status/2123791736686387324",
+"facts": [
+"a3e0f065acf9",
+"e6f37891b4ef",
+"34b153407ae1",
+"b88da2ecc064",
+"835f2d6023b3"
+]
+},
+"202611210225-grok-76": {
+"url": "https://x.com/lashin_chiba/status/2123785939491151963",
+"facts": [
+"96ff14f02f1b",
+"6280ed371369",
+"835f2d6023b3"
+]
+},
+"202611210225-grok-77": {
+"url": "https://x.com/valiv_official/status/2123714215202713821",
+"facts": [
+"5816a4dcd5a6",
+"b1ae0325c45e",
+"33417748ab29",
+"536d29828e31",
+"27634eb517ae",
+"43edec3863e9",
+"bc023856ca44",
+"3e9b049d2dbb",
+"eaf372b29ece",
+"539fb14c0a8f",
+"6053a54cd6cf",
+"b262396b35a5",
+"f4853210ca60",
+"e372dd7c092a",
+"7256a613ca9c",
+"7dc5a9a71cdb",
+"715730b4aec9",
+"223bdacb4a79"
+]
+},
+"202611210225-grok-78": {
+"url": "https://x.com/valiv_official/status/2123710441536856192",
+"facts": [
+"5e08466dc68f",
+"54a984a5e779",
+"3e0d7ff464ae",
+"06ac95d3de36",
+"7ffbf51cf825",
+"b262396b35a5",
+"f4853210ca60"
+]
+},
+"202611210225-grok-79": {
+"url": "https://x.com/valiv_official/status/2123702894163898846",
+"facts": [
+"0ba545ac1be4",
+"f2ebf964524e",
+"ad1868caae3f",
+"a00ee8020a9d",
+"9e6289aecfd4",
+"8be847e035c3",
+"512d577d0006",
+"835f2d6023b3",
+"297f837abe81"
+]
+},
+"202611210225-grok-81": {
+"url": "https://x.com/TosaKyodai_mane/status/2123710446259572971",
+"facts": [
+"77c29a3953d5",
+"9320389cb3f6",
+"2149fc650e41",
+"e74fb146bc4e",
+"0185ed48cf30",
+"b262396b35a5",
+"18b3fa8b33db"
+]
+},
+"202611210225-grok-82": {
+"url": "https://x.com/KamizuruCosmo/status/2123799333900542187",
+"facts": [
+"d5b026d978ae",
+"ba5f7c658393",
+"e9f3ba7f80bd",
+"835f2d6023b3",
+"297f837abe81"
+]
+},
+"202611210225-grok-87": {
+"url": "https://x.com/imas_columbia/status/2123612546343018613",
+"facts": [
+"af8442847afa",
+"ab5f927fe95d",
+"712cd1dea3b6",
+"fd69da844060"
+]
+},
+"202611210225-grok-88": {
+"url": "https://x.com/imas_columbia/status/2123702907413713030",
+"facts": [
+"4b9aa0845050",
+"7fa6b8e20c06",
+"0e61353cc32b",
+"c31c59551e1e",
+"ede74197dbf6",
+"96c93995632b",
+"b262396b35a5",
+"86974813d0f7"
+]
+},
+"202611210225-grok-90": {
+"url": "https://idolmaster-official.jp/news/01_20404",
+"facts": [
+"13cb6c0ab58e",
+"b262396b35a5"
+]
+},
+"202611210225-grok-92": {
+"url": "https://x.com/bs_official/status/2123717994438148317",
+"facts": [
+"bb9be8a01925",
+"b96cc63582da",
+"13b60d9948d3",
+"b262396b35a5",
+"c235d7ec4ee6"
+]
+},
+"202611210225-grok-94": {
+"url": "https://www.seiburailway.jp/railway/ticket/20260928_gakuenidolmaster/",
+"facts": [
+"5480f05ae2a1",
+"39fc7a7f53f6",
+"44882b34e473",
+"562dbd877bac",
+"bb7af44e3f24",
+"587dd29f5c42",
+"627880530a32",
+"2ecb91d079ae",
+"a6c580e82a5d",
+"633b48919721",
+"e6a33e65b3f6",
+"153d25696f2d",
+"593d76a2e1a9",
+"9c07be5c9764",
+"00473f9f62fd",
+"94bfcc768f0e",
+"cd72002c9341",
+"b262396b35a5",
+"c3bbabc19e3a"
+]
+},
+"202611210225-grok-95": {
+"url": "https://x.com/imas_official/status/2123702904062357508",
+"facts": [
+"ec4faf6c3515"
+]
+},
+"202611210225-grok-96": {
+"url": "https://x.com/imas_CGofficial/status/2123712519651164658",
+"facts": [
+"fcae419d9338",
+"f4ecac6e5c49",
+"352fc9fcf7c1",
+"fcae419d9338",
+"1f1677bd013a",
+"5450bd2fdbc6",
+"bfa68b478c5d",
+"e6bc69cbd693",
+"6e30c4696255",
+"c144dd282b7d",
+"4996516e792f",
+"fcae419d9338",
+"a007cd60dd35",
+"8e34d3c7d866",
+"fcae419d9338",
+"95cea1b1cc44",
+"d0e493e0321f",
+"420aa2d64ba0",
+"6e30c4696255",
+"f4ecac6e5c49"
+]
+},
+"202611210225-grok-97": {
+"url": "https://x.com/imas_CGofficial/status/2123702911968698785",
+"facts": [
+"b8c2e7f5450c",
+"bb8464840f6b",
+"0ac779184d2c",
+"524041c5fd2b",
+"f58ebe5bd12d",
+"793d62035660",
+"0ac779184d2c",
+"994f3fed7193",
+"894e226a8cdb",
+"53c0f7318a6f",
+"7ea3c949d907",
+"4996516e792f",
+"0ac779184d2c",
+"c2b6cdf0b2d2",
+"b8c2e7f5450c",
+"dfed6d4266c1",
+"0ac779184d2c",
+"994f3fed7193",
+"5d2210dab406",
+"894e226a8cdb",
+"53c0f7318a6f"
+]
+},
+"202611210225-grok-98": {
+"url": "https://x.com/imas_CGofficial/status/2123687802718298366",
+"facts": [
+"24adbcf0fc28",
+"f1e3d20b0108",
+"0c285f8a4472",
+"24adbcf0fc28",
+"2ac379b1efc5",
+"866142596a15",
+"ad91693240fb",
+"16d65c746e47",
+"74d7de081ed4",
+"4996516e792f",
+"24adbcf0fc28",
+"f1e3d20b0108",
+"24adbcf0fc28",
+"c834034e6074",
+"b499b3a4c712",
+"200782c5fdcc",
+"25308da0e1e4",
+"985a151f8961",
+"a423248b6b88"
+]
+},
+"202611210225-grok-99": {
+"url": "https://x.com/imas_CGofficial/status/2123372651402121375",
+"facts": [
+"fcae419d9338",
+"f4ecac6e5c49",
+"38ca8c78784f",
+"fcae419d9338",
+"1f1677bd013a",
+"b7307f7798b3",
+"7ace55d2de54",
+"6e30c4696255",
+"c144dd282b7d",
+"4996516e792f",
+"fcae419d9338",
+"a007cd60dd35",
+"8e34d3c7d866",
+"fcae419d9338",
+"95cea1b1cc44",
+"d0e493e0321f",
+"420aa2d64ba0",
+"6e30c4696255",
+"f4ecac6e5c49"
+]
+},
+"update-10232c6b2a87": {
+"url": "https://webstore.asobistore.jp/shinycolors-song-for-prism",
+"facts": [
+"e36e68a24bcd",
+"7921dbc420db",
+"4f2705f67701",
+"e36e68a24bcd",
+"50559b470f48",
+"59874d55d728",
+"6032d842d7d4",
+"ea96c33a43fa",
+"308e62d76e75",
+"7921dbc420db",
+"4bc886302919",
+"2fd740ab322b",
+"67182c36b460",
+"f4e3ededfc4d",
+"750cf457e039",
+"52970748ba21",
+"131b37aa0b5f",
+"0a1cc479e240",
+"ef256a11ba23",
+"e9ab1fad7cf1",
+"50559b470f48",
+"59874d55d728"
+]
+},
+"update-14cb383446ba": {
+"url": "https://asobistage.asobistore.jp/event/gakuen_shirube_final/ticket",
+"facts": [
+"03fad52e37a7",
+"e94f99490acc",
+"078bfd3ea9b7",
+"31407f5d8903",
+"e5aac86991da",
+"6d23179ab03a",
+"97d4faab6e52",
+"a8e5237cccb0",
+"61241348656c",
+"dc59b3cd732f",
+"b893e113cee6",
+"9e84884d2aa7",
+"4342043e199f",
+"dbcbfe7a72b8",
+"e82cae342d36",
+"b837be08db66",
+"6789f6b149b5",
+"66142585a8ac",
+"f69ee56bbd68",
+"6490e8fcb5e5",
+"6f1e769f5ac6",
+"79380ee9837b",
+"4f8a689a236a",
+"dbcbfe7a72b8",
+"e283600ffd3e",
+"b837be08db66",
+"6789f6b149b5",
+"bbf7cbeddeaf",
+"f69ee56bbd68",
+"6490e8fcb5e5",
+"6f1e769f5ac6",
+"79380ee9837b",
+"aa41a067872a",
+"dbcbfe7a72b8",
+"e283600ffd3e",
+"b837be08db66",
+"6789f6b149b5",
+"bbf7cbeddeaf",
+"f69ee56bbd68",
+"6490e8fcb5e5",
+"6f1e769f5ac6",
+"79380ee9837b",
+"5008d6c167dd",
+"1d757725cb49",
+"dbcbfe7a72b8",
+"e82cae342d36",
+"b837be08db66",
+"6789f6b149b5",
+"66142585a8ac",
+"f69ee56bbd68",
+"6490e8fcb5e5",
+"6f1e769f5ac6",
+"79380ee9837b",
+"c52f0104fcab",
+"dbcbfe7a72b8",
+"e283600ffd3e",
+"b837be08db66",
+"6789f6b149b5",
+"bbf7cbeddeaf",
+"f69ee56bbd68",
+"6490e8fcb5e5",
+"6f1e769f5ac6",
+"79380ee9837b",
+"69964fea14eb",
+"dbcbfe7a72b8",
+"e283600ffd3e",
+"b837be08db66",
+"6789f6b149b5",
+"bbf7cbeddeaf",
+"f69ee56bbd68",
+"6490e8fcb5e5",
+"6f1e769f5ac6",
+"79380ee9837b",
+"64772a294069",
+"d96ef1a9d9ca",
+"a8fd7ba58bab",
+"6b3180123da6",
+"bc7a6d7adce5",
+"11c4aea0118a",
+"9107b7c5de87",
+"7e918c53c82a",
+"cc56c9a43b30",
+"669b9a27140b",
+"02982eb44709",
+"f3b13a9dc727",
+"f411e0beda64",
+"04840abd70c4",
+"7a81b414abb2",
+"c49766953f2d",
+"c811a4964124",
+"3b73c431f482",
+"ad4853bbb7d3",
+"cff11cb4e792",
+"7ba9bfc03f74",
+"4468d75505be",
+"a75c94a20c74",
+"88efabb169a6",
+"8dac3de38b5e",
+"ff355d40ff46",
+"800bc96ca9fb",
+"13a6eae2f393",
+"48e1865ffc00",
+"c01ea6f456aa",
+"4acd551a75ff",
+"35de543d6bb1",
+"e83ac403086d",
+"14d0086d1d30",
+"b1d8c8f1cdbd",
+"069af57269d2",
+"b34e161d8d61",
+"7360523ca8d6",
+"994bdf83ca09",
+"43dca8d542cd",
+"d0557a555753",
+"08f6f1071ca1",
+"a6f1111dfe5a",
+"cca26682844c",
+"9f2450b99f03",
+"0de86fc5df84",
+"40056c420f8d",
+"d63845cc4675",
+"04ffea73aaf8",
+"447cac0aa5a1",
+"1ce2674222a7",
+"75c55250b58e",
+"70a78cf46fd4",
+"6960090b004f",
+"e4e1f7ea5046",
+"f36b3d7d19d0",
+"7c85ada562fd",
+"5f28e74fb99e",
+"193cf33df993",
+"e4bbd93703bc",
+"55c4992bfc58",
+"df1479cbc550",
+"c7f49ceb12cf",
+"0dff380bec3a",
+"17ac8ce4f8d7",
+"9a81b7867ee8",
+"f30feb554ce9",
+"da40bdd7197c",
+"5f4264f9c833",
+"269100680043",
+"cebd7e5e5c9b",
+"cc52fb3d1618",
+"86c29f849aab",
+"99ad5f26d778",
+"99ad5f26d778",
+"86d1d083b69c",
+"18049e2ab517",
+"5bd523b2a0dd",
+"e8a082b33174",
+"b6959ea1eab9",
+"86d1d083b69c",
+"203ad7d13a17",
+"f8afeaa9fd22",
+"269100680043",
+"18049e2ab517",
+"18049e2ab517",
+"c84a22d92f3f",
+"83b2e7461a78",
+"5bd523b2a0dd",
+"5bd523b2a0dd",
+"7fd307ff3bcb",
+"83b2e7461a78",
+"e8a082b33174",
+"e8a082b33174",
+"ab9a62f6cbc6",
+"83b2e7461a78",
+"b6959ea1eab9",
+"c07ec7147b3c",
+"2294395230d7",
+"83b2e7461a78",
+"53196fd9ef2b",
+"beaac1c47256",
+"87ef520df5d2",
+"59913e89559e",
+"f867e87f92dd",
+"75859f10b133",
+"f708508df005",
+"75859f10b133",
+"f708508df005",
+"75859f10b133",
+"f708508df005",
+"5e8e9971211b",
+"75859f10b133",
+"f708508df005",
+"f761f545a607",
+"8e6212dd5fab",
+"06c4a367d326",
+"cc52fb3d1618",
+"e1b533f75f4c"
+]
+},
+"update-1ab59dbb2fc6": {
+"url": "https://imas-cg-marine.sync-innovation.co.jp/",
+"facts": [
+"fb2fcbbbc5c1",
+"3f5888ec97ea",
+"47ba33e84dfa",
+"e7d4262397dc",
+"12a7b5ccf0b5",
+"76ab7018b91b",
+"e7d4262397dc",
+"12a1a3694865",
+"94c7a70e7095",
+"ac746ab02613",
+"237c826aa06a",
+"d03c281c20a9",
+"49f33ef5b375",
+"4e5798627c6c"
+]
+},
+"update-41bf605f07c9": {
+"url": "https://store.moviewalker.jp/item/detail/5386",
+"facts": [
+"265d3ba019d4",
+"ff6539ca5569",
+"265d3ba019d4",
+"265d3ba019d4",
+"265d3ba019d4",
+"ff6539ca5569",
+"265d3ba019d4",
+"265d3ba019d4",
+"bf6105d1ef5c",
+"5015b3ad8724",
+"b122504bef06",
+"4eb9a714b2d3",
+"f44482ce4610",
+"b406b79944a8",
+"96781f538ffd",
+"16f00ac8ef77",
+"7282fef3ed2d",
+"a88388e287a8",
+"4cc0bbae1def",
+"1f1b7f05a79e",
+"75b339d9b20e",
+"5015b3ad8724",
+"b122504bef06",
+"daac044759be",
+"9a870a8ddb57",
+"b406b79944a8",
+"f0ffe8cb8b74",
+"75b339d9b20e",
+"5015b3ad8724",
+"b122504bef06",
+"3c5907887abb",
+"573a4a2aa152",
+"b406b79944a8",
+"f0ffe8cb8b74",
+"75b339d9b20e",
+"5015b3ad8724",
+"b122504bef06",
+"26ca0abea22b",
+"573a4a2aa152",
+"b406b79944a8",
+"f0ffe8cb8b74",
+"388cc6d8497a",
+"573a4a2aa152",
+"f0ffe8cb8b74",
+"62f608304d06",
+"7bbcd0145971",
+"5015b3ad8724",
+"78aa15245616",
+"517eb0fe2d7f",
+"1c836e7fe78d",
+"f0ffe8cb8b74",
+"75b339d9b20e",
+"4b030825711a",
+"f0ffe8cb8b74",
+"75b339d9b20e",
+"aa8ad3d3432b",
+"573a4a2aa152",
+"b406b79944a8",
+"f0ffe8cb8b74",
+"75b339d9b20e",
+"5015b3ad8724",
+"7d1eb8d04092",
+"6d1582c3e0b4",
+"f44482ce4610",
+"f0ffe8cb8b74",
+"75b339d9b20e",
+"5015b3ad8724",
+"b122504bef06",
+"7541f7168887",
+"573a4a2aa152",
+"b406b79944a8",
+"f0ffe8cb8b74",
+"75b339d9b20e",
+"5015b3ad8724",
+"b122504bef06",
+"73573eaf1d17",
+"f0ffe8cb8b74",
+"fea7547b939a",
+"53aa398456a1",
+"660e38bd6b60",
+"cbb948e20c8e",
+"44ed84040d01",
+"fea7547b939a",
+"53aa398456a1",
+"660e38bd6b60",
+"cbb948e20c8e",
+"44ed84040d01",
+"16d5cfb86ec1",
+"dabcf0841719",
+"95e4bba6d95b",
+"faaddb54eb02",
+"0b10ed45e605",
+"c87c29bdde83",
+"c57702eb06b7",
+"0b10ed45e605",
+"19c26fb16c1b",
+"c57702eb06b7",
+"0b10ed45e605",
+"2c80719e79a2",
+"71e728a3bdab",
+"8709e2e5e3d9",
+"84cc6d7b16ce",
+"95e4bba6d95b",
+"c57702eb06b7",
+"0b10ed45e605",
+"2c80719e79a2",
+"71e728a3bdab",
+"e5183d76da8c",
+"28f7766bcc62",
+"95e4bba6d95b",
+"c57702eb06b7",
+"0b10ed45e605",
+"2c80719e79a2",
+"cf3686a22868",
+"d9c5660b32f8",
+"28f7766bcc62",
+"c57702eb06b7",
+"0b10ed45e605",
+"2c80719e79a2",
+"71e728a3bdab",
+"9c6a8e351cde",
+"84cc6d7b16ce",
+"95e4bba6d95b",
+"c57702eb06b7",
+"0b10ed45e605",
+"2c80719e79a2",
+"71e728a3bdab",
+"5ce1bed4e409",
+"84cc6d7b16ce",
+"95e4bba6d95b",
+"c57702eb06b7",
+"0b10ed45e605",
+"2c80719e79a2",
+"71e728a3bdab",
+"0c6d95e2395f",
+"84cc6d7b16ce",
+"95e4bba6d95b",
+"c57702eb06b7",
+"0b10ed45e605",
+"2c80719e79a2",
+"cf3686a22868",
+"435a58dd3663",
+"682e7f96a99f",
+"c57702eb06b7",
+"0b10ed45e605",
+"2c80719e79a2",
+"71e728a3bdab",
+"65eb11f94569",
+"84cc6d7b16ce",
+"95e4bba6d95b",
+"c57702eb06b7",
+"0b10ed45e605",
+"2c80719e79a2",
+"71e728a3bdab",
+"cc1770acdd16",
+"e5a897ab7e7a",
+"95e4bba6d95b",
+"c57702eb06b7"
+]
+},
+"update-4ec4bbb70d19": {
+"url": "https://www.animate-onlineshop.jp/contents/fair_event/detail.php?id=116355",
+"facts": [
+"325ee8aac562",
+"a8c6f5533064",
+"109813fde48f",
+"b6fccd9618d3",
+"ab85acbb0cfc",
+"74e575a5965a",
+"92f808921f8e",
+"e0b94ba52cde",
+"05f16d65bb52",
+"eaa453c9cd6a",
+"6ee355fec566",
+"ced813025229",
+"478a26b8408f",
+"e5a2114306ed",
+"ff464203c2c4",
+"b49248e9925f",
+"bb3aa08c8b49",
+"2ee10500b45d",
+"db301f2704d5",
+"d409a54f3b27",
+"6943967293ea",
+"2d209d8edee9",
+"5f8995dc9899",
+"dd56ebfcfebd",
+"42a8fbf102b8",
+"c7921922e092",
+"99f2bcfee5b1",
+"b65ef87058b2",
+"b262396b35a5",
+"f027230cc42f",
+"ebcb4f3ee746",
+"db6dd0588306",
+"b7883c661900",
+"0f3934e42ae2",
+"42e67caf9fcd",
+"7d5dce254951",
+"b679fdc26710",
+"5d4034f9bec7",
+"52a8a5e5203d",
+"7e1082d1f46f",
+"18a95d24f9eb",
+"4614ab549347",
+"6c0b3972ad57",
+"4da35ae70146",
+"53ada7f18acc",
+"0fd9e139c617",
+"57557928f1e1",
+"ef76ef7aae11",
+"faff0d39db9a",
+"dc2ed06f540f",
+"d3b84a20a157"
+]
+},
+"update-70494882fc93": {
+"url": "https://bushiroad-creative.com/105358/",
+"facts": [
+"7a51dde7cf08",
+"77bea62262b7",
+"dffe241aa473",
+"d4841d3e339f",
+"a164c53d65d7",
+"f2cee8e51be0",
+"fc27a58e3cea",
+"aad3f27ada3e",
+"51a57dcf26ce",
+"56d8623f1ddb",
+"513aba66c688",
+"ec5691a5300a",
+"f2861dc98069",
+"de091130ba40",
+"0d30403d95c9",
+"66bf07f23023",
+"5388897d131e",
+"a1df83b8f48c",
+"e02459599e14",
+"862434ff15e8",
+"8f319367e771",
+"3451a411dbc1",
+"77bea62262b7",
+"f2cee8e51be0",
+"26894b3f8337",
+"a85e601f7b2a",
+"2198619ff9ca",
+"c9ef4623919a",
+"d7fc37829c83",
+"0c59b1cb10a0",
+"7d4df23181f5",
+"0314aa93e6ee",
+"b2d8e9c22ec3",
+"53982fdecb90",
+"19ca3bc2d1df",
+"4c59a449992e",
+"05186ba2427b",
+"bf8c7c67eabe",
+"fdc18562b5c8"
+]
+},
+"update-717f19ab5e15": {
+"url": "https://www.animate-onlineshop.jp/contents/fair_event/detail.php?id=115933",
+"facts": [
+"ecceaa24c797",
+"39eb4b0c323e",
+"25a9de6daf79",
+"2a4d3a9bf9be",
+"6e9a6b0bd2dd",
+"4e89e47b4bc5",
+"39e66995a19b",
+"519848994910",
+"84fcc3cf24bd",
+"79e09c7cf612",
+"78081e13829a",
+"959c33847f14"
+]
+},
+"update-7d2a0a67f983": {
+"url": "https://idolmaster-tours-w.bn-am.net/news/detail/58",
+"facts": [
+"d5853d602e71",
+"2a6c7c9f7105",
+"f033afb0db45",
+"2b62584229be",
+"214de009c5c8",
+"44648981ee4d",
+"6ea01ca09688",
+"72aeb2d6eb99",
+"7822ae2ae22d",
+"ab767de52f90",
+"590b174fa964",
+"1e91621d3fa1",
+"7cf82642a87e",
+"c1b2abf790ae",
+"35f18f027e7d",
+"e1fa38cceaf5",
+"ce0b486ac51d",
+"5f4305ba6d68",
+"885c7a5b22f9",
+"3aec7d206d65",
+"deb2a9976630",
+"f26151ff5869",
+"e3fa39d35c47",
+"a125a49a2fb0",
+"438cd91b06ab",
+"ad7da04d2f3e",
+"142c42e93d1f",
+"a218bf5365d6",
+"da3a67228bcd",
+"d3593e27d61d",
+"056605d393ac",
+"b262396b35a5",
+"1050a57c0a61",
+"9e2077e828a6",
+"6b7cad8306f9",
+"52b612f27863",
+"61c71eb9ee83",
+"42c1a1727bcc"
+]
+},
+"update-839dedb270b0": {
+"url": "https://shop.asobistore.jp/product/catalog/n/30/t/category/ca/cg15th_occon_ec/s/older#a1",
+"facts": [
+"9921b0ee44f0",
+"d161211fba4a",
+"462494099f5e",
+"e29f90a17519",
+"3d38614e8d6d",
+"a94f5d43f642",
+"fcf28ecdfafa",
+"eb9cdcae744c",
+"7756d241b2f2",
+"526e1413ab5b",
+"d0a4ae9b80ed",
+"96d37198acc7",
+"394f7339fe04",
+"483b24d40034"
+]
+},
+"update-87bd8b529e3c": {
+"url": "https://world.nol.com/ja/ticket/products/26016535",
+"facts": [
+"bea16dd91293",
+"cb361961aa84",
+"588943a72315",
+"6deac220c0b0",
+"bdc0bebfe198",
+"59844faafe7e",
+"6df702260bff",
+"d1df4a8bd40f",
+"cc978de14874",
+"21d0c62a4ba7",
+"c7867e9718e0",
+"eed7f9ff818f",
+"073c26ede5fe",
+"9d87c50ccc98",
+"b9c12306d9d8",
+"f38e266c843a",
+"ca423a97e18d",
+"1dab67ec5a7e",
+"7eab6aef6ebc",
+"f58cc7e812f8",
+"96c9bab138b9",
+"18627f2f57b6",
+"18627f2f57b6",
+"2190fda4cf34"
+]
+},
+"update-c6c3c07db860": {
+"url": "https://shop.columbia.jp/shop/e/e1125derepa/",
+"facts": [
+"811f82c74e79",
+"20b019164051",
+"2a8f67f69c35",
+"c032599dc55e",
+"06ad2c2b0cef",
+"ecd050a82f84",
+"fdf72e6717fa",
+"d62e72a814e8",
+"2a6371c7e508",
+"ecd050a82f84",
+"a90865aded2c",
+"00eda1b76aa1",
+"9a149efdf8a4",
+"86df9616bdf2",
+"deacae990e68",
+"664a5674f03a",
+"ec20c8fda781",
+"bcb2719a6fbd",
+"5bc831669307",
+"1592993c9d7a",
+"f40f31603b93",
+"9b04a6f1cb6f",
+"b4ff880242ce",
+"169eb3ef1264",
+"4eefe2ed1455",
+"8209d910760d",
+"8f2c7fcc2605",
+"63fbaefe3887"
+]
+}
+}
+}

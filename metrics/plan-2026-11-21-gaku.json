@@ -1,0 +1,389 @@
+{
+ "decisions": {
+  "hatsuboshi-radio-2026-11-25": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-20号で記事済み。質問締切は20日午前で過ぎている"
+  },
+  "shirube-final-stream-ticket": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-shirube-final-streaming-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "出典変更の facts はナビ文言のみで新事実なし。配信券の記事へ統合"
+  },
+  "hoshigakuen-radio-archive-2026-11-18": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-19号で#114アーカイブ記事済み"
+  },
+  "gaku-espresto-shinagawa-hiro-2026": {
+   "action": "article",
+   "angle": "ESPRESTO篠澤 広のプライズが初衣装姿・約12cmの全1種で登場し、オンラインクレーンゲームに順次導入される",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "eclipse-light-animate-fair-2026": {
+   "action": "article",
+   "angle": "アニメイト「ECLIPSE LIGHT」フェア(23日まで)の対象商品欄に月村手毬3rd Single「一体いつから」などが加わり、GOLD RUSH(7)特装版が外れた",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "手毬3rd Singleの追加は11-19号の本文に無い。変更前後を執筆で突き合わせる"
+  },
+  "gaku-asari-produce-seminar-2026-10": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "metamorphose-2m-views-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "実体は『メタモルフォーゼ』MV200万再生の投稿。あさり先生ゼミは過年度でなく別件の古い素材"
+  },
+  "twinkle-rabbit-ume-poster-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "twinkle-rabbit-poster-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ花海佑芽ポスター"
+  },
+  "metamorphose-mv-short-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "metamorphose-2m-views-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "MVショート動画とMV本編・1stシングル予約リンクは既報の範囲。MV記事に統合"
+  },
+  "twinkle-rabbit-poster-2026": {
+   "action": "article",
+   "angle": "ハツボシストア「トゥインクルラビット」テーマの花海佑芽ポスターが公開され、11月27日から店内で展示される",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "metamorphose-2m-views-2026": {
+   "action": "article",
+   "angle": "氷渡香名江「メタモルフォーゼ」のMVが公開5日で200万再生を突破した",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "100万再生は11-19号で記事済み。200万は新しい節目"
+  },
+  "seibu-chichibu-ticket-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9-29号で記事済み。販売は29日までで3日以内の締切ではない"
+  },
+  "gaku-memory-goods-2026": {
+   "action": "article",
+   "angle": "標ツアー開催記念グッズの受注は11月23日まで。あと2日",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "グッズ受注は配信券とは別の行動のため別記事"
+  },
+  "gaku-shirube-final-streaming-2026": {
+   "action": "article",
+   "angle": "標ファイナル公演の配信視聴チケット販売は11月23日18時まで。あと2日",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 55,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "福岡公演出演メンバーの「ハッピーミルフィーユ」披露映像の紹介は新要素。出典変更分も統合"
+  },
+  "gaku-seibu-chichibu-ticket-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9-29号で記事済み。販売は29日までで当日のトリガーなし"
+  },
+  "gakumas-battlespirits-collab-2027": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-16号で描き下ろし公開と商品情報を記事済み。新事実は有村麻央の日次イラストのみ"
+  },
+  "gold-silver-emerald-axe-mv-million-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-20号で100万再生を記事済み"
+  },
+  "metamorphose-youtube-ranking-2026-11-19": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-20号でランキング1位を記事済み"
+  },
+  "shirube-final-day2-fan-report-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のnote観戦記"
+  },
+  "lashin-chiba-gakumas-plush-buyback-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "中古店の買取告知で公式の話題ではない"
+  },
+  "contest-season-56-2026": {
+   "action": "article",
+   "angle": "学園アイドルマスターでコンテストシーズン56が開催された",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "carried。素材は1件で、日程などは執筆と校閲で判断"
+  },
+  "30ms-saki-you-and-ai-2026": {
+   "action": "article",
+   "angle": "30MS 花海咲季(20th Anniv. YOU AND アイ！)が本日発売。5,060円、対象年齢15歳以上",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約。本日発売。ステッカー特典の共同記事とは別の話題"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "gaku-espresto-shinagawa-hiro-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "ESPRESTO篠澤 広のプライズが初衣装姿・約12cmの全1種で登場し、オンラインクレーンゲームに順次導入される",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "gaku-espresto-shinagawa-hiro-2026",
+    "candidate_ids": [
+     "202611202334-explore-14"
+    ]
+   },
+   {
+    "slug": "gaku-eclipse-light-animate-fair-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "アニメイト「ECLIPSE LIGHT」フェア(23日まで)の対象商品欄に月村手毬3rd Single「一体いつから」などが加わり、GOLD RUSH(7)特装版が外れた",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "eclipse-light-animate-fair-2026",
+    "candidate_ids": [
+     "update-717f19ab5e15"
+    ]
+   },
+   {
+    "slug": "gaku-twinkle-rabbit-poster-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "ハツボシストア「トゥインクルラビット」テーマの花海佑芽ポスターが公開され、11月27日から店内で展示される",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "twinkle-rabbit-poster-2026",
+    "candidate_ids": [
+     "202611210225-grok-68",
+     "202611210225-explore-10"
+    ]
+   },
+   {
+    "slug": "gaku-metamorphose-2m-views-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "氷渡香名江「メタモルフォーゼ」のMVが公開5日で200万再生を突破した",
+    "purpose": "新情報",
+    "lead_score": 30,
+    "dedup_key": "metamorphose-2m-views-2026",
+    "candidate_ids": [
+     "202611210225-grok-69",
+     "202611210225-explore-7",
+     "202611210225-grok-66"
+    ]
+   },
+   {
+    "slug": "gaku-memory-goods-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "標ツアー開催記念グッズの受注は11月23日まで。あと2日",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "gaku-memory-goods-2026",
+    "candidate_ids": [
+     "202611210225-grok-71",
+     "202611210225-grok-113"
+    ]
+   },
+   {
+    "slug": "gaku-shirube-final-streaming-2026",
+    "brand": "gaku",
+    "rank": "medium",
+    "angle": "標ファイナル公演の配信視聴チケット販売は11月23日18時まで。あと2日",
+    "purpose": "期日の知らせ",
+    "lead_score": 55,
+    "dedup_key": "gaku-shirube-final-streaming-2026",
+    "candidate_ids": [
+     "202611210225-grok-72",
+     "202611210225-grok-114",
+     "update-14cb383446ba"
+    ]
+   },
+   {
+    "slug": "gaku-contest-season-56-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "学園アイドルマスターでコンテストシーズン56が開催された",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "contest-season-56-2026",
+    "candidate_ids": [
+     "202611200230-grok-53"
+    ]
+   },
+   {
+    "slug": "gaku-30ms-saki-you-and-ai-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "30MS 花海咲季(20th Anniv. YOU AND アイ！)が本日発売。5,060円、対象年齢15歳以上",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "30ms-saki-you-and-ai-2026",
+    "candidate_ids": [
+     "sched-2026-11-21-30ms-saki-you-and-ai-2026-発売"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "hatsuboshi-radio-2026-11-25",
+    "reason": "既報",
+    "note": "11-20号で記事済み。質問締切は20日午前で過ぎている"
+   },
+   {
+    "dedup_key": "hoshigakuen-radio-archive-2026-11-18",
+    "reason": "既報",
+    "note": "11-19号で#114アーカイブ記事済み"
+   },
+   {
+    "dedup_key": "seibu-chichibu-ticket-2026",
+    "reason": "既報",
+    "note": "9-29号で記事済み。販売は29日までで3日以内の締切ではない"
+   },
+   {
+    "dedup_key": "metamorphose-youtube-ranking-2026-11-19",
+    "reason": "既報",
+    "note": "11-20号でランキング1位を記事済み"
+   },
+   {
+    "dedup_key": "gold-silver-emerald-axe-mv-million-2026",
+    "reason": "既報",
+    "note": "11-20号で100万再生を記事済み"
+   },
+   {
+    "dedup_key": "shirube-final-day2-fan-report-2026",
+    "reason": "個人の話題",
+    "note": "個人のnote観戦記"
+   },
+   {
+    "dedup_key": "lashin-chiba-gakumas-plush-buyback-2026",
+    "reason": "その他",
+    "note": "中古店の買取告知で公式の話題ではない"
+   },
+   {
+    "dedup_key": "gakumas-battlespirits-collab-2027",
+    "reason": "既報",
+    "note": "11-16号で描き下ろし公開と商品情報を記事済み。新事実は有村麻央の日次イラストのみ"
+   },
+   {
+    "dedup_key": "gaku-seibu-chichibu-ticket-2026",
+    "reason": "既報",
+    "note": "9-29号で記事済み。販売は29日までで当日のトリガーなし"
+   }
+  ],
+  "cross_brand": []
+ }
+}

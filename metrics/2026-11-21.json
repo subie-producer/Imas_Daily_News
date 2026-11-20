@@ -1,0 +1,162 @@
+{
+ "collect": [
+  {
+   "at": "2026-11-21T02:33:17+09:00",
+   "edition": "2026-11-21",
+   "started_at": "2026-11-21T02:00:20+09:00",
+   "trigger": "timer",
+   "watch": {
+    "stats": {
+     "imas-portal": {
+      "found": 12,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-sidem": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-shiny": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-million": {
+      "found": 8,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "lantis-shiny": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "lantis-sidem": {
+      "found": 5,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "columbia-imas": {
+      "found": 355,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "bnam-tours": {
+      "found": 70,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "imasnews765": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     }
+    },
+    "new": 0,
+    "facted": 0,
+    "deferred": 0,
+    "blocked": 0,
+    "unavailable": 0
+   },
+   "per_query": {
+    "explore:765as": 0,
+    "explore:cinderella": 0,
+    "explore:million": 0,
+    "explore:shiny": 7,
+    "explore:sidem": 0,
+    "explore_failed:sidem": 1,
+    "explore:gakuen": 6,
+    "explore:dsva": 2,
+    "explore:joint-other": 0,
+    "explore:trend": 0,
+    "grok_week_searches": 481,
+    "grok:765as": 2,
+    "grok:cinderella": 21,
+    "grok:million": 10,
+    "grok:shiny": 21,
+    "grok:sidem": 14,
+    "grok:gakuen": 14,
+    "grok:dsva": 13,
+    "grok:joint-other": 5,
+    "grok:trend": 11,
+    "grok_searches:gaku": 7,
+    "grok_searches:shiny": 6,
+    "grok_searches:general": 8,
+    "grok_searches:cg": 7,
+    "grok_searches:sidem": 5,
+    "grok_searches:dsva": 13,
+    "grok_searches:joint": 8,
+    "grok_searches:million": 7,
+    "grok_searches:765": 6
+   },
+   "normalized": 126,
+   "added": 103,
+   "verify": {
+    "confirmed": 81,
+    "unconfirmed": 42,
+    "failed": 3
+   },
+   "duration_s": 1976
+  }
+ ],
+ "collect_required": [
+  {
+   "at": "2026-11-21T02:35:48+09:00",
+   "edition": "2026-11-21",
+   "started_at": "2026-11-21T02:00:20+09:00",
+   "trigger": "timer",
+   "reserve_s": 420,
+   "left_s": 704,
+   "elapsed_s": 153
+  }
+ ],
+ "compose": [
+  {
+   "at": "2026-11-21T03:45:53+09:00",
+   "edition": "2026-11-21",
+   "rounds": 5,
+   "approved": true,
+   "lint_green": true,
+   "planned": 62,
+   "written": 57,
+   "roundups": 2,
+   "dropped": 0,
+   "coverage": {
+    "subjects": 147,
+    "covered": 147,
+    "missing": 0,
+    "missing_keys": []
+   },
+   "dropped_by_review": [
+    "dsva-valiv-3rdlive-meeting-goods-2026"
+   ],
+   "stages_min": {
+    "選定": 2.4772026737531028,
+    "執筆": 17.20775587161382,
+    "出典の判定": 0.7254544854164123,
+    "組版": 0.9370429197947184,
+    "校閲": 0.8840118249257406,
+    "校閲1波": 0.8840118249257406
+   },
+   "target_min": 60,
+   "over_target": false,
+   "aborted": [
+    "shiny-meltic-frost-marche-2026",
+    "shiny-sweets-paradise-goods-online-2026",
+    "sidem-mfes-label-cans-2026",
+    "shiny-kuji-road-kokoro-couture-2026"
+   ],
+   "duration_s": 2732
+  }
+ ]
+}

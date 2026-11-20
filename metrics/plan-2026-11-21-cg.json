@@ -1,0 +1,447 @@
+{
+ "decisions": {
+  "cg-hub-the-last-order-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/20開幕の記事に同じ事実のみ。新情報・当日の期日なし"
+  },
+  "cg-hourglass-full-mv-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/18・11/19の記事でMV公開は報じ済み"
+  },
+  "cg-cinderella-party-10th-cd-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "延長の抽選期限は11/20で終了済み。11/20の記事で既報"
+  },
+  "cinderella-girls-yokohama-marine-tower-2026": {
+   "action": "article",
+   "angle": "横浜マリンタワーのコラボ物販に購入制限(オープン商品は1商品3点まで、クローズド商品は1セットまで)が11月18日付で追記された。26日開幕",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "出典変更: 条件の追加で既報本文に無い"
+  },
+  "cinderella-15th-orchestra-goods-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "商品一覧が14→13件に減っただけで、変更理由が不明(完売表示の可能性)。読者への変更として確定できない"
+  },
+  "cg-15th-karena-shop-goods-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cinderella-k-arena-collab-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "Kアリーナコラボ施策の一部(ショップのグッズ11/27〜29)"
+  },
+  "cg-15th-karena-drink-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cinderella-k-arena-collab-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "Kアリーナコラボ施策の一部(コラボドリンク11/27〜29)"
+  },
+  "cg-hourglass-cd-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/18発売の記事で価格・販売先まで既報"
+  },
+  "deresute-emergency-maintenance-2026-11": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "11/20 2:15に終了済みの緊急メンテ。読者の行動なし"
+  },
+  "cg-15th-dress-comment-2026": {
+   "action": "article",
+   "angle": "15周年特設ページにDressページが公開され、記念衣装「ウィズ・ユア・ハート」をデザインした木澄玲生さんのお祝いコメントが載った",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "cg-apple-of-my-ai-goods-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/17までの記事と同内容。締切11/29は3日以内でない"
+  },
+  "cg-memory-pict-9th-february-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/18の記事と同内容。締切11/29は3日以内でない"
+  },
+  "deresute-emergency-maintenance-end-2026-11": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "終了済みの緊急メンテ。読者の行動なし"
+  },
+  "deresute-emergency-maintenance-schedule-2026-11": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "終了済みの緊急メンテの終了予定告知"
+  },
+  "cg-everyday-idols-2026-11-19": {
+   "action": "article",
+   "angle": "「シンデレラガールズの日常」に「アイドルになって変わったことは…」が公開された",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "定常運営だが3件に満たないため通常記事"
+  },
+  "deresute-master-all-s-418-fan-achievement-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿。cg面はファン面ではない"
+  },
+  "cg-rose-tea-parlor-ikebukuro-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/19に池袋カフェ開幕を報じ済み。店舗投稿に新事実なし"
+  },
+  "cinderella-15th-hourglass-mv-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "HOURGLASSのMV公開は11/18・11/19に既報"
+  },
+  "sekihiro-s-mile-ing-preview-2026": {
+   "action": "article",
+   "angle": "関裕美が歌う「S(mile)ING!」の試聴が公開された(作詞NBSI八城雄太、作編曲NBSI Yoshi)",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "cinderella-k-arena-collab-2026": {
+   "action": "article",
+   "angle": "11月27日からKアリーナ横浜とのコラボ企画が始まる。ショップのコラボグッズ(27〜29日)とコラボドリンク(特典カード付き)を15thPARTY直前に展開",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 70,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "karena-shop-goods・karena-drink を統合。素材は計5件"
+  },
+  "cg-15th-party-resale-2026": {
+   "action": "article",
+   "angle": "15thPARTY公演の一般販売(先着)は明日22日23時59分まで、公式リセール抽選は23日9時59分まで",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "締切が3日以内のトリガー"
+  },
+  "cg-yamanashi-walk-wander-2026": {
+   "action": "article",
+   "angle": "「やまなし WALK & WANDER」が本日開幕。甲府・石和・勝沼の7拠点を巡る無料のデジタルスタンプラリーは12月27日まで",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(開幕)。素材5件"
+  },
+  "cg-sousenkyo-2026-15th-popup": {
+   "action": "article",
+   "angle": "総選挙＆15周年POP UP SHOPが本日横浜ランドマークホールで開幕。29日まで、入場無料だが全日程事前予約制",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(開幕)。election-15th-invitational-party を統合"
+  },
+  "cg-election-15th-invitational-party-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-sousenkyo-2026-15th-popup",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じPOP UP SHOPの開幕"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "cg-cinderella-girls-yokohama-marine-tower-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "横浜マリンタワーのコラボ物販に購入制限(オープン商品は1商品3点まで、クローズド商品は1セットまで)が11月18日付で追記された。26日開幕",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "cinderella-girls-yokohama-marine-tower-2026",
+    "candidate_ids": [
+     "update-1ab59dbb2fc6"
+    ]
+   },
+   {
+    "slug": "cg-15th-dress-comment-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "15周年特設ページにDressページが公開され、記念衣装「ウィズ・ユア・ハート」をデザインした木澄玲生さんのお祝いコメントが載った",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "cg-15th-dress-comment-2026",
+    "candidate_ids": [
+     "202611210225-grok-16",
+     "202611210225-grok-101"
+    ]
+   },
+   {
+    "slug": "cg-everyday-idols-2026-11-19",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "「シンデレラガールズの日常」に「アイドルになって変わったことは…」が公開された",
+    "purpose": "新情報",
+    "lead_score": 5,
+    "dedup_key": "cg-everyday-idols-2026-11-19",
+    "candidate_ids": [
+     "202611210225-grok-22"
+    ]
+   },
+   {
+    "slug": "cg-sekihiro-s-mile-ing-preview-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "関裕美が歌う「S(mile)ING!」の試聴が公開された(作詞NBSI八城雄太、作編曲NBSI Yoshi)",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "sekihiro-s-mile-ing-preview-2026",
+    "candidate_ids": [
+     "202611210225-grok-88",
+     "202611210225-grok-124"
+    ]
+   },
+   {
+    "slug": "cg-cinderella-k-arena-collab-2026",
+    "brand": "cg",
+    "rank": "medium",
+    "angle": "11月27日からKアリーナ横浜とのコラボ企画が始まる。ショップのコラボグッズ(27〜29日)とコラボドリンク(特典カード付き)を15thPARTY直前に展開",
+    "purpose": "新情報",
+    "lead_score": 70,
+    "dedup_key": "cinderella-k-arena-collab-2026",
+    "candidate_ids": [
+     "202611210225-grok-90",
+     "202611210225-grok-121",
+     "202611201841-watch-21",
+     "202611201841-watch-22"
+    ]
+   },
+   {
+    "slug": "cg-15th-party-resale-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "15thPARTY公演の一般販売(先着)は明日22日23時59分まで、公式リセール抽選は23日9時59分まで",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "cg-15th-party-resale-2026",
+    "candidate_ids": [
+     "202611210225-grok-98",
+     "202611210225-grok-103"
+    ]
+   },
+   {
+    "slug": "cg-yamanashi-walk-wander-2026",
+    "brand": "cg",
+    "rank": "medium",
+    "angle": "「やまなし WALK & WANDER」が本日開幕。甲府・石和・勝沼の7拠点を巡る無料のデジタルスタンプラリーは12月27日まで",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "cg-yamanashi-walk-wander-2026",
+    "candidate_ids": [
+     "sched-2026-11-21-cg-yamanashi-walk-wander-2026-開幕",
+     "sched-2026-11-21-cg-yamanashi-walk-wander-2026-開幕-src1",
+     "sched-2026-11-21-cg-yamanashi-walk-wander-2026-開幕-src2",
+     "sched-2026-11-21-cg-yamanashi-walk-wander-2026-開幕-src3",
+     "sched-2026-11-21-cg-yamanashi-walk-wander-2026-開幕-src4"
+    ]
+   },
+   {
+    "slug": "cg-sousenkyo-2026-15th-popup",
+    "brand": "cg",
+    "rank": "medium",
+    "angle": "総選挙＆15周年POP UP SHOPが本日横浜ランドマークホールで開幕。29日まで、入場無料だが全日程事前予約制",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "cg-sousenkyo-2026-15th-popup",
+    "candidate_ids": [
+     "sched-2026-11-21-cg-sousenkyo-2026-15th-popup-開幕",
+     "sched-2026-11-21-cg-election-15th-invitational-party-2026-開幕"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "cg-hub-the-last-order-2026",
+    "reason": "既報",
+    "note": "11/20開幕の記事に同じ事実のみ。新情報・当日の期日なし"
+   },
+   {
+    "dedup_key": "cg-hourglass-full-mv-2026",
+    "reason": "既報",
+    "note": "11/18・11/19の記事でMV公開は報じ済み"
+   },
+   {
+    "dedup_key": "cg-cinderella-party-10th-cd-2026",
+    "reason": "既報",
+    "note": "延長の抽選期限は11/20で終了済み。11/20の記事で既報"
+   },
+   {
+    "dedup_key": "cinderella-15th-orchestra-goods-2026",
+    "reason": "その他",
+    "note": "商品一覧が14→13件に減っただけで、変更理由が不明(完売表示の可能性)。読者への変更として確定できない"
+   },
+   {
+    "dedup_key": "cg-hourglass-cd-2026",
+    "reason": "既報",
+    "note": "11/18発売の記事で価格・販売先まで既報"
+   },
+   {
+    "dedup_key": "deresute-emergency-maintenance-2026-11",
+    "reason": "その他",
+    "note": "11/20 2:15に終了済みの緊急メンテ。読者の行動なし"
+   },
+   {
+    "dedup_key": "cg-apple-of-my-ai-goods-2026",
+    "reason": "既報",
+    "note": "11/17までの記事と同内容。締切11/29は3日以内でない"
+   },
+   {
+    "dedup_key": "cg-memory-pict-9th-february-2026",
+    "reason": "既報",
+    "note": "11/18の記事と同内容。締切11/29は3日以内でない"
+   },
+   {
+    "dedup_key": "deresute-emergency-maintenance-end-2026-11",
+    "reason": "その他",
+    "note": "終了済みの緊急メンテ。読者の行動なし"
+   },
+   {
+    "dedup_key": "deresute-emergency-maintenance-schedule-2026-11",
+    "reason": "その他",
+    "note": "終了済みの緊急メンテの終了予定告知"
+   },
+   {
+    "dedup_key": "deresute-master-all-s-418-fan-achievement-2026",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿。cg面はファン面ではない"
+   },
+   {
+    "dedup_key": "cg-rose-tea-parlor-ikebukuro-2026",
+    "reason": "既報",
+    "note": "11/19に池袋カフェ開幕を報じ済み。店舗投稿に新事実なし"
+   },
+   {
+    "dedup_key": "cinderella-15th-hourglass-mv-2026",
+    "reason": "既報",
+    "note": "HOURGLASSのMV公開は11/18・11/19に既報"
+   }
+  ],
+  "cross_brand": []
+ }
+}

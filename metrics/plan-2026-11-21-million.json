@@ -1,0 +1,238 @@
+{
+ "decisions": {
+  "futamasu-manhole-kiriyo-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-20号で百合子の設置先・設置日後日告知まで報じ済み。新事実なし"
+  },
+  "million-idol-grand-prix-iku-addition-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-20号で追加日・PV公開時刻とも報じ済み。25日は3日以内のトリガーに当たらない"
+  },
+  "futamasu-machida-manhole-card-2026": {
+   "action": "article",
+   "angle": "ロコのマンホールカードが12月18日11時から町田駅前のはっとまちだで手渡し配布される(1人1枚、予約・郵送・代理不可、年末年始休止)",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "million-platinum-start-trust-13-outside-isotope-2026": {
+   "action": "article",
+   "angle": "「プラチナスタートラスト13」が今日15時から公演折り返しとなり、羽ばたく心を最大4倍消費できる。24日20時59分まで",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "MV100万回突破も折り返しの文脈で添えられる"
+  },
+  "million-rio-momose-birthday-2026": {
+   "action": "article",
+   "angle": "百瀬莉緒の誕生日をミリシタで祝う。Birthdayガシャとセット、劇場の特別仕様デコレーションをまとめて伝える",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "gasha・set・decoration を統合"
+  },
+  "million-rio-momose-birthday-gasha-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-rio-momose-birthday-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "million-rio-momose-birthday-set-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-rio-momose-birthday-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "million-rio-birthday-theater-decoration-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-rio-momose-birthday-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "million-seasonal-snapshot-february-2027": {
+   "action": "article",
+   "angle": "Seasonal Snapshot 2月(島原エレナ・星井美希)の商品がasobistoreに登場。ステッカーセット2,000円、ファイングラフ16,000円、シーズナルBOX5,500円",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "受注期間は素材に無く、記事では商品と価格のみ"
+  },
+  "million-rio-idol-grand-prix-missions-2026": {
+   "action": "article",
+   "angle": "莉緒のアイグラ追加記念ミッションが26日23:59まで。全達成でフラッシュGPメダルiGP引換券を計210枚獲得",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "fan-rio-momose-birthday-tributes-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿。culture は general 面のみ"
+  },
+  "million-x-stream-radio-playlist-letters-2026-11": {
+   "action": "article",
+   "angle": "「ラジオ#プレイリスト」のお便り募集が24日23:59の締切まであと3日",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "million-futamasu-machida-manhole-card-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "ロコのマンホールカードが12月18日11時から町田駅前のはっとまちだで手渡し配布される(1人1枚、予約・郵送・代理不可、年末年始休止)",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "futamasu-machida-manhole-card-2026",
+    "candidate_ids": [
+     "202611202334-watch-0",
+     "202611202334-explore-17"
+    ]
+   },
+   {
+    "slug": "million-platinum-start-trust-13-outside-isotope-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "「プラチナスタートラスト13」が今日15時から公演折り返しとなり、羽ばたく心を最大4倍消費できる。24日20時59分まで",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "million-platinum-start-trust-13-outside-isotope-2026",
+    "candidate_ids": [
+     "202611202334-explore-7",
+     "202611210225-grok-33",
+     "sched-2026-11-21-million-platinum-start-trust-13-outside-isotope-2026-その他"
+    ]
+   },
+   {
+    "slug": "million-rio-momose-birthday-2026",
+    "brand": "million",
+    "rank": "medium",
+    "angle": "百瀬莉緒の誕生日をミリシタで祝う。Birthdayガシャとセット、劇場の特別仕様デコレーションをまとめて伝える",
+    "purpose": "新情報",
+    "lead_score": 60,
+    "dedup_key": "million-rio-momose-birthday-2026",
+    "candidate_ids": [
+     "202611210225-grok-25",
+     "202611210225-grok-26",
+     "202611210225-grok-27",
+     "202611210225-grok-28"
+    ]
+   },
+   {
+    "slug": "million-seasonal-snapshot-february-2027",
+    "brand": "million",
+    "rank": "small",
+    "angle": "Seasonal Snapshot 2月(島原エレナ・星井美希)の商品がasobistoreに登場。ステッカーセット2,000円、ファイングラフ16,000円、シーズナルBOX5,500円",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "million-seasonal-snapshot-february-2027",
+    "candidate_ids": [
+     "202611210225-grok-29",
+     "202611210225-grok-104"
+    ]
+   },
+   {
+    "slug": "million-rio-idol-grand-prix-missions-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "莉緒のアイグラ追加記念ミッションが26日23:59まで。全達成でフラッシュGPメダルiGP引換券を計210枚獲得",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "million-rio-idol-grand-prix-missions-2026",
+    "candidate_ids": [
+     "202611210225-grok-31"
+    ]
+   },
+   {
+    "slug": "million-x-stream-radio-playlist-letters-2026-11",
+    "brand": "million",
+    "rank": "small",
+    "angle": "「ラジオ#プレイリスト」のお便り募集が24日23:59の締切まであと3日",
+    "purpose": "期日の知らせ",
+    "lead_score": 15,
+    "dedup_key": "million-x-stream-radio-playlist-letters-2026-11",
+    "candidate_ids": [
+     "sched-2026-11-21-million-x-stream-radio-playlist-letters-2026-11-締切前",
+     "sched-2026-11-21-million-x-stream-radio-playlist-letters-2026-11-締切前-src1"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "futamasu-manhole-kiriyo-2026",
+    "reason": "既報",
+    "note": "11-20号で百合子の設置先・設置日後日告知まで報じ済み。新事実なし"
+   },
+   {
+    "dedup_key": "million-idol-grand-prix-iku-addition-2026",
+    "reason": "既報",
+    "note": "11-20号で追加日・PV公開時刻とも報じ済み。25日は3日以内のトリガーに当たらない"
+   },
+   {
+    "dedup_key": "fan-rio-momose-birthday-tributes-2026",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿。culture は general 面のみ"
+   }
+  ],
+  "cross_brand": []
+ }
+}

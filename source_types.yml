@@ -135,6 +135,7 @@ discovery_only_domains:
 # --- 二次情報: 他所の発表を写して伝えている情報源(規程2.5) ---
 # 法人運営か個人運営かは問わない。自ら取材・発表していないものはここ。
 secondary_domains:
+  - rerizumo.doorblog.jp  # 合議で追加: SNS投稿や感想を集めて貼るまとめ形式。運営者情報は見つからず
   - bitotaku.com          # 合議で追加: 公式配信の説明・リンクを写す転載型。運営者情報は未発見
   - buzz-atlas.com        # 合議で追加: Aboutに公開トレンドを集め自動整理と明記。独自取材の形跡なし
   - nitter.gq             # 合議で追加: X上の他者の投稿を代理表示する閲覧サイト。自らの発表はなし
@@ -281,6 +282,8 @@ party_paths:
   - item.rakuten.co.jp/f272078-takatsuki        # 高槻市ふるさと納税
 
 party_domains:
+  - hatmachida.tokyo      # 合議で追加: はっとまちだ概要に町田市と実行委員会の運営とあり、マンホールカードの配布会場
+  - k-arena-shop.com      # 合議で追加: 会場Kアリーナ横浜の自社店で、コラボグッズの販売元
   - play.google.com       # 合議で追加: 多数の作品を扱う一般の配信・販売サービス(ストアページ)
   - medicos-e-shop.net    # 合議で追加: 販売業者はメディコス・エンタテインメント。ライセンス商品の販売元
   - sma.co.jp             # 合議で追加: 楽曲提供の告知。所属事務所が出しても、演じる人でない竹内は演者ではない
@@ -513,6 +516,7 @@ video_ids:
     - sm18526341          # 機械で追加: nicovideo.jp/user/17835786「iM@S 6th Anniversary Live - キラ」
     - LSkzNm3AzHk         # 機械で追加: @TogawaNonoha「〖 世界のアソビ大全51 〗遊び…？いいえ、ののは vs ま」
   公式:
+    - hZDHZ8SwPN4         # 機械で追加: @imas-official「【SideM】＜期間限定無料公開＞Legenders『ひとつ」
     - YbyjjPC6wUQ         # 機械で追加: @hatsuboshi_gakuen「初星学園 「金の斧、銀の斧、エメラルドの斧」Official」
     - mdRv_Zk5Scw         # 機械で追加: @TomoriManaka「#4【Japanese Ramen Simulator】福岡」
     - PoNEj7tUdLk         # 機械で追加: @KamizuruCosmo「【朝活】初見さん大歓迎！高評価数でお昼ご飯の値段が決まる朝の」
@@ -702,6 +706,16 @@ x_accounts:
     - imasnews765
     - zutapoke
   ファン:
+    - yuzulemon64         # 合議で追加: 個人による園田智代子のAIイラスト投稿
+    - nougyoudorei        # 合議で追加: 個人によるシャニマス流行語大賞への投稿
+    - mirutomiruto_01     # 合議で追加: 個人による鈴木羽那のファンイラスト投稿
+    - matono1AD           # 合議で追加: 個人によるシャニマス選択肢失敗題材の漫画投稿
+    - kurakura_8_         # 合議で追加: 個人によるシャニソン視聴の感想投稿
+    - kokeshi333          # 合議で追加: 個人によるシャニマス流行語大賞への投稿
+    - jinbe283            # 合議で追加: 個人による浅倉透の衣装選定の投稿
+    - cos_aIRu            # 合議で追加: 個人による樋口円香のコスプレ投稿
+    - anteeeeeku1019      # 合議で追加: 個人によるデレステ全曲S達成の報告
+    - Atto_HKP            # 合議で追加: 個人アカウントによるツアー現地観戦の感想・報告
     - yashiroku           # 合議で追加: 個人のまつりルームのファン漫画投稿
     - otya_kei            # 合議で追加: 個人の北上麗花ファンイラスト投稿
     - nigomatsu           # 合議で追加: 個人が山下次郎3Dモデルとの交流を楽しむ投稿
@@ -1096,6 +1110,9 @@ x_accounts:
     - procinen1
     - yutaleP
   当事者:
+    - lashin_chiba        # 合議で追加: ちびぐるみの買取保証を掲げる商業事業者の告知と見える
+    - bs_official         # 合議で追加: 別タイトル(バトルスピリッツ)公式のコラボ商品告知
+    - SMILEBASETOKYO      # 合議で追加: Rose Tea Parlorコラボカフェの開催側による告知
     - TAGLIVELABEL        # 合議で追加: SideM Mフェス缶の販売元が自ら発表。ライセンス商品の販売元
     - ShochikuGames       # 合議で追加: 松竹ゲームズ(ゲーム発売元)の一次発信。要約は途切れ、IM@S関係未確認
     - maron_akiba         # 合議で追加: ツアマスS2カードの入荷を告知するカードショップ(販売元)
@@ -1240,6 +1257,7 @@ x_accounts:
 # tiktok.com/@…、ch.nicovideo.jp/…、manga.nicovideo.jp/comic/… など。ドメイン(プラットフォーム)では
 # 決まらず、そのパスの主体で決まる。合議が足す(classify_sources.add_paths)。
 path_types:
+  youtube.com/post/Ugkx3L2iBqKM4RM9am4x8oohVKGkvGwL21kU: 公式 # 機械で追加: 持ち主 @imas-official「SideMさんの事、みやたんの事、もっと知りたかったです！ 」
   t.co/VuddOGS7g5: 当事者                         # 機械で追加: 展開先 https://www.medicos-e.net/newsdetail/imas_millionlive_popup/
   note.com/karagarashi: ファン                    # 合議で追加: 個人のnote。ライブ旅行記・感想を一人称で投稿
   ch.nicovideo.jp/MillionRADIO: 準公式            # 合議で追加: ニコニコ公式生放送の番組を自ら配信する公式チャンネル
@@ -1305,6 +1323,19 @@ x_posts:
 
 # --- リンク元から引き継いだ種別(リンク先1つずつ。キーは pipelib.link_key)。合議がリンク元の告知と関係していると確かめたものだけ(classify_sources.inherit_from_links)。リンク先そのものの種別より強いときだけ効く ---
 link_types:
+  youtube.com/watch?v=lC7E51IJ_nc: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/valiv_official/status/2123710441536856192(公式)。リンク元は関裕美とのコラボ踊ってみた動画告知で、リンク先が同じ動画(Shorts
+  youtube.com/watch?v=MBCfFXzT0GA: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/imas_columbia/status/2123702907413713030(公式)。リンク元は関裕美「S(mile)ING!」試聴公開告知で、リンク先が同曲のYou
+  www.tiktok.com/@bandainamcomusiclive/video/7709827571008982292?_r=1&_t=ZS-9BYpOoZWSHN: 準公式 # リンク元から引き継ぎ(合議で関係を確認): https://x.com/lantis_imasSC/status/2123734389549084806(準公式)。リンク元は鈴木羽那のTikTokダンス動画公開告知で、リンク先がその動画
+  asobiticket2.asobistore.jp/receptions/d9c0888d-0868-4fd9-aede-a05ef1a87e2e: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://idolmaster-official.jp/news/01_20192(公式)。リンク元は同公演の一般販売告知で、リンク先は11/28公演の公式リセール受付UR
+  asobiticket2.asobistore.jp/receptions/9dfacb31-3381-42b4-a804-de1812f1630c: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://idolmaster-official.jp/news/01_20192(公式)。リンク元は同公演の一般販売告知で、リンク先はその一般販売の受付URL
+  asobiticket2.asobistore.jp/receptions/203a03a6-56ca-4c39-b121-1ed44b332e83: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://idolmaster-official.jp/news/01_20192(公式)。リンク元は同公演の現地チケット受付告知で、リンク先は11/29公演の公式リセール
+  x.com/i/status/2123702907413713030: 公式      # リンク元から引き継ぎ(合議で関係を確認): https://x.com/TomoriManaka/status/2123757581848248657(公式)。同曲の試聴公開の告知。引用元なので別話題とは言えない(相手の反論は誤り)
+  www.sunday-webry.com/episode/12207421984549186405: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://x.com/jimushiny_oa/status/2123793858018644360(公式)。告知の第24話前編が掲載された連載の話ページ
+  shop.asobistore.jp/category/ml_sd_ssm02_b: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://x.com/imasml_765PRO/status/2123644549583229300(公式)。告知の2月Seasonal Snapshot商品の購入ページ
+  asobistage.asobistore.jp/event/shinycolors_refrac7ions_sb/ticket: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://x.com/shinyc_official/status/2123707124392014295(公式)。同じ公演の配信チケット販売ページで、告知と一致する
+  k-arena.com/news/20261120-1/: 公式            # リンク元から引き継ぎ(合議で関係を確認): https://idolmaster-official.jp/news/01_20404(公式)。リンク元と同じシンデレラ×Kアリーナのコラボ企画。コラボドリンク・ノベルティの案
+  k-arena-shop.com/news/195/: 公式              # リンク元から引き継ぎ(合議で関係を確認): https://idolmaster-official.jp/news/01_20404(公式)。リンク元のシンデレラ×Kアリーナのコラボ企画の一部。コラボグッズの販売案内
+  x.com/i/status/2123371454314197417: 公式      # リンク元から引き継ぎ(合議で関係を確認): https://idolmaster-official.jp/news/01_20398(公式)。Mフェス2026×中村麺兵衛のコラボフード告知。告知の掲載項目と一致
   x.com/i/status/2123340515466764547: 準公式      # リンク元から引き継ぎ(合議で関係を確認): https://x.com/SideM_lantis/status/2123347593661153619(準公式)。リンク元が引用元として示す同じ3Dライブ振り返り特集記事の投稿
   nicovideo.jp/watch/lv351753743: 準公式          # リンク元から引き継ぎ(合議で関係を確認): https://x.com/SideM_lantis/status/2123249905787719728(準公式)。リンク元と同じ11/13放送『315プロNight!』の視聴ページ
   youtube.com/watch?v=v9KAmlDayS0: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/imas_ch/status/2123068726274596952(公式)。リンク元は的場梨沙の誕生日祝い告知。リンク先はそのお祝い動画

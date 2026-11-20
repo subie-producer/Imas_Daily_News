@@ -1,0 +1,95 @@
+{
+ "decisions": {
+  "xr-live-revival-2026-general-sale": {
+   "action": "article",
+   "angle": "xR LIVE REVIVALの現地チケット一般販売(先着)が22日12時に始まる。受付は12月5日まで、1公演2枚まで、公演ごとに受付URLが別",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "既報は当落・入金のみ。一般販売は新しい発表"
+  },
+  "tours-allnet-maintenance-remedy-2026": {
+   "action": "article",
+   "angle": "ツアマスのハロウィン期間限定コミュとログインボーナスが今日7時から再実施。あわせて周防桃子の誕生日コミュが不具合で見られず、12月初旬を目途に再開すると出典が更新された",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "開始が当日のトリガー。桃子コミュの不具合対応(12月初旬に再開・YouTube限定公開予定)が出典の新しい事実"
+  },
+  "tours-momoko-birthday-community-recovery-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "tours-allnet-maintenance-remedy-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じメンテ補填施策。桃子コミュの12月初旬再開の事実を統合先の記事に入れる"
+  },
+  "imas-30ms-sticker-campaign-2026": {
+   "action": "article",
+   "angle": "30MSアイマス20周年コラボ商品の購入特典ステッカー第一弾が今日21日から始まる。12月18日まで、先着・数量限定",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "19日号で既報。開始日が当日のトリガー"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "joint-xr-live-revival-2026-general-sale",
+    "brand": "joint",
+    "rank": "medium",
+    "angle": "xR LIVE REVIVALの現地チケット一般販売(先着)が22日12時に始まる。受付は12月5日まで、1公演2枚まで、公演ごとに受付URLが別",
+    "purpose": "新情報",
+    "lead_score": 60,
+    "dedup_key": "xr-live-revival-2026-general-sale",
+    "candidate_ids": [
+     "202611201841-watch-13",
+     "202611210225-grok-95"
+    ]
+   },
+   {
+    "slug": "joint-tours-allnet-maintenance-remedy-2026",
+    "brand": "joint",
+    "rank": "medium",
+    "angle": "ツアマスのハロウィン期間限定コミュとログインボーナスが今日7時から再実施。あわせて周防桃子の誕生日コミュが不具合で見られず、12月初旬を目途に再開すると出典が更新された",
+    "purpose": "新情報",
+    "lead_score": 30,
+    "dedup_key": "tours-allnet-maintenance-remedy-2026",
+    "candidate_ids": [
+     "update-7d2a0a67f983",
+     "202611210225-grok-118",
+     "sched-2026-11-21-tours-allnet-maintenance-remedy-2026-開始",
+     "sched-2026-11-21-tours-allnet-maintenance-remedy-2026-開始-src1",
+     "202611210225-grok-117"
+    ]
+   },
+   {
+    "slug": "joint-imas-30ms-sticker-campaign-2026",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "30MSアイマス20周年コラボ商品の購入特典ステッカー第一弾が今日21日から始まる。12月18日まで、先着・数量限定",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "imas-30ms-sticker-campaign-2026",
+    "candidate_ids": [
+     "sched-2026-11-21-imas-30ms-sticker-campaign-2026-開始"
+    ]
+   }
+  ],
+  "dropped": [],
+  "cross_brand": []
+ }
+}

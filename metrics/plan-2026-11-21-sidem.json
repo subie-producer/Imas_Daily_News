@@ -1,0 +1,511 @@
+{
+ "decisions": {
+  "sidem-fbfes-movie-goods-2026": {
+   "action": "article",
+   "angle": "劇場版公開記念グッズ(ライブシーン付アクリルスタンド1,900円・クリアカード700円)のASOBI STORE受注が12月6日23:59まで",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "sidem-wgf-story-free-stream-2026": {
+   "action": "article",
+   "angle": "劇場版連動ストーリーをアイマスチャンネルで期間限定無料公開、Legendersの幕張連動ストーリーは12月4日10時まで",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "Legenders連動ストーリーの素材を統合"
+  },
+  "sidem-mfes-animate-winter-wonderland-2026": {
+   "action": "article",
+   "angle": "アニメイトMフェス2026対象商品が更新され、花園百々人のミニアクスタやWのクリアファイルが加わり、アクリルブロックの顔ぶれも入れ替わった",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "source_change: 11/18号の本文にない品目変更"
+  },
+  "sidem-mfes-2026-winter": {
+   "action": "article",
+   "angle": "Mフェス2026 in Winter Wonderlandは12月1日から2027年1月15日まで、企業ごとに期間が異なり、共通特典ブロマイドは12月25日まで",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "sidem-mfes-winter-wonderland-shop-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/16号の本文と同内容、当日のトリガー無し"
+  },
+  "sidem-mfes-2026-animate-cafe": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/29号と同内容で新事実無し"
+  },
+  "sidem-mfes-christmas-cruise-2026": {
+   "action": "article",
+   "angle": "F-LAGSクリスマスクルーズの神戸12日・横浜20日分の申込は11月23日23:59まで",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "締切3日以内。11/23の申込期限は既報本文に無い"
+  },
+  "sidem-gotoken-christmas-party-set-2026": {
+   "action": "article",
+   "angle": "五島軒SideMクリスマスパーティセットの早期予約・全国送料無料は本日11月21日が最終日",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "sidem-mfes-2026-nakamura-menbei": {
+   "action": "article",
+   "angle": "中村麺兵衛×Mフェス2026、12月1日〜27日に5種のコラボフードを販売しステッカーを配布",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "sidem-mfes-bakudanyaki-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/13号の本文と同内容"
+  },
+  "sidem-mfes-2026-tufave-earcuff": {
+   "action": "article",
+   "angle": "TUfaveのMフェス2026コラボジュエリー第3弾「Mフェスユニットイヤーカフ」が12月上旬発売",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "sidem-fantastic-battle-fes-2026-nagano-sale": {
+   "action": "article",
+   "angle": "Wanna step in長野公演の一般発売(先着)が本日13時に開始、受付は12月19日まで",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "sidem-popup-howls-2026-animo": {
+   "action": "article",
+   "angle": "POP UP SHOP「Who howls at night? marche」のグッズ事後通販がAnimoで1月8日まで、購入時期で特典が変わる",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "memory-pict-8th-january-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "シンデレラの話題。出典変更も読者に関わる変更とは読めない"
+  },
+  "sidem-legenders-linked-story-free-release-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-wgf-story-free-stream-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "sidem-idol-one-panel-update-2026-11-21": {
+   "action": "roundup",
+   "angle": "今週の運営情報: アイドルたちの1コマ更新と315プロNight!の出演・投稿募集",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "sidem-315pronight-december-personalities-2026": {
+   "action": "roundup",
+   "angle": "315プロNight!12月のパーソナリティ決定と投稿募集",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "sidem-315pronight-mfes-public-recording-2026": {
+   "action": "roundup",
+   "angle": "315プロNight!出張版公開録音の出演者と投稿募集",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "sidem-legenders-refrain-atrium-2dmv-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/14号で既報。公開は25日で当日のトリガー無し"
+  },
+  "sidem-aji-project-cd-release-2027": {
+   "action": "article",
+   "angle": "新ストーリー「AJIプロジェクト」連動の「What's it taste like?」CD3作品(Sweet・Spicy・Bitter)が発売決定、Sweetは2027年2月24日",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "sidem-fantastic-battle-fes-movie-release-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/20号「劇場版きょう公開」で既報"
+  },
+  "sidem-mfes-label-cans-2026": {
+   "action": "article",
+   "angle": "Mフェスのオリジナルラベル缶を全国の専用自販機で12月1日から販売、音自販機では「Season's Greetings Party！」が聴ける",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "sidem-fbfes-wgf-2026-stage-greeting": {
+   "action": "article",
+   "angle": "劇場版SideM公開記念舞台挨拶が本日新宿ピカデリーで3回開催、8人のキャストが登壇し12:45・15:30の回はライブビューイングもある",
+   "purpose": "期日の知らせ",
+   "rank": "large",
+   "lead_score": 75,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "LV中継の主題を統合"
+  },
+  "sidem-fbfes-movie-stage-greeting-shinjuku-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-fbfes-wgf-2026-stage-greeting",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "sidem-idolish7-collab-screening-2026-12": {
+   "action": "article",
+   "angle": "SideM×アイナナ12月10日の一夜限り応援上映、チケット先着販売が本日22時に開始(全席指定3,800円)",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "sidem-fbfes-movie-goods-2026",
+    "brand": "sidem",
+    "rank": "medium",
+    "angle": "劇場版公開記念グッズ(ライブシーン付アクリルスタンド1,900円・クリアカード700円)のASOBI STORE受注が12月6日23:59まで",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "sidem-fbfes-movie-goods-2026",
+    "candidate_ids": [
+     "202611201235-watch-4",
+     "202611201841-explore-37"
+    ]
+   },
+   {
+    "slug": "sidem-wgf-story-free-stream-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "劇場版連動ストーリーをアイマスチャンネルで期間限定無料公開、Legendersの幕張連動ストーリーは12月4日10時まで",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "sidem-wgf-story-free-stream-2026",
+    "candidate_ids": [
+     "202611201235-explore-7",
+     "202611202334-explore-13"
+    ]
+   },
+   {
+    "slug": "sidem-mfes-animate-winter-wonderland-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "アニメイトMフェス2026対象商品が更新され、花園百々人のミニアクスタやWのクリアファイルが加わり、アクリルブロックの顔ぶれも入れ替わった",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "sidem-mfes-animate-winter-wonderland-2026",
+    "candidate_ids": [
+     "update-4ec4bbb70d19"
+    ]
+   },
+   {
+    "slug": "sidem-mfes-2026-winter",
+    "brand": "sidem",
+    "rank": "medium",
+    "angle": "Mフェス2026 in Winter Wonderlandは12月1日から2027年1月15日まで、企業ごとに期間が異なり、共通特典ブロマイドは12月25日まで",
+    "purpose": "新情報",
+    "lead_score": 25,
+    "dedup_key": "sidem-mfes-2026-winter",
+    "candidate_ids": [
+     "202611201841-watch-0",
+     "202611210225-grok-119"
+    ]
+   },
+   {
+    "slug": "sidem-mfes-christmas-cruise-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "F-LAGSクリスマスクルーズの神戸12日・横浜20日分の申込は11月23日23:59まで",
+    "purpose": "期日の知らせ",
+    "lead_score": 15,
+    "dedup_key": "sidem-mfes-christmas-cruise-2026",
+    "candidate_ids": [
+     "202611201841-watch-5"
+    ]
+   },
+   {
+    "slug": "sidem-gotoken-christmas-party-set-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "五島軒SideMクリスマスパーティセットの早期予約・全国送料無料は本日11月21日が最終日",
+    "purpose": "期日の知らせ",
+    "lead_score": 15,
+    "dedup_key": "sidem-gotoken-christmas-party-set-2026",
+    "candidate_ids": [
+     "202611201841-watch-6",
+     "sched-2026-11-21-sidem-gotoken-christmas-party-set-2026-締切"
+    ]
+   },
+   {
+    "slug": "sidem-mfes-2026-nakamura-menbei",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "中村麺兵衛×Mフェス2026、12月1日〜27日に5種のコラボフードを販売しステッカーを配布",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "sidem-mfes-2026-nakamura-menbei",
+    "candidate_ids": [
+     "202611201841-watch-7"
+    ]
+   },
+   {
+    "slug": "sidem-mfes-2026-tufave-earcuff",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "TUfaveのMフェス2026コラボジュエリー第3弾「Mフェスユニットイヤーカフ」が12月上旬発売",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "sidem-mfes-2026-tufave-earcuff",
+    "candidate_ids": [
+     "202611201841-watch-9"
+    ]
+   },
+   {
+    "slug": "sidem-fantastic-battle-fes-2026-nagano-sale",
+    "brand": "sidem",
+    "rank": "medium",
+    "angle": "Wanna step in長野公演の一般発売(先着)が本日13時に開始、受付は12月19日まで",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "sidem-fantastic-battle-fes-2026-nagano-sale",
+    "candidate_ids": [
+     "202611201841-watch-17"
+    ]
+   },
+   {
+    "slug": "sidem-popup-howls-2026-animo",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "POP UP SHOP「Who howls at night? marche」のグッズ事後通販がAnimoで1月8日まで、購入時期で特典が変わる",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "sidem-popup-howls-2026-animo",
+    "candidate_ids": [
+     "202611201841-watch-20",
+     "202611210225-grok-120"
+    ]
+   },
+   {
+    "slug": "sidem-aji-project-cd-release-2027",
+    "brand": "sidem",
+    "rank": "medium",
+    "angle": "新ストーリー「AJIプロジェクト」連動の「What's it taste like?」CD3作品(Sweet・Spicy・Bitter)が発売決定、Sweetは2027年2月24日",
+    "purpose": "新情報",
+    "lead_score": 30,
+    "dedup_key": "sidem-aji-project-cd-release-2027",
+    "candidate_ids": [
+     "202611210225-grok-63",
+     "202611210225-grok-110",
+     "202611210225-grok-111"
+    ]
+   },
+   {
+    "slug": "sidem-mfes-label-cans-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "Mフェスのオリジナルラベル缶を全国の専用自販機で12月1日から販売、音自販機では「Season's Greetings Party！」が聴ける",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "sidem-mfes-label-cans-2026",
+    "candidate_ids": [
+     "202611200230-grok-75"
+    ]
+   },
+   {
+    "slug": "sidem-fbfes-wgf-2026-stage-greeting",
+    "brand": "sidem",
+    "rank": "large",
+    "angle": "劇場版SideM公開記念舞台挨拶が本日新宿ピカデリーで3回開催、8人のキャストが登壇し12:45・15:30の回はライブビューイングもある",
+    "purpose": "期日の知らせ",
+    "lead_score": 75,
+    "dedup_key": "sidem-fbfes-wgf-2026-stage-greeting",
+    "candidate_ids": [
+     "sched-2026-11-21-sidem-fbfes-wgf-2026-stage-greeting-開幕",
+     "sched-2026-11-21-sidem-fbfes-wgf-2026-stage-greeting-開幕-src1",
+     "sched-2026-11-21-sidem-fbfes-wgf-2026-stage-greeting-開始",
+     "sched-2026-11-21-sidem-fbfes-wgf-2026-stage-greeting-開始-src1",
+     "sched-2026-11-21-sidem-fbfes-wgf-2026-stage-greeting-その他",
+     "sched-2026-11-21-sidem-fbfes-movie-stage-greeting-shinjuku-2026-開幕",
+     "sched-2026-11-21-sidem-fbfes-movie-stage-greeting-shinjuku-2026-開始"
+    ]
+   },
+   {
+    "slug": "sidem-idolish7-collab-screening-2026-12",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "SideM×アイナナ12月10日の一夜限り応援上映、チケット先着販売が本日22時に開始(全席指定3,800円)",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "sidem-idolish7-collab-screening-2026-12",
+    "candidate_ids": [
+     "sched-2026-11-21-sidem-idolish7-collab-screening-2026-12-発売"
+    ]
+   },
+   {
+    "slug": "sidem-ops-roundup",
+    "brand": "sidem",
+    "rank": "roundup",
+    "angle": "今週の運営情報: アイドルたちの1コマ更新と315プロNight!の出演・投稿募集",
+    "lead_score": 0,
+    "dedup_key": "sidem-idol-one-panel-update-2026-11-21",
+    "candidate_ids": [
+     "202611210225-grok-59",
+     "202611210225-grok-60",
+     "202611210225-grok-112",
+     "202611210225-grok-61"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "sidem-mfes-winter-wonderland-shop-2026",
+    "reason": "既報",
+    "note": "10/16号の本文と同内容、当日のトリガー無し"
+   },
+   {
+    "dedup_key": "sidem-mfes-2026-animate-cafe",
+    "reason": "既報",
+    "note": "10/29号と同内容で新事実無し"
+   },
+   {
+    "dedup_key": "sidem-mfes-bakudanyaki-2026",
+    "reason": "既報",
+    "note": "11/13号の本文と同内容"
+   },
+   {
+    "dedup_key": "memory-pict-8th-january-2026",
+    "reason": "面違い",
+    "note": "シンデレラの話題。出典変更も読者に関わる変更とは読めない"
+   },
+   {
+    "dedup_key": "sidem-legenders-refrain-atrium-2dmv-2026",
+    "reason": "既報",
+    "note": "11/14号で既報。公開は25日で当日のトリガー無し"
+   },
+   {
+    "dedup_key": "sidem-fantastic-battle-fes-movie-release-2026",
+    "reason": "既報",
+    "note": "11/20号「劇場版きょう公開」で既報"
+   }
+  ],
+  "cross_brand": []
+ }
+}

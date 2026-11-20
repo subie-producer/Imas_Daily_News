@@ -472,3 +472,9 @@
   subject: シャニソン「円環 -Halo around-」#03 放クラ×ストレイライト
   watch: 「近日開催予定」とされたガシャの開催日・期間(判明次第 triggers へ)
   added_on: '2026-11-20'
+  removed_on: '2026-11-21'
+- dedup_key: sidem-mfes-2026-tufave-earcuff
+  brand: sidem
+  subject: TUfave Mフェスユニットイヤーカフ
+  watch: 「12月上旬より」とされた正式な発売日・価格(判明次第 triggers へ)
+  added_on: '2026-11-21'

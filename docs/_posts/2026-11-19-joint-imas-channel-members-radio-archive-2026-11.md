@@ -2,7 +2,7 @@
 slug: joint-imas-channel-members-radio-archive-2026-11
 edition: "2026-11-19"
 brand: joint
-src: 未確認
+src: 公式
 rank: medium
 corrected: false
 corrections: []
@@ -24,7 +24,7 @@ sources:
   type: 公式
 - label: アイドルマスターチャンネル「出演者メッセージ、2026年11月メンバー限定配信アーカイブの案内」(2026-11-18)
   url: https://www.youtube.com/post/Ugkx3L2iBqKM4RM9am4x8oohVKGkvGwL21kU
-  type: 未確認
+  type: 公式
 event_date: "2026-11-18"
 title_fact_ids:
 - F2

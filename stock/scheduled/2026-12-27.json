@@ -844,5 +844,32 @@
   "src_candidate_id": "202611161834-watch-2",
   "companion_of": "sched-2026-12-27-valiv-14th-online-one-on-one-2026-開始",
   "src_dedup_key": "va-liv-online-1on1-14th-2026"
+ },
+ {
+  "id": "sched-2026-12-27-sidem-mfes-2026-nakamura-menbei-終了",
+  "dedup_key": "sidem-mfes-2026-nakamura-menbei",
+  "brand": "sidem",
+  "subject": "中村麺兵衛 Mフェス2026コラボフード",
+  "kind": "終了",
+  "note": "コラボフード販売の最終日",
+  "reserved_on": "2026-11-21",
+  "occurs_on": "2026-12-27",
+  "title": "中村麺兵衛 × Mフェス2026 コラボフード",
+  "url": "https://x.com/bkdanikebukuro/status/2123371454314197417",
+  "source_type": "公式",
+  "facts": [
+   "期間：2026/12/1(火)～12/27(日)",
+   "5種類のコラボフードを販売",
+   "ご注文毎にステッカーをランダムで1枚プレゼント",
+   "前半/後半とアイドル達が分かれているため注意",
+   "税込1,100円毎に特典ブロマイドも1枚プレゼント",
+   "店舗情報は公式HP（nakamura-menbei.com）を確認",
+   "エンゲージメント: 中"
+  ],
+  "via": "watch",
+  "verify": "unconfirmed",
+  "deadline": "2026-12-27",
+  "link_from": "https://idolmaster-official.jp/news/01_20398",
+  "src_candidate_id": "202611201841-watch-7"
  }
 ]

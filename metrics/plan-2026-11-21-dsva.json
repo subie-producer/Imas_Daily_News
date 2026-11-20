@@ -1,0 +1,204 @@
+{
+ "decisions": {
+  "va-liv-3rdlive-qonnect-goods-preorder-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "valiv-3rdlive-meeting-goods-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ公式グッズ事前受注。facts は11/20の既報本文と同内容"
+  },
+  "valiv-tomori-birthday-live-2026-screening": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "manaka-birthday-archive-watch-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ延期公演の同時視聴上映会"
+  },
+  "valiv-3rdlive-meeting-goods-2026": {
+   "action": "article",
+   "angle": "vα-liv 3rdLIVE & MEETING公式グッズの各商品の価格(ライト3,200円、Tシャツ3,600円、パーカー6,500円など)が判明。受注は29日まで",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "既報は価格なし。価格が新しい事実"
+  },
+  "manaka-birthday-archive-watch-2026": {
+   "action": "article",
+   "angle": "灯里愛夏の延期バースデーライブ同時視聴上映会は23日13時から。スペシャルゲストに関裕美が出演すると判明",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 50,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ゲスト出演は既報に無い新事実。ゲストのみでは joint にしない"
+  },
+  "manaka-seki-dance-short-2026": {
+   "action": "article",
+   "angle": "灯里愛夏と関裕美のコラボ「アタシポンコツアンドロイド」踊ってみたショート動画が公開された",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ヴイアライヴ公式の発信。ゲスト出演だけでは joint にしない"
+  },
+  "cosmo-neon-dance-short-2026": {
+   "action": "article",
+   "angle": "上水流宇宙の「NEON / A2O LITE」踊ってみたショート動画が公開された",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "valiv-3rd-tosakyodai-goods-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "未確認の個人アカウント投稿のみ"
+  },
+  "cosmo-slay-spire2-fool-a3-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人の配信報告の投稿のみで、読者の行動に関わらない"
+  },
+  "tomori-manaka-ramen-simulator-2026-11": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "11/18に終了した配信の振り返りで、新しい発表も当日のトリガーも無い"
+  },
+  "dsva-cosmo-ace-combat-8-clear-2026": {
+   "action": "article",
+   "angle": "上水流宇宙の『ACE COMBAT 8』オンラインモード挑戦配信が今夜21時から",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約。本日21時開始"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "dsva-valiv-3rdlive-meeting-goods-2026",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "vα-liv 3rdLIVE & MEETING公式グッズの各商品の価格(ライト3,200円、Tシャツ3,600円、パーカー6,500円など)が判明。受注は29日まで",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "valiv-3rdlive-meeting-goods-2026",
+    "candidate_ids": [
+     "202611201841-explore-39",
+     "202611201235-explore-9",
+     "202611202334-explore-15",
+     "202611210225-grok-115",
+     "202611210225-grok-116",
+     "202611210225-grok-122"
+    ]
+   },
+   {
+    "slug": "dsva-manaka-birthday-archive-watch-2026",
+    "brand": "dsva",
+    "rank": "medium",
+    "angle": "灯里愛夏の延期バースデーライブ同時視聴上映会は23日13時から。スペシャルゲストに関裕美が出演すると判明",
+    "purpose": "新情報",
+    "lead_score": 50,
+    "dedup_key": "manaka-birthday-archive-watch-2026",
+    "candidate_ids": [
+     "202611210225-grok-77",
+     "202611201235-explore-10",
+     "202611210225-grok-123"
+    ]
+   },
+   {
+    "slug": "dsva-manaka-seki-dance-short-2026",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "灯里愛夏と関裕美のコラボ「アタシポンコツアンドロイド」踊ってみたショート動画が公開された",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "manaka-seki-dance-short-2026",
+    "candidate_ids": [
+     "202611210225-grok-78"
+    ]
+   },
+   {
+    "slug": "dsva-cosmo-neon-dance-short-2026",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "上水流宇宙の「NEON / A2O LITE」踊ってみたショート動画が公開された",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "cosmo-neon-dance-short-2026",
+    "candidate_ids": [
+     "202611210225-grok-79",
+     "202611210225-grok-125"
+    ]
+   },
+   {
+    "slug": "dsva-cosmo-ace-combat-8-clear-2026",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "上水流宇宙の『ACE COMBAT 8』オンラインモード挑戦配信が今夜21時から",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "dsva-cosmo-ace-combat-8-clear-2026",
+    "candidate_ids": [
+     "sched-2026-11-21-dsva-cosmo-ace-combat-8-clear-2026-開始"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "valiv-3rd-tosakyodai-goods-2026",
+    "reason": "出典不足",
+    "note": "未確認の個人アカウント投稿のみ"
+   },
+   {
+    "dedup_key": "cosmo-slay-spire2-fool-a3-2026",
+    "reason": "個人の話題",
+    "note": "個人の配信報告の投稿のみで、読者の行動に関わらない"
+   },
+   {
+    "dedup_key": "tomori-manaka-ramen-simulator-2026-11",
+    "reason": "その他",
+    "note": "11/18に終了した配信の振り返りで、新しい発表も当日のトリガーも無い"
+   }
+  ],
+  "cross_brand": []
+ }
+}

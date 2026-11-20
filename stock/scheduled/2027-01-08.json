@@ -69,5 +69,53 @@
   "deadline": "2027-01-11",
   "link_from": "https://x.com/Noel_angelos/status/2122692123422249183",
   "src_candidate_id": "202611180226-grok-48"
+ },
+ {
+  "id": "sched-2027-01-08-sidem-popup-howls-2026-animo-締切",
+  "dedup_key": "sidem-popup-howls-2026-animo",
+  "brand": "sidem",
+  "subject": "Who howls at night? marche Animo事後通販",
+  "kind": "締切",
+  "note": "17時までAnimoで事後通販を申し込める最終日",
+  "reserved_on": "2026-11-21",
+  "occurs_on": "2027-01-08",
+  "title": "SideM POP UP SHOP『～Who howls at night?～ marche』事後通販（Animo）",
+  "url": "https://idolmaster-official.jp/news/01_20402",
+  "source_type": "公式",
+  "facts": [
+   "2026年11月20日(金)17:00より、POP UP SHOP『～Who howls at night?～ marche』で販売していたグッズの予約受付をAnimoにて開始",
+   "受付期間: 2026年11月20日(金)17:00~2027年1月8日(金)17:00",
+   "ご購入時期によって配布特典が変わる（購入期間を間違えないよう注意）",
+   "特典切り替えのため、2026/12/14 12:00~17:00の間は購入不可",
+   "GOODS LINEUPは画像掲載のため、本文からは品目を確認できない",
+   "エンゲージメント: 中",
+   "アイドルマスター SideM POP UP SHOP『～Who howls at night?～ marche』事後通販が11月20日(金)に開始"
+  ],
+  "via": "watch",
+  "verify": "confirmed",
+  "deadline": "2027-01-08",
+  "link_from": "https://x.com/imas_official/status/2123689060317503810",
+  "src_candidate_id": "202611201841-watch-20"
+ },
+ {
+  "id": "sched-2027-01-08-sidem-popup-howls-2026-animo-締切-src1",
+  "dedup_key": "sidem-popup-howls-2026-animo",
+  "brand": "sidem",
+  "subject": "Who howls at night? marche Animo事後通販",
+  "kind": "締切",
+  "note": "17時までAnimoで事後通販を申し込める最終日",
+  "reserved_on": "2026-11-21",
+  "occurs_on": "2027-01-08",
+  "title": "SideM POP UP SHOP事後通販",
+  "url": "https://x.com/imas_official/status/2123689060317503810",
+  "source_type": "公式",
+  "facts": [
+   "【SideM】本日11月20日(金)よりアイドルマスター SideM POP UP SHOP『～Who howls at night?～ marche』事後通販開始！🐺🌙 #SideM #idolmaster https://idolmaster-official.jp/news/01_20402"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202611210225-grok-120",
+  "companion_of": "sched-2027-01-08-sidem-popup-howls-2026-animo-締切",
+  "src_dedup_key": "sidem-who-howls-at-night-marche-mailorder-2026"
  }
 ]

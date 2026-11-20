@@ -1,0 +1,26 @@
+{
+ "decisions": {
+  "765as-never-end-idol-blu-ray-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "発売日・特装版・収録内容・特典は既報の本文と同じ。発売25日は4日先で当日トリガー(3日以内)に未達。"
+  }
+ },
+ "plan": {
+  "articles": [],
+  "dropped": [
+   {
+    "dedup_key": "765as-never-end-idol-blu-ray-2026",
+    "reason": "既報",
+    "note": "発売日・特装版・収録内容・特典は既報の本文と同じ。発売25日は4日先で当日トリガー(3日以内)に未達。"
+   }
+  ],
+  "cross_brand": []
+ }
+}

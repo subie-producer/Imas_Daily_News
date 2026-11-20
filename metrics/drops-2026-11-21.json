@@ -1,0 +1,53 @@
+{
+ "shiny-meltic-frost-marche-2026": {
+  "title": "POP UP SHOP「Meltic*Frost Marche」が12/4〜12/20にあみあみ秋葉原ラジオ会館店で開催、雪うさぎ衣装のアルストロメリアとストレイライトのグッズ",
+  "stage": "執筆で見送り",
+  "why": "NO_PRIMARY_SOURCE 開催期間や会場などを掲載した素材ページは確認できましたが、公式が告知する催しについて必要な公式・準公式または報道の出典を、fetch_page.pyで本文確認できませんでした。公式Xの投稿は素材に含まれておらず、取得できたページは二次情報で",
+  "candidate_ids": [
+   "202611202334-explore-12"
+  ]
+ },
+ "shiny-sweets-paradise-goods-online-2026": {
+  "title": "スイパラのコラボグッズが11/25 10時〜12/9 23:59にYahoo!ショッピングで通販",
+  "stage": "執筆で見送り",
+  "why": "NO_PRIMARY_SOURCE 販売期間と販売先は二次情報のページで確認できましたが、公式の告知ページには到達できず、Yahoo!ショッピング内の該当商品ページも404で本文を取得できませんでした。公式告知が必要な話題のため見送ります。",
+  "candidate_ids": [
+   "202611210225-explore-5"
+  ]
+ },
+ "sidem-mfes-label-cans-2026": {
+  "title": "SideM Mフェス缶、12月から全国販売",
+  "stage": "書き直しで見送り",
+  "why": "NO_PRIMARY_SOURCE R5を解消する公式・準公式または報道の出典を確認できませんでした。検索で見つけた https://sidematome.xxxblog.jp/archives/35474904.html を scripts/fetch_page.py で確認しましたが、出力の出典の種別は「二次情報」",
+  "candidate_ids": [
+   "202611200230-grok-75"
+  ]
+ },
+ "shiny-kuji-road-kokoro-couture-2026": {
+  "title": "シャニマスのくじロード、秋葉原で11月27日先行販売",
+  "stage": "書き直しで見送り",
+  "why": "OTHER I1の重複指摘に基づき、本記事を取り下げます。同じ会場・同日の先行販売は shiny-283-production-pop-up-shop-2026 に残します。",
+  "candidate_ids": [
+   "202611210225-explore-4"
+  ],
+  "settled": {
+   "rule": "P1",
+   "dup_of": [
+    "shiny-283-production-pop-up-shop-2026"
+   ]
+  }
+ },
+ "dsva-valiv-3rdlive-meeting-goods-2026": {
+  "title": "ヴイアラ3rd公演グッズ、価格掲載",
+  "stage": "校閲ブロック",
+  "why": "R4 リードが、税込価格を公式ページに掲載されたと書いている。出典の公式ページ(idolmaster-official.jp/news/01_20395)の本文には商品名と「名古屋公演の会場物販」の一覧はあるが、価格は無い。価格が載っているのは準",
+  "candidate_ids": [
+   "202611201841-explore-39",
+   "202611201235-explore-9",
+   "202611202334-explore-15",
+   "202611210225-grok-115",
+   "202611210225-grok-116",
+   "202611210225-grok-122"
+  ]
+ }
+}

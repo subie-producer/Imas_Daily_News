@@ -1215,5 +1215,52 @@
   "verify": "unconfirmed",
   "event_date": "2027-01-16",
   "src_candidate_id": "202611190229-grok-80"
+ },
+ {
+  "id": "sched-2026-12-04-sidem-legenders-linked-story-free-release-2026-終了",
+  "dedup_key": "sidem-legenders-linked-story-free-release-2026",
+  "brand": "sidem",
+  "subject": "SideM Legenders連動ストーリー無料公開の終了日",
+  "kind": "終了",
+  "note": "当日10時まで、アイマスチャンネルでストーリーを無料視聴できる",
+  "reserved_on": "2026-11-21",
+  "occurs_on": "2026-12-04",
+  "title": "Legenders連動ストーリーの期間限定無料公開",
+  "url": "https://www.youtube.com/watch?v=hZDHZ8SwPN4",
+  "source_type": "公式",
+  "facts": [
+   "2026年11月20日10:00から12月4日10:00まで期間限定で無料公開される。",
+   "「315 Production presents F＠NTASTIC BATTLE FES ～Who goes first～」幕張公演連動ストーリーとして、Legenders『ひとつひとつの輝きを重ねて』を公開する。",
+   "エンゲージメント: 低",
+   "言及アイドル: 葛之葉雨彦、北村想楽、古論クリス"
+  ],
+  "via": "explore",
+  "verify": "unconfirmed",
+  "event_date": "2026-11-20",
+  "deadline": "2026-12-04",
+  "src_candidate_id": "202611202334-explore-13"
+ },
+ {
+  "id": "sched-2026-12-04-sidem-legenders-linked-story-free-release-2026-終了-src1",
+  "dedup_key": "sidem-legenders-linked-story-free-release-2026",
+  "brand": "sidem",
+  "subject": "SideM Legenders連動ストーリー無料公開の終了日",
+  "kind": "終了",
+  "note": "当日10時まで、アイマスチャンネルでストーリーを無料視聴できる",
+  "reserved_on": "2026-11-21",
+  "occurs_on": "2026-12-04",
+  "title": "劇場版連動ストーリーを期間限定無料公開",
+  "url": "https://x.com/SideM_official/status/2123328674565120477",
+  "source_type": "公式",
+  "facts": [
+   "2026年11月20日(金)10時より、#SideMFANFES_WGF連動ストーリーをアイマスチャンネルで期間限定無料公開する。",
+   "エンゲージメント: 高"
+  ],
+  "via": "explore",
+  "verify": "unconfirmed",
+  "event_date": "2026-11-20",
+  "src_candidate_id": "202611201235-explore-7",
+  "companion_of": "sched-2026-12-04-sidem-legenders-linked-story-free-release-2026-終了",
+  "src_dedup_key": "sidem-wgf-story-free-stream-2026"
  }
 ]

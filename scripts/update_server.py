@@ -74,7 +74,13 @@ LOCK_WAIT_MIN = 120           # 枝に commit するとき、収集などが作�
 PIP_TIMEOUT = 600
 # 入れ替えを始めてから、失敗して戻し・再起動・確認を終えるまでに見込む秒(入れ替えと戻しの pip の上限+確認の待ち×2+余裕)。
 # これだけ先までに発行の時間帯に掛かるなら始めない(戻しの分を含める。Sol 監査 r5)
-QUIET_MARGIN = 2 * (PIP_TIMEOUT + CHECK_WAIT) + 300
+RESTART_TIMEOUT = 120         # systemctl restart の上限
+EXTERNAL_TIMEOUT = 30         # 外からの公開ページの確認の上限
+CHECK_LIMIT = CHECK_WAIT + EXTERNAL_TIMEOUT    # check_http 全体の上限
+JOURNAL_TIMEOUT = 60          # 失敗の記録に添える journal の読み取りの上限
+# 入れ替え1回(または戻し1回)の各段の上限の合計: pip+再起動+確認+journal。Caddy の差し替えは pip より短いので同じ見込みで足りる
+SWAP_STEP = PIP_TIMEOUT + RESTART_TIMEOUT + CHECK_LIMIT + JOURNAL_TIMEOUT
+QUIET_MARGIN = 2 * SWAP_STEP + 300     # 入れ替え+戻し+余裕(約 36 分。Sol 監査 r5・r6: 各段の上限から積む)
 # この回の持ち時間(unit の TimeoutStartSec 12h より短く)。入れ替えは、待ち・入れ替え・戻しがこの内に収まるときだけ始める(Sol 監査 r2)
 RUN_BUDGET = 11 * 3600
 RUN_DEADLINE: float | None = None      # main が起動の時刻+RUN_BUDGET を入れる(テスト・--check では無し)
@@ -543,17 +549,17 @@ def edit_requirements(text: str, edits: list[dict]) -> str:
 # ---------------------------------------------------------------- 動作の確認
 
 def systemctl_restart(unit: str) -> str:
-    """再起動。失敗の理由を返す(成功なら空)。例外は投げない。"""
+    """再起動。失敗の理由を返す(成功なら空)。例外は投げない。上限は RESTART_TIMEOUT 秒。"""
     try:
-        r = subprocess.run(["systemctl", "--user", "restart", unit], capture_output=True, text=True, timeout=120)
+        r = subprocess.run(["systemctl", "--user", "restart", unit], capture_output=True, text=True, timeout=RESTART_TIMEOUT)
     except Exception as e:
         return f"{unit} の再起動で例外({type(e).__name__}: {e})"
     return "" if r.returncode == 0 else f"{unit} の再起動に失敗(exit {r.returncode}): {(r.stderr or '').strip()[-200:]}"
 
 
-def get_status(url: str, headers: dict | None = None) -> int:
+def get_status(url: str, headers: dict | None = None, timeout: float = 30) -> int:
     try:
-        with urllib.request.urlopen(urllib.request.Request(url, headers={**UA, **(headers or {})}), timeout=30) as r:
+        with urllib.request.urlopen(urllib.request.Request(url, headers={**UA, **(headers or {})}), timeout=max(1.0, timeout)) as r:
             return r.status
     except urllib.error.HTTPError as e:
         return e.code
@@ -562,16 +568,24 @@ def get_status(url: str, headers: dict | None = None) -> int:
 
 
 def check_http() -> tuple[bool, str]:
-    """Caddy 経由の数ページが 200 か、外から公開ページが 200 か。再起動の直後は CHECK_WAIT 秒まで待つ。例外は投げない。"""
+    """Caddy 経由の数ページが 200 か、外から公開ページが 200 か。再起動の直後は 200 が揃うまで待つ。例外は投げない。
+    全体で CHECK_LIMIT 秒を越えない(1回の要求の上限は残りの秒に縮める。待ちの見込み QUIET_MARGIN の前提。Sol 監査 r6)。
+    手元のページの待ちに CHECK_WAIT 秒、外からの確認に残り(EXTERNAL_TIMEOUT 秒)を取っておく。"""
     try:
-        end = time.time() + CHECK_WAIT
+        start = time.monotonic()
+        local_end = start + CHECK_WAIT
+        end = start + CHECK_LIMIT
+        left = lambda until: until - time.monotonic()
         while True:
-            codes = {p: get_status(LOCAL_WEB + p) for p in CHECK_PATHS}
-            if all(c == 200 for c in codes.values()) or time.time() > end:
+            codes = {}
+            for p in CHECK_PATHS:
+                codes[p] = get_status(LOCAL_WEB + p, timeout=min(30, left(local_end))) if left(local_end) > 0 else 0
+            if all(c == 200 for c in codes.values()) or left(local_end) <= 0:
                 break
-            time.sleep(3)
+            time.sleep(min(3, max(0, left(local_end))))
         site = ENV.get("SITE_URL", "").rstrip("/")
-        ext = get_status(f"{site}/?server-check={int(time.time())}", {"Cache-Control": "no-cache"}) if site else None
+        ext = (get_status(f"{site}/?server-check={int(time.time())}", {"Cache-Control": "no-cache"}, timeout=min(30, left(end)))
+               if site and left(end) > 0 else (0 if site else None))
         parts = [f"{p} {c}" for p, c in codes.items()] + ([f"外から {site} {ext}"] if site else [])
         ok = all(c == 200 for c in codes.values()) and ext in (200, None)
         return ok, "・".join(parts)
@@ -582,7 +596,7 @@ def check_http() -> tuple[bool, str]:
 def unit_log(unit: str, since: str, lines: int = 40) -> str:
     try:
         r = subprocess.run(["journalctl", "--user", "-u", unit, "--since", since, "-o", "cat", "--no-pager", "-n", str(lines)],
-                           capture_output=True, text=True, timeout=60)
+                           capture_output=True, text=True, timeout=JOURNAL_TIMEOUT)
         return (r.stdout or "").strip()
     except Exception as e:
         return f"(journal を読めない: {e})"

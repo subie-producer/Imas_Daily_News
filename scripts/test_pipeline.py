@@ -8852,6 +8852,27 @@ def test_update_server_apply(tmp: Path):
         checks[:] = [(True, "/ 200")]
         r = us.apply_webapp(["Werkzeug==3.1.9"], "Flask==3.1.3\n", tmp)
         check(r["ok"] and restarts == [us.APP_UNIT], f"上げられたのに失敗とした: {r}")
+        # Sol 監査 r6: check_http は、応答しないページが並んでも全体で CHECK_LIMIT 秒を越えない。見込みは各段の上限から積む
+        mono = [1000.0]
+        gets = []
+
+        def hanging_get(url, headers=None, timeout=30):
+            gets.append(timeout)
+            mono[0] += timeout          # 上限いっぱいまで返らない
+            return 0
+        saved_t = (us.time.monotonic, us.time.sleep)
+        saved_g = _patch(us, get_status=hanging_get, check_http=saved["check_http"])
+        us.time.monotonic = lambda: mono[0]
+        us.time.sleep = lambda s: mono.__setitem__(0, mono[0] + s)
+        try:
+            ok_h, _ = us.check_http()
+            check(not ok_h and mono[0] - 1000.0 <= us.CHECK_LIMIT + 1e-6 and gets and all(0 < t <= 30 for t in gets),
+                  f"確認が全体の上限を越えた: {mono[0] - 1000.0} 秒(上限 {us.CHECK_LIMIT})・要求の上限 {gets}")
+        finally:
+            us.time.monotonic, us.time.sleep = saved_t
+            _unpatch(us, saved_g)
+        check(us.QUIET_MARGIN >= 2 * (us.PIP_TIMEOUT + us.RESTART_TIMEOUT + us.CHECK_LIMIT + us.JOURNAL_TIMEOUT),
+              f"見込みが入れ替えと戻しの各段の上限の合計より短い: {us.QUIET_MARGIN}")
         # Sol 監査 r1: 入れる途中の例外(pip の時間切れ)でも戻す。戻しの例外は「戻せなかった」と返す
         import subprocess as sp0
 

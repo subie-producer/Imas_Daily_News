@@ -25,6 +25,7 @@ import json
 import os
 import re
 import shutil
+import signal
 import subprocess
 import sys
 import tarfile
@@ -72,6 +73,9 @@ LOCK_WAIT_MIN = 120           # 枝に commit するとき、収集などが作�
 PIP_TIMEOUT = 600
 # 入れ替えを始めてから再起動・確認を終えるまでに見込む秒(pip の上限+確認の待ち+余裕)。これだけ先までに発行の時間帯に掛かるなら始めない
 QUIET_MARGIN = PIP_TIMEOUT + CHECK_WAIT + 300
+# この回の持ち時間(unit の TimeoutStartSec 12h より短く)。入れ替えは、待ち・入れ替え・戻しがこの内に収まるときだけ始める(Sol 監査 r2)
+RUN_BUDGET = 11 * 3600
+RUN_DEADLINE: float | None = None      # main が起動の時刻+RUN_BUDGET を入れる(テスト・--check では無し)
 SCHEMA_ASSESS = "server-assess.schema.json"
 SCHEMA_BARRIER = "server-barrier.schema.json"
 SCHEMA_REVIEW = "server-barrier-review.schema.json"
@@ -744,6 +748,7 @@ def commit_change(rel: Path, text: str, message: str) -> str:
     checkout_edition_branch が送る)。"""
     fd = None
     head = ""
+    wrote = False       # 自分が rel を書き換えたか。書き換える前の失敗(ロック・checkout)では何も戻さない(他の工程の変更を消す。Sol 監査 r2)
     try:
         fd = job_lock(JOB, wait_min=LOCK_WAIT_MIN)
         date = edition_date()
@@ -753,6 +758,7 @@ def commit_change(rel: Path, text: str, message: str) -> str:
         path = ROOT / rel
         if path.read_text(encoding="utf-8") == text:
             return ""
+        wrote = True
         path.write_text(text, encoding="utf-8")
         if not commit_and_push(f"edition/{date}", message, JOB, paths=[str(rel)]):
             if _committed(head, rel, text):
@@ -762,7 +768,7 @@ def commit_change(rel: Path, text: str, message: str) -> str:
             return f"edition/{date} への commit に失敗(index と作業ツリーは元に戻した)"
         return ""
     except Exception as e:
-        if not (head and _committed(head, rel, text)):
+        if wrote and not (head and _committed(head, rel, text)):
             _restore(rel)
         return f"commit の途中で例外({type(e).__name__}: {e})"
     finally:
@@ -865,10 +871,7 @@ def handle(component: str, advs: list[dict], candidates: dict[str, list[str]], m
     """1つの部品(caddy / webapp)の合議 → 上げる → 確認 → 障壁 → 上げ直し → 知らせる。"""
     key = judge_key([a["id"] for a in advs], candidates)
     prev = (state.get("judged") or {}).get(component) or {}
-    if prev.get("result") == "broken":
-        # 前の回に戻しきれずに止めた: 人が手で戻して state の judged.<部品> を消すまで、上げ直さずに毎回知らせる
-        notify(JOB, f"{component}: {prev.get('at')} の更新で戻しきれずに止めたまま。手で戻したら {STATE} の judged.{component} を消す"
-                    "(消すまで判定も更新もしない)", ok=False)
+    if stopped(state, component):
         return
     if prev.get("key") == key and prev.get("result") in ("applied", "hold", "split"):
         say(f"{component}: 同じ報告と候補の組は判定済み({prev.get('at')} {prev.get('result')})")
@@ -880,7 +883,7 @@ def handle(component: str, advs: list[dict], candidates: dict[str, list[str]], m
     if result == "apply":
         targets = v["sol"]["targets"]
         lines.append(f"更新: {', '.join(targets)}")
-        r = apply_fn(targets, None)
+        r = guarded(apply_fn, targets, None)
         lines += [f"- {s}" for s in r["steps"]]
         if broken(r):
             # 戻しきれていない: ここで止めて人に渡す。障壁を外して上げ直すと、壊れた今の状態を旧版の写しに上書きしかねない(Sol 監査 r1)
@@ -889,7 +892,7 @@ def handle(component: str, advs: list[dict], candidates: dict[str, list[str]], m
             b = barrier_council(component, targets, r["failure"], materials, work, date)
             lines.append(barrier_text(b))
             if b["agreed"] and b["proposal"]["lift"]:
-                r = barrier_fn(targets, b["proposal"])
+                r = guarded(barrier_fn, targets, b["proposal"])
                 lines += [f"- {s}" for s in r["steps"]]
                 if broken(r):
                     lines.append("🚨 上げ直しの後に戻しきれない。止めた(手で戻す)")
@@ -900,6 +903,44 @@ def handle(component: str, advs: list[dict], candidates: dict[str, list[str]], m
                                                  "ids": sorted(a["id"] for a in advs)}
     save_state(state)
     report(component, {**v, "result": v["result"]}, lines, ok=result in ("applied", "hold", "split"))
+
+
+class Terminated(Exception):
+    """systemd の停止(時間制限の SIGTERM)。Exception にして、入れ替えの途中なら戻しの経路へ進ませる(Sol 監査 r2)。"""
+
+
+def on_sigterm(signum, frame):
+    raise Terminated("SIGTERM を受けた(unit の時間制限か停止)")
+
+
+def swap_budget_ok(now: float | None = None) -> tuple[bool, str]:
+    """入れ替えを始めてよいか: 発行の時間帯の待ち+入れ替え・確認+戻しの分が、この回の残り時間(RUN_DEADLINE まで)に収まるか。"""
+    if RUN_DEADLINE is None:
+        return True, ""
+    left = RUN_DEADLINE - (now if now is not None else time.time())
+    need = quiet_wait_secs(now_jst(), QUIET_MARGIN) + 2 * QUIET_MARGIN
+    if left < need:
+        return False, f"この回の残り {int(left)} 秒では、入れ替えと戻し(見込み {int(need)} 秒)が終わらない"
+    return True, ""
+
+
+def guarded(fn, targets, proposal) -> dict:
+    """入れ替え(apply_fn / barrier_fn)を、時間が足りるときだけ始める。足りなければ何も入れ替えずに失敗として返す(次の回にやり直す)。"""
+    ok, why = swap_budget_ok()
+    if not ok:
+        return {"ok": False, "steps": [f"入れ替えを始めない: {why}"], "failure": why, "rolled_back": False}
+    return fn(targets, proposal)
+
+
+def stopped(state: dict, component: str) -> bool:
+    """前の回に戻しきれずに止めた部品か。止めていれば知らせて True。人が手で戻して state の judged.<部品> を消すまで、
+    候補選び・判定・更新・「直す版なし」の記録のどれもしない(止めた印を上書きしない。Sol 監査 r2)。"""
+    prev = (state.get("judged") or {}).get(component) or {}
+    if prev.get("result") != "broken":
+        return False
+    notify(JOB, f"{component}: {prev.get('at')} の更新で戻しきれずに止めたまま。手で戻したら {STATE} の judged.{component} を消す"
+                "(消すまで判定も更新もしない)", ok=False)
+    return True
 
 
 def broken(r: dict) -> bool:
@@ -954,11 +995,13 @@ def run(check: bool) -> int:
     if news:
         notify(JOB, "配信サーバーの新しい版(脆弱性の判断は別に知らせる):\n" + "\n".join(news))
     save_state(state)
+    # ---- 前の回に戻しきれずに止めた部品は、候補選び・判定・更新・「直す版なし」の記録のどれもしない(止めた印を残す。Sol 監査 r2)
+    halted = {c for c in ("caddy", "webapp") if stopped(state, c)}
     # ---- Caddy の脆弱性
-    if cadv:
+    if cadv and "caddy" not in halted:
         handle_caddy(cinv, rel, cadv, work, date, state)
     # ---- webapp の脆弱性
-    if padv:
+    if padv and "webapp" not in halted:
         handle_webapp(pkgs, latest, req_text, padv, work, date, state)
     return 0
 
@@ -1066,6 +1109,10 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--check", action="store_true", help="調べて表示するだけ(通知・合議・更新をしない)")
     args = ap.parse_args()
+    global RUN_DEADLINE
+    if not args.check:
+        RUN_DEADLINE = time.time() + RUN_BUDGET
+        signal.signal(signal.SIGTERM, on_sigterm)
     try:
         return run(args.check)
     except CliBlocked as e:

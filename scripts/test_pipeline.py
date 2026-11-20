@@ -8886,6 +8886,31 @@ def test_update_server_apply(tmp: Path):
         r = us.apply_webapp(["Werkzeug==3.1.9"], "Flask==3.1.3\n", tmp)
         check(not r["ok"] and r["rolled_back"] and "発行の時間帯" in r["failure"] and restarts == [us.APP_UNIT],
               f"入れ終わりが発行の時間帯なのに上げた版で再起動した: {r} {restarts}")
+        # Sol 監査 r2: systemd の停止(SIGTERM)は Terminated(Exception)として入れ替えの途中から戻しへ進む
+        def term_pip(*args, timeout=0):
+            if args[0] == "install" and "--dry-run" not in args and str(tmp / "freeze-before.txt") not in args:
+                us.on_sigterm(15, None)
+            return R(0, "Flask==3.1.3\n")
+        us.pip = term_pip
+        clock[0] = datetime.datetime(2026, 11, 21, 10, 0, tzinfo=JST)
+        checks[:] = [(True, "/ 200")]
+        r = us.apply_webapp(["Werkzeug==3.1.9"], "Flask==3.1.3\n", tmp)
+        check(not r["ok"] and r["rolled_back"] and r["restored"] and "SIGTERM" in r["failure"], f"SIGTERM で戻さない: {r}")
+        # 持ち時間の内に待ち・入れ替え・戻しが収まらなければ、入れ替えを始めない
+        called = []
+        saved_dl = us.RUN_DEADLINE
+        try:
+            us.RUN_DEADLINE = us.time.time() + 2 * us.QUIET_MARGIN - 60
+            r = us.guarded(lambda t, p: called.append(t) or {"ok": True}, ["x==1"], None)
+            check(not called and not r["ok"] and not r["rolled_back"] and "始めない" in r["steps"][0], f"時間が足りないのに入れ替えを始めた: {r}")
+            us.RUN_DEADLINE = us.time.time() + 3 * us.QUIET_MARGIN
+            check(us.guarded(lambda t, p: called.append(t) or {"ok": True}, ["x==1"], None)["ok"] and called, "時間が足りるのに始めない")
+            clock[0] = datetime.datetime(2026, 11, 21, 2, 40, tzinfo=JST)    # 07:00 までの待ちも見込む
+            called.clear()
+            us.guarded(lambda t, p: called.append(t) or {"ok": True}, ["x==1"], None)
+            check(not called, "発行の時間帯の待ちを見込まずに入れ替えを始めた")
+        finally:
+            us.RUN_DEADLINE = saved_dl
         us.pip = fake_pip
         us.now_jst = lambda: datetime.datetime(2026, 11, 21, 10, 0, tzinfo=JST)
         # ---- Caddy
@@ -8947,6 +8972,21 @@ def test_update_server_apply(tmp: Path):
             check(why == "" and (repo / "webapp" / "requirements.txt").read_text() == "Flask==3.1.5\n",
                   f"commit できて push だけ失敗したのに戻した: {why!r}")
             us.commit_and_push = stage_then_fail
+            # Sol 監査 r2: ロックが取れない(書き換える前の失敗)なら、他の工程が stage した変更を戻さない
+            (repo / "webapp" / "requirements.txt").write_text("other job\n")
+            sp.run(["git", "add", "-A"], cwd=repo, check=True)
+
+            def lock_timeout(job, wait_min=0):
+                raise us.JobLockTimeoutForTest("busy")
+            us.JobLockTimeoutForTest = type("JobLockTimeoutForTest", (RuntimeError,), {})
+            us.job_lock = lock_timeout
+            why = us.commit_change(us.REQUIREMENTS_REPO, "Flask==9\n", "m")
+            st = sp.run(["git", "status", "--porcelain"], cwd=repo, capture_output=True, text=True).stdout
+            check(why and (repo / "webapp" / "requirements.txt").read_text() == "other job\n" and st.startswith("M "),
+                  f"ロックが取れないのに他の工程の変更を戻した: {why} {st!r}")
+            del us.JobLockTimeoutForTest
+            us.job_lock = lambda job, wait_min=0: None
+            sp.run(["git", "reset", "-q", "--hard"], cwd=repo, check=True)
             us.checkout_edition_branch = lambda d, j: False
             check("checkout" in us.commit_change(us.REQUIREMENTS_REPO, "x\n", "m"), "checkout できないのに書いた")
             pushed = []
@@ -9005,6 +9045,17 @@ def test_update_server_run(tmp: Path):
         check(not [n for n in notes if "新しい版" in n[0] or "直す版がまだ無い" in n[0]], f"同じ版・同じ報告を知らせ直した: {notes}")
         st = json.loads((tmp / "state.json").read_text())
         check(st["cvss"]["GHSA-w"]["score"] == 6.3, f"CVSS を state に残さない: {st.get('cvss')}")
+        # Sol 監査 r2: 戻しきれずに止めた部品は、「直す版なし」の回でも印を上書きせず、候補選び・判定もしない
+        st["judged"]["caddy"] = {"key": "k", "result": "broken", "at": "t", "ids": []}
+        st["judged"]["webapp"] = {"key": "k", "result": "broken", "at": "t", "ids": []}
+        (tmp / "state.json").write_text(json.dumps(st))
+        notes.clear()
+        handled.clear()
+        us.run(False)
+        st2 = json.loads((tmp / "state.json").read_text())
+        check(st2["judged"]["caddy"]["result"] == "broken" and st2["judged"]["webapp"]["result"] == "broken" and not handled
+              and sum("戻しきれずに止めた" in n[0] and n[1] is False for n in notes) == 2,
+              f"止めた印を上書きした・判定した・知らせない: {st2['judged']} {handled} {notes}")
 
         def blocked(check_only):
             raise CliBlocked({"tool": "claude", "kind": "auth", "detail": "x"})

@@ -8574,6 +8574,329 @@ def test_update_cloudflared_failures(tmp: Path):
             ucf.tempfile = saved_tempfile
 
 
+def _patch(mod, **kw):
+    """mod の属性を差し替え、元の値の辞書を返す(_unpatch で戻す)。"""
+    saved = {k: getattr(mod, k) for k in kw}
+    for k, v in kw.items():
+        setattr(mod, k, v)
+    return saved
+
+
+def _unpatch(mod, saved: dict) -> None:
+    for k, v in saved.items():
+        setattr(mod, k, v)
+
+
+def test_update_server_parts(tmp: Path):
+    """配信サーバーの更新(編集長 2026-11-20): build-info・checksums・版の比較・OSV の直った版・別名の束ね・requirements の書き換え・
+    答えの形の検め・合意の判定・判定の鍵・依頼文の埋め込み。"""
+    import update_server as us
+    from pipelib import render_prompt, schema_ok
+    bi = ("go\tgo1.26.3\npath\tcaddy\nmod\tcaddy\t(devel)\t\n"
+          "dep\tgithub.com/caddyserver/caddy/v2\tv2.11.4\th1:x=\n"
+          "dep\tgolang.org/x/net\tv0.55.0\th1:y=\n=>\tgolang.org/x/net\tv0.56.0\th1:z=\n")
+    inv = us.parse_build_info(bi)
+    check(inv["version"] == "2.11.4" and inv["go"] == "1.26.3", f"build-info の版を読めない: {inv}")
+    check(inv["modules"]["golang.org/x/net"] == "v0.56.0", f"置き換え(=>)の版を採らない: {inv['modules']}")
+    q = us.caddy_queries(inv)
+    check(q[0] == ("Go", "stdlib", "1.26.3") and ("Go", "golang.org/x/net", "0.56.0") in q, f"OSV への問い合わせの形: {q}")
+    sums = f"{'a' * 128}  caddy_2.11.9_linux_amd64.tar.gz.sig\n{'b' * 128}  caddy_2.11.9_linux_amd64.tar.gz\n"
+    check(us.checksum_of(sums, "caddy_2.11.9_linux_amd64.tar.gz") == "b" * 128, "checksums.txt の別名(.sig)の行を取り違えた")
+    check(us.checksum_of(sums, "caddy_2.11.9_linux_arm64.tar.gz") == "", "載っていないファイルの sha512 を返した")
+    check(us.vkey("3.1.10") > us.vkey("3.1.9") > us.vkey("3.1.9rc1") and us.vkey("v2.11.9") == us.vkey("2.11.9"),
+          "版の比較が数字の並びでない")
+    check(us.is_pre("4.0.0b1") and us.is_pre("1.2.0-pre") and not us.is_pre("26.3"), "プレリリースの見分け")
+    vuln = {"affected": [{"package": {"ecosystem": "PyPI", "name": "werkzeug"},
+                          "ranges": [{"events": [{"introduced": "0"}, {"fixed": "3.1.9"}]},
+                                     {"events": [{"introduced": "4.0.0"}, {"fixed": "4.0.1"}]}]},
+                         {"package": {"ecosystem": "PyPI", "name": "flask"}, "ranges": [{"events": [{"fixed": "9"}]}]}]}
+    check(us.fixed_versions(vuln, "PyPI", "Werkzeug") == ["3.1.9", "4.0.1"], f"直った版(大文字小文字・別のパッケージ): "
+          f"{us.fixed_versions(vuln, 'PyPI', 'Werkzeug')}")
+    gv = {"affected": [{"package": {"name": "stdlib"}, "ecosystem_specific": {"imports": [{"path": "net/http", "symbols": ["Serve"]}]}}]}
+    check(us.go_symbols(gv, "stdlib") == ["net/http: Serve"] and us.go_symbols(gv, "x") == [], "影響を受ける関数の読み方")
+    pk = lambda n: {"ecosystem": "Go", "name": n, "installed": "1", "fixed": ["2"], "symbols": []}
+    adv = lambda i, al, n, s: {"id": i, "aliases": al, "summary": i, "details": "", "published": "", "modified": "", "component": "caddy",
+                               "packages": [pk(n)], "refs": [], "cvss": {"score": s}}
+    m = us.merge_aliases({"GO-2026-6874": adv("GO-2026-6874", ["GHSA-8qx7", "CVE-1"], "github.com/caddyserver/caddy/v2", None),
+                          "GHSA-8qx7": adv("GHSA-8qx7", ["CVE-1"], "github.com/caddyserver/caddy/v2", 2.9),
+                          "GO-1": adv("GO-1", [], "stdlib", 7.5)})
+    check(sorted(m) == ["GHSA-8qx7", "GO-1"], f"別名の報告を束ねない: {sorted(m)}")
+    g = m["GHSA-8qx7"]
+    check(g["cvss"]["score"] == 2.9 and "GO-2026-6874" in g["aliases"] and "GHSA-8qx7" not in g["aliases"] and len(g["packages"]) == 1,
+          f"束ねた報告の中身: {g}")
+    req = "# 注記 Flask==0\nFlask==3.1.3\nwaitress==3.0.2\nmarkdown_it_py==4.3.0\n"
+    out = us.edit_requirements(req, [{"name": "flask", "spec": "==3.1.4"}, {"name": "markdown-it-py", "spec": ">= 4.3.1"},
+                                     {"name": "Werkzeug", "spec": ">=3.1.9"}])
+    check(out == "# 注記 Flask==0\nflask==3.1.4\nwaitress==3.0.2\nmarkdown-it-py>=4.3.1\nWerkzeug>=3.1.9\n",
+          f"requirements の書き換え(注記の行は触らない・名前の表記ゆれ・無い名前は足す): {out!r}")
+    cands = {"Werkzeug": ["3.1.9", "3.2.0"]}
+    ok = {"serious": True, "exposure": "e", "update_risk": "u", "leave_risk": "l", "verdict": "apply", "targets": ["Werkzeug==3.1.9"], "why": "w"}
+    check(us.shaped_assess(ok, cands) == ok, "形の合う答えを捨てた")
+    for bad in (["Werkzeug==9.9"], ["Flask==3.1.4"], ["Werkzeug==3.1.9", "Werkzeug==3.2.0"], []):
+        check(us.shaped_assess({**ok, "targets": bad}, cands) is None, f"候補に無い・重複・空の上げる先を採った: {bad}")
+    check(us.shaped_assess({**ok, "verdict": "hold", "targets": ["x"]}, cands)["targets"] == [], "hold の上げる先を空にしない")
+    hold = {**ok, "verdict": "hold", "targets": []}
+    check(us.agreed(ok, dict(ok)) == "apply" and us.agreed(hold, hold) == "hold", "揃った答えを合意にしない")
+    check(us.agreed(ok, {**ok, "serious": False}) == "" and us.agreed(ok, {**ok, "targets": ["Werkzeug==3.2.0"]}) == ""
+          and us.agreed(ok, hold) == "" and us.agreed(ok, None) == "", "割れた答え(重大でない・上げる先が違う・片方 hold・答えなし)を合意にした")
+    k1 = us.judge_key(["B", "A"], {"x": ["2", "1"]})
+    check(k1 == us.judge_key(["A", "B", "A"], {"x": ["1", "2"]}) and k1 != us.judge_key(["A", "B"], {"x": ["1", "3"]})
+          and k1 != us.judge_key(["A"], {"x": ["1", "2"]}), "判定の鍵が並び順で変わる・候補や報告が変わっても同じ")
+    lift = {"lift": True, "barrier": "b", "impact": "i", "why": "w", "requirements": [{"name": "Flask", "spec": "==3.1.4"}], "caddyfile": ""}
+    check(us.shaped_barrier(lift, "webapp") == lift, "webapp の外し方の案を捨てた")
+    for bad, comp in (({**lift, "requirements": [{"name": "Flask; rm -rf", "spec": "==1"}]}, "webapp"),
+                      ({**lift, "requirements": [{"name": "Flask", "spec": "@ https://x"}]}, "webapp"),
+                      ({**lift, "requirements": []}, "webapp"), ({**lift, "caddyfile": ":80"}, "webapp"), (lift, "caddy"),
+                      ({**lift, "requirements": [], "caddyfile": "  "}, "caddy")):
+        check(us.shaped_barrier(bad, comp) is None, f"崩れた外し方の案を採った({comp}): {bad}")
+    check(us.shaped_barrier({**lift, "lift": False}, "webapp")["requirements"] == [], "外さない案の書き換えを空にしない")
+    # 依頼文は埋め残し・使われない値が無い(render_prompt が検める)。答えの schema は答えの例を通す
+    render_prompt("server-assess", COMPONENT="caddy", CANDIDATES="- caddy: caddy==2.11.9", MATERIALS="/x.md")
+    render_prompt("server-assess-debate", FIRST="f", MINE="{}", THEIRS="{}")
+    render_prompt("server-barrier", COMPONENT="webapp", TARGETS="Flask==3.1.4", OBJECTIONS="(なし)", FAILURE="f", MATERIALS="/x.md")
+    render_prompt("server-barrier-review", COMPONENT="webapp", PROPOSAL="{}", FAILURE="f", MATERIALS="/x.md")
+    sd = Path(us.__file__).resolve().parent.parent / "schema"
+    check(schema_ok(ok, (sd / us.SCHEMA_ASSESS).read_text()) and not schema_ok({**ok, "verdict": "maybe"}, (sd / us.SCHEMA_ASSESS).read_text()),
+          "評価の schema")
+    check(schema_ok(lift, (sd / us.SCHEMA_BARRIER).read_text()) and schema_ok({"approve": True, "objections": [], "why": "w"},
+                                                                             (sd / us.SCHEMA_REVIEW).read_text()), "障壁・査読の schema")
+
+
+def test_update_server_council(tmp: Path):
+    """合議と判定の流れ: 1巡目で揃えば2巡目なし、割れたら相手の答えを見せて2巡目、答えが無ければ上げない。
+    合意して上げ、失敗したら障壁の案→査読→外して上げ直す。同じ報告と候補の組は判定し直さない。失敗・答えなしは次の回に判定し直す。"""
+    import update_server as us
+    tmp.mkdir(parents=True, exist_ok=True)
+    cands = {"caddy": ["2.11.9"]}
+    ap = {"serious": True, "exposure": "e", "update_risk": "u", "leave_risk": "l", "verdict": "apply", "targets": ["caddy==2.11.9"], "why": "w"}
+    hold = {**ap, "serious": False, "verdict": "hold", "targets": []}
+    calls, answers = [], {}
+
+    def fake(who):
+        def f(prompt, schema, name, work, date):
+            calls.append((who, name, prompt))
+            q = answers.get((who, name.split("-")[1]), [])
+            return q.pop(0) if q else None
+        return f
+    saved = _patch(us, sol_session=fake("sol"), opus_session=fake("opus"), STATE=tmp / "state.json",
+                   notify=lambda job, msg, ok=True, require=False, ledger=True: notes.append((msg, ok)) or True)
+    notes: list = []
+    try:
+        answers.update({("sol", "assess"): [ap], ("opus", "assess"): [ap]})
+        v = us.council("caddy", tmp / "m.md", cands, tmp, "2026-11-21")
+        check(v["result"] == "apply" and v["rounds"] == 1 and len(calls) == 2, f"1巡目で揃ったのに: {v} {len(calls)}")
+        calls.clear()
+        answers.update({("sol", "assess"): [ap], ("opus", "assess"): [hold], ("sol", "debate"): [ap], ("opus", "debate"): [ap]})
+        v = us.council("caddy", tmp / "m.md", cands, tmp, "2026-11-21")
+        deb = [c for c in calls if "debate" in c[1]]
+        check(v["result"] == "apply" and v["rounds"] == 2 and len(deb) == 2, f"割れたのに議論しない: {v}")
+        check('"hold"' in deb[1][2].split("## 相手の1巡目の答え")[0].split("## あなたの1巡目の答え")[1]
+              and '"apply"' in deb[1][2].split("## 相手の1巡目の答え")[1], "2巡目に自分と相手の答えを取り違えて見せた")
+        calls.clear()
+        answers.update({("sol", "assess"): [ap], ("opus", "assess"): [hold], ("sol", "debate"): [ap], ("opus", "debate"): [hold]})
+        check(us.council("caddy", tmp / "m.md", cands, tmp, "d")["result"] == "split", "2巡目でも割れたのに合意にした")
+        answers.update({("sol", "assess"): [ap], ("opus", "assess"): [None]})
+        check(us.council("caddy", tmp / "m.md", cands, tmp, "d")["result"] == "noanswer", "答えが無いのに合意にした")
+        # ---- handle: 合意 → 上げて失敗 → 障壁の合意 → 外して上げ直す
+        advs = [{"id": "GO-1", "aliases": [], "summary": "s", "cvss": {"score": 7.5}, "packages": []}]
+        lift = {"lift": True, "barrier": "b", "impact": "i", "why": "w", "requirements": [], "caddyfile": ":8080 {\n}\n"}
+        did = []
+        apply_fn = lambda t, _: did.append(("apply", t)) or {"ok": False, "steps": ["差し替え→確認失敗→戻した"], "failure": "validate", "rolled_back": True, "restored": True}
+        barrier_fn = lambda t, p: did.append(("barrier", p["caddyfile"])) or {"ok": True, "steps": ["書き換えて上げた"], "failure": ""}
+        answers.update({("sol", "assess"): [ap], ("opus", "assess"): [ap], ("sol", "barrier"): [lift],
+                        ("opus", "barrier"): [{"approve": True, "objections": [], "why": "ok"}]})
+        state: dict = {}
+        us.handle("caddy", advs, cands, tmp / "m.md", tmp, "d", state, apply_fn, barrier_fn)
+        check(did == [("apply", ["caddy==2.11.9"]), ("barrier", ":8080 {\n}\n")] and state["judged"]["caddy"]["result"] == "applied",
+              f"障壁を外して上げ直さない: {did} {state}")
+        check(notes and notes[-1][1] and "合意: 外す" in notes[-1][0] and "書き換えて上げた" in notes[-1][0] and "Sol:" in notes[-1][0],
+              f"知らせに判断・障壁・更新の中身が無い: {notes[-1:]}")
+        # 同じ組は判定し直さない
+        n = len(calls)
+        us.handle("caddy", advs, cands, tmp / "m.md", tmp, "d", state, apply_fn, barrier_fn)
+        check(len(calls) == n, "判定済みの組を判定し直した")
+        # 査読で差し戻された案は、指摘を添えて出し直させる。承認されなければ外さない
+        did.clear()
+        notes.clear()
+        state = {}
+        answers.update({("sol", "assess"): [ap], ("opus", "assess"): [ap], ("sol", "barrier"): [lift, lift],
+                        ("opus", "barrier"): [{"approve": False, "objections": ["ログの出し先が変わる"], "why": "x"},
+                                              {"approve": False, "objections": ["まだ変わる"], "why": "x"}]})
+        calls.clear()
+        us.handle("caddy", advs, cands, tmp / "m.md", tmp, "d", state, apply_fn, barrier_fn)
+        second = [c for c in calls if c[1] == "caddy-barrier-sol-2"]
+        check(second and "ログの出し先が変わる" in second[0][2], "差し戻しの指摘を2回目の案の依頼に添えない")
+        check(did == [("apply", ["caddy==2.11.9"])] and state["judged"]["caddy"]["result"] == "failed" and notes[-1][1] is False,
+              f"承認されない案で外した・失敗を異常にしない: {did} {state} {notes[-1:]}")
+        # 失敗は次の回に判定し直す
+        n = len(calls)
+        answers.update({("sol", "assess"): [hold], ("opus", "assess"): [hold]})
+        us.handle("caddy", advs, cands, tmp / "m.md", tmp, "d", state, apply_fn, barrier_fn)
+        check(len(calls) > n and state["judged"]["caddy"]["result"] == "hold" and notes[-1][1], "失敗した組を次の回に判定し直さない")
+        # 割れた組は上げず、知らせる(異常にはしない)。答えが揃わない回は異常にして次の回にやり直す
+        did.clear()
+        answers.update({("sol", "assess"): [ap], ("opus", "assess"): [None]})
+        us.handle("caddy", advs + [{"id": "GO-2", "aliases": [], "summary": "s", "cvss": {}, "packages": []}], cands, tmp / "m.md", tmp,
+                  "d", state, apply_fn, barrier_fn)
+        check(not did and state["judged"]["caddy"]["result"] == "noanswer" and notes[-1][1] is False, "答えが揃わないのに上げた・異常にしない")
+    finally:
+        _unpatch(us, saved)
+
+
+def test_update_server_apply(tmp: Path):
+    """上げる手順: webapp は解決の失敗で何も入れない・確認に通らなければ freeze のとおりに戻す。Caddy は validate に通らなければ
+    差し替えない・確認に通らなければ実行ファイルと Caddyfile を両方戻す。枝への commit に失敗したら作業ツリーを元に戻す。
+    本物の pip・systemctl・HTTP は差し替える。"""
+    import datetime
+    import update_server as us
+    from pipelib import JST
+    tmp.mkdir(parents=True, exist_ok=True)
+    pips, restarts, checks = [], [], []
+
+    class R:
+        def __init__(self, rc=0, out="", err=""):
+            self.returncode, self.stdout, self.stderr = rc, out, err
+    pip_rc = {}
+
+    def fake_pip(*args, timeout=0):
+        pips.append(args)
+        return R(pip_rc.get(args[0] + ("-dry" if "--dry-run" in args else ""), 0), "Flask==3.1.3\nWerkzeug==3.1.8\n", "conflict")
+    saved = _patch(us, pip=fake_pip, systemctl_restart=lambda u: restarts.append(u) or "",
+                   check_http=lambda: checks.pop(0), unit_log=lambda *a, **k: "log",
+                   now_jst=lambda: datetime.datetime(2026, 11, 21, 10, 0, tzinfo=JST))
+    try:
+        pip_rc.update({"install-dry": 1})
+        r = us.apply_webapp(["Werkzeug==3.1.9"], "Flask==3.1.3\n", tmp)
+        check(not r["ok"] and not r["rolled_back"] and [p[0] for p in pips] == ["freeze", "install"] and not restarts
+              and "conflict" in r["failure"], f"解決に失敗したのに入れた・再起動した: {r} {pips}")
+        pips.clear()
+        pip_rc.clear()
+        checks[:] = [(False, "/ 502"), (True, "/ 200")]
+        r = us.apply_webapp(["Werkzeug==3.1.9"], "Flask==3.1.3\n", tmp)
+        inst = [p for p in pips if p[0] == "install" and "--dry-run" not in p]
+        check(not r["ok"] and r["rolled_back"] and r["restored"] and len(inst) == 2 and str(tmp / "freeze-before.txt") in inst[1]
+              and restarts == [us.APP_UNIT] * 2, f"確認に通らないのに戻さない: {r} {pips} {restarts}")
+        check((tmp / "freeze-before.txt").read_text() == "Flask==3.1.3\nWerkzeug==3.1.8\n", "戻す先の freeze を残さない")
+        restarts.clear()
+        checks[:] = [(True, "/ 200")]
+        r = us.apply_webapp(["Werkzeug==3.1.9"], "Flask==3.1.3\n", tmp)
+        check(r["ok"] and restarts == [us.APP_UNIT], f"上げられたのに失敗とした: {r}")
+        # ---- Caddy
+        bin_dir = tmp / "bin"
+        bin_dir.mkdir()
+        etc = tmp / "etc"
+        etc.mkdir()
+        cur_bin, cf = bin_dir / "caddy", etc / "Caddyfile"
+        cur_bin.write_bytes(b"OLD")
+        cf.write_text("OLDCONF\n")
+        new = tmp / "work" / "caddy-new"
+        new.parent.mkdir()
+        new.write_bytes(b"NEW")
+        vals = []
+        saved2 = _patch(us, CADDY_BIN=cur_bin, CADDYFILE_LIVE=cf, caddy_validate=lambda b, c: vals.append(c.read_text()) or vbad.pop(0))
+        try:
+            vbad = ["parse error"]
+            restarts.clear()
+            r = us.apply_caddy(new, "2.11.9", "2.11.4")
+            check(not r["ok"] and cur_bin.read_bytes() == b"OLD" and not restarts and vals == ["OLDCONF\n"], f"validate に通らないのに差し替えた: {r}")
+            vbad = [""]
+            checks[:] = [(False, "/ 502"), (True, "/ 200")]
+            r = us.apply_caddy(new, "2.11.9", "2.11.4", caddyfile_text="NEWCONF\n")
+            check(not r["ok"] and r["rolled_back"] and r["restored"] and cur_bin.read_bytes() == b"OLD" and cf.read_text() == "OLDCONF\n"
+                  and restarts == [us.WEB_UNIT] * 2, f"確認に通らないのに実行ファイル・Caddyfile を戻さない: {r} {cur_bin.read_bytes()} {cf.read_text()}")
+            vbad = [""]
+            checks[:] = [(True, "/ 200")]
+            r = us.apply_caddy(new, "2.11.9", "2.11.4", caddyfile_text="NEWCONF\n")
+            check(r["ok"] and cur_bin.read_bytes() == b"NEW" and cf.read_text() == "NEWCONF\n" and (bin_dir / "caddy.2.11.4.bak").read_bytes() == b"OLD",
+                  f"上げられない・旧版を残さない: {r}")
+            check(not (bin_dir / "caddy.new").exists(), "差し替えの .new を残した")
+        finally:
+            _unpatch(us, saved2)
+        # ---- 枝への commit の失敗は作業ツリーを元に戻す
+        import subprocess as sp
+        repo = tmp / "repo"
+        (repo / "webapp").mkdir(parents=True)
+        (repo / "webapp" / "requirements.txt").write_text("Flask==3.1.3\n")
+        for c in (["init", "-q"], ["add", "-A"], ["-c", "user.email=t@t", "-c", "user.name=t", "commit", "-qm", "i"]):
+            sp.run(["git", *c], cwd=repo, check=True, capture_output=True)
+        saved3 = _patch(us, ROOT=repo, job_lock=lambda job, wait_min=0: None, checkout_edition_branch=lambda d, j: True,
+                        commit_and_push=lambda *a, **k: False, edition_date=lambda: "2026-11-22")
+        try:
+            why = us.commit_change(us.REQUIREMENTS_REPO, "Flask==3.1.4\n", "m")
+            check(why and (repo / "webapp" / "requirements.txt").read_text() == "Flask==3.1.3\n", f"commit の失敗で書きかけを残した: {why}")
+            us.checkout_edition_branch = lambda d, j: False
+            check("checkout" in us.commit_change(us.REQUIREMENTS_REPO, "x\n", "m"), "checkout できないのに書いた")
+            pushed = []
+            us.checkout_edition_branch = lambda d, j: True
+            us.commit_and_push = lambda branch, msg, job, paths=None: pushed.append((branch, paths)) or True
+            check(us.commit_change(us.REQUIREMENTS_REPO, "Flask==3.1.4\n", "m") == ""
+                  and pushed == [("edition/2026-11-22", ["webapp/requirements.txt"])], f"今の号の枝に commit しない: {pushed}")
+        finally:
+            _unpatch(us, saved3)
+    finally:
+        _unpatch(us, saved)
+
+
+def test_update_server_run(tmp: Path):
+    """毎日の回: 新しい版は1回だけ知らせる・直す版の無い報告は合議にかけず1回だけ知らせる・webapp の上げる先は直った版と最新の版・
+    モデルの CLI が使えない回は台帳に積まずに知らせる。通信・pip・合議は差し替える。"""
+    import datetime
+    import update_server as us
+    from pipelib import JST, CliBlocked
+    tmp.mkdir(parents=True, exist_ok=True)
+    (tmp / "webapp").mkdir()
+    (tmp / "webapp" / "requirements.txt").write_text("Flask==3.1.3\n")
+    notes, handled = [], []
+    hits = {("PyPI", "Werkzeug", "3.1.8"): ["GHSA-w"], ("Go", "stdlib", "1.26.3"): ["GO-9"]}
+    osv = {"GHSA-w": {"id": "GHSA-w", "aliases": [], "summary": "w", "affected": [{"package": {"ecosystem": "PyPI", "name": "werkzeug"},
+                                                                                 "ranges": [{"events": [{"fixed": "3.1.9"}]}]}]},
+           "GO-9": {"id": "GO-9", "aliases": [], "summary": "g", "affected": [{"package": {"ecosystem": "Go", "name": "stdlib"},
+                                                                           "ranges": [{"events": [{"fixed": "1.26.4"}]}]}]}}
+
+    def fake_http(url, data=None, **k):
+        if url.startswith("https://api.osv.dev/v1/vulns/"):
+            return osv[url.rsplit("/", 1)[1]]
+        if url.startswith("https://api.github.com/advisories/"):
+            return {"cvss_severities": {"cvss_v3": {"score": 6.3, "vector_string": "V"}}, "severity": "medium"}
+        raise AssertionError(url)
+    saved = _patch(us, ROOT=tmp, STATE=tmp / "state.json", WORK_ROOT=tmp / "work",
+                   caddy_inventory=lambda b=None: {"version": "2.11.4", "go": "1.26.3", "modules": {}},
+                   caddy_latest=lambda: {"version": "2.11.4", "notes": "", "url": "u", "published": "", "assets": []},
+                   python_inventory=lambda: {"Werkzeug": "3.1.8", "Flask": "3.1.3"},
+                   pypi_latest=lambda n: {"Werkzeug": {"latest": "3.2.0", "releases": ["3.1.8", "3.1.9", "3.2.0"], "notes_url": "c"},
+                                          "Flask": {"latest": "3.1.3", "releases": ["3.1.3"], "notes_url": ""}}[n],
+                   osv_ids=lambda qs: {q: hits[q] for q in qs if q in hits}, http_json=fake_http,
+                   handle=lambda comp, advs, cands, *a, **k: handled.append((comp, cands)),
+                   notify=lambda job, msg, ok=True, require=False, ledger=True: notes.append((msg, ok, ledger)) or True,
+                   now_jst=lambda: datetime.datetime(2026, 11, 21, 10, 0, tzinfo=JST))
+    try:
+        check(us.run(False) == 0, "回が失敗した")
+        check(handled == [("webapp", {"Werkzeug": ["3.1.9", "3.2.0"]})], f"webapp の上げる先が直った版と最新の版でない: {handled}")
+        news = [n for n in notes if "新しい版" in n[0]]
+        check(len(news) == 1 and "Werkzeug 3.1.8 → 3.2.0" in news[0][0] and "Flask" not in news[0][0], f"新しい版の知らせ: {notes}")
+        nof = [n for n in notes if "直す版がまだ無い" in n[0]]
+        check(len(nof) == 1 and "GO-9" in nof[0][0], f"直す版の無い Caddy の報告を知らせない・合議にかけた: {notes} {handled}")
+        notes.clear()
+        handled.clear()
+        us.run(False)
+        check(not [n for n in notes if "新しい版" in n[0] or "直す版がまだ無い" in n[0]], f"同じ版・同じ報告を知らせ直した: {notes}")
+        st = json.loads((tmp / "state.json").read_text())
+        check(st["cvss"]["GHSA-w"]["score"] == 6.3, f"CVSS を state に残さない: {st.get('cvss')}")
+
+        def blocked(check_only):
+            raise CliBlocked({"tool": "claude", "kind": "auth", "detail": "x"})
+        orig_run, us.run = us.run, blocked
+        saved_argv, sys.argv = sys.argv, ["update_server.py"]
+        try:
+            notes.clear()
+            check(us.main() == 1 and notes and notes[-1][2] is False, f"CLI が使えない回を台帳に積んだ・知らせない: {notes}")
+        finally:
+            sys.argv = saved_argv
+            us.run = orig_run
+    finally:
+        _unpatch(us, saved)
+
+
 def test_update_clis_smoke_answer(tmp: Path):
     """道具の動作確認は、正常終了して、答え(標準出力の最後の行)が求めたとおりの「2」のときだけ動作 OK(監査指摘 2026-10-14 ar9:
     実の CLI が `2` を出して exit 1、`1+1=3 (attempt 2)` を出して exit 0、のどちらも動作 OK になっていた)。
@@ -22470,6 +22793,10 @@ def main() -> int:
     test_update_clis_smoke_answer(tmp / "ucs")
     test_update_cloudflared(tmp / "ucf")
     test_update_cloudflared_failures(tmp / "ucff")
+    test_update_server_parts(tmp / "usp")
+    test_update_server_council(tmp / "usc")
+    test_update_server_apply(tmp / "usa")
+    test_update_server_run(tmp / "usr")
     test_git_commit_push_checkout(tmp / "gcp")
     test_grok_face_retry(tmp / "gr")
     test_grok_format_matches_parser()

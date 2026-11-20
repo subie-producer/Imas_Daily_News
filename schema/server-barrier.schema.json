@@ -1,0 +1,24 @@
+{
+  "$id": "server-barrier.schema.json",
+  "title": "配信サーバーの更新を妨げる障壁の外し方の案(scripts/update_server.py で Sol が返す答え)",
+  "type": "object",
+  "required": ["lift", "barrier", "impact", "why", "requirements", "caddyfile"],
+  "additionalProperties": false,
+  "properties": {
+    "lift": {"type": "boolean", "description": "障壁を外すか"},
+    "barrier": {"type": "string", "description": "更新を妨げている障壁と、それが置かれた理由"},
+    "impact": {"type": "string", "description": "外したときの影響"},
+    "why": {"type": "string", "description": "判断の要約"},
+    "requirements": {
+      "type": "array",
+      "description": "webapp: 書き換える requirements.txt の行。それ以外は空",
+      "items": {
+        "type": "object",
+        "required": ["name", "spec"],
+        "additionalProperties": false,
+        "properties": {"name": {"type": "string"}, "spec": {"type": "string"}}
+      }
+    },
+    "caddyfile": {"type": "string", "description": "caddy: 書き換えた Caddyfile の全文。それ以外は空文字"}
+  }
+}

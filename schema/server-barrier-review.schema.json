@@ -1,0 +1,12 @@
+{
+  "$id": "server-barrier-review.schema.json",
+  "title": "障壁の外し方の案の査読(scripts/update_server.py で Opus が返す答え)",
+  "type": "object",
+  "required": ["approve", "objections", "why"],
+  "additionalProperties": false,
+  "properties": {
+    "approve": {"type": "boolean", "description": "案をそのまま適用してよいか"},
+    "objections": {"type": "array", "items": {"type": "string"}, "description": "直すべき点。承認なら空"},
+    "why": {"type": "string", "description": "判断の要約"}
+  }
+}

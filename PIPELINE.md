@@ -344,6 +344,15 @@ systemd user unit は `imas-web`(Caddy)・`imas-app`(紙面・タグ・検索の
 
 **cloudflared の更新(2026-10-28)**: `~/.local/bin/cloudflared` は手で置いた実行ファイルで、自動更新は切ってある(`--no-autoupdate`)。毎月1日 01:00 に `imas-cloudflared.timer` が `scripts/update_cloudflared.py` を回し、GitHub の最新の release を、本文に載った sha256 と照らし、新しい実行ファイルが自分の版を名乗るのを確かめてから入れ替える。旧版は `cloudflared.<版>.bak` に直近2個残す。トンネルを再起動し、今回の起動(InvocationID)の cloudflared の `/ready` が今張れている接続4本を返すことと外からの 200 を確かめ、だめなら旧版に戻して異常として通知する(当番がなぜなぜ。途中の例外・戻しの失敗でも通知する)。再起動で数秒落ちるので、組版・発行と重ならない時刻に置く。01:00 に止まっていた月は復帰の時に追いつくが、02:30〜07:00 に当たったら 07:00 まで待ってから上げる(取るのに時間がかかったときのため、差し替えの直前にも見直す)。`--check` は表示だけ(通知しない)。2026-10-27 に Cloudflare から「中間証明書の侵害で 2026.10.2 未満は使えなくなる」と告知が来るまで 2026.8.2 のままだった。告知から期限まで2か月あったので月1回とした(編集長)。
 
+**配信サーバーの更新(2026-11-20)**: Caddy(`~/.local/bin/caddy`)と webapp の Python の依存(`~/srv/imas-news/venv`)は、どの定期にも入っていなかった(Caddy は 6 月に手で置いた 2.11.4 のまま。調べると Caddy 本体と Werkzeug に GHSA が出ていた)。毎日 10:00 に `imas-server.timer` が `scripts/update_server.py` を回す(編集長の方針):
+- 新しい版・リリースノート・GHSA・CVE・CVSS を確かめる。脆弱性は OSV(GHSA・Go の脆弱性DB・PyPA を束ねる)に、Caddy は `caddy build-info` の Go の版と全モジュール、webapp は venv の全パッケージ(依存の依存も)で問い合わせる。CVSS は GHSA があれば GitHub、無ければ CVE を NVD で引き、`~/srv/imas-news/state/server-updates.json` に残す。同じ脆弱性の別名(GHSA / GO- / PYSEC)は1つに束ねる
+- 通常の更新(新しい版)は Discord に知らせるだけ。同じ版は1回だけ
+- 今の版に当たる報告があり、直す版があれば、Sol(codex `gpt-6.1-sol`)と Opus(claude `claude-opus-5-5`)が素材(報告の中身・影響を受ける関数・CVSS・設定・最新の版のリリースノート)を読んで独立に評価する(依頼文 `server-assess`)。CVSS の有無や数値だけで決めず、今の版・構成・外から届くか・修正版の信頼性を見る。割れたら相手の答えを見せて2巡目(`server-assess-debate`)。両者が「重大」「上げる」で上げる先まで揃ったときだけ上げる。同じ報告と候補の組は判定し直さない(失敗・答えが揃わない回は次の回にやり直す)。直す版の無い報告は合議にかけず1回だけ知らせる。Caddy は最新の release を checksums.txt の sha512 と照らして取り、その build-info をもう一度 OSV に聞いて、最新の版で直る報告があるときだけ候補にする。webapp の候補は、直った版の最小と最新
+- 上げたら Caddy 経由の `/`・`/search`・`/feed.xml` と外からの公開ページの 200 を確かめ、だめならすぐ戻す(Caddy は旧版の実行ファイルと Caddyfile、webapp は上げる前の `pip freeze`)。Caddy は差し替えの前に新しい版で `caddy validate`
+- 戻した後、Sol が障壁(版の固定・依存の制約・設定の非互換)と外したときの影響を見て外し方を出し(`server-barrier`)、Opus が査読する(`server-barrier-review`。差し戻しは指摘を添えて出し直し、2往復まで)。承認されたら外して上げ直す。外した `webapp/requirements.txt` / `ops/caddy/Caddyfile` は、作業ツリーのロックを取って今の号の枝に commit・push する(発行のマージで main に入る。deploy は requirements.txt のとおりに入れ直すので、固定の外しを残さないと古い版に戻る)
+- 判断と根拠(両者の答え)・更新の中身・障壁の解除・動作の確認・戻したかを Discord に知らせる。上げられなかった・戻した・答えが揃わない回は異常として台帳に積む
+- 再起動で数秒落ちるので、02:30〜07:00 には再起動しない(追いつきの起動はその終わりまで待つ)。`--check` は調べて表示するだけ
+
 ## 10. 実装ステップ(REQUIREMENTS 7章 Step 3〜4 の分解)
 
 | # | 作業 | 成果物 |

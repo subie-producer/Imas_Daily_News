@@ -9101,34 +9101,40 @@ def test_update_server_apply(tmp: Path):
         repo = tmp / "repo"
         (repo / "webapp").mkdir(parents=True)
         (repo / "webapp" / "requirements.txt").write_text("Flask==3.1.3\n")
-        for c in (["init", "-q"], ["add", "-A"], ["-c", "user.email=t@t", "-c", "user.name=t", "commit", "-qm", "i"]):
+        for c in (["init", "-q"], ["config", "user.email", "t@t"], ["config", "user.name", "t"], ["add", "-A"], ["commit", "-qm", "i"],
+                  ["checkout", "-q", "-b", "edition/2026-11-22"]):
             sp.run(["git", *c], cwd=repo, check=True, capture_output=True)
-        def stage_then_fail(branch, msg, job, paths=None):
-            # pipelib.commit_and_push は stage してから commit に失敗しうる(Sol 監査 r1)
-            sp.run(["git", "add", "-A", "--", *paths], cwd=repo, check=True)
-            return False
-        # git の通信の段(子プロセス)は、同じ本体(git_step_main)を手元で呼ぶ形に差し替える。子プロセスの打ち切りは下で本物を検める
+
+        def stage_then_fail(rel, msg):
+            # commit は stage してから失敗しうる(Sol 監査 r1)
+            sp.run(["git", "add", "--", str(rel)], cwd=repo, check=True)
+            return "commit failed"
+        # 手元の commit は本物(commit_local)、push は差し替える。push の打ち切りは下で本物を検める
         git_steps = []
-        saved3 = _patch(us, ROOT=repo, job_lock=lambda job, wait_min=0, wait_fn=None: None, checkout_edition_branch=lambda d, j: True,
-                        commit_and_push=stage_then_fail, edition_date=lambda: "2026-11-22",
-                        git_step=lambda kind, *a: git_steps.append(kind) or (us.git_step_main(kind, list(a)) == 0, ""))
+        real_commit = us.commit_local
+        saved3 = _patch(us, ROOT=repo, job_lock=lambda job, wait_min=0, wait_fn=None: None, edition_date=lambda: "2026-11-22",
+                        commit_local=lambda rel, msg: git_steps.append("commit") or stage_then_fail(rel, msg),
+                        git_push=lambda branch: git_steps.append("push") or (False, "rejected"))
         applied = []
         ok_apply = lambda: applied.append(1) or {"ok": True, "steps": ["上げた"], "failure": "", "rolled_back": False}
         req = lambda: (repo / "webapp" / "requirements.txt").read_text()
         status = lambda: sp.run(["git", "status", "--porcelain"], cwd=repo, capture_output=True, text=True).stdout
         try:
             r = us.change_on_branch(us.REQUIREMENTS_REPO, "Flask==3.1.3\n", "Flask==3.1.4\n", "m", ok_apply)
-            check(not r["ok"] and req() == "Flask==3.1.3\n" and not status().strip() and "commit に失敗" in r["failure"],
-                  f"commit の失敗で書きかけ・stage を残した: {r} {status()!r}")
-
-            def commit_then_push_fails(branch, msg, job, paths=None):
-                sp.run(["git", "add", "-A", "--", *paths], cwd=repo, check=True)
-                sp.run(["git", "-c", "user.email=t@t", "-c", "user.name=t", "commit", "-qm", msg], cwd=repo, check=True)
-                return False
-            us.commit_and_push = commit_then_push_fails
+            check(not r["ok"] and req() == "Flask==3.1.3\n" and not status().strip() and "commit に失敗" in r["failure"]
+                  and "push" not in git_steps, f"commit の失敗で書きかけ・stage を残した・push した: {r} {status()!r} {git_steps}")
+            # 本物の commit で rel だけを積む。push だけ失敗したら戻さない(次の工程の checkout が送る)
+            (repo / "other.txt").write_text("other\n")
+            sp.run(["git", "add", "other.txt"], cwd=repo, check=True)     # ほかの工程が stage していた変更(混ぜない)
+            us.commit_local = real_commit
             r = us.change_on_branch(us.REQUIREMENTS_REPO, "Flask==3.1.3\n", "Flask==3.1.5\n", "m", ok_apply)
-            check(r["ok"] and req() == "Flask==3.1.5\n", f"commit できて push だけ失敗したのに戻した: {r}")
-            us.commit_and_push = stage_then_fail
+            last = sp.run(["git", "show", "--stat", "--format=%s", "HEAD"], cwd=repo, capture_output=True, text=True).stdout
+            check(r["ok"] and req() == "Flask==3.1.5\n" and "requirements.txt" in last and "other.txt" not in last
+                  and status().startswith("A  other.txt") and "push できない" in r["steps"][-1],
+                  f"commit できて push だけ失敗したのに戻した・ほかの stage を混ぜた: {r} {last!r} {status()!r}")
+            sp.run(["git", "reset", "-q", "--", "other.txt"], cwd=repo, check=True)
+            (repo / "other.txt").unlink()
+            us.commit_local = lambda rel, msg: stage_then_fail(rel, msg)
             # Sol 監査 r3: 評価の後に枝の上で変わっていたら(合議のあいだに依存が足された)、入れ替えも書き換えもしない
             applied.clear()
             r = us.change_on_branch(us.REQUIREMENTS_REPO, "Flask==3.1.3\n", "Flask==3.1.6\n", "m", ok_apply)
@@ -9146,14 +9152,17 @@ def test_update_server_apply(tmp: Path):
                   f"ロックが取れないのに他の工程の変更を戻した・入れ替えた: {r} {status()!r}")
             us.job_lock = lambda job, wait_min=0, wait_fn=None: None
             sp.run(["git", "reset", "-q", "--hard"], cwd=repo, check=True)
-            us.checkout_edition_branch = lambda d, j: False
+            # 作業ツリーが今の号の枝にいなければ、入れ替えも書き換えもしない
+            sp.run(["git", "checkout", "-q", "-b", "edition/2026-11-21"], cwd=repo, check=True)
             r = us.change_on_branch(us.REQUIREMENTS_REPO, "Flask==3.1.5\n", "x\n", "m", ok_apply)
-            check(not r["ok"] and not applied and "checkout" in r["failure"], "checkout できないのに入れ替えた")
+            check(not r["ok"] and not applied and "にいない" in r["failure"], f"今の号の枝にいないのに入れ替えた: {r}")
+            sp.run(["git", "checkout", "-q", "edition/2026-11-22"], cwd=repo, check=True)
             pushed = []
-            us.checkout_edition_branch = lambda d, j: True
-            us.commit_and_push = lambda branch, msg, job, paths=None: pushed.append((branch, paths)) or True
+            us.commit_local = real_commit
+            us.git_push = lambda branch: pushed.append(branch) or (True, "")
             r = us.change_on_branch(us.REQUIREMENTS_REPO, "Flask==3.1.5\n", "Flask==3.1.4\n", "m", ok_apply)
-            check(r["ok"] and applied and pushed == [("edition/2026-11-22", ["webapp/requirements.txt"])], f"今の号の枝に commit しない: {r} {pushed}")
+            check(r["ok"] and applied and pushed == ["edition/2026-11-22"] and req() == "Flask==3.1.4\n" and not status().strip(),
+                  f"今の号の枝に commit・push しない: {r} {pushed}")
             # 入れ替えに失敗したら書き換えない
             pushed.clear()
             r = us.change_on_branch(us.REQUIREMENTS_REPO, "Flask==3.1.4\n", "Flask==3.1.7\n", "m",
@@ -9213,6 +9222,8 @@ def test_update_server_apply(tmp: Path):
                 us.TERM_PENDING = False
                 # Sol 監査 r9: 書き換えない通常の上げ方は、checkout・commit をせず、ロックの中で作業ツリーの原本を確かめてから入れる
                 us.job_lock = lambda job, wait_min=0, wait_fn=None: None
+                us.commit_local = lambda rel, msg: git_steps.append("commit") or ""
+                us.git_push = lambda branch: git_steps.append("push") or (True, "")
                 git_steps.clear()
                 applied.clear()
                 r = us.change_on_branch(us.REQUIREMENTS_REPO, "Flask==3.1.0\n", "Flask==3.1.0\n", "", ok_apply)
@@ -9226,31 +9237,43 @@ def test_update_server_apply(tmp: Path):
                 us.now_jst = lambda: datetime.datetime(2026, 11, 21, 10, 0, tzinfo=JST)
         finally:
             _unpatch(us, saved3)
-        # Sol 監査 r9: git の通信の段は子プロセスで走らせ、期限で子孫ごと打ち切り、殺した git の index.lock を消す。ロックと ssh の上限を渡す
-        gdir = tmp / "gitstep"
-        (gdir / ".git").mkdir(parents=True)
-        # 子として走らせるスクリプト(git_step は自分の __file__ を --git-step で起こす)を、止まる子(孫に sleep を持つ)に差し替える
-        saved4 = _patch(us, ROOT=gdir, GIT_STEP_TIMEOUT=1, __file__=str(gdir / "hang.py"))
+        # Sol 監査 r9・r10: push は本物の git で、止まった通信(ssh が応えない)を期限で子孫ごと打ち切る。打ち切っても手元の枝・index・
+        # 作業ツリーは変わらない(rebase の途中・detached HEAD を残さない)。ssh には上限を付ける
+        gdir = tmp / "pushrepo"
+        gdir.mkdir()
+        for c in (["init", "-q"], ["config", "user.email", "t@t"], ["config", "user.name", "t"], ["commit", "-q", "--allow-empty", "-m", "i"],
+                  ["checkout", "-q", "-b", "edition/2026-11-22"], ["remote", "add", "origin", "ssh://example.invalid/x.git"]):
+            sp.run(["git", *c], cwd=gdir, check=True, capture_output=True)
+        fake_ssh = gdir / "fake_ssh.sh"
+        fake_ssh.write_text(f"#!/bin/sh\necho \"$0 $*\" >> {gdir / 'ssh.log'}\nsleep 30\n")
+        fake_ssh.chmod(0o755)
+        before = sp.run(["git", "rev-parse", "HEAD"], cwd=gdir, capture_output=True, text=True).stdout
+        saved4 = _patch(us, ROOT=gdir, GIT_STEP_TIMEOUT=1, run_group=us.run_group)
+        saved_env = os.environ.get("GIT_SSH_COMMAND")
+        os.environ["GIT_SSH_COMMAND"] = str(fake_ssh)
         try:
-            (gdir / ".git" / "index.lock").write_text("")
-            (gdir / "hang.py").write_text("import subprocess, time\nsubprocess.Popen(['sleep', '30'])\ntime.sleep(30)\n")
             t0 = _t_real.monotonic()
-            ok_g, why_g = us.git_step("checkout", "2026-11-22")
+            ok_g, why_g = us.git_push("edition/2026-11-22")
             el = _t_real.monotonic() - t0
-            check(not ok_g and el < 10 and "打ち切った" in why_g and not (gdir / ".git" / "index.lock").exists(),
-                  f"止まった git の段を期限で打ち切らない・index.lock を残した: {ok_g} {why_g} {el:.1f}秒")
-            env_probe = gdir / "env.py"
-            env_probe.write_text("import os\nprint(os.environ.get('IMAS_JOB_LOCK'), '|', os.environ.get('GIT_SSH_COMMAND'))\n")
-            us.__file__ = str(env_probe)
-            us.GIT_STEP_TIMEOUT = 30
-            saved_env = os.environ.pop("GIT_SSH_COMMAND", None)
-            try:
-                ok_g, out_g = us.git_step("checkout", "2026-11-22")
-            finally:
-                if saved_env is not None:
-                    os.environ["GIT_SSH_COMMAND"] = saved_env
-            check(ok_g and out_g.startswith("held |") and us.GIT_SSH_BOUND in out_g, f"子にロックと ssh の上限を渡さない: {out_g!r}")
+            after_branch = sp.run(["git", "branch", "--show-current"], cwd=gdir, capture_output=True, text=True).stdout.strip()
+            after = sp.run(["git", "rev-parse", "HEAD"], cwd=gdir, capture_output=True, text=True).stdout
+            check(not ok_g and el < 10 and "打ち切った" in why_g and after == before and after_branch == "edition/2026-11-22"
+                  and not (gdir / ".git" / "rebase-merge").exists() and not (gdir / ".git" / "rebase-apply").exists(),
+                  f"止まった push を期限で打ち切らない・手元の状態を変えた: {ok_g} {why_g} {el:.1f}秒 {after_branch}")
+            _t_real.sleep(0.3)
+            orphans = sp.run(["pgrep", "-f", str(fake_ssh)], capture_output=True, text=True).stdout.strip()
+            check(not orphans, f"打ち切った push の子孫(ssh)が残った: {orphans}")
+            os.environ.pop("GIT_SSH_COMMAND")
+            env_seen = []
+            us.run_group = lambda cmd, timeout=None, cwd=None, env=None, **k: env_seen.append((env or {}).get("GIT_SSH_COMMAND")) or \
+                sp.CompletedProcess(cmd, 0, "", "")
+            us.git_push("edition/2026-11-22")
+            check(env_seen == [us.GIT_SSH_BOUND], f"push の ssh に上限を付けない: {env_seen}")
         finally:
+            if saved_env is None:
+                os.environ.pop("GIT_SSH_COMMAND", None)
+            else:
+                os.environ["GIT_SSH_COMMAND"] = saved_env
             _unpatch(us, saved4)
     finally:
         _unpatch(us, saved)
@@ -9265,7 +9288,7 @@ def test_update_server_run(tmp: Path):
     tmp.mkdir(parents=True, exist_ok=True)
     (tmp / "webapp").mkdir()
     (tmp / "webapp" / "requirements.txt").write_text("Flask==3.1.3\n")
-    notes, handled = [], []
+    notes, handled, apply_fns = [], [], []
     hits = {("PyPI", "Werkzeug", "3.1.8"): ["GHSA-w"], ("Go", "stdlib", "1.26.3"): ["GO-9"]}
     osv = {"GHSA-w": {"id": "GHSA-w", "aliases": [], "summary": "w", "affected": [{"package": {"ecosystem": "PyPI", "name": "werkzeug"},
                                                                                  "ranges": [{"events": [{"fixed": "3.1.9"}]}]}]},
@@ -9285,12 +9308,26 @@ def test_update_server_run(tmp: Path):
                    pypi_latest=lambda n: {"Werkzeug": {"latest": "3.2.0", "releases": ["3.1.8", "3.1.9", "3.2.0"], "notes_url": "c"},
                                           "Flask": {"latest": "3.1.3", "releases": ["3.1.3"], "notes_url": ""}}[n],
                    osv_ids=lambda qs: {q: hits[q] for q in qs if q in hits}, http_json=fake_http,
-                   handle=lambda comp, advs, cands, *a, **k: handled.append((comp, cands)),
+                   handle=lambda comp, advs, cands, *a, **k: handled.append((comp, cands)) or apply_fns.append(a[4]),
                    notify=lambda job, msg, ok=True, require=False, ledger=True: notes.append((msg, ok, ledger)) or True,
                    now_jst=lambda: datetime.datetime(2026, 11, 21, 10, 0, tzinfo=JST))
     try:
         check(us.run(False) == 0, "回が失敗した")
         check(handled == [("webapp", {"Werkzeug": ["3.1.9", "3.2.0"]})], f"webapp の上げる先が直った版と最新の版でない: {handled}")
+        # Sol 監査 r9・r10 の later: 通常の上げ方の入口(handle_webapp の apply_fn)から、待つあいだに requirements が変わった場合を通す
+        installs = []
+        saved_aw = _patch(us, apply_webapp=lambda targets, req_text, work: installs.append(req_text) or {"ok": True, "steps": [], "failure": ""},
+                          job_lock=lambda job, wait_min=0, wait_fn=None: None)
+        try:
+            (tmp / "webapp" / "requirements.txt").write_text("Flask==3.1.5\n")      # 待つあいだに deploy が入れ替えた
+            r = apply_fns[0](["Werkzeug==3.1.9"], None)
+            check(not r["ok"] and not installs and "変わっていた" in r["failure"],
+                  f"通常の上げ方の入口が、待つあいだに変わった requirements の古い全文で入れた: {r} {installs}")
+            (tmp / "webapp" / "requirements.txt").write_text("Flask==3.1.3\n")
+            r = apply_fns[0](["Werkzeug==3.1.9"], None)
+            check(r["ok"] and installs == ["Flask==3.1.3\n"], f"通常の上げ方の入口で原本が同じなのに入れない: {r} {installs}")
+        finally:
+            _unpatch(us, saved_aw)
         news = [n for n in notes if "新しい版" in n[0]]
         check(len(news) == 1 and "Werkzeug 3.1.8 → 3.2.0" in news[0][0] and "Flask" not in news[0][0], f"新しい版の知らせ: {notes}")
         nof = [n for n in notes if "直す版がまだ無い" in n[0]]

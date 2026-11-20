@@ -1575,12 +1575,17 @@ def post_author(post_id: str, fetch=None) -> tuple[str, str]:
             ep, _ = dec.raw_decode(html, m.end())
         except ValueError:
             ep = None
+        def dig(obj, *keys):
+            """辞書を順にたどる。途中が辞書でなければ None(型の違う中身で止まらない。Sol 監査 noon r2)"""
+            for k in keys:
+                if not isinstance(obj, dict):
+                    return None
+                obj = obj.get(k)
+            return obj
         found = set()
-        if isinstance(ep, dict):
-            for u in ((((ep.get("commandMetadata") or {}).get("webCommandMetadata") or {}).get("url")),
-                      ((ep.get("browseEndpoint") or {}).get("canonicalBaseUrl"))):
-                if isinstance(u, str) and re.fullmatch(r"/@[^/\"?#]+", u):
-                    found.add(u[2:])
+        for u in (dig(ep, "commandMetadata", "webCommandMetadata", "url"), dig(ep, "browseEndpoint", "canonicalBaseUrl")):
+            if isinstance(u, str) and re.fullmatch(r"/@[^/\"?#]+", u):
+                found.add(u[2:])
         if len(found) != 1:
             print(f"  投稿のページの authorEndpoint から投稿者を読めない {post_id}: {sorted(found)}", flush=True)
             return "", ""
@@ -1661,6 +1666,9 @@ def resolve_playlists(date: str, apply: bool) -> tuple[list[str], dict[str, tupl
         elif handle:
             left.append(f"https://www.{key}: 持ち主のチャンネル(@{handle})が判定表に無い(チャンネルの合議でも決まらなかった)")
             unknown_chans.setdefault(handle, (key, title))
+        elif key.startswith("youtube.com/post/"):
+            left.append(f"https://www.{key}: コミュニティ投稿の投稿者を引けなかった(合議に掛かっていない。ページを読めない・"
+                        "authorEndpoint から投稿者が1つに決まらない。削除・非公開の場合もある)")
         else:
             left.append(f"https://www.{key}: 再生リストの持ち主を引けなかった(合議に掛かっていない。oEmbed が返さない・ハンドルが無い。削除・非公開の場合もある)")
     if found and apply:

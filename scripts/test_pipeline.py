@@ -14301,7 +14301,9 @@ def test_youtube_post_owner(tmp: Path):
                                        '"clickTrackingParams":"y","browseEndpoint":{"canonicalBaseUrl":"/@somefan"}},')
     check(cs.post_author(pid, fetch=lambda u: swapped)[0] == "", "キーの並びの違う別の投稿者を見落として持ち主にした")
     # ハンドルの無い・読めない authorEndpoint があれば決まらない
-    for broken in ('"authorEndpoint":{"browseEndpoint":{"browseId":"UCabc"}},', '"authorEndpoint":{"commandMetadata":'):
+    for broken in ('"authorEndpoint":{"browseEndpoint":{"browseId":"UCabc"}},', '"authorEndpoint":{"commandMetadata":',
+                   '"authorEndpoint":{"browseEndpoint":"unreadable"},', '"authorEndpoint":{"commandMetadata":[1]},',
+                   '"authorEndpoint":{"commandMetadata":{"webCommandMetadata":[1]}},', '"authorEndpoint":[1],'):
         check(cs.post_author(pid, fetch=lambda u: page("imas-official") + broken)[0] == "",
               f"読めない authorEndpoint を無視して持ち主にした: {broken}")
     check(cs.post_author(pid, fetch=lambda u: (_ for _ in ()).throw(OSError("404")))[0] == "", "取得の失敗で持ち主を返した")

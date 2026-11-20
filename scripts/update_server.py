@@ -72,8 +72,9 @@ SESSION_TIMEOUT = 1800
 BARRIER_ROUNDS = 2            # 障壁の外し方の「案→査読」の往復の上限
 LOCK_WAIT_MIN = 120           # 枝に commit するとき、収集などが作業ツリーを使い終わるのを待つ分
 PIP_TIMEOUT = 600
-# 入れ替えを始めてから再起動・確認を終えるまでに見込む秒(pip の上限+確認の待ち+余裕)。これだけ先までに発行の時間帯に掛かるなら始めない
-QUIET_MARGIN = PIP_TIMEOUT + CHECK_WAIT + 300
+# 入れ替えを始めてから、失敗して戻し・再起動・確認を終えるまでに見込む秒(入れ替えと戻しの pip の上限+確認の待ち×2+余裕)。
+# これだけ先までに発行の時間帯に掛かるなら始めない(戻しの分を含める。Sol 監査 r5)
+QUIET_MARGIN = 2 * (PIP_TIMEOUT + CHECK_WAIT) + 300
 # この回の持ち時間(unit の TimeoutStartSec 12h より短く)。入れ替えは、待ち・入れ替え・戻しがこの内に収まるときだけ始める(Sol 監査 r2)
 RUN_BUDGET = 11 * 3600
 RUN_DEADLINE: float | None = None      # main が起動の時刻+RUN_BUDGET を入れる(テスト・--check では無し)
@@ -611,12 +612,11 @@ def apply_webapp(targets: list[str], req_text: str, work: Path) -> dict:
         steps.append("入れる前の解決で失敗(何も入れていない)")
         return {"ok": False, "steps": steps, "rolled_back": False,
                 "failure": f"pip install --dry-run -r requirements.txt {' '.join(targets)} が失敗:\n{(dry.stderr or dry.stdout)[-1500:]}"}
-    # 入れ替えの前に待つ。入れ終わって再起動するまでに発行の時間帯に入らないよう、入れる時間の分を見込む
-    # (入れた後に待つと、待つあいだにアプリが落ちて自動で起き直したとき、確かめていない新しい版を読む)
-    wait_quiet(margin=QUIET_MARGIN)
+    # 入れ替えの直前に見直す。ここでは待たない(障壁を外した上げ直しではロックを持っている。待ちは入口の guarded がロックの外で行う。
+    # Sol 監査 r5)。発行の時間帯に掛かるなら何も入れずに返し、guarded が待ってからやり直す
     if (why := swap_blocker()):
         steps.append(why)
-        return {"ok": False, "steps": steps, "failure": why, "rolled_back": False}
+        return {**not_started(why), "steps": steps}
     # ここから先は入れ替えが始まっている。例外(pip の時間切れなど)でも必ず下の戻しへ進む(Sol 監査 r1)。停止の要求(SIGTERM)は
     # この区間では例外にせず保留し、戻しまで済ませる(Sol 監査 r3)
     with critical():
@@ -678,10 +678,10 @@ def apply_caddy(new_bin: Path, version: str, cur: str, caddyfile_text: str | Non
     except Exception as e:
         steps.append("差し替えの前の準備で例外(差し替えていない)")
         return {"ok": False, "steps": steps, "failure": f"準備で例外({type(e).__name__}: {e})", "rolled_back": False}
-    wait_quiet(margin=QUIET_MARGIN)
+    # 差し替えの直前に見直す。ここでは待たない(待ちは入口の guarded がロックの外で行う。Sol 監査 r5)
     if (why := swap_blocker()):
         steps.append(why)
-        return {"ok": False, "steps": steps, "failure": why, "rolled_back": False}
+        return {**not_started(why), "steps": steps}
     # 差し替えから戻しまでは、停止の要求(SIGTERM)を例外にせず保留する(確認の失敗から戻しまでのあいだで止められると、
     # 新しい実行ファイル・設定が残り、戻しも止めた印の記録もしない。Sol 監査 r3)
     with critical():
@@ -761,9 +761,12 @@ def swap_blocker() -> str:
     if TERM_PENDING:
         return "停止の要求(SIGTERM)を受けているので入れ替えを始めない"
     if quiet_wait_secs(now_jst(), QUIET_MARGIN) > 0:
-        return "入れ替えと戻しのあいだに発行の時間帯に掛かるので入れ替えを始めない"
+        return QUIET_BLOCK
     ok, why = swap_budget_ok()
     return "" if ok else f"入れ替えを始めない: {why}"
+
+
+QUIET_BLOCK = "入れ替えと戻しのあいだに発行の時間帯に掛かるので入れ替えを始めない"
 
 
 def prune_caddy_backups(keep: int = ucf.BACKUP_KEEP) -> None:
@@ -773,7 +776,8 @@ def prune_caddy_backups(keep: int = ucf.BACKUP_KEEP) -> None:
 
 
 def not_started(msg: str) -> dict:
-    return {"ok": False, "steps": [msg], "failure": msg, "rolled_back": False}
+    """何も入れ替えずに返す。発行の時間帯に掛かるのが理由なら retry(入口の guarded がロックの外で待ってからやり直す)。"""
+    return {"ok": False, "steps": [msg], "failure": msg, "rolled_back": False, "retry": msg == QUIET_BLOCK}
 
 
 def change_on_branch(rel: Path, expect: str, text: str, message: str, apply) -> dict:
@@ -789,11 +793,8 @@ def change_on_branch(rel: Path, expect: str, text: str, message: str, apply) -> 
     wrote = False
     r: dict | None = None
     try:
-        # 発行の時間帯の待ちはロックを取る前に済ませる(ロックを持ったまま待つと、03:00 の組版・06:00 の発行がロックを取れない。Sol 監査 r4)
-        wait_quiet(margin=QUIET_MARGIN)
-        if (why := swap_blocker()):
-            return not_started(why)
-        # ロック待ちは停止の要求を受けたらやめる(待ち終えてから停止の直前に入れ替えを始めない。Sol 監査 r4)
+        # 発行の時間帯の待ちは、ロックの外の入口(guarded)で済ませる。ロックの中では待たない(ロックを持ったまま待つと、03:00 の組版・
+        # 06:00 の発行がロックを取れない。Sol 監査 r4・r5)。ロック待ちは停止の要求を受けたらやめる(待ち終えてから停止の直前に入れ替えを始めない。Sol 監査 r4)
         fd = job_lock(JOB, wait_min=0, wait_fn=lambda t0: 0 if TERM_PENDING else LOCK_WAIT_MIN)
         date = edition_date()
         if not checkout_edition_branch(date, JOB):
@@ -1016,14 +1017,29 @@ def swap_budget_ok(now: float | None = None) -> tuple[bool, str]:
     return True, ""
 
 
+GUARD_TRIES = 3
+
+
 def guarded(fn, targets, proposal) -> dict:
-    """入れ替え(apply_fn / barrier_fn)を、時間が足りるときだけ始める。足りなければ何も入れ替えずに失敗として返す(次の回にやり直す)。"""
-    if TERM_PENDING:
-        return not_started("停止の要求(SIGTERM)を受けているので入れ替えを始めない")
-    ok, why = swap_budget_ok()
-    if not ok:
-        return {"ok": False, "steps": [f"入れ替えを始めない: {why}"], "failure": why, "rolled_back": False}
-    return fn(targets, proposal)
+    """入れ替え(apply_fn / barrier_fn)の入口。発行の時間帯の待ちはここだけで、ロックの外で行う(Sol 監査 r5)。待った後、停止の要求と
+    残り時間を見て、足りるときだけ fn を呼ぶ。fn が準備(pip の解決・ロック待ち)のうちに時間帯に近づいて何もせずに返したら(retry)、
+    ここで待ってからやり直す(GUARD_TRIES 回まで)。足りなければ何も入れ替えずに失敗として返す(次の回にやり直す)。"""
+    r: dict = {}
+    for _ in range(GUARD_TRIES):
+        # 待つ前に、待ち・入れ替え・戻しが残り時間に収まるかを見る(収まらないのに何時間も待たない)
+        ok, why = swap_budget_ok()
+        if not ok:
+            return not_started(f"入れ替えを始めない: {why}")
+        wait_quiet(margin=QUIET_MARGIN)
+        if TERM_PENDING:
+            return not_started("停止の要求(SIGTERM)を受けているので入れ替えを始めない")
+        ok, why = swap_budget_ok()
+        if not ok:
+            return not_started(f"入れ替えを始めない: {why}")
+        r = fn(targets, proposal)
+        if not r.get("retry"):
+            return r
+    return r
 
 
 def stopped(state: dict, component: str) -> bool:

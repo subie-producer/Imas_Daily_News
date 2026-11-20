@@ -8876,19 +8876,37 @@ def test_update_server_apply(tmp: Path):
         checks[:] = [(True, "/ 200")]
         r = us.apply_webapp(["Werkzeug==3.1.9"], "Flask==3.1.3\n", tmp)
         check(not r["ok"] and r["rolled_back"] and r["restored"] is False and "disk" in r["steps"][-1], f"戻しの例外で落ちた・戻せたとした: {r}")
-        # Sol 監査 r1: 入れ終わったときに発行の時間帯に入っていたら再起動せずに戻す。始める前は入れ替えの見込みの分まで待つ
+        # Sol 監査 r1: 入れ終わったときに発行の時間帯に入っていたら再起動せずに戻す。始める前は入れ替えと戻しの見込みの分まで待つ。
+        # Sol 監査 r5: 待つのは入口(guarded)だけ。入れ替えの関数は待たずに、何も入れずに retry で返す
         us.pip = fake_pip
-        clock = [datetime.datetime(2026, 11, 21, 2, 20, tzinfo=JST)]     # 見込み(約 16 分)の内に 02:30 に掛かる
+        clock = [datetime.datetime(2026, 11, 21, 2, 10, tzinfo=JST)]     # 見込み(入れ替えと戻しで約 28 分)の内に 02:30 に掛かる
         us.now_jst = lambda: clock[0]
 
         def fake_sleep(s):
             clock[0] += datetime.timedelta(seconds=s)
         saved_sleep, us.time.sleep = us.time.sleep, fake_sleep
         try:
+            pips.clear()
+            r = us.apply_webapp(["Werkzeug==3.1.9"], "Flask==3.1.3\n", tmp)
+            check(not r["ok"] and r.get("retry") and clock[0] == datetime.datetime(2026, 11, 21, 2, 10, tzinfo=JST)
+                  and not [p for p in pips if p[0] == "install" and "--dry-run" not in p],
+                  f"入れ替えの関数が待った・時間帯に掛かるのに入れた: {r} {clock[0]}")
             restarts.clear()
             checks[:] = [(True, "/ 200")]
-            r = us.apply_webapp(["Werkzeug==3.1.9"], "Flask==3.1.3\n", tmp)
-            check(r["ok"] and clock[0] >= datetime.datetime(2026, 11, 21, 7, 0, tzinfo=JST), f"02:20 から始めて発行の時間帯に掛かるのに待たない: {clock[0]} {r}")
+            r = us.guarded(lambda t, p: us.apply_webapp(t, "Flask==3.1.3\n", tmp), ["Werkzeug==3.1.9"], None)
+            check(r["ok"] and clock[0] >= datetime.datetime(2026, 11, 21, 7, 0, tzinfo=JST), f"02:10 から始めて発行の時間帯に掛かるのに待たない: {clock[0]} {r}")
+            # 準備のうちに時間帯に近づいて retry で返ったら、入口で待ってからやり直す
+            clock[0] = datetime.datetime(2026, 11, 22, 1, 0, tzinfo=JST)
+            tries = []
+
+            def late_first(t, p):
+                tries.append(clock[0])
+                if len(tries) == 1:
+                    clock[0] = datetime.datetime(2026, 11, 22, 2, 15, tzinfo=JST)    # 準備に時間が掛かった
+                    return us.not_started(us.QUIET_BLOCK)
+                return {"ok": True, "steps": []}
+            r = us.guarded(late_first, ["x==1"], None)
+            check(r["ok"] and len(tries) == 2 and tries[1] >= datetime.datetime(2026, 11, 22, 7, 0, tzinfo=JST), f"retry を入口で待ってやり直さない: {tries} {r}")
             check(us.quiet_wait_secs(datetime.datetime(2026, 11, 21, 10, 0, tzinfo=JST), us.QUIET_MARGIN) == 0
                   and us.quiet_wait_secs(datetime.datetime(2026, 11, 21, 2, 29, tzinfo=JST), 60) > 4 * 3600
                   and us.quiet_wait_secs(datetime.datetime(2026, 11, 21, 6, 59, tzinfo=JST), 0) == 60, "時間帯の待ちの秒")
@@ -8943,12 +8961,15 @@ def test_update_server_apply(tmp: Path):
             check(not called and not r["ok"] and not r["rolled_back"] and "始めない" in r["steps"][0], f"時間が足りないのに入れ替えを始めた: {r}")
             us.RUN_DEADLINE = us.time.time() + 3 * us.QUIET_MARGIN
             check(us.guarded(lambda t, p: called.append(t) or {"ok": True}, ["x==1"], None)["ok"] and called, "時間が足りるのに始めない")
+            saved_sleep3, us.time.sleep = us.time.sleep, lambda s: (_ for _ in ()).throw(AssertionError("待った"))
             clock[0] = datetime.datetime(2026, 11, 21, 2, 40, tzinfo=JST)    # 07:00 までの待ちも見込む
             called.clear()
             us.guarded(lambda t, p: called.append(t) or {"ok": True}, ["x==1"], None)
             check(not called, "発行の時間帯の待ちを見込まずに入れ替えを始めた")
         finally:
             us.RUN_DEADLINE = saved_dl
+            if "saved_sleep3" in dir():
+                us.time.sleep = saved_sleep3
         us.pip = fake_pip
         us.now_jst = lambda: datetime.datetime(2026, 11, 21, 10, 0, tzinfo=JST)
         # ---- Caddy
@@ -9075,7 +9096,13 @@ def test_update_server_apply(tmp: Path):
             us.job_lock = lock_at
             applied.clear()
             try:
+                # Sol 監査 r5: ロックの中では待たない。時間帯に掛かるなら入れ替えずに retry で返し(ロックは放す)、入口がロックの外で待つ
                 r = us.change_on_branch(us.REQUIREMENTS_REPO, "Flask==3.1.4\n", "Flask==3.1.4\n", "m", ok_apply)
+                check(not r["ok"] and r.get("retry") and not applied and clock2[0] == datetime.datetime(2026, 11, 22, 2, 20, tzinfo=JST),
+                      f"ロックの中で発行の時間帯を待った・入れ替えた: {r} {clock2[0]}")
+                locked_at.clear()
+                r = us.guarded(lambda t, p: us.change_on_branch(us.REQUIREMENTS_REPO, "Flask==3.1.4\n", "Flask==3.1.4\n", "m", ok_apply),
+                               ["x==1"], None)
                 check(r["ok"] and locked_at and locked_at[0] >= datetime.datetime(2026, 11, 22, 7, 0, tzinfo=JST),
                       f"ロックを取ってから発行の時間帯を待った(ロックを取った時刻 {locked_at}): {r}")
                 clock2[0] = datetime.datetime(2026, 11, 22, 10, 0, tzinfo=JST)

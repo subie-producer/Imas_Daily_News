@@ -8753,6 +8753,25 @@ def test_update_server_council(tmp: Path):
                   "d", state, bad_apply, barrier_fn)
         check(len(calls) == n and len(did) == 1 and notes[-1][1] is False and "手で戻したら" in notes[-1][0],
               f"止めた部品を判定し直した・知らせない: {did} {notes[-1:]}")
+        # Sol 監査 r3: 入れ替えの区間で停止の要求を受けたら、障壁の検討をせず、結果を記録して知らせてから止まる
+        did.clear()
+        state = {}
+        answers.update({("sol", "assess"): [ap], ("opus", "assess"): [ap]})
+
+        def term_apply(t, _):
+            did.append(("apply", t))
+            us.on_sigterm(15, None)
+            return {"ok": False, "steps": ["戻した"], "failure": "停止の要求", "rolled_back": True, "restored": True}
+        stopped_by = None
+        try:
+            us.handle("caddy", advs, cands, tmp / "m.md", tmp, "d", state, term_apply, barrier_fn)
+        except us.Terminated as e:
+            stopped_by = e
+        finally:
+            us.TERM_PENDING = False
+        check(stopped_by and did == [("apply", ["caddy==2.11.9"])] and state["judged"]["caddy"]["result"] == "failed"
+              and json.loads((tmp / "state.json").read_text())["judged"]["caddy"]["result"] == "failed" and "戻した" in notes[-1][0],
+              f"停止の要求の後に障壁を検討した・記録や通知の前に止まった・止まらない: {stopped_by} {did} {state}")
     finally:
         _unpatch(us, saved)
 
@@ -8886,7 +8905,7 @@ def test_update_server_apply(tmp: Path):
         r = us.apply_webapp(["Werkzeug==3.1.9"], "Flask==3.1.3\n", tmp)
         check(not r["ok"] and r["rolled_back"] and "発行の時間帯" in r["failure"] and restarts == [us.APP_UNIT],
               f"入れ終わりが発行の時間帯なのに上げた版で再起動した: {r} {restarts}")
-        # Sol 監査 r2: systemd の停止(SIGTERM)は Terminated(Exception)として入れ替えの途中から戻しへ進む
+        # Sol 監査 r2・r3: 入れ替えの区間で受けた停止の要求(SIGTERM)は保留し、再起動せずに戻しまで済ませる。区間の外では止める
         def term_pip(*args, timeout=0):
             if args[0] == "install" and "--dry-run" not in args and str(tmp / "freeze-before.txt") not in args:
                 us.on_sigterm(15, None)
@@ -8894,8 +8913,22 @@ def test_update_server_apply(tmp: Path):
         us.pip = term_pip
         clock[0] = datetime.datetime(2026, 11, 21, 10, 0, tzinfo=JST)
         checks[:] = [(True, "/ 200")]
-        r = us.apply_webapp(["Werkzeug==3.1.9"], "Flask==3.1.3\n", tmp)
-        check(not r["ok"] and r["rolled_back"] and r["restored"] and "SIGTERM" in r["failure"], f"SIGTERM で戻さない: {r}")
+        restarts.clear()
+        try:
+            r = us.apply_webapp(["Werkzeug==3.1.9"], "Flask==3.1.3\n", tmp)
+            check(not r["ok"] and r["rolled_back"] and r["restored"] and "SIGTERM" in r["failure"] and restarts == [us.APP_UNIT],
+                  f"SIGTERM で戻さない・上げた版で再起動した: {r} {restarts}")
+            check(us.TERM_PENDING and us._CRITICAL == 0, "停止の要求を覚えていない・区間を閉じない")
+            check(not us.guarded(lambda t, p: {"ok": True}, ["x==1"], None)["ok"], "停止の要求を受けた後に入れ替えを始めた")
+            us.TERM_PENDING = False
+            raised = False
+            try:
+                us.on_sigterm(15, None)
+            except us.Terminated:
+                raised = True
+            check(raised, "入れ替えの区間の外の SIGTERM で止まらない")
+        finally:
+            us.TERM_PENDING = False
         # 持ち時間の内に待ち・入れ替え・戻しが収まらなければ、入れ替えを始めない
         called = []
         saved_dl = us.RUN_DEADLINE
@@ -8942,6 +8975,26 @@ def test_update_server_apply(tmp: Path):
             check(r["ok"] and cur_bin.read_bytes() == b"NEW" and cf.read_text() == "NEWCONF\n" and (bin_dir / "caddy.2.11.4.bak").read_bytes() == b"OLD",
                   f"上げられない・旧版を残さない: {r}")
             check(not (bin_dir / "caddy.new").exists(), "差し替えの .new を残した")
+            # Sol 監査 r3: 確認が 502 を返した直後の SIGTERM でも、旧版・旧設定に戻してから返す
+            cur_bin.write_bytes(b"OLD")
+            cf.write_text("OLDCONF\n")
+            vbad = [""]
+            seq = [(False, "/ 502"), (True, "/ 200")]
+
+            def check_then_term():
+                got = seq.pop(0)
+                if not got[0]:
+                    us.on_sigterm(15, None)
+                return got
+            us.check_http = check_then_term
+            restarts.clear()
+            try:
+                r = us.apply_caddy(new, "2.11.9", "2.11.4", caddyfile_text="NEWCONF\n")
+                check(not r["ok"] and r["restored"] and cur_bin.read_bytes() == b"OLD" and cf.read_text() == "OLDCONF\n"
+                      and restarts == [us.WEB_UNIT] * 2, f"確認の直後の SIGTERM で戻さない: {r} {cur_bin.read_bytes()}")
+            finally:
+                us.TERM_PENDING = False
+                us.check_http = lambda: checks.pop(0)
         finally:
             _unpatch(us, saved2)
         # ---- 枝への commit の失敗は作業ツリーを元に戻す
@@ -8957,43 +9010,53 @@ def test_update_server_apply(tmp: Path):
             return False
         saved3 = _patch(us, ROOT=repo, job_lock=lambda job, wait_min=0: None, checkout_edition_branch=lambda d, j: True,
                         commit_and_push=stage_then_fail, edition_date=lambda: "2026-11-22")
+        applied = []
+        ok_apply = lambda: applied.append(1) or {"ok": True, "steps": ["上げた"], "failure": "", "rolled_back": False}
+        req = lambda: (repo / "webapp" / "requirements.txt").read_text()
+        status = lambda: sp.run(["git", "status", "--porcelain"], cwd=repo, capture_output=True, text=True).stdout
         try:
-            why = us.commit_change(us.REQUIREMENTS_REPO, "Flask==3.1.4\n", "m")
-            st = sp.run(["git", "status", "--porcelain"], cwd=repo, capture_output=True, text=True).stdout
-            check(why and (repo / "webapp" / "requirements.txt").read_text() == "Flask==3.1.3\n" and not st.strip(),
-                  f"commit の失敗で書きかけ・stage を残した: {why} {st!r}")
+            r = us.change_on_branch(us.REQUIREMENTS_REPO, "Flask==3.1.3\n", "Flask==3.1.4\n", "m", ok_apply)
+            check(not r["ok"] and req() == "Flask==3.1.3\n" and not status().strip() and "commit に失敗" in r["failure"],
+                  f"commit の失敗で書きかけ・stage を残した: {r} {status()!r}")
 
             def commit_then_push_fails(branch, msg, job, paths=None):
                 sp.run(["git", "add", "-A", "--", *paths], cwd=repo, check=True)
                 sp.run(["git", "-c", "user.email=t@t", "-c", "user.name=t", "commit", "-qm", msg], cwd=repo, check=True)
                 return False
             us.commit_and_push = commit_then_push_fails
-            why = us.commit_change(us.REQUIREMENTS_REPO, "Flask==3.1.5\n", "m")
-            check(why == "" and (repo / "webapp" / "requirements.txt").read_text() == "Flask==3.1.5\n",
-                  f"commit できて push だけ失敗したのに戻した: {why!r}")
+            r = us.change_on_branch(us.REQUIREMENTS_REPO, "Flask==3.1.3\n", "Flask==3.1.5\n", "m", ok_apply)
+            check(r["ok"] and req() == "Flask==3.1.5\n", f"commit できて push だけ失敗したのに戻した: {r}")
             us.commit_and_push = stage_then_fail
+            # Sol 監査 r3: 評価の後に枝の上で変わっていたら(合議のあいだに依存が足された)、入れ替えも書き換えもしない
+            applied.clear()
+            r = us.change_on_branch(us.REQUIREMENTS_REPO, "Flask==3.1.3\n", "Flask==3.1.6\n", "m", ok_apply)
+            check(not r["ok"] and not applied and req() == "Flask==3.1.5\n" and "変わっていた" in r["failure"],
+                  f"評価の後に変わった requirements を古い全文で上書きした・入れ替えた: {r} {req()!r}")
             # Sol 監査 r2: ロックが取れない(書き換える前の失敗)なら、他の工程が stage した変更を戻さない
             (repo / "webapp" / "requirements.txt").write_text("other job\n")
             sp.run(["git", "add", "-A"], cwd=repo, check=True)
 
             def lock_timeout(job, wait_min=0):
-                raise us.JobLockTimeoutForTest("busy")
-            us.JobLockTimeoutForTest = type("JobLockTimeoutForTest", (RuntimeError,), {})
+                raise RuntimeError("busy")
             us.job_lock = lock_timeout
-            why = us.commit_change(us.REQUIREMENTS_REPO, "Flask==9\n", "m")
-            st = sp.run(["git", "status", "--porcelain"], cwd=repo, capture_output=True, text=True).stdout
-            check(why and (repo / "webapp" / "requirements.txt").read_text() == "other job\n" and st.startswith("M "),
-                  f"ロックが取れないのに他の工程の変更を戻した: {why} {st!r}")
-            del us.JobLockTimeoutForTest
+            r = us.change_on_branch(us.REQUIREMENTS_REPO, "Flask==3.1.5\n", "Flask==9\n", "m", ok_apply)
+            check(not r["ok"] and not applied and req() == "other job\n" and status().startswith("M "),
+                  f"ロックが取れないのに他の工程の変更を戻した・入れ替えた: {r} {status()!r}")
             us.job_lock = lambda job, wait_min=0: None
             sp.run(["git", "reset", "-q", "--hard"], cwd=repo, check=True)
             us.checkout_edition_branch = lambda d, j: False
-            check("checkout" in us.commit_change(us.REQUIREMENTS_REPO, "x\n", "m"), "checkout できないのに書いた")
+            r = us.change_on_branch(us.REQUIREMENTS_REPO, "Flask==3.1.5\n", "x\n", "m", ok_apply)
+            check(not r["ok"] and not applied and "checkout" in r["failure"], "checkout できないのに入れ替えた")
             pushed = []
             us.checkout_edition_branch = lambda d, j: True
             us.commit_and_push = lambda branch, msg, job, paths=None: pushed.append((branch, paths)) or True
-            check(us.commit_change(us.REQUIREMENTS_REPO, "Flask==3.1.4\n", "m") == ""
-                  and pushed == [("edition/2026-11-22", ["webapp/requirements.txt"])], f"今の号の枝に commit しない: {pushed}")
+            r = us.change_on_branch(us.REQUIREMENTS_REPO, "Flask==3.1.5\n", "Flask==3.1.4\n", "m", ok_apply)
+            check(r["ok"] and applied and pushed == [("edition/2026-11-22", ["webapp/requirements.txt"])], f"今の号の枝に commit しない: {r} {pushed}")
+            # 入れ替えに失敗したら書き換えない
+            pushed.clear()
+            r = us.change_on_branch(us.REQUIREMENTS_REPO, "Flask==3.1.4\n", "Flask==3.1.7\n", "m",
+                                    lambda: {"ok": False, "steps": [], "failure": "f", "rolled_back": True, "restored": True})
+            check(not r["ok"] and not pushed and req() == "Flask==3.1.4\n", f"入れ替えに失敗したのに書き換えた: {r}")
         finally:
             _unpatch(us, saved3)
     finally:

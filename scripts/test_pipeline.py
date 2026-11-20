@@ -16538,7 +16538,8 @@ def test_collect_handover_deadline(tmp: Path):
     saved_popen, saved_inv = subprocess.Popen, os.environ.get("INVOCATION_ID")
     notes: list = []
     try:
-        collect.GROK_TIMEOUT, collect.GROK_WAVE = 0.3, 3
+        # 足し算(3面で 3 秒)と並行(1 秒)の差を、機械の混み(2026-11-21: 回帰テストの並走で 0.3 秒の待ちが全体 0.72 秒)より大きく取る
+        collect.GROK_TIMEOUT, collect.GROK_WAVE = 1.0, 3
         collect.save_raw = lambda *a, **k: None
         collect.notify = lambda job, msg, ok=True, require=False: notes.append(msg) or True
         collect.prompt_file = lambda *a, **k: "p"
@@ -16550,8 +16551,8 @@ def test_collect_handover_deadline(tmp: Path):
         t_all = _t.time()
         failed = collect.run_grok_prompts(targets, {})
         t_all = _t.time() - t_all
-        check(failed == {"f0", "f1", "f2"} and max(waits) <= 0.35 and t_all <= 0.6,
-              f"Grok の待ちが面ごとに足し算になった(待った秒 {waits}・全体 {t_all:.2f}秒。上限は GROK_TIMEOUT 0.3 秒)")
+        check(failed == {"f0", "f1", "f2"} and max(waits) <= 1.05 and t_all <= 2.0,
+              f"Grok の待ちが面ごとに足し算になった(待った秒 {waits}・全体 {t_all:.2f}秒。上限は GROK_TIMEOUT 1.0 秒)")
         # 収集の締切が先なら、そこまでしか待たない
         waits.clear()
         collect.GROK_TIMEOUT = 100

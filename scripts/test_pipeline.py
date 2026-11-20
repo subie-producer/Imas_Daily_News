@@ -9152,6 +9152,17 @@ def test_update_server_apply(tmp: Path):
                   f"ロックが取れないのに他の工程の変更を戻した・入れ替えた: {r} {status()!r}")
             us.job_lock = lambda job, wait_min=0, wait_fn=None: None
             sp.run(["git", "reset", "-q", "--hard"], cwd=repo, check=True)
+            # Sol 監査 r11: 書き換える対象に未確定の変更(未 stage・stage 済み)があれば、入れ替えず、その変更も消さない
+            for staged in (False, True):
+                (repo / "webapp" / "requirements.txt").write_text("Flask==3.1.8\n")
+                if staged:
+                    sp.run(["git", "add", "webapp/requirements.txt"], cwd=repo, check=True)
+                applied.clear()
+                us.commit_local = lambda rel, msg: stage_then_fail(rel, msg)
+                r = us.change_on_branch(us.REQUIREMENTS_REPO, "Flask==3.1.8\n", "Flask==9\n", "m", ok_apply)
+                check(not r["ok"] and not applied and req() == "Flask==3.1.8\n" and "未確定" in r["failure"],
+                      f"対象の未確定の変更({'stage 済み' if staged else '未 stage'})があるのに入れ替えた・消した: {r} {req()!r}")
+                sp.run(["git", "reset", "-q", "--hard"], cwd=repo, check=True)
             # 作業ツリーが今の号の枝にいなければ、入れ替えも書き換えもしない
             sp.run(["git", "checkout", "-q", "-b", "edition/2026-11-21"], cwd=repo, check=True)
             r = us.change_on_branch(us.REQUIREMENTS_REPO, "Flask==3.1.5\n", "x\n", "m", ok_apply)
@@ -9244,9 +9255,19 @@ def test_update_server_apply(tmp: Path):
         for c in (["init", "-q"], ["config", "user.email", "t@t"], ["config", "user.name", "t"], ["commit", "-q", "--allow-empty", "-m", "i"],
                   ["checkout", "-q", "-b", "edition/2026-11-22"], ["remote", "add", "origin", "ssh://example.invalid/x.git"]):
             sp.run(["git", *c], cwd=gdir, check=True, capture_output=True)
-        fake_ssh = gdir / "fake_ssh.sh"
-        fake_ssh.write_text(f"#!/bin/sh\necho \"$0 $*\" >> {gdir / 'ssh.log'}\nsleep 30\n")
+        fake_ssh = tmp / "fake_ssh.sh"      # 検める作業ツリーの外に置く(記録が未追跡のファイルとして見えないように)
+        fake_ssh.write_text(f"#!/bin/sh\necho \"$0 $*\" >> {tmp / 'ssh.log'}\nsleep 30\n")
         fake_ssh.chmod(0o755)
+        # stage 済み・未 stage の変更を置き、打ち切りの前後で index と作業ツリーの中身が変わらないことも見る(Sol 監査 r11 の later)
+        (gdir / "staged.txt").write_text("s\n")
+        sp.run(["git", "add", "staged.txt"], cwd=gdir, check=True)
+        (gdir / "staged.txt").write_text("s2\n")
+        (gdir / "loose.txt").write_text("l\n")
+        snap = lambda: (sp.run(["git", "diff", "--cached"], cwd=gdir, capture_output=True, text=True).stdout,
+                        sp.run(["git", "diff"], cwd=gdir, capture_output=True, text=True).stdout,
+                        sp.run(["git", "status", "--porcelain"], cwd=gdir, capture_output=True, text=True).stdout,
+                        (gdir / "staged.txt").read_text(), (gdir / "loose.txt").read_text())
+        before_snap = snap()
         before = sp.run(["git", "rev-parse", "HEAD"], cwd=gdir, capture_output=True, text=True).stdout
         saved4 = _patch(us, ROOT=gdir, GIT_STEP_TIMEOUT=1, run_group=us.run_group)
         saved_env = os.environ.get("GIT_SSH_COMMAND")
@@ -9258,8 +9279,9 @@ def test_update_server_apply(tmp: Path):
             after_branch = sp.run(["git", "branch", "--show-current"], cwd=gdir, capture_output=True, text=True).stdout.strip()
             after = sp.run(["git", "rev-parse", "HEAD"], cwd=gdir, capture_output=True, text=True).stdout
             check(not ok_g and el < 10 and "打ち切った" in why_g and after == before and after_branch == "edition/2026-11-22"
-                  and not (gdir / ".git" / "rebase-merge").exists() and not (gdir / ".git" / "rebase-apply").exists(),
-                  f"止まった push を期限で打ち切らない・手元の状態を変えた: {ok_g} {why_g} {el:.1f}秒 {after_branch}")
+                  and not (gdir / ".git" / "rebase-merge").exists() and not (gdir / ".git" / "rebase-apply").exists()
+                  and snap() == before_snap,
+                  f"止まった push を期限で打ち切らない・手元の状態(枝・index・作業ツリー)を変えた: {ok_g} {why_g} {el:.1f}秒 {after_branch}")
             _t_real.sleep(0.3)
             orphans = sp.run(["pgrep", "-f", str(fake_ssh)], capture_output=True, text=True).stdout.strip()
             check(not orphans, f"打ち切った push の子孫(ssh)が残った: {orphans}")

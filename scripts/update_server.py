@@ -833,6 +833,11 @@ def change_on_branch(rel: Path, expect: str, text: str, message: str, apply) -> 
             cur_branch = _git("branch", "--show-current").stdout.strip()
             if cur_branch != branch:
                 return not_started(f"作業ツリーが {branch} にいない(いま {cur_branch or 'detached'})。入れ替えずに次の回にやり直す")
+            # 書き換える対象に未確定の変更(stage 済み・未 stage)があれば入れ替えない。commit に失敗したときの戻し(HEAD へ)で、
+            # その変更まで消す(Sol 監査 r11)。対象が HEAD と同じときだけ進む
+            dirty = _git("status", "--porcelain", "--", str(rel)).stdout.strip()
+            if dirty:
+                return not_started(f"{rel} に未確定の変更がある({dirty[:80]})。入れ替えずに次の回にやり直す")
         path = ROOT / rel
         cur = path.read_text(encoding="utf-8")
         if cur != expect:

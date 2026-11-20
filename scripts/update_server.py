@@ -558,13 +558,21 @@ def systemctl_restart(unit: str) -> str:
 
 
 def get_status(url: str, headers: dict | None = None, timeout: float = 30) -> int:
+    """url の HTTP の状態コード(取れなければ 0)。curl の --max-time で、名前解決・接続・少しずつ届く応答まで含めた要求全体を
+    timeout 秒で打ち切る(urlopen の timeout は1回の読みの上限で、全体を縛らない。Sol 監査 r7)。subprocess の timeout は予備。"""
+    t = max(1.0, timeout)
+    cmd = ["curl", "-s", "-o", "/dev/null", "-w", "%{http_code}", "--max-time", f"{t:.1f}", "-A", UA["User-Agent"]]
+    for k, v in (headers or {}).items():
+        cmd += ["-H", f"{k}: {v}"]
     try:
-        with urllib.request.urlopen(urllib.request.Request(url, headers={**UA, **(headers or {})}), timeout=max(1.0, timeout)) as r:
-            return r.status
-    except urllib.error.HTTPError as e:
-        return e.code
+        r = subprocess.run(cmd + [url], capture_output=True, text=True, timeout=t + 5)
     except Exception:
         return 0
+    if r.returncode != 0:
+        # 上限で打ち切った(exit 28)・つながらない回は、状態行だけ受け取っていても取れなかったとする(-w は 200 を出す)
+        return 0
+    code = (r.stdout or "").strip()
+    return int(code) if code.isdigit() else 0
 
 
 def check_http() -> tuple[bool, str]:

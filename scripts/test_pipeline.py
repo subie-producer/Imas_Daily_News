@@ -8819,6 +8819,7 @@ def test_update_server_apply(tmp: Path):
     差し替えない・確認に通らなければ実行ファイルと Caddyfile を両方戻す。枝への commit に失敗したら作業ツリーを元に戻す。
     本物の pip・systemctl・HTTP は差し替える。"""
     import datetime
+    import time as _t_real
     import update_server as us
     from pipelib import JST
     tmp.mkdir(parents=True, exist_ok=True)
@@ -8860,19 +8861,62 @@ def test_update_server_apply(tmp: Path):
             gets.append(timeout)
             mono[0] += timeout          # 上限いっぱいまで返らない
             return 0
-        saved_t = (us.time.monotonic, us.time.sleep)
+        saved_t = (us.time.monotonic, us.time.sleep, us.time.time)
         saved_g = _patch(us, get_status=hanging_get, check_http=saved["check_http"])
-        us.time.monotonic = lambda: mono[0]
+        us.time.monotonic = us.time.time = lambda: mono[0]      # どちらの時計で数えても同じに進める
         us.time.sleep = lambda s: mono.__setitem__(0, mono[0] + s)
         try:
             ok_h, _ = us.check_http()
             check(not ok_h and mono[0] - 1000.0 <= us.CHECK_LIMIT + 1e-6 and gets and all(0 < t <= 30 for t in gets),
                   f"確認が全体の上限を越えた: {mono[0] - 1000.0} 秒(上限 {us.CHECK_LIMIT})・要求の上限 {gets}")
         finally:
-            us.time.monotonic, us.time.sleep = saved_t
+            us.time.monotonic, us.time.sleep, us.time.time = saved_t
             _unpatch(us, saved_g)
         check(us.QUIET_MARGIN >= 2 * (us.PIP_TIMEOUT + us.RESTART_TIMEOUT + us.CHECK_LIMIT + us.JOURNAL_TIMEOUT),
               f"見込みが入れ替えと戻しの各段の上限の合計より短い: {us.QUIET_MARGIN}")
+        # Sol 監査 r7: 1回の要求は、応答しない・少しずつ届く相手でも上限で打ち切る(本物の curl を手元の黙るサーバーに当てる)
+        import socket as _so
+        import threading as _th
+        srv = _so.socket()
+        srv.bind(("127.0.0.1", 0))
+        srv.listen(4)
+        held = []
+
+        def silent():
+            while True:
+                try:
+                    c, _ = srv.accept()
+                except OSError:
+                    return
+                held.append(c)
+
+                def drip(c=c):
+                    # 正しい応答の頭を送り、ヘッダを 0.5 秒ごとに1行ずつ送る(1回の読みの上限には掛からず、ヘッダが終わらない)
+                    try:
+                        c.sendall(b"HTTP/1.1 200 OK\r\n")
+                    except OSError:
+                        return
+                    for _ in range(40):
+                        try:
+                            c.sendall(b"X-Drip: 1\r\n")
+                        except OSError:
+                            return
+                        _t_real.sleep(0.5)
+                _th.Thread(target=drip, daemon=True).start()
+        _th.Thread(target=silent, daemon=True).start()
+        try:
+            t0 = _t_real.monotonic()
+            code = us.get_status(f"http://127.0.0.1:{srv.getsockname()[1]}/", timeout=1.5)
+            el = _t_real.monotonic() - t0
+            check(code == 0 and el < 4.0, f"黙る相手への要求が上限で打ち切られない: {el:.1f} 秒・{code}")
+        finally:
+            srv.close()
+            for c in held:
+                c.close()
+        # Sol 監査 r7: 停止の猶予(TimeoutStopSec)は、確認の途中で止められたときの残り+戻しの各段の上限より長い
+        unit = (Path(us.__file__).resolve().parent.parent / "ops" / "systemd" / "imas-server.service").read_text()
+        m_stop = re.search(r"(?m)^TimeoutStopSec=(\d+)min$", unit)
+        check(m_stop and int(m_stop.group(1)) * 60 >= 2 * us.SWAP_STEP + 60, f"停止の猶予が戻しの分より短い: {m_stop and m_stop.group(0)}")
         # Sol 監査 r1: 入れる途中の例外(pip の時間切れ)でも戻す。戻しの例外は「戻せなかった」と返す
         import subprocess as sp0
 

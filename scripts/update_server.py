@@ -70,6 +70,8 @@ SESSION_TIMEOUT = 1800
 BARRIER_ROUNDS = 2            # 障壁の外し方の「案→査読」の往復の上限
 LOCK_WAIT_MIN = 120           # 枝に commit するとき、収集などが作業ツリーを使い終わるのを待つ分
 PIP_TIMEOUT = 600
+# 入れ替えを始めてから再起動・確認を終えるまでに見込む秒(pip の上限+確認の待ち+余裕)。これだけ先までに発行の時間帯に掛かるなら始めない
+QUIET_MARGIN = PIP_TIMEOUT + CHECK_WAIT + 300
 SCHEMA_ASSESS = "server-assess.schema.json"
 SCHEMA_BARRIER = "server-barrier.schema.json"
 SCHEMA_REVIEW = "server-barrier-review.schema.json"
@@ -604,26 +606,37 @@ def apply_webapp(targets: list[str], req_text: str, work: Path) -> dict:
         steps.append("入れる前の解決で失敗(何も入れていない)")
         return {"ok": False, "steps": steps, "rolled_back": False,
                 "failure": f"pip install --dry-run -r requirements.txt {' '.join(targets)} が失敗:\n{(dry.stderr or dry.stdout)[-1500:]}"}
-    # 入れ替えの前に待つ(入れた後に待つと、待つあいだにアプリが落ちて自動で起き直したとき新しい版を読む)
-    wait_quiet()
-    r = pip("install", "-q", "-r", str(req), *targets)
-    if r.returncode != 0:
-        fail = f"pip install が失敗:\n{(r.stderr or r.stdout)[-1500:]}"
-    else:
-        steps.append(f"{' '.join(targets)} を入れた")
-        why = systemctl_restart(APP_UNIT)
-        ok, state = check_http() if not why else (False, why)
-        steps.append(f"アプリを再起動して確認: {state}")
-        if ok:
-            return {"ok": True, "steps": steps, "failure": "", "rolled_back": False}
-        fail = f"上げた後の確認で失敗: {state}\n--- imas-app の journal ---\n{unit_log(APP_UNIT, since)}"
-    # 戻す: 入れる前の freeze のとおりに入れ直し、再起動して確かめる
-    rb = pip("install", "-q", "-r", str(before))
+    # 入れ替えの前に待つ。入れ終わって再起動するまでに発行の時間帯に入らないよう、入れる時間の分を見込む
+    # (入れた後に待つと、待つあいだにアプリが落ちて自動で起き直したとき、確かめていない新しい版を読む)
+    wait_quiet(margin=QUIET_MARGIN)
+    # ここから先は入れ替えが始まっている。例外(pip の時間切れなど)でも必ず下の戻しへ進む(Sol 監査 r1)
+    try:
+        r = pip("install", "-q", "-r", str(req), *targets)
+        if r.returncode != 0:
+            fail = f"pip install が失敗:\n{(r.stderr or r.stdout)[-1500:]}"
+        elif ucf.publishing_wait(now_jst()) > 0:
+            fail = "入れ終わったときに発行の時間帯に入っていたので、再起動せずに戻す"
+        else:
+            steps.append(f"{' '.join(targets)} を入れた")
+            why = systemctl_restart(APP_UNIT)
+            ok, state = check_http() if not why else (False, why)
+            steps.append(f"アプリを再起動して確認: {state}")
+            if ok:
+                return {"ok": True, "steps": steps, "failure": "", "rolled_back": False}
+            fail = f"上げた後の確認で失敗: {state}\n--- imas-app の journal ---\n{unit_log(APP_UNIT, since)}"
+    except Exception as e:
+        fail = f"入れ替えの途中で例外({type(e).__name__}: {e})"
+    # 戻す: 入れる前の freeze のとおりに入れ直し、再起動して確かめる。戻しの例外も捕まえて、戻せなかったと返す
+    try:
+        rb = pip("install", "-q", "-r", str(before))
+        pip_state = "pip 成功" if rb.returncode == 0 else "pip 失敗: " + (rb.stderr or "")[-200:]
+        pip_ok = rb.returncode == 0
+    except Exception as e:
+        pip_state, pip_ok = f"pip で例外({type(e).__name__}: {e})", False
     rs = systemctl_restart(APP_UNIT)
     ok2, state2 = check_http() if not rs else (False, rs)
-    steps.append(f"入れる前の版に戻した({'pip 成功' if rb.returncode == 0 else 'pip 失敗: ' + (rb.stderr or '')[-200:]})・"
-                 f"再起動して確認: {state2}")
-    return {"ok": False, "steps": steps, "failure": fail, "rolled_back": True, "restored": rb.returncode == 0 and ok2}
+    steps.append(f"入れる前の版に戻した({pip_state})・再起動して確認: {state2}")
+    return {"ok": False, "steps": steps, "failure": fail, "rolled_back": True, "restored": pip_ok and ok2}
 
 
 def caddy_validate(binary: Path, caddyfile: Path) -> str:
@@ -639,16 +652,21 @@ def apply_caddy(new_bin: Path, version: str, cur: str, caddyfile_text: str | Non
     since = now_jst().strftime("%Y-%m-%d %H:%M:%S")
     cf = CADDYFILE_LIVE
     cand = new_bin.with_name("Caddyfile.candidate")
-    cand.write_text(caddyfile_text if caddyfile_text is not None else cf.read_text(encoding="utf-8"), encoding="utf-8")
-    bad = caddy_validate(new_bin, cand)
-    if bad:
-        steps.append("新しい版で Caddyfile が通らない(差し替えていない)")
-        return {"ok": False, "steps": steps, "failure": bad, "rolled_back": False}
     bak = CADDY_BIN.with_name(f"caddy.{cur or 'unknown'}.bak")
     cf_bak = cf.with_name("Caddyfile.bak")
-    shutil.copy2(CADDY_BIN, bak)
-    shutil.copy2(cf, cf_bak)
-    wait_quiet()
+    # 差し替えの前の段(validate・旧版の写し)の例外は、何も入れ替えていないので戻しは要らない
+    try:
+        cand.write_text(caddyfile_text if caddyfile_text is not None else cf.read_text(encoding="utf-8"), encoding="utf-8")
+        bad = caddy_validate(new_bin, cand)
+        if bad:
+            steps.append("新しい版で Caddyfile が通らない(差し替えていない)")
+            return {"ok": False, "steps": steps, "failure": bad, "rolled_back": False}
+        shutil.copy2(CADDY_BIN, bak)
+        shutil.copy2(cf, cf_bak)
+    except Exception as e:
+        steps.append("差し替えの前の準備で例外(差し替えていない)")
+        return {"ok": False, "steps": steps, "failure": f"準備で例外({type(e).__name__}: {e})", "rolled_back": False}
+    wait_quiet(margin=QUIET_MARGIN)
     staged = CADDY_BIN.with_name("caddy.new")
     swap_err = ""
     try:
@@ -697,10 +715,19 @@ def ucf_replace(src: Path, dest: Path) -> None:
         ucf.quiet_unlink(staged)
 
 
-def wait_quiet() -> None:
-    """発行の時間帯(02:30〜07:00)なら、その終わりまで待つ(再起動で数秒落ちるため)。"""
-    while (w := ucf.publishing_wait(now_jst())) > 0:
-        say(f"発行の時間帯なので {ucf.QUIET_UNTIL:%H:%M} まで待ってから再起動する({int(w)}秒)")
+def quiet_wait_secs(now: datetime.datetime, margin: float = 0) -> float:
+    """now から margin 秒のあいだに発行の時間帯(02:30〜07:00)に掛かるなら、その終わりまでの秒。掛からなければ 0。"""
+    later = ucf.publishing_wait(now + datetime.timedelta(seconds=margin))
+    if later > 0:
+        return later + margin
+    return ucf.publishing_wait(now)
+
+
+def wait_quiet(margin: float = 0) -> None:
+    """入れ替えて再起動し終えるまで(margin 秒)のあいだに発行の時間帯に掛かるなら、その終わりまで待つ(再起動で数秒落ちるため)。
+    待ちから戻るたびに時刻を見直す。"""
+    while (w := quiet_wait_secs(now_jst(), margin)) > 0:
+        say(f"発行の時間帯に掛かるので {ucf.QUIET_UNTIL:%H:%M} まで待ってから入れ替える({int(w)}秒)")
         time.sleep(w)
 
 
@@ -712,27 +739,55 @@ def prune_caddy_backups(keep: int = ucf.BACKUP_KEEP) -> None:
 
 def commit_change(rel: Path, text: str, message: str) -> str:
     """ops の今の号の枝で rel を text に書き換えて commit・push する。戻りは失敗の理由(成功なら空)。
-    失敗したら作業ツリーの rel を元に戻す(書きかけを残すと次の収集・組版が止まる)。"""
+    commit できずに終わったら、index と作業ツリーの rel を HEAD に戻す(stage したまま残すと、次の収集・組版の checkout が
+    未コミットの変更で止まる。Sol 監査 r1)。commit できて push だけ失敗したときは戻さない(手元の commit は、次の工程の
+    checkout_edition_branch が送る)。"""
     fd = None
+    head = ""
     try:
         fd = job_lock(JOB, wait_min=LOCK_WAIT_MIN)
         date = edition_date()
         if not checkout_edition_branch(date, JOB):
             return f"edition/{date} を checkout できない"
+        head = _head()
         path = ROOT / rel
         if path.read_text(encoding="utf-8") == text:
             return ""
         path.write_text(text, encoding="utf-8")
         if not commit_and_push(f"edition/{date}", message, JOB, paths=[str(rel)]):
-            subprocess.run(["git", "checkout", "--", str(rel)], cwd=ROOT, capture_output=True)
-            return f"edition/{date} への commit・push に失敗(作業ツリーは元に戻した)"
+            if _committed(head, rel, text):
+                say(f"{rel} は edition/{date} に commit したが push できない(次の工程の checkout が送る)")
+                return ""
+            _restore(rel)
+            return f"edition/{date} への commit に失敗(index と作業ツリーは元に戻した)"
         return ""
     except Exception as e:
-        subprocess.run(["git", "checkout", "--", str(rel)], cwd=ROOT, capture_output=True)
+        if not (head and _committed(head, rel, text)):
+            _restore(rel)
         return f"commit の途中で例外({type(e).__name__}: {e})"
     finally:
         if fd is not None:
             os.close(fd)
+
+
+def _head() -> str:
+    r = subprocess.run(["git", "rev-parse", "HEAD"], cwd=ROOT, capture_output=True, text=True)
+    return r.stdout.strip() if r.returncode == 0 else ""
+
+
+def _committed(head: str, rel: Path, text: str) -> bool:
+    """head の後に、rel を text にした commit が積まれたか。"""
+    now = _head()
+    if not now or now == head:
+        return False
+    r = subprocess.run(["git", "show", f"HEAD:{rel.as_posix()}"], cwd=ROOT, capture_output=True, text=True)
+    return r.returncode == 0 and r.stdout == text
+
+
+def _restore(rel: Path) -> None:
+    """rel の index と作業ツリーを HEAD に戻す。"""
+    subprocess.run(["git", "reset", "-q", "--", str(rel)], cwd=ROOT, capture_output=True)
+    subprocess.run(["git", "checkout", "--", str(rel)], cwd=ROOT, capture_output=True)
 
 
 # ---------------------------------------------------------------- 素材
@@ -810,6 +865,11 @@ def handle(component: str, advs: list[dict], candidates: dict[str, list[str]], m
     """1つの部品(caddy / webapp)の合議 → 上げる → 確認 → 障壁 → 上げ直し → 知らせる。"""
     key = judge_key([a["id"] for a in advs], candidates)
     prev = (state.get("judged") or {}).get(component) or {}
+    if prev.get("result") == "broken":
+        # 前の回に戻しきれずに止めた: 人が手で戻して state の judged.<部品> を消すまで、上げ直さずに毎回知らせる
+        notify(JOB, f"{component}: {prev.get('at')} の更新で戻しきれずに止めたまま。手で戻したら {STATE} の judged.{component} を消す"
+                    "(消すまで判定も更新もしない)", ok=False)
+        return
     if prev.get("key") == key and prev.get("result") in ("applied", "hold", "split"):
         say(f"{component}: 同じ報告と候補の組は判定済み({prev.get('at')} {prev.get('result')})")
         return
@@ -822,21 +882,29 @@ def handle(component: str, advs: list[dict], candidates: dict[str, list[str]], m
         lines.append(f"更新: {', '.join(targets)}")
         r = apply_fn(targets, None)
         lines += [f"- {s}" for s in r["steps"]]
-        if not r["ok"] and r.get("rolled_back") and not r.get("restored", True):
-            lines.append("🚨 戻した後も確認が通らない")
-        if not r["ok"]:
+        if broken(r):
+            # 戻しきれていない: ここで止めて人に渡す。障壁を外して上げ直すと、壊れた今の状態を旧版の写しに上書きしかねない(Sol 監査 r1)
+            lines.append("🚨 戻した後も確認が通らない。障壁の検討・上げ直しはせずに止めた(手で戻す)")
+        elif not r["ok"]:
             b = barrier_council(component, targets, r["failure"], materials, work, date)
             lines.append(barrier_text(b))
             if b["agreed"] and b["proposal"]["lift"]:
                 r = barrier_fn(targets, b["proposal"])
                 lines += [f"- {s}" for s in r["steps"]]
-        result = "applied" if r["ok"] else "failed"
+                if broken(r):
+                    lines.append("🚨 上げ直しの後に戻しきれない。止めた(手で戻す)")
+        result = "applied" if r["ok"] else ("broken" if broken(r) else "failed")
         if not r["ok"]:
             lines.append(f"失敗の記録: {r['failure'][:600]}")
     state.setdefault("judged", {})[component] = {"key": key, "result": result, "at": now_jst().isoformat(timespec="seconds"),
                                                  "ids": sorted(a["id"] for a in advs)}
     save_state(state)
     report(component, {**v, "result": v["result"]}, lines, ok=result in ("applied", "hold", "split"))
+
+
+def broken(r: dict) -> bool:
+    """上げるのに失敗し、戻しても確認が通らない(または戻せない)状態か。"""
+    return not r["ok"] and bool(r.get("rolled_back")) and not r.get("restored", True)
 
 
 def barrier_text(b: dict) -> str:

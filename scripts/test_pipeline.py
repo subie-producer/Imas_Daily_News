@@ -8739,6 +8739,58 @@ def test_update_server_council(tmp: Path):
         us.handle("caddy", advs + [{"id": "GO-2", "aliases": [], "summary": "s", "cvss": {}, "packages": []}], cands, tmp / "m.md", tmp,
                   "d", state, apply_fn, barrier_fn)
         check(not did and state["judged"]["caddy"]["result"] == "noanswer" and notes[-1][1] is False, "答えが揃わないのに上げた・異常にしない")
+        # Sol 監査 r1: 戻しても確認が通らなければ、障壁の検討・上げ直しをせずに止める。止めた部品は手で戻すまで判定も更新もしない
+        did.clear()
+        state = {}
+        answers.update({("sol", "assess"): [ap], ("opus", "assess"): [ap], ("sol", "barrier"): [lift],
+                        ("opus", "barrier"): [{"approve": True, "objections": [], "why": "ok"}]})
+        bad_apply = lambda t, _: did.append(("apply", t)) or {"ok": False, "steps": ["戻した・確認 502"], "failure": "f", "rolled_back": True, "restored": False}
+        us.handle("caddy", advs, cands, tmp / "m.md", tmp, "d", state, bad_apply, barrier_fn)
+        check(did == [("apply", ["caddy==2.11.9"])] and state["judged"]["caddy"]["result"] == "broken" and notes[-1][1] is False
+              and "止めた" in notes[-1][0], f"戻しきれないのに障壁を外して上げ直した・止めた状態を残さない: {did} {state}")
+        n = len(calls)
+        us.handle("caddy", advs + [{"id": "GO-3", "aliases": [], "summary": "s", "cvss": {}, "packages": []}], cands, tmp / "m.md", tmp,
+                  "d", state, bad_apply, barrier_fn)
+        check(len(calls) == n and len(did) == 1 and notes[-1][1] is False and "手で戻したら" in notes[-1][0],
+              f"止めた部品を判定し直した・知らせない: {did} {notes[-1:]}")
+    finally:
+        _unpatch(us, saved)
+
+
+def test_update_server_sessions(tmp: Path):
+    """モデルの答えの入口(Sol 監査 r1 の later): 正常に終わり、渡した schema に合う答えだけを採る。異常終了・時間切れの間際の答え、
+    schema に合わない答えは採らない。本物の codex・claude は差し替える。"""
+    import subprocess as sp
+    import update_server as us
+    tmp.mkdir(parents=True, exist_ok=True)
+    good = {"serious": True, "exposure": "e", "update_risk": "u", "leave_risk": "l", "verdict": "apply", "targets": ["x==1"], "why": "w"}
+    runs = []
+
+    def fake_run_group(cmd, timeout=None, cwd=None, **k):
+        runs.append(cmd)
+        out = Path(cmd[cmd.index("--output-last-message") + 1])
+        mode = runs_mode[0]
+        if mode == "timeout":
+            out.write_text(json.dumps(good))
+            raise sp.TimeoutExpired(cmd, timeout, output="", stderr="")
+        out.write_text(json.dumps({**good, "verdict": "maybe"} if mode == "bad" else good))
+        return sp.CompletedProcess(cmd, 1 if mode == "exit1" else 0, "", "")
+    runs_mode = ["ok"]
+    traced = []
+    saved = _patch(us, run_group=fake_run_group, save_raw=lambda *a, **k: None, cli_check=lambda *a, **k: None,
+                   claude_traced=lambda args, trace, timeout, cwd=None, job="", where="": traced.pop(0))
+    try:
+        for mode, want in (("ok", good), ("exit1", None), ("timeout", None), ("bad", None)):
+            runs_mode[0] = mode
+            got = us.sol_session("p", us.SCHEMA_ASSESS, f"t-{mode}", tmp, "2026-11-21")
+            check(got == want, f"Sol の答えの採り方({mode}): {got}")
+        check("-s" in runs[0] and runs[0][runs[0].index("-s") + 1] == "read-only" and "--output-schema" in runs[0]
+              and runs[0][runs[0].index("-m") + 1] == us.SOL_MODEL, f"Sol の呼び方: {runs[0]}")
+        base = {"timed_out": False, "returncode": 0, "result": "", "seconds": 1, "cost": 0, "summary": "s"}
+        traced[:] = [{**base, "ok": True, "structured": good}, {**base, "ok": False, "structured": good},
+                     {**base, "ok": True, "structured": {**good, "targets": "x"}}, {**base, "ok": True, "structured": None, "result": json.dumps(good)}]
+        got = [us.opus_session("p", us.SCHEMA_ASSESS, f"o{i}", tmp, "2026-11-21") for i in range(4)]
+        check(got == [good, None, None, good], f"Opus の答えの採り方(正常・異常終了・schema 違反・本文の JSON): {got}")
     finally:
         _unpatch(us, saved)
 
@@ -8781,6 +8833,61 @@ def test_update_server_apply(tmp: Path):
         checks[:] = [(True, "/ 200")]
         r = us.apply_webapp(["Werkzeug==3.1.9"], "Flask==3.1.3\n", tmp)
         check(r["ok"] and restarts == [us.APP_UNIT], f"上げられたのに失敗とした: {r}")
+        # Sol 監査 r1: 入れる途中の例外(pip の時間切れ)でも戻す。戻しの例外は「戻せなかった」と返す
+        import subprocess as sp0
+
+        def raising_pip(*args, timeout=0):
+            pips.append(args)
+            if args[0] == "install" and "--dry-run" not in args and str(tmp / "freeze-before.txt") not in args:
+                raise sp0.TimeoutExpired(["pip"], 600)
+            return R(0, "Flask==3.1.3\n")
+        us.pip = raising_pip
+        pips.clear()
+        restarts.clear()
+        checks[:] = [(True, "/ 200")]
+        r = us.apply_webapp(["Werkzeug==3.1.9"], "Flask==3.1.3\n", tmp)
+        check(not r["ok"] and r["rolled_back"] and r["restored"] and any(str(tmp / "freeze-before.txt") in p for p in pips)
+              and "TimeoutExpired" in r["failure"], f"pip の時間切れで戻さない: {r} {pips}")
+
+        def rollback_raises(*args, timeout=0):
+            if str(tmp / "freeze-before.txt") in args:
+                raise OSError("disk")
+            return R(1 if args[0] == "install" and "--dry-run" not in args else 0, "x")
+        us.pip = rollback_raises
+        checks[:] = [(True, "/ 200")]
+        r = us.apply_webapp(["Werkzeug==3.1.9"], "Flask==3.1.3\n", tmp)
+        check(not r["ok"] and r["rolled_back"] and r["restored"] is False and "disk" in r["steps"][-1], f"戻しの例外で落ちた・戻せたとした: {r}")
+        # Sol 監査 r1: 入れ終わったときに発行の時間帯に入っていたら再起動せずに戻す。始める前は入れ替えの見込みの分まで待つ
+        us.pip = fake_pip
+        clock = [datetime.datetime(2026, 11, 21, 2, 20, tzinfo=JST)]     # 見込み(約 16 分)の内に 02:30 に掛かる
+        us.now_jst = lambda: clock[0]
+
+        def fake_sleep(s):
+            clock[0] += datetime.timedelta(seconds=s)
+        saved_sleep, us.time.sleep = us.time.sleep, fake_sleep
+        try:
+            restarts.clear()
+            checks[:] = [(True, "/ 200")]
+            r = us.apply_webapp(["Werkzeug==3.1.9"], "Flask==3.1.3\n", tmp)
+            check(r["ok"] and clock[0] >= datetime.datetime(2026, 11, 21, 7, 0, tzinfo=JST), f"02:20 から始めて発行の時間帯に掛かるのに待たない: {clock[0]} {r}")
+            check(us.quiet_wait_secs(datetime.datetime(2026, 11, 21, 10, 0, tzinfo=JST), us.QUIET_MARGIN) == 0
+                  and us.quiet_wait_secs(datetime.datetime(2026, 11, 21, 2, 29, tzinfo=JST), 60) > 4 * 3600
+                  and us.quiet_wait_secs(datetime.datetime(2026, 11, 21, 6, 59, tzinfo=JST), 0) == 60, "時間帯の待ちの秒")
+        finally:
+            us.time.sleep = saved_sleep
+        def slow_pip(*args, timeout=0):
+            if args[0] == "install" and "--dry-run" not in args and str(tmp / "freeze-before.txt") not in args:
+                clock[0] = datetime.datetime(2026, 11, 22, 2, 35, tzinfo=JST)      # 入れているあいだに時間帯に入った
+            return R(0, "Flask==3.1.3\n")
+        us.pip = slow_pip
+        clock[0] = datetime.datetime(2026, 11, 22, 1, 0, tzinfo=JST)
+        restarts.clear()
+        checks[:] = [(True, "/ 200")]
+        r = us.apply_webapp(["Werkzeug==3.1.9"], "Flask==3.1.3\n", tmp)
+        check(not r["ok"] and r["rolled_back"] and "発行の時間帯" in r["failure"] and restarts == [us.APP_UNIT],
+              f"入れ終わりが発行の時間帯なのに上げた版で再起動した: {r} {restarts}")
+        us.pip = fake_pip
+        us.now_jst = lambda: datetime.datetime(2026, 11, 21, 10, 0, tzinfo=JST)
         # ---- Caddy
         bin_dir = tmp / "bin"
         bin_dir.mkdir()
@@ -8819,11 +8926,27 @@ def test_update_server_apply(tmp: Path):
         (repo / "webapp" / "requirements.txt").write_text("Flask==3.1.3\n")
         for c in (["init", "-q"], ["add", "-A"], ["-c", "user.email=t@t", "-c", "user.name=t", "commit", "-qm", "i"]):
             sp.run(["git", *c], cwd=repo, check=True, capture_output=True)
+        def stage_then_fail(branch, msg, job, paths=None):
+            # pipelib.commit_and_push は stage してから commit に失敗しうる(Sol 監査 r1)
+            sp.run(["git", "add", "-A", "--", *paths], cwd=repo, check=True)
+            return False
         saved3 = _patch(us, ROOT=repo, job_lock=lambda job, wait_min=0: None, checkout_edition_branch=lambda d, j: True,
-                        commit_and_push=lambda *a, **k: False, edition_date=lambda: "2026-11-22")
+                        commit_and_push=stage_then_fail, edition_date=lambda: "2026-11-22")
         try:
             why = us.commit_change(us.REQUIREMENTS_REPO, "Flask==3.1.4\n", "m")
-            check(why and (repo / "webapp" / "requirements.txt").read_text() == "Flask==3.1.3\n", f"commit の失敗で書きかけを残した: {why}")
+            st = sp.run(["git", "status", "--porcelain"], cwd=repo, capture_output=True, text=True).stdout
+            check(why and (repo / "webapp" / "requirements.txt").read_text() == "Flask==3.1.3\n" and not st.strip(),
+                  f"commit の失敗で書きかけ・stage を残した: {why} {st!r}")
+
+            def commit_then_push_fails(branch, msg, job, paths=None):
+                sp.run(["git", "add", "-A", "--", *paths], cwd=repo, check=True)
+                sp.run(["git", "-c", "user.email=t@t", "-c", "user.name=t", "commit", "-qm", msg], cwd=repo, check=True)
+                return False
+            us.commit_and_push = commit_then_push_fails
+            why = us.commit_change(us.REQUIREMENTS_REPO, "Flask==3.1.5\n", "m")
+            check(why == "" and (repo / "webapp" / "requirements.txt").read_text() == "Flask==3.1.5\n",
+                  f"commit できて push だけ失敗したのに戻した: {why!r}")
+            us.commit_and_push = stage_then_fail
             us.checkout_edition_branch = lambda d, j: False
             check("checkout" in us.commit_change(us.REQUIREMENTS_REPO, "x\n", "m"), "checkout できないのに書いた")
             pushed = []
@@ -22797,6 +22920,7 @@ def main() -> int:
     test_update_server_council(tmp / "usc")
     test_update_server_apply(tmp / "usa")
     test_update_server_run(tmp / "usr")
+    test_update_server_sessions(tmp / "uss")
     test_git_commit_push_checkout(tmp / "gcp")
     test_grok_face_retry(tmp / "gr")
     test_grok_format_matches_parser()

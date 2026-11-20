@@ -3286,7 +3286,7 @@ PATH_FORM_HOSTS = ("krs.bz",)
 
 def query_doc_key(url: str) -> str | None:
     """クエリの id で文書が決まる URL なら、判定表に書く文書のキー(`<host>/pages/responsepage.aspx?id=<ID>`、
-    YouTube の再生リストは `youtube.com/playlist?list=<ID>`)。それ以外は None。"""
+    YouTube の再生リストは `youtube.com/playlist?list=<ID>`、コミュニティ投稿は `youtube.com/post/<ID>`)。それ以外は None。"""
     import urllib.parse
     u = urllib.parse.urlparse(url if "//" in url else "//" + url)
     host = (u.hostname or "").removeprefix("www.")
@@ -3295,6 +3295,11 @@ def query_doc_key(url: str) -> str | None:
         # (classify_sources.resolve_playlists)。キーは `youtube.com/playlist?list=<ID>`(`&si=` などは含めない)
         ids = urllib.parse.parse_qs(u.query).get("list") or []
         return f"youtube.com/playlist?list={ids[0]}" if len(ids) == 1 and re.fullmatch(r"[A-Za-z0-9_-]{10,}", ids[0]) else None
+    if host.removeprefix("m.") == "youtube.com" and u.path.startswith("/post/"):
+        # YouTube のコミュニティ投稿も、ID の1つずつが1つの文書で、種別は投稿したチャンネルを写す(再生リストと同じ。
+        # 2026-11-20: `youtube.com/post/<ID>` にパーサが無く、公式の投稿が未確認のまま紙面に載った)。キーは `youtube.com/post/<ID>`
+        seg = [s for s in u.path.split("/") if s]
+        return f"youtube.com/post/{seg[1]}" if len(seg) == 2 and re.fullmatch(r"[A-Za-z0-9_-]{20,}", seg[1]) else None
     page = QUERY_DOC_PAGES.get(host)
     if not page or u.path.rstrip("/").lower() != page:
         return None

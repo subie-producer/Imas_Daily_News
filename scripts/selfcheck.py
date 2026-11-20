@@ -107,6 +107,7 @@ def check(path: Path) -> list[str]:
 # 回帰テストの時間の上限(秒)。手元の実測は 9〜17 分。止まったテストを待ち続けない(2026-10-27: watch の selfcheck の下でテストが
 # 終わらず 7 時間半走り、6.4G を使って OOM で殺された。そのあいだ機械が止まり 12:30 の収集も起動しなかった)
 TEST_TIMEOUT_SEC = 45 * 60
+FAILS_SHOWN = 5     # 赤のとき結果の文に載せる、落ちた検査の数
 
 
 def run_tests() -> tuple[str, str]:
@@ -124,7 +125,14 @@ def run_tests() -> tuple[str, str]:
     out = (r.stdout or "") + (r.stderr or "")
     if r.returncode == 0:
         return "", out
-    return ("回帰テストが赤" if r.returncode > 0 else f"回帰テストがシグナル {-r.returncode} で止まった"), out
+    if r.returncode < 0:
+        return f"回帰テストがシグナル {-r.returncode} で止まった", out
+    # 落ちた検査の文を結果の文に載せる。載せないと監視の通知が「赤」だけになり、出力はどこにも残らないので、どれが落ちたか
+    # 後から分からない(2026-11-20: 朝の監視の赤を、手元で走らせ直しても突き止められなかった)
+    fails = [l.strip().removeprefix("[FAIL]").strip() for l in out.splitlines() if l.strip().startswith("[FAIL]")]
+    shown = "; ".join(f[:200] for f in fails[:FAILS_SHOWN])
+    more = f" ほか {len(fails) - FAILS_SHOWN} 件" if len(fails) > FAILS_SHOWN else ""
+    return (f"回帰テストが赤({len(fails)} 件: {shown}{more})" if fails else "回帰テストが赤"), out
 
 
 def main() -> int:

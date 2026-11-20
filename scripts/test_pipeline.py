@@ -9891,6 +9891,18 @@ def test_carry_late_candidates(tmp: Path):
     own = compose.own_artifacts("2026-10-11")
     check("metrics/candidates-read-2026-10-11.json" in own and "candidates/2026-10-11.json" in own,
           "途中終了の commit に選定記録・写した候補が含まれない")
+    # compose がその号の日付で metrics に書くファイルは、git が無視するもの以外すべて途中終了の commit に入る。漏れると
+    # 作業ツリーに残り、発行と収集が「未コミットの変更がある」で止まる(実測 2026-11-20: 認証切れで選定の途中で止まり、
+    # plan-events が残って 11/20 号が出なかった)
+    import fnmatch
+    root = Path(compose.__file__).resolve().parent.parent
+    written = set(re.findall(r'"metrics" / f"([^"]*\{date\}[^"]*)"', inspect.getsource(compose)))
+    check(len(written) >= 10, f"compose が metrics に書くファイルを拾えていない: {sorted(written)}")
+    for pat in sorted(written):
+        path = "metrics/" + re.sub(r"\{[^}]+\}", "x", pat.replace("{date}", "2026-10-11"))
+        ignored = subprocess.run(["git", "check-ignore", "-q", "--no-index", path], cwd=root).returncode == 0
+        check(ignored or any(fnmatch.fnmatch(path, g) for g in own),
+              f"compose が書く {path} が途中終了の commit(own_artifacts)に入らない")
 
 
 def test_oncall_ensure_edition(tmp: Path):

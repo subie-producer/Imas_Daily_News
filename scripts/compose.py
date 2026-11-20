@@ -4904,7 +4904,7 @@ def own_artifacts(date: str) -> list[str]:
             f"metrics/plan-{date}*.json", f"metrics/plan-lead-{date}.json", f"metrics/review-{date}-*.json",
             f"metrics/stories-before-{date}.yml", f"metrics/pending-before-{date}.yml", f"metrics/{date}.json",
             f"metrics/candidates-read-{date}.json", f"candidates/{date}.json", f"metrics/drops-{date}.json",
-            f"metrics/factmap-{date}.json",
+            f"metrics/factmap-{date}.json", f"metrics/plan-events-{date}-*.json",
             "stock/stories.yml", "stock/pending.yml", "stock/scheduled/*.json", "stock/columnist.md"]
 
 

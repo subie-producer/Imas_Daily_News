@@ -80,10 +80,11 @@ CHECK_LIMIT = CHECK_WAIT + EXTERNAL_TIMEOUT    # check_http 全体の上限
 JOURNAL_TIMEOUT = 60          # 失敗の記録に添える journal の読み取りの上限
 # 入れ替え1回(または戻し1回)の各段の上限の合計: pip+再起動+確認+journal。Caddy の差し替えは pip より短いので同じ見込みで足りる
 SWAP_STEP = PIP_TIMEOUT + RESTART_TIMEOUT + CHECK_LIMIT + JOURNAL_TIMEOUT
-# 障壁を外した上げ直しで、ロックを持ったまま行う git の通信(fetch・push と再試行)の上限の見込み。ssh に接続の上限と死活の確認を
-# 付けて(GIT_SSH_BOUND)、止まった通信を約 1 分で切る。pipelib.git_net の再試行(5回・間 4〜16 秒)を fetch と push で見込む(Sol 監査 r8)
+# 障壁を外した上げ直しで、ロックを持ったまま行う git の通信。1段(checkout の fetch と再試行 / commit の push と pull --rebase と再試行)
+# を子プロセスで走らせ、GIT_STEP_TIMEOUT 秒で子孫ごと打ち切る。ssh にも接続の上限と死活の確認を付け、切れた通信は早く諦める(Sol 監査 r8・r9)
 GIT_SSH_BOUND = "ssh -o ConnectTimeout=30 -o ServerAliveInterval=15 -o ServerAliveCountMax=4 -o BatchMode=yes"
-GIT_LOCK_MARGIN = 15 * 60
+GIT_STEP_TIMEOUT = 7 * 60
+GIT_LOCK_MARGIN = 2 * GIT_STEP_TIMEOUT + 60      # checkout と commit の2段+余裕
 QUIET_MARGIN = 2 * SWAP_STEP + GIT_LOCK_MARGIN + 300     # 入れ替え+戻し+ロック中の git+余裕(約 51 分。Sol 監査 r5・r6・r8: 各段の上限から積む)
 # この回の持ち時間(unit の TimeoutStartSec 12h より短く)。入れ替えは、待ち・入れ替え・戻しがこの内に収まるときだけ始める(Sol 監査 r2)
 RUN_BUDGET = 11 * 3600
@@ -813,22 +814,23 @@ def change_on_branch(rel: Path, expect: str, text: str, message: str, apply) -> 
     - 原本と違えば入れ替えずに失敗にする(次の回に今の中身で評価し直す)
     - commit できずに終わったら、index と作業ツリーの rel を HEAD に戻す(stage したまま残すと、次の収集・組版の checkout が
       未コミットの変更で止まる。Sol 監査 r1)。commit できて push だけ失敗したときは戻さない(次の工程の checkout が送る)
-    - 自分が rel を書き換える前の失敗(ロック・checkout)では何も戻さない(他の工程の変更を消す。Sol 監査 r2)"""
+    - 自分が rel を書き換える前の失敗(ロック・checkout)では何も戻さない(他の工程の変更を消す。Sol 監査 r2)
+    - text が expect と同じ(書き換えない通常の上げ方)なら checkout も commit もせず、ロックの中で作業ツリーの原本を確かめて apply する。
+      発行の deploy もこのロックを持って venv に依存を入れるので、重ならず、待つあいだに deploy が入れた依存を古い全文で戻さない(Sol 監査 r9)
+    - git の通信(checkout の fetch・commit の push)は子プロセス(git_step)で走らせ、全体の期限で子孫ごと打ち切る(Sol 監査 r8・r9)"""
     fd = None
     head = ""
     wrote = False
     r: dict | None = None
-    # ロックを持つあいだの git の通信(checkout の fetch・commit の push)に上限を付ける(止まると 03:00 の組版・06:00 の発行がロックを
-    # 取れない。Sol 監査 r8)。git は環境変数を子に引き継ぐ。ほかで指定があればそれを使う
-    saved_ssh = os.environ.get("GIT_SSH_COMMAND")
-    os.environ["GIT_SSH_COMMAND"] = saved_ssh or GIT_SSH_BOUND
     try:
         # 発行の時間帯の待ちは、ロックの外の入口(guarded)で済ませる。ロックの中では待たない(ロックを持ったまま待つと、03:00 の組版・
         # 06:00 の発行がロックを取れない。Sol 監査 r4・r5)。ロック待ちは停止の要求を受けたらやめる(待ち終えてから停止の直前に入れ替えを始めない。Sol 監査 r4)
         fd = job_lock(JOB, wait_min=0, wait_fn=lambda t0: 0 if TERM_PENDING else LOCK_WAIT_MIN)
         date = edition_date()
-        if not checkout_edition_branch(date, JOB):
-            return not_started(f"edition/{date} を checkout できない(入れ替えていない)")
+        if text != expect:
+            ok, why = git_step("checkout", date)
+            if not ok:
+                return not_started(f"edition/{date} を checkout できない(入れ替えていない): {why}")
         path = ROOT / rel
         cur = path.read_text(encoding="utf-8")
         if cur != expect:
@@ -842,12 +844,13 @@ def change_on_branch(rel: Path, expect: str, text: str, message: str, apply) -> 
         head = _head()
         wrote = True
         path.write_text(text, encoding="utf-8")
-        if not commit_and_push(f"edition/{date}", message, JOB, paths=[str(rel)]):
+        ok, why = git_step("commit", date, str(rel), message)
+        if not ok:
             if _committed(head, rel, text):
                 r["steps"].append(f"{rel} を edition/{date} に commit したが push できない(次の工程の checkout が送る)")
                 return r
             _restore(rel)
-            msg = f"🚨 {rel} の edition/{date} への commit に失敗(index と作業ツリーは元に戻した。動いている版は上げたまま)"
+            msg = f"🚨 {rel} の edition/{date} への commit に失敗(index と作業ツリーは元に戻した。動いている版は上げたまま): {why}"
             r["steps"].append(msg)
             return {**r, "ok": False, "failure": msg}
         r["steps"].append(f"{rel} を edition/{date} に commit した")
@@ -863,10 +866,36 @@ def change_on_branch(rel: Path, expect: str, text: str, message: str, apply) -> 
     finally:
         if fd is not None:
             os.close(fd)
-        if saved_ssh is None:
-            os.environ.pop("GIT_SSH_COMMAND", None)
-        else:
-            os.environ["GIT_SSH_COMMAND"] = saved_ssh
+
+
+def git_step(kind: str, *args: str) -> tuple[bool, str]:
+    """git の通信を伴う1段を子プロセス(この scripts の --git-step)で走らせ、GIT_STEP_TIMEOUT 秒で子孫ごと打ち切る(ssh の死活の確認に
+    応えながら git だけが止まる場合も切る。Sol 監査 r9)。親が持つ作業ツリーのロックは子に引き継ぐ(IMAS_JOB_LOCK=held)。
+    打ち切ったら、殺した git が残した .git/index.lock を消す(ロックを持っているので、ほかの工程の git ではない)。戻りは (成功か, 説明)。"""
+    env = {**os.environ, "IMAS_JOB_LOCK": "held", "GIT_SSH_COMMAND": os.environ.get("GIT_SSH_COMMAND") or GIT_SSH_BOUND}
+    cmd = [sys.executable, str(Path(__file__).resolve()), "--git-step", kind, *args]
+    try:
+        r = run_group(cmd, timeout=GIT_STEP_TIMEOUT, cwd=ROOT, env=env)
+    except subprocess.TimeoutExpired:
+        lock = ROOT / ".git" / "index.lock"
+        try:
+            lock.unlink(missing_ok=True)
+        except OSError as e:
+            say(f"({lock} を消せない: {e})")
+        return False, f"git の {kind} が {GIT_STEP_TIMEOUT} 秒で終わらず、子孫ごと打ち切った"
+    tail = ((r.stdout or "") + (r.stderr or "")).strip()[-300:]
+    return r.returncode == 0, tail
+
+
+def git_step_main(kind: str, args: list[str]) -> int:
+    """--git-step の子プロセスの本体(git_step から呼ばれる)。"""
+    if kind == "checkout" and len(args) == 1:
+        return 0 if checkout_edition_branch(args[0], JOB) else 1
+    if kind == "commit" and len(args) == 3:
+        date, rel, message = args
+        return 0 if commit_and_push(f"edition/{date}", message, JOB, paths=[rel]) else 1
+    say(f"--git-step の引数が違う: {kind} {args}")
+    return 2
 
 
 def _head() -> str:
@@ -1214,7 +1243,9 @@ def handle_webapp(pkgs: dict, latest: dict, req_text: str, padv: dict, work: Pat
     materials = write_materials(work, "webapp", webapp_head(pkgs, req_text, latest), advs)
 
     def apply_fn(targets, _):
-        return apply_webapp(targets, req_text, work)
+        # 書き換えない通常の上げ方も、作業ツリーのロックの中で requirements.txt が評価のときのままかを確かめてから入れる
+        # (発行の deploy と重ならず、待つあいだに deploy が入れた依存を古い全文で戻さない。Sol 監査 r9)
+        return change_on_branch(REQUIREMENTS_REPO, req_text, req_text, "", lambda: apply_webapp(targets, req_text, work))
 
     def barrier_fn(targets, proposal):
         new_req = edit_requirements(req_text, proposal["requirements"])
@@ -1242,7 +1273,10 @@ def nofix(state: dict, component: str, advs: list[dict], head: str) -> None:
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--check", action="store_true", help="調べて表示するだけ(通知・合議・更新をしない)")
+    ap.add_argument("--git-step", nargs="+", help=argparse.SUPPRESS)      # git_step が子プロセスとして呼ぶ
     args = ap.parse_args()
+    if args.git_step:
+        return git_step_main(args.git_step[0], args.git_step[1:])
     global RUN_DEADLINE
     if not args.check:
         RUN_DEADLINE = time.time() + RUN_BUDGET

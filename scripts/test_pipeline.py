@@ -9107,8 +9107,11 @@ def test_update_server_apply(tmp: Path):
             # pipelib.commit_and_push は stage してから commit に失敗しうる(Sol 監査 r1)
             sp.run(["git", "add", "-A", "--", *paths], cwd=repo, check=True)
             return False
+        # git の通信の段(子プロセス)は、同じ本体(git_step_main)を手元で呼ぶ形に差し替える。子プロセスの打ち切りは下で本物を検める
+        git_steps = []
         saved3 = _patch(us, ROOT=repo, job_lock=lambda job, wait_min=0, wait_fn=None: None, checkout_edition_branch=lambda d, j: True,
-                        commit_and_push=stage_then_fail, edition_date=lambda: "2026-11-22")
+                        commit_and_push=stage_then_fail, edition_date=lambda: "2026-11-22",
+                        git_step=lambda kind, *a: git_steps.append(kind) or (us.git_step_main(kind, list(a)) == 0, ""))
         applied = []
         ok_apply = lambda: applied.append(1) or {"ok": True, "steps": ["上げた"], "failure": "", "rolled_back": False}
         req = lambda: (repo / "webapp" / "requirements.txt").read_text()
@@ -9202,28 +9205,53 @@ def test_update_server_apply(tmp: Path):
                 # 停止の要求で、ロック待ちの上限が 0 になる(待ちをやめる)
                 got_fn = []
                 us.job_lock = lambda job, wait_min=0, wait_fn=None: got_fn.append((wait_min, wait_fn)) or None
-                ssh_seen = []
-                us.checkout_edition_branch = lambda d, j: ssh_seen.append(os.environ.get("GIT_SSH_COMMAND")) or True
-                saved_env = os.environ.pop("GIT_SSH_COMMAND", None)
-                try:
-                    us.change_on_branch(us.REQUIREMENTS_REPO, "Flask==3.1.4\n", "Flask==3.1.4\n", "m", ok_apply)
-                    # Sol 監査 r8: ロックを持つあいだの git の通信(fetch・push)に上限を付け、終わったら元に戻す
-                    check(ssh_seen == [us.GIT_SSH_BOUND] and "GIT_SSH_COMMAND" not in os.environ,
-                          f"ロック中の git の通信に上限が無い・環境を戻さない: {ssh_seen}")
-                finally:
-                    if saved_env is not None:
-                        os.environ["GIT_SSH_COMMAND"] = saved_env
-                    us.checkout_edition_branch = lambda d, j: True
+                us.change_on_branch(us.REQUIREMENTS_REPO, "Flask==3.1.4\n", "Flask==3.1.4\n", "m", ok_apply)
                 before_term = got_fn[0][1](0)
                 us.TERM_PENDING = True
                 check(got_fn[0][0] == 0 and before_term == us.LOCK_WAIT_MIN and got_fn[0][1](0) == 0,
                       f"停止の要求でロック待ちをやめない: {got_fn} {before_term}")
+                us.TERM_PENDING = False
+                # Sol 監査 r9: 書き換えない通常の上げ方は、checkout・commit をせず、ロックの中で作業ツリーの原本を確かめてから入れる
+                us.job_lock = lambda job, wait_min=0, wait_fn=None: None
+                git_steps.clear()
+                applied.clear()
+                r = us.change_on_branch(us.REQUIREMENTS_REPO, "Flask==3.1.0\n", "Flask==3.1.0\n", "", ok_apply)
+                check(not r["ok"] and not applied and not git_steps and "変わっていた" in r["failure"],
+                      f"待つあいだに変わった requirements の古い全文で入れた・通常の上げ方で git を動かした: {r} {git_steps}")
+                r = us.change_on_branch(us.REQUIREMENTS_REPO, req(), req(), "", ok_apply)
+                check(r["ok"] and applied and not git_steps, f"通常の上げ方で原本が同じなのに入れない・git を動かした: {r} {git_steps}")
             finally:
                 us.TERM_PENDING = False
                 us.time.sleep = saved_sleep2
                 us.now_jst = lambda: datetime.datetime(2026, 11, 21, 10, 0, tzinfo=JST)
         finally:
             _unpatch(us, saved3)
+        # Sol 監査 r9: git の通信の段は子プロセスで走らせ、期限で子孫ごと打ち切り、殺した git の index.lock を消す。ロックと ssh の上限を渡す
+        gdir = tmp / "gitstep"
+        (gdir / ".git").mkdir(parents=True)
+        # 子として走らせるスクリプト(git_step は自分の __file__ を --git-step で起こす)を、止まる子(孫に sleep を持つ)に差し替える
+        saved4 = _patch(us, ROOT=gdir, GIT_STEP_TIMEOUT=1, __file__=str(gdir / "hang.py"))
+        try:
+            (gdir / ".git" / "index.lock").write_text("")
+            (gdir / "hang.py").write_text("import subprocess, time\nsubprocess.Popen(['sleep', '30'])\ntime.sleep(30)\n")
+            t0 = _t_real.monotonic()
+            ok_g, why_g = us.git_step("checkout", "2026-11-22")
+            el = _t_real.monotonic() - t0
+            check(not ok_g and el < 10 and "打ち切った" in why_g and not (gdir / ".git" / "index.lock").exists(),
+                  f"止まった git の段を期限で打ち切らない・index.lock を残した: {ok_g} {why_g} {el:.1f}秒")
+            env_probe = gdir / "env.py"
+            env_probe.write_text("import os\nprint(os.environ.get('IMAS_JOB_LOCK'), '|', os.environ.get('GIT_SSH_COMMAND'))\n")
+            us.__file__ = str(env_probe)
+            us.GIT_STEP_TIMEOUT = 30
+            saved_env = os.environ.pop("GIT_SSH_COMMAND", None)
+            try:
+                ok_g, out_g = us.git_step("checkout", "2026-11-22")
+            finally:
+                if saved_env is not None:
+                    os.environ["GIT_SSH_COMMAND"] = saved_env
+            check(ok_g and out_g.startswith("held |") and us.GIT_SSH_BOUND in out_g, f"子にロックと ssh の上限を渡さない: {out_g!r}")
+        finally:
+            _unpatch(us, saved4)
     finally:
         _unpatch(us, saved)
 

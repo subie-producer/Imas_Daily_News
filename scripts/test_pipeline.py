@@ -14296,6 +14296,14 @@ def test_youtube_post_owner(tmp: Path):
           and calls == [f"https://www.youtube.com/post/{pid}"], f"投稿のページの持ち主: {calls}")
     check(cs.post_author(pid, fetch=lambda u: page("imas-official", "somefan"))[0] == "", "投稿者が1つに決まらないのに持ち主にした")
     check(cs.post_author(pid, fetch=lambda u: page())[0] == "", "authorEndpoint の無いページで、ほかのチャンネルを持ち主にした")
+    # キーの並びが違う authorEndpoint の投稿者も数える(Sol 監査 noon r1: 並びの違う @somefan を見落として公式にした)
+    swapped = page("imas-official") + ('"authorEndpoint":{"commandMetadata":{"webCommandMetadata":{"url":"/@somefan"}},'
+                                       '"clickTrackingParams":"y","browseEndpoint":{"canonicalBaseUrl":"/@somefan"}},')
+    check(cs.post_author(pid, fetch=lambda u: swapped)[0] == "", "キーの並びの違う別の投稿者を見落として持ち主にした")
+    # ハンドルの無い・読めない authorEndpoint があれば決まらない
+    for broken in ('"authorEndpoint":{"browseEndpoint":{"browseId":"UCabc"}},', '"authorEndpoint":{"commandMetadata":'):
+        check(cs.post_author(pid, fetch=lambda u: page("imas-official") + broken)[0] == "",
+              f"読めない authorEndpoint を無視して持ち主にした: {broken}")
     check(cs.post_author(pid, fetch=lambda u: (_ for _ in ()).throw(OSError("404")))[0] == "", "取得の失敗で持ち主を返した")
     tmp.mkdir(parents=True, exist_ok=True)
     (tmp / "candidates").mkdir(exist_ok=True)

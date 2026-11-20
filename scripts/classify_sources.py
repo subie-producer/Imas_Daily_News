@@ -1566,8 +1566,25 @@ def post_author(post_id: str, fetch=None) -> tuple[str, str]:
     except Exception as e:
         print(f"  投稿のページを取得できず {post_id}: {type(e).__name__}", flush=True)
         return "", ""
-    handles = set(re.findall(r'"authorEndpoint":\{"clickTrackingParams":"[^"]*","commandMetadata":\{"webCommandMetadata":'
-                             r'\{"url":"/@([^"/]+)"', html))
+    # authorEndpoint の中身は JSON として読む(キーの並びに頼ると、並びの違う別の投稿者を見落とす。Sol 監査 noon r1)。
+    # 1つでも読めない・ハンドルの無い authorEndpoint があれば、投稿者は決まらないことにする
+    handles: set[str] = set()
+    dec = json.JSONDecoder()
+    for m in re.finditer(r'"authorEndpoint"\s*:\s*', html):
+        try:
+            ep, _ = dec.raw_decode(html, m.end())
+        except ValueError:
+            ep = None
+        found = set()
+        if isinstance(ep, dict):
+            for u in ((((ep.get("commandMetadata") or {}).get("webCommandMetadata") or {}).get("url")),
+                      ((ep.get("browseEndpoint") or {}).get("canonicalBaseUrl"))):
+                if isinstance(u, str) and re.fullmatch(r"/@[^/\"?#]+", u):
+                    found.add(u[2:])
+        if len(found) != 1:
+            print(f"  投稿のページの authorEndpoint から投稿者を読めない {post_id}: {sorted(found)}", flush=True)
+            return "", ""
+        handles |= found
     if len(handles) != 1:
         print(f"  投稿のページから投稿者が1つに決まらない {post_id}: {sorted(handles)}", flush=True)
         return "", ""

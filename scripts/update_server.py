@@ -80,7 +80,11 @@ CHECK_LIMIT = CHECK_WAIT + EXTERNAL_TIMEOUT    # check_http 全体の上限
 JOURNAL_TIMEOUT = 60          # 失敗の記録に添える journal の読み取りの上限
 # 入れ替え1回(または戻し1回)の各段の上限の合計: pip+再起動+確認+journal。Caddy の差し替えは pip より短いので同じ見込みで足りる
 SWAP_STEP = PIP_TIMEOUT + RESTART_TIMEOUT + CHECK_LIMIT + JOURNAL_TIMEOUT
-QUIET_MARGIN = 2 * SWAP_STEP + 300     # 入れ替え+戻し+余裕(約 36 分。Sol 監査 r5・r6: 各段の上限から積む)
+# 障壁を外した上げ直しで、ロックを持ったまま行う git の通信(fetch・push と再試行)の上限の見込み。ssh に接続の上限と死活の確認を
+# 付けて(GIT_SSH_BOUND)、止まった通信を約 1 分で切る。pipelib.git_net の再試行(5回・間 4〜16 秒)を fetch と push で見込む(Sol 監査 r8)
+GIT_SSH_BOUND = "ssh -o ConnectTimeout=30 -o ServerAliveInterval=15 -o ServerAliveCountMax=4 -o BatchMode=yes"
+GIT_LOCK_MARGIN = 15 * 60
+QUIET_MARGIN = 2 * SWAP_STEP + GIT_LOCK_MARGIN + 300     # 入れ替え+戻し+ロック中の git+余裕(約 51 分。Sol 監査 r5・r6・r8: 各段の上限から積む)
 # この回の持ち時間(unit の TimeoutStartSec 12h より短く)。入れ替えは、待ち・入れ替え・戻しがこの内に収まるときだけ始める(Sol 監査 r2)
 RUN_BUDGET = 11 * 3600
 RUN_DEADLINE: float | None = None      # main が起動の時刻+RUN_BUDGET を入れる(テスト・--check では無し)
@@ -814,6 +818,10 @@ def change_on_branch(rel: Path, expect: str, text: str, message: str, apply) -> 
     head = ""
     wrote = False
     r: dict | None = None
+    # ロックを持つあいだの git の通信(checkout の fetch・commit の push)に上限を付ける(止まると 03:00 の組版・06:00 の発行がロックを
+    # 取れない。Sol 監査 r8)。git は環境変数を子に引き継ぐ。ほかで指定があればそれを使う
+    saved_ssh = os.environ.get("GIT_SSH_COMMAND")
+    os.environ["GIT_SSH_COMMAND"] = saved_ssh or GIT_SSH_BOUND
     try:
         # 発行の時間帯の待ちは、ロックの外の入口(guarded)で済ませる。ロックの中では待たない(ロックを持ったまま待つと、03:00 の組版・
         # 06:00 の発行がロックを取れない。Sol 監査 r4・r5)。ロック待ちは停止の要求を受けたらやめる(待ち終えてから停止の直前に入れ替えを始めない。Sol 監査 r4)
@@ -855,6 +863,10 @@ def change_on_branch(rel: Path, expect: str, text: str, message: str, apply) -> 
     finally:
         if fd is not None:
             os.close(fd)
+        if saved_ssh is None:
+            os.environ.pop("GIT_SSH_COMMAND", None)
+        else:
+            os.environ["GIT_SSH_COMMAND"] = saved_ssh
 
 
 def _head() -> str:

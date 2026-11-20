@@ -8877,10 +8877,15 @@ def test_update_server_apply(tmp: Path):
         # Sol 監査 r7: 1回の要求は、応答しない・少しずつ届く相手でも上限で打ち切る(本物の curl を手元の黙るサーバーに当てる)
         import socket as _so
         import threading as _th
-        srv = _so.socket()
-        srv.bind(("127.0.0.1", 0))
-        srv.listen(4)
         held = []
+        try:
+            srv = _so.socket()
+            srv.bind(("127.0.0.1", 0))
+            srv.listen(4)
+        except OSError as e:
+            # ソケットを禁じた環境(監査の砂場など)では、この実測だけを飛ばしたと明示して先へ進む(Sol 監査 r8 の later)
+            print(f"[SKIP] curl の要求全体の上限の実測: 手元にソケットを開けない({type(e).__name__}: {e})", flush=True)
+            srv = None
 
         def silent():
             while True:
@@ -8903,20 +8908,23 @@ def test_update_server_apply(tmp: Path):
                             return
                         _t_real.sleep(0.5)
                 _th.Thread(target=drip, daemon=True).start()
-        _th.Thread(target=silent, daemon=True).start()
-        try:
-            t0 = _t_real.monotonic()
-            code = us.get_status(f"http://127.0.0.1:{srv.getsockname()[1]}/", timeout=1.5)
-            el = _t_real.monotonic() - t0
-            check(code == 0 and el < 4.0, f"黙る相手への要求が上限で打ち切られない: {el:.1f} 秒・{code}")
-        finally:
-            srv.close()
-            for c in held:
-                c.close()
-        # Sol 監査 r7: 停止の猶予(TimeoutStopSec)は、確認の途中で止められたときの残り+戻しの各段の上限より長い
+        if srv is not None:
+            _th.Thread(target=silent, daemon=True).start()
+            try:
+                t0 = _t_real.monotonic()
+                code = us.get_status(f"http://127.0.0.1:{srv.getsockname()[1]}/", timeout=1.5)
+                el = _t_real.monotonic() - t0
+                check(code == 0 and el < 4.0, f"黙る相手への要求が上限で打ち切られない: {el:.1f} 秒・{code}")
+            finally:
+                srv.close()
+                for c in held:
+                    c.close()
+        # Sol 監査 r7・r8: 停止の猶予(TimeoutStopSec)は、確認の途中で止められたときの残り+戻し+ロック中の git の上限より長い
         unit = (Path(us.__file__).resolve().parent.parent / "ops" / "systemd" / "imas-server.service").read_text()
         m_stop = re.search(r"(?m)^TimeoutStopSec=(\d+)min$", unit)
-        check(m_stop and int(m_stop.group(1)) * 60 >= 2 * us.SWAP_STEP + 60, f"停止の猶予が戻しの分より短い: {m_stop and m_stop.group(0)}")
+        check(m_stop and int(m_stop.group(1)) * 60 >= 2 * us.SWAP_STEP + us.GIT_LOCK_MARGIN + 60,
+              f"停止の猶予が戻しとロック中の git の分より短い: {m_stop and m_stop.group(0)}")
+        check(us.QUIET_MARGIN >= 2 * us.SWAP_STEP + us.GIT_LOCK_MARGIN, f"見込みにロック中の git の分が無い: {us.QUIET_MARGIN}")
         # Sol 監査 r1: 入れる途中の例外(pip の時間切れ)でも戻す。戻しの例外は「戻せなかった」と返す
         import subprocess as sp0
 
@@ -9194,7 +9202,18 @@ def test_update_server_apply(tmp: Path):
                 # 停止の要求で、ロック待ちの上限が 0 になる(待ちをやめる)
                 got_fn = []
                 us.job_lock = lambda job, wait_min=0, wait_fn=None: got_fn.append((wait_min, wait_fn)) or None
-                us.change_on_branch(us.REQUIREMENTS_REPO, "Flask==3.1.4\n", "Flask==3.1.4\n", "m", ok_apply)
+                ssh_seen = []
+                us.checkout_edition_branch = lambda d, j: ssh_seen.append(os.environ.get("GIT_SSH_COMMAND")) or True
+                saved_env = os.environ.pop("GIT_SSH_COMMAND", None)
+                try:
+                    us.change_on_branch(us.REQUIREMENTS_REPO, "Flask==3.1.4\n", "Flask==3.1.4\n", "m", ok_apply)
+                    # Sol 監査 r8: ロックを持つあいだの git の通信(fetch・push)に上限を付け、終わったら元に戻す
+                    check(ssh_seen == [us.GIT_SSH_BOUND] and "GIT_SSH_COMMAND" not in os.environ,
+                          f"ロック中の git の通信に上限が無い・環境を戻さない: {ssh_seen}")
+                finally:
+                    if saved_env is not None:
+                        os.environ["GIT_SSH_COMMAND"] = saved_env
+                    us.checkout_edition_branch = lambda d, j: True
                 before_term = got_fn[0][1](0)
                 us.TERM_PENDING = True
                 check(got_fn[0][0] == 0 and before_term == us.LOCK_WAIT_MIN and got_fn[0][1](0) == 0,

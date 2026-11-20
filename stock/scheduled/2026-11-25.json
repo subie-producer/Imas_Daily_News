@@ -1299,5 +1299,78 @@
   "verify": "confirmed",
   "event_date": "2026-11-25",
   "src_candidate_id": "202611190229-grok-50"
+ },
+ {
+  "id": "sched-2026-11-25-hatsuboshi-radio-2026-11-25-開始",
+  "dedup_key": "hatsuboshi-radio-2026-11-25",
+  "brand": "gaku",
+  "subject": "初星学園放送部 11月25日放送回",
+  "kind": "開始",
+  "note": "ゲスト回の放送を聴ける日",
+  "reserved_on": "2026-11-20",
+  "occurs_on": "2026-11-25",
+  "title": "初星学園放送部 11月25日放送回ゲスト募集",
+  "url": "https://x.com/gkmas_official/status/2123290286793302269",
+  "source_type": "公式",
+  "facts": [
+   "11月25日放送回のゲストは安倍彩野夏さん（氷渡香名江役）。",
+   "11月25日放送回のゲストは伊藤舞音さん（倉本千奈役）。",
+   "安倍彩野夏さんへの「初星Q＆A」の質問を受付中。",
+   "募集締切は「金曜午前まで」と告知された。",
+   "お便り投稿フォーム: https://idolmaster-official.jp/gakuen/gakuenradio/contact/",
+   "リンク: https://t.co/MZC4lxTN1O",
+   "エンゲージメント: 中",
+   "言及アイドル: 氷渡香名江、倉本千奈"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "event_date": "2026-11-25",
+  "src_candidate_id": "202611200230-grok-51"
+ },
+ {
+  "id": "sched-2026-11-25-million-idol-grand-prix-iku-addition-2026-開始",
+  "dedup_key": "million-idol-grand-prix-iku-addition-2026",
+  "brand": "million",
+  "subject": "ミリシタ アイグラに中谷育追加・PV公開",
+  "kind": "開始",
+  "note": "中谷育がアイドルグランプリに加わり、14時50分に「キミが真ん中にいた」PVを見られる",
+  "reserved_on": "2026-11-20",
+  "occurs_on": "2026-11-25",
+  "title": "アイドルグランプリに中谷育を追加予定",
+  "url": "https://x.com/imasml_theater/status/2123393353136107985",
+  "source_type": "公式",
+  "facts": [
+   "アイドルグランプリへの中谷育の追加は2026年11月25日予定。",
+   "予定は予告なく変更される場合がある。",
+   "エンゲージメント: 中",
+   "言及アイドル: 中谷育"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "event_date": "2026-11-25",
+  "src_candidate_id": "202611200230-grok-23"
+ },
+ {
+  "id": "sched-2026-11-25-million-idol-grand-prix-iku-addition-2026-開始-src1",
+  "dedup_key": "million-idol-grand-prix-iku-addition-2026",
+  "brand": "million",
+  "subject": "ミリシタ アイグラに中谷育追加・PV公開",
+  "kind": "開始",
+  "note": "中谷育がアイドルグランプリに加わり、14時50分に「キミが真ん中にいた」PVを見られる",
+  "reserved_on": "2026-11-20",
+  "occurs_on": "2026-11-25",
+  "title": "「キミが真ん中にいた」iDOL GRAND-PRIX PV公開予定",
+  "url": "https://x.com/imasml_theater/status/2123393602902532460",
+  "source_type": "公式",
+  "facts": [
+   "「キミが真ん中にいた」iDOL GRAND-PRIX PVは2026年11月25日14:50公開予定。",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "event_date": "2026-11-25",
+  "src_candidate_id": "202611200230-grok-24",
+  "companion_of": "sched-2026-11-25-million-idol-grand-prix-iku-addition-2026-開始",
+  "src_dedup_key": "million-kimi-ga-mannaka-idol-grand-prix-pv-2026"
  }
 ]

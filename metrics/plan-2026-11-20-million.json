@@ -1,0 +1,199 @@
+{
+ "decisions": {
+  "million-vs-million-fighter-gasha-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "プラチナスタートラスト13は11/18・11/19に記事済み。折り返しは21日で当日でなく、終了(24日)も3日以内でない"
+  },
+  "million-bot10-invisible-light": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/19の記事と同内容。新事実・当日のトリガー無し"
+  },
+  "soutei-shinrigai-mv-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "MVは16日公開済みで11/14〜17に記事済み"
+  },
+  "million-idol-grand-prix-iku-addition-2026": {
+   "action": "article",
+   "angle": "ミリシタのアイドルグランプリに、11月25日予定で中谷育が追加される(同日14時50分に「キミが真ん中にいた」のPVも公開予定)。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "PV公開予定の主題を統合"
+  },
+  "million-kimi-ga-mannaka-idol-grand-prix-pv-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-idol-grand-prix-iku-addition-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じiDOL GRAND-PRIX施策、同日25日の発表"
+  },
+  "cosmo-shigure-ittan-aishite-short-2026": {
+   "action": "article",
+   "angle": "ミリシタ楽曲「一旦愛して♡」のMVが100万回再生を突破した。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "既報(しぐれうい踊ってみた)とは別の公式発表"
+  },
+  "million-vs-million-fighter-gasha-2026-11": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/19の記事と同じガシャ・終了日時。新事実なし"
+  },
+  "million-tapipyon-goods-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "出典が未確認の販売店投稿のみで、価格・締切・商品ページの記載が無い"
+  },
+  "million-off-time-voice-series-konomi-2026": {
+   "action": "article",
+   "angle": "ミリシタ「Off Time Voice Series vol.4」の真・このみセットは23日23時59分まで。両方買うと田中琴葉のボイスが付く。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "締切3日前の続報予約"
+  },
+  "million-official-shop-photo-panels-2026": {
+   "action": "article",
+   "angle": "ミリオンライブ！アイドルフォトパネル新柄8種が、きょうからオフィシャルショップ5店舗で発売される(各5,000円)。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "発売日当日の続報予約"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "million-idol-grand-prix-iku-addition-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "ミリシタのアイドルグランプリに、11月25日予定で中谷育が追加される(同日14時50分に「キミが真ん中にいた」のPVも公開予定)。",
+    "purpose": "新情報",
+    "lead_score": 25,
+    "dedup_key": "million-idol-grand-prix-iku-addition-2026",
+    "candidate_ids": [
+     "202611200230-grok-23",
+     "202611200230-grok-24"
+    ]
+   },
+   {
+    "slug": "million-cosmo-shigure-ittan-aishite-short-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "ミリシタ楽曲「一旦愛して♡」のMVが100万回再生を突破した。",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "cosmo-shigure-ittan-aishite-short-2026",
+    "candidate_ids": [
+     "202611200230-grok-25"
+    ]
+   },
+   {
+    "slug": "million-off-time-voice-series-konomi-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "ミリシタ「Off Time Voice Series vol.4」の真・このみセットは23日23時59分まで。両方買うと田中琴葉のボイスが付く。",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "million-off-time-voice-series-konomi-2026",
+    "candidate_ids": [
+     "sched-2026-11-20-million-off-time-voice-series-konomi-2026-締切前",
+     "sched-2026-11-20-million-off-time-voice-series-konomi-2026-締切前-src1",
+     "sched-2026-11-20-million-off-time-voice-series-konomi-2026-締切前-src2",
+     "sched-2026-11-20-million-off-time-voice-series-konomi-2026-締切前-src3"
+    ]
+   },
+   {
+    "slug": "million-official-shop-photo-panels-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "ミリオンライブ！アイドルフォトパネル新柄8種が、きょうからオフィシャルショップ5店舗で発売される(各5,000円)。",
+    "purpose": "期日の知らせ",
+    "lead_score": 60,
+    "dedup_key": "million-official-shop-photo-panels-2026",
+    "candidate_ids": [
+     "sched-2026-11-20-million-official-shop-photo-panels-2026-発売",
+     "sched-2026-11-20-million-official-shop-photo-panels-2026-発売-src1"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "million-vs-million-fighter-gasha-2026",
+    "reason": "既報",
+    "note": "プラチナスタートラスト13は11/18・11/19に記事済み。折り返しは21日で当日でなく、終了(24日)も3日以内でない"
+   },
+   {
+    "dedup_key": "million-bot10-invisible-light",
+    "reason": "既報",
+    "note": "11/19の記事と同内容。新事実・当日のトリガー無し"
+   },
+   {
+    "dedup_key": "soutei-shinrigai-mv-2026",
+    "reason": "既報",
+    "note": "MVは16日公開済みで11/14〜17に記事済み"
+   },
+   {
+    "dedup_key": "million-vs-million-fighter-gasha-2026-11",
+    "reason": "既報",
+    "note": "11/19の記事と同じガシャ・終了日時。新事実なし"
+   },
+   {
+    "dedup_key": "million-tapipyon-goods-2026",
+    "reason": "出典不足",
+    "note": "出典が未確認の販売店投稿のみで、価格・締切・商品ページの記載が無い"
+   }
+  ],
+  "cross_brand": []
+ }
+}

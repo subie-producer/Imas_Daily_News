@@ -1,0 +1,330 @@
+{
+ "decisions": {
+  "shiny-still-blue-ticket-sales-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/18号が販売期間・枚数・リセール期間まで掲載済み。一般発売開始は明日21日で当日トリガーではない"
+  },
+  "shiny-prelude-collection-chiyuki-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/19号『桑山千雪のプレコレ開催中』と同一施策。出典は二次情報で終了日も既報(27日)と食い違う"
+  },
+  "shiny-style-collection-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "変更後の行は商品紹介文の言い回しで、締切・日程・条件・品目の変更なし。表示上の変化のみ"
+  },
+  "shiny-30ms-cometik-products-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/18号『CoMETIK、30MS新商品3種』と同内容"
+  },
+  "shiny-shinro-wa-cho-ginga-2dmv-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-cho-bakuhatsu-galaxy-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ新曲の2DMV追加(本日12:00)。新曲イベント記事に統合"
+  },
+  "shiny-cho-bakuhatsu-galaxy-2026": {
+   "action": "article",
+   "angle": "放課後クライマックスガールズの新曲『進路は超銀河』が、本日12時に2DMV付きでライブ楽曲に追加され、新曲イベント『超爆発ギャラクシー』も近日開催予定。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "2DMV追加は本日12:00のトリガー。イベント報酬は虹の結晶×500・ドレスオーダーチケット×300"
+  },
+  "shiny-noctchill-live-2027": {
+   "action": "article",
+   "angle": "ノクチル単独ライブ(2027年3月仙台)のアソビストア一般会員先行が12月1日23時59分まで受付中で、当落は12月12日13時、入金は12月16日まで。",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 70,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "既報は一般会員先行を含まない新情報。ティーン割も同日程。追加の演出参加者選出は入金期間後"
+  },
+  "shiny-noctchill-campaign-selection-2026": {
+   "action": "article",
+   "angle": "ノクチル単独ライブの『早期限定 演出参加キャンペーン』に選出された人へ、アソビストアから選出案内メールが送られた(2枚申込では申込者のみ)。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "先行申込とは別の行動(メール確認)のため別記事"
+  },
+  "shiny-collab-fes-reward-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/19号『コラボフェスに三峰結華SR』と同内容"
+  },
+  "shiny-prism-rinze-hana-pickup-2026": {
+   "action": "article",
+   "angle": "シャニソンの凛世・羽那ピックアップ復刻ガシャ(ステップアップ含む)は本日11時59分で終了する。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "当日終了。定常運営まとめは3件未満のため通常記事"
+  },
+  "shiny-prism-haruki-pickup-2026": {
+   "action": "article",
+   "angle": "シャニソンのはるきピックアップガシャ『夢と出逢えるワンコール』(ステップアップ含む)は本日11時59分で終了する。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "当日終了。定常運営まとめは3件未満のため通常記事"
+  },
+  "shiny-prism-halo-03-2026": {
+   "action": "article",
+   "angle": "シャニソンで『“円環 -Halo around-” #03 放クラ×ストレイライト』ガシャが近日開催予定で、【サンダラスエクソダス】衣装の期間限定ライブ専用Pアイドル4名が登場する。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "開催予告(発表)のため単独記事"
+  },
+  "shiny-song-im-a-cutie-finder-rerun-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/19号『開催中ガシャ3種』に掲載済み。終了は11/30でトリガー無し"
+  },
+  "shiny-support-hazuki-package-2026-11": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/19号『特訓はづきさんパッケージ販売開始』と同内容"
+  },
+  "shiny-prelude-collection-chiyuki-2026-11": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/19号『桑山千雪のプレコレ開催中』に千雪ピース付きパッケージ・購入制限4回まで掲載済み"
+  },
+  "shiny-30ms-luka-kit-2027": {
+   "action": "article",
+   "angle": "30MS 斑鳩ルカが価格4,980円(税込)・発売予定2027年6月30日と判明し、予約受付が始まっている。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "既報(11/18)は2027年6月発売予定のみ。価格・発売日・予約は新事実。出典はAmazon(当事者)で校閲要確認"
+  },
+  "shiny-style-collection-higanryu-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/13号『Style COLLECTION第3弾は11月29日まで』と同一施策。締切29日は3日以内でなく、新事実はコメント紹介のみ"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "shiny-cho-bakuhatsu-galaxy-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "放課後クライマックスガールズの新曲『進路は超銀河』が、本日12時に2DMV付きでライブ楽曲に追加され、新曲イベント『超爆発ギャラクシー』も近日開催予定。",
+    "purpose": "新情報",
+    "lead_score": 25,
+    "dedup_key": "shiny-cho-bakuhatsu-galaxy-2026",
+    "candidate_ids": [
+     "202611192332-explore-3",
+     "202611191837-explore-12",
+     "202611192332-explore-2"
+    ]
+   },
+   {
+    "slug": "shiny-noctchill-live-2027",
+    "brand": "shiny",
+    "rank": "medium",
+    "angle": "ノクチル単独ライブ(2027年3月仙台)のアソビストア一般会員先行が12月1日23時59分まで受付中で、当落は12月12日13時、入金は12月16日まで。",
+    "purpose": "新情報",
+    "lead_score": 70,
+    "dedup_key": "shiny-noctchill-live-2027",
+    "candidate_ids": [
+     "202611200230-grok-28",
+     "202611200230-grok-95"
+    ]
+   },
+   {
+    "slug": "shiny-noctchill-campaign-selection-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "ノクチル単独ライブの『早期限定 演出参加キャンペーン』に選出された人へ、アソビストアから選出案内メールが送られた(2枚申込では申込者のみ)。",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "shiny-noctchill-campaign-selection-2026",
+    "candidate_ids": [
+     "202611200230-grok-29"
+    ]
+   },
+   {
+    "slug": "shiny-prism-rinze-hana-pickup-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "シャニソンの凛世・羽那ピックアップ復刻ガシャ(ステップアップ含む)は本日11時59分で終了する。",
+    "purpose": "期日の知らせ",
+    "lead_score": 10,
+    "dedup_key": "shiny-prism-rinze-hana-pickup-2026",
+    "candidate_ids": [
+     "202611200230-grok-32"
+    ]
+   },
+   {
+    "slug": "shiny-prism-haruki-pickup-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "シャニソンのはるきピックアップガシャ『夢と出逢えるワンコール』(ステップアップ含む)は本日11時59分で終了する。",
+    "purpose": "期日の知らせ",
+    "lead_score": 10,
+    "dedup_key": "shiny-prism-haruki-pickup-2026",
+    "candidate_ids": [
+     "202611200230-grok-33"
+    ]
+   },
+   {
+    "slug": "shiny-prism-halo-03-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "シャニソンで『“円環 -Halo around-” #03 放クラ×ストレイライト』ガシャが近日開催予定で、【サンダラスエクソダス】衣装の期間限定ライブ専用Pアイドル4名が登場する。",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "shiny-prism-halo-03-2026",
+    "candidate_ids": [
+     "202611200230-grok-34"
+    ]
+   },
+   {
+    "slug": "shiny-30ms-luka-kit-2027",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "30MS 斑鳩ルカが価格4,980円(税込)・発売予定2027年6月30日と判明し、予約受付が始まっている。",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "shiny-30ms-luka-kit-2027",
+    "candidate_ids": [
+     "202611200230-grok-41"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "shiny-still-blue-ticket-sales-2026",
+    "reason": "既報",
+    "note": "11/18号が販売期間・枚数・リセール期間まで掲載済み。一般発売開始は明日21日で当日トリガーではない"
+   },
+   {
+    "dedup_key": "shiny-prelude-collection-chiyuki-2026",
+    "reason": "既報",
+    "note": "11/19号『桑山千雪のプレコレ開催中』と同一施策。出典は二次情報で終了日も既報(27日)と食い違う"
+   },
+   {
+    "dedup_key": "shiny-style-collection-2026",
+    "reason": "その他",
+    "note": "変更後の行は商品紹介文の言い回しで、締切・日程・条件・品目の変更なし。表示上の変化のみ"
+   },
+   {
+    "dedup_key": "shiny-30ms-cometik-products-2026",
+    "reason": "既報",
+    "note": "11/18号『CoMETIK、30MS新商品3種』と同内容"
+   },
+   {
+    "dedup_key": "shiny-collab-fes-reward-2026",
+    "reason": "既報",
+    "note": "11/19号『コラボフェスに三峰結華SR』と同内容"
+   },
+   {
+    "dedup_key": "shiny-song-im-a-cutie-finder-rerun-2026",
+    "reason": "既報",
+    "note": "11/19号『開催中ガシャ3種』に掲載済み。終了は11/30でトリガー無し"
+   },
+   {
+    "dedup_key": "shiny-support-hazuki-package-2026-11",
+    "reason": "既報",
+    "note": "11/19号『特訓はづきさんパッケージ販売開始』と同内容"
+   },
+   {
+    "dedup_key": "shiny-prelude-collection-chiyuki-2026-11",
+    "reason": "既報",
+    "note": "11/19号『桑山千雪のプレコレ開催中』に千雪ピース付きパッケージ・購入制限4回まで掲載済み"
+   },
+   {
+    "dedup_key": "shiny-style-collection-higanryu-2026",
+    "reason": "既報",
+    "note": "11/13号『Style COLLECTION第3弾は11月29日まで』と同一施策。締切29日は3日以内でなく、新事実はコメント紹介のみ"
+   }
+  ],
+  "cross_brand": []
+ }
+}

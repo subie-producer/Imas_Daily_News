@@ -1,0 +1,129 @@
+{
+ "decisions": {
+  "hourglass-trend-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "未確認のトレンド集計のみ。話題は声優個人の発売祝い"
+  },
+  "va-liv-3rdlive-concert-light-regulation-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "重複",
+   "note": "dsva面が同じレギュレーション変更を記事化済み(dsva-valiv-3rd-concert-light-rules-2026)。他ブランドのライトは名前が出るだけで共同ではない"
+  },
+  "futamasu-manhole-kiriyo-2026": {
+   "action": "article",
+   "angle": "ふたマス第11弾として猫柳キリオ・七尾百合子のマンホールのデザインと設置場所(江東区富岡・豊洲)が公開され、設置日は後日告知される。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "百合子の件を統合した1記事"
+  },
+  "futamasu-manhole-yuriko-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "futamasu-manhole-kiriyo-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じふたマス第11弾の発表"
+  },
+  "metamorphose-mv-million-views-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-19号で100万再生・チャート3位を記事化済み。新事実なし。gaku面にも同種の記事あり"
+  },
+  "imas-interest-survey-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "imas-channel-fan-art-submissions-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ファン面の記事に、界隈の動きとして小さく入れる(個人投稿の集計なので断定せず)"
+  },
+  "imas-channel-fan-art-submissions-2026": {
+   "action": "article",
+   "angle": "アイマスchが配信サムネイルなどに使うファンアートを、ハッシュタグ「#アイマスch_FA」で募集している。",
+   "purpose": "新情報",
+   "rank": "culture",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ファン面1本にまとめる"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "general-futamasu-manhole-kiriyo-2026",
+    "brand": "general",
+    "rank": "small",
+    "angle": "ふたマス第11弾として猫柳キリオ・七尾百合子のマンホールのデザインと設置場所(江東区富岡・豊洲)が公開され、設置日は後日告知される。",
+    "purpose": "新情報",
+    "lead_score": 30,
+    "dedup_key": "futamasu-manhole-kiriyo-2026",
+    "candidate_ids": [
+     "202611191837-watch-7",
+     "202611191837-watch-8"
+    ]
+   },
+   {
+    "slug": "general-imas-channel-fan-art-submissions-2026",
+    "brand": "general",
+    "rank": "culture",
+    "angle": "アイマスchが配信サムネイルなどに使うファンアートを、ハッシュタグ「#アイマスch_FA」で募集している。",
+    "purpose": "新情報",
+    "lead_score": 0,
+    "dedup_key": "imas-channel-fan-art-submissions-2026",
+    "candidate_ids": [
+     "202611200230-grok-12",
+     "202611200230-grok-11"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "hourglass-trend-2026",
+    "reason": "出典不足",
+    "note": "未確認のトレンド集計のみ。話題は声優個人の発売祝い"
+   },
+   {
+    "dedup_key": "va-liv-3rdlive-concert-light-regulation-2026",
+    "reason": "重複",
+    "note": "dsva面が同じレギュレーション変更を記事化済み(dsva-valiv-3rd-concert-light-rules-2026)。他ブランドのライトは名前が出るだけで共同ではない"
+   },
+   {
+    "dedup_key": "metamorphose-mv-million-views-2026",
+    "reason": "既報",
+    "note": "11-19号で100万再生・チャート3位を記事化済み。新事実なし。gaku面にも同種の記事あり"
+   }
+  ],
+  "cross_brand": []
+ }
+}

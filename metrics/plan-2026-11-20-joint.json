@@ -1,0 +1,154 @@
+{
+ "decisions": {
+  "tours-prime-match-fes-2026-11": {
+   "action": "article",
+   "angle": "プライムマッチフェスSSSランク1位の記念品カード風賞状は、マイページから期限までに発送情報を入力しないと権利が無効になり、再配送なし・国内限定などの注意事項が公式に示された。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "賞状が授与されること自体は11/19号で既報。新しいのは発送情報入力の期限と受取条件。tours-prime-match-fes-2026を統合。"
+  },
+  "tours-prime-match-fes-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "tours-prime-match-fes-2026-11",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ賞状の更新(別ページ)。賞状の名称・実物である点は11/19号で既報、発送連絡はイベント終了後という点を統合先に添える。"
+  },
+  "tours-momoko-birthday-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "tours-allnet-maintenance-remedy-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "メンテ補填施策の一部(桃子誕生日施策の本日開始)で同じ施策。統合先で記事化。"
+  },
+  "tours-my-page-maintenance-2026-11-19": {
+   "action": "article",
+   "angle": "ツアマスのマイページは11月19日22時から20日13時までメンテナンス中で、終了時刻は前後する可能性がある。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "本日13時に終了予定。マイページ経由の手続き(桃子の施策・フェスの発送入力など)に影響。"
+  },
+  "imas-radio-stamas-5th-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "次回テーマ「BATTLE」のお便りとOPジングル募集は11/11号で既報。放送は11/24で当日のトリガーも無い。"
+  },
+  "imas-channel-members-radio-archive-2026-11": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "アーカイブ公開は11/19号で記事化済み。新しい事実なし。"
+  },
+  "765-961-xr-live-2027": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "続報予約(入金締切まであと3日)だが、素材のfactsに入金期間・締切が書かれていない。日付は既報に頼るのみで、締切が11/23と確認できない。"
+  },
+  "tours-allnet-maintenance-remedy-2026": {
+   "action": "article",
+   "angle": "ツアマスで周防桃子の誕生日コミュ・ログインボーナス・バースデーライブが本日7時に始まり、ハロウィン施策は明日21日から再実施される。",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(開始)。誕生日コミュは本日25時59分まで、ログボは22日23時59分まで、ライブは22日25時59分まで。tours-momoko-birthday-2026を統合。"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "joint-tours-prime-match-fes-2026-11",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "プライムマッチフェスSSSランク1位の記念品カード風賞状は、マイページから期限までに発送情報を入力しないと権利が無効になり、再配送なし・国内限定などの注意事項が公式に示された。",
+    "purpose": "新情報",
+    "lead_score": 30,
+    "dedup_key": "tours-prime-match-fes-2026-11",
+    "candidate_ids": [
+     "update-b784d0d85b4b",
+     "update-0ada4207962b",
+     "202611200230-grok-110"
+    ]
+   },
+   {
+    "slug": "joint-tours-my-page-maintenance-2026-11-19",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "ツアマスのマイページは11月19日22時から20日13時までメンテナンス中で、終了時刻は前後する可能性がある。",
+    "purpose": "期日の知らせ",
+    "lead_score": 10,
+    "dedup_key": "tours-my-page-maintenance-2026-11-19",
+    "candidate_ids": [
+     "202611200230-grok-63"
+    ]
+   },
+   {
+    "slug": "joint-tours-allnet-maintenance-remedy-2026",
+    "brand": "joint",
+    "rank": "medium",
+    "angle": "ツアマスで周防桃子の誕生日コミュ・ログインボーナス・バースデーライブが本日7時に始まり、ハロウィン施策は明日21日から再実施される。",
+    "purpose": "期日の知らせ",
+    "lead_score": 60,
+    "dedup_key": "tours-allnet-maintenance-remedy-2026",
+    "candidate_ids": [
+     "sched-2026-11-20-tours-allnet-maintenance-remedy-2026-開始",
+     "sched-2026-11-20-tours-allnet-maintenance-remedy-2026-開始-src1",
+     "202611200230-grok-62"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "imas-radio-stamas-5th-2026",
+    "reason": "既報",
+    "note": "次回テーマ「BATTLE」のお便りとOPジングル募集は11/11号で既報。放送は11/24で当日のトリガーも無い。"
+   },
+   {
+    "dedup_key": "imas-channel-members-radio-archive-2026-11",
+    "reason": "既報",
+    "note": "アーカイブ公開は11/19号で記事化済み。新しい事実なし。"
+   },
+   {
+    "dedup_key": "765-961-xr-live-2027",
+    "reason": "出典不足",
+    "note": "続報予約(入金締切まであと3日)だが、素材のfactsに入金期間・締切が書かれていない。日付は既報に頼るのみで、締切が11/23と確認できない。"
+   }
+  ],
+  "cross_brand": []
+ }
+}

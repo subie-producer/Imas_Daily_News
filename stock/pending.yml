@@ -308,6 +308,7 @@
   subject: シャニソン 近日実装予定の2DMV
   watch: 2DMVの正式な実装日・対象楽曲(判明次第 triggers へ)
   added_on: '2026-10-20'
+  removed_on: '2026-11-20'
 - dedup_key: shiny-new-idol-teaser-2026-10
   brand: shiny
   subject: シャニマス 近日登場アイドルのチラ見せ
@@ -444,6 +445,7 @@
   subject: シャニソン 凛世・羽那の限定★3復刻ピックアップガシャ
   watch: 復刻ピックアップガシャの開催期間・開始日(予告のみで期間は未記載。判明次第 triggers へ)
   added_on: '2026-11-11'
+  removed_on: '2026-11-20'
 - dedup_key: million-rio-momose-true-ending-reward-design-2026
   brand: million
   subject: ミリシタ 百瀬莉緒のTrue Ending報酬デザイン変更
@@ -465,3 +467,8 @@
   subject: 橘ありす「シーサイド・メモリー」1/7フィギュア(プラム)
   watch: 2027年1月予定の正式発売日(判明次第 triggers へ)
   added_on: '2026-11-18'
+- dedup_key: shiny-prism-halo-03-2026
+  brand: shiny
+  subject: シャニソン「円環 -Halo around-」#03 放クラ×ストレイライト
+  watch: 「近日開催予定」とされたガシャの開催日・期間(判明次第 triggers へ)
+  added_on: '2026-11-20'

@@ -1,0 +1,74 @@
+{
+ "decisions": {
+  "765as-never-end-idol-blu-ray-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "発売日・特装版の内容・特典(A4クリアファイル)は既報の本文にある。発売25日は5日先で3日以内のトリガーに当たらない。"
+  },
+  "765pro-allstars-never-end-idol-bluray-day1-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "Amazonの掲載価格が15,040円から14,890円に動いただけ。公式価格・特典・日程は変わらず、表示の変化として選ばない。"
+  },
+  "joint-topic-37": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "12月17日の配信、宮﨑雅也MC、中村繪里子ゲスト、お便りの募集は11月19日号の本文に既出。新しい事実も当日のトリガーも無い。"
+  },
+  "765as-never-end-idol-bluray-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11月25日発売は既報。facts に新しい事実が無く、準公式の投稿で未確認。"
+  }
+ },
+ "plan": {
+  "articles": [],
+  "dropped": [
+   {
+    "dedup_key": "765as-never-end-idol-blu-ray-2026",
+    "reason": "既報",
+    "note": "発売日・特装版の内容・特典(A4クリアファイル)は既報の本文にある。発売25日は5日先で3日以内のトリガーに当たらない。"
+   },
+   {
+    "dedup_key": "765pro-allstars-never-end-idol-bluray-day1-2026",
+    "reason": "その他",
+    "note": "Amazonの掲載価格が15,040円から14,890円に動いただけ。公式価格・特典・日程は変わらず、表示の変化として選ばない。"
+   },
+   {
+    "dedup_key": "joint-topic-37",
+    "reason": "既報",
+    "note": "12月17日の配信、宮﨑雅也MC、中村繪里子ゲスト、お便りの募集は11月19日号の本文に既出。新しい事実も当日のトリガーも無い。"
+   },
+   {
+    "dedup_key": "765as-never-end-idol-bluray-2026",
+    "reason": "既報",
+    "note": "11月25日発売は既報。facts に新しい事実が無く、準公式の投稿で未確認。"
+   }
+  ],
+  "cross_brand": []
+ }
+}

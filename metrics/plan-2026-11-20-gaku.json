@@ -1,0 +1,362 @@
+{
+ "decisions": {
+  "hoshigakuen-radio-archive-2026-11-18": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-19号で#114アーカイブ公開を記事化済み。新事実なし"
+  },
+  "gaku-cedec-kyushu-ui-hif-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-19号でCEDEC講演を記事化済み"
+  },
+  "metamorphose-instrumental-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-18号で「メタモルフォーゼ」インスト公開を記事化済み"
+  },
+  "gaku-hatsuboshi-radio-114-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "#114は11-19号で記事化済み。出典も未確認"
+  },
+  "metamorphose-youtube-ranking-2026-11-19": {
+   "action": "article",
+   "angle": "氷渡香名江「メタモルフォーゼ」がYouTube音楽急上昇チャートとデイリーMVランキングで1位になった。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gold-silver-emerald-axe-mv-million-2026": {
+   "action": "article",
+   "angle": "「金の斧、銀の斧、エメラルドの斧」のMVが100万再生を突破した。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "hatsuboshi-radio-2026-11-25": {
+   "action": "article",
+   "angle": "初星学園放送部11月25日回のゲスト(安倍彩野夏さん・伊藤舞音さん)への質問募集が、本日金曜午前で締め切られる。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "11-19号に質問募集の既報あり。当日締切がトリガー"
+  },
+  "contest-season-56-2026": {
+   "action": "article",
+   "angle": "学マスのコンテストがシーズン56として開催された。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "定常運営だが3件に満たず roundup 不成立。素材が薄く出典は校閲判断"
+  },
+  "fan-gakumas-winter-comiket-art-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "ファン創作(冬コミ向けイラスト)。個人投稿で未確認。ファン面は general 面の扱い"
+  },
+  "fan-piano-metamorphose-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "ファン投稿の演奏動画。ファン面は general 面の扱い"
+  },
+  "gakumas-battlespirits-collab-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-16号で学マス×バトスピ描き下ろし14人公開を記事化済み。出典も未確認で、2027年春発売の新事実も確認できない"
+  },
+  "gakumas-shirube-final-stream-ticket-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-shirube-final-streaming-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ配信視聴チケット販売の告知"
+  },
+  "gravure-solo-collection-vol1-release-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-18号でグラビアCD発売を記事化済み"
+  },
+  "gakuen-hatsuboshi-hr-2-5th-sp-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "終了済み配信の視聴回数のみ。配信内容は既報で、新事実・当日トリガーなし"
+  },
+  "gaku-shirube-final-streaming-2026": {
+   "action": "article",
+   "angle": "標ファイナルの配信視聴チケット販売(11月23日18時まで)・コメント付きアーカイブ視聴とアンケート(23日23時59分まで)があと3日で終わる。",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "配信券・アーカイブ・アンケートを1記事に統合"
+  },
+  "shirube-final-stream-ticket-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-shirube-final-streaming-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ配信チケット販売の別素材"
+  },
+  "gaku-jouo-seina-birthday-message-2026": {
+   "action": "article",
+   "angle": "十王星南の誕生日特別編に向けたお祝いメッセージと質問の募集が、本日11月20日で締め切られる。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-memory-goods-2026": {
+   "action": "article",
+   "angle": "標ツアー開催記念グッズ(フォトフレームセット3,700円・アイドルセット4,800円)の受注締切11月23日まであと3日。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "チケット/アーカイブとは読者の行動が別なので別記事"
+  },
+  "gakumas-hyo-final-archive-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-shirube-final-streaming-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ公演の配信・アーカイブ・アンケート"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "gaku-metamorphose-youtube-ranking-2026-11-19",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "氷渡香名江「メタモルフォーゼ」がYouTube音楽急上昇チャートとデイリーMVランキングで1位になった。",
+    "purpose": "新情報",
+    "lead_score": 25,
+    "dedup_key": "metamorphose-youtube-ranking-2026-11-19",
+    "candidate_ids": [
+     "202611200230-grok-48"
+    ]
+   },
+   {
+    "slug": "gaku-gold-silver-emerald-axe-mv-million-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "「金の斧、銀の斧、エメラルドの斧」のMVが100万再生を突破した。",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "gold-silver-emerald-axe-mv-million-2026",
+    "candidate_ids": [
+     "202611200230-grok-50"
+    ]
+   },
+   {
+    "slug": "gaku-hatsuboshi-radio-2026-11-25",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "初星学園放送部11月25日回のゲスト(安倍彩野夏さん・伊藤舞音さん)への質問募集が、本日金曜午前で締め切られる。",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "hatsuboshi-radio-2026-11-25",
+    "candidate_ids": [
+     "202611200230-grok-51",
+     "202611200230-grok-101"
+    ]
+   },
+   {
+    "slug": "gaku-contest-season-56-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "学マスのコンテストがシーズン56として開催された。",
+    "purpose": "新情報",
+    "lead_score": 5,
+    "dedup_key": "contest-season-56-2026",
+    "candidate_ids": [
+     "202611200230-grok-53"
+    ]
+   },
+   {
+    "slug": "gaku-shirube-final-streaming-2026",
+    "brand": "gaku",
+    "rank": "medium",
+    "angle": "標ファイナルの配信視聴チケット販売(11月23日18時まで)・コメント付きアーカイブ視聴とアンケート(23日23時59分まで)があと3日で終わる。",
+    "purpose": "期日の知らせ",
+    "lead_score": 60,
+    "dedup_key": "gaku-shirube-final-streaming-2026",
+    "candidate_ids": [
+     "sched-2026-11-20-gaku-shirube-final-streaming-2026-締切前",
+     "sched-2026-11-20-gaku-shirube-final-streaming-2026-締切前-src1",
+     "sched-2026-11-20-gaku-shirube-final-streaming-2026-締切前-src2",
+     "sched-2026-11-20-gaku-shirube-final-streaming-2026-締切前-src3",
+     "sched-2026-11-20-gaku-shirube-final-streaming-2026-締切前-src4",
+     "202611200230-grok-100",
+     "202611200230-grok-104",
+     "sched-2026-11-20-shirube-final-stream-ticket-2026-締切前",
+     "sched-2026-11-20-shirube-final-stream-ticket-2026-締切前-src1",
+     "sched-2026-11-20-shirube-final-stream-ticket-2026-締切前-src2",
+     "sched-2026-11-20-gakumas-hyo-final-archive-2026-締切前",
+     "sched-2026-11-20-gakumas-hyo-final-archive-2026-締切前-src1"
+    ]
+   },
+   {
+    "slug": "gaku-jouo-seina-birthday-message-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "十王星南の誕生日特別編に向けたお祝いメッセージと質問の募集が、本日11月20日で締め切られる。",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "gaku-jouo-seina-birthday-message-2026",
+    "candidate_ids": [
+     "sched-2026-11-20-gaku-jouo-seina-birthday-message-2026-締切"
+    ]
+   },
+   {
+    "slug": "gaku-memory-goods-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "標ツアー開催記念グッズ(フォトフレームセット3,700円・アイドルセット4,800円)の受注締切11月23日まであと3日。",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "gaku-memory-goods-2026",
+    "candidate_ids": [
+     "sched-2026-11-20-gaku-memory-goods-2026-締切前",
+     "sched-2026-11-20-gaku-memory-goods-2026-締切前-src1"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "hoshigakuen-radio-archive-2026-11-18",
+    "reason": "既報",
+    "note": "11-19号で#114アーカイブ公開を記事化済み。新事実なし"
+   },
+   {
+    "dedup_key": "gaku-cedec-kyushu-ui-hif-2026",
+    "reason": "既報",
+    "note": "11-19号でCEDEC講演を記事化済み"
+   },
+   {
+    "dedup_key": "metamorphose-instrumental-2026",
+    "reason": "既報",
+    "note": "11-18号で「メタモルフォーゼ」インスト公開を記事化済み"
+   },
+   {
+    "dedup_key": "gaku-hatsuboshi-radio-114-2026",
+    "reason": "既報",
+    "note": "#114は11-19号で記事化済み。出典も未確認"
+   },
+   {
+    "dedup_key": "fan-gakumas-winter-comiket-art-2026",
+    "reason": "面違い",
+    "note": "ファン創作(冬コミ向けイラスト)。個人投稿で未確認。ファン面は general 面の扱い"
+   },
+   {
+    "dedup_key": "fan-piano-metamorphose-2026",
+    "reason": "面違い",
+    "note": "ファン投稿の演奏動画。ファン面は general 面の扱い"
+   },
+   {
+    "dedup_key": "gakumas-battlespirits-collab-2026",
+    "reason": "既報",
+    "note": "11-16号で学マス×バトスピ描き下ろし14人公開を記事化済み。出典も未確認で、2027年春発売の新事実も確認できない"
+   },
+   {
+    "dedup_key": "gravure-solo-collection-vol1-release-2026",
+    "reason": "既報",
+    "note": "11-18号でグラビアCD発売を記事化済み"
+   },
+   {
+    "dedup_key": "gakuen-hatsuboshi-hr-2-5th-sp-2026",
+    "reason": "既報",
+    "note": "終了済み配信の視聴回数のみ。配信内容は既報で、新事実・当日トリガーなし"
+   }
+  ],
+  "cross_brand": []
+ }
+}

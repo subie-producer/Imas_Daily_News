@@ -1,5 +1,8 @@
 {
  "imas-portal": [
+  "https://idolmaster-official.jp/news/01_20395",
+  "https://idolmaster-official.jp/news/01_20400",
+  "https://idolmaster-official.jp/news/01_20394",
   "https://idolmaster-official.jp/news/01_20392",
   "https://idolmaster-official.jp/news/01_20288",
   "https://idolmaster-official.jp/news/01_20303",
@@ -18,9 +21,9 @@
   "https://idolmaster-official.jp/news/01_20326",
   "https://idolmaster-official.jp/news/01_20378",
   "https://idolmaster-official.jp/news/01_20332",
-  "https://idolmaster-official.jp/news/01_20351",
-  "https://idolmaster-official.jp/news/01_20336",
   "https://idolmaster-official.jp/news/01_20377",
+  "https://idolmaster-official.jp/news/01_20336",
+  "https://idolmaster-official.jp/news/01_20351",
   "https://idolmaster-official.jp/news/01_20339",
   "https://idolmaster-official.jp/news/01_20375",
   "https://idolmaster-official.jp/news/01_20380",
@@ -496,10 +499,7 @@
   "https://idolmaster-official.jp/news/01_19341",
   "https://idolmaster-official.jp/news/01_19353",
   "https://idolmaster-official.jp/news/01_19352",
-  "https://idolmaster-official.jp/news/01_19336",
-  "https://idolmaster-official.jp/news/01_19298",
-  "https://idolmaster-official.jp/news/01_19351",
-  "https://idolmaster-official.jp/news/01_19324"
+  "https://idolmaster-official.jp/news/01_19336"
  ],
  "columbia-imas": [
   "https://columbia.jp/idolmaster/imasnews/261113.html",
@@ -930,6 +930,8 @@
   "https://bandainamco-am.co.jp/am/vg/idolmaster-tours/news/20230623.html"
  ],
  "imasnews765": [
+  "https://imasnews765.com/?p=32693",
+  "https://imasnews765.com/?p=32690",
   "https://imasnews765.com/?p=32687",
   "https://imasnews765.com/?p=32683",
   "https://imasnews765.com/?p=32681",
@@ -1060,6 +1062,7 @@
  ],
  "_unreadable": {},
  "pylonport-sidem": [
+  "https://pylonport.bandainamcomusiclive.co.jp/more/970",
   "https://pylonport.bandainamcomusiclive.co.jp/more/954",
   "https://pylonport.bandainamcomusiclive.co.jp/more/953",
   "https://pylonport.bandainamcomusiclive.co.jp/more/902",

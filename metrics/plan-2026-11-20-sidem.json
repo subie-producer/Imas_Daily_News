@@ -1,0 +1,385 @@
+{
+ "decisions": {
+  "sidem-315nyao-mini-goods-latte-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/19号「本日発売」に購入制限・缶バッジ12/1発売まで掲載済み。新事実・当日トリガー無し"
+  },
+  "sidem-producer-meeting-ajewelholic-2027-premium-advance-2": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/19号で業務報告書11/30締切を掲載済み。締切は10日先でトリガー無し"
+  },
+  "sidem-idolish7-collab-screening-2026-12": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/18号で12/10応援上映を掲載済み。新事実無し"
+  },
+  "sidem-zenryoku-heatup-live-2026-11": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/19号で11/25配信を掲載済み。当日は5日先でトリガー無し"
+  },
+  "jupiter-monthly-theme-song-13-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-fbfes-movie-2026-11-20",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "劇場版全国上映の公式サイト・キャスト情報。公開初日の記事に統合"
+  },
+  "sidem-mfes-animate-winter-wonderland-2026": {
+   "action": "article",
+   "angle": "Mフェスのアニメイト対象商品に、C.FIRSTのアクリルブロックと眉見鋭心・天峰秀・花園百々人のミニアクリルスタンドが加わった。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "source_change: 変更後に品目追加あり(読者に関わる追加)"
+  },
+  "sidem-wgf-general-ticket-sale-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-fbfes-movie-2026-11-20",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ムビチケ販売は19日で終了済み。続報予約の全国公開は公開初日の記事に統合"
+  },
+  "sidem-315pronight-20261113-clip": {
+   "action": "article",
+   "angle": "ラジオ「315プロNight!」11月13日放送回のチラ見せ動画(会員限定おまけ冒頭5分)が、本日11月20日23時59分まで公開されている。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公開終了が本日。既報無し"
+  },
+  "sidem-amusement-of-315-story-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/19号で投稿不可を掲載済み。新事実・当日トリガー無し"
+  },
+  "sidem-wgf-premiere-fan-congratulations-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿。ファン面(culture)は general 面のみ"
+  },
+  "sidem-mfes-label-cans-2026": {
+   "action": "article",
+   "angle": "Mフェスのオリジナルラベル缶が12月1日から1月6日まで全国の専用自販機で販売され、約50台の音自販機ではW・神速一魂・C.FIRSTの歌を聴ける。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "既報無しの新発表"
+  },
+  "sidem-wgf-pylon-feature-2026": {
+   "action": "article",
+   "angle": "音楽情報メディアPYLONPORTが、公開初日の劇場版の元になった3Dアイドルライブ「Who goes first」の振り返り特集(第3弾)を公開した。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "出典は公式の告知投稿。記事にできるかは執筆と校閲が判断"
+  },
+  "sidem-gotoken-christmas-party-set-2026": {
+   "action": "article",
+   "angle": "SideM×五島軒クリスマスパーティセットの早期予約の特典(全国送料無料)の対象は、明日11月21日までとなる。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "carried。早期割引期間の終了が明日で3日以内。予約本体は12/5まで"
+  },
+  "sidem-fbfes-movie-2026-11-20": {
+   "action": "article",
+   "angle": "劇場版SideM「Who goes first」が本日11月20日、全国の劇場で公開初日を迎え、通常上映・応援上映、1週目の週替わり映像、入場者プレゼント第1弾(チケット風カード)が始まる。",
+   "purpose": "期日の知らせ",
+   "rank": "large",
+   "lead_score": 90,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公開初日の本体記事。上映・週替わり映像・入場者特典・キャスト情報を統合"
+  },
+  "sidem-fantastic-battle-fes-movie-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-fbfes-movie-2026-11-20",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "劇場版公開初日(同じ出来事)"
+  },
+  "sidem-fbfes-movie-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-fbfes-movie-2026-11-20",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "劇場版公開初日(同じ出来事)"
+  },
+  "sidem-fantastic-battle-fes-movie-weekly-footage-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-fbfes-movie-2026-11-20",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "1週目(11/20〜26)の週替わり映像として初日の記事に統合"
+  },
+  "sidem-battle-fes-theater-goods-2026": {
+   "action": "article",
+   "angle": "劇場版SideMの劇場物販が本日11月20日から全国の上映劇場と松竹ストアで始まり、ウォーターボトル・ブックバンド・マルチケース・ドリップバッグなどが並ぶ。",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "購入行動が上映鑑賞と別。ポップコーンBOX(SMT劇場)も同記事に統合"
+  },
+  "sidem-fantastic-battle-fes-film-gift-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-fbfes-movie-2026-11-20",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "入場者プレゼント第1弾の配布開始は公開初日の記事に統合"
+  },
+  "sidem-fanfes-wgf-popcorn-box-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-battle-fes-theater-goods-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "劇場での購入商品。劇場物販の記事に統合"
+  },
+  "sidem-fantastic-battle-fes-film-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-fbfes-movie-2026-11-20",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "劇場版公開初日(同じ出来事)"
+  },
+  "sidem-movie-frame-complete-ticket-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "販売は11/19 23:59で終了済み。11/19号で掲載済み。全国公開は初日の記事で扱う"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "sidem-mfes-animate-winter-wonderland-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "Mフェスのアニメイト対象商品に、C.FIRSTのアクリルブロックと眉見鋭心・天峰秀・花園百々人のミニアクリルスタンドが加わった。",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "sidem-mfes-animate-winter-wonderland-2026",
+    "candidate_ids": [
+     "update-df03f7cf51f7"
+    ]
+   },
+   {
+    "slug": "sidem-315pronight-20261113-clip",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "ラジオ「315プロNight!」11月13日放送回のチラ見せ動画(会員限定おまけ冒頭5分)が、本日11月20日23時59分まで公開されている。",
+    "purpose": "期日の知らせ",
+    "lead_score": 10,
+    "dedup_key": "sidem-315pronight-20261113-clip",
+    "candidate_ids": [
+     "202611200230-grok-44"
+    ]
+   },
+   {
+    "slug": "sidem-mfes-label-cans-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "Mフェスのオリジナルラベル缶が12月1日から1月6日まで全国の専用自販機で販売され、約50台の音自販機ではW・神速一魂・C.FIRSTの歌を聴ける。",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "sidem-mfes-label-cans-2026",
+    "candidate_ids": [
+     "202611200230-grok-75"
+    ]
+   },
+   {
+    "slug": "sidem-wgf-pylon-feature-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "音楽情報メディアPYLONPORTが、公開初日の劇場版の元になった3Dアイドルライブ「Who goes first」の振り返り特集(第3弾)を公開した。",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "sidem-wgf-pylon-feature-2026",
+    "candidate_ids": [
+     "202611200230-grok-98"
+    ]
+   },
+   {
+    "slug": "sidem-gotoken-christmas-party-set-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "SideM×五島軒クリスマスパーティセットの早期予約の特典(全国送料無料)の対象は、明日11月21日までとなる。",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "sidem-gotoken-christmas-party-set-2026",
+    "candidate_ids": [
+     "sched-2026-11-18-sidem-gotoken-christmas-party-set-2026-締切前"
+    ]
+   },
+   {
+    "slug": "sidem-fbfes-movie-2026-11-20",
+    "brand": "sidem",
+    "rank": "large",
+    "angle": "劇場版SideM「Who goes first」が本日11月20日、全国の劇場で公開初日を迎え、通常上映・応援上映、1週目の週替わり映像、入場者プレゼント第1弾(チケット風カード)が始まる。",
+    "purpose": "期日の知らせ",
+    "lead_score": 90,
+    "dedup_key": "sidem-fbfes-movie-2026-11-20",
+    "candidate_ids": [
+     "sched-2026-11-20-sidem-fbfes-movie-2026-11-20-開幕",
+     "202611191837-watch-3",
+     "202611200230-grok-42",
+     "202611200230-grok-99",
+     "sched-2026-11-20-sidem-wgf-general-ticket-sale-2026-開幕",
+     "sched-2026-11-20-sidem-wgf-general-ticket-sale-2026-開幕-src1",
+     "sched-2026-11-20-sidem-fantastic-battle-fes-movie-2026-開幕",
+     "sched-2026-11-20-sidem-fantastic-battle-fes-movie-2026-開幕-src1",
+     "sched-2026-11-20-sidem-fbfes-movie-2026-開幕",
+     "sched-2026-11-20-sidem-fantastic-battle-fes-movie-weekly-footage-2026-開幕",
+     "sched-2026-11-20-sidem-fantastic-battle-fes-film-gift-2026-開幕",
+     "sched-2026-11-20-sidem-fantastic-battle-fes-film-2026-開幕",
+     "sched-2026-11-20-sidem-fantastic-battle-fes-film-2026-開幕-src1"
+    ]
+   },
+   {
+    "slug": "sidem-battle-fes-theater-goods-2026",
+    "brand": "sidem",
+    "rank": "medium",
+    "angle": "劇場版SideMの劇場物販が本日11月20日から全国の上映劇場と松竹ストアで始まり、ウォーターボトル・ブックバンド・マルチケース・ドリップバッグなどが並ぶ。",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "sidem-battle-fes-theater-goods-2026",
+    "candidate_ids": [
+     "sched-2026-11-20-sidem-battle-fes-theater-goods-2026-開始",
+     "sched-2026-11-20-sidem-fanfes-wgf-popcorn-box-2026-発売"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "sidem-315nyao-mini-goods-latte-2026",
+    "reason": "既報",
+    "note": "11/19号「本日発売」に購入制限・缶バッジ12/1発売まで掲載済み。新事実・当日トリガー無し"
+   },
+   {
+    "dedup_key": "sidem-producer-meeting-ajewelholic-2027-premium-advance-2",
+    "reason": "既報",
+    "note": "11/19号で業務報告書11/30締切を掲載済み。締切は10日先でトリガー無し"
+   },
+   {
+    "dedup_key": "sidem-idolish7-collab-screening-2026-12",
+    "reason": "既報",
+    "note": "11/18号で12/10応援上映を掲載済み。新事実無し"
+   },
+   {
+    "dedup_key": "sidem-zenryoku-heatup-live-2026-11",
+    "reason": "既報",
+    "note": "11/19号で11/25配信を掲載済み。当日は5日先でトリガー無し"
+   },
+   {
+    "dedup_key": "sidem-amusement-of-315-story-2026",
+    "reason": "既報",
+    "note": "11/19号で投稿不可を掲載済み。新事実・当日トリガー無し"
+   },
+   {
+    "dedup_key": "sidem-wgf-premiere-fan-congratulations-2026",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿。ファン面(culture)は general 面のみ"
+   },
+   {
+    "dedup_key": "sidem-movie-frame-complete-ticket-2026",
+    "reason": "既報",
+    "note": "販売は11/19 23:59で終了済み。11/19号で掲載済み。全国公開は初日の記事で扱う"
+   }
+  ],
+  "cross_brand": []
+ }
+}

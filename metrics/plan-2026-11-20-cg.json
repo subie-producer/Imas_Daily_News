@@ -1,0 +1,408 @@
+{
+ "decisions": {
+  "cg-hourglass-full-mv-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/19号でフル尺MV公開・配信開始を記事化済み。新事実なし"
+  },
+  "cg-hourglass-premiere-mv-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/18号でPremiere MV公開を記事化済み"
+  },
+  "cg-cinderella-party-10th-cd-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "derepa-10th-cd-additional-sales-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "出典更新(受注延長)。同じCDの追加販売として統合"
+  },
+  "cinderella-15th-anniversary-hourglass-cd-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "出典の変化は配信開始・MV公開の追記で、11/18・11/19号に既報"
+  },
+  "cinderella-orchestra-concert-2027": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cinderella-15th-orchestra-goods-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じオケ公式グッズ数量限定販売"
+  },
+  "cg-yamanashi-walk-wander-art-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "出典の変化は参加登録ボタン・更新日時など表示面で、読者に関わる条件変更なし。11/13号に詳細既報"
+  },
+  "cg-motomachidoria-momopeaberry-2026": {
+   "action": "article",
+   "angle": "元町ドリアコラボが本日開始。グッズは1商品3点・クローズド商品1セットまでの購入制限が示され、オンラインショップは10時30分に開く。",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 70,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "source_change(購入レギュレーション追記)と開始の続報予約を統合。cg-motomachi-doria-collab-2026 を統合"
+  },
+  "memory-pict-9th-february-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/18号で『February』受注は11月29日までと記事化済み。当日トリガーなし"
+  },
+  "cinderella-15th-orchestra-goods-2026": {
+   "action": "article",
+   "angle": "15周年オーケストラコンサートの公式グッズ数量限定販売が11月19日に始まり、Tシャツやアクスタなど品目・価格が公開され、29日まで販売される。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "cinderella-orchestra-concert-2027 を統合"
+  },
+  "deresute-emergency-maintenance-2026-11-19": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "メンテは20日2時15分に終了予定で、発行時点で終了済み"
+  },
+  "deresute-maintenance-endtime-2026-11": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "終了予定02:15は発行時点で過ぎており、読者の行動に結びつかない"
+  },
+  "derepa-10th-cd-additional-sales-2026": {
+   "action": "article",
+   "angle": "デレパ10周年記念CDの追加生産・販売受付が再開され、直筆サイン&P名入りジャケット抽選の対象期間が本日11月20日23時59分まで延長された。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "既報は抽選対象を18日までとしていた。cg-cinderella-party-10th-cd-2026 を統合"
+  },
+  "matoba-risa-birthday-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/19号で誕生日動画を記事化済み"
+  },
+  "cinderella-hub-collab-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cinderella-last-order-hub-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じHUBコラボ"
+  },
+  "cg-apple-of-my-ai-goods-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/6・11/17号に既報。受注は29日までで当日トリガーなし"
+  },
+  "cinderella-15th-party-sales-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-15th-party-resale-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ15周年公演のチケット(一般販売は22日まで)"
+  },
+  "dijimas-cg-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "dejimasu-naha-2026-stamp-rally",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ那覇コラボ"
+  },
+  "cg-dejimas-naha-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "dejimasu-naha-2026-stamp-rally",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ那覇コラボ"
+  },
+  "cinderella-last-order-hub-2026": {
+   "action": "article",
+   "angle": "シンデレラ×HUB「-The Last Order-」が本日開幕し、HUB6店舗で12月13日まで、桜木町クロスゲート店は11月27〜30日限定で開催される。",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "cinderella-hub-collab-2026 / cg-hub-the-last-order-2026 を統合。当日開幕のトリガー"
+  },
+  "cg-15th-party-resale-2026": {
+   "action": "article",
+   "angle": "15周年公演の公式リセール受付は23日9時59分までで、一般販売(先着)は22日までと、どちらも締切が3日以内に迫っている。",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "cinderella-15th-party-sales-2026 を統合。締切3日前の続報予約"
+  },
+  "dejimasu-naha-2026-stamp-rally": {
+   "action": "article",
+   "angle": "那覇市「でじます」×シンデレラガールズのコラボ第1弾が本日開幕し、furariのデジタルスタンプラリーが2027年1月17日まで始まる。",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "dijimas-cg-2026 / cg-dejimas-naha-2026 / cg-naha-dejimas-collab-2026 を統合。既報の100店舗超・ブラウザ版は新事実に数えず、開幕をトリガーにする"
+  },
+  "cg-hub-the-last-order-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cinderella-last-order-hub-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じHUBコラボ"
+  },
+  "cg-motomachi-doria-collab-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-motomachidoria-momopeaberry-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ元町ドリアコラボ(開幕・グッズ・オンラインショップ)"
+  },
+  "cg-naha-dejimas-collab-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "dejimasu-naha-2026-stamp-rally",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ那覇コラボ"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "cg-motomachidoria-momopeaberry-2026",
+    "brand": "cg",
+    "rank": "medium",
+    "angle": "元町ドリアコラボが本日開始。グッズは1商品3点・クローズド商品1セットまでの購入制限が示され、オンラインショップは10時30分に開く。",
+    "purpose": "期日の知らせ",
+    "lead_score": 70,
+    "dedup_key": "cg-motomachidoria-momopeaberry-2026",
+    "candidate_ids": [
+     "update-20f83b4618a1",
+     "sched-2026-11-20-cg-motomachidoria-momopeaberry-2026-開始",
+     "sched-2026-11-20-cg-motomachidoria-momopeaberry-2026-開始-src1",
+     "sched-2026-11-20-cg-motomachi-doria-collab-2026-開幕",
+     "sched-2026-11-20-cg-motomachi-doria-collab-2026-開幕-src1"
+    ]
+   },
+   {
+    "slug": "cg-cinderella-15th-orchestra-goods-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "15周年オーケストラコンサートの公式グッズ数量限定販売が11月19日に始まり、Tシャツやアクスタなど品目・価格が公開され、29日まで販売される。",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "cinderella-15th-orchestra-goods-2026",
+    "candidate_ids": [
+     "202611200230-grok-20",
+     "202611200230-grok-89",
+     "202611191235-watch-0",
+     "202611200230-grok-113"
+    ]
+   },
+   {
+    "slug": "cg-derepa-10th-cd-additional-sales-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "デレパ10周年記念CDの追加生産・販売受付が再開され、直筆サイン&P名入りジャケット抽選の対象期間が本日11月20日23時59分まで延長された。",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "derepa-10th-cd-additional-sales-2026",
+    "candidate_ids": [
+     "202611200230-grok-71",
+     "update-7956c2239b81"
+    ]
+   },
+   {
+    "slug": "cg-cinderella-last-order-hub-2026",
+    "brand": "cg",
+    "rank": "medium",
+    "angle": "シンデレラ×HUB「-The Last Order-」が本日開幕し、HUB6店舗で12月13日まで、桜木町クロスゲート店は11月27〜30日限定で開催される。",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "cinderella-last-order-hub-2026",
+    "candidate_ids": [
+     "sched-2026-11-20-cinderella-last-order-hub-2026-開幕",
+     "202611200230-grok-82",
+     "sched-2026-11-20-cg-hub-the-last-order-2026-開幕",
+     "sched-2026-11-20-cg-hub-the-last-order-2026-開幕-src1"
+    ]
+   },
+   {
+    "slug": "cg-15th-party-resale-2026",
+    "brand": "cg",
+    "rank": "medium",
+    "angle": "15周年公演の公式リセール受付は23日9時59分までで、一般販売(先着)は22日までと、どちらも締切が3日以内に迫っている。",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "cg-15th-party-resale-2026",
+    "candidate_ids": [
+     "sched-2026-11-20-cg-15th-party-resale-2026-締切前",
+     "202611200230-grok-88"
+    ]
+   },
+   {
+    "slug": "cg-dejimasu-naha-2026-stamp-rally",
+    "brand": "cg",
+    "rank": "medium",
+    "angle": "那覇市「でじます」×シンデレラガールズのコラボ第1弾が本日開幕し、furariのデジタルスタンプラリーが2027年1月17日まで始まる。",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "dejimasu-naha-2026-stamp-rally",
+    "candidate_ids": [
+     "sched-2026-11-20-dejimasu-naha-2026-stamp-rally-開幕",
+     "sched-2026-11-20-dejimasu-naha-2026-stamp-rally-開幕-src1",
+     "sched-2026-11-20-dijimas-cg-2026-開幕",
+     "sched-2026-11-20-cg-dejimas-naha-2026-開始",
+     "sched-2026-11-20-cg-naha-dejimas-collab-2026-開始"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "cg-hourglass-full-mv-2026",
+    "reason": "既報",
+    "note": "11/19号でフル尺MV公開・配信開始を記事化済み。新事実なし"
+   },
+   {
+    "dedup_key": "cinderella-15th-anniversary-hourglass-cd-2026",
+    "reason": "既報",
+    "note": "出典の変化は配信開始・MV公開の追記で、11/18・11/19号に既報"
+   },
+   {
+    "dedup_key": "cg-hourglass-premiere-mv-2026",
+    "reason": "既報",
+    "note": "11/18号でPremiere MV公開を記事化済み"
+   },
+   {
+    "dedup_key": "cg-yamanashi-walk-wander-art-2026",
+    "reason": "既報",
+    "note": "出典の変化は参加登録ボタン・更新日時など表示面で、読者に関わる条件変更なし。11/13号に詳細既報"
+   },
+   {
+    "dedup_key": "memory-pict-9th-february-2026",
+    "reason": "既報",
+    "note": "11/18号で『February』受注は11月29日までと記事化済み。当日トリガーなし"
+   },
+   {
+    "dedup_key": "deresute-emergency-maintenance-2026-11-19",
+    "reason": "その他",
+    "note": "メンテは20日2時15分に終了予定で、発行時点で終了済み"
+   },
+   {
+    "dedup_key": "deresute-maintenance-endtime-2026-11",
+    "reason": "その他",
+    "note": "終了予定02:15は発行時点で過ぎており、読者の行動に結びつかない"
+   },
+   {
+    "dedup_key": "matoba-risa-birthday-2026",
+    "reason": "既報",
+    "note": "11/19号で誕生日動画を記事化済み"
+   },
+   {
+    "dedup_key": "cg-apple-of-my-ai-goods-2026",
+    "reason": "既報",
+    "note": "11/6・11/17号に既報。受注は29日までで当日トリガーなし"
+   }
+  ],
+  "cross_brand": []
+ }
+}

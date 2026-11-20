@@ -1,0 +1,191 @@
+{
+ "decisions": {
+  "manaka-birthday-live-watchalong-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/19号の上映会記事と同内容(11/23 13時・Z-aN・券は11/29 18時まで)。出典は二次情報・未確認"
+  },
+  "dsva-manaka-birthday-online-live-2026-platform-change": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "Z-aN移行は10/24号で報じ済み。変更点は上映会の追記のみで11/19号に既出、読者に関わる新変更なし"
+  },
+  "valiv-tomori-birthday-live-2026-screening": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/19号『灯里愛夏の上映会、本人もコメント参加』に日時・Z-aN・券が既出。当日のトリガーも無い(開催は23日)"
+  },
+  "va-liv-3rdlive-qonnect-goods-preorder-2026": {
+   "action": "article",
+   "angle": "3rdLIVE&MEETINGの公式グッズ事前受注が11月29日まで始まり、届くのは3月中旬で名古屋公演には間に合わず、名古屋は会場先行販売になる。",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "va-liv-3rd-live-2027(出典更新)を統合。受注開始は新発表"
+  },
+  "va-liv-3rd-live-2027": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "va-liv-3rdlive-qonnect-goods-preorder-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "出典ページの変更は事前受注の届け時期と名古屋会場先行販売の追記で、グッズ受注の主題と同一"
+  },
+  "cosmo-rain-paterson-ultra-c-dance-2026": {
+   "action": "article",
+   "angle": "上水流宇宙のYouTubeで、レイン・パターソンとの「ULTRA C」踊ってみた動画が公開された。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "過去のコラボ動画とは別曲の新作"
+  },
+  "tomori-manaka-ramen-simulator-2026-11": {
+   "action": "article",
+   "angle": "灯里愛夏の「Japanese Ramen Simulator」#4配信で、きくらげへの反応や暖簾の油染み、ゲーム内の「まなかっちゃん」が話題になった。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公式Xがハイライトを紹介した配信。視聴者投稿は補足にとどめる"
+  },
+  "valiv-14th-online-one-on-one-2026": {
+   "action": "article",
+   "angle": "第14回オンライン1on1の抽選受付は11月23日23時59分までで締切まで3日、愛夏・宇宙・レトラそれぞれの申込ページから応募できる。",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(締切前)。11/17号に既出の締切を当日トリガーで伝え直す"
+  },
+  "valiv-3rd-concert-light-rules-2026": {
+   "action": "article",
+   "angle": "3rdLIVE&MEETINGのコンサートライトのレギュレーションが一部変更され、公式が告知した。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "来場者の持ち物の規則で、グッズ受注とは読者の行動が別。変更内容はfactsに無く、公式ページ(01_20400)で要確認"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "dsva-va-liv-3rdlive-qonnect-goods-preorder-2026",
+    "brand": "dsva",
+    "rank": "medium",
+    "angle": "3rdLIVE&MEETINGの公式グッズ事前受注が11月29日まで始まり、届くのは3月中旬で名古屋公演には間に合わず、名古屋は会場先行販売になる。",
+    "purpose": "新情報",
+    "lead_score": 60,
+    "dedup_key": "va-liv-3rdlive-qonnect-goods-preorder-2026",
+    "candidate_ids": [
+     "202611191837-watch-0",
+     "202611200230-grok-105",
+     "202611200230-grok-112",
+     "update-024308016751"
+    ]
+   },
+   {
+    "slug": "dsva-cosmo-rain-paterson-ultra-c-dance-2026",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "上水流宇宙のYouTubeで、レイン・パターソンとの「ULTRA C」踊ってみた動画が公開された。",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "cosmo-rain-paterson-ultra-c-dance-2026",
+    "candidate_ids": [
+     "202611200230-explore-7"
+    ]
+   },
+   {
+    "slug": "dsva-tomori-manaka-ramen-simulator-2026-11",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "灯里愛夏の「Japanese Ramen Simulator」#4配信で、きくらげへの反応や暖簾の油染み、ゲーム内の「まなかっちゃん」が話題になった。",
+    "purpose": "新情報",
+    "lead_score": 5,
+    "dedup_key": "tomori-manaka-ramen-simulator-2026-11",
+    "candidate_ids": [
+     "202611200230-grok-83",
+     "202611200230-grok-108"
+    ]
+   },
+   {
+    "slug": "dsva-valiv-14th-online-one-on-one-2026",
+    "brand": "dsva",
+    "rank": "medium",
+    "angle": "第14回オンライン1on1の抽選受付は11月23日23時59分までで締切まで3日、愛夏・宇宙・レトラそれぞれの申込ページから応募できる。",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "valiv-14th-online-one-on-one-2026",
+    "candidate_ids": [
+     "202611200230-grok-106",
+     "sched-2026-11-20-valiv-14th-online-one-on-one-2026-締切前",
+     "sched-2026-11-20-valiv-14th-online-one-on-one-2026-締切前-src1"
+    ]
+   },
+   {
+    "slug": "dsva-valiv-3rd-concert-light-rules-2026",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "3rdLIVE&MEETINGのコンサートライトのレギュレーションが一部変更され、公式が告知した。",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "valiv-3rd-concert-light-rules-2026",
+    "candidate_ids": [
+     "202611200230-grok-111"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "manaka-birthday-live-watchalong-2026",
+    "reason": "既報",
+    "note": "11/19号の上映会記事と同内容(11/23 13時・Z-aN・券は11/29 18時まで)。出典は二次情報・未確認"
+   },
+   {
+    "dedup_key": "dsva-manaka-birthday-online-live-2026-platform-change",
+    "reason": "既報",
+    "note": "Z-aN移行は10/24号で報じ済み。変更点は上映会の追記のみで11/19号に既出、読者に関わる新変更なし"
+   },
+   {
+    "dedup_key": "valiv-tomori-birthday-live-2026-screening",
+    "reason": "既報",
+    "note": "11/19号『灯里愛夏の上映会、本人もコメント参加』に日時・Z-aN・券が既出。当日のトリガーも無い(開催は23日)"
+   }
+  ],
+  "cross_brand": []
+ }
+}

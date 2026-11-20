@@ -135,6 +135,8 @@ discovery_only_domains:
 # --- 二次情報: 他所の発表を写して伝えている情報源(規程2.5) ---
 # 法人運営か個人運営かは問わない。自ら取材・発表していないものはここ。
 secondary_domains:
+  - bitotaku.com          # 合議で追加: 公式配信の説明・リンクを写す転載型。運営者情報は未発見
+  - buzz-atlas.com        # 合議で追加: Aboutに公開トレンドを集め自動整理と明記。独自取材の形跡なし
   - nitter.gq             # 合議で追加: X上の他者の投稿を代理表示する閲覧サイト。自らの発表はなし
   - san-tatsu.jp          # 合議で追加: あみあみ・大網社のプレスリリースを転載。運営は街情報の媒体社
   - mainichikirei.jp      # 合議で追加: PR TIMESのプレスリリースを本文ごと転載、自社取材の形跡なし
@@ -511,6 +513,7 @@ video_ids:
     - sm18526341          # 機械で追加: nicovideo.jp/user/17835786「iM@S 6th Anniversary Live - キラ」
     - LSkzNm3AzHk         # 機械で追加: @TogawaNonoha「〖 世界のアソビ大全51 〗遊び…？いいえ、ののは vs ま」
   公式:
+    - YbyjjPC6wUQ         # 機械で追加: @hatsuboshi_gakuen「初星学園 「金の斧、銀の斧、エメラルドの斧」Official」
     - mdRv_Zk5Scw         # 機械で追加: @TomoriManaka「#4【Japanese Ramen Simulator】福岡」
     - PoNEj7tUdLk         # 機械で追加: @KamizuruCosmo「【朝活】初見さん大歓迎！高評価数でお昼ご飯の値段が決まる朝の」
     - -tgTxEgOmRQ         # 機械で追加: @KamizuruCosmo「ULTRA C 踊ってみた with レイン・パターソン さ」
@@ -1093,6 +1096,7 @@ x_accounts:
     - procinen1
     - yutaleP
   当事者:
+    - TAGLIVELABEL        # 合議で追加: SideM Mフェス缶の販売元が自ら発表。ライセンス商品の販売元
     - ShochikuGames       # 合議で追加: 松竹ゲームズ(ゲーム発売元)の一次発信。要約は途切れ、IM@S関係未確認
     - maron_akiba         # 合議で追加: ツアマスS2カードの入荷を告知するカードショップ(販売元)
     - cocollabo           # 合議で追加: 学マス標ツアーファイナル協賛グッズを一般販売する販売元
@@ -1301,6 +1305,8 @@ x_posts:
 
 # --- リンク元から引き継いだ種別(リンク先1つずつ。キーは pipelib.link_key)。合議がリンク元の告知と関係していると確かめたものだけ(classify_sources.inherit_from_links)。リンク先そのものの種別より強いときだけ効く ---
 link_types:
+  x.com/i/status/2123340515466764547: 準公式      # リンク元から引き継ぎ(合議で関係を確認): https://x.com/SideM_lantis/status/2123347593661153619(準公式)。リンク元が引用元として示す同じ3Dライブ振り返り特集記事の投稿
+  nicovideo.jp/watch/lv351753743: 準公式          # リンク元から引き継ぎ(合議で関係を確認): https://x.com/SideM_lantis/status/2123249905787719728(準公式)。リンク元と同じ11/13放送『315プロNight!』の視聴ページ
   youtube.com/watch?v=v9KAmlDayS0: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/imas_ch/status/2123068726274596952(公式)。リンク元は的場梨沙の誕生日祝い告知。リンク先はそのお祝い動画
   youtube.com/watch?v=ZpA_nERiA74: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/gkmas_official/status/2123037254365167778(公式)。リンク元は11月18日放送回の終了・アーカイブ告知。リンク先は同じ放送回の動画
   youtube.com/watch?v=Q0I9tWqvtgY: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/imas_ch/status/2123040555135541529(公式)。リンク元は11月メンバー限定ラジオのアーカイブ案内。リンク先は同じ配信の動画

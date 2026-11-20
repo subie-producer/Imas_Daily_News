@@ -8919,6 +8919,11 @@ def test_update_server_apply(tmp: Path):
             check(not r["ok"] and r["rolled_back"] and r["restored"] and "SIGTERM" in r["failure"] and restarts == [us.APP_UNIT],
                   f"SIGTERM で戻さない・上げた版で再起動した: {r} {restarts}")
             check(us.TERM_PENDING and us._CRITICAL == 0, "停止の要求を覚えていない・区間を閉じない")
+            # Sol 監査 r4: 停止の要求を受けた後は、入れ替えの直前の見直しで止まり、pip で入れない
+            pips.clear()
+            r2 = us.apply_webapp(["Werkzeug==3.1.9"], "Flask==3.1.3\n", tmp)
+            check(not r2["ok"] and not r2["rolled_back"] and not [p for p in pips if p[0] == "install" and "--dry-run" not in p],
+                  f"停止の要求を受けた後に入れ替えた: {r2} {pips}")
             check(not us.guarded(lambda t, p: {"ok": True}, ["x==1"], None)["ok"], "停止の要求を受けた後に入れ替えを始めた")
             us.TERM_PENDING = False
             raised = False
@@ -9008,7 +9013,7 @@ def test_update_server_apply(tmp: Path):
             # pipelib.commit_and_push は stage してから commit に失敗しうる(Sol 監査 r1)
             sp.run(["git", "add", "-A", "--", *paths], cwd=repo, check=True)
             return False
-        saved3 = _patch(us, ROOT=repo, job_lock=lambda job, wait_min=0: None, checkout_edition_branch=lambda d, j: True,
+        saved3 = _patch(us, ROOT=repo, job_lock=lambda job, wait_min=0, wait_fn=None: None, checkout_edition_branch=lambda d, j: True,
                         commit_and_push=stage_then_fail, edition_date=lambda: "2026-11-22")
         applied = []
         ok_apply = lambda: applied.append(1) or {"ok": True, "steps": ["上げた"], "failure": "", "rolled_back": False}
@@ -9036,13 +9041,13 @@ def test_update_server_apply(tmp: Path):
             (repo / "webapp" / "requirements.txt").write_text("other job\n")
             sp.run(["git", "add", "-A"], cwd=repo, check=True)
 
-            def lock_timeout(job, wait_min=0):
+            def lock_timeout(job, wait_min=0, wait_fn=None):
                 raise RuntimeError("busy")
             us.job_lock = lock_timeout
             r = us.change_on_branch(us.REQUIREMENTS_REPO, "Flask==3.1.5\n", "Flask==9\n", "m", ok_apply)
             check(not r["ok"] and not applied and req() == "other job\n" and status().startswith("M "),
                   f"ロックが取れないのに他の工程の変更を戻した・入れ替えた: {r} {status()!r}")
-            us.job_lock = lambda job, wait_min=0: None
+            us.job_lock = lambda job, wait_min=0, wait_fn=None: None
             sp.run(["git", "reset", "-q", "--hard"], cwd=repo, check=True)
             us.checkout_edition_branch = lambda d, j: False
             r = us.change_on_branch(us.REQUIREMENTS_REPO, "Flask==3.1.5\n", "x\n", "m", ok_apply)
@@ -9057,6 +9062,55 @@ def test_update_server_apply(tmp: Path):
             r = us.change_on_branch(us.REQUIREMENTS_REPO, "Flask==3.1.4\n", "Flask==3.1.7\n", "m",
                                     lambda: {"ok": False, "steps": [], "failure": "f", "rolled_back": True, "restored": True})
             check(not r["ok"] and not pushed and req() == "Flask==3.1.4\n", f"入れ替えに失敗したのに書き換えた: {r}")
+            # Sol 監査 r4: 発行の時間帯の待ちはロックを取る前。ロック待ちの後は停止の要求・残り時間を見直してから入れ替える
+            clock2 = [datetime.datetime(2026, 11, 22, 2, 20, tzinfo=JST)]
+            locked_at = []
+
+            def lock_at(job, wait_min=0, wait_fn=None):
+                locked_at.append(clock2[0])
+                return None
+            saved_sleep2 = us.time.sleep
+            us.now_jst = lambda: clock2[0]
+            us.time.sleep = lambda s: clock2.__setitem__(0, clock2[0] + datetime.timedelta(seconds=s))
+            us.job_lock = lock_at
+            applied.clear()
+            try:
+                r = us.change_on_branch(us.REQUIREMENTS_REPO, "Flask==3.1.4\n", "Flask==3.1.4\n", "m", ok_apply)
+                check(r["ok"] and locked_at and locked_at[0] >= datetime.datetime(2026, 11, 22, 7, 0, tzinfo=JST),
+                      f"ロックを取ってから発行の時間帯を待った(ロックを取った時刻 {locked_at}): {r}")
+                clock2[0] = datetime.datetime(2026, 11, 22, 10, 0, tzinfo=JST)
+                applied.clear()
+
+                def lock_then_term(job, wait_min=0, wait_fn=None):
+                    us.TERM_PENDING = True      # ロックを待つあいだに停止の要求を受けた
+                    return None
+                us.job_lock = lock_then_term
+                r = us.change_on_branch(us.REQUIREMENTS_REPO, "Flask==3.1.4\n", "Flask==3.1.4\n", "m", ok_apply)
+                check(not r["ok"] and not applied and "SIGTERM" in r["failure"], f"ロック待ちの後の停止の要求を見ずに入れ替えた: {r}")
+                us.TERM_PENDING = False
+                saved_dl2 = us.RUN_DEADLINE
+
+                def lock_then_late(job, wait_min=0, wait_fn=None):
+                    us.RUN_DEADLINE = us.time.time() + 60      # ロックを待つあいだに残り時間が尽きた
+                    return None
+                us.job_lock = lock_then_late
+                try:
+                    r = us.change_on_branch(us.REQUIREMENTS_REPO, "Flask==3.1.4\n", "Flask==3.1.4\n", "m", ok_apply)
+                    check(not r["ok"] and not applied and "残り" in r["failure"], f"ロック待ちの後の残り時間を見ずに入れ替えた: {r}")
+                finally:
+                    us.RUN_DEADLINE = saved_dl2
+                # 停止の要求で、ロック待ちの上限が 0 になる(待ちをやめる)
+                got_fn = []
+                us.job_lock = lambda job, wait_min=0, wait_fn=None: got_fn.append((wait_min, wait_fn)) or None
+                us.change_on_branch(us.REQUIREMENTS_REPO, "Flask==3.1.4\n", "Flask==3.1.4\n", "m", ok_apply)
+                before_term = got_fn[0][1](0)
+                us.TERM_PENDING = True
+                check(got_fn[0][0] == 0 and before_term == us.LOCK_WAIT_MIN and got_fn[0][1](0) == 0,
+                      f"停止の要求でロック待ちをやめない: {got_fn} {before_term}")
+            finally:
+                us.TERM_PENDING = False
+                us.time.sleep = saved_sleep2
+                us.now_jst = lambda: datetime.datetime(2026, 11, 21, 10, 0, tzinfo=JST)
         finally:
             _unpatch(us, saved3)
     finally:

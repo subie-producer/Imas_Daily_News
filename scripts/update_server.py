@@ -614,6 +614,9 @@ def apply_webapp(targets: list[str], req_text: str, work: Path) -> dict:
     # 入れ替えの前に待つ。入れ終わって再起動するまでに発行の時間帯に入らないよう、入れる時間の分を見込む
     # (入れた後に待つと、待つあいだにアプリが落ちて自動で起き直したとき、確かめていない新しい版を読む)
     wait_quiet(margin=QUIET_MARGIN)
+    if (why := swap_blocker()):
+        steps.append(why)
+        return {"ok": False, "steps": steps, "failure": why, "rolled_back": False}
     # ここから先は入れ替えが始まっている。例外(pip の時間切れなど)でも必ず下の戻しへ進む(Sol 監査 r1)。停止の要求(SIGTERM)は
     # この区間では例外にせず保留し、戻しまで済ませる(Sol 監査 r3)
     with critical():
@@ -676,6 +679,9 @@ def apply_caddy(new_bin: Path, version: str, cur: str, caddyfile_text: str | Non
         steps.append("差し替えの前の準備で例外(差し替えていない)")
         return {"ok": False, "steps": steps, "failure": f"準備で例外({type(e).__name__}: {e})", "rolled_back": False}
     wait_quiet(margin=QUIET_MARGIN)
+    if (why := swap_blocker()):
+        steps.append(why)
+        return {"ok": False, "steps": steps, "failure": why, "rolled_back": False}
     # 差し替えから戻しまでは、停止の要求(SIGTERM)を例外にせず保留する(確認の失敗から戻しまでのあいだで止められると、
     # 新しい実行ファイル・設定が残り、戻しも止めた印の記録もしない。Sol 監査 r3)
     with critical():
@@ -743,10 +749,21 @@ def quiet_wait_secs(now: datetime.datetime, margin: float = 0) -> float:
 
 def wait_quiet(margin: float = 0) -> None:
     """入れ替えて再起動し終えるまで(margin 秒)のあいだに発行の時間帯に掛かるなら、その終わりまで待つ(再起動で数秒落ちるため)。
-    待ちから戻るたびに時刻を見直す。"""
-    while (w := quiet_wait_secs(now_jst(), margin)) > 0:
+    待ちから戻るたびに時刻を見直す。停止の要求を受けたら待ちをやめて戻る(入れ替えるかは呼び手が swap_blocker で決める)。"""
+    while not TERM_PENDING and (w := quiet_wait_secs(now_jst(), margin)) > 0:
         say(f"発行の時間帯に掛かるので {ucf.QUIET_UNTIL:%H:%M} まで待ってから入れ替える({int(w)}秒)")
-        time.sleep(w)
+        time.sleep(min(w, 60))
+
+
+def swap_blocker() -> str:
+    """いま入れ替えを始めてはいけない理由(無ければ空)。入れ替えの直前(待ち・ロック待ちの後)に必ず見直す(Sol 監査 r4):
+    停止の要求を受けている・入れ替えと戻しのあいだに発行の時間帯に掛かる・この回の残り時間に収まらない。"""
+    if TERM_PENDING:
+        return "停止の要求(SIGTERM)を受けているので入れ替えを始めない"
+    if quiet_wait_secs(now_jst(), QUIET_MARGIN) > 0:
+        return "入れ替えと戻しのあいだに発行の時間帯に掛かるので入れ替えを始めない"
+    ok, why = swap_budget_ok()
+    return "" if ok else f"入れ替えを始めない: {why}"
 
 
 def prune_caddy_backups(keep: int = ucf.BACKUP_KEEP) -> None:
@@ -772,7 +789,12 @@ def change_on_branch(rel: Path, expect: str, text: str, message: str, apply) -> 
     wrote = False
     r: dict | None = None
     try:
-        fd = job_lock(JOB, wait_min=LOCK_WAIT_MIN)
+        # 発行の時間帯の待ちはロックを取る前に済ませる(ロックを持ったまま待つと、03:00 の組版・06:00 の発行がロックを取れない。Sol 監査 r4)
+        wait_quiet(margin=QUIET_MARGIN)
+        if (why := swap_blocker()):
+            return not_started(why)
+        # ロック待ちは停止の要求を受けたらやめる(待ち終えてから停止の直前に入れ替えを始めない。Sol 監査 r4)
+        fd = job_lock(JOB, wait_min=0, wait_fn=lambda t0: 0 if TERM_PENDING else LOCK_WAIT_MIN)
         date = edition_date()
         if not checkout_edition_branch(date, JOB):
             return not_started(f"edition/{date} を checkout できない(入れ替えていない)")
@@ -780,6 +802,9 @@ def change_on_branch(rel: Path, expect: str, text: str, message: str, apply) -> 
         cur = path.read_text(encoding="utf-8")
         if cur != expect:
             return not_started(f"{rel} が評価の後に枝の上で変わっていた(評価に使った原本と違う)。入れ替えずに次の回に今の中身で評価し直す")
+        # ロック待ちのあいだに時刻・停止の要求・残り時間が変わる。入れ替えの直前に見直す
+        if (why := swap_blocker()):
+            return not_started(why)
         r = apply()
         if not r["ok"] or cur == text:
             return r

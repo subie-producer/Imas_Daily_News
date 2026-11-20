@@ -92,8 +92,9 @@ def path_key(url: str) -> str | None:
     if host in QUERY_DOC_PAGES:
         # 文書 ID はクエリの id か、短縮の /r/<ID>。取れなければ None(フォームのサービス全体を1つの主体にしない。監査指摘 2026-10-14)
         return query_doc_key(url) or (f"{host}/r/{seg[1]}" if len(seg) >= 2 and seg[0].lower() == "r" else None)
-    if host == "youtube.com" and seg == ["playlist"]:
-        # 再生リストは list= の ID までが1つの単位(種別は持ち主のチャンネルを写す。resolve_playlists)。ID が無ければ None
+    if host == "youtube.com" and (seg == ["playlist"] or (seg and seg[0] == "post")):
+        # 再生リストは list= の ID まで、コミュニティ投稿は投稿の ID までが1つの単位(種別は持ち主のチャンネルを写す。
+        # resolve_playlists)。ID が無ければ None
         return query_doc_key(url)
     if host == "youtube.com" and seg:
         # チャンネルのページ(`/@<ハンドル>/streams`・`/channel/<ID>/videos` など)は、チャンネルまでが1つの単位。
@@ -183,6 +184,8 @@ def platform_unit(url: str) -> tuple[str, str]:
         return "skip", f"{host} の文書 ID の無い URL(文書でなければ持ち主は無い)"
     if host.removeprefix("m.") == "youtube.com" and u.path.rstrip("/") == "/playlist":
         return "skip", "YouTube の再生リスト ID(list=)の無い URL"
+    if host.removeprefix("m.") == "youtube.com" and u.path.rstrip("/").split("/")[:2] == ["", "post"]:
+        return "skip", "YouTube のコミュニティ投稿の ID の無い URL"
     if host.removeprefix("m.") == "youtube.com" and (u.path.strip("/") == "" or u.path.strip("/").split("/")[0] in ("results", "feed", "hashtag")):
         return "skip", "YouTube のチャンネルにも動画にも紐づかない URL(トップ・検索・トレンド・ハッシュタグ)。出典にするならチャンネルか動画の URL が要る"
     for q in SUBDOMAIN_PLATFORMS:
@@ -1539,9 +1542,59 @@ def video_author(vid: str) -> tuple[str, str]:
 
 
 def yt_playlist_key(url: str) -> str | None:
-    """YouTube の再生リストの URL なら、判定表(path_types)に書くキー `youtube.com/playlist?list=<ID>`。それ以外は None。"""
+    """YouTube の再生リストかコミュニティ投稿の URL なら、判定表(path_types)に書くキー(`youtube.com/playlist?list=<ID>`・
+    `youtube.com/post/<ID>`)。どちらも種別は持ち主のチャンネルを写す(resolve_playlists)。それ以外は None。"""
     k = query_doc_key(url)
-    return k if k and k.startswith("youtube.com/playlist?") else None
+    return k if k and k.startswith(("youtube.com/playlist?", "youtube.com/post/")) else None
+
+
+def post_author(post_id: str, fetch=None) -> tuple[str, str]:
+    """コミュニティ投稿を投稿したチャンネルのハンドルと、投稿の題(ページの題)を取る。(handle, title)。取れなければ ("", "")。
+    oEmbed は投稿を扱わないので、投稿のページの埋め込み情報の authorEndpoint(投稿者の構造化フィールド)だけを見る。本文や
+    おすすめ欄のチャンネルからは推定しない。authorEndpoint のハンドルが1つに決まらなければ取れなかったことにする。
+    fetch(url) -> 本文 を渡せば取得しない(テスト用)。実測 2026-11-20: post/Ugkx3L2iBqKM4RM9am4x8oohVKGkvGwL21kU の
+    authorEndpoint は1つで `/@imas-official`(ページ約 950KB の末尾近く)。"""
+    import urllib.request
+    url = f"https://www.youtube.com/post/{post_id}"
+    try:
+        if fetch is None:
+            req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0", "Accept-Language": "ja"})
+            with polite_urlopen(req, timeout=20) as r:
+                html = r.read(PAGE_READ_BYTES).decode("utf-8", "replace")
+        else:
+            html = fetch(url)
+    except Exception as e:
+        print(f"  投稿のページを取得できず {post_id}: {type(e).__name__}", flush=True)
+        return "", ""
+    # authorEndpoint の中身は JSON として読む(キーの並びに頼ると、並びの違う別の投稿者を見落とす。Sol 監査 noon r1)。
+    # 1つでも読めない・ハンドルの無い authorEndpoint があれば、投稿者は決まらないことにする
+    handles: set[str] = set()
+    dec = json.JSONDecoder()
+    for m in re.finditer(r'"authorEndpoint"\s*:\s*', html):
+        try:
+            ep, _ = dec.raw_decode(html, m.end())
+        except ValueError:
+            ep = None
+        def dig(obj, *keys):
+            """辞書を順にたどる。途中が辞書でなければ None(型の違う中身で止まらない。Sol 監査 noon r2)"""
+            for k in keys:
+                if not isinstance(obj, dict):
+                    return None
+                obj = obj.get(k)
+            return obj
+        found = set()
+        for u in (dig(ep, "commandMetadata", "webCommandMetadata", "url"), dig(ep, "browseEndpoint", "canonicalBaseUrl")):
+            if isinstance(u, str) and re.fullmatch(r"/@[^/\"?#]+", u):
+                found.add(u[2:])
+        if len(found) != 1:
+            print(f"  投稿のページの authorEndpoint から投稿者を読めない {post_id}: {sorted(found)}", flush=True)
+            return "", ""
+        handles |= found
+    if len(handles) != 1:
+        print(f"  投稿のページから投稿者が1つに決まらない {post_id}: {sorted(handles)}", flush=True)
+        return "", ""
+    t = re.search(r'<meta name="title" content="([^"]*)"', html) or re.search(r'<title>([^<]*)</title>', html)
+    return urllib.parse.unquote(handles.pop()), (t.group(1) if t else "").replace(" - YouTube", "")
 
 
 def playlist_author(list_id: str, fetch=None) -> tuple[str, str]:
@@ -1571,11 +1624,14 @@ _PLAYLIST_CACHE: dict[str, tuple[str, str]] = {}
 
 
 def playlist_owner(key: str) -> tuple[str, str]:
-    """`playlist_author` を再生リストごとに1回だけ呼ぶ(display_base は出典行ごとに引く)。key は yt_playlist_key の形。"""
-    lid = key.split("list=", 1)[1]
-    if lid not in _PLAYLIST_CACHE:
-        _PLAYLIST_CACHE[lid] = playlist_author(lid)
-    return _PLAYLIST_CACHE[lid]
+    """`playlist_author`(コミュニティ投稿は `post_author`)を1つずつ1回だけ呼ぶ(display_base は出典行ごとに引く)。
+    key は yt_playlist_key の形。"""
+    if key not in _PLAYLIST_CACHE:
+        if key.startswith("youtube.com/post/"):
+            _PLAYLIST_CACHE[key] = post_author(key.rsplit("/", 1)[1])
+        else:
+            _PLAYLIST_CACHE[key] = playlist_author(key.split("list=", 1)[1])
+    return _PLAYLIST_CACHE[key]
 
 
 def unknown_playlists(date: str) -> dict[str, str]:
@@ -1597,7 +1653,7 @@ def resolve_playlists(date: str, apply: bool) -> tuple[list[str], dict[str, tupl
         return [], {}
     t = source_type_table()
     chans = {h.lower(): typ for typ, hs in (t.get("video_channels") or {}).items() for h in hs or []}
-    print(f"\n{date}: 判定表に無い YouTube 再生リスト {len(lists)}件", flush=True)
+    print(f"\n{date}: 判定表に無い YouTube 再生リスト・コミュニティ投稿 {len(lists)}件", flush=True)
     found: dict[str, tuple[str, str]] = {}
     left: list[str] = []
     unknown_chans: dict[str, tuple[str, str]] = {}
@@ -1610,6 +1666,9 @@ def resolve_playlists(date: str, apply: bool) -> tuple[list[str], dict[str, tupl
         elif handle:
             left.append(f"https://www.{key}: 持ち主のチャンネル(@{handle})が判定表に無い(チャンネルの合議でも決まらなかった)")
             unknown_chans.setdefault(handle, (key, title))
+        elif key.startswith("youtube.com/post/"):
+            left.append(f"https://www.{key}: コミュニティ投稿の投稿者を引けなかった(合議に掛かっていない。ページを読めない・"
+                        "authorEndpoint から投稿者が1つに決まらない。削除・非公開の場合もある)")
         else:
             left.append(f"https://www.{key}: 再生リストの持ち主を引けなかった(合議に掛かっていない。oEmbed が返さない・ハンドルが無い。削除・非公開の場合もある)")
     if found and apply:

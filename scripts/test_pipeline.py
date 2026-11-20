@@ -14274,6 +14274,71 @@ def test_youtube_playlist_owner(tmp: Path):
         cs._PLAYLIST_CACHE.update(cache)
 
 
+def test_youtube_post_owner(tmp: Path):
+    """YouTube のコミュニティ投稿の持ち主(2026-11-20: `youtube.com/post/<ID>` が出典に載り、持ち主を取るパーサが無かった)。
+    単位は投稿の ID、種別は投稿のページの authorEndpoint(投稿したチャンネル)の種別を写す(再生リストと同じ仕組み)。偽の取得で確かめる。"""
+    import classify_sources as cs
+    pid = "Ugkx3L2iBqKM4RM9am4x8oohVKGkvGwL21kU"
+    url = f"https://www.youtube.com/post/{pid}?si=abc"
+    key = f"youtube.com/post/{pid}"
+    check(cs.platform_unit(url) == ("path", key), f"投稿の単位: {cs.platform_unit(url)}")
+    for u in ("https://www.youtube.com/post", "https://www.youtube.com/post/"):
+        check(cs.platform_unit(u)[0] == "skip", f"ID の無い投稿の URL を判定の対象にした: {u} {cs.platform_unit(u)}")
+    check(pipelib.path_type_norm(key) == key, "投稿の ID の大小文字を潰した")
+
+    def page(*handles: str) -> str:
+        ends = "".join('"authorEndpoint":{"clickTrackingParams":"x","commandMetadata":{"webCommandMetadata":'
+                       f'{{"url":"/@{h}","webPageType":"WEB_PAGE_TYPE_CHANNEL"}}}}}},' for h in handles)
+        # 本文・おすすめ欄に出る別のチャンネルは持ち主ではない
+        return f'<meta name="title" content="みやたんの花園百々人">{ends}"canonicalBaseUrl":"/@somefan","url":"/@other"'
+    calls: list[str] = []
+    check(cs.post_author(pid, fetch=lambda u: calls.append(u) or page("imas-official")) == ("imas-official", "みやたんの花園百々人")
+          and calls == [f"https://www.youtube.com/post/{pid}"], f"投稿のページの持ち主: {calls}")
+    check(cs.post_author(pid, fetch=lambda u: page("imas-official", "somefan"))[0] == "", "投稿者が1つに決まらないのに持ち主にした")
+    check(cs.post_author(pid, fetch=lambda u: page())[0] == "", "authorEndpoint の無いページで、ほかのチャンネルを持ち主にした")
+    # キーの並びが違う authorEndpoint の投稿者も数える(Sol 監査 noon r1: 並びの違う @somefan を見落として公式にした)
+    swapped = page("imas-official") + ('"authorEndpoint":{"commandMetadata":{"webCommandMetadata":{"url":"/@somefan"}},'
+                                       '"clickTrackingParams":"y","browseEndpoint":{"canonicalBaseUrl":"/@somefan"}},')
+    check(cs.post_author(pid, fetch=lambda u: swapped)[0] == "", "キーの並びの違う別の投稿者を見落として持ち主にした")
+    # ハンドルの無い・読めない authorEndpoint があれば決まらない
+    for broken in ('"authorEndpoint":{"browseEndpoint":{"browseId":"UCabc"}},', '"authorEndpoint":{"commandMetadata":',
+                   '"authorEndpoint":{"browseEndpoint":"unreadable"},', '"authorEndpoint":{"commandMetadata":[1]},',
+                   '"authorEndpoint":{"commandMetadata":{"webCommandMetadata":[1]}},', '"authorEndpoint":[1],'):
+        check(cs.post_author(pid, fetch=lambda u: page("imas-official") + broken)[0] == "",
+              f"読めない authorEndpoint を無視して持ち主にした: {broken}")
+    check(cs.post_author(pid, fetch=lambda u: (_ for _ in ()).throw(OSError("404")))[0] == "", "取得の失敗で持ち主を返した")
+    tmp.mkdir(parents=True, exist_ok=True)
+    (tmp / "candidates").mkdir(exist_ok=True)
+    (tmp / "docs" / "_posts").mkdir(parents=True, exist_ok=True)
+    (tmp / "source_types.yml").write_text("official_domains:\n  - a.example\nvideo_channels:\n  公式:\n    - imas-official\n", encoding="utf-8")
+    saved = (cs.ROOT, pipelib.ROOT, pipelib._ST_TABLE, pipelib._ST_KEY, cs.POSTS_ONLY, cs.post_author, dict(cs._PLAYLIST_CACHE))
+    other = "https://youtube.com/post/UgkxOther0000000000000000000"
+    try:
+        cs.ROOT = pipelib.ROOT = tmp
+        pipelib._ST_TABLE = pipelib._ST_KEY = None
+        cs.POSTS_ONLY = None
+        cs._PLAYLIST_CACHE.clear()
+        owners = {pid: ("imas-official", "みやたん"), "UgkxOther0000000000000000000": ("somefan", "x")}
+        cs.post_author = lambda p, fetch=None: owners[p]
+        check(cs.display_base(url) == "https://youtube.com/@imas-official", f"表示の単位: {cs.display_base(url)}")
+        (tmp / "candidates" / "2026-11-20.json").write_text(json.dumps([{"url": url, "title": "a"}, {"url": other, "title": "b"}]),
+                                                            encoding="utf-8")
+        d, a, paths = cs.unknown_targets("2026-11-20")
+        check(not cs.NEED_PARSER and not cs.SKIPPED and not d and not paths, f"投稿がパーサ待ち・合議に回った: {cs.NEED_PARSER} {paths}")
+        left, unk = cs.resolve_playlists("2026-11-20", True)
+        pipelib._ST_TABLE = None
+        check(pipelib.classify_source(url) == "公式" and pipelib.classify_source(other) == "未確認"
+              and pipelib.classify_source(url.replace(pid, pid.lower())) == "未確認", "持ち主の種別が投稿に写らない・別の投稿に写った")
+        check(list(unk) == ["somefan"] and unk["somefan"][0] == "youtube.com/post/UgkxOther0000000000000000000",
+              f"表に無いチャンネルの投稿: {left} {unk}")
+    except (Exception, SystemExit) as e:      # noqa: BLE001
+        check(False, f"コミュニティ投稿のテストが例外: {type(e).__name__}: {e}")
+    finally:
+        cs.ROOT, pipelib.ROOT, pipelib._ST_TABLE, pipelib._ST_KEY, cs.POSTS_ONLY, cs.post_author, cache = saved
+        cs._PLAYLIST_CACHE.clear()
+        cs._PLAYLIST_CACHE.update(cache)
+
+
 def test_booth_item_owner(tmp: Path):
     """BOOTH の商品の持ち主(2026-10-19: `booth.pm/ja/items/7563732` が出典に載り、持ち主を取るパーサが無かった)。
     単位はショップ `<subdomain>.booth.pm`(ドメイン)。商品の JSON の shop.subdomain から引き、ショップの種別を商品へ写す。偽の取得で確かめる。"""
@@ -17056,7 +17121,7 @@ def test_cli_blocked_r5(tmp: Path):
 
 
 def test_watch_notices_do_not_fail(tmp: Path):
-    """監視は、紙面を止めない事柄(回帰テストの赤・記事総数の目安・nit の残り)では異常終了しない(編集長 2026-11-09「こんなので止めんな」)。
+    """監視は、紙面を止めない事柄(回帰テストの赤・nit の残り)では異常終了しない(編集長 2026-11-09「こんなので止めんな」)。
     号が出ていないときだけ異常終了する。偽物にするのは git・selfcheck の起動・通知だけで、監視の判定は本物(watch.main)。"""
     import datetime
     from unittest.mock import patch
@@ -17085,7 +17150,8 @@ def test_watch_notices_do_not_fail(tmp: Path):
 
     code, sent = run(published=True)
     check(code == 0 and sent and all(ok for _, ok in sent)
-          and any("回帰テストが赤" in m and "記事総数" in m and "nit" in m for m, _ in sent),
+          and any("回帰テストが赤" in m and "nit" in m for m, _ in sent)
+          and not any("記事総数" in m for m, _ in sent),     # ビルドしないので記事の数は見張らない(2026-11-20)
           f"紙面を止めない事柄で監視が異常終了した・知らせに載らない: {code} {sent}")
     code, sent = run(published=False)
     check(code == 1 and any(not ok and "発行されていない" in m for m, ok in sent)
@@ -21541,7 +21607,10 @@ def test_selfcheck_stops_stuck_tests(tmp: Path):
           "selfcheck.ROOT, selfcheck.TARGETS, selfcheck.TEST_TIMEOUT_SEC = Path(sys.argv[2]), [], 3\n"
           "sys.argv = ['selfcheck.py']\nsys.exit(selfcheck.main())\n")
     got = {}
-    for name, body in (("stuck", escaping), ("killed", "import os, signal\nos.kill(os.getpid(), signal.SIGKILL)\n")):
+    red = ("import sys\n" + "".join(f"print('  [FAIL] 検査{i} が落ちた')\n" for i in range(7))
+           + "print('test_pipeline: 7 failures')\nsys.exit(1)\n")
+    for name, body in (("stuck", escaping), ("killed", "import os, signal\nos.kill(os.getpid(), signal.SIGKILL)\n"),
+                       ("red", red)):
         root, pidfile = fake_repo(name, body)
         t0 = __import__("time").time()
         try:
@@ -21555,6 +21624,11 @@ def test_selfcheck_stops_stuck_tests(tmp: Path):
           f"{got['stuck'][3]}秒 {got['stuck'][1][-300:]!r}")
     check(got["killed"][0] == 1 and "シグナル 9" in got["killed"][1] and "終わらない" not in got["killed"][1],
           f"シグナルで止まったテストを時間切れと言った: {got['killed'][1][-300:]!r}")
+    # 赤のときは、落ちた検査の文を ::error の行(監視が通知に載せる行)に載せる。載せるのは先頭の5件と残りの件数
+    err = next((l for l in got["red"][1].splitlines() if l.startswith("::error")), "")
+    check(got["red"][0] == 1 and "7 件" in err and "検査0 が落ちた" in err and "検査4 が落ちた" in err
+          and "検査5" not in err and "ほか 2 件" in err,
+          f"赤の回帰テストで、落ちた検査を監視の通知の行に載せない: {got['red'][1][-400:]!r}")
     # 当番の検査の上限で selfcheck(本物)を止めたとき・当番だけが SIGTERM で止められたときも、selfcheck が起動した回帰テスト
     # (別のセッションへ逃げた子孫も)を残さない(Sol 監査 WT r1・r2 の later)
     def real_selfcheck(name: str, body: str) -> tuple[Path, Path]:
@@ -22022,6 +22096,9 @@ def test_x_survey_streams_faces(tmp: Path):
     slow_verify: dict = {}                  # 確かめの作業ディレクトリ名 → 終わるまでの秒
     running = {"grok": 0, "max": 0}
     lock = threading.Lock()
+    # 時間の尺度。締切・見込み・偽物の所要時間をすべてこの倍率で伸ばし、比は変えない。混んだ機械では起動の遅れが1秒近く出て、
+    # 1倍の尺度(締切 4秒・許容 0.5秒)では順番の検査が落ちた(2026-11-20: 組版と並んで走り、遅い面の切りが 3.01 秒になった)
+    K = 3
 
     class Grok:
         """Grok の偽物。slow 面は1件書いてから終わらない(止められるまで)。ほかの面は 0.2秒で書き終える"""
@@ -22051,13 +22128,13 @@ def test_x_survey_streams_faces(tmp: Path):
             if self.killed:
                 return "", ""
             if self.face == "slow":
-                end = _t.time() + min(timeout if timeout is not None else 5, 5)
+                end = _t.time() + min(timeout if timeout is not None else 5 * K, 5 * K)
                 while _t.time() < end and not self.killed:
                     _t.sleep(0.02)
                 if self.killed:
                     return "", ""
                 raise subprocess.TimeoutExpired("grok", timeout)
-            _t.sleep(0.2)
+            _t.sleep(0.2 * K)
             self.returncode = 0
             self._done()
             return "", ""
@@ -22123,10 +22200,10 @@ def test_x_survey_streams_faces(tmp: Path):
         # 週の予算: 深掘りに使える残りは2回(問い1つ)。a・b の2問のうち1問だけを調べる
         collect.grok_week_usage = lambda *a: usage.append(1) or int(collect.GROK_WEEKLY_SEARCHES * collect.GROK_DEEP_SHARE) - 2
         collect.subprocess.Popen = lambda args, cwd=None, **kw: Grok(args) if args[0] == "grok" else Luna(cwd)
-        collect.GROK_WAVE, collect.GROK_TIMEOUT = 2, 100
-        collect.X_VERIFY_SEC, collect.X_DEEP_SEC, collect.X_DEEP_VERIFY_SEC, collect.X_DEEP_GRACE_SEC = 1.0, 1.0, 0.3, 0.1
+        collect.GROK_WAVE, collect.GROK_TIMEOUT = 2, 100 * K
+        collect.X_VERIFY_SEC, collect.X_DEEP_SEC, collect.X_DEEP_VERIFY_SEC, collect.X_DEEP_GRACE_SEC = 1.0 * K, 1.0 * K, 0.3 * K, 0.1 * K
         t0 = _t.time()
-        collect.DEADLINE = t0 + 4.0     # Grok の調べは t0+2.0 で切る。深掘りは t0+3.0 までに確かめ終えた面の問いで
+        collect.DEADLINE = t0 + 4.0 * K     # Grok の調べは t0+2.0K で切る。深掘りは t0+3.0K までに確かめ終えた面の問いで
         items, per = collect.run_explores(True, False)
         got = {it["url"] for it in items if it.get("_via") == "grok"}
         end_slow = next((t for t, e, f in ev if e == "grok-end" and f == "slow"), None)
@@ -22136,7 +22213,7 @@ def test_x_survey_streams_faces(tmp: Path):
               f"調べの終わった面の確かめが、遅い面の調べの終わりを待った: {[(e, f, round(t - t0, 2)) for t, e, f in ev]}")
         check(running["max"] <= 2, f"Grok を GROK_WAVE より多く同時に走らせた: {running['max']}")
         # 2. 遅い面は、前段の締切から確かめ・深掘りの見込みを引いた時刻で切る(前段の締切までは待たない)
-        check(end_slow is not None and abs(end_slow - (t0 + 2.0)) < 0.5,
+        check(end_slow is not None and abs(end_slow - (t0 + 2.0 * K)) < 0.5 * K,
               f"遅い面の Grok を確かめ・深掘りの見込みを残した時刻で切らない: {end_slow and round(end_slow - t0, 2)}")
         # 3. 終わった面の候補も、遅い面の途中までの書き出しも残る。深掘りは予算の範囲(1問)だけ
         want = {f"https://x.com/off/status/{sum(map(ord, k)) * 10}" for k in faces}
@@ -22150,7 +22227,7 @@ def test_x_survey_streams_faces(tmp: Path):
         ev.clear()
         usage.clear()
         notes.clear()
-        collect.DEADLINE = _t.time() + 0.5
+        collect.DEADLINE = _t.time() + 0.5 * K
         out = collect.grok_deep_phase(qs, root / "candidates" / ".grok", {"a": [{"question": "q", "why": "w"}]}, {},
                                       collect.lost_posts_ledger(), {})
         check(out == [] and not ev and not usage and any("深掘り" in n and "a" in n for n in notes),
@@ -22172,10 +22249,10 @@ def test_x_survey_streams_faces(tmp: Path):
         notes.clear()
         ask_faces.clear()
         ask_faces.update({"verify-a", "verify-d"})
-        slow_verify["verify-d"] = 1.5
-        collect.X_VERIFY_SEC, collect.X_DEEP_SEC = 0.5, 1.5
+        slow_verify["verify-d"] = 1.5 * K
+        collect.X_VERIFY_SEC, collect.X_DEEP_SEC = 0.5 * K, 1.5 * K
         t0 = _t.time()
-        collect.DEADLINE = t0 + 3.0     # Grok の調べは t0+1.0 で切る。確かめを待つのは t0+1.4 まで
+        collect.DEADLINE = t0 + 3.0 * K     # Grok の調べは t0+1.0K で切る。確かめを待つのは t0+1.4K まで
         items, _ = collect.run_explores(True, False)
         got = {it["url"] for it in items if it.get("_via") == "grok"}
         dives = [(t, f) for t, e, f in ev if e == "grok" and f.endswith("-deep")]
@@ -22346,6 +22423,7 @@ def main() -> int:
     test_youtube_upcoming_video_owner()
     test_unresolved_reason_matches_what_ran()
     test_youtube_playlist_owner(tmp / "ytpl")
+    test_youtube_post_owner(tmp / "ytpost")
     test_booth_item_owner(tmp / "booth")
     test_youtube_channel_page_unit(tmp / "ytchan")
     test_path_types_mobile_host()

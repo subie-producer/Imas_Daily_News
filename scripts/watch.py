@@ -87,14 +87,7 @@ def main() -> int:
                 f"{engine} を回した直近の collect({last['at'][5:16]})で取得が全クエリ0件"
                 "(認証切れ・CLI の版切れ・仕様変更・引数エラーの疑い)")
 
-    # 4b. ビルド劣化の先行監視: 記事総数が閾値超過(PIPELINE §9.5 の改修トリガー)
-    POSTS_THRESHOLD = 2500
-    r = git("ls-tree", "-r", "--name-only", "origin/main", "docs/_posts/")
-    n_posts = len([l for l in r.stdout.splitlines() if l.endswith(".md")])
-    if n_posts > POSTS_THRESHOLD:
-        notices.append(
-            f"記事総数 {n_posts} 本が閾値 {POSTS_THRESHOLD} を超過。"
-            "Pages ビルド劣化前に『号スナップショットへの記事リスト持たせ』改修を実施すること(PIPELINE §9.5)")
+    # 4b.(記事総数の見張りは 2026-11-20 に外した。紙面はビルドせずアプリが要求ごとに描くので、記事が増えてもビルドは劣化しない)
 
     # 4c. .env の設定漏れ・取り違え検査。
     #     人が触るクローンと自動実行のクローンで .env が別々にあり、片方だけ古い値が

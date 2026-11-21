@@ -87,7 +87,7 @@ SWAP_STEP = PIP_TIMEOUT + RESTART_TIMEOUT + CHECK_LIMIT + JOURNAL_TIMEOUT
 GIT_SSH_BOUND = "ssh -o ConnectTimeout=30 -o ServerAliveInterval=15 -o ServerAliveCountMax=4 -o BatchMode=yes"
 GIT_STEP_TIMEOUT = 7 * 60
 GIT_LOCK_MARGIN = 2 * GIT_STEP_TIMEOUT + 60      # push と手元の git の上限+余裕(多めに見込む)
-QUIET_MARGIN = 2 * SWAP_STEP + GIT_LOCK_MARGIN + 300     # 入れ替え+戻し+ロック中の git+余裕(約 51 分。Sol 監査 r5・r6・r8: 各段の上限から積む)
+QUIET_MARGIN = 2 * SWAP_STEP + GIT_LOCK_MARGIN + 300     # 入れ替え+戻し+ロック中の git+余裕(約 53 分。Sol 監査 r5・r6・r8: 各段の上限から積む)
 # この回の持ち時間(unit の TimeoutStartSec 12h より短く)。入れ替えは、待ち・入れ替え・戻しがこの内に収まるときだけ始める(Sol 監査 r2)
 RUN_BUDGET = 11 * 3600
 RUN_DEADLINE: float | None = None      # main が起動の時刻+RUN_BUDGET を入れる(テスト・--check では無し)
@@ -585,7 +585,8 @@ def get_status(url: str, headers: dict | None = None, timeout: float = 30) -> in
 def check_http() -> tuple[bool, str]:
     """Caddy 経由の数ページが 200 か、外から公開ページが 200 か。再起動の直後は 200 が揃うまで待つ。例外は投げない。
     全体で CHECK_LIMIT 秒を越えない(1回の要求の上限は残りの秒に縮める。待ちの見込み QUIET_MARGIN の前提。Sol 監査 r6)。
-    手元のページの待ちに CHECK_WAIT 秒、外からの確認に残り(EXTERNAL_TIMEOUT 秒)を取っておく。
+    手元のページの待ちに CHECK_WAIT 秒、外からの確認に少なくとも EXTERNAL_TIMEOUT 秒を取っておく(手元が早く揃えば、
+    その残りも外からの確認に使う。上限は全体の CHECK_LIMIT)。
     外からの確認も 200 が返るまで繰り返す(トンネルの張り直しを待つ)。"""
     try:
         start = time.monotonic()

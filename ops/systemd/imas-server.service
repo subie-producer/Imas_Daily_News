@@ -15,7 +15,7 @@ ExecStart=/usr/bin/python3 %h/git/imas-ops/scripts/update_server.py
 # 追いつきの起動が発行の時間帯に当たると、入れ替えの前に 07:00 まで待つ(最長 4.5 時間)。合計は 12 時間を越えうるので、
 # update_server.py は持ち時間 11 時間(RUN_BUDGET)の内に、待ち・入れ替え・戻しが収まるときだけ入れ替えを始める。
 # それでも止められたら(SIGTERM)、入れ替えの途中なら戻しへ進む。停止の猶予は、確認の途中で受けたときの残り(確認+journal)と
-# 戻し(pip+再起動+確認)と、障壁を外した上げ直しの commit・push と記録の分。各段の上限(update_server.SWAP_STEP 約 15.5 分)の
+# 戻し(pip+再起動+確認)と、障壁を外した上げ直しの commit・push と記録の分。各段の上限(update_server.SWAP_STEP 約 16.5 分)の
 # 2つ分+ロック中の git(GIT_LOCK_MARGIN 15 分)+余裕で 50 分(test_update_server_apply が照らす)
 TimeoutStartSec=12h
 TimeoutStopSec=50min

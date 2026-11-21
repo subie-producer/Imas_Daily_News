@@ -135,6 +135,8 @@ discovery_only_domains:
 # --- 二次情報: 他所の発表を写して伝えている情報源(規程2.5) ---
 # 法人運営か個人運営かは問わない。自ら取材・発表していないものはここ。
 secondary_domains:
+  - imabazu.com           # 合議で追加: X投稿を集めて順位付けし紹介する媒体。自ら取材した形跡なし
+  - dvd-otakara.blog.jp   # 合議で追加: 自称「まとめサイト」。BD発売の告知を他媒体の引用で伝える
   - rerizumo.doorblog.jp  # 合議で追加: SNS投稿や感想を集めて貼るまとめ形式。運営者情報は見つからず
   - bitotaku.com          # 合議で追加: 公式配信の説明・リンクを写す転載型。運営者情報は未発見
   - buzz-atlas.com        # 合議で追加: Aboutに公開トレンドを集め自動整理と明記。独自取材の形跡なし
@@ -282,6 +284,8 @@ party_paths:
   - item.rakuten.co.jp/f272078-takatsuki        # 高槻市ふるさと納税
 
 party_domains:
+  - store.shopping.yahoo.co.jp # 合議で追加: ストア情報がスイーツパラダイス。シャニマスコラボ商品の販売元
+  - hakusan.aeonmall.jp   # 合議で追加: 会場のイオンモール白山が、店舗ニュースでコラボメニューの開催を告知
   - hatmachida.tokyo      # 合議で追加: はっとまちだ概要に町田市と実行委員会の運営とあり、マンホールカードの配布会場
   - k-arena-shop.com      # 合議で追加: 会場Kアリーナ横浜の自社店で、コラボグッズの販売元
   - play.google.com       # 合議で追加: 多数の作品を扱う一般の配信・販売サービス(ストアページ)
@@ -516,6 +520,7 @@ video_ids:
     - sm18526341          # 機械で追加: nicovideo.jp/user/17835786「iM@S 6th Anniversary Live - キラ」
     - LSkzNm3AzHk         # 機械で追加: @TogawaNonoha「〖 世界のアソビ大全51 〗遊び…？いいえ、ののは vs ま」
   公式:
+    - UTodfL2t6fM         # 機械で追加: @imas-official「【#学マス】ランウェイの秘密 #初星学園放送部 #村田綾香 」
     - hZDHZ8SwPN4         # 機械で追加: @imas-official「【SideM】＜期間限定無料公開＞Legenders『ひとつ」
     - YbyjjPC6wUQ         # 機械で追加: @hatsuboshi_gakuen「初星学園 「金の斧、銀の斧、エメラルドの斧」Official」
     - mdRv_Zk5Scw         # 機械で追加: @TomoriManaka「#4【Japanese Ramen Simulator】福岡」
@@ -706,6 +711,20 @@ x_accounts:
     - imasnews765
     - zutapoke
   ファン:
+    - tenka_yaten         # 合議で追加: 個人によるHUBコラボ訪問の投稿
+    - milkcats            # 合議で追加: 個人による30MS購入者向けステッカー品切れ報告
+    - m4s4k0h4            # 合議で追加: 個人によるCEDEC講演(学園アイマス)のレポート
+    - kitasoro            # 合議で追加: 個人によるシャニソンRPキャンペーン当選報告
+    - kei_silvepengin     # 合議で追加: 個人による篠原礼誕生日のお祝い投稿
+    - hiyashiameP         # 合議で追加: 個人による秋山隼人誕生日のお祝い投稿
+    - himenya_maimero     # 合議で追加: 個人による花海咲季GIGOコラボ衣装のコスプレ投稿
+    - hikarihaya11        # 合議で追加: 個人によるシンデレラガールズ関連グッズの話題投稿
+    - hachik0h_3ban       # 合議で追加: 個人による30MSカスタム投稿
+    - armarx932           # 合議で追加: 個人によるファンライブレポート
+    - _MY_io              # 合議で追加: 個人によるSideMコラボ企画への参加投稿
+    - TosaKyodai_mane     # 合議で追加: 個人アカウントで運営主体は個人。イベント側の案内と示す材料なし
+    - APOn_De_Beach       # 合議で追加: 個人のイベント参加感想。個人に紐づく発信
+    - 10to_wa2            # 合議で追加: 個人アカウントによる劇場版SideM初日鑑賞の投稿
     - yuzulemon64         # 合議で追加: 個人による園田智代子のAIイラスト投稿
     - nougyoudorei        # 合議で追加: 個人によるシャニマス流行語大賞への投稿
     - mirutomiruto_01     # 合議で追加: 個人による鈴木羽那のファンイラスト投稿
@@ -1110,6 +1129,7 @@ x_accounts:
     - procinen1
     - yutaleP
   当事者:
+    - gema_nagoya         # 合議で追加: ゲーマーズ(販売元)によるBlu-ray予約・特典案内
     - lashin_chiba        # 合議で追加: ちびぐるみの買取保証を掲げる商業事業者の告知と見える
     - bs_official         # 合議で追加: 別タイトル(バトルスピリッツ)公式のコラボ商品告知
     - SMILEBASETOKYO      # 合議で追加: Rose Tea Parlorコラボカフェの開催側による告知
@@ -1323,6 +1343,12 @@ x_posts:
 
 # --- リンク元から引き継いだ種別(リンク先1つずつ。キーは pipelib.link_key)。合議がリンク元の告知と関係していると確かめたものだけ(classify_sources.inherit_from_links)。リンク先そのものの種別より強いときだけ効く ---
 link_types:
+  youtube.com/watch?v=yaqMJ_Rjptg: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/imas_ch/status/2124155883131371713(公式)。篠原礼の誕生日お祝いムービーがリンク先で、告知の内容と一致
+  youtube.com/watch?v=ngZSVcF8v3U: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/TomoriManaka/status/2124074305155981447(公式)。灯里愛夏の踊ってみた動画の告知で、リンク先はその動画本体
+  youtube.com/watch?v=24CDOZ40f60: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/imas_ch/status/2124155883131371713(公式)。告知の秋山隼人誕生日お祝いムービーそのものがリンク先
+  lnk.to/LACM-24792: 準公式                       # リンク元から引き継ぎ(合議で関係を確認): https://x.com/SideM_lantis/status/2097965869343117422(準公式)。CD発売の告知で、リンク先は同じCD『Café Parade』の購入ページ
+  asobiticket2.asobistore.jp/receptions/80a8a372-e672-4f71-87c1-c80e48135632: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://idolmaster-official.jp/news/01_20266(公式)。SideM公演の2次先行の受付URLで、告知の受付URLと一致する
+  asobiticket2.asobistore.jp/receptions/4a872893-f64d-4537-af95-38c7ef13699b: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://idolmaster-official.jp/news/01_20372(公式)。同じ公演の一般発売の受付URLで、告知と一致する
   youtube.com/watch?v=lC7E51IJ_nc: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/valiv_official/status/2123710441536856192(公式)。リンク元は関裕美とのコラボ踊ってみた動画告知で、リンク先が同じ動画(Shorts
   youtube.com/watch?v=MBCfFXzT0GA: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/imas_columbia/status/2123702907413713030(公式)。リンク元は関裕美「S(mile)ING!」試聴公開告知で、リンク先が同曲のYou
   www.tiktok.com/@bandainamcomusiclive/video/7709827571008982292?_r=1&_t=ZS-9BYpOoZWSHN: 準公式 # リンク元から引き継ぎ(合議で関係を確認): https://x.com/lantis_imasSC/status/2123734389549084806(準公式)。リンク元は鈴木羽那のTikTokダンス動画公開告知で、リンク先がその動画

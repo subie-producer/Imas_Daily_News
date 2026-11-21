@@ -1,0 +1,321 @@
+{
+ "decisions": {
+  "hatsuboshi-radio-2026-11-25": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "質問募集は20日午前で締切済み。11/20の記事と同内容で新事実なし"
+  },
+  "gaku-gravure-solo-collection-vol-1": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/18に発売日の記事(全15曲で本日発売)が出ており、新しい事実なし"
+  },
+  "shirube-final-stream-ticket-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-shirube-final-streaming-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "出典の変更は表示のみ(変更後の本文は確認できず)。同じ配信券の施策として統合"
+  },
+  "gaku-mission-pass-2026-11": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "MV200万再生は11/21、佑芽ポスターは11/21に記事化済み。ミッションパス自体も既報"
+  },
+  "gaku-hatsuboshi-broadcasting-club-runway-secret-2026-11-20": {
+   "action": "article",
+   "angle": "初星学園放送部の「ランウェイの秘密」回が公開され、村田綾香と陽高真白・七瀬つむぎ・飯田ヒカルが出演している",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "切り抜き公開(hoshigakuen-radio-archive)を統合"
+  },
+  "hoshigakuen-radio-archive-2026-11-18": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-hatsuboshi-broadcasting-club-runway-secret-2026-11-20",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ「ランウェイの秘密」回の切り抜き"
+  },
+  "gaku-memory-goods-2026": {
+   "action": "article",
+   "angle": "LIVE TOUR -標-開催記念グッズの受注は明日11月23日が最終日",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "グッズ受注はチケットとは別行動なので別記事。締切まで1日"
+  },
+  "gaku-shirube-final-streaming-2026": {
+   "action": "article",
+   "angle": "標ファイナルの配信視聴チケットは明日11月23日18時まで、アーカイブ視聴とアンケートも23時59分まで",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 70,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "shirube-final-stream-ticket-2026を統合。販売終了が明日で当日のトリガー(3日以内)"
+  },
+  "gaku-hatsumi-produce-class": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "動画リストの公開中という情報のみで、新しい事実・日付が無い"
+  },
+  "metamorphose-2m-views-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "200万再生は11/21に記事化済み、1stシングルは11/16に既報"
+  },
+  "gaku-cedec-kyushu-ui-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/19に同講演のUI演出・Titan活用の記事が出ている"
+  },
+  "gaku-gearbeat-concerto-card-set": {
+   "action": "article",
+   "angle": "ポップアップストア2026「ギアビート・コンチェルト」の公式トレーディングコレクションカードセット(26種、15,600円)が予約受付中で、発売は2027年3月26日",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-battlespirits-collab-illustration-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/16に描き下ろし14人公開として記事化済み。2027年春発売の2商品も既報の施策と同じ"
+  },
+  "gaku-saki-gigo-cosplay-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNSのコスプレ投稿で、gaku面には culture の枠が無い"
+  },
+  "twinkle-rabbit-poster-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/21に記事化済み。27日展示開始は当日のトリガーではない"
+  },
+  "gakumas-suntory-oolong-towel-set-2026": {
+   "action": "article",
+   "angle": "サントリー烏龍茶×学マスのタオルセットは今日23時59分が注文の最終日",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(締切)。今日が締切"
+  },
+  "sweets-acrylic-stand-saki-2026": {
+   "action": "article",
+   "angle": "花海咲季のスイーツver.アクリルコレクションスタンドのcolleize予約は今日が最終日",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(締切)。今日が最終日"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "gaku-hatsuboshi-broadcasting-club-runway-secret-2026-11-20",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "初星学園放送部の「ランウェイの秘密」回が公開され、村田綾香と陽高真白・七瀬つむぎ・飯田ヒカルが出演している",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "gaku-hatsuboshi-broadcasting-club-runway-secret-2026-11-20",
+    "candidate_ids": [
+     "202611212333-explore-8",
+     "202611220221-explore-6"
+    ]
+   },
+   {
+    "slug": "gaku-memory-goods-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "LIVE TOUR -標-開催記念グッズの受注は明日11月23日が最終日",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "gaku-memory-goods-2026",
+    "candidate_ids": [
+     "202611220221-grok-57",
+     "202611220221-grok-112",
+     "202611220221-grok-114"
+    ]
+   },
+   {
+    "slug": "gaku-shirube-final-streaming-2026",
+    "brand": "gaku",
+    "rank": "medium",
+    "angle": "標ファイナルの配信視聴チケットは明日11月23日18時まで、アーカイブ視聴とアンケートも23時59分まで",
+    "purpose": "期日の知らせ",
+    "lead_score": 70,
+    "dedup_key": "gaku-shirube-final-streaming-2026",
+    "candidate_ids": [
+     "202611220221-grok-58",
+     "202611220221-grok-113",
+     "update-b05c88518578"
+    ]
+   },
+   {
+    "slug": "gaku-gearbeat-concerto-card-set",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "ポップアップストア2026「ギアビート・コンチェルト」の公式トレーディングコレクションカードセット(26種、15,600円)が予約受付中で、発売は2027年3月26日",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "gaku-gearbeat-concerto-card-set",
+    "candidate_ids": [
+     "202611220221-grok-64"
+    ]
+   },
+   {
+    "slug": "gaku-gakumas-suntory-oolong-towel-set-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "サントリー烏龍茶×学マスのタオルセットは今日23時59分が注文の最終日",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "gakumas-suntory-oolong-towel-set-2026",
+    "candidate_ids": [
+     "sched-2026-11-22-gakumas-suntory-oolong-towel-set-2026-締切",
+     "sched-2026-11-22-gakumas-suntory-oolong-towel-set-2026-締切-src1"
+    ]
+   },
+   {
+    "slug": "gaku-sweets-acrylic-stand-saki-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "花海咲季のスイーツver.アクリルコレクションスタンドのcolleize予約は今日が最終日",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "sweets-acrylic-stand-saki-2026",
+    "candidate_ids": [
+     "sched-2026-11-22-sweets-acrylic-stand-saki-2026-締切"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "hatsuboshi-radio-2026-11-25",
+    "reason": "既報",
+    "note": "質問募集は20日午前で締切済み。11/20の記事と同内容で新事実なし"
+   },
+   {
+    "dedup_key": "gaku-gravure-solo-collection-vol-1",
+    "reason": "既報",
+    "note": "11/18に発売日の記事(全15曲で本日発売)が出ており、新しい事実なし"
+   },
+   {
+    "dedup_key": "gaku-mission-pass-2026-11",
+    "reason": "既報",
+    "note": "MV200万再生は11/21、佑芽ポスターは11/21に記事化済み。ミッションパス自体も既報"
+   },
+   {
+    "dedup_key": "gaku-hatsumi-produce-class",
+    "reason": "出典不足",
+    "note": "動画リストの公開中という情報のみで、新しい事実・日付が無い"
+   },
+   {
+    "dedup_key": "metamorphose-2m-views-2026",
+    "reason": "既報",
+    "note": "200万再生は11/21に記事化済み、1stシングルは11/16に既報"
+   },
+   {
+    "dedup_key": "gaku-cedec-kyushu-ui-2026",
+    "reason": "既報",
+    "note": "11/19に同講演のUI演出・Titan活用の記事が出ている"
+   },
+   {
+    "dedup_key": "gaku-battlespirits-collab-illustration-2026",
+    "reason": "既報",
+    "note": "11/16に描き下ろし14人公開として記事化済み。2027年春発売の2商品も既報の施策と同じ"
+   },
+   {
+    "dedup_key": "gaku-saki-gigo-cosplay-2026",
+    "reason": "個人の話題",
+    "note": "個人のSNSのコスプレ投稿で、gaku面には culture の枠が無い"
+   },
+   {
+    "dedup_key": "twinkle-rabbit-poster-2026",
+    "reason": "既報",
+    "note": "11/21に記事化済み。27日展示開始は当日のトリガーではない"
+   }
+  ],
+  "cross_brand": []
+ }
+}

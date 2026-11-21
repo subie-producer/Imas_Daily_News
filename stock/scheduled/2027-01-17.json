@@ -319,5 +319,45 @@
   "via": "watch",
   "verify": "confirmed",
   "src_candidate_id": "update-91599f10702a"
+ },
+ {
+  "id": "sched-2027-01-17-tours-prime-match-fes-support-cards-2026-終了",
+  "dedup_key": "tours-prime-match-fes-support-cards-2026",
+  "brand": "joint",
+  "subject": "ツアマス 第1回プライムマッチフェス終了",
+  "kind": "終了",
+  "note": "最終日。プラフェスPtを稼げる最後の日(25:59終了)",
+  "reserved_on": "2026-11-22",
+  "title": "プライムマッチフェスで対象サポートカードにポイントボーナス",
+  "url": "https://x.com/TOURS_imas/status/2123974693405515796",
+  "source_type": "公式",
+  "facts": [
+   "特定のサポートカードを使用すると、より多くのプラフェスPtを獲得できる。",
+   "リンク: https://idolmaster-tours-w.bn-am.net/news/detail/59",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202611220221-grok-80"
+ },
+ {
+  "id": "sched-2027-01-17-tours-prime-match-fes-support-cards-2026-終了-src1",
+  "dedup_key": "tours-prime-match-fes-support-cards-2026",
+  "brand": "joint",
+  "subject": "ツアマス 第1回プライムマッチフェス終了",
+  "kind": "終了",
+  "note": "最終日。プラフェスPtを稼げる最後の日(25:59終了)",
+  "reserved_on": "2026-11-22",
+  "title": "アイドルマスター TOURS マイページ「第1回プライムマッチフェス 開催！」(2026-11-16)",
+  "url": "https://idolmaster-tours-w.bn-am.net/news/detail/59",
+  "source_type": "公式",
+  "facts": [
+   "第1回プライムマッチフェスの開催期間は2026年11月19日7:00から2027年1月17日25:59まで。"
+  ],
+  "via": "verified_fact",
+  "verify": "unconfirmed",
+  "src_candidate_id": "202611220221-grok-80",
+  "companion_of": "sched-2027-01-17-tours-prime-match-fes-support-cards-2026-終了",
+  "src_dedup_key": "tours-prime-match-fes-support-cards-2026"
  }
 ]

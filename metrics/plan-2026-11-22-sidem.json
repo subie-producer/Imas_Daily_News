@@ -1,0 +1,414 @@
+{
+ "decisions": {
+  "sidem-fbfes-movie-goods-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/21号の記事に価格・品目・期間すべて記載済み。新事実なし"
+  },
+  "sidem-mfes-2026-winter-wonderland-315shop": {
+   "action": "article",
+   "angle": "12月1日から25日まで315!!!SHOPで「Mフェス2026」開催。オリジナルグッズ・くじ・ブロマイド特典・カフェを展開",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "既報なし(prior無し)"
+  },
+  "sidem-315-episode-idol-one-panel-update-2026-10": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "source_change は日付・曜日など表示の変化のみ。1コマ更新は11/21号で記事済み"
+  },
+  "sidem-gotoken-christmas-party-set-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "在庫×(完売)は11/21号で記事済み。変更点は同じ"
+  },
+  "sidem-fanfes-wgf-popcorn-box-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "劇場版公開・物販・ポップコーンBOXは11/20号で記事済み"
+  },
+  "sidem-315-mode-vol2-spring-goods-2026": {
+   "action": "article",
+   "angle": "「315 MODE」vol.2 SPRINGグッズの受注が11月24日18時に始まり12月6日まで。特設ページは受注開始時に正しい内容へ更新される",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "prior無し"
+  },
+  "sidem-popup-howls-2026-animo": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/21号で期間・特典切替まで記事済み"
+  },
+  "sidem-movie-opening-buzz-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "SNSバズランキングの順位のみ。劇場版公開は11/20号で記事済み"
+  },
+  "sidem-idol-one-panel-update-2026-11-21": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/21号「1コマ更新と315プロNight!情報」と同内容"
+  },
+  "sidem-hayato-akiyama-birthday-2026": {
+   "action": "article",
+   "angle": "11月22日は秋山隼人の誕生日。公式アカウントが #秋山隼人BD2026 で祝福した",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "素材は公式投稿1件で薄い。出典不足なら校閲で判断"
+  },
+  "sidem-producer-meeting-ajewelholic-2027-premium-advance-2": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "締切11/26は4日後で3日以内に入らず。条件・日程は11/7号に記載済み"
+  },
+  "sidem-fbfes-wgf-premiere-screening-report-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "舞台挨拶3回の開催は11/21号で記事済み。感謝投稿のみ"
+  },
+  "sidem-monthly-theme-song-12-cafe-parade-streaming": {
+   "action": "article",
+   "angle": "Café Parade「MONTHLY THEME SONG 12」が各音楽サービスでサブスク配信開始",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "roundup は3件に満たないため small の通常記事"
+  },
+  "sidem-315pronight-december-personalities-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "12月パーソナリティと投稿募集は11/21号に記載済み。期日は「週明け」のみで具体日なし"
+  },
+  "sidem-legenders-refrain-atrium-2dmv-2026": {
+   "action": "article",
+   "angle": "Legenders「リフレインアトリウム」の2DMVが11月25日21時に公開される",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "prior無し(連動ストーリー無料公開の記事とは別件)"
+  },
+  "sidem-aji-project-cd-release-2027": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/21号で3作の発売日・内容を記事済み"
+  },
+  "fan-hayato-akiyama-birthday-celebration-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "ファン面(culture)は general 面のみ。誕生日祝いのファン投稿"
+  },
+  "fan-sidem-collaboration-participation-2026-11": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "ファン投稿の参加報告。ファン面は general 面のみ"
+  },
+  "fan-sidem-fbfes-wgf-opening-day-reactions-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "ファン投稿の鑑賞感想。ファン面は general 面のみ"
+  },
+  "sidem-mfes-label-cans-2026": {
+   "action": "article",
+   "angle": "Mフェスのオリジナルラベル缶が12月1日から全国の専用自販機で発売。音自販機約50台で「Season's Greetings Party！」が聴ける",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "carried 2回目。11/16号の新グッズ4種とは別件"
+  },
+  "sidem-super-retrose-party-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-seibuen-retro-party-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ西武園トークショー。続報予約(その他)の素材として統合"
+  },
+  "sidem-seibuen-retro-party-2026": {
+   "action": "article",
+   "angle": "西武園ゆうえんちの声優トークショー「超!!レトローズ“スペシャル”パーティ」最終回が本日18時からレオランド特設ステージで開催",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 50,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約3件のうち2件はこの記事に統合。参加には1万円の参加券付き切符が必要"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "sidem-mfes-2026-winter-wonderland-315shop",
+    "brand": "sidem",
+    "rank": "medium",
+    "angle": "12月1日から25日まで315!!!SHOPで「Mフェス2026」開催。オリジナルグッズ・くじ・ブロマイド特典・カフェを展開",
+    "purpose": "新情報",
+    "lead_score": 60,
+    "dedup_key": "sidem-mfes-2026-winter-wonderland-315shop",
+    "candidate_ids": [
+     "202611210732-explore-6"
+    ]
+   },
+   {
+    "slug": "sidem-315-mode-vol2-spring-goods-2026",
+    "brand": "sidem",
+    "rank": "medium",
+    "angle": "「315 MODE」vol.2 SPRINGグッズの受注が11月24日18時に始まり12月6日まで。特設ページは受注開始時に正しい内容へ更新される",
+    "purpose": "新情報",
+    "lead_score": 25,
+    "dedup_key": "sidem-315-mode-vol2-spring-goods-2026",
+    "candidate_ids": [
+     "202611212333-watch-0",
+     "202611220221-grok-84"
+    ]
+   },
+   {
+    "slug": "sidem-hayato-akiyama-birthday-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "11月22日は秋山隼人の誕生日。公式アカウントが #秋山隼人BD2026 で祝福した",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "sidem-hayato-akiyama-birthday-2026",
+    "candidate_ids": [
+     "202611220221-grok-46"
+    ]
+   },
+   {
+    "slug": "sidem-monthly-theme-song-12-cafe-parade-streaming",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "Café Parade「MONTHLY THEME SONG 12」が各音楽サービスでサブスク配信開始",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "sidem-monthly-theme-song-12-cafe-parade-streaming",
+    "candidate_ids": [
+     "202611220221-grok-49"
+    ]
+   },
+   {
+    "slug": "sidem-legenders-refrain-atrium-2dmv-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "Legenders「リフレインアトリウム」の2DMVが11月25日21時に公開される",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "sidem-legenders-refrain-atrium-2dmv-2026",
+    "candidate_ids": [
+     "202611220221-grok-51"
+    ]
+   },
+   {
+    "slug": "sidem-mfes-label-cans-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "Mフェスのオリジナルラベル缶が12月1日から全国の専用自販機で発売。音自販機約50台で「Season's Greetings Party！」が聴ける",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "sidem-mfes-label-cans-2026",
+    "candidate_ids": [
+     "202611200230-grok-75"
+    ]
+   },
+   {
+    "slug": "sidem-seibuen-retro-party-2026",
+    "brand": "sidem",
+    "rank": "medium",
+    "angle": "西武園ゆうえんちの声優トークショー「超!!レトローズ“スペシャル”パーティ」最終回が本日18時からレオランド特設ステージで開催",
+    "purpose": "期日の知らせ",
+    "lead_score": 50,
+    "dedup_key": "sidem-seibuen-retro-party-2026",
+    "candidate_ids": [
+     "sched-2026-11-22-sidem-seibuen-retro-party-2026-その他",
+     "sched-2026-11-22-sidem-seibuen-retro-party-2026-その他-src1",
+     "sched-2026-11-22-sidem-seibuen-retro-party-2026-開幕",
+     "sched-2026-11-22-sidem-seibuen-retro-party-2026-開幕-src1",
+     "sched-2026-11-22-sidem-super-retrose-party-2026-その他",
+     "sched-2026-11-22-sidem-super-retrose-party-2026-その他-src1",
+     "sched-2026-11-22-sidem-super-retrose-party-2026-その他-src2"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "sidem-fbfes-movie-goods-2026",
+    "reason": "既報",
+    "note": "11/21号の記事に価格・品目・期間すべて記載済み。新事実なし"
+   },
+   {
+    "dedup_key": "sidem-315-episode-idol-one-panel-update-2026-10",
+    "reason": "既報",
+    "note": "source_change は日付・曜日など表示の変化のみ。1コマ更新は11/21号で記事済み"
+   },
+   {
+    "dedup_key": "sidem-gotoken-christmas-party-set-2026",
+    "reason": "既報",
+    "note": "在庫×(完売)は11/21号で記事済み。変更点は同じ"
+   },
+   {
+    "dedup_key": "sidem-fanfes-wgf-popcorn-box-2026",
+    "reason": "既報",
+    "note": "劇場版公開・物販・ポップコーンBOXは11/20号で記事済み"
+   },
+   {
+    "dedup_key": "sidem-popup-howls-2026-animo",
+    "reason": "既報",
+    "note": "11/21号で期間・特典切替まで記事済み"
+   },
+   {
+    "dedup_key": "sidem-movie-opening-buzz-2026",
+    "reason": "既報",
+    "note": "SNSバズランキングの順位のみ。劇場版公開は11/20号で記事済み"
+   },
+   {
+    "dedup_key": "sidem-idol-one-panel-update-2026-11-21",
+    "reason": "既報",
+    "note": "11/21号「1コマ更新と315プロNight!情報」と同内容"
+   },
+   {
+    "dedup_key": "sidem-producer-meeting-ajewelholic-2027-premium-advance-2",
+    "reason": "既報",
+    "note": "締切11/26は4日後で3日以内に入らず。条件・日程は11/7号に記載済み"
+   },
+   {
+    "dedup_key": "sidem-fbfes-wgf-premiere-screening-report-2026",
+    "reason": "既報",
+    "note": "舞台挨拶3回の開催は11/21号で記事済み。感謝投稿のみ"
+   },
+   {
+    "dedup_key": "sidem-315pronight-december-personalities-2026",
+    "reason": "既報",
+    "note": "12月パーソナリティと投稿募集は11/21号に記載済み。期日は「週明け」のみで具体日なし"
+   },
+   {
+    "dedup_key": "sidem-aji-project-cd-release-2027",
+    "reason": "既報",
+    "note": "11/21号で3作の発売日・内容を記事済み"
+   },
+   {
+    "dedup_key": "fan-hayato-akiyama-birthday-celebration-2026",
+    "reason": "面違い",
+    "note": "ファン面(culture)は general 面のみ。誕生日祝いのファン投稿"
+   },
+   {
+    "dedup_key": "fan-sidem-collaboration-participation-2026-11",
+    "reason": "面違い",
+    "note": "ファン投稿の参加報告。ファン面は general 面のみ"
+   },
+   {
+    "dedup_key": "fan-sidem-fbfes-wgf-opening-day-reactions-2026",
+    "reason": "面違い",
+    "note": "ファン投稿の鑑賞感想。ファン面は general 面のみ"
+   }
+  ],
+  "cross_brand": []
+ }
+}

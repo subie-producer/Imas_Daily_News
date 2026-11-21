@@ -231,5 +231,51 @@
   "event_date": "2026-11-13",
   "deadline": "2026-12-11",
   "src_candidate_id": "202611131839-watch-4"
+ },
+ {
+  "id": "sched-2026-12-11-cinderella-15th-orchestra-general-member-lottery-2026-結果",
+  "dedup_key": "cinderella-15th-orchestra-general-member-lottery-2026",
+  "brand": "cg",
+  "subject": "シンデレラ15周年オケ 一般会員先行 当落発表",
+  "kind": "結果",
+  "note": "13時から抽選結果を確認でき、当選者は入金手続きに進める",
+  "reserved_on": "2026-11-22",
+  "occurs_on": "2026-12-11",
+  "title": "シンデレラガールズ15周年オーケストラ公演先行受付",
+  "url": "https://x.com/imas_CGofficial/status/2123974701416583518",
+  "source_type": "公式",
+  "facts": [
+   "🎻••┈┈┈┈┈♪┈┈┈┈┈••🎻",
+   "#デレマスオーケストラ",
+   "アソビストア一般会員先行(抽選)",
+   "🎺••┈┈┈┈┈♪┈┈┈┈┈••🎺",
+   "📅現地チケットのお申し込みは11/29(日)まで‼",
+   "本公演にご出演いただくキャストの皆様を改めてご紹介✨",
+   "🎼詳細はこちら！"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202611220221-grok-98"
+ },
+ {
+  "id": "sched-2026-12-11-cinderella-15th-orchestra-general-member-lottery-2026-結果-src1",
+  "dedup_key": "cinderella-15th-orchestra-general-member-lottery-2026",
+  "brand": "cg",
+  "subject": "シンデレラ15周年オケ 一般会員先行 当落発表",
+  "kind": "結果",
+  "note": "13時から抽選結果を確認でき、当選者は入金手続きに進める",
+  "reserved_on": "2026-11-22",
+  "occurs_on": "2026-12-11",
+  "title": "バンダイナムコエンターテインメント公式サイト「Ticket チケット情報│ THE IDOLM@STER CINDERELLA GIRLS 15th ANNIVERSARY ORCHESTRA CONCERT ～ シンデレラの演奏会 ～」",
+  "url": "https://idolmaster-official.jp/live_event/cg_15th_orchestra/ticket/",
+  "source_type": "公式",
+  "facts": [
+   "アソビストア一般会員先行は抽選。受付対象席種はS席スペシャルシートとA席全席指定。受付期間は2026年11月13日12時～11月29日23時59分、当落発表は12月11日13時から、当選者の入金期間は12月11日13時～12月15日23時59分。アソビストア会員のみ申し込み可能で、1公演につき1人2枚まで、複数公演申込可。申し込みから当落発表までに退会すると抽選対象外。受付URLは https://asobiticket2.asobistore.jp/receptions/bebd8d4b-9a4f-4c9f-b224-35d1808ddc84 。未就学児入場不可、申し込みはデジタルチケットのみ。"
+  ],
+  "via": "verified_fact",
+  "verify": "unconfirmed",
+  "src_candidate_id": "202611220221-grok-98",
+  "companion_of": "sched-2026-12-11-cinderella-15th-orchestra-general-member-lottery-2026-結果",
+  "src_dedup_key": "cinderella-15th-orchestra-general-member-lottery-2026"
  }
 ]

@@ -92,5 +92,34 @@
   "src_candidate_id": "202611080229-grok-46",
   "companion_of": "sched-2027-03-26-gaku-steampunk-gearbeat-goods-2026-発売",
   "src_dedup_key": "gaku-gearbeat-concerto-2026"
+ },
+ {
+  "id": "sched-2027-03-26-gaku-gearbeat-concerto-card-set-発売",
+  "dedup_key": "gaku-gearbeat-concerto-card-set",
+  "brand": "gaku",
+  "subject": "ギアビート・コンチェルト 公式カードセット発売",
+  "kind": "発売",
+  "note": "カードセットの発売日で、商品が購入者に届き始める",
+  "reserved_on": "2026-11-22",
+  "occurs_on": "2027-03-26",
+  "title": "学マスポップアップストア2026トレーディングコレクションカードセット予約",
+  "url": "https://www.amazon.co.jp/dp/B0HS8669W9?tag=afjzk-22&linkCode=ogi&th=1&psc=1",
+  "source_type": "当事者",
+  "facts": [
+   "商品名: 【グッズ】学園アイドルマスター ポップアップストア 2026 ギアビート・コンチェルト公式トレーディングコレクションカードセット",
+   "価格: 15,600円(税込)",
+   "発売予定日: 2027年3月26日",
+   "予約受付中。",
+   "全26種類(ホログラムカード13種、PETカード13種)。",
+   "サイズ: 約H130×W80mm。",
+   "素材: 紙(ホログラムカード)、PET(PETカード)。",
+   "対象年齢: 15才以上。",
+   "商品モデル番号: 4570273419206。",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "link_from": "https://x.com/SnowLove10Yuna/status/2124130005412348104",
+  "src_candidate_id": "202611220221-grok-64"
  }
 ]

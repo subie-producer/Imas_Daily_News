@@ -478,3 +478,8 @@
   subject: TUfave Mフェスユニットイヤーカフ
   watch: 「12月上旬より」とされた正式な発売日・価格(判明次第 triggers へ)
   added_on: '2026-11-21'
+- dedup_key: shiny-30ms-luka-kit-2027
+  brand: shiny
+  subject: 30MS 斑鳩ルカ プラモデル
+  watch: 2027年6月予定とされた正式な発売日(判明次第 triggers へ)
+  added_on: '2026-11-22'

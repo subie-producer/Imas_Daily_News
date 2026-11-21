@@ -1,0 +1,327 @@
+{
+ "decisions": {
+  "va-liv-3rdlive-qonnect-goods-preorder-2026": {
+   "action": "article",
+   "angle": "3rdLIVE&MEETINGのグッズ事前受注は29日まで。ASOBI STOREの価格と、名古屋1月30・31日の公演日程・会場先行販売品を伝える",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "既報は期間・届け時期・名古屋先行販売品。価格、出演、名古屋公演の日時は新しい"
+  },
+  "valiv-3rdlive-goods-preorder-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "va-liv-3rdlive-qonnect-goods-preorder-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じグッズ受注"
+  },
+  "valiv-3rdlive-meeting-goods-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "va-liv-3rdlive-qonnect-goods-preorder-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "価格一覧の素材として統合"
+  },
+  "letora-birthday-goods-set-2026": {
+   "action": "article",
+   "angle": "レトラのバースデー記念グッズセット2026(新アイドル衣装テーマ、11,000円)の受注は12月6日まで",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "manaka-birthday-live-archive-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/19・11/21の記事に同内容。上映会は明日で当日トリガーなし"
+  },
+  "valiv-akari-manaka-birthday-live-archive-watch-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "上映会・関裕美出演・チケット期間は既報"
+  },
+  "cosmo-ace-combat-zero-2026": {
+   "action": "article",
+   "angle": "上水流宇宙が『ACE COMBAT ZERO』の初回配信を11月27日21時から行う",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "cosmo-ace8-online-report-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "終了済み配信の振り返りで、予告は既報"
+  },
+  "letora-birthday-voice-2026": {
+   "action": "article",
+   "angle": "レトラ バースデー記念ボイス2026のコミュボイスが12月13日23時59分まで期間限定販売",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "valiv-14th-online-one-on-one-2026": {
+   "action": "article",
+   "angle": "第14回オンライン1on1の抽選申込は明日23日23時59分まで、追加・一般販売なし",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 40,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "締切が3日以内"
+  },
+  "manaka-seki-dance-short-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/21に記事化済み"
+  },
+  "cosmo-neon-dance-short-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/21に記事化済み"
+  },
+  "tosa-goods-valiv-3rd-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "マネージャー個人の投稿のみで未確認"
+  },
+  "manaka-guilty-dance-short-2026": {
+   "action": "article",
+   "angle": "灯里愛夏が「モーレツ★世直しギルティ!」を3人で踊ったショート動画をYouTubeで公開",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "manaka-birthday-archive-watch-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "manaka-guilty-dance-short-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ動画"
+  },
+  "tomori-manaka-ramen-simulator-2026-11": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "11/18終了の配信の振り返りで当日のトリガーなし"
+  },
+  "manaka-onimusha-way-of-the-sword-stream-2026-11-22": {
+   "action": "article",
+   "angle": "灯里愛夏の『鬼武者 Way of the Sword』配信が今夜21時から灯里愛夏のYouTubeチャンネルで始まる",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約。当日開始"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "dsva-va-liv-3rdlive-qonnect-goods-preorder-2026",
+    "brand": "dsva",
+    "rank": "medium",
+    "angle": "3rdLIVE&MEETINGのグッズ事前受注は29日まで。ASOBI STOREの価格と、名古屋1月30・31日の公演日程・会場先行販売品を伝える",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "va-liv-3rdlive-qonnect-goods-preorder-2026",
+    "candidate_ids": [
+     "202611210732-explore-9",
+     "202611210732-explore-10",
+     "202611210225-grok-115",
+     "202611210225-grok-116",
+     "202611210225-grok-122",
+     "202611211834-watch-0",
+     "202611220221-grok-85",
+     "202611201841-explore-39"
+    ]
+   },
+   {
+    "slug": "dsva-letora-birthday-goods-set-2026",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "レトラのバースデー記念グッズセット2026(新アイドル衣装テーマ、11,000円)の受注は12月6日まで",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "letora-birthday-goods-set-2026",
+    "candidate_ids": [
+     "202611211834-watch-3",
+     "202611220221-grok-86"
+    ]
+   },
+   {
+    "slug": "dsva-cosmo-ace-combat-zero-2026",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "上水流宇宙が『ACE COMBAT ZERO』の初回配信を11月27日21時から行う",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "cosmo-ace-combat-zero-2026",
+    "candidate_ids": [
+     "202611220221-grok-69"
+    ]
+   },
+   {
+    "slug": "dsva-letora-birthday-voice-2026",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "レトラ バースデー記念ボイス2026のコミュボイスが12月13日23時59分まで期間限定販売",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "letora-birthday-voice-2026",
+    "candidate_ids": [
+     "202611220221-grok-71"
+    ]
+   },
+   {
+    "slug": "dsva-valiv-14th-online-one-on-one-2026",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "第14回オンライン1on1の抽選申込は明日23日23時59分まで、追加・一般販売なし",
+    "purpose": "期日の知らせ",
+    "lead_score": 40,
+    "dedup_key": "valiv-14th-online-one-on-one-2026",
+    "candidate_ids": [
+     "202611220221-grok-72"
+    ]
+   },
+   {
+    "slug": "dsva-manaka-guilty-dance-short-2026",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "灯里愛夏が「モーレツ★世直しギルティ!」を3人で踊ったショート動画をYouTubeで公開",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "manaka-guilty-dance-short-2026",
+    "candidate_ids": [
+     "202611220221-grok-78",
+     "202611220221-grok-79",
+     "202611220221-grok-118"
+    ]
+   },
+   {
+    "slug": "dsva-manaka-onimusha-way-of-the-sword-stream-2026-11-22",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "灯里愛夏の『鬼武者 Way of the Sword』配信が今夜21時から灯里愛夏のYouTubeチャンネルで始まる",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "manaka-onimusha-way-of-the-sword-stream-2026-11-22",
+    "candidate_ids": [
+     "sched-2026-11-22-manaka-onimusha-way-of-the-sword-stream-2026-11-22-開始"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "manaka-birthday-live-archive-2026",
+    "reason": "既報",
+    "note": "11/19・11/21の記事に同内容。上映会は明日で当日トリガーなし"
+   },
+   {
+    "dedup_key": "cosmo-ace8-online-report-2026",
+    "reason": "その他",
+    "note": "終了済み配信の振り返りで、予告は既報"
+   },
+   {
+    "dedup_key": "manaka-seki-dance-short-2026",
+    "reason": "既報",
+    "note": "11/21に記事化済み"
+   },
+   {
+    "dedup_key": "cosmo-neon-dance-short-2026",
+    "reason": "既報",
+    "note": "11/21に記事化済み"
+   },
+   {
+    "dedup_key": "tosa-goods-valiv-3rd-2026",
+    "reason": "出典不足",
+    "note": "マネージャー個人の投稿のみで未確認"
+   },
+   {
+    "dedup_key": "valiv-akari-manaka-birthday-live-archive-watch-2026",
+    "reason": "既報",
+    "note": "上映会・関裕美出演・チケット期間は既報"
+   },
+   {
+    "dedup_key": "tomori-manaka-ramen-simulator-2026-11",
+    "reason": "その他",
+    "note": "11/18終了の配信の振り返りで当日のトリガーなし"
+   }
+  ],
+  "cross_brand": []
+ }
+}

@@ -1,0 +1,472 @@
+{
+ "decisions": {
+  "shiny-283-production-pop-up-shop-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/21号の記事に全事実あり。開幕は27日でトリガー無し"
+  },
+  "shiny-jimushiny-episode-24-part-1-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/21号で記事化済み"
+  },
+  "shiny-phrase-award-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/21号と同内容。締切29日で3日以内ではない"
+  },
+  "shinyson-super-explosion-galaxy-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-super-explosion-galaxy-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ新曲イベント"
+  },
+  "shinyson-halo-around-03-pickup-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-halo-around-03-hokura-straylight-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ円環#03ガシャ"
+  },
+  "shinyson-3rd-anniversary-webstore-jewel-sale-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/21号に価格・期限とも掲載済み"
+  },
+  "lisani-tokyo-2027": {
+   "action": "article",
+   "angle": "ストレイライト出演のLISANI！TOKYO 2027、チケットが2次先行に切り替わり11月21日12時〜29日23時59分まで申し込める",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "source_change: 最速先行(〜11/15)から2次先行(11/21〜11/29)へ。締切・条件の変更"
+  },
+  "shiny-super-explosion-galaxy-2026": {
+   "action": "roundup",
+   "angle": "放クラ新曲イベント「超爆発ギャラクシー」。11月26日20時59分まで、メダルガシャ形式、結果発表は30日まで",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "開催中のイベント。期間・形式は新情報"
+  },
+  "shiny-halo-around-03-hokura-straylight-2026": {
+   "action": "roundup",
+   "angle": "「円環 #03 放クラ×ストレイライト」ガシャは12月21日まで。交換ptは200ptで★3と交換できる",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "開催中ガシャ。シャニソン側のピックアップ告知も統合"
+  },
+  "shiny-refrac7ions-still-blue-ticket-sales-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/21号に一般発売の内容は掲載済み。本日の新しい事実なし"
+  },
+  "shiny-haruki-piece-package-2026": {
+   "action": "roundup",
+   "angle": "郁田はるきの「ふたりタイムスリップ！」ピース付きパッケージ販売中(1人4回まで)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "開催中ガシャの関連販売"
+  },
+  "shiny-wedding-select-ticket-step-gacha-2026": {
+   "action": "roundup",
+   "angle": "ウェディングテーマのセレチケ付きステップアップガシャ(24時間限定、SSR11・22％)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "開催中ガシャ"
+  },
+  "shiny-haruki-special-stamp-gacha-2026": {
+   "action": "roundup",
+   "angle": "郁田はるきのREFRAC7IONS限定S-SSRが登場する特別アイドルスタンプガシャ",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "開催中ガシャ"
+  },
+  "shiny-lonely-date-watercolor-2026": {
+   "action": "roundup",
+   "angle": "「ザ・ふたりトラベラー」の新曲「ロンリー・デイト水性白書」がゲーム内に追加",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "楽曲追加"
+  },
+  "shiny-style-collection-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/21号に全商品と受注期限掲載済み。締切29日で3日以内ではない"
+  },
+  "shiny-still-blue-tickets": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/21号と同内容"
+  },
+  "shiny-mattari-hbtk-clip-2026-11-21": {
+   "action": "roundup",
+   "angle": "「まったりHBTK」切り抜き(小糸が果穂に勉強を教える回)公開",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "配信出演・動画公開"
+  },
+  "shiny-3rd-anniv-login-bonus-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/21号に同内容。終了30日で3日以内ではない"
+  },
+  "general-30ms-shiny-sticker-campaign-shortage-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿のみ、未確認"
+  },
+  "general-fan-30ms-amana-custom-2026-11-22": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "ファン個人の投稿。culture は general 面のみ"
+  },
+  "general-fan-song-for-prism-repost-campaign-win-2026-11-21": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人の当選報告"
+  },
+  "shiny-orchestra-2027-game-advance-entry": {
+   "action": "article",
+   "angle": "シャニマスオケ2027のゲーム先行が、シャニマス・シャニソンのゲーム内「お知らせ」から申し込める",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "受付日時は出典で未確認。SideM の投稿は他面の素材"
+  },
+  "shiny-mattari-hbtk-clip-2026-11-20": {
+   "action": "roundup",
+   "angle": "「まったりHBTK」切り抜き(斑鳩ルカ回)公開",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "配信出演・動画公開"
+  },
+  "shiny-meltic-frost-marche-2026": {
+   "action": "article",
+   "angle": "POP UP SHOP「Meltic＊Frost Marche」が12月4日〜20日にあみあみ秋葉原ラジオ会館店で開催、雪うさぎ衣装のアルストロメリアとストレイライトのグッズを販売",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "carried。既報なし"
+  },
+  "shiny-sweets-paradise-goods-online-2026": {
+   "action": "article",
+   "angle": "シャニマス×スイパラのコラボグッズが、11月25日10時〜12月9日23時59分にYahoo!ショッピングのスイパラショップで通販される",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "carried。通販は新しい発表"
+  },
+  "shiny-30ms-luka-kit-2027": {
+   "action": "article",
+   "angle": "30MS 斑鳩ルカ(CoMETIK)が予約受付中。発売は2027年6月30日、4,980円(税込)",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "11/18号で商品化発表済み(4,180円)。予約開始・発売日・価格を新事実とする"
+  },
+  "shiny-tokyo-jiyukei-mytime-event-2026": {
+   "action": "article",
+   "angle": "「Tokyo自由系*ガール/My time」発売記念イベントが今日開催。第1回15時、第2回17時30分開演、配信なし。会場物販は12時30分開始",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約。当選者のみの催し。会場物販(12:30〜)を統合"
+  },
+  "shiny-tokyo-jiyukei-my-time-event-merch-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-tokyo-jiyukei-mytime-event-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ公演の物販。読者の行動も同じ"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "shiny-lisani-tokyo-2027",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "ストレイライト出演のLISANI！TOKYO 2027、チケットが2次先行に切り替わり11月21日12時〜29日23時59分まで申し込める",
+    "purpose": "新情報",
+    "lead_score": 60,
+    "dedup_key": "lisani-tokyo-2027",
+    "candidate_ids": [
+     "update-e8bd7b21af65"
+    ]
+   },
+   {
+    "slug": "shiny-orchestra-2027-game-advance-entry",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "シャニマスオケ2027のゲーム先行が、シャニマス・シャニソンのゲーム内「お知らせ」から申し込める",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "shiny-orchestra-2027-game-advance-entry",
+    "candidate_ids": [
+     "202611220221-grok-43",
+     "202611220221-grok-107",
+     "202611220221-grok-108",
+     "202611220221-grok-109"
+    ]
+   },
+   {
+    "slug": "shiny-meltic-frost-marche-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "POP UP SHOP「Meltic＊Frost Marche」が12月4日〜20日にあみあみ秋葉原ラジオ会館店で開催、雪うさぎ衣装のアルストロメリアとストレイライトのグッズを販売",
+    "purpose": "新情報",
+    "lead_score": 25,
+    "dedup_key": "shiny-meltic-frost-marche-2026",
+    "candidate_ids": [
+     "202611202334-explore-12"
+    ]
+   },
+   {
+    "slug": "shiny-sweets-paradise-goods-online-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "シャニマス×スイパラのコラボグッズが、11月25日10時〜12月9日23時59分にYahoo!ショッピングのスイパラショップで通販される",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "shiny-sweets-paradise-goods-online-2026",
+    "candidate_ids": [
+     "202611210225-explore-5"
+    ]
+   },
+   {
+    "slug": "shiny-30ms-luka-kit-2027",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "30MS 斑鳩ルカ(CoMETIK)が予約受付中。発売は2027年6月30日、4,980円(税込)",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "shiny-30ms-luka-kit-2027",
+    "candidate_ids": [
+     "202611200230-grok-41"
+    ]
+   },
+   {
+    "slug": "shiny-tokyo-jiyukei-mytime-event-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "「Tokyo自由系*ガール/My time」発売記念イベントが今日開催。第1回15時、第2回17時30分開演、配信なし。会場物販は12時30分開始",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "shiny-tokyo-jiyukei-mytime-event-2026",
+    "candidate_ids": [
+     "sched-2026-11-22-shiny-tokyo-jiyukei-mytime-event-2026-開幕",
+     "sched-2026-11-22-shiny-tokyo-jiyukei-my-time-event-merch-2026-開始",
+     "sched-2026-11-22-shiny-tokyo-jiyukei-my-time-event-merch-2026-開始-src1",
+     "sched-2026-11-22-shiny-tokyo-jiyukei-my-time-event-merch-2026-開始-src2"
+    ]
+   },
+   {
+    "slug": "shiny-ops-roundup",
+    "brand": "shiny",
+    "rank": "roundup",
+    "angle": "放クラ新曲イベント「超爆発ギャラクシー」。11月26日20時59分まで、メダルガシャ形式、結果発表は30日まで",
+    "lead_score": 0,
+    "dedup_key": "shiny-super-explosion-galaxy-2026",
+    "candidate_ids": [
+     "202611212333-explore-4",
+     "202611212333-explore-5",
+     "202611220221-grok-30",
+     "202611220221-grok-31",
+     "202611220221-grok-32",
+     "202611220221-grok-33",
+     "202611220221-grok-37",
+     "202611220221-grok-44",
+     "202611211834-explore-18",
+     "202611211834-explore-19"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "shiny-283-production-pop-up-shop-2026",
+    "reason": "既報",
+    "note": "11/21号の記事に全事実あり。開幕は27日でトリガー無し"
+   },
+   {
+    "dedup_key": "shiny-jimushiny-episode-24-part-1-2026",
+    "reason": "既報",
+    "note": "11/21号で記事化済み"
+   },
+   {
+    "dedup_key": "shiny-phrase-award-2026",
+    "reason": "既報",
+    "note": "11/21号と同内容。締切29日で3日以内ではない"
+   },
+   {
+    "dedup_key": "shinyson-3rd-anniversary-webstore-jewel-sale-2026",
+    "reason": "既報",
+    "note": "11/21号に価格・期限とも掲載済み"
+   },
+   {
+    "dedup_key": "shiny-refrac7ions-still-blue-ticket-sales-2026",
+    "reason": "既報",
+    "note": "11/21号に一般発売の内容は掲載済み。本日の新しい事実なし"
+   },
+   {
+    "dedup_key": "shiny-style-collection-2026",
+    "reason": "既報",
+    "note": "11/21号に全商品と受注期限掲載済み。締切29日で3日以内ではない"
+   },
+   {
+    "dedup_key": "shiny-still-blue-tickets",
+    "reason": "既報",
+    "note": "11/21号と同内容"
+   },
+   {
+    "dedup_key": "shiny-3rd-anniv-login-bonus-2026",
+    "reason": "既報",
+    "note": "11/21号に同内容。終了30日で3日以内ではない"
+   },
+   {
+    "dedup_key": "general-30ms-shiny-sticker-campaign-shortage-2026",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿のみ、未確認"
+   },
+   {
+    "dedup_key": "general-fan-30ms-amana-custom-2026-11-22",
+    "reason": "個人の話題",
+    "note": "ファン個人の投稿。culture は general 面のみ"
+   },
+   {
+    "dedup_key": "general-fan-song-for-prism-repost-campaign-win-2026-11-21",
+    "reason": "個人の話題",
+    "note": "個人の当選報告"
+   }
+  ],
+  "cross_brand": []
+ }
+}

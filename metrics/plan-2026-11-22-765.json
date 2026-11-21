@@ -1,0 +1,119 @@
+{
+ "decisions": {
+  "765as-never-end-idol-bluray-2026": {
+   "action": "article",
+   "angle": "11月25日発売の765ASライブBDに、アソビストア特装版(4枚組BOX・フォトブック、数量限定)と購入店舗特典A4クリアファイルが出る。ゲーマーズ特典(缶バッジ・ブロマイド)も併せて伝える",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "素材は公式1件と未確認2件。メイキング収録の有無は10/2の訂正と食い違うので校閲で確認"
+  },
+  "765-never-end-idol-blu-ray-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "765as-never-end-idol-bluray-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じBDの発売告知。通常版の情報は既報と照合して使う"
+  },
+  "765as-never-end-idol-gamers-bonus-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "765as-never-end-idol-bluray-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じBDの予約と店舗特典。読者の行動は同じ(予約購入)なので1記事に"
+  },
+  "765pro-allstars-never-end-idol-bluray-day1-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "765as-never-end-idol-bluray-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "出典の変更はAmazonの掲載価格が15,040円から14,892円になっただけ。BD記事に入れるなら価格の変動として短く"
+  },
+  "imas-radio-stamas-5th-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/11の記事に、ゲスト・日時・テーマ・メール募集・ファンアート募集がすべて載っている。新事実なし。放送は24日で当日のトリガーに当たらない"
+  },
+  "fan-765as-reading-event-reaction-2026-11": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿1件で、声優のイベント参加の感想。単体では記事にしない"
+  },
+  "765-hangetsu-revival-ticket-firstcome-2026": {
+   "action": "cross_brand",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "joint-xr-live-revival-2026-general-sale",
+   "reason": "",
+   "note": "菊地真・萩原雪歩のtwin liveは、joint面の記事にあるxR LIVE REVIVALと同じ公演。現地先着販売は同じ22日12時開始"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "765-765as-never-end-idol-bluray-2026",
+    "brand": "765",
+    "rank": "medium",
+    "angle": "11月25日発売の765ASライブBDに、アソビストア特装版(4枚組BOX・フォトブック、数量限定)と購入店舗特典A4クリアファイルが出る。ゲーマーズ特典(缶バッジ・ブロマイド)も併せて伝える",
+    "purpose": "新情報",
+    "lead_score": 60,
+    "dedup_key": "765as-never-end-idol-bluray-2026",
+    "candidate_ids": [
+     "202611220221-grok-10",
+     "202611211834-explore-4",
+     "update-16fbff21d259",
+     "202611220221-grok-11"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "imas-radio-stamas-5th-2026",
+    "reason": "既報",
+    "note": "11/11の記事に、ゲスト・日時・テーマ・メール募集・ファンアート募集がすべて載っている。新事実なし。放送は24日で当日のトリガーに当たらない"
+   },
+   {
+    "dedup_key": "fan-765as-reading-event-reaction-2026-11",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿1件で、声優のイベント参加の感想。単体では記事にしない"
+   }
+  ],
+  "cross_brand": [
+   {
+    "slug": "joint-xr-live-revival-2026-general-sale",
+    "dedup_key": "765-hangetsu-revival-ticket-firstcome-2026",
+    "note": "菊地真・萩原雪歩のtwin liveは、joint面の記事にあるxR LIVE REVIVALと同じ公演。現地先着販売は同じ22日12時開始"
+   }
+  ]
+ }
+}

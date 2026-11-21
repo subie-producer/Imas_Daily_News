@@ -1,0 +1,68 @@
+{
+ "decisions": {
+  "imas-birthdays-2026-11-22": {
+   "action": "article",
+   "angle": "アイマスchが11月22日誕生日の篠原礼・秋山隼人のお祝いムービーをYouTube Shortsで公開した",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "sidemの秋山隼人誕生日記事は公式アカウントの祝福投稿が切り口。こちらはアイマスchのムービー公開"
+  },
+  "cinderella-hub-collab-fan-visit-2026": {
+   "action": "article",
+   "angle": "デレとHUBのコラボを訪れたファンの感想や、MILLION MIXのライブレポートなど、ファンの投稿をまとめて紹介する",
+   "purpose": "新情報",
+   "rank": "culture",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ファン面の1本。投稿者個人は主役にしない"
+  },
+  "fan-outside-isotope-million-mix-report-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cinderella-hub-collab-fan-visit-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ファン面の1本に統合"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "general-cinderella-hub-collab-fan-visit-2026",
+    "brand": "general",
+    "rank": "culture",
+    "angle": "デレとHUBのコラボを訪れたファンの感想や、MILLION MIXのライブレポートなど、ファンの投稿をまとめて紹介する",
+    "purpose": "新情報",
+    "lead_score": 5,
+    "dedup_key": "cinderella-hub-collab-fan-visit-2026",
+    "candidate_ids": [
+     "202611220221-grok-21",
+     "202611220221-grok-29"
+    ]
+   },
+   {
+    "slug": "general-imas-birthdays-2026-11-22",
+    "brand": "general",
+    "rank": "small",
+    "angle": "アイマスchが11月22日誕生日の篠原礼・秋山隼人のお祝いムービーをYouTube Shortsで公開した",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "imas-birthdays-2026-11-22",
+    "candidate_ids": [
+     "202611220221-grok-83"
+    ]
+   }
+  ],
+  "dropped": [],
+  "cross_brand": []
+ }
+}

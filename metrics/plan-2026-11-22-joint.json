@@ -1,0 +1,86 @@
+{
+ "decisions": {
+  "tours-allnet-maintenance-remedy-2026": {
+   "action": "article",
+   "angle": "周防桃子の誕生日施策の最終日。バースデーライブ・フォトは25:59まで、誕生日ログボは23:59までなので駆け込める",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(終了)。当日トリガーあり"
+  },
+  "xr-live-revival-2026-general-sale": {
+   "action": "article",
+   "angle": "現地チケットの一般先着販売が今日12時に始まり、15時からはASOBI TICKET公式リセールの受付も始まる",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(開始)。一般販売とリセールは同じ公演の施策として1記事にまとめる"
+  },
+  "tours-prime-match-fes-support-cards-2026": {
+   "action": "article",
+   "angle": "プライムマッチフェスで、特定のサポートカードを使うとプラフェスPtを多く獲得できる",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "既報の本文に無い新しい事実。素材は少なく短い記事にする"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "joint-tours-allnet-maintenance-remedy-2026",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "周防桃子の誕生日施策の最終日。バースデーライブ・フォトは25:59まで、誕生日ログボは23:59までなので駆け込める",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "tours-allnet-maintenance-remedy-2026",
+    "candidate_ids": [
+     "202611210732-explore-11",
+     "202611220221-grok-120",
+     "sched-2026-11-22-tours-allnet-maintenance-remedy-2026-終了",
+     "sched-2026-11-22-tours-allnet-maintenance-remedy-2026-終了-src1"
+    ]
+   },
+   {
+    "slug": "joint-xr-live-revival-2026-general-sale",
+    "brand": "joint",
+    "rank": "medium",
+    "angle": "現地チケットの一般先着販売が今日12時に始まり、15時からはASOBI TICKET公式リセールの受付も始まる",
+    "purpose": "期日の知らせ",
+    "lead_score": 60,
+    "dedup_key": "xr-live-revival-2026-general-sale",
+    "candidate_ids": [
+     "202611211834-explore-22",
+     "202611220221-explore-0",
+     "202611220221-grok-91",
+     "sched-2026-11-22-xr-live-revival-2026-general-sale-開始",
+     "sched-2026-11-22-xr-live-revival-2026-general-sale-開始-src1"
+    ]
+   },
+   {
+    "slug": "joint-tours-prime-match-fes-support-cards-2026",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "プライムマッチフェスで、特定のサポートカードを使うとプラフェスPtを多く獲得できる",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "tours-prime-match-fes-support-cards-2026",
+    "candidate_ids": [
+     "202611220221-grok-80"
+    ]
+   }
+  ],
+  "dropped": [],
+  "cross_brand": []
+ }
+}

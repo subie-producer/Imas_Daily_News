@@ -677,5 +677,28 @@
   "verify": "unconfirmed",
   "deadline": "2026-12-09",
   "src_candidate_id": "202611190229-grok-21"
+ },
+ {
+  "id": "sched-2026-12-09-shiny-sweets-paradise-goods-online-2026-終了",
+  "dedup_key": "shiny-sweets-paradise-goods-online-2026",
+  "brand": "shiny",
+  "subject": "スイパラコラボグッズ通販終了",
+  "kind": "終了",
+  "note": "23:59まで購入できる最終日",
+  "reserved_on": "2026-11-22",
+  "occurs_on": "2026-12-09",
+  "title": "スイーツパラダイスコラボグッズの通販決定",
+  "url": "https://gameo.jp/imassc/170735",
+  "source_type": "二次情報",
+  "facts": [
+   "「アイドルマスター シャイニーカラーズ」コラボレーションカフェのオリジナルグッズの通販が決定した。",
+   "販売期間: 11/25（水）10:00～12/9（水）23:59",
+   "Yahoo!ショッピング内スイパラショップで一部コラボグッズを販売する。",
+   "エンゲージメント: 中"
+  ],
+  "via": "explore",
+  "verify": "unconfirmed",
+  "deadline": "2026-12-09",
+  "src_candidate_id": "202611210225-explore-5"
  }
 ]

@@ -92,5 +92,36 @@
   "src_candidate_id": "202611080229-grok-46",
   "companion_of": "sched-2027-01-03-gaku-steampunk-gearbeat-goods-2026-千秋楽",
   "src_dedup_key": "gaku-gearbeat-concerto-2026"
+ },
+ {
+  "id": "sched-2027-01-03-sidem-mfes-label-cans-2026-締切前",
+  "dedup_key": "sidem-mfes-label-cans-2026",
+  "brand": "sidem",
+  "subject": "SideM Mフェス ラベル缶 販売終了前",
+  "kind": "締切前",
+  "note": "販売は1月6日まで。残り3日で買える",
+  "reserved_on": "2026-11-22",
+  "occurs_on": "2027-01-06",
+  "title": "SideM Mフェス オリジナルラベル缶を全国販売",
+  "url": "https://x.com/TAGLIVELABEL/status/2123325407139365173",
+  "source_type": "当事者",
+  "facts": [
+   "アイドルマスター SideM Mフェスのオリジナルラベル缶を全国の専用自販機で販売。",
+   "販売期間: 12月1日(火)～1月6日(水)。",
+   "SDキャラのアクリルキーホルダーが当たる場合がある。",
+   "2層構造のラベルは剥がしてステッカーとして利用できる。",
+   "全国約50台で音自販機が登場し、W・神速一魂・C.FIRSTが歌う「Season’s Greetings Party！」を聴ける。",
+   "専用自販機MAPには在庫表記がない。",
+   "音が鳴らない場合、商品交換・返金対応は不可。",
+   "音自販機はMAP内で施設名に♪が付いたもの。",
+   "自販機MAP: https://www.google.com/maps/d/viewer?mid=1oLR4rz1OqefYD7DiLM2teP0lNmJSKrw&ll=35.53037550734204%2C135.45038510000003&z=5",
+   "リンク: https://t.co/GABGhQaOYM",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "unconfirmed",
+  "event_date": "2026-12-01",
+  "deadline": "2027-01-06",
+  "src_candidate_id": "202611200230-grok-75"
  }
 ]

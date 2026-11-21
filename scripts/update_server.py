@@ -75,7 +75,9 @@ PIP_TIMEOUT = 600
 # 入れ替えを始めてから、失敗して戻し・再起動・確認を終えるまでに見込む秒(入れ替えと戻しの pip の上限+確認の待ち×2+余裕)。
 # これだけ先までに発行の時間帯に掛かるなら始めない(戻しの分を含める。Sol 監査 r5)
 RESTART_TIMEOUT = 120         # systemctl restart の上限
-EXTERNAL_TIMEOUT = 30         # 外からの公開ページの確認の上限
+# 外からの公開ページの確認に取る秒。imas-tunnel は imas-web に BindsTo で結ばれ、Caddy の再起動で一緒に止まって
+# 張り直すので、つながるまで(Cloudflare は 502・530 を返す)繰り返し確かめる
+EXTERNAL_TIMEOUT = 120
 CHECK_LIMIT = CHECK_WAIT + EXTERNAL_TIMEOUT    # check_http 全体の上限
 JOURNAL_TIMEOUT = 60          # 失敗の記録に添える journal の読み取りの上限
 # 入れ替え1回(または戻し1回)の各段の上限の合計: pip+再起動+確認+journal。Caddy の差し替えは pip より短いので同じ見込みで足りる
@@ -583,7 +585,8 @@ def get_status(url: str, headers: dict | None = None, timeout: float = 30) -> in
 def check_http() -> tuple[bool, str]:
     """Caddy 経由の数ページが 200 か、外から公開ページが 200 か。再起動の直後は 200 が揃うまで待つ。例外は投げない。
     全体で CHECK_LIMIT 秒を越えない(1回の要求の上限は残りの秒に縮める。待ちの見込み QUIET_MARGIN の前提。Sol 監査 r6)。
-    手元のページの待ちに CHECK_WAIT 秒、外からの確認に残り(EXTERNAL_TIMEOUT 秒)を取っておく。"""
+    手元のページの待ちに CHECK_WAIT 秒、外からの確認に残り(EXTERNAL_TIMEOUT 秒)を取っておく。
+    外からの確認も 200 が返るまで繰り返す(トンネルの張り直しを待つ)。"""
     try:
         start = time.monotonic()
         local_end = start + CHECK_WAIT
@@ -597,8 +600,15 @@ def check_http() -> tuple[bool, str]:
                 break
             time.sleep(min(3, max(0, left(local_end))))
         site = ENV.get("SITE_URL", "").rstrip("/")
-        ext = (get_status(f"{site}/?server-check={int(time.time())}", {"Cache-Control": "no-cache"}, timeout=min(30, left(end)))
-               if site and left(end) > 0 else (0 if site else None))
+        ext = None
+        if site:
+            ext = 0
+            while left(end) > 0:
+                ext = get_status(f"{site}/?server-check={int(time.time())}", {"Cache-Control": "no-cache"},
+                                 timeout=min(30, left(end)))
+                if ext == 200 or left(end) <= 0 or not all(c == 200 for c in codes.values()):   # 手元が落ちていれば待たない
+                    break
+                time.sleep(min(5, max(0, left(end))))
         parts = [f"{p} {c}" for p, c in codes.items()] + ([f"外から {site} {ext}"] if site else [])
         ok = all(c == 200 for c in codes.values()) and ext in (200, None)
         return ok, "・".join(parts)

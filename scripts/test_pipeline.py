@@ -8872,6 +8872,40 @@ def test_update_server_apply(tmp: Path):
         finally:
             us.time.monotonic, us.time.sleep, us.time.time = saved_t
             _unpatch(us, saved_g)
+        # 2026-11-21 の初回: Caddy の再起動で BindsTo のトンネルも張り直し、外からは数秒 502・530 になる。
+        # 手元が 200 なら、外からも 200 が返るまで上限の内で繰り返す(1回で決めて戻さない)
+        mono[0] = 1000.0
+        ext_codes = [502, 530, 200]
+        ext_seen = []
+
+        def tunnel_get(url, headers=None, timeout=30):
+            mono[0] += 1
+            if url.startswith(us.LOCAL_WEB):
+                return 200
+            ext_seen.append(url)
+            return ext_codes.pop(0) if ext_codes else 200
+        saved_g = _patch(us, get_status=tunnel_get, check_http=saved["check_http"])
+        saved_env = us.ENV.get("SITE_URL")
+        us.ENV["SITE_URL"] = "https://news.example"
+        us.time.monotonic = us.time.time = lambda: mono[0]
+        us.time.sleep = lambda s: mono.__setitem__(0, mono[0] + s)
+        try:
+            ok_t, msg_t = us.check_http()
+            check(ok_t and len(ext_seen) == 3 and mono[0] - 1000.0 <= us.CHECK_LIMIT,
+                  f"トンネルの張り直しを待たずに失敗とした: {ok_t} {msg_t} {ext_seen}")
+            # 外からずっと 530 なら、上限で打ち切って失敗とする
+            mono[0] = 1000.0
+            ext_codes[:] = [530] * 1000
+            ok_t, msg_t = us.check_http()
+            check(not ok_t and "530" in msg_t and mono[0] - 1000.0 <= us.CHECK_LIMIT + 1e-6,
+                  f"外から落ちたままを通した・上限を越えた: {ok_t} {msg_t} {mono[0] - 1000.0}")
+        finally:
+            us.time.monotonic, us.time.sleep, us.time.time = saved_t
+            _unpatch(us, saved_g)
+            if saved_env is None:
+                us.ENV.pop("SITE_URL", None)
+            else:
+                us.ENV["SITE_URL"] = saved_env
         check(us.QUIET_MARGIN >= 2 * (us.PIP_TIMEOUT + us.RESTART_TIMEOUT + us.CHECK_LIMIT + us.JOURNAL_TIMEOUT),
               f"見込みが入れ替えと戻しの各段の上限の合計より短い: {us.QUIET_MARGIN}")
         # Sol 監査 r7: 1回の要求は、応答しない・少しずつ届く相手でも上限で打ち切る(本物の curl を手元の黙るサーバーに当てる)

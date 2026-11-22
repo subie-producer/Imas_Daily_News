@@ -1,0 +1,248 @@
+{
+ "decisions": {
+  "cinderella-k-arena-collab-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-21号に価格・期間・営業時間まで掲載済み。販売開始27日は3日以内でなく新事実なし"
+  },
+  "cinderella-hub-last-order-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-20号に開幕記事あり。新事実・当日トリガーなし"
+  },
+  "cg-yamanashi-walk-wander-2026": {
+   "action": "article",
+   "angle": "山梨周遊イベントの公式サイトが更新され、おにぎり弁当の販売店が「RAN 甲府店」から「花小路店」に変わった",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "既報の甲府店表記との差分を伝える。グッズ・スポット掲載の更新も補足"
+  },
+  "cinderella-15th-orchestra-goods-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "Tシャツ表記のS→Mの変化のみで、品目・条件の追加や変更とは読み取れない"
+  },
+  "cinderella-orchestra-concert-2027": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "実際は15th PARTY一般先着販売で22日23:59に終了済み。11-22号に締切記事あり"
+  },
+  "cg-apple-of-my-ai-goods-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-17号に品目・価格・締切29日を掲載済み。新事実なし、締切まで6日"
+  },
+  "cg-memory-pict-9th-february-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-18号に商品・価格・締切29日を掲載済み。締切まで6日"
+  },
+  "personality-diagnosis-cg-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿で未確認。出典も不十分"
+  },
+  "cg-15th-party-stream-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-13号に配信券の料金・販売期間を掲載済み。新事実なし"
+  },
+  "fan-shiki-plush-making-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "同人・ファン主催",
+   "note": "ファン個人の創作投稿。culture はgeneral面のみ"
+  },
+  "cinderella-15th-kizumi-comment-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-21号の既報と同内容で、この号でも新事実・トリガーなし"
+  },
+  "cg-15th-party-resale-2026": {
+   "action": "article",
+   "angle": "シンデレラ15周年公演の公式リセール抽選は本日9時59分で受付終了。28日・29日公演で受付ページが別々",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ施策のリセール締切3主題を本主題に統合。一般先着販売は昨夜終了済み"
+  },
+  "cg-15th-anniversary-party-2026-general": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-15th-party-resale-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じリセール締切の予約。素材を統合"
+  },
+  "cg-15th-party-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-15th-party-resale-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じリセール抽選締切の予約。素材を統合"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "cg-yamanashi-walk-wander-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "山梨周遊イベントの公式サイトが更新され、おにぎり弁当の販売店が「RAN 甲府店」から「花小路店」に変わった",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "cg-yamanashi-walk-wander-2026",
+    "candidate_ids": [
+     "update-ccab7574029a",
+     "update-cc50a842fe9a",
+     "update-d42403111914",
+     "update-42671450078d",
+     "update-2d21569c887c"
+    ]
+   },
+   {
+    "slug": "cg-15th-party-resale-2026",
+    "brand": "cg",
+    "rank": "medium",
+    "angle": "シンデレラ15周年公演の公式リセール抽選は本日9時59分で受付終了。28日・29日公演で受付ページが別々",
+    "purpose": "期日の知らせ",
+    "lead_score": 60,
+    "dedup_key": "cg-15th-party-resale-2026",
+    "candidate_ids": [
+     "sched-2026-11-23-cg-15th-party-resale-2026-締切",
+     "sched-2026-11-23-cg-15th-anniversary-party-2026-general-締切",
+     "sched-2026-11-23-cg-15th-anniversary-party-2026-general-締切-src1",
+     "sched-2026-11-23-cg-15th-party-2026-締切",
+     "sched-2026-11-23-cg-15th-party-2026-締切-src1",
+     "sched-2026-11-23-cg-15th-party-2026-締切-src2"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "cinderella-k-arena-collab-2026",
+    "reason": "既報",
+    "note": "11-21号に価格・期間・営業時間まで掲載済み。販売開始27日は3日以内でなく新事実なし"
+   },
+   {
+    "dedup_key": "cinderella-hub-last-order-2026",
+    "reason": "既報",
+    "note": "11-20号に開幕記事あり。新事実・当日トリガーなし"
+   },
+   {
+    "dedup_key": "cinderella-15th-orchestra-goods-2026",
+    "reason": "その他",
+    "note": "Tシャツ表記のS→Mの変化のみで、品目・条件の追加や変更とは読み取れない"
+   },
+   {
+    "dedup_key": "cinderella-orchestra-concert-2027",
+    "reason": "既報",
+    "note": "実際は15th PARTY一般先着販売で22日23:59に終了済み。11-22号に締切記事あり"
+   },
+   {
+    "dedup_key": "cg-apple-of-my-ai-goods-2026",
+    "reason": "既報",
+    "note": "11-17号に品目・価格・締切29日を掲載済み。新事実なし、締切まで6日"
+   },
+   {
+    "dedup_key": "cg-memory-pict-9th-february-2026",
+    "reason": "既報",
+    "note": "11-18号に商品・価格・締切29日を掲載済み。締切まで6日"
+   },
+   {
+    "dedup_key": "personality-diagnosis-cg-2026",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿で未確認。出典も不十分"
+   },
+   {
+    "dedup_key": "cg-15th-party-stream-2026",
+    "reason": "既報",
+    "note": "11-13号に配信券の料金・販売期間を掲載済み。新事実なし"
+   },
+   {
+    "dedup_key": "fan-shiki-plush-making-2026",
+    "reason": "同人・ファン主催",
+    "note": "ファン個人の創作投稿。culture はgeneral面のみ"
+   },
+   {
+    "dedup_key": "cinderella-15th-kizumi-comment-2026",
+    "reason": "既報",
+    "note": "11-21号の既報と同内容で、この号でも新事実・トリガーなし"
+   }
+  ],
+  "cross_brand": []
+ }
+}

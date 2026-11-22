@@ -1,0 +1,399 @@
+{
+ "decisions": {
+  "shiny-phrase-award-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/21号で報じ済み。締切29日は3日以内でなくトリガー無し"
+  },
+  "shiny-lonely-date-watercolor-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/22の運営情報まとめに新曲追加の本文あり"
+  },
+  "shiny-283-pop-up-egai-eikou-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "出典変更はくじ先行販売の追記だが11/21号に記載済み。開幕は27日でトリガー無し"
+  },
+  "shiny-still-blue-tickets": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "一般発売は11/21号で報じ済み。締切12/12でトリガー無し"
+  },
+  "shiny-haruki-futari-timeslip-stamp-gasha-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/22の運営情報まとめに掲載済み"
+  },
+  "shiny-web4koma-670": {
+   "action": "article",
+   "angle": "シャニマスのweb4コマ漫画第670話「作画」が公開され、郁田はるきが描かれた",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-style-collection-2026": {
+   "action": "article",
+   "angle": "SHINY Style COLLECTIONにClassical Twin Styleのグッズが登場し、公式グッズセット5,000円など7品目の受注が始まった",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "彼岸流(11/21号)とは別のStyle。受注期限は素材で要確認"
+  },
+  "shiny-song-prism-3rd-anniversary-campaign-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "11/14の発表で期限も不明、当日のトリガー無し"
+  },
+  "shiny-song-prism-juri-pickup-2026-11": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/21号「円環」限定★3の4人の記事で報じ済み"
+  },
+  "shiny-haruki-piece-package-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/22の運営情報まとめに掲載済み"
+  },
+  "shiny-wedding-select-ticket-step-gacha-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/22の運営情報まとめに掲載済み。24時間限定で既に終了"
+  },
+  "shiny-haruki-special-stamp-gacha-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/22の運営情報まとめに掲載済み"
+  },
+  "shiny-song-prism-fuyuko-pickup-2026-11": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/21号「円環」限定★3の4人の記事で報じ済み"
+  },
+  "shiny-song-prism-shinro-cho-galaxy-2dmv-2026-11": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-super-explosion-galaxy-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ放クラ新曲施策"
+  },
+  "shiny-orchestra-2027-game-presale": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/11の記事で報じ済み。新事実も当日トリガーも無い"
+  },
+  "shiny-mattari-hbtk-clip-2026-11-21": {
+   "action": "article",
+   "angle": "シャニラジの切り抜きが公開され、福丸小糸が小宮果穂に勉強を教える場面が紹介された",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 3,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-fan-started-song-prism-after-cover-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿"
+  },
+  "shiny-fan-yunir-collab-report-2026-11-22": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS参加報告"
+  },
+  "shinyson-super-explosion-galaxy-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-super-explosion-galaxy-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ放クラ新曲施策(2DMV)"
+  },
+  "shiny-meltic-frost-marche-2026": {
+   "action": "article",
+   "angle": "「Meltic＊Frost Marche」POP UP SHOPが12月4日から20日まで秋葉原で開催、雪うさぎ衣装のアルストロメリアとストレイライトのグッズを販売",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "11/22号まで2回見送りだが既報なし"
+  },
+  "shiny-orchestra-2027-game-advance-entry": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "素材の内容はSideMの映画舞台挨拶で、ゲーム先行は既報"
+  },
+  "shiny-super-explosion-galaxy-2026": {
+   "action": "article",
+   "angle": "シャニソン新曲イベント「超爆発ギャラクシー」は26日20時59分まで、残り3日(ランキング集計・結果発表の日程も)",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(締切前)。2DMV関連2件を統合"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "shiny-web4koma-670",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "シャニマスのweb4コマ漫画第670話「作画」が公開され、郁田はるきが描かれた",
+    "purpose": "新情報",
+    "lead_score": 5,
+    "dedup_key": "shiny-web4koma-670",
+    "candidate_ids": [
+     "202611230229-explore-4"
+    ]
+   },
+   {
+    "slug": "shiny-style-collection-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "SHINY Style COLLECTIONにClassical Twin Styleのグッズが登場し、公式グッズセット5,000円など7品目の受注が始まった",
+    "purpose": "新情報",
+    "lead_score": 25,
+    "dedup_key": "shiny-style-collection-2026",
+    "candidate_ids": [
+     "202611230229-grok-25",
+     "202611230229-grok-108",
+     "202611230229-grok-110"
+    ]
+   },
+   {
+    "slug": "shiny-mattari-hbtk-clip-2026-11-21",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "シャニラジの切り抜きが公開され、福丸小糸が小宮果穂に勉強を教える場面が紹介された",
+    "purpose": "新情報",
+    "lead_score": 3,
+    "dedup_key": "shiny-mattari-hbtk-clip-2026-11-21",
+    "candidate_ids": [
+     "202611230229-grok-36"
+    ]
+   },
+   {
+    "slug": "shiny-meltic-frost-marche-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "「Meltic＊Frost Marche」POP UP SHOPが12月4日から20日まで秋葉原で開催、雪うさぎ衣装のアルストロメリアとストレイライトのグッズを販売",
+    "purpose": "新情報",
+    "lead_score": 30,
+    "dedup_key": "shiny-meltic-frost-marche-2026",
+    "candidate_ids": [
+     "202611202334-explore-12"
+    ]
+   },
+   {
+    "slug": "shiny-super-explosion-galaxy-2026",
+    "brand": "shiny",
+    "rank": "medium",
+    "angle": "シャニソン新曲イベント「超爆発ギャラクシー」は26日20時59分まで、残り3日(ランキング集計・結果発表の日程も)",
+    "purpose": "期日の知らせ",
+    "lead_score": 60,
+    "dedup_key": "shiny-super-explosion-galaxy-2026",
+    "candidate_ids": [
+     "sched-2026-11-23-shiny-super-explosion-galaxy-2026-締切前",
+     "sched-2026-11-23-shiny-super-explosion-galaxy-2026-締切前-src1",
+     "sched-2026-11-23-shiny-super-explosion-galaxy-2026-締切前-src2",
+     "sched-2026-11-23-shiny-super-explosion-galaxy-2026-締切前-src3",
+     "sched-2026-11-23-shiny-super-explosion-galaxy-2026-締切前-src4",
+     "sched-2026-11-23-shiny-super-explosion-galaxy-2026-締切前-src5",
+     "sched-2026-11-23-shiny-super-explosion-galaxy-2026-締切前-src6",
+     "sched-2026-11-23-shiny-super-explosion-galaxy-2026-締切前-src7",
+     "202611230229-grok-34",
+     "202611230229-grok-87"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "shiny-phrase-award-2026",
+    "reason": "既報",
+    "note": "11/21号で報じ済み。締切29日は3日以内でなくトリガー無し"
+   },
+   {
+    "dedup_key": "shiny-lonely-date-watercolor-2026",
+    "reason": "既報",
+    "note": "11/22の運営情報まとめに新曲追加の本文あり"
+   },
+   {
+    "dedup_key": "shiny-283-pop-up-egai-eikou-2026",
+    "reason": "既報",
+    "note": "出典変更はくじ先行販売の追記だが11/21号に記載済み。開幕は27日でトリガー無し"
+   },
+   {
+    "dedup_key": "shiny-still-blue-tickets",
+    "reason": "既報",
+    "note": "一般発売は11/21号で報じ済み。締切12/12でトリガー無し"
+   },
+   {
+    "dedup_key": "shiny-haruki-futari-timeslip-stamp-gasha-2026",
+    "reason": "既報",
+    "note": "11/22の運営情報まとめに掲載済み"
+   },
+   {
+    "dedup_key": "shiny-song-prism-3rd-anniversary-campaign-2026",
+    "reason": "その他",
+    "note": "11/14の発表で期限も不明、当日のトリガー無し"
+   },
+   {
+    "dedup_key": "shiny-song-prism-juri-pickup-2026-11",
+    "reason": "既報",
+    "note": "11/21号「円環」限定★3の4人の記事で報じ済み"
+   },
+   {
+    "dedup_key": "shiny-haruki-piece-package-2026",
+    "reason": "既報",
+    "note": "11/22の運営情報まとめに掲載済み"
+   },
+   {
+    "dedup_key": "shiny-wedding-select-ticket-step-gacha-2026",
+    "reason": "既報",
+    "note": "11/22の運営情報まとめに掲載済み。24時間限定で既に終了"
+   },
+   {
+    "dedup_key": "shiny-haruki-special-stamp-gacha-2026",
+    "reason": "既報",
+    "note": "11/22の運営情報まとめに掲載済み"
+   },
+   {
+    "dedup_key": "shiny-song-prism-fuyuko-pickup-2026-11",
+    "reason": "既報",
+    "note": "11/21号「円環」限定★3の4人の記事で報じ済み"
+   },
+   {
+    "dedup_key": "shiny-orchestra-2027-game-presale",
+    "reason": "既報",
+    "note": "11/11の記事で報じ済み。新事実も当日トリガーも無い"
+   },
+   {
+    "dedup_key": "shiny-fan-started-song-prism-after-cover-2026",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿"
+   },
+   {
+    "dedup_key": "shiny-fan-yunir-collab-report-2026-11-22",
+    "reason": "個人の話題",
+    "note": "個人のSNS参加報告"
+   },
+   {
+    "dedup_key": "shiny-orchestra-2027-game-advance-entry",
+    "reason": "面違い",
+    "note": "素材の内容はSideMの映画舞台挨拶で、ゲーム先行は既報"
+   }
+  ],
+  "cross_brand": []
+ }
+}

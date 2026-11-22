@@ -284,6 +284,7 @@ party_paths:
   - item.rakuten.co.jp/f272078-takatsuki        # 高槻市ふるさと納税
 
 party_domains:
+  - shochiku.co.jp        # 合議で追加: 映画配給元。当社配給の劇場版SideM作品を掲載した公式ページ
   - store.shopping.yahoo.co.jp # 合議で追加: ストア情報がスイーツパラダイス。シャニマスコラボ商品の販売元
   - hakusan.aeonmall.jp   # 合議で追加: 会場のイオンモール白山が、店舗ニュースでコラボメニューの開催を告知
   - hatmachida.tokyo      # 合議で追加: はっとまちだ概要に町田市と実行委員会の運営とあり、マンホールカードの配布会場
@@ -520,6 +521,7 @@ video_ids:
     - sm18526341          # 機械で追加: nicovideo.jp/user/17835786「iM@S 6th Anniversary Live - キラ」
     - LSkzNm3AzHk         # 機械で追加: @TogawaNonoha「〖 世界のアソビ大全51 〗遊び…？いいえ、ののは vs ま」
   公式:
+    - F2Wk47w6fxU         # 機械で追加: @imas-official「【ミリシタ】ゲーム内楽曲『想定心理外 -Outside Is」
     - UTodfL2t6fM         # 機械で追加: @imas-official「【#学マス】ランウェイの秘密 #初星学園放送部 #村田綾香 」
     - hZDHZ8SwPN4         # 機械で追加: @imas-official「【SideM】＜期間限定無料公開＞Legenders『ひとつ」
     - YbyjjPC6wUQ         # 機械で追加: @hatsuboshi_gakuen「初星学園 「金の斧、銀の斧、エメラルドの斧」Official」
@@ -662,6 +664,7 @@ x_accounts:
     - asobistore
     - imas_musicradio
   演者:
+    - 81pro_official      # 合議で追加: 所属事務所の公式アカウントで所属者の出演告知
     - inoue_honokuma      # 合議で追加: 出演者本人の発信。シンデレラガールズ特別ステージ出演告知
     - official_kep1er     # 合議で追加: Kep1er公式。ヴイアラ楽曲を踊る出演者側の発信
     - todamegumi          # 合議で追加: 出演者本人の発信。ARC-FLAGSのPOP UP訪問を自ら投稿
@@ -711,6 +714,18 @@ x_accounts:
     - imasnews765
     - zutapoke
   ファン:
+    - ui_gyu              # 合議で追加: コラボカバーをきっかけに遊び始めた個人の投稿
+    - tonkatsudesuwa      # 合議で追加: 個人がツアマスで撮影した誕生日フォト投稿
+    - syuzoazarasi        # 合議で追加: 個人による個性診断ネタの投稿
+    - popopo_niitsu       # 合議で追加: 個人による高槻やよいのマンホール発見投稿
+    - pin_mo              # 合議で追加: 個人アカウントによるファン制作動画の紹介
+    - mrj_sauna           # 合議で追加: 個人の参加報告と読める。湯〜ねるの発信とする表示は要約にない
+    - m1c_1ru             # 合議で追加: 個人のSideMコラボ・映画鑑賞の日記投稿
+    - imaschisako         # 合議で追加: 個人によるぬい制作の投稿
+    - fJ1jc9slIiJI6y7     # 合議で追加: 個人による星井美希の誕生日祝い投稿
+    - Wakari_ko           # 合議で追加: 個人の感想投稿。来場者の広がりを語る
+    - Bonri381            # 合議で追加: 個人が誕生日に劇場版を鑑賞した投稿
+    - 961000_kuroio       # 合議で追加: 個人のアカウントによるマンホール訪問投稿
     - tenka_yaten         # 合議で追加: 個人によるHUBコラボ訪問の投稿
     - milkcats            # 合議で追加: 個人による30MS購入者向けステッカー品切れ報告
     - m4s4k0h4            # 合議で追加: 個人によるCEDEC講演(学園アイマス)のレポート
@@ -1129,6 +1144,7 @@ x_accounts:
     - procinen1
     - yutaleP
   当事者:
+    - Simeji_pr           # 合議で追加: Simejiの販売元PR。Mフェスとのコラボを告知
     - gema_nagoya         # 合議で追加: ゲーマーズ(販売元)によるBlu-ray予約・特典案内
     - lashin_chiba        # 合議で追加: ちびぐるみの買取保証を掲げる商業事業者の告知と見える
     - bs_official         # 合議で追加: 別タイトル(バトルスピリッツ)公式のコラボ商品告知
@@ -1277,6 +1293,8 @@ x_accounts:
 # tiktok.com/@…、ch.nicovideo.jp/…、manga.nicovideo.jp/comic/… など。ドメイン(プラットフォーム)では
 # 決まらず、そのパスの主体で決まる。合議が足す(classify_sources.add_paths)。
 path_types:
+  note.com/thinkaigyo: ファン                     # 合議で追加: 個人アカウントの学マス標ファイナル参加記(ファンレポート)
+  note.com/atto_hk: ファン                        # 合議で追加: 個人のnoteで、学園アイマス公演の現地観戦レポートを投稿
   youtube.com/post/Ugkx3L2iBqKM4RM9am4x8oohVKGkvGwL21kU: 公式 # 機械で追加: 持ち主 @imas-official「SideMさんの事、みやたんの事、もっと知りたかったです！ 」
   t.co/VuddOGS7g5: 当事者                         # 機械で追加: 展開先 https://www.medicos-e.net/newsdetail/imas_millionlive_popup/
   note.com/karagarashi: ファン                    # 合議で追加: 個人のnote。ライブ旅行記・感想を一人称で投稿
@@ -1343,6 +1361,12 @@ x_posts:
 
 # --- リンク元から引き継いだ種別(リンク先1つずつ。キーは pipelib.link_key)。合議がリンク元の告知と関係していると確かめたものだけ(classify_sources.inherit_from_links)。リンク先そのものの種別より強いときだけ効く ---
 link_types:
+  youtube.com/watch?v=dp-x87l413o: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/gkmas_official/status/2124458312708284567(公式)。リンク元が『ミラクルナナウ』MVの300万再生突破を伝え、リンク先がそのMV本体
+  youtube.com/watch?v=ZUKWy8nHvv4: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/TomoriManaka/status/2124327029072158939(公式)。リンク元が灯里愛夏の#朝まな100回目配信を伝え、そのアーカイブとしてリンク先を
+  youtube.com/watch?v=9xDJcJMVucY: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/KamizuruCosmo/status/2124427669173661943(公式)。リンク元が同じ『YES!東京』踊ってみたショート動画を紹介しており、リンク先がそ
+  special.amiami.jp/cinderella_amiami_2026/: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://idolmaster-official.jp/news/01_20309(公式)。リンク元が同イベントの特設サイトと明記。ページは403で本文未取得
+  asobiticket2.asobistore.jp/receptions/62d2bd07-0a6e-4ab3-a891-bb53dcaf31de: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://x.com/imas_CGofficial/status/2123725541274526198(公式)。リンク先は現地チケットの受付で、Pop'n ToyBox!!の一般販売と同じ内容
+  youtube.com/watch?v=ELRja09J0SE: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/KamizuruCosmo/status/2124169641295749309(公式)。同じ動画(ELRja09J0SE)。ACE8オンラインモードの実況で、告知内容と
   youtube.com/watch?v=yaqMJ_Rjptg: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/imas_ch/status/2124155883131371713(公式)。篠原礼の誕生日お祝いムービーがリンク先で、告知の内容と一致
   youtube.com/watch?v=ngZSVcF8v3U: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/TomoriManaka/status/2124074305155981447(公式)。灯里愛夏の踊ってみた動画の告知で、リンク先はその動画本体
   youtube.com/watch?v=24CDOZ40f60: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/imas_ch/status/2124155883131371713(公式)。告知の秋山隼人誕生日お祝いムービーそのものがリンク先

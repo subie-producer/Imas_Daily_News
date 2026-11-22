@@ -1,0 +1,74 @@
+{
+ "decisions": {
+  "xr-live-revival-2026-general-sale": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/22号に同内容の記事が既出。新事実なし、締切は12/5で3日以内でもない"
+  },
+  "shirube-final-day2-fan-exchange": {
+   "action": "article",
+   "angle": "標ファイナルDAY2の名刺交換やCampus mode!!衣装、ツアマスの桃子誕生日フォト、安満遺跡公園のやよいマンホールなど、ファンの楽しみ方をまとめて紹介する。",
+   "purpose": "新情報",
+   "rank": "culture",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "個人SNS投稿は単体にせず、ファン面1本に束ねる"
+  },
+  "fan-tours-momoko-birthday-photo-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shirube-final-day2-fan-exchange",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ファン面の記事に統合"
+  },
+  "fan-sighting-yayoi-manhole-2026-11-22": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shirube-final-day2-fan-exchange",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ファン面の記事に統合(聖地巡礼系)"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "general-shirube-final-day2-fan-exchange",
+    "brand": "general",
+    "rank": "culture",
+    "angle": "標ファイナルDAY2の名刺交換やCampus mode!!衣装、ツアマスの桃子誕生日フォト、安満遺跡公園のやよいマンホールなど、ファンの楽しみ方をまとめて紹介する。",
+    "purpose": "新情報",
+    "lead_score": 5,
+    "dedup_key": "shirube-final-day2-fan-exchange",
+    "candidate_ids": [
+     "202611221837-explore-10",
+     "202611230229-grok-72",
+     "202611230229-grok-94"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "xr-live-revival-2026-general-sale",
+    "reason": "既報",
+    "note": "11/22号に同内容の記事が既出。新事実なし、締切は12/5で3日以内でもない"
+   }
+  ],
+  "cross_brand": []
+ }
+}

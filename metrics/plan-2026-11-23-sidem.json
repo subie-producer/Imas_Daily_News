@@ -1,0 +1,486 @@
+{
+ "decisions": {
+  "sidem-popup-howls-2026-animo": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/21号の記事に受付期間・特典切替の事実が全て既出。当日トリガー無し"
+  },
+  "sidem-315-mode-vol2-spring-goods-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/22号に価格・期間とも既出。受注開始は明日で当日トリガーではない"
+  },
+  "sidem-315-episode-idol-one-panel-update-2026-10": {
+   "action": "article",
+   "angle": "「アイドルたちの1コマ」の『読めない男』(牙崎漣)が、前回確認時の有償から無償に変わった",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "source_change: 有償→無償は読者に関わる条件変更。11/22更新の1コマ更新(one-cut)を統合"
+  },
+  "sidem-315pronight-public-recording-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "変更はアニメイトMフェスフェアの注意書き表示で、締切・日程等の変更は読み取れない"
+  },
+  "sidem-mfes-2026-winter-wonderland-315shop": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/22号に期間・特典・カフェ等すべて既出"
+  },
+  "sidem-film-fantastic-battle-fes-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/20号で公開を既報。出典も未確認"
+  },
+  "sidem-mfes-2026-winter-wonderland": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/21号に全企業展開が既出。新事実無し"
+  },
+  "sidem-mfes-animate-winter-wonderland-2026": {
+   "action": "article",
+   "angle": "アニメイトのMフェス2026対象商品に「THE 虎牙道 Mフェス2026」クリアファイル(税込440円)が加わった",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "source_change: 11/22版で追加された商品。既報の対象商品一覧に無い"
+  },
+  "sidem-who-goes-first-movie-release-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/20号で劇場版公開を既報。公式Xのビュー数のみ"
+  },
+  "sidem-fbfes-wsi-nagano-tickets-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/21号「長野公演、一般先着が本日13時開始」に受付期間・席種・枚数が既出。締切は12/19で3日以内でない"
+  },
+  "sidem-fbfes-movie-goods-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/21号に受注期間・商品・価格が既出。締切は12/6で先"
+  },
+  "sidem-315-episode-one-cut-2026-11": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-315-episode-idol-one-panel-update-2026-10",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "11/22の1コマ更新の同じ出来事"
+  },
+  "sidem-hayato-birthday-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "誕生日は前日で終了。公式投稿のコメントのみで読者の行動・新事実が無い"
+  },
+  "sidem-producer-meeting-ajewelholic-2027-premium-advance-2": {
+   "action": "article",
+   "angle": "SideMプロミ「AJewelholIc!!!」のプレミアム会員2次先行は11月26日23時59分まで、締切3日前",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約。当落12/10、入金12/10〜14"
+  },
+  "sidem-wgf-premiere-stage-greeting-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "舞台挨拶は11/21号で既報、開催済みの謝意投稿のみ"
+  },
+  "sidem-wgf-new-viewers-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿・出典未確認。ファン面は general 面の扱い"
+  },
+  "sidem-hayato-birthday-fan-visit-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿・出典未確認"
+  },
+  "sidem-wgf-premiere-photo-session-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "舞台挨拶は11/21号で既報。写真投稿のみで新事実・トリガー無し"
+  },
+  "sidem-wgf-we-are-315-challenge-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "舞台挨拶は既報。チャレンジ紹介の投稿のみで新事実・トリガー無し"
+  },
+  "sidem-retrose-rose-party-day3-kodama-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "終了済みDAY3の出演報告。11/22号でトークショー最終回を既報、出典未確認"
+  },
+  "sidem-retrose-rose-party-day3-kano-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "終了済みDAY3の出演報告。声優・関係者の投稿"
+  },
+  "sidem-retrose-rose-party-day3-kobayashi-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "終了済みDAY3の出演報告。出典未確認"
+  },
+  "sidem-fan-full-course-2026-11": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿。ファン面は general 面の扱い"
+  },
+  "sidem-fantastic-battle-fes-2026-nagano-sale": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/21号「長野公演、一般先着が本日13時開始」と同じ施策"
+  },
+  "sidem-simeji-collab-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/21号のMフェス全展開記事にSimejiの12/1開始が既出。開始は12/1"
+  },
+  "sidem-mfes-2026-winter": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/21号に全企業展開が既出。公式Xの告知のみ"
+  },
+  "sidem-legenders-refrain-atrium-2dmv-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/14号で公開日時を既報。公開は25日で当日トリガーでない"
+  },
+  "sidem-mfes-2026-willer-cruise": {
+   "action": "article",
+   "angle": "Mフェス2026クリスマスクルーズの神戸12/12便・横浜12/20便は本日23時59分が先着申込の最終日",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約。横浜12/25便は12/13まで申込可"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "sidem-315-episode-idol-one-panel-update-2026-10",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "「アイドルたちの1コマ」の『読めない男』(牙崎漣)が、前回確認時の有償から無償に変わった",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "sidem-315-episode-idol-one-panel-update-2026-10",
+    "candidate_ids": [
+     "update-df027c8a287b",
+     "202611230229-grok-41"
+    ]
+   },
+   {
+    "slug": "sidem-mfes-animate-winter-wonderland-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "アニメイトのMフェス2026対象商品に「THE 虎牙道 Mフェス2026」クリアファイル(税込440円)が加わった",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "sidem-mfes-animate-winter-wonderland-2026",
+    "candidate_ids": [
+     "update-f40a85ded020"
+    ]
+   },
+   {
+    "slug": "sidem-producer-meeting-ajewelholic-2027-premium-advance-2",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "SideMプロミ「AJewelholIc!!!」のプレミアム会員2次先行は11月26日23時59分まで、締切3日前",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "sidem-producer-meeting-ajewelholic-2027-premium-advance-2",
+    "candidate_ids": [
+     "202611230229-grok-43",
+     "202611230229-grok-114",
+     "sched-2026-11-23-sidem-producer-meeting-ajewelholic-2027-premium-advance-2-締切前",
+     "sched-2026-11-23-sidem-producer-meeting-ajewelholic-2027-premium-advance-2-締切前-src1"
+    ]
+   },
+   {
+    "slug": "sidem-mfes-2026-willer-cruise",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "Mフェス2026クリスマスクルーズの神戸12/12便・横浜12/20便は本日23時59分が先着申込の最終日",
+    "purpose": "期日の知らせ",
+    "lead_score": 60,
+    "dedup_key": "sidem-mfes-2026-willer-cruise",
+    "candidate_ids": [
+     "sched-2026-11-23-sidem-mfes-2026-willer-cruise-締切"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "sidem-popup-howls-2026-animo",
+    "reason": "既報",
+    "note": "11/21号の記事に受付期間・特典切替の事実が全て既出。当日トリガー無し"
+   },
+   {
+    "dedup_key": "sidem-315-mode-vol2-spring-goods-2026",
+    "reason": "既報",
+    "note": "11/22号に価格・期間とも既出。受注開始は明日で当日トリガーではない"
+   },
+   {
+    "dedup_key": "sidem-315pronight-public-recording-2026",
+    "reason": "既報",
+    "note": "変更はアニメイトMフェスフェアの注意書き表示で、締切・日程等の変更は読み取れない"
+   },
+   {
+    "dedup_key": "sidem-mfes-2026-winter-wonderland-315shop",
+    "reason": "既報",
+    "note": "11/22号に期間・特典・カフェ等すべて既出"
+   },
+   {
+    "dedup_key": "sidem-film-fantastic-battle-fes-2026",
+    "reason": "既報",
+    "note": "11/20号で公開を既報。出典も未確認"
+   },
+   {
+    "dedup_key": "sidem-mfes-2026-winter-wonderland",
+    "reason": "既報",
+    "note": "11/21号に全企業展開が既出。新事実無し"
+   },
+   {
+    "dedup_key": "sidem-who-goes-first-movie-release-2026",
+    "reason": "既報",
+    "note": "11/20号で劇場版公開を既報。公式Xのビュー数のみ"
+   },
+   {
+    "dedup_key": "sidem-fbfes-wsi-nagano-tickets-2026",
+    "reason": "既報",
+    "note": "11/21号「長野公演、一般先着が本日13時開始」に受付期間・席種・枚数が既出。締切は12/19で3日以内でない"
+   },
+   {
+    "dedup_key": "sidem-fbfes-movie-goods-2026",
+    "reason": "既報",
+    "note": "11/21号に受注期間・商品・価格が既出。締切は12/6で先"
+   },
+   {
+    "dedup_key": "sidem-hayato-birthday-2026",
+    "reason": "その他",
+    "note": "誕生日は前日で終了。公式投稿のコメントのみで読者の行動・新事実が無い"
+   },
+   {
+    "dedup_key": "sidem-wgf-premiere-stage-greeting-2026",
+    "reason": "既報",
+    "note": "舞台挨拶は11/21号で既報、開催済みの謝意投稿のみ"
+   },
+   {
+    "dedup_key": "sidem-wgf-new-viewers-2026",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿・出典未確認。ファン面は general 面の扱い"
+   },
+   {
+    "dedup_key": "sidem-hayato-birthday-fan-visit-2026",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿・出典未確認"
+   },
+   {
+    "dedup_key": "sidem-wgf-premiere-photo-session-2026",
+    "reason": "既報",
+    "note": "舞台挨拶は11/21号で既報。写真投稿のみで新事実・トリガー無し"
+   },
+   {
+    "dedup_key": "sidem-wgf-we-are-315-challenge-2026",
+    "reason": "既報",
+    "note": "舞台挨拶は既報。チャレンジ紹介の投稿のみで新事実・トリガー無し"
+   },
+   {
+    "dedup_key": "sidem-retrose-rose-party-day3-kodama-2026",
+    "reason": "個人の話題",
+    "note": "終了済みDAY3の出演報告。11/22号でトークショー最終回を既報、出典未確認"
+   },
+   {
+    "dedup_key": "sidem-retrose-rose-party-day3-kano-2026",
+    "reason": "個人の話題",
+    "note": "終了済みDAY3の出演報告。声優・関係者の投稿"
+   },
+   {
+    "dedup_key": "sidem-retrose-rose-party-day3-kobayashi-2026",
+    "reason": "個人の話題",
+    "note": "終了済みDAY3の出演報告。出典未確認"
+   },
+   {
+    "dedup_key": "sidem-fan-full-course-2026-11",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿。ファン面は general 面の扱い"
+   },
+   {
+    "dedup_key": "sidem-fantastic-battle-fes-2026-nagano-sale",
+    "reason": "既報",
+    "note": "11/21号「長野公演、一般先着が本日13時開始」と同じ施策"
+   },
+   {
+    "dedup_key": "sidem-simeji-collab-2026",
+    "reason": "既報",
+    "note": "11/21号のMフェス全展開記事にSimejiの12/1開始が既出。開始は12/1"
+   },
+   {
+    "dedup_key": "sidem-mfes-2026-winter",
+    "reason": "既報",
+    "note": "11/21号に全企業展開が既出。公式Xの告知のみ"
+   },
+   {
+    "dedup_key": "sidem-legenders-refrain-atrium-2dmv-2026",
+    "reason": "既報",
+    "note": "11/14号で公開日時を既報。公開は25日で当日トリガーでない"
+   }
+  ],
+  "cross_brand": []
+ }
+}

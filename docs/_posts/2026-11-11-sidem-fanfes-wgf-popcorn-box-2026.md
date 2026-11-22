@@ -2,7 +2,7 @@
 slug: sidem-fanfes-wgf-popcorn-box-2026
 edition: "2026-11-11"
 brand: sidem
-src: ファン
+src: 当事者
 rank: large
 corrected: false
 corrections: []
@@ -22,7 +22,7 @@ sources:
   type: 公式
 - label: 松竹「劇場版 アイドルマスター SideM F＠NTASTIC BATTLE FES ～Who goes first～」
   url: https://www.shochiku.co.jp/cinema/lineup/%E5%8A%87%E5%A0%B4%E7%89%88-%E3%82%A2%E3%82%A4%E3%83%89%E3%83%AB%E3%83%9E%E3%82%B9%E3%82%BF%E3%83%BC-sidem-f%EF%BC%A0ntastic-battle-fes-%EF%BD%9Ewho-goes-first%EF%BD%9E/
-  type: ファン
+  type: 当事者
 event_date: "2026-11-20"
 title_fact_ids:
 - F1

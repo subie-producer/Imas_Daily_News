@@ -1616,5 +1616,61 @@
   "src_candidate_id": "202611220221-grok-84",
   "companion_of": "sched-2026-11-24-sidem-315-mode-vol2-spring-goods-2026-開始",
   "src_dedup_key": "sidem-315-mode-vol2-spring-goods"
+ },
+ {
+  "id": "sched-2026-11-24-million-platinum-star-trust-13-2026-終了",
+  "dedup_key": "million-platinum-star-trust-13-2026",
+  "brand": "million",
+  "subject": "プラチナスタートラスト13「想定心理外」終了",
+  "kind": "終了",
+  "note": "20:59まで。イベントを走れる最終日",
+  "reserved_on": "2026-11-23",
+  "occurs_on": "2026-11-24",
+  "title": "プラチナスタートラスト13「想定心理外 -Outside Isotope-」",
+  "url": "https://x.com/imasml_theater/status/2124095477163467153",
+  "source_type": "公式",
+  "facts": [
+   "イベント開催は11/24（火）20:59まで（予定）",
+   "イベント楽曲は「想定心理外 -Outside Isotope-」",
+   "歌唱アイドルは北上麗花、ジュリア、桜守歌織、所恵美、松田亜利沙",
+   "YouTube: https://www.youtube.com/watch?v=APheYmKfeFQ&feature=youtu.be",
+   "リンク: https://www.youtube.com/watch?v=APheYmKfeFQ&feature=youtu.be",
+   "エンゲージメント: 中",
+   "言及アイドル: 北上麗花、ジュリア、桜守歌織、所恵美、松田亜利沙"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "deadline": "2026-11-24",
+  "src_candidate_id": "202611230229-grok-20"
+ },
+ {
+  "id": "sched-2026-11-24-million-platinum-star-trust-13-2026-終了-src1",
+  "dedup_key": "million-platinum-star-trust-13-2026",
+  "brand": "million",
+  "subject": "プラチナスタートラスト13「想定心理外」終了",
+  "kind": "終了",
+  "note": "20:59まで。イベントを走れる最終日",
+  "reserved_on": "2026-11-23",
+  "occurs_on": "2026-11-24",
+  "title": "プラチナスタートラスト13 公演折り返し",
+  "url": "https://www.nitter.cf/imasml_theater",
+  "source_type": "二次情報",
+  "facts": [
+   "イベント『プラチナスタートラスト13～想定心理外 -Outside Isotope-～』の公演折り返しが告知された。",
+   "イベント楽曲をプレイする際、「羽ばたく心」を最大4倍消費できる。",
+   "「羽ばたく心」は1日1回まで10倍消費できる。",
+   "元気消費コスト倍率を変更しても、「サイコロ」獲得数は増加しない。",
+   "イベント開催は2026年11月24日20:59まで（予定）。",
+   "エンゲージメント: 中",
+   "『想定心理外 -Outside Isotope-』のショートMVが紹介された。",
+   "投稿では、麗花、ジュリア、歌織、恵美、亜利沙が歌う楽曲として紹介された。",
+   "言及アイドル: 北上麗花、ジュリア、桜守歌織、所恵美、松田亜利沙"
+  ],
+  "via": "explore",
+  "verify": "unconfirmed",
+  "deadline": "2026-11-24",
+  "src_candidate_id": "202611222334-explore-8",
+  "companion_of": "sched-2026-11-24-million-platinum-star-trust-13-2026-終了",
+  "src_dedup_key": "million--platinum-start-trust13-outside-isotope-2026"
  }
 ]

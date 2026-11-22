@@ -1,0 +1,316 @@
+{
+ "decisions": {
+  "futamasu-machida-manhole-card-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "変更後の facts は前号本文の事実(日時・場所・図柄)の言い直しで、読者に関わる変更なし"
+  },
+  "million-seasonal-snapshot-valentine-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "受注は11月22日で終了済み。22日号で既報"
+  },
+  "million-soutei-shinrigai-short-mv-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "soutei-shinrigai-mv-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ楽曲・イベントの話。歌唱アイドル5人は17日号で既報"
+  },
+  "million-platinum-start-trust-13-outside-isotope-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "soutei-shinrigai-mv-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "出典の変更はこのみセット販売の投稿で、新事実は無い。イベント終了の知らせに統合"
+  },
+  "soutei-shinrigai-mv-2026": {
+   "action": "article",
+   "angle": "プラチナスタートラスト13「想定心理外」は明日24日20時59分に終了するため、羽ばたく心4倍消費など残り期間の遊び方を伝える",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "終了が3日以内のトリガー"
+  },
+  "million-thanksgiving-login-bonus-2026": {
+   "action": "article",
+   "angle": "勤労感謝スペシャルログインボーナスが本日23日から29日まで開催、ミリオンジュエル合計500個",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "本日開始。roundup の対象が3件に満たないため単独"
+  },
+  "miki-birthday-theater-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "miki-birthday-gasha-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ美希誕生日施策。劇場装飾とホワイトボードメッセージを統合"
+  },
+  "miki-birthday-gasha-2026": {
+   "action": "article",
+   "angle": "星井美希の誕生日を、Birthdayガシャ・Birthdayセット2026・劇場の特別装飾で祝う",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ツアマスの美希誕生日(joint)とは別の施策(ミリシタ側)"
+  },
+  "miki-birthday-set-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "miki-birthday-gasha-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ誕生日施策のセット内容"
+  },
+  "million-scratch-second-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10月27日号で既報。新事実も当日のトリガーも無い(販売終了は12月2日)"
+  },
+  "fan-roco-manhole-visit-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿で出典も未確認"
+  },
+  "million-off-time-voice-series-konomi-2026": {
+   "action": "article",
+   "angle": "Off Time Voice Series vol.4(真・このみセット)は本日23日23時59分に販売終了",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "当日が締切"
+  },
+  "kotobukiya-arcflags-popup-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-arc-flags-pop-up-2026-11",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ催しの最終日"
+  },
+  "million-arc-flags-pop-up-corner-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-arc-flags-pop-up-2026-11",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ催しの最終日。ポストカード特典は既報"
+  },
+  "million-arc-flags-pop-up-2026-11": {
+   "action": "article",
+   "angle": "ARC-FLAGS POP UP CORNERのコトブキヤ秋葉原館が本日23日で最終日、日本橋は12月4日から",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "千秋楽の続報予約。素材3件を統合"
+  },
+  "million-vs-million-fighter-gasha-2026": {
+   "action": "article",
+   "angle": "「VSミリオンファイター！」ガシャは26日14時59分まで、あと3日で四条貴音・双海真美のSSR出現率アップが終了",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "終了3日前のトリガー"
+  },
+  "million-rio-idol-grand-prix-missions-2026": {
+   "action": "article",
+   "angle": "莉緒のアイグラ追加記念ミッションは26日23時59分まで、全達成でiGP引換券210枚",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "締切3日前のトリガー"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "million-soutei-shinrigai-mv-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "プラチナスタートラスト13「想定心理外」は明日24日20時59分に終了するため、羽ばたく心4倍消費など残り期間の遊び方を伝える",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "soutei-shinrigai-mv-2026",
+    "candidate_ids": [
+     "202611222334-explore-8",
+     "202611230229-grok-20",
+     "202611221837-explore-6",
+     "update-b7b76d869f8b",
+     "202611230229-explore-0"
+    ]
+   },
+   {
+    "slug": "million-thanksgiving-login-bonus-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "勤労感謝スペシャルログインボーナスが本日23日から29日まで開催、ミリオンジュエル合計500個",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "million-thanksgiving-login-bonus-2026",
+    "candidate_ids": [
+     "202611230229-grok-16"
+    ]
+   },
+   {
+    "slug": "million-miki-birthday-gasha-2026",
+    "brand": "million",
+    "rank": "medium",
+    "angle": "星井美希の誕生日を、Birthdayガシャ・Birthdayセット2026・劇場の特別装飾で祝う",
+    "purpose": "新情報",
+    "lead_score": 60,
+    "dedup_key": "miki-birthday-gasha-2026",
+    "candidate_ids": [
+     "202611230229-grok-18",
+     "202611230229-grok-17",
+     "202611230229-grok-19"
+    ]
+   },
+   {
+    "slug": "million-off-time-voice-series-konomi-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "Off Time Voice Series vol.4(真・このみセット)は本日23日23時59分に販売終了",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "million-off-time-voice-series-konomi-2026",
+    "candidate_ids": [
+     "202611230229-grok-106",
+     "202611230229-grok-107",
+     "sched-2026-11-23-million-off-time-voice-series-konomi-2026-締切",
+     "sched-2026-11-23-million-off-time-voice-series-konomi-2026-締切-src1",
+     "sched-2026-11-23-million-off-time-voice-series-konomi-2026-締切-src2",
+     "sched-2026-11-23-million-off-time-voice-series-konomi-2026-締切-src3"
+    ]
+   },
+   {
+    "slug": "million-arc-flags-pop-up-2026-11",
+    "brand": "million",
+    "rank": "small",
+    "angle": "ARC-FLAGS POP UP CORNERのコトブキヤ秋葉原館が本日23日で最終日、日本橋は12月4日から",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "million-arc-flags-pop-up-2026-11",
+    "candidate_ids": [
+     "sched-2026-11-23-million-arc-flags-pop-up-2026-11-千秋楽",
+     "sched-2026-11-23-kotobukiya-arcflags-popup-2026-終了",
+     "sched-2026-11-23-million-arc-flags-pop-up-corner-2026-千秋楽"
+    ]
+   },
+   {
+    "slug": "million-vs-million-fighter-gasha-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "「VSミリオンファイター！」ガシャは26日14時59分まで、あと3日で四条貴音・双海真美のSSR出現率アップが終了",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "million-vs-million-fighter-gasha-2026",
+    "candidate_ids": [
+     "sched-2026-11-23-million-vs-million-fighter-gasha-2026-締切前",
+     "sched-2026-11-23-million-vs-million-fighter-gasha-2026-締切前-src1"
+    ]
+   },
+   {
+    "slug": "million-rio-idol-grand-prix-missions-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "莉緒のアイグラ追加記念ミッションは26日23時59分まで、全達成でiGP引換券210枚",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "million-rio-idol-grand-prix-missions-2026",
+    "candidate_ids": [
+     "sched-2026-11-23-million-rio-idol-grand-prix-missions-2026-締切前"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "futamasu-machida-manhole-card-2026",
+    "reason": "既報",
+    "note": "変更後の facts は前号本文の事実(日時・場所・図柄)の言い直しで、読者に関わる変更なし"
+   },
+   {
+    "dedup_key": "million-seasonal-snapshot-valentine-2026",
+    "reason": "既報",
+    "note": "受注は11月22日で終了済み。22日号で既報"
+   },
+   {
+    "dedup_key": "million-scratch-second-2026",
+    "reason": "既報",
+    "note": "10月27日号で既報。新事実も当日のトリガーも無い(販売終了は12月2日)"
+   },
+   {
+    "dedup_key": "fan-roco-manhole-visit-2026",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿で出典も未確認"
+   }
+  ],
+  "cross_brand": []
+ }
+}

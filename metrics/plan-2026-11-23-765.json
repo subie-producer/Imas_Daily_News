@@ -1,0 +1,74 @@
+{
+ "decisions": {
+  "765as-never-end-idol-bluray-2026": {
+   "action": "article",
+   "angle": "11月25日発売の765AS単独ライブBDについて、出典の更新で分かった収録曲(22曲メドレー、アンケート反映曲、千早の「おはよう!!朝ご飯」再現)と出演者を、発売2日前に伝える。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 45,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "既報は価格・特典・販売終了のみ。「メイキング収録」は10/2の訂正(通常版は非収録)と食い違うため、執筆・校閲で版ごとに確認が必要。"
+  },
+  "miki-hoshii-birthday-movie-2026": {
+   "action": "article",
+   "angle": "アイドルマスターチャンネルが星井美希の誕生日の11月23日にお祝いムービー(YouTubeショート)を公開した。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 55,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公式発信で確認済み。ツアマスの紫雲清夏の誕生日記事(joint)とは別の話題。"
+  },
+  "miki-birthday-fan-celebrations-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人の SNS 投稿1件で未確認。765面にファン面(culture)は無く、単体では記事にしない。"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "765-765as-never-end-idol-bluray-2026",
+    "brand": "765",
+    "rank": "small",
+    "angle": "11月25日発売の765AS単独ライブBDについて、出典の更新で分かった収録曲(22曲メドレー、アンケート反映曲、千早の「おはよう!!朝ご飯」再現)と出演者を、発売2日前に伝える。",
+    "purpose": "新情報",
+    "lead_score": 45,
+    "dedup_key": "765as-never-end-idol-bluray-2026",
+    "candidate_ids": [
+     "202611220733-explore-0",
+     "update-e7aea7cb2748"
+    ]
+   },
+   {
+    "slug": "765-miki-hoshii-birthday-movie-2026",
+    "brand": "765",
+    "rank": "small",
+    "angle": "アイドルマスターチャンネルが星井美希の誕生日の11月23日にお祝いムービー(YouTubeショート)を公開した。",
+    "purpose": "新情報",
+    "lead_score": 55,
+    "dedup_key": "miki-hoshii-birthday-movie-2026",
+    "candidate_ids": [
+     "202611230229-grok-9"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "miki-birthday-fan-celebrations-2026",
+    "reason": "個人の話題",
+    "note": "個人の SNS 投稿1件で未確認。765面にファン面(culture)は無く、単体では記事にしない。"
+   }
+  ],
+  "cross_brand": []
+ }
+}

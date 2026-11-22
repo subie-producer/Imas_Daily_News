@@ -1,0 +1,58 @@
+{
+ "decisions": {
+  "765-961-xr-live-2027": {
+   "action": "article",
+   "angle": "765×961 xRライブ最速先行の当選者の入金が本日11月23日23時59分で締切",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約の入金締切。今日が当日トリガー。11/7記事の当落11/25・入金11/30は別の受付で、本記事は11/16当落・11/23入金の最速先行分。混同に注意"
+  },
+  "tours-shiina-birthday-2026": {
+   "action": "article",
+   "angle": "ツアマスで星井美希の誕生日コミュが本日7時に公開、バースデーライブの称号は25日25時59分まで",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "prior は別アイドル(清夏・薫)の誕生日で、美希の誕生日施策は今日開始の新規。誕生日コミュは今日限り、ライブ称号は25日25時59分まで"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "joint-tours-shiina-birthday-2026",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "ツアマスで星井美希の誕生日コミュが本日7時に公開、バースデーライブの称号は25日25時59分まで",
+    "purpose": "期日の知らせ",
+    "lead_score": 15,
+    "dedup_key": "tours-shiina-birthday-2026",
+    "candidate_ids": [
+     "202611230229-grok-67",
+     "202611230229-grok-128"
+    ]
+   },
+   {
+    "slug": "joint-765-961-xr-live-2027",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "765×961 xRライブ最速先行の当選者の入金が本日11月23日23時59分で締切",
+    "purpose": "期日の知らせ",
+    "lead_score": 60,
+    "dedup_key": "765-961-xr-live-2027",
+    "candidate_ids": [
+     "sched-2026-11-23-765-961-xr-live-2027-締切",
+     "sched-2026-11-23-765-961-xr-live-2027-締切-src1"
+    ]
+   }
+  ],
+  "dropped": [],
+  "cross_brand": []
+ }
+}

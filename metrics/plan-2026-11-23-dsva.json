@@ -1,0 +1,331 @@
+{
+ "decisions": {
+  "cosmo-ace-combat-8-online-stream-2026-11-21": {
+   "action": "roundup",
+   "angle": "vα-liv各アイドルの配信出演まとめ(宇宙のACE COMBAT 8配信、愛夏の朝まな100回目など)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "va-liv-3rdlive-qonnect-goods-preorder-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/22号に価格・名古屋先行品・日程まで掲載済み。締切29日は3日以内でなく新事実なし"
+  },
+  "letora-birthday-goods-set-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/22号に内容・価格・受注期間とも掲載済み。締切12/6はまだ先"
+  },
+  "dsva-online-1on1-14": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "valiv-14th-online-one-on-one-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "dsva-letora-birthday-voice-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "販売期間~12/13は既報で新事実・当日のトリガーなし"
+  },
+  "manaka-guilty-dance-short-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/22号で記事化済み、新事実なし"
+  },
+  "dsva-3rdlive-goods-advance-order-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "va-liv-3rdlive-qonnect-goods-preorder-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "letora-birthday-goods-order-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "letora-birthday-goods-set-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "valiv-manaka-switch-sports-resort-collab-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "21日夜の他チャンネルでのコラボ配信告知で、終了済み・二次情報"
+  },
+  "manaka-birthday-live-archive-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "manaka-birthday-archive-watch-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "manaka-birthday-live-watchparty-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "manaka-birthday-archive-watch-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "valiv-14th-online-one-on-one-2026": {
+   "action": "article",
+   "angle": "ヴイアライヴ第14回オンライン1on1の抽選申込は本日23時59分が最終日(追加・一般販売なし、当落は27日見込み)",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 50,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "素材5件。1on1の他2主題とdsva-online-1on1-14を統合"
+  },
+  "cosmo-yes-tokyo-short-2026": {
+   "action": "roundup",
+   "angle": "vα-liv各アイドルの配信・ショート動画まとめ(宇宙の『YES!東京』踊ってみた)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "manaka-onimusha-way-of-the-sword-2026": {
+   "action": "article",
+   "angle": "灯里愛夏が『鬼武者 Way of the Sword』の続きを本日21時から配信すると告知",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "初回配信は既報だが続編の日時は新情報"
+  },
+  "manaka-asamana-100-2026": {
+   "action": "roundup",
+   "angle": "vα-liv各アイドルの配信まとめ(灯里愛夏の#朝まな100回目)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "letora-birthday-voice-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "carried。既報と同じ販売期間・内容で新事実も当日のトリガーも無い"
+  },
+  "manaka-birthday-watchalong-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "manaka-birthday-archive-watch-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "manaka-birthday-archive-watch-2026": {
+   "action": "article",
+   "angle": "灯里愛夏の延期バースデーLIVE同時視聴上映会が本日13時からZ-aNで開催、関裕美がゲスト出演し愛夏もコメント参加(配信チケットは29日18時まで)",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 55,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同時視聴上映会・アーカイブ販売の4主題を統合(素材8件超)"
+  },
+  "valiv-online-1on1-14-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "valiv-14th-online-one-on-one-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "dsva-valiv-14th-online-one-on-one-2026",
+    "brand": "dsva",
+    "rank": "medium",
+    "angle": "ヴイアライヴ第14回オンライン1on1の抽選申込は本日23時59分が最終日(追加・一般販売なし、当落は27日見込み)",
+    "purpose": "期日の知らせ",
+    "lead_score": 50,
+    "dedup_key": "valiv-14th-online-one-on-one-2026",
+    "candidate_ids": [
+     "202611230229-grok-63",
+     "202611230229-grok-122",
+     "202611230229-grok-123",
+     "sched-2026-11-23-valiv-14th-online-one-on-one-2026-締切",
+     "sched-2026-11-23-valiv-14th-online-one-on-one-2026-締切-src1",
+     "202611221837-explore-13",
+     "sched-2026-11-23-valiv-online-1on1-14-2026-締切"
+    ]
+   },
+   {
+    "slug": "dsva-manaka-onimusha-way-of-the-sword-2026",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "灯里愛夏が『鬼武者 Way of the Sword』の続きを本日21時から配信すると告知",
+    "purpose": "期日の知らせ",
+    "lead_score": 10,
+    "dedup_key": "manaka-onimusha-way-of-the-sword-2026",
+    "candidate_ids": [
+     "202611230229-grok-65",
+     "202611230229-grok-118",
+     "202611230229-grok-120",
+     "202611230229-grok-124",
+     "202611230229-grok-125",
+     "202611230229-grok-126"
+    ]
+   },
+   {
+    "slug": "dsva-manaka-birthday-archive-watch-2026",
+    "brand": "dsva",
+    "rank": "medium",
+    "angle": "灯里愛夏の延期バースデーLIVE同時視聴上映会が本日13時からZ-aNで開催、関裕美がゲスト出演し愛夏もコメント参加(配信チケットは29日18時まで)",
+    "purpose": "期日の知らせ",
+    "lead_score": 55,
+    "dedup_key": "manaka-birthday-archive-watch-2026",
+    "candidate_ids": [
+     "sched-2026-11-23-manaka-birthday-archive-watch-2026-開始",
+     "sched-2026-11-23-manaka-birthday-archive-watch-2026-開始-src1",
+     "202611230229-grok-61",
+     "202611230229-grok-141",
+     "202611230229-grok-62",
+     "202611230229-grok-134",
+     "sched-2026-11-23-manaka-birthday-watchalong-2026-開始",
+     "sched-2026-11-23-manaka-birthday-watchalong-2026-開始-src1"
+    ]
+   },
+   {
+    "slug": "dsva-ops-roundup",
+    "brand": "dsva",
+    "rank": "roundup",
+    "angle": "vα-liv各アイドルの配信出演まとめ(宇宙のACE COMBAT 8配信、愛夏の朝まな100回目など)",
+    "lead_score": 0,
+    "dedup_key": "cosmo-ace-combat-8-online-stream-2026-11-21",
+    "candidate_ids": [
+     "202611221233-explore-7",
+     "202611221837-explore-16",
+     "202611230229-grok-64",
+     "202611230229-grok-119",
+     "202611230229-grok-66",
+     "202611230229-grok-121",
+     "202611230229-grok-127"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "va-liv-3rdlive-qonnect-goods-preorder-2026",
+    "reason": "既報",
+    "note": "11/22号に価格・名古屋先行品・日程まで掲載済み。締切29日は3日以内でなく新事実なし"
+   },
+   {
+    "dedup_key": "letora-birthday-goods-set-2026",
+    "reason": "既報",
+    "note": "11/22号に内容・価格・受注期間とも掲載済み。締切12/6はまだ先"
+   },
+   {
+    "dedup_key": "dsva-letora-birthday-voice-2026",
+    "reason": "既報",
+    "note": "販売期間~12/13は既報で新事実・当日のトリガーなし"
+   },
+   {
+    "dedup_key": "manaka-guilty-dance-short-2026",
+    "reason": "既報",
+    "note": "11/22号で記事化済み、新事実なし"
+   },
+   {
+    "dedup_key": "valiv-manaka-switch-sports-resort-collab-2026",
+    "reason": "その他",
+    "note": "21日夜の他チャンネルでのコラボ配信告知で、終了済み・二次情報"
+   },
+   {
+    "dedup_key": "letora-birthday-voice-2026",
+    "reason": "既報",
+    "note": "carried。既報と同じ販売期間・内容で新事実も当日のトリガーも無い"
+   },
+   {
+    "dedup_key": "dsva-3rdlive-goods-advance-order-2026",
+    "reason": "既報",
+    "note": "不採用の主題 va-liv-3rdlive-qonnect-goods-preorder-2026 へ統合: 11/22号に価格・名古屋先行品・日程まで掲載済み。締切29日は3日以内でなく新事実なし"
+   },
+   {
+    "dedup_key": "letora-birthday-goods-order-2026",
+    "reason": "既報",
+    "note": "不採用の主題 letora-birthday-goods-set-2026 へ統合: 11/22号に内容・価格・受注期間とも掲載済み。締切12/6はまだ先"
+   }
+  ],
+  "cross_brand": []
+ }
+}

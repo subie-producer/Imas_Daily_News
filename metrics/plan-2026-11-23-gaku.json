@@ -1,0 +1,330 @@
+{
+ "decisions": {
+  "metamorphose-2m-views-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-metamorphose-mv-3m-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ曲のMV。1st Single予約の記載はMV300万再生の記事に統合"
+  },
+  "eclipse-light-animate-fair-2026": {
+   "action": "article",
+   "angle": "アニメイト「ECLIPSE LIGHT」フェアは本日11月23日で終了、後半ポストカード7種の配布も最終日",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(終了)。出典の更新は対象商品欄の差し替えで、終了日が当日のトリガー"
+  },
+  "twinkle-rabbit-poster-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "出典の更新は閲覧数など数値のみ。ポスターの展示開始(11月27日)は11-21号に既報"
+  },
+  "shirube-final-day1-fan-report-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人ファンの感想投稿"
+  },
+  "gaku-metamorphose-mv-3m-2026": {
+   "action": "article",
+   "angle": "氷渡香名江「メタモルフォーゼ」MVが300万再生を突破、ショート動画も公開され1st Singleは予約受付中",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "既報は200万再生(11-21号)。300万再生とショート動画が新事実"
+  },
+  "gaku-memory-goods-2026": {
+   "action": "article",
+   "angle": "「LIVE TOUR -標-」開催記念グッズの受注は本日11月23日が最終日、ASOBI STOREの商品ページから注文できる",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(締切)。同じ受注の3主題を統合。素材9件ほど"
+  },
+  "roar-jouo-sena-2026": {
+   "action": "article",
+   "angle": "十王星南「Roar」MVが200万再生を突破",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "既報は100万再生(10-28号)。200万は新事実"
+  },
+  "gaku-miracle-nanau-mv-3m-2026": {
+   "action": "article",
+   "angle": "「ミラクルナナウ(ﾟ∀ﾟ)！」MVが300万再生を突破",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "既報なし"
+  },
+  "gaku-metamorphose-short-video-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-metamorphose-mv-3m-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じMVの話題として統合"
+  },
+  "gaku-shirube-final-stream-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-shirube-final-streaming-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ配信視聴チケット販売"
+  },
+  "gaku-battlespirits-china-art-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "14日連続の描き下ろし企画と2027年春発売は11-16号『描き下ろし14人公開』で既報。個別イラストの日次投稿のみ"
+  },
+  "gaku-fan-car-commercial-video-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "同人・ファン主催",
+   "note": "ファン制作動画の個人投稿"
+  },
+  "battle-spirits-gakumasu-collab-2027": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "同じ14日連続企画と2027年春発売は11-16号で既報。新事実なし"
+  },
+  "gaku-shirube-final-streaming-2026": {
+   "action": "article",
+   "angle": "標ファイナルの配信視聴チケットは本日18時で販売終了、コメント付きアーカイブと公演アンケートは23時59分まで",
+   "purpose": "期日の知らせ",
+   "rank": "large",
+   "lead_score": 80,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(締切)。配信券・アーカイブ視聴・アンケートは同じ配信券の期日として1本に統合。素材12件ほど"
+  },
+  "shirube-final-stream-ticket-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-shirube-final-streaming-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ配信券の販売締切"
+  },
+  "gakumas-hyo-final-archive-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-shirube-final-streaming-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "アーカイブ視聴期間とアンケートの最終日(23:59)も同じ配信券の記事に含める"
+  },
+  "shirube-final-goods-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-memory-goods-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ記念グッズ受注の締切"
+  },
+  "gaku-shirube-final-memorial-goods": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-memory-goods-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ記念グッズ受注の締切"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "gaku-eclipse-light-animate-fair-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "アニメイト「ECLIPSE LIGHT」フェアは本日11月23日で終了、後半ポストカード7種の配布も最終日",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "eclipse-light-animate-fair-2026",
+    "candidate_ids": [
+     "update-8a1e6e0ff582",
+     "sched-2026-11-23-eclipse-light-animate-fair-2026-終了"
+    ]
+   },
+   {
+    "slug": "gaku-metamorphose-mv-3m-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "氷渡香名江「メタモルフォーゼ」MVが300万再生を突破、ショート動画も公開され1st Singleは予約受付中",
+    "purpose": "新情報",
+    "lead_score": 25,
+    "dedup_key": "gaku-metamorphose-mv-3m-2026",
+    "candidate_ids": [
+     "202611230229-grok-53",
+     "202611221837-explore-9",
+     "202611230229-grok-57"
+    ]
+   },
+   {
+    "slug": "gaku-memory-goods-2026",
+    "brand": "gaku",
+    "rank": "medium",
+    "angle": "「LIVE TOUR -標-」開催記念グッズの受注は本日11月23日が最終日、ASOBI STOREの商品ページから注文できる",
+    "purpose": "期日の知らせ",
+    "lead_score": 60,
+    "dedup_key": "gaku-memory-goods-2026",
+    "candidate_ids": [
+     "202611230229-grok-54",
+     "202611230229-grok-115",
+     "202611230229-grok-116",
+     "sched-2026-11-23-gaku-memory-goods-2026-締切",
+     "sched-2026-11-23-gaku-memory-goods-2026-締切-src1",
+     "sched-2026-11-23-shirube-final-goods-2026-締切",
+     "sched-2026-11-23-gaku-shirube-final-memorial-goods-締切",
+     "sched-2026-11-23-gaku-shirube-final-memorial-goods-締切-src1",
+     "sched-2026-11-23-gaku-shirube-final-memorial-goods-締切-src2"
+    ]
+   },
+   {
+    "slug": "gaku-roar-jouo-sena-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "十王星南「Roar」MVが200万再生を突破",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "roar-jouo-sena-2026",
+    "candidate_ids": [
+     "202611230229-grok-55"
+    ]
+   },
+   {
+    "slug": "gaku-miracle-nanau-mv-3m-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "「ミラクルナナウ(ﾟ∀ﾟ)！」MVが300万再生を突破",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "gaku-miracle-nanau-mv-3m-2026",
+    "candidate_ids": [
+     "202611230229-grok-56"
+    ]
+   },
+   {
+    "slug": "gaku-shirube-final-streaming-2026",
+    "brand": "gaku",
+    "rank": "large",
+    "angle": "標ファイナルの配信視聴チケットは本日18時で販売終了、コメント付きアーカイブと公演アンケートは23時59分まで",
+    "purpose": "期日の知らせ",
+    "lead_score": 80,
+    "dedup_key": "gaku-shirube-final-streaming-2026",
+    "candidate_ids": [
+     "202611220221-grok-58",
+     "sched-2026-11-23-gaku-shirube-final-streaming-2026-締切",
+     "sched-2026-11-23-gaku-shirube-final-streaming-2026-締切-src1",
+     "sched-2026-11-23-gaku-shirube-final-streaming-2026-締切-src2",
+     "sched-2026-11-23-gaku-shirube-final-streaming-2026-締切-src3",
+     "sched-2026-11-23-gaku-shirube-final-streaming-2026-締切-src4",
+     "202611230229-grok-58",
+     "202611230229-grok-117",
+     "update-b05c88518578",
+     "sched-2026-11-23-shirube-final-stream-ticket-2026-締切",
+     "sched-2026-11-23-shirube-final-stream-ticket-2026-締切-src1",
+     "sched-2026-11-23-shirube-final-stream-ticket-2026-締切-src2",
+     "sched-2026-11-23-gakumas-hyo-final-archive-2026-締切",
+     "sched-2026-11-23-gakumas-hyo-final-archive-2026-締切-src1"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "twinkle-rabbit-poster-2026",
+    "reason": "既報",
+    "note": "出典の更新は閲覧数など数値のみ。ポスターの展示開始(11月27日)は11-21号に既報"
+   },
+   {
+    "dedup_key": "shirube-final-day1-fan-report-2026",
+    "reason": "個人の話題",
+    "note": "個人ファンの感想投稿"
+   },
+   {
+    "dedup_key": "gaku-battlespirits-china-art-2026",
+    "reason": "既報",
+    "note": "14日連続の描き下ろし企画と2027年春発売は11-16号『描き下ろし14人公開』で既報。個別イラストの日次投稿のみ"
+   },
+   {
+    "dedup_key": "gaku-fan-car-commercial-video-2026",
+    "reason": "同人・ファン主催",
+    "note": "ファン制作動画の個人投稿"
+   },
+   {
+    "dedup_key": "battle-spirits-gakumasu-collab-2027",
+    "reason": "既報",
+    "note": "同じ14日連続企画と2027年春発売は11-16号で既報。新事実なし"
+   }
+  ],
+  "cross_brand": []
+ }
+}

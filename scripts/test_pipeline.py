@@ -22670,6 +22670,7 @@ def test_units_bound_memory_and_report_failure(tmp: Path):
     run_id = "fedcba9876543210fedcba9876543210"
     saved = (pipelib.subprocess.run, pipelib.shutil.which, os.environ.get("INVOCATION_ID"), pipelib._ESCALATED, pipelib.oncall_clis_blocked,
              list(pipelib.ANOMALIES), pipelib.ENV.get("ONCALL"), os.environ.get("IMAS_SCRATCH"))
+    saved_os_oncall = os.environ.pop("ONCALL", None)     # 環境変数の ONCALL=off も当番を止める。ここでは見ない
 
     def fake_run(cmd, **k):
         rec.append(list(cmd))
@@ -22696,6 +22697,8 @@ def test_units_bound_memory_and_report_failure(tmp: Path):
             pipelib.ENV.pop("ONCALL", None)
         else:
             pipelib.ENV["ONCALL"] = onc
+        if saved_os_oncall is not None:
+            os.environ["ONCALL"] = saved_os_oncall
     sd = next((c for c in rec if c[:1] == ["systemd-run"]), [])
     unit = sd[sd.index("--unit") + 1] if "--unit" in sd else ""
     check(unit and "--slice=imas.slice" in sd and f"--property=OnFailure=imas-failure@{unit}.service" in sd,

@@ -18715,9 +18715,14 @@ def test_oncall_no_rerun_frees_lock_before_slot(tmp: Path):
     (tmp / "metrics").mkdir(exist_ok=True)
     (tmp / "scripts" / "oncall.py").write_text("", encoding="utf-8")
     launches: list = []
-    saved = (pipelib.ROOT, _sp.Popen, os.environ.pop("INVOCATION_ID", None), pipelib._ESCALATED, list(pipelib.ANOMALIES))
+    # 当番の切り替え(本番の .env の ONCALL=off)と CLI の停止は、ここでは見ない(起こす経路の --end-at を確かめる。2026-11-07 から
+    # 本番の作業ツリーの watch で、当番を止めた .env のまま走って毎日赤だった)
+    saved = (pipelib.ROOT, _sp.Popen, os.environ.pop("INVOCATION_ID", None), pipelib._ESCALATED, list(pipelib.ANOMALIES),
+             pipelib.ENV.get("ONCALL"), os.environ.pop("ONCALL", None), pipelib.oncall_clis_blocked)
     try:
         pipelib.ROOT = tmp
+        pipelib.ENV["ONCALL"] = "on"
+        pipelib.oncall_clis_blocked = lambda: []
         _sp.Popen = lambda args, **k: launches.append(list(args))
         pipelib.ANOMALIES[:] = ["[compose] 紙面から外れた記事 11本"]
         want = str(int(pipelib.next_slot_end(pipelib.now_jst())))
@@ -18741,6 +18746,13 @@ def test_oncall_no_rerun_frees_lock_before_slot(tmp: Path):
             os.environ["INVOCATION_ID"] = saved[2]
         pipelib._ESCALATED = saved[3]
         pipelib.ANOMALIES[:] = saved[4]
+        if saved[5] is None:
+            pipelib.ENV.pop("ONCALL", None)
+        else:
+            pipelib.ENV["ONCALL"] = saved[5]
+        if saved[6] is not None:
+            os.environ["ONCALL"] = saved[6]
+        pipelib.oncall_clis_blocked = saved[7]
 
     names = ("ROOT", "BACKLOG", "notify", "job_lock", "DEADLINE_AT", "STAGE_END_AT", "RECOVER")
     saved_o, saved_argv = {k: getattr(oncall, k) for k in names}, sys.argv

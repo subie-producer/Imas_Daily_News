@@ -1,0 +1,329 @@
+{
+ "decisions": {
+  "shiny-super-explosion-galaxy-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "はるきピース付きパッケージは11-22の運営まとめに内容・条件とも掲載済み"
+  },
+  "shiny-web4koma-670": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-23に第670話の記事あり"
+  },
+  "shiny-lon---date-suisei-hakusho": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-22の運営まとめに掲載済み"
+  },
+  "shiny-webcomic-670-sakuga": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "web4コマ第670話は11-23の記事で既報"
+  },
+  "shiny-style-collection-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "第3弾は11-21と11-23に記事あり。受注締切は29日で3日以内ではない"
+  },
+  "shiny-song-pickup-juri-2026-11": {
+   "action": "roundup",
+   "angle": "シャニソン開催中の運営情報(円環#03ピックアップ樹里・3DMV特別演出)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-song-pickup-kaho-2026-11": {
+   "action": "roundup",
+   "angle": "シャニソン開催中の運営情報(円環#03ピックアップ果穂・3DMV特別演出)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-song-shiny-competition-2026-11": {
+   "action": "article",
+   "angle": "シャニソンでシャイニーコンペティションが近日開催予定で、報酬は無償ジュエル・マスターバッジ・ドレスオーダーチケットなど。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "開催予告のため単独記事"
+  },
+  "shiny-song-dress-order-week-2026-11": {
+   "action": "roundup",
+   "angle": "シャニソン開催中の運営情報(ドレスオーダー強化週間のミッション報酬)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-orchestra-2027-game-presale": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "ゲーム先行受付中は11-11の記事で既報。新事実・当日トリガーなし"
+  },
+  "shiny-orchestra-2027-game-advance-entry": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "先行受付は既報。factsはSideM映画の舞台挨拶投稿で、この面の新事実なし"
+  },
+  "shiny-sweets-paradise-cafe-2026": {
+   "action": "article",
+   "angle": "シャニマス×スイパラの東京・新宿と大阪・あべのハルカスのコラボカフェが本日最終日で、行けるのは今日まで。",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 50,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(終了)"
+  },
+  "shiny-shiny-party-2026-november": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-party-november-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じシャイニーパーティ終了日の話題"
+  },
+  "shiny-party-november-2026": {
+   "action": "article",
+   "angle": "シャニソン「シャイニーパーティ in November」は本日23時59分で終了。ログイン報酬と交換所は今日まで、れんこんの受取・交換期限は27日11時59分。",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(締切)。素材7件"
+  },
+  "shiny-collab-fes-2026-11": {
+   "action": "article",
+   "angle": "シャニマス「コラボフェス」は27日11時59分の終了まで残り3日。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(締切前)"
+  },
+  "shiny-tomarikaze-no-harutachi-rerun-2026": {
+   "action": "article",
+   "angle": "「とまりかぜの春たちは」復刻は27日11時59分の終了まで残り3日。シナリオポイントの報酬交換を進められる。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(締切前)"
+  },
+  "shiny-prelude-collection-chiyuki-2026-11": {
+   "action": "article",
+   "angle": "プレリュードコレクション桑山千雪は27日11時59分の終了まで残り3日。SSRサポートとミッション報酬を入手できる。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(締切前)"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "shiny-song-shiny-competition-2026-11",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "シャニソンでシャイニーコンペティションが近日開催予定で、報酬は無償ジュエル・マスターバッジ・ドレスオーダーチケットなど。",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "shiny-song-shiny-competition-2026-11",
+    "candidate_ids": [
+     "202611240223-grok-22"
+    ]
+   },
+   {
+    "slug": "shiny-sweets-paradise-cafe-2026",
+    "brand": "shiny",
+    "rank": "medium",
+    "angle": "シャニマス×スイパラの東京・新宿と大阪・あべのハルカスのコラボカフェが本日最終日で、行けるのは今日まで。",
+    "purpose": "期日の知らせ",
+    "lead_score": 50,
+    "dedup_key": "shiny-sweets-paradise-cafe-2026",
+    "candidate_ids": [
+     "sched-2026-11-24-shiny-sweets-paradise-cafe-2026-終了",
+     "sched-2026-11-24-shiny-sweets-paradise-cafe-2026-終了-src1"
+    ]
+   },
+   {
+    "slug": "shiny-party-november-2026",
+    "brand": "shiny",
+    "rank": "medium",
+    "angle": "シャニソン「シャイニーパーティ in November」は本日23時59分で終了。ログイン報酬と交換所は今日まで、れんこんの受取・交換期限は27日11時59分。",
+    "purpose": "期日の知らせ",
+    "lead_score": 60,
+    "dedup_key": "shiny-party-november-2026",
+    "candidate_ids": [
+     "sched-2026-11-24-shiny-party-november-2026-締切",
+     "sched-2026-11-24-shiny-party-november-2026-締切-src1",
+     "sched-2026-11-24-shiny-shiny-party-2026-november-締切",
+     "sched-2026-11-24-shiny-shiny-party-2026-november-締切-src1",
+     "sched-2026-11-24-shiny-shiny-party-2026-november-締切-src2",
+     "sched-2026-11-24-shiny-shiny-party-2026-november-締切-src3",
+     "sched-2026-11-24-shiny-shiny-party-2026-november-締切-src4"
+    ]
+   },
+   {
+    "slug": "shiny-collab-fes-2026-11",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "シャニマス「コラボフェス」は27日11時59分の終了まで残り3日。",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "shiny-collab-fes-2026-11",
+    "candidate_ids": [
+     "sched-2026-11-24-shiny-collab-fes-2026-11-締切前"
+    ]
+   },
+   {
+    "slug": "shiny-tomarikaze-no-harutachi-rerun-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "「とまりかぜの春たちは」復刻は27日11時59分の終了まで残り3日。シナリオポイントの報酬交換を進められる。",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "shiny-tomarikaze-no-harutachi-rerun-2026",
+    "candidate_ids": [
+     "sched-2026-11-24-shiny-tomarikaze-no-harutachi-rerun-2026-締切前",
+     "sched-2026-11-24-shiny-tomarikaze-no-harutachi-rerun-2026-締切前-src1"
+    ]
+   },
+   {
+    "slug": "shiny-prelude-collection-chiyuki-2026-11",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "プレリュードコレクション桑山千雪は27日11時59分の終了まで残り3日。SSRサポートとミッション報酬を入手できる。",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "shiny-prelude-collection-chiyuki-2026-11",
+    "candidate_ids": [
+     "sched-2026-11-24-shiny-prelude-collection-chiyuki-2026-11-締切前",
+     "sched-2026-11-24-shiny-prelude-collection-chiyuki-2026-11-締切前-src1",
+     "sched-2026-11-24-shiny-prelude-collection-chiyuki-2026-11-締切前-src2",
+     "sched-2026-11-24-shiny-prelude-collection-chiyuki-2026-11-締切前-src3"
+    ]
+   },
+   {
+    "slug": "shiny-ops-roundup",
+    "brand": "shiny",
+    "rank": "roundup",
+    "angle": "シャニソン開催中の運営情報(円環#03ピックアップ樹里・3DMV特別演出)",
+    "lead_score": 0,
+    "dedup_key": "shiny-song-pickup-juri-2026-11",
+    "candidate_ids": [
+     "202611240223-grok-20",
+     "202611240223-grok-21",
+     "202611240223-grok-23"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "shiny-super-explosion-galaxy-2026",
+    "reason": "既報",
+    "note": "はるきピース付きパッケージは11-22の運営まとめに内容・条件とも掲載済み"
+   },
+   {
+    "dedup_key": "shiny-web4koma-670",
+    "reason": "既報",
+    "note": "11-23に第670話の記事あり"
+   },
+   {
+    "dedup_key": "shiny-lon---date-suisei-hakusho",
+    "reason": "既報",
+    "note": "11-22の運営まとめに掲載済み"
+   },
+   {
+    "dedup_key": "shiny-webcomic-670-sakuga",
+    "reason": "既報",
+    "note": "web4コマ第670話は11-23の記事で既報"
+   },
+   {
+    "dedup_key": "shiny-style-collection-2026",
+    "reason": "既報",
+    "note": "第3弾は11-21と11-23に記事あり。受注締切は29日で3日以内ではない"
+   },
+   {
+    "dedup_key": "shiny-orchestra-2027-game-presale",
+    "reason": "既報",
+    "note": "ゲーム先行受付中は11-11の記事で既報。新事実・当日トリガーなし"
+   },
+   {
+    "dedup_key": "shiny-orchestra-2027-game-advance-entry",
+    "reason": "既報",
+    "note": "先行受付は既報。factsはSideM映画の舞台挨拶投稿で、この面の新事実なし"
+   }
+  ],
+  "cross_brand": []
+ }
+}

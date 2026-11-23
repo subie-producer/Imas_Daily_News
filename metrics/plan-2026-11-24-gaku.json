@@ -1,0 +1,157 @@
+{
+ "decisions": {
+  "metamorphose-2m-views-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "出典の変化は再生数・フォロワー数の表示の更新のみ。200万再生は11/21号で既報、300万も11/23号で既報"
+  },
+  "gaku-metamorphose-mv-3m-2026": {
+   "action": "article",
+   "angle": "「メタモルフォーゼ」MVショート動画の制作スタッフ(監督coalowl、仕上げ・背景・撮影編集ほか)が公式投稿で明らかに。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ショート公開自体は11/23号で既報。スタッフ情報が新しい事実。ショート単体の主題(yutura)を統合"
+  },
+  "gaku-metamorphose-short-2026-11-22": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-metamorphose-mv-3m-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じショート動画の二次情報。公開日時11/22 18:07を補う"
+  },
+  "gaku-metamorphose-ep-preview": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "kan-nae-metamorphose-ep",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "EP配信と同じ施策。収録曲「初 [Solo ver.]」の情報をEP配信記事に統合"
+  },
+  "gaku-gearbeat-concerto-program-2026": {
+   "action": "article",
+   "angle": "Gearbeat Concerto紹介番組(12月22日22時配信)へのお便り投稿は本日11月24日まで。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "既報にお便り募集はあるが締切日は未記載。当日のトリガー"
+  },
+  "roar-jouo-sena-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "200万再生突破は11/23号で既報。新しい事実なし"
+  },
+  "gaku-miracle-nanau-mv-3m-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "300万再生突破は11/23号で既報。新しい事実なし"
+  },
+  "kan-nae-metamorphose-ep": {
+   "action": "article",
+   "angle": "氷渡香名江のEP『メタモルフォーゼ』が本日0時から各種音楽配信サービスで配信開始。収録曲に「初 [氷渡香名江 Solo ver.]」があり、公式が一部を先行公開した。",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(発売)。既報は「メタモルフォーゼ」のみ収録と告知、2曲目「初」のTrack Listと一部公開が新しい事実"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "gaku-metamorphose-mv-3m-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "「メタモルフォーゼ」MVショート動画の制作スタッフ(監督coalowl、仕上げ・背景・撮影編集ほか)が公式投稿で明らかに。",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "gaku-metamorphose-mv-3m-2026",
+    "candidate_ids": [
+     "202611231832-explore-8",
+     "202611240223-explore-9",
+     "202611240223-grok-33",
+     "202611240223-explore-8"
+    ]
+   },
+   {
+    "slug": "gaku-gearbeat-concerto-program-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "Gearbeat Concerto紹介番組(12月22日22時配信)へのお便り投稿は本日11月24日まで。",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "gaku-gearbeat-concerto-program-2026",
+    "candidate_ids": [
+     "202611240223-grok-29",
+     "202611240223-grok-68"
+    ]
+   },
+   {
+    "slug": "gaku-kan-nae-metamorphose-ep",
+    "brand": "gaku",
+    "rank": "medium",
+    "angle": "氷渡香名江のEP『メタモルフォーゼ』が本日0時から各種音楽配信サービスで配信開始。収録曲に「初 [氷渡香名江 Solo ver.]」があり、公式が一部を先行公開した。",
+    "purpose": "新情報",
+    "lead_score": 60,
+    "dedup_key": "kan-nae-metamorphose-ep",
+    "candidate_ids": [
+     "sched-2026-11-24-kan-nae-metamorphose-ep-発売",
+     "sched-2026-11-24-kan-nae-metamorphose-ep-発売-src1",
+     "sched-2026-11-24-kan-nae-metamorphose-ep-発売-src2",
+     "202611240223-grok-28"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "metamorphose-2m-views-2026",
+    "reason": "既報",
+    "note": "出典の変化は再生数・フォロワー数の表示の更新のみ。200万再生は11/21号で既報、300万も11/23号で既報"
+   },
+   {
+    "dedup_key": "roar-jouo-sena-2026",
+    "reason": "既報",
+    "note": "200万再生突破は11/23号で既報。新しい事実なし"
+   },
+   {
+    "dedup_key": "gaku-miracle-nanau-mv-3m-2026",
+    "reason": "既報",
+    "note": "300万再生突破は11/23号で既報。新しい事実なし"
+   }
+  ],
+  "cross_brand": []
+ }
+}

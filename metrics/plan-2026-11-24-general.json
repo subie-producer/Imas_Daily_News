@@ -1,0 +1,109 @@
+{
+ "decisions": {
+  "miki-birthday-2026": {
+   "action": "article",
+   "angle": "星井美希の誕生日にファンが投稿で祝福し、ミリシタ公式のバースデーライブ・劇場装飾・ガシャ告知にも反応が集まった。ツアマスでの祝福や標ツアーファイナルの感想もまとめて、ファンの盛り上がりを1本にする。",
+   "purpose": "新情報",
+   "rank": "culture",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "誰か1人を主役にせず、界隈の盛り上がりとして書く"
+  },
+  "miki-birthday-fan-reactions-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "miki-birthday-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ミリシタ掲示板の祝福コメント"
+  },
+  "fan-tours-miki-birthday-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "miki-birthday-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ツアマスでの祝福投稿"
+  },
+  "gaku-shirube-final-fan-reports-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "miki-birthday-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "標ツアーファイナルの感想。ファン面の1本に統合"
+  },
+  "call-participation-at-hatsuraku-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人1件のSNS投稿で、新規ファンへの批判とも読める"
+  },
+  "xr-live-revival-resale-2026": {
+   "action": "article",
+   "angle": "xR LIVE REVIVALの現地チケット公式リセールの受付が始まり、申込は12月6日まで。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "過去は合同面扱いだが、他の面に同件の記事は無いためここで記事にする"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "general-miki-birthday-2026",
+    "brand": "general",
+    "rank": "culture",
+    "angle": "星井美希の誕生日にファンが投稿で祝福し、ミリシタ公式のバースデーライブ・劇場装飾・ガシャ告知にも反応が集まった。ツアマスでの祝福や標ツアーファイナルの感想もまとめて、ファンの盛り上がりを1本にする。",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "miki-birthday-2026",
+    "candidate_ids": [
+     "202611232332-explore-14",
+     "202611231232-explore-2",
+     "202611240223-grok-34",
+     "202611240223-grok-45"
+    ]
+   },
+   {
+    "slug": "general-xr-live-revival-resale-2026",
+    "brand": "general",
+    "rank": "small",
+    "angle": "xR LIVE REVIVALの現地チケット公式リセールの受付が始まり、申込は12月6日まで。",
+    "purpose": "新情報",
+    "lead_score": 25,
+    "dedup_key": "xr-live-revival-resale-2026",
+    "candidate_ids": [
+     "202611240223-grok-54"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "call-participation-at-hatsuraku-2026",
+    "reason": "個人の話題",
+    "note": "個人1件のSNS投稿で、新規ファンへの批判とも読める"
+   }
+  ],
+  "cross_brand": []
+ }
+}

@@ -1,0 +1,133 @@
+{
+ "decisions": {
+  "million-thanksgiving-login-bonus-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/23号の勤労感謝ログボ記事と同内容。新事実・当日トリガーなし"
+  },
+  "miki-birthday-gasha-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/23号の美希Birthdayガシャ記事に同じ内容。新事実なし"
+  },
+  "million-platinum-start-trust-13-outside-isotope-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-platinum-trust-13-outside-isotope-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じイベントの終了。出典更新の変更後はログボの表示で読者に関わる変更なし"
+  },
+  "soutei-shinrigai-mv-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "factsは勤労感謝ログボと美希ガシャで、いずれも11/23号で記事化済み"
+  },
+  "million-x-stream-radio-playlist-letters-2026-11": {
+   "action": "article",
+   "angle": "「ラジオ#プレイリスト」のお便り募集が本日23時59分で締切。お悩み相談とふつおたを送れる最終日。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "読者の行動(お便り投稿)が別なのでイベント終了とは別記事"
+  },
+  "million-platinum-trust-13-outside-isotope-2026": {
+   "action": "article",
+   "angle": "ミリシタ「プラチナスタートラスト13 想定心理外」は本日20時59分で終了。イベント楽曲を走れる最終日で、ランキング報酬の最終確認ができる。",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "終了系3主題(start-trust/star-trust含む)をここに統合"
+  },
+  "million-platinum-star-trust-13-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-platinum-trust-13-outside-isotope-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じイベントの終了"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "million-x-stream-radio-playlist-letters-2026-11",
+    "brand": "million",
+    "rank": "small",
+    "angle": "「ラジオ#プレイリスト」のお便り募集が本日23時59分で締切。お悩み相談とふつおたを送れる最終日。",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "million-x-stream-radio-playlist-letters-2026-11",
+    "candidate_ids": [
+     "sched-2026-11-24-million-x-stream-radio-playlist-letters-2026-11-締切",
+     "sched-2026-11-24-million-x-stream-radio-playlist-letters-2026-11-締切-src1"
+    ]
+   },
+   {
+    "slug": "million-platinum-trust-13-outside-isotope-2026",
+    "brand": "million",
+    "rank": "medium",
+    "angle": "ミリシタ「プラチナスタートラスト13 想定心理外」は本日20時59分で終了。イベント楽曲を走れる最終日で、ランキング報酬の最終確認ができる。",
+    "purpose": "期日の知らせ",
+    "lead_score": 60,
+    "dedup_key": "million-platinum-trust-13-outside-isotope-2026",
+    "candidate_ids": [
+     "sched-2026-11-24-million-platinum-trust-13-outside-isotope-2026-終了",
+     "sched-2026-11-24-million-platinum-trust-13-outside-isotope-2026-終了-src1",
+     "update-b29d2ec27379",
+     "sched-2026-11-24-million-platinum-start-trust-13-outside-isotope-2026-終了",
+     "sched-2026-11-24-million-platinum-star-trust-13-2026-終了",
+     "sched-2026-11-24-million-platinum-star-trust-13-2026-終了-src1"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "million-thanksgiving-login-bonus-2026",
+    "reason": "既報",
+    "note": "11/23号の勤労感謝ログボ記事と同内容。新事実・当日トリガーなし"
+   },
+   {
+    "dedup_key": "miki-birthday-gasha-2026",
+    "reason": "既報",
+    "note": "11/23号の美希Birthdayガシャ記事に同じ内容。新事実なし"
+   },
+   {
+    "dedup_key": "soutei-shinrigai-mv-2026",
+    "reason": "既報",
+    "note": "factsは勤労感謝ログボと美希ガシャで、いずれも11/23号で記事化済み"
+   }
+  ],
+  "cross_brand": []
+ }
+}

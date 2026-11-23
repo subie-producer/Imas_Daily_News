@@ -1,0 +1,233 @@
+{
+ "decisions": {
+  "sidem-315-mode-vol2-spring-goods-2026": {
+   "action": "article",
+   "angle": "「315 MODE」vol.2 SPRINGグッズの受注が本日18時に始まり、12月6日まで受け付ける。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約の開始。既報と同内容だが当日のトリガーあり"
+  },
+  "sidem-fantastic-battle-fes-movie-stage-greeting-2026": {
+   "action": "article",
+   "angle": "劇場版SideM公開記念舞台挨拶が新宿ピカデリーで行われ、登壇キャストが11th STAGEで発表された劇場版や家庭用ゲーム企画について語った。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "舞台挨拶の実施レポートは新しい出来事。過去記事は開催告知"
+  },
+  "sidem-producer-meeting-ajewelholic-2027-premium-second": {
+   "action": "article",
+   "angle": "SideMプロミ2027のアソビストアプレミアム12か月会員2次先行は11月26日23時59分で締切。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "締切が3日以内(あと2日)のトリガー"
+  },
+  "sidem-11th-stage-bluray-2027": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "2026-09-14号の記事と同じ内容で、新事実もトリガーも無い"
+  },
+  "sidem-fantastic-battle-fes-wanna-step-in-nagano-ticket-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "一般先着は11-21号で既報。締切は12月19日でまだ先"
+  },
+  "sidem-fbfes-movie-goods-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-21号で受注12月6日までを既報。新事実も当日のトリガーも無い"
+  },
+  "sidem-wgf-premiere-photo-session-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "公式の投稿だけで新しい事実が無い。舞台挨拶の記事に含まれる内容"
+  },
+  "sidem-wgf-we-are-315-challenge-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "公式の投稿だけで新しい事実もトリガーも無い"
+  },
+  "sidem-legenders-refrain-atrium-2dmv-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "公開日時は11-14号で既報。公開は明日で、今日のトリガーは無い"
+  },
+  "sidem-daimaru-vol2-2026": {
+   "action": "article",
+   "angle": "SideM×大丸松坂屋 大丸梅田店のポップアップが本日20時までの最終日で、会場に行ける最後の日。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 35,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "大丸の3主題をこの1本に統合。続報予約の千秋楽"
+  },
+  "sidem-daimaru-matsuzakaya-popup-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-daimaru-vol2-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ梅田店最終日の主題"
+  },
+  "sidem-daimaru-matsuzakaya-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-daimaru-vol2-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ梅田店最終日の主題。オンライン受注(11/27〜)の素材もここへ"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "sidem-315-mode-vol2-spring-goods-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "「315 MODE」vol.2 SPRINGグッズの受注が本日18時に始まり、12月6日まで受け付ける。",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "sidem-315-mode-vol2-spring-goods-2026",
+    "candidate_ids": [
+     "202611230732-explore-4",
+     "202611231232-explore-3",
+     "202611240223-grok-82",
+     "sched-2026-11-24-sidem-315-mode-vol2-spring-goods-2026-開始",
+     "sched-2026-11-24-sidem-315-mode-vol2-spring-goods-2026-開始-src1"
+    ]
+   },
+   {
+    "slug": "sidem-fantastic-battle-fes-movie-stage-greeting-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "劇場版SideM公開記念舞台挨拶が新宿ピカデリーで行われ、登壇キャストが11th STAGEで発表された劇場版や家庭用ゲーム企画について語った。",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "sidem-fantastic-battle-fes-movie-stage-greeting-2026",
+    "candidate_ids": [
+     "202611231832-explore-7"
+    ]
+   },
+   {
+    "slug": "sidem-producer-meeting-ajewelholic-2027-premium-second",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "SideMプロミ2027のアソビストアプレミアム12か月会員2次先行は11月26日23時59分で締切。",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "sidem-producer-meeting-ajewelholic-2027-premium-second",
+    "candidate_ids": [
+     "202611240223-grok-24",
+     "202611240223-grok-64"
+    ]
+   },
+   {
+    "slug": "sidem-daimaru-vol2-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "SideM×大丸松坂屋 大丸梅田店のポップアップが本日20時までの最終日で、会場に行ける最後の日。",
+    "purpose": "期日の知らせ",
+    "lead_score": 35,
+    "dedup_key": "sidem-daimaru-vol2-2026",
+    "candidate_ids": [
+     "sched-2026-11-24-sidem-daimaru-vol2-2026-千秋楽",
+     "sched-2026-11-24-sidem-daimaru-vol2-2026-千秋楽-src1",
+     "sched-2026-11-24-sidem-daimaru-vol2-2026-千秋楽-src2",
+     "sched-2026-11-24-sidem-daimaru-matsuzakaya-popup-2026-終了",
+     "sched-2026-11-24-sidem-daimaru-matsuzakaya-popup-2026-終了-src1",
+     "sched-2026-11-24-sidem-daimaru-matsuzakaya-2026-終了",
+     "sched-2026-11-24-sidem-daimaru-matsuzakaya-2026-終了-src1",
+     "sched-2026-11-24-sidem-daimaru-matsuzakaya-2026-終了-src2"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "sidem-11th-stage-bluray-2027",
+    "reason": "既報",
+    "note": "2026-09-14号の記事と同じ内容で、新事実もトリガーも無い"
+   },
+   {
+    "dedup_key": "sidem-fantastic-battle-fes-wanna-step-in-nagano-ticket-2026",
+    "reason": "既報",
+    "note": "一般先着は11-21号で既報。締切は12月19日でまだ先"
+   },
+   {
+    "dedup_key": "sidem-fbfes-movie-goods-2026",
+    "reason": "既報",
+    "note": "11-21号で受注12月6日までを既報。新事実も当日のトリガーも無い"
+   },
+   {
+    "dedup_key": "sidem-wgf-premiere-photo-session-2026",
+    "reason": "既報",
+    "note": "公式の投稿だけで新しい事実が無い。舞台挨拶の記事に含まれる内容"
+   },
+   {
+    "dedup_key": "sidem-wgf-we-are-315-challenge-2026",
+    "reason": "既報",
+    "note": "公式の投稿だけで新しい事実もトリガーも無い"
+   },
+   {
+    "dedup_key": "sidem-legenders-refrain-atrium-2dmv-2026",
+    "reason": "既報",
+    "note": "公開日時は11-14号で既報。公開は明日で、今日のトリガーは無い"
+   }
+  ],
+  "cross_brand": []
+ }
+}

@@ -2,7 +2,7 @@
 slug: sidem-mfes-label-cans-2026
 edition: "2026-11-22"
 brand: sidem
-src: 未確認
+src: 当事者
 rank: medium
 corrected: false
 corrections: []
@@ -20,7 +20,7 @@ sources:
   type: 当事者
 - label: Google マイマップ「アイドルマスター SideM Mフェス」
   url: https://www.google.com/maps/d/viewer?mid=1oLR4rz1OqefYD7DiLM2teP0lNmJSKrw&ll=35.530375507342015%2C135.45038510000003&z=5
-  type: 未確認
+  type: 当事者
 - label: 【SideM】『Mフェス 2026 in Winter Wonderland』全企業・サービス展開内容を公開🎄🌟 (2026-11-20)
   url: https://idolmaster-official.jp/news/01_20398
   type: 公式

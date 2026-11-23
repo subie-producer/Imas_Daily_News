@@ -1804,5 +1804,55 @@
   "deadline": "2026-12-13",
   "link_from": "https://idolmaster-official.jp/news/01_20398",
   "src_candidate_id": "sched-2026-11-23-sidem-mfes-2026-willer-cruise-締切"
+ },
+ {
+  "id": "sched-2026-12-12-xr-live-revival-resale-2026-開幕",
+  "dedup_key": "xr-live-revival-resale-2026",
+  "brand": "general",
+  "subject": "xR LIVE REVIVAL 12月12日公演(オリックス劇場)",
+  "kind": "開幕",
+  "note": "第一〜第三公演がオリックス劇場で開催され、現地で観られる",
+  "reserved_on": "2026-11-24",
+  "occurs_on": "2026-12-12",
+  "title": "xR LIVE REVIVAL 現地チケット公式リセール受付",
+  "url": "https://x.com/imas_official/status/2124382367678685656",
+  "source_type": "公式",
+  "facts": [
+   "🌓━━━━━━━━━━🎀",
+   "xR LIVE REVIVAL",
+   "#はんげつ_REVIVAL",
+   "#トイボ公演_もういっかい",
+   "🎀━━━━━━━━━━🌓",
+   "現地チケット",
+   "＼リセール受付スタート！／",
+   "🎫お申込みは【12/6(日)】まで",
+   "🔗公式サイト",
+   "#アイマスxR_REVIVAL"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202611240223-grok-54"
+ },
+ {
+  "id": "sched-2026-12-12-xr-live-revival-resale-2026-開幕-src1",
+  "dedup_key": "xr-live-revival-resale-2026",
+  "brand": "general",
+  "subject": "xR LIVE REVIVAL 12月12日公演(オリックス劇場)",
+  "kind": "開幕",
+  "note": "第一〜第三公演がオリックス劇場で開催され、現地で観られる",
+  "reserved_on": "2026-11-24",
+  "occurs_on": "2026-12-12",
+  "title": "アイドルマスター ポータル「【765】【シンデレラ】12月12・13日大阪・オリックス劇場にて開催される「xR LIVE REVIVAL」 現地チケット一般先着販売 & リセール受付が本日よりスタート！！」(2026-11-22)",
+  "url": "https://idolmaster-official.jp/news/01_20420",
+  "source_type": "公式",
+  "facts": [
+   "リセールの受付URLは、12月12日第一公演[～友藍～]、第二公演[～悲藍～]、第三公演[～純藍～]、12月12日3公演通しチケット、12月13日第四公演[夕方公演]の5種類。公演日時ごとに受付URLが異なる。",
+   "公演はオリックス劇場で開催。12月12日（土）は第一公演「菊地 真・萩原 雪歩 twin live “はんげつであえたら” [～友藍～]」が開場11:00・開演12:00、第二公演[～悲藍～]が開場14:30・開演15:30、第三公演[～純藍～]が開場18:00・開演19:00。12月13日（日）は第四公演「Pop’n ToyBox!! もういっかい！ [夕方公演]」が開場15:00・開演16:00。"
+  ],
+  "via": "verified_fact",
+  "verify": "unconfirmed",
+  "src_candidate_id": "202611240223-grok-54",
+  "companion_of": "sched-2026-12-12-xr-live-revival-resale-2026-開幕",
+  "src_dedup_key": "xr-live-revival-resale-2026"
  }
 ]

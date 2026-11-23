@@ -1,0 +1,74 @@
+{
+ "decisions": {
+  "imas-radio-2026-11-24": {
+   "action": "article",
+   "angle": "IM＠S RADIOが本日20時から生配信。ゲストは三瓶由布子さんで、本編はYouTubeアイマスchで誰でも視聴できる。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約の開始。当日20時から視聴できる。"
+  },
+  "tours-shiina-birthday-2026": {
+   "action": "article",
+   "angle": "星井美希バースデーライブの称号対象は25日25時59分(26日1時59分)までで、終了まで残り2日。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "dedup_keyは「shiina」だが中身は星井美希。事実は11/23記事と同じで、期限が3日以内に迫っている点だけがトリガー。"
+  },
+  "xr-live-revival-2026-ticket-sales-resale": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/21・11/22の記事に同じ事実がある。新しい事実は無く、締切(12/5・12/6)も3日以内ではない。"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "joint-tours-shiina-birthday-2026",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "星井美希バースデーライブの称号対象は25日25時59分(26日1時59分)までで、終了まで残り2日。",
+    "purpose": "期日の知らせ",
+    "lead_score": 15,
+    "dedup_key": "tours-shiina-birthday-2026",
+    "candidate_ids": [
+     "202611240223-grok-44"
+    ]
+   },
+   {
+    "slug": "joint-imas-radio-2026-11-24",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "IM＠S RADIOが本日20時から生配信。ゲストは三瓶由布子さんで、本編はYouTubeアイマスchで誰でも視聴できる。",
+    "purpose": "期日の知らせ",
+    "lead_score": 60,
+    "dedup_key": "imas-radio-2026-11-24",
+    "candidate_ids": [
+     "sched-2026-11-24-imas-radio-2026-11-24-開始",
+     "sched-2026-11-24-imas-radio-2026-11-24-開始-src1"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "xr-live-revival-2026-ticket-sales-resale",
+    "reason": "既報",
+    "note": "11/21・11/22の記事に同じ事実がある。新しい事実は無く、締切(12/5・12/6)も3日以内ではない。"
+   }
+  ],
+  "cross_brand": []
+ }
+}

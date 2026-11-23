@@ -135,6 +135,7 @@ discovery_only_domains:
 # --- 二次情報: 他所の発表を写して伝えている情報源(規程2.5) ---
 # 法人運営か個人運営かは問わない。自ら取材・発表していないものはここ。
 secondary_domains:
+  - mibasamu.doorblog.jp  # 合議で追加: X投稿を集めて写す話題まとめ。個人と示す材料なし(相手の個人ブログ説は未確認)
   - imabazu.com           # 合議で追加: X投稿を集めて順位付けし紹介する媒体。自ら取材した形跡なし
   - dvd-otakara.blog.jp   # 合議で追加: 自称「まとめサイト」。BD発売の告知を他媒体の引用で伝える
   - rerizumo.doorblog.jp  # 合議で追加: SNS投稿や感想を集めて貼るまとめ形式。運営者情報は見つからず
@@ -284,6 +285,8 @@ party_paths:
   - item.rakuten.co.jp/f272078-takatsuki        # 高槻市ふるさと納税
 
 party_domains:
+  - cosmoworld.jp         # 合議で追加: 会場の公式サイトで、コスモクロック21の作品コラボ演出を告知
+  - google.com            # 合議で追加: SideM Mフェス缶の販売店マップを掲載。作成者は表示になし
   - shochiku.co.jp        # 合議で追加: 映画配給元。当社配給の劇場版SideM作品を掲載した公式ページ
   - store.shopping.yahoo.co.jp # 合議で追加: ストア情報がスイーツパラダイス。シャニマスコラボ商品の販売元
   - hakusan.aeonmall.jp   # 合議で追加: 会場のイオンモール白山が、店舗ニュースでコラボメニューの開催を告知
@@ -521,6 +524,7 @@ video_ids:
     - sm18526341          # 機械で追加: nicovideo.jp/user/17835786「iM@S 6th Anniversary Live - キラ」
     - LSkzNm3AzHk         # 機械で追加: @TogawaNonoha「〖 世界のアソビ大全51 〗遊び…？いいえ、ののは vs ま」
   公式:
+    - DDn5Eq5Ntec         # 機械で追加: @hatsuboshi_gakuen「初星学園 「メタモルフォーゼ」Official Music 」
     - F2Wk47w6fxU         # 機械で追加: @imas-official「【ミリシタ】ゲーム内楽曲『想定心理外 -Outside Is」
     - UTodfL2t6fM         # 機械で追加: @imas-official「【#学マス】ランウェイの秘密 #初星学園放送部 #村田綾香 」
     - hZDHZ8SwPN4         # 機械で追加: @imas-official「【SideM】＜期間限定無料公開＞Legenders『ひとつ」
@@ -714,6 +718,13 @@ x_accounts:
     - imasnews765
     - zutapoke
   ファン:
+    - tettikuwahata       # 合議で追加: 個人によるツアーファイナル公演の感想・披露曲投稿
+    - skypenguins         # 合議で追加: 個人によるコール参加の観察・感想の発信
+    - sizuku_rouge        # 合議で追加: 個人による15周年公演向けネイル制作の発信、事業者の根拠なし
+    - Yukihana09          # 合議で追加: 個人によるツアマス星井美希誕生日祝いの投稿
+    - OssGsan             # 合議で追加: 個人による愛夏誕生祭上映会の感想投稿
+    - LEVEL_Z             # 合議で追加: 個人によるライブ前応援グッズのファン制作の発信
+    - DrgnONE_            # 合議で追加: 個人アカウントによる横浜駅の応援広告の目撃報告
     - ui_gyu              # 合議で追加: コラボカバーをきっかけに遊び始めた個人の投稿
     - tonkatsudesuwa      # 合議で追加: 個人がツアマスで撮影した誕生日フォト投稿
     - syuzoazarasi        # 合議で追加: 個人による個性診断ネタの投稿
@@ -1361,6 +1372,8 @@ x_posts:
 
 # --- リンク元から引き継いだ種別(リンク先1つずつ。キーは pipelib.link_key)。合議がリンク元の告知と関係していると確かめたものだけ(classify_sources.inherit_from_links)。リンク先そのものの種別より強いときだけ効く ---
 link_types:
+  youtube.com/watch?v=vl9SS0toOrs: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/imas_ch/status/2124518274495140262(公式)。星井美希の誕生日ムービーのページで、告知された動画と同じ
+  shop.asobistore.jp/category/vl_3rd: 公式      # リンク元から引き継ぎ(合議で関係を確認): https://x.com/valiv_official/status/2124708454510342514(公式)。リンク先の題名が3rdLIVE公式グッズ事前販売で、告知と同じ企画の購入ページ
   youtube.com/watch?v=dp-x87l413o: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/gkmas_official/status/2124458312708284567(公式)。リンク元が『ミラクルナナウ』MVの300万再生突破を伝え、リンク先がそのMV本体
   youtube.com/watch?v=ZUKWy8nHvv4: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/TomoriManaka/status/2124327029072158939(公式)。リンク元が灯里愛夏の#朝まな100回目配信を伝え、そのアーカイブとしてリンク先を
   youtube.com/watch?v=9xDJcJMVucY: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/KamizuruCosmo/status/2124427669173661943(公式)。リンク元が同じ『YES!東京』踊ってみたショート動画を紹介しており、リンク先がそ

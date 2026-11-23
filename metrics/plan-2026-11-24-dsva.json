@@ -1,0 +1,250 @@
+{
+ "decisions": {
+  "letora-birthday-goods-set-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-22号が全内容を既報。締切12月6日はまだ12日先で、新事実もトリガーも無い。"
+  },
+  "va-liv-3rdlive-qonnect-goods-preorder-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "出典の変更は、11-20号と11-22号に既にある内容(ライト規制緩和、受注29日まで、会場先行販売品)の再掲。締切29日は5日先でトリガーに当たらない。"
+  },
+  "valiv-letora-birthday-live-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "公式ニュース一覧の差し替わりによる変化で、レトラ誕生日ライブとは無関係。公演は11月11日に終了済み。"
+  },
+  "valiv-special-stream-2026-11": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "出典のYouTubeページの表示が変わっただけ。特番は11月3日に終了済みで、読者に関わる変更が無い。"
+  },
+  "valiv-14th-online-one-on-one-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "抽選申込は11月23日に締切済み。11-23号までで既報。"
+  },
+  "valiv-manaka-onimusha-stream-2026-11-22": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11月22日夜の配信は終了済みで、11-19号と11-22号が告知を既報。"
+  },
+  "valiv-manaka-onimusha-stream-2026-11-23": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11月23日夜の配信は終了済みで、11-23号が告知を既報。同人の上映会の事実も11-21号から11-23号で既報。"
+  },
+  "manaka-onimusha-way-of-the-sword-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11月22日の配信告知で、配信は終了済み。11-19号と11-22号が既報。"
+  },
+  "valiv-online-oneonone-14-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "抽選申込は11月23日に締切済み。開催日・料金・当落発表日(27日)は11-17号から11-23号で既報。"
+  },
+  "valiv-cosmo-ace-combat-8-stream-report-2026-10-21": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "レトラのバースデーボイス(価格3,300円、販売は12月13日まで)は11-09号で既報。新事実も、3日以内の締切も無い。"
+  },
+  "cosmo-yes-tokyo-short-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "「YES!東京」の踊ってみた動画は11-23号で既報。"
+  },
+  "fans-react-to-manaka-birthday-watchparty-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "ファン個人のSNS投稿1件のみで、出典は未確認。単体の記事にしない。"
+  },
+  "manaka-onimusha-way-of-the-sword-stream-2026-11-23": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "配信後の本人の感想投稿(受け流し、タックルが次の課題)で、個人のSNS投稿。配信自体は11-23号が既報。"
+  },
+  "valiv-3rd-live-meeting-merch-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "グッズの税込価格は11-22号が既報。受注は29日までで、締切まで5日あり3日以内に入らない。"
+  },
+  "manaka-birthday-live-archive-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "アーカイブ券の販売は29日18時まで。11-19号から11-23号で既報で、締切は5日先。"
+  }
+ },
+ "plan": {
+  "articles": [],
+  "dropped": [
+   {
+    "dedup_key": "letora-birthday-goods-set-2026",
+    "reason": "既報",
+    "note": "11-22号が全内容を既報。締切12月6日はまだ12日先で、新事実もトリガーも無い。"
+   },
+   {
+    "dedup_key": "va-liv-3rdlive-qonnect-goods-preorder-2026",
+    "reason": "既報",
+    "note": "出典の変更は、11-20号と11-22号に既にある内容(ライト規制緩和、受注29日まで、会場先行販売品)の再掲。締切29日は5日先でトリガーに当たらない。"
+   },
+   {
+    "dedup_key": "valiv-letora-birthday-live-2026",
+    "reason": "既報",
+    "note": "公式ニュース一覧の差し替わりによる変化で、レトラ誕生日ライブとは無関係。公演は11月11日に終了済み。"
+   },
+   {
+    "dedup_key": "valiv-special-stream-2026-11",
+    "reason": "その他",
+    "note": "出典のYouTubeページの表示が変わっただけ。特番は11月3日に終了済みで、読者に関わる変更が無い。"
+   },
+   {
+    "dedup_key": "valiv-14th-online-one-on-one-2026",
+    "reason": "既報",
+    "note": "抽選申込は11月23日に締切済み。11-23号までで既報。"
+   },
+   {
+    "dedup_key": "valiv-manaka-onimusha-stream-2026-11-22",
+    "reason": "既報",
+    "note": "11月22日夜の配信は終了済みで、11-19号と11-22号が告知を既報。"
+   },
+   {
+    "dedup_key": "valiv-manaka-onimusha-stream-2026-11-23",
+    "reason": "既報",
+    "note": "11月23日夜の配信は終了済みで、11-23号が告知を既報。同人の上映会の事実も11-21号から11-23号で既報。"
+   },
+   {
+    "dedup_key": "manaka-onimusha-way-of-the-sword-2026",
+    "reason": "既報",
+    "note": "11月22日の配信告知で、配信は終了済み。11-19号と11-22号が既報。"
+   },
+   {
+    "dedup_key": "valiv-online-oneonone-14-2026",
+    "reason": "既報",
+    "note": "抽選申込は11月23日に締切済み。開催日・料金・当落発表日(27日)は11-17号から11-23号で既報。"
+   },
+   {
+    "dedup_key": "valiv-cosmo-ace-combat-8-stream-report-2026-10-21",
+    "reason": "既報",
+    "note": "レトラのバースデーボイス(価格3,300円、販売は12月13日まで)は11-09号で既報。新事実も、3日以内の締切も無い。"
+   },
+   {
+    "dedup_key": "cosmo-yes-tokyo-short-2026",
+    "reason": "既報",
+    "note": "「YES!東京」の踊ってみた動画は11-23号で既報。"
+   },
+   {
+    "dedup_key": "fans-react-to-manaka-birthday-watchparty-2026",
+    "reason": "個人の話題",
+    "note": "ファン個人のSNS投稿1件のみで、出典は未確認。単体の記事にしない。"
+   },
+   {
+    "dedup_key": "manaka-onimusha-way-of-the-sword-stream-2026-11-23",
+    "reason": "個人の話題",
+    "note": "配信後の本人の感想投稿(受け流し、タックルが次の課題)で、個人のSNS投稿。配信自体は11-23号が既報。"
+   },
+   {
+    "dedup_key": "valiv-3rd-live-meeting-merch-2026",
+    "reason": "既報",
+    "note": "グッズの税込価格は11-22号が既報。受注は29日までで、締切まで5日あり3日以内に入らない。"
+   },
+   {
+    "dedup_key": "manaka-birthday-live-archive-2026",
+    "reason": "既報",
+    "note": "アーカイブ券の販売は29日18時まで。11-19号から11-23号で既報で、締切は5日先。"
+   }
+  ],
+  "cross_brand": []
+ }
+}

@@ -1,0 +1,58 @@
+[
+ {
+  "id": "sched-2026-12-14-sidem-producer-meeting-ajewelholic-2027-premium-second-締切",
+  "dedup_key": "sidem-producer-meeting-ajewelholic-2027-premium-second",
+  "brand": "sidem",
+  "subject": "SideMプロミ プレミアム会員2次先行 入金締切",
+  "kind": "締切",
+  "note": "23時59分までに当選分の入金ができる最終日",
+  "reserved_on": "2026-11-24",
+  "occurs_on": "2026-12-14",
+  "title": "SideMプロミ2027 アソビストアプレミアム会員2次先行",
+  "url": "https://idolmaster-official.jp/live_event/sidem_pm2027/ticket/",
+  "source_type": "公式",
+  "facts": [
+   "現地チケットは全席指定11,000円(税込)。",
+   "受付期間: 2026年11月5日(木)12:00～11月26日(木)23:59",
+   "当落発表: 2026年12月10日(木)13:00～",
+   "入金期間: 2026年12月10日(木)13:00～12月14日(月)23:59",
+   "お一人様1公演につき4枚まで(複数公演申込可)。",
+   "本先行はアソビストアプレミアム12か月会員のみ申込可能。申込から当落発表までの間に退会した場合は抽選対象外。1か月会員はプレミアム会員先行抽選の対象外。",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "unconfirmed",
+  "deadline": "2026-11-26",
+  "link_from": "https://x.com/SideM_official/status/2124835366079520769",
+  "src_candidate_id": "202611240223-grok-24"
+ },
+ {
+  "id": "sched-2026-12-14-sidem-producer-meeting-ajewelholic-2027-premium-second-締切-src1",
+  "dedup_key": "sidem-producer-meeting-ajewelholic-2027-premium-second",
+  "brand": "sidem",
+  "subject": "SideMプロミ プレミアム会員2次先行 入金締切",
+  "kind": "締切",
+  "note": "23時59分までに当選分の入金ができる最終日",
+  "reserved_on": "2026-11-24",
+  "occurs_on": "2026-12-14",
+  "title": "SideMプロミ2027 アソビストアプレミアム会員2次先行",
+  "url": "https://x.com/SideM_official/status/2124835366079520769",
+  "source_type": "公式",
+  "facts": [
+   "【イベント情報】",
+   "#SideMプロミ2027",
+   "アソビストアプレミアム会員2次先行",
+   "お申込み受付中🔔",
+   "｡o♡o｡+｡o♡o｡+｡o♡o｡+｡o♡o｡",
+   "チケットお申し込みは",
+   "2026年11月26日(木)まで⏰✨",
+   "🎫詳細はこちら！",
+   "#SideM"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202611240223-grok-64",
+  "companion_of": "sched-2026-12-14-sidem-producer-meeting-ajewelholic-2027-premium-second-締切",
+  "src_dedup_key": "sidem-producer-meeting-ajewelholic-2027-premium-second"
+ }
+]

@@ -483,3 +483,8 @@
   subject: 30MS 斑鳩ルカ プラモデル
   watch: 2027年6月予定とされた正式な発売日(判明次第 triggers へ)
   added_on: '2026-11-22'
+- dedup_key: shiny-song-shiny-competition-2026-11
+  brand: shiny
+  subject: シャニソン シャイニーコンペティション開催
+  watch: 「近日開催予定」とされた開催期間・開始日(判明次第 triggers へ)
+  added_on: '2026-11-24'

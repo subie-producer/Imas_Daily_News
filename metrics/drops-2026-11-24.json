@@ -1,0 +1,21 @@
+{
+ "cg-cosmoclock-special-2026": {
+  "title": "シンデレラガールズ、観覧車で特別演出",
+  "stage": "書き直しで見送り",
+  "why": "NO_PRIMARY_SOURCE I1対応として公式ページ https://idolmaster-official.jp/news/01_20269 を fetch_page.py で確認しました。現行版はコラボの開催期間や企画概要を掲載していますが、大観覧車の特別演出には触れていません。追加企画を告知・報道する公式",
+  "candidate_ids": [
+   "202611232332-explore-0"
+  ]
+ },
+ "shiny-prelude-collection-chiyuki-2026-11": {
+  "title": "シャニマス千雪プレコレ、27日11時59分まで",
+  "stage": "書き直しで見送り",
+  "why": "NOT_NEWS 校閲指摘I3のとおり、記事の中核となる終了日が誤っており、正しい終了日では締切前の理由がなくなります。残る内容は11月18日の公式投稿で公表済みで、11月24日に新たに起きたことを中核にできないため、記事を取り下げます。",
+  "candidate_ids": [
+   "sched-2026-11-24-shiny-prelude-collection-chiyuki-2026-11-締切前",
+   "sched-2026-11-24-shiny-prelude-collection-chiyuki-2026-11-締切前-src1",
+   "sched-2026-11-24-shiny-prelude-collection-chiyuki-2026-11-締切前-src2",
+   "sched-2026-11-24-shiny-prelude-collection-chiyuki-2026-11-締切前-src3"
+  ]
+ }
+}

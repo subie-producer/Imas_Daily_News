@@ -10,7 +10,7 @@
           "file": { "type": "string" },
           "issue": { "type": "string" },
           "quote": { "type": "string" },
-          "rule_id": { "type": "string", "description": "チェックリストの項目番号(R1〜R19、社説は E、紙面は P)" },
+          "rule_id": { "type": "string", "description": "チェックリストの項目番号(R1〜R17、社説は E、紙面は P)" },
           "repair": { "enum": ["rewrite_claim", "drop_claim", "add_source", "drop_source", "drop_article", "none"],
                       "description": "推奨する修正の種類(提案)。直し方は執筆側が素材と出典に照らして決める" },
           "fact_ids": { "type": "array", "items": { "type": "string" }, "description": "関係する素材の事実 id(分かれば)" },

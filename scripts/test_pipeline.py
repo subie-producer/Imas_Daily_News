@@ -4904,12 +4904,21 @@ ACTIVE_PROMPTS = ("plan-brand", "plan-rules", "plan-lead", "plan-missing", "writ
 def test_info_boundary_rules():
     """執筆・書き直し・校閲には、読者に向けた書き方(ibgs。編集長 2026-11-25)が常に入る。読み直せなかった出典の断り書きは
     2026-11-25 号から付けない(メンテナンスの断り書きは常設のまま。発行済みの号の文面は変えない)"""
+    # ibgs は言い換えて写さず、スキルとしてそのまま置き、3役ともそのスキルを使わせる(編集長 2026-11-25「スキルとしてそのまま入れろ」)。
+    # 執筆(codex)は .agents/skills、校閲(claude)は .claude/skills から同じファイルを読む
+    skill = pipelib.ROOT / ".agents" / "skills" / "ibgs" / "SKILL.md"
+    text = skill.read_text(encoding="utf-8") if skill.exists() else ""
+    check(text.startswith("---\nname: ibgs\n") and "### 6. 出力直前の検品ゲート" in text, "スキル ibgs の SKILL.md が置かれていない")
+    alias = pipelib.ROOT / ".claude" / "skills" / "ibgs" / "SKILL.md"
+    check(alias.exists() and alias.resolve() == skill.resolve(), "校閲(claude)から読むスキル ibgs が執筆と同じファイルを指していない")
     for role in ("write", "revise", "review"):
         t = pipelib.maintenance_rules(role)
-        check("読者に向けた書き方" in t and "作業の経過" in t and "ホスト名" in t and "ダッシュ" in t,
-              f"info-boundary.{role}: 読者に向けた書き方が依頼文に入っていない")
+        check("読者に向けた書き方" in t and "スキル ibgs" in t and ".agents/skills/ibgs/SKILL.md" in t and "検品ゲート" in t
+              and "06:00" in t and "素材の title" in t,
+              f"info-boundary.{role}: スキル ibgs を使わせていない・紙面の境界(読む時点・素材の title)が無い")
+        check("ダッシュ" not in t, f"info-boundary.{role}: ibgs の中身を依頼文に言い換えて写している")
     r = pipelib.maintenance_rules("review")
-    check("R17" in r and "R18" in r and "R19" in r and "ブロック" in r, "校閲に読者に向けた書き方のブロック項目が無い")
+    check("R17" in r and "ブロック" in r, "校閲に読者に向けた書き方のブロック項目が無い")
     art = {"slug": "s", "brand": "million", "rank": "small", "angle": "a", "candidate_ids": ["c1"]}
     t = compose.article_prompt("2026-11-25", art, [{"id": "c1", "url": "https://idolmaster-official.jp/news/1"}], [], None)
     check("読者に向けた書き方" in t, "執筆の依頼文に読者に向けた書き方が埋まっていない")

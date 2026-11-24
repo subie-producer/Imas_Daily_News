@@ -2201,7 +2201,8 @@ def polite_urlopen(req, timeout: float, deadline: float | None = None, wait_dead
 
 
 # メンテナンスで読めなかったサイトの、断り書きでの呼び名(ここに無いサイトはホスト名で書く)
-MAINTENANCE_SITE_NAMES = {"idolmaster-official.jp": "公式ポータル", "lantis.jp": "ランティス", "asobistore.jp": "ASOBI STORE"}
+MAINTENANCE_SITE_NAMES = {"idolmaster-official.jp": "公式ポータル", "lantis.jp": "ランティス", "asobistore.jp": "ASOBI STORE",
+                          "idolmaster-tours-w.bn-am.net": "TOURS公式サイト"}
 # 断り書きを付け始めた号と、それより前に発行した号の文面(発行済みの号は再生成しても文面を変えない)。
 # 編集長の決定 2026-10-22: 10/23 号は公式ポータルのメンテナンスに限って断り書きを付けて掲載。2026-10-23: どのサイトでも、読んだときに
 # メンテナンスの画面だった出典は「確認できていない」と断って掲載する(常設)

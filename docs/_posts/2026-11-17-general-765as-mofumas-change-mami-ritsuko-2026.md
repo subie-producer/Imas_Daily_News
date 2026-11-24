@@ -27,5 +27,3 @@ verified_facts:
   url: https://www.nicovideo.jp/watch/sm47054030?cmp=award2026
 ---
 765ASの楽曲を使ったファン制作MVの投稿があった。ニコニコ動画のタイトルは「【もふM@S MV】 「CHANGE!!!!」 真美・律子」。 <!-- N1 -->
-
-※nicovideo.jpの原本を読み直せず、現在の内容は確認できていません(2026年11月17日時点)。内容は収集時点(11月17日)に読んだ原本に基づきます。 <!-- notice:portal-maintenance -->

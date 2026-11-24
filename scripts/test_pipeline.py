@@ -3409,8 +3409,11 @@ def test_maintenance_page_is_not_read(tmp: Path):
     check(cv[0].get("verify") == "unconfirmed" and "メンテナンス" in (cv[0].get("verify_note") or "") and counts["unconfirmed"] == 1,
           f"メンテナンス中の出典の候補を URL の取り違えとして使えなくした: {cv[0].get('verify')} {cv[0].get('verify_note')}")
     # 依頼文: 執筆・書き直し・校閲とも、メンテナンス中の url は読めないだけで、confirmed の素材の facts を使う・照合する
+    # (公式・準公式の素材だけ。書き直しの扱いは site-maintenance.revise にまとめて、依頼文に埋める)
     for name in ("write-article", "revise-article", "review-article"):
         text = (Path(compose.__file__).resolve().parent.parent / "prompts" / f"{name}.md").read_text(encoding="utf-8")
+        if name != "write-article":
+            text += pipelib.maintenance_rules(name.split("-")[0])
         check("FETCH_FAILED: メンテナンス中" in text and "confirmed" in text, f"{name} にメンテナンス中の url の扱いが無い")
 
 
@@ -20118,6 +20121,8 @@ def test_page_archive_store(tmp: Path):
     # 作業ツリーの fetch_page.py をそのまま走らせる
     refuse = (f"import runpy, sys, urllib.request\nsys.argv = [{str(wt / 'scripts' / 'fetch_page.py')!r}, {dead!r}]\n"
               f"sys.path.insert(0, {str(wt / 'scripts')!r})\n"
+              # 原本で書いてよいのは公式・準公式のページだけ(編集長 2026-11-25)。この事例のページは公式として読ませる
+              "import pipelib\npipelib.classify_source = lambda u: '公式'\n"
               "def refused(*a, **k):\n    raise urllib.request.URLError(ConnectionRefusedError(111, 'Connection refused'))\n"
               "urllib.request.urlopen = refused\nrunpy.run_path(sys.argv[0], run_name='__main__')\n")
     r = subprocess.run([sys.executable, "-c", refuse], cwd=wt, env=env, capture_output=True, text=True,
@@ -20155,6 +20160,11 @@ def test_page_archive_versions_and_reads(tmp: Path):
     import collect
     import fetch_page
     import page_archive as pa
+    # 読み直せないページの原本で書いてよいのは公式・準公式だけ(編集長 2026-11-25)。この事例のサイト(audit.example 等)は公式として読ませ、
+    # 終わったら戻す(_own_archive の後片付けに載せる)
+    saved_classify = fetch_page.classify_source
+    fetch_page.classify_source = lambda u: "公式"
+    _AFTER_TEST.append(lambda: setattr(fetch_page, "classify_source", saved_classify))
     rec = tmp / "fetched" / "r.jsonl"
     rec.parent.mkdir(parents=True)
 
@@ -23481,6 +23491,9 @@ def main() -> int:
     return 1 if FAILS else 0
 
 
+_AFTER_TEST: list = []      # テストが差し替えたものを戻す後片付け(_own_archive がテストの終わりに必ず呼ぶ)
+
+
 def _own_archive(fn):
     """テストごとに原本の置き場(page_archive)を空の別の置き場にする(前のテストが読んだページの原本を、次のテストの fetch_page.py が
     「読み直せないときの原本」として返さない)。収集の締切(collect.DEADLINE。collect.main が決める)もテストの前の値に戻す
@@ -23496,6 +23509,8 @@ def _own_archive(fn):
         try:
             return fn(*a, **k)
         finally:
+            while _AFTER_TEST:
+                _AFTER_TEST.pop()()
             os.environ["IMAS_PAGE_ARCHIVE"] = saved
             if col is None:
                 col = sys.modules.get("collect")

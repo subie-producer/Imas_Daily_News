@@ -2214,6 +2214,9 @@ MAINTENANCE_NOTICE_TAIL = "がメンテナンス中のため、原本は確認�
 # 読み直せず、保存の原本(page_archive)で書いた出典の断り書き(編集長 2026-10-26。読み直して同じ内容を読めたら付けない)。
 # {read} は原本を読んだ日(収集が読んだ版は「収集時点(10月25日)」、執筆などが読み直した版は「10月26日」)
 ARCHIVE_NOTICE_FROM = "2026-10-27"
+# 読み直せなかった(メンテナンスでない)出典の断り書きは、この号の前の号まで(編集長 2026-11-25: 読者に宛てていない舞台裏なのでやめる。
+# メンテナンスの断り書きは常設のまま)
+ARCHIVE_FAILED_NOTICE_UNTIL = "2026-11-26"
 ARCHIVE_NOTICE_TAILS = {
     "maintenance": "がメンテナンス中のため、原本は現在確認できていません({date}時点)。内容は{read}に読んだ原本に基づきます。",
     "failed": "の原本を読み直せず、現在の内容は確認できていません({date}時点)。内容は{read}に読んだ原本に基づきます。",
@@ -2268,6 +2271,8 @@ def maintenance_notice(edition: str, hosts, archived=None) -> str | None:
         if not host:
             continue
         read = f"収集時点({t.month}月{t.day}日)" if via == "collect" else f"{t.month}月{t.day}日"
+        if why != "maintenance" and edition >= ARCHIVE_FAILED_NOTICE_UNTIL:
+            continue
         groups.setdefault(("maintenance" if why == "maintenance" else "failed", read), set()).add(maintenance_site_name(host))
     for (why, read), names in sorted(groups.items(), key=lambda kv: (sorted(kv[1]), kv[0])):
         parts.append("・".join(sorted(names)) + ARCHIVE_NOTICE_TAILS[why].format(date=day, read=read))
@@ -2276,8 +2281,10 @@ def maintenance_notice(edition: str, hosts, archived=None) -> str | None:
 
 def maintenance_rules(role: str) -> str:
     """執筆・書き直し・校閲の依頼文に足す、メンテナンス中の出典の扱い(prompts/site-maintenance.<role>.md。常設)と、
-    保存の原本(page_archive)で読んだ・内容が変わった・無くなった出典の扱い(prompts/source-archive.<role>.md)。"""
-    return render_prompt(f"site-maintenance.{role}") + render_prompt(f"source-archive.{role}")
+    保存の原本(page_archive)で読んだ・内容が変わった・無くなった出典の扱い(prompts/source-archive.<role>.md)と、
+    読者に向けた書き方(prompts/info-boundary.<role>.md。編集長 2026-11-25: 執筆には常に ibgs を当てる)。"""
+    return (render_prompt(f"site-maintenance.{role}") + render_prompt(f"source-archive.{role}")
+            + render_prompt(f"info-boundary.{role}"))
 
 
 def maintenance_record(rec) -> Path:

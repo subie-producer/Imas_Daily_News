@@ -23,7 +23,7 @@
 | write-article(+ .roundup / .culture) | 執筆(`compose.article_prompt`) | Codex luna | 記事(schema/article-out) |
 | revise-article | 校閲の指摘を受けた書き直し(`compose.revise_prompt`) | Codex luna | 記事(同上) |
 | review-article / review-paper | 校閲(`compose.claude_review`) | Claude haiku | 判定(prompts/review-schema.json) |
-| site-maintenance.* / source-archive.* | 執筆・書き直し・校閲に足す、出典のサイトのメンテナンスと原本の照合の扱い(`pipelib.maintenance_rules`) | — | — |
+| site-maintenance.* / source-archive.* / info-boundary.* | 執筆・書き直し・校閲に足す、出典のサイトのメンテナンスと原本の照合の扱い、読者に向けた書き方(`pipelib.maintenance_rules`) | — | — |
 | source-update(+ .retry)| 発行済み記事の出典の変化の判定と変化の要約(`source_watch.judge`。収集の終わり。通ったものは「出典の更新」の素材) | Codex luna | 種類と要約(schema/source-update) |
 | source-update-review | 判定と要約の案の校閲(`source_watch.review`) | Claude haiku | approve / block(schema/source-update-review) |
 | assemble-digest / assemble-ledger | 組版の判断(`assemble.prompt_digest` / `prompt_ledger`) | Claude sonnet | digest / 既報・予約・pending |
@@ -227,6 +227,11 @@
 - 出典の原本の照合(source-archive.review。2026-10-26): 執筆の節の同じ項目のとおり。読み直せず原本で読んだページは読めた出典として照合し、
   内容が変わったページはいまの版を正として、古い値を今の事実として書いた記事を止める。無くなったページを出典に残した記事も止める
   (取り下げ・移動の可能性。その url を外したことは出典隠しではない)
+- 読者に向けた書き方(info-boundary.write / .revise / .review。編集長 2026-11-25「ibgs を常に適用して執筆する」): 11/24 号のミリシタの記事の末尾に
+  「※nitter.cfの原本を読み直せず…teapawt.orgの原本を読み直せず…」が載った。誰に向けた何のための文で、どこのリンクか読者に分からない
+  (出典欄に無い X の代替サイトのホスト名)。書き手の作業の経過・依頼文の言葉・内部の識別子を紙面に出さない、文の関係を構造で示す、
+  決まった言い回しを使わない、の3つを執筆・書き直しに書き、校閲は R17〜R19 でブロックする。読み直せなかった出典の断り書き
+  (pipelib.ARCHIVE_FAILED_NOTICE_UNTIL)も同じ理由で 11/26 号から付けない。メンテナンスの断り書きは常設の決定のまま残す
 - 当日トリガー: 「終了日は既知だから当日トリガーとして成立しない」という誤りで、総選挙ミッションの期限・文化祭の開催中・無料公開の最終日を落とした(2026-09-10)
 - 休載・延期・中止もニュース: 連載漫画の休載告知を「ニュース性の欠如」で落とした(2026-09-10)
 - 「公式バッジの誤用」の項目は外した(2026-09-18): 出典の種別は判定表からコードが付けるので、執筆には直せない指摘になる

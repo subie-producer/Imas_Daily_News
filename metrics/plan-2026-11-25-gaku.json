@@ -1,0 +1,342 @@
+{
+ "decisions": {
+  "gaku-metamorphose-mv-3m-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "300万再生は11/23号で記事化済み。EP配信開始も11/24号で既報"
+  },
+  "metamorphose-youtube-ranking-2026-11-19": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "出典の変化は再生数の表示のみで読者に関わる変更なし"
+  },
+  "twinkle-rabbit-poster-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "出典の変化はSNS数値の表示のみ。展示開始27日は既報"
+  },
+  "gakumas-round1-vol2": {
+   "action": "article",
+   "angle": "学マス×ROUND1 vol.2が12月1日に開幕、新規描き下ろしの先行販売・コラボメニュー・特典・コラボパック・ルームなど詳細と、カラオケコラボルームの予約制の条件",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "11/08号は詳細後日発表。詳細が出たため新情報"
+  },
+  "gakumas-round1-vol-2-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gakumas-round1-vol2",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ボウリング・カラオケ・スポッチャのコラボメニュー詳細"
+  },
+  "gaku-round1-vol2-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gakumas-round1-vol2",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "出典変更: コラボルームは原則予約制・割引なし・転売禁止の追記"
+  },
+  "metamorphose-mv-3m-views-2026-11-22": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/23号で300万再生を記事化済み"
+  },
+  "roar-mv-2m-views-2026-11-22": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/23号で200万再生を記事化済み"
+  },
+  "miracle-nanau-mv-3m-views-2026-11-22": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/23号で300万再生を記事化済み"
+  },
+  "kanae-metamorphose-ep-track-preview-2026-11-24": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "EP配信開始と収録曲は11/24号で既報"
+  },
+  "hiro-shinozawa-birthday-messages-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-shinosawa-hiro-birthday-message-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ募集の二次情報"
+  },
+  "gearbeat-concerto-program-letters-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "締切は24日で終了済み、11/24号で既報"
+  },
+  "gaku-cedec-kyushu-ui-design-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "UI演出の設計思想は11/19号で記事化済みと同じ話題"
+  },
+  "gaku-kananae-2-5th-login-bonus-2026": {
+   "action": "article",
+   "angle": "氷渡香名江登場記念＆2.5thアニバーサリーログインボーナスは12月1日4時59分まで、初日ジュエル2,500個・7日目にSSRP確定ガシャチケット",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "運営情報は他に3件なくroundup不成立のためsmall"
+  },
+  "gaku-shinosawa-hiro-birthday-message-2026": {
+   "action": "article",
+   "angle": "篠澤広の誕生日（12月21日）に向けたお祝いメッセージと「篠澤広へ、ひとこと。」（10文字以内）の募集が始まり、12月7日まで",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公式の投稿が出典"
+  },
+  "gaku-round1-collab-vol2-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gakumas-round1-vol2",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "全国4店舗のカラオケコラボルーム予約受付開始"
+  },
+  "gaku-gearbeat-concerto-program-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "お便り締切は24日で終了、配信日時・出演者は11/18号と11/24号で既報"
+  },
+  "gaku-metamorphose-fanart-2026-11-25": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "個人のファンアート投稿。ファン面(general)の対象で出典も未確認"
+  },
+  "hoshigakuen-radio-guest-2026-11-25": {
+   "action": "article",
+   "angle": "初星学園放送部は本日11月25日放送、ゲストは安倍彩野夏さん（氷渡香名江役）と伊藤舞音さん（倉本千奈役）で、安倍さんへの質問への回答が聞ける",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約。当日の放送が開始のトリガー"
+  },
+  "hatsuboshi-radio-2026-11-25": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "hoshigakuen-radio-guest-2026-11-25",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ放送回の続報予約"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "gaku-gakumas-round1-vol2",
+    "brand": "gaku",
+    "rank": "medium",
+    "angle": "学マス×ROUND1 vol.2が12月1日に開幕、新規描き下ろしの先行販売・コラボメニュー・特典・コラボパック・ルームなど詳細と、カラオケコラボルームの予約制の条件",
+    "purpose": "新情報",
+    "lead_score": 60,
+    "dedup_key": "gakumas-round1-vol2",
+    "candidate_ids": [
+     "202611241835-watch-2",
+     "202611241835-explore-11",
+     "202611242337-explore-12",
+     "update-7a8b51b6c00c",
+     "202611250223-grok-45",
+     "202611250223-grok-64"
+    ]
+   },
+   {
+    "slug": "gaku-kananae-2-5th-login-bonus-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "氷渡香名江登場記念＆2.5thアニバーサリーログインボーナスは12月1日4時59分まで、初日ジュエル2,500個・7日目にSSRP確定ガシャチケット",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "gaku-kananae-2-5th-login-bonus-2026",
+    "candidate_ids": [
+     "202611250223-grok-43"
+    ]
+   },
+   {
+    "slug": "gaku-shinosawa-hiro-birthday-message-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "篠澤広の誕生日（12月21日）に向けたお祝いメッセージと「篠澤広へ、ひとこと。」（10文字以内）の募集が始まり、12月7日まで",
+    "purpose": "新情報",
+    "lead_score": 25,
+    "dedup_key": "gaku-shinosawa-hiro-birthday-message-2026",
+    "candidate_ids": [
+     "202611250223-grok-44",
+     "202611242337-explore-10"
+    ]
+   },
+   {
+    "slug": "gaku-hoshigakuen-radio-guest-2026-11-25",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "初星学園放送部は本日11月25日放送、ゲストは安倍彩野夏さん（氷渡香名江役）と伊藤舞音さん（倉本千奈役）で、安倍さんへの質問への回答が聞ける",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "hoshigakuen-radio-guest-2026-11-25",
+    "candidate_ids": [
+     "sched-2026-11-25-hoshigakuen-radio-guest-2026-11-25-その他",
+     "sched-2026-11-25-hoshigakuen-radio-guest-2026-11-25-開始",
+     "sched-2026-11-25-hatsuboshi-radio-2026-11-25-開始"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "gaku-metamorphose-mv-3m-2026",
+    "reason": "既報",
+    "note": "300万再生は11/23号で記事化済み。EP配信開始も11/24号で既報"
+   },
+   {
+    "dedup_key": "metamorphose-youtube-ranking-2026-11-19",
+    "reason": "既報",
+    "note": "出典の変化は再生数の表示のみで読者に関わる変更なし"
+   },
+   {
+    "dedup_key": "twinkle-rabbit-poster-2026",
+    "reason": "既報",
+    "note": "出典の変化はSNS数値の表示のみ。展示開始27日は既報"
+   },
+   {
+    "dedup_key": "metamorphose-mv-3m-views-2026-11-22",
+    "reason": "既報",
+    "note": "11/23号で300万再生を記事化済み"
+   },
+   {
+    "dedup_key": "roar-mv-2m-views-2026-11-22",
+    "reason": "既報",
+    "note": "11/23号で200万再生を記事化済み"
+   },
+   {
+    "dedup_key": "miracle-nanau-mv-3m-views-2026-11-22",
+    "reason": "既報",
+    "note": "11/23号で300万再生を記事化済み"
+   },
+   {
+    "dedup_key": "kanae-metamorphose-ep-track-preview-2026-11-24",
+    "reason": "既報",
+    "note": "EP配信開始と収録曲は11/24号で既報"
+   },
+   {
+    "dedup_key": "gearbeat-concerto-program-letters-2026",
+    "reason": "既報",
+    "note": "締切は24日で終了済み、11/24号で既報"
+   },
+   {
+    "dedup_key": "gaku-cedec-kyushu-ui-design-2026",
+    "reason": "既報",
+    "note": "UI演出の設計思想は11/19号で記事化済みと同じ話題"
+   },
+   {
+    "dedup_key": "gaku-gearbeat-concerto-program-2026",
+    "reason": "既報",
+    "note": "お便り締切は24日で終了、配信日時・出演者は11/18号と11/24号で既報"
+   },
+   {
+    "dedup_key": "gaku-metamorphose-fanart-2026-11-25",
+    "reason": "面違い",
+    "note": "個人のファンアート投稿。ファン面(general)の対象で出典も未確認"
+   }
+  ],
+  "cross_brand": []
+ }
+}

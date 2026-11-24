@@ -1,0 +1,35 @@
+{
+ "decisions": {
+  "idolmaster-series-popup-taipei-2027": {
+   "action": "article",
+   "angle": "THE IDOLM@STER Series POP-UP STORE in TAIPEI 2027 寶島紀行が2027年1月20日〜26日に台北松山文創園區で開催、如月千早・塩見周子・北上麗花・信玄誠司らが参加",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 70,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "prior・events・他面の記事に同じ話題なし。公式発表で新規。"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "general-idolmaster-series-popup-taipei-2027",
+    "brand": "general",
+    "rank": "medium",
+    "angle": "THE IDOLM@STER Series POP-UP STORE in TAIPEI 2027 寶島紀行が2027年1月20日〜26日に台北松山文創園區で開催、如月千早・塩見周子・北上麗花・信玄誠司らが参加",
+    "purpose": "新情報",
+    "lead_score": 70,
+    "dedup_key": "idolmaster-series-popup-taipei-2027",
+    "candidate_ids": [
+     "202611241835-watch-0",
+     "202611241835-watch-1",
+     "202611250223-grok-68"
+    ]
+   }
+  ],
+  "dropped": [],
+  "cross_brand": []
+ }
+}

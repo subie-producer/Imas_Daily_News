@@ -946,5 +946,33 @@
   "src_candidate_id": "202611240223-grok-64",
   "companion_of": "sched-2026-12-10-sidem-producer-meeting-ajewelholic-2027-premium-second-結果",
   "src_dedup_key": "sidem-producer-meeting-ajewelholic-2027-premium-second"
+ },
+ {
+  "id": "sched-2026-12-10-sidem-producer-meeting-2027-premium-2nd-結果",
+  "dedup_key": "sidem-producer-meeting-2027-premium-2nd",
+  "brand": "sidem",
+  "subject": "SideMプロミ プレミアム会員2次先行 当落発表",
+  "kind": "結果",
+  "note": "13時から当落を確認できる",
+  "reserved_on": "2026-11-25",
+  "occurs_on": "2026-12-10",
+  "title": "SideMプロミ2027 アソビストアプレミアム会員2次先行",
+  "url": "https://idolmaster-official.jp/live_event/sidem_pm2027/ticket/",
+  "source_type": "公式",
+  "facts": [
+   "受付期間: 2026年11月5日(木)12:00～11月26日(木)23:59",
+   "当落発表: 2026年12月10日(木)13:00～",
+   "入金期間: 2026年12月10日(木)13:00～12月14日(月)23:59",
+   "現地チケット全席指定：11,000円(税込)",
+   "枚数制限：お一人様1公演につき4枚まで(複数公演申込可)",
+   "アソビストアプレミアム12か月会員のみ申込可能。申込から当落発表までに退会すると抽選対象外。",
+   "受付ページから申し込み。応募多数の場合は抽選。",
+   "エンゲージメント: 高"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "deadline": "2026-11-26",
+  "link_from": "https://x.com/SideM_official/status/2124835366079520769",
+  "src_candidate_id": "202611250223-grok-36"
  }
 ]

@@ -268,5 +268,31 @@
   "src_candidate_id": "202611210225-grok-111",
   "companion_of": "sched-2027-03-10-sidem-aji-project-cd-release-2027-発売",
   "src_dedup_key": "sidem-aji-project-cd-release-2027"
+ },
+ {
+  "id": "sched-2027-03-10-sidem-whats-it-taste-like-cds-2027-発売",
+  "dedup_key": "sidem-whats-it-taste-like-cds-2027",
+  "brand": "sidem",
+  "subject": "SideM「What's it taste like?」Bitter 発売",
+  "kind": "発売",
+  "note": "Bitterの初回限定盤・通常盤を店頭や通販で入手できる",
+  "reserved_on": "2026-11-25",
+  "occurs_on": "2027-03-10",
+  "title": "SideM『What's it taste like?』CD予約情報",
+  "url": "https://www.animate-onlineshop.jp/pd/3643174/",
+  "source_type": "当事者",
+  "facts": [
+   "Sweet 初回限定盤：2027年2月24日発売、5,500円(税込)、品番LACA-35333",
+   "Spicy 初回限定盤：2027年3月3日発売、5,500円(税込)",
+   "Bitter 初回限定盤：2027年3月10日発売、5,500円(税込)",
+   "初回限定盤：新曲＋ソロVer.（15曲）＋新曲Off Vocalを収録",
+   "アーティスト：315 STARS (フィジカルVer.)",
+   "Sweetのアニメイト特典：ミニフォト(54mm×86mm)、ロングフォト(150×50mm)。特典は無くなり次第終了",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "unconfirmed",
+  "link_from": "https://x.com/animatekyobashi/status/2125175154594677174",
+  "src_candidate_id": "202611250223-grok-37"
  }
 ]

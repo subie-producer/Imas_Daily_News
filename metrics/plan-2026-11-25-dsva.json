@@ -1,0 +1,181 @@
+{
+ "decisions": {
+  "manaka-birthday-archive-watch-2026": {
+   "action": "article",
+   "angle": "愛夏バースデーLIVE延期公演のアーカイブ視聴中。冒頭無料配信・記念ボイス再販・公演アンケートが新たに案内され、チケット販売は29日18時まで",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "既報はチケット価格・期間・上映会。無料配信・ボイス再販・アンケートが新事実"
+  },
+  "cosmo-yes-tokyo-dance-2026": {
+   "action": "article",
+   "angle": "上水流宇宙が「YES!東京 / #EBiDAN」を踊ってみたショート動画を公開した",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "出典は二次情報(yutura)。公開は11/22"
+  },
+  "dsva-sukusuku-radio-start-2026": {
+   "action": "article",
+   "angle": "「vα-livがすくすく育つラジオ(卵)」の初回配信が11月30日に決定、以降は隔週月曜13時頃",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "11/13号は初回日未定。valiv-onsen-radio-eggを統合"
+  },
+  "cosmo-zattsu-choujou-dance-collab-2026": {
+   "action": "article",
+   "angle": "上水流宇宙が蛇宵ティア、レイン・パターソン、マリア・マリオネットと「ザッツ!超常」を4人で踊るショート動画を公開",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公式発信。YouTube Shorts・TikTokで公開"
+  },
+  "manaka-japanese-ramen-simulator-compilation-2026": {
+   "action": "article",
+   "angle": "灯里愛夏が「Japanese Ramen Simulator」3回分の総集編切り抜き動画を公開",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 8,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "fan-manaka-10-minute-endurance-clip-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "同人・ファン主催",
+   "note": "ファン制作の10分耐久動画。出典も未確認"
+  },
+  "valiv-machine-party-stream-2026-11": {
+   "action": "article",
+   "angle": "愛夏・宇宙・レトラが今夜20時からそれぞれのYouTubeで「Machine Party」を配信",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(開始)。当日トリガー"
+  },
+  "valiv-onsen-radio-egg": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "dsva-sukusuku-radio-start-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ初回配信日決定の知らせ"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "dsva-manaka-birthday-archive-watch-2026",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "愛夏バースデーLIVE延期公演のアーカイブ視聴中。冒頭無料配信・記念ボイス再販・公演アンケートが新たに案内され、チケット販売は29日18時まで",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "manaka-birthday-archive-watch-2026",
+    "candidate_ids": [
+     "202611240732-explore-0"
+    ]
+   },
+   {
+    "slug": "dsva-cosmo-yes-tokyo-dance-2026",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "上水流宇宙が「YES!東京 / #EBiDAN」を踊ってみたショート動画を公開した",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "cosmo-yes-tokyo-dance-2026",
+    "candidate_ids": [
+     "202611242337-explore-14"
+    ]
+   },
+   {
+    "slug": "dsva-sukusuku-radio-start-2026",
+    "brand": "dsva",
+    "rank": "medium",
+    "angle": "「vα-livがすくすく育つラジオ(卵)」の初回配信が11月30日に決定、以降は隔週月曜13時頃",
+    "purpose": "新情報",
+    "lead_score": 30,
+    "dedup_key": "dsva-sukusuku-radio-start-2026",
+    "candidate_ids": [
+     "202611250223-explore-4",
+     "202611250223-grok-87",
+     "202611250223-grok-90"
+    ]
+   },
+   {
+    "slug": "dsva-cosmo-zattsu-choujou-dance-collab-2026",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "上水流宇宙が蛇宵ティア、レイン・パターソン、マリア・マリオネットと「ザッツ!超常」を4人で踊るショート動画を公開",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "cosmo-zattsu-choujou-dance-collab-2026",
+    "candidate_ids": [
+     "202611250223-grok-50",
+     "202611250223-grok-88"
+    ]
+   },
+   {
+    "slug": "dsva-manaka-japanese-ramen-simulator-compilation-2026",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "灯里愛夏が「Japanese Ramen Simulator」3回分の総集編切り抜き動画を公開",
+    "purpose": "新情報",
+    "lead_score": 8,
+    "dedup_key": "manaka-japanese-ramen-simulator-compilation-2026",
+    "candidate_ids": [
+     "202611250223-grok-51",
+     "202611250223-grok-89"
+    ]
+   },
+   {
+    "slug": "dsva-valiv-machine-party-stream-2026-11",
+    "brand": "dsva",
+    "rank": "medium",
+    "angle": "愛夏・宇宙・レトラが今夜20時からそれぞれのYouTubeで「Machine Party」を配信",
+    "purpose": "期日の知らせ",
+    "lead_score": 60,
+    "dedup_key": "valiv-machine-party-stream-2026-11",
+    "candidate_ids": [
+     "202611250223-grok-65",
+     "sched-2026-11-25-valiv-machine-party-stream-2026-11-開始"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "fan-manaka-10-minute-endurance-clip-2026",
+    "reason": "同人・ファン主催",
+    "note": "ファン制作の10分耐久動画。出典も未確認"
+   }
+  ],
+  "cross_brand": []
+ }
+}

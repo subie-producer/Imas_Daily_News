@@ -1,0 +1,130 @@
+{
+ "decisions": {
+  "imas-radio-episode-6-archive-2026-11-24": {
+   "action": "article",
+   "angle": "IM＠S RADIO第6回(ゲスト三瓶由布子)の本編アーカイブが公開され、メンバー限定アフタートークも視聴できる",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "アフタートークを統合"
+  },
+  "imas-radio-aftertalk-2026-11-24": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "imas-radio-episode-6-archive-2026-11-24",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ放送回のアフタートーク"
+  },
+  "imas-radio-mail-2026-11-24": {
+   "action": "article",
+   "angle": "IM＠S RADIO次回のMoments Mailテーマは「2026年の思い出」、Best Storiesと生ジングルの募集も",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "番組メール募集の新しいお題"
+  },
+  "765-961-idol-ultimate-lighttag-2027": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "765-961-xr-live-2027",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ先行の当落発表(13時)。ライトタグ付き券も同じ手続き"
+  },
+  "765-961-xr-live-2027": {
+   "action": "article",
+   "angle": "765×961 xRライブのプレミアム会員先行、本日13時に当落発表と当選者の入金受付が始まり、入金は30日23時59分まで",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 70,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "当日のトリガー(結果・入金開始)。既報の料金等は繰り返さず手続き中心に"
+  },
+  "tours-miki-birthday-2026": {
+   "action": "article",
+   "angle": "ツアマス星井美希のバースデーライブ称号は本日が最終日、26日1時59分までにセンター美希でライブを",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "当日のトリガー(獲得期限の最終日)"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "joint-imas-radio-episode-6-archive-2026-11-24",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "IM＠S RADIO第6回(ゲスト三瓶由布子)の本編アーカイブが公開され、メンバー限定アフタートークも視聴できる",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "imas-radio-episode-6-archive-2026-11-24",
+    "candidate_ids": [
+     "202611250223-grok-9",
+     "202611250223-grok-10"
+    ]
+   },
+   {
+    "slug": "joint-imas-radio-mail-2026-11-24",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "IM＠S RADIO次回のMoments Mailテーマは「2026年の思い出」、Best Storiesと生ジングルの募集も",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "imas-radio-mail-2026-11-24",
+    "candidate_ids": [
+     "202611250223-grok-55"
+    ]
+   },
+   {
+    "slug": "joint-765-961-xr-live-2027",
+    "brand": "joint",
+    "rank": "medium",
+    "angle": "765×961 xRライブのプレミアム会員先行、本日13時に当落発表と当選者の入金受付が始まり、入金は30日23時59分まで",
+    "purpose": "期日の知らせ",
+    "lead_score": 70,
+    "dedup_key": "765-961-xr-live-2027",
+    "candidate_ids": [
+     "sched-2026-11-25-765-961-xr-live-2027-開始",
+     "sched-2026-11-25-765-961-xr-live-2027-開始-src1",
+     "sched-2026-11-25-765-961-idol-ultimate-lighttag-2027-結果",
+     "sched-2026-11-25-765-961-idol-ultimate-lighttag-2027-結果-src1",
+     "sched-2026-11-25-765-961-idol-ultimate-lighttag-2027-結果-src2"
+    ]
+   },
+   {
+    "slug": "joint-tours-miki-birthday-2026",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "ツアマス星井美希のバースデーライブ称号は本日が最終日、26日1時59分までにセンター美希でライブを",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "tours-miki-birthday-2026",
+    "candidate_ids": [
+     "sched-2026-11-25-tours-miki-birthday-2026-締切",
+     "sched-2026-11-25-tours-miki-birthday-2026-締切-src1"
+    ]
+   }
+  ],
+  "dropped": [],
+  "cross_brand": []
+ }
+}

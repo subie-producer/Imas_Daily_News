@@ -1,0 +1,42 @@
+{
+ "shiny-sweets-paradise-goods-online-2026": {
+  "title": "スイパラのシャニマスコラボグッズ通販が本日10時からYahoo!ショッピングのスイパラショップで始まり、12月9日23:59まで",
+  "stage": "執筆で見送り",
+  "why": "NO_PRIMARY_SOURCE 販売開始日と期間を伝える公式告知または報道の出典を確認できませんでした。確認できた販売ページには商品6点と価格が掲載されていますが、販売期間の記載はありません。",
+  "candidate_ids": [
+   "sched-2026-11-25-shiny-sweets-paradise-goods-online-2026-開始"
+  ]
+ },
+ "cg-cosmoclock-special-2026": {
+  "title": "シンデレラガールズ、29日まで観覧車特別演出",
+  "stage": "書き直しで見送り",
+  "why": "NO_PRIMARY_SOURCE 公式ポータルの https://cinderellagirls.idolmaster-official.jp/news/ にはコラボ詳細の告知がありますが、特別演出の期間と時刻は確認できませんでした。期間・時刻を確認できた https://cosmoworld.jp/topics/5",
+  "candidate_ids": [
+   "202611232332-explore-0"
+  ]
+ },
+ "dsva-cosmo-yes-tokyo-dance-2026": {
+  "title": "上水流宇宙が「YES!東京」踊ってみた",
+  "stage": "書き直しで見送り",
+  "why": "NOT_NEWS 動画投稿は2026年11月23日号の既報と同じ事実で、記事に新しい事実や当日のトリガーがありません。記事を取り下げます。",
+  "candidate_ids": [
+   "202611242337-explore-14"
+  ]
+ },
+ "gaku-kananae-2-5th-login-bonus-2026": {
+  "title": "学マス、ログボは12月1日4時59分まで",
+  "stage": "書き直しで見送り",
+  "why": "NOT_NEWS 開催中のログインボーナスと報酬、終了日時の案内が中心で、2026年11月25日に新たに発表・発生した出来事を扱う記事として成立しないため。",
+  "candidate_ids": [
+   "202611250223-grok-43"
+  ]
+ },
+ "cg-yamanashi-walk-wander-art-2026": {
+  "title": "デレマス山梨周遊、特典条件を更新",
+  "stage": "校閲ブロック",
+  "why": "R1 従来の特典条件を「税込2,000円ごとに1枚」とし、「グッズと店内商品の合計」への変更として書いているが、出典の変更前版(11/22 18:43 の版)は「税込2,000円お買い上げごとに1枚」とだけ書き、店内商品の扱いには触れていない。変",
+  "candidate_ids": [
+   "update-c7ea9f689047"
+  ]
+ }
+}

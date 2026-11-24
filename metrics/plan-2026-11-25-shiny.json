@@ -1,0 +1,236 @@
+{
+ "decisions": {
+  "shiny-shiny-competition-2026-11": {
+   "action": "article",
+   "angle": "シャニソンのプロデュースイベント「シャイニーコンペティション」が開催中で、対象アイドル5人とPt条件、28日20:59までの期間を伝える",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "前号は近日開催の予告。開始後の詳細が新事実"
+  },
+  "shiny-song-for-prism-shiny-competition-2026-11": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-shiny-competition-2026-11",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じイベント"
+  },
+  "shiny-sweets-paradise-goods-online-2026": {
+   "action": "article",
+   "angle": "スイパラのシャニマスコラボグッズ通販が本日10時からYahoo!ショッピングのスイパラショップで始まり、12月9日23:59まで",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(開始)。当日トリガーあり。商品・価格は既報なので開始を中心に"
+  },
+  "shiny-mattari-habataki-radio-december-mc-2026": {
+   "action": "roundup",
+   "angle": "シャニマス・シャニソンの運営情報と番組出演まとめ(まったりHBTK12月度MC・ゲスト決定)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "MCは幸村恵理・前川涼子、ゲストは紫月杏朱彩"
+  },
+  "shiny-mattari-habataki-radio-2026-11-24": {
+   "action": "roundup",
+   "angle": "シャニマス・シャニソンの運営情報と番組出演まとめ(まったりHBTK11月24日放送回のノクチル回)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "配信出演の定常情報"
+  },
+  "shiny-mattari-habataki-radio-archive-2026-11-24": {
+   "action": "roundup",
+   "angle": "シャニマス・シャニソンの運営情報と番組出演まとめ(まったりHBTK11月24日放送回のアーカイブ)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ放送回の案内。アーカイブURLはYouTube"
+  },
+  "shiny-style-collection-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/21・11/23の記事と同じ商品・価格・11/29締切。締切は4日先で3日以内でない"
+  },
+  "shiny-song-for-prism-pickup-natsuha-2026-11": {
+   "action": "roundup",
+   "angle": "シャニソンの開催中ガシャ(有栖川夏葉の限定★3ピックアップ、月末3DMV演出)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "開催中のガシャ"
+  },
+  "shiny-haruki-stamp-gasha-2026-11": {
+   "action": "roundup",
+   "angle": "シャニマスの開催中ガシャ(REFRAC7IONS郁田はるき特別アイドルスタンプガシャ)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "開催中のガシャ"
+  },
+  "shiny-song-pickup-kaho-2026-11": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/24『樹里ガシャと運営情報』に果穂ピックアップが掲載済み。新事実なし"
+  },
+  "shiny-fan-art-nichika-2026-11-25": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿のみ。ファン面(culture)は general 面だけ"
+  },
+  "shiny-fan-yunel-collab-visit-2026-11-24": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人の訪問報告。単体では記事にしない"
+  },
+  "fan-ai-art-kogane-tsukioka-2026-11-24": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "同人・ファン主催",
+   "note": "ファンのAIイラスト投稿。出典も未確認"
+  },
+  "shiny-prelude-collection-chiyuki-2026-11": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/19の記事と同内容で新事実なし。終了日は誤りの指摘があり、3日以内の締切トリガーも確認できない"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "shiny-shiny-competition-2026-11",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "シャニソンのプロデュースイベント「シャイニーコンペティション」が開催中で、対象アイドル5人とPt条件、28日20:59までの期間を伝える",
+    "purpose": "新情報",
+    "lead_score": 30,
+    "dedup_key": "shiny-shiny-competition-2026-11",
+    "candidate_ids": [
+     "202611242337-explore-5",
+     "202611250223-grok-24"
+    ]
+   },
+   {
+    "slug": "shiny-sweets-paradise-goods-online-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "スイパラのシャニマスコラボグッズ通販が本日10時からYahoo!ショッピングのスイパラショップで始まり、12月9日23:59まで",
+    "purpose": "期日の知らせ",
+    "lead_score": 60,
+    "dedup_key": "shiny-sweets-paradise-goods-online-2026",
+    "candidate_ids": [
+     "sched-2026-11-25-shiny-sweets-paradise-goods-online-2026-開始"
+    ]
+   },
+   {
+    "slug": "shiny-ops-roundup",
+    "brand": "shiny",
+    "rank": "roundup",
+    "angle": "シャニマス・シャニソンの運営情報と番組出演まとめ(まったりHBTK12月度MC・ゲスト決定)",
+    "lead_score": 0,
+    "dedup_key": "shiny-mattari-habataki-radio-december-mc-2026",
+    "candidate_ids": [
+     "202611250223-grok-19",
+     "202611250223-grok-20",
+     "202611250223-grok-78",
+     "202611250223-grok-21",
+     "202611250223-grok-23",
+     "202611250223-grok-25"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "shiny-style-collection-2026",
+    "reason": "既報",
+    "note": "11/21・11/23の記事と同じ商品・価格・11/29締切。締切は4日先で3日以内でない"
+   },
+   {
+    "dedup_key": "shiny-song-pickup-kaho-2026-11",
+    "reason": "既報",
+    "note": "11/24『樹里ガシャと運営情報』に果穂ピックアップが掲載済み。新事実なし"
+   },
+   {
+    "dedup_key": "shiny-fan-art-nichika-2026-11-25",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿のみ。ファン面(culture)は general 面だけ"
+   },
+   {
+    "dedup_key": "shiny-fan-yunel-collab-visit-2026-11-24",
+    "reason": "個人の話題",
+    "note": "個人の訪問報告。単体では記事にしない"
+   },
+   {
+    "dedup_key": "fan-ai-art-kogane-tsukioka-2026-11-24",
+    "reason": "同人・ファン主催",
+    "note": "ファンのAIイラスト投稿。出典も未確認"
+   },
+   {
+    "dedup_key": "shiny-prelude-collection-chiyuki-2026-11",
+    "reason": "既報",
+    "note": "11/19の記事と同内容で新事実なし。終了日は誤りの指摘があり、3日以内の締切トリガーも確認できない"
+   }
+  ],
+  "cross_brand": []
+ }
+}

@@ -4976,5 +4976,37 @@
   "src_candidate_id": "202611230229-grok-108",
   "companion_of": "sched-2026-11-29-shiny-style-collection-2026-締切",
   "src_dedup_key": "shiny-style-collection-2026"
+ },
+ {
+  "id": "sched-2026-11-29-valiv-manaka-birthday-live-archive-2026-締切",
+  "dedup_key": "valiv-manaka-birthday-live-archive-2026",
+  "brand": "dsva",
+  "subject": "灯里愛夏バースデーLIVE チケット販売終了・アーカイブ最終日",
+  "kind": "締切",
+  "note": "18時までチケット購入、23:59までアーカイブ視聴とボイス購入ができる",
+  "reserved_on": "2026-11-25",
+  "occurs_on": "2026-11-29",
+  "title": "灯里愛夏バースデーONLINE LIVE 2026のアーカイブチケット販売",
+  "url": "https://x.com/valiv_official/status/2124344619932725646",
+  "source_type": "公式",
+  "facts": [
+   "灯里愛夏バースデーONLINE LIVE 2026の同時視聴上映会は11/23(月・祝)13:00から実施。",
+   "チケット販売：11/29(日)18:00まで",
+   "アーカイブ期間：11/29(日)23:59まで",
+   "YouTubeで冒頭無料配信が案内されている。",
+   "バースデー記念ボイスが再販中。",
+   "公演アンケートを実施中。",
+   "エンゲージメント: 中",
+   "言及アイドル: 灯里愛夏",
+   "灯里愛夏バースデーONLINE LIVE 2026の同時視聴上映会は11月23日13:00から実施予定。",
+   "チケット販売：11月29日18:00まで。",
+   "アーカイブ期間：11月29日23:59まで。",
+   "YouTubeで冒頭を無料公開。"
+  ],
+  "via": "explore",
+  "verify": "unconfirmed",
+  "event_date": "2026-11-23",
+  "deadline": "2026-11-29",
+  "src_candidate_id": "202611240732-explore-0"
  }
 ]

@@ -985,5 +985,33 @@
   "src_candidate_id": "202611220221-grok-64",
   "companion_of": "sched-2026-12-07-gaku-gearbeat-concerto-card-set-締切",
   "src_dedup_key": "gaku-gearbeat-concerto-card-set"
+ },
+ {
+  "id": "sched-2026-12-07-gaku-shinosawa-hiro-birthday-message-2026-締切",
+  "dedup_key": "gaku-shinosawa-hiro-birthday-message-2026",
+  "brand": "gaku",
+  "subject": "篠澤広 誕生日メッセージ募集 締切",
+  "kind": "締切",
+  "note": "締切日。フォームからお祝いメッセージと「ひとこと」を送れる最終日",
+  "reserved_on": "2026-11-25",
+  "occurs_on": "2026-12-07",
+  "title": "篠澤広誕生日お祝いメッセージ募集",
+  "url": "https://x.com/gkmas_official/status/2125067129817055341",
+  "source_type": "公式",
+  "facts": [
+   "篠澤広の誕生日は12月21日。",
+   "誕生日お祝いメッセージと「篠澤広へ、ひとこと。」を募集している。",
+   "「ひとこと」は10文字以内で、内容は自由。",
+   "募集は12/7(月)まで（予定）。",
+   "送付先としてMicrosoft Formsの回答ページが案内されている。",
+   "リンク: https://forms.cloud.microsoft/pages/responsepage.aspx?id=q7kiOCyrIE-ozavmrJhsNy1jUNck6E5Boq5Ni9tgygZUMjRDMFVKS1hLOENVM1BPRzVHNVlWV01OTi4u&route=shorturl",
+   "エンゲージメント: 中",
+   "言及アイドル: 篠澤広"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "event_date": "2026-12-21",
+  "deadline": "2026-12-07",
+  "src_candidate_id": "202611250223-grok-44"
  }
 ]

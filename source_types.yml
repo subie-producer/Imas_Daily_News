@@ -135,6 +135,7 @@ discovery_only_domains:
 # --- 二次情報: 他所の発表を写して伝えている情報源(規程2.5) ---
 # 法人運営か個人運営かは問わない。自ら取材・発表していないものはここ。
 secondary_domains:
+  - media.on-gacha.com    # 合議で追加: 署名は編集部のみ、商品発表を定型構成で紹介する媒体
   - mibasamu.doorblog.jp  # 合議で追加: X投稿を集めて写す話題まとめ。個人と示す材料なし(相手の個人ブログ説は未確認)
   - imabazu.com           # 合議で追加: X投稿を集めて順位付けし紹介する媒体。自ら取材した形跡なし
   - dvd-otakara.blog.jp   # 合議で追加: 自称「まとめサイト」。BD発売の告知を他媒体の引用で伝える
@@ -253,6 +254,7 @@ performer_domains:
 # --- ファン: ファン・サークル活動等の**当事者発信** ---
 # 自分の営みを自分で発信しているもの。他所の発表を写しているものは 二次情報 へ。
 fan_domains:
+  - page.yokohama         # 合議で追加: 運営者情報で個人運営と明記。イベント告知を言い換えて掲載
   - salinabo.doorblog.jp  # 合議で追加: 運営者情報なし。個人ブログとみて、内容によらずファン
   - kitayan.games         # 合議で追加: プロフィールで個人のアナリストが運営と明記。個人に紐づくのでファン
   - oshikatsu.ldblog.jp   # 合議で追加: 個人運営のブログ。内容が紹介・まとめでも個人はファン
@@ -285,6 +287,7 @@ party_paths:
   - item.rakuten.co.jp/f272078-takatsuki        # 高槻市ふるさと納税
 
 party_domains:
+  - cheering-ad.jeki.co.jp # 合議で追加: 応援広告の掲出を取り次ぐ事務局の自社サイトで、広告まとめを発信
   - cosmoworld.jp         # 合議で追加: 会場の公式サイトで、コスモクロック21の作品コラボ演出を告知
   - google.com            # 合議で追加: SideM Mフェス缶の販売店マップを掲載。作成者は表示になし
   - shochiku.co.jp        # 合議で追加: 映画配給元。当社配給の劇場版SideM作品を掲載した公式ページ
@@ -524,6 +527,7 @@ video_ids:
     - sm18526341          # 機械で追加: nicovideo.jp/user/17835786「iM@S 6th Anniversary Live - キラ」
     - LSkzNm3AzHk         # 機械で追加: @TogawaNonoha「〖 世界のアソビ大全51 〗遊び…？いいえ、ののは vs ま」
   公式:
+    - VjFfUY_P2Ug         # 機械で追加: @imas-official「【ミリシタ】『キミが真ん中にいた』アイドルグランプリ PV【」
     - DDn5Eq5Ntec         # 機械で追加: @hatsuboshi_gakuen「初星学園 「メタモルフォーゼ」Official Music 」
     - F2Wk47w6fxU         # 機械で追加: @imas-official「【ミリシタ】ゲーム内楽曲『想定心理外 -Outside Is」
     - UTodfL2t6fM         # 機械で追加: @imas-official「【#学マス】ランウェイの秘密 #初星学園放送部 #村田綾香 」
@@ -1304,6 +1308,7 @@ x_accounts:
 # tiktok.com/@…、ch.nicovideo.jp/…、manga.nicovideo.jp/comic/… など。ドメイン(プラットフォーム)では
 # 決まらず、そのパスの主体で決まる。合議が足す(classify_sources.add_paths)。
 path_types:
+  booth.pm/ja/items/8568512: 公式               # 機械で追加: ショップ va-liv.booth.pm
   note.com/thinkaigyo: ファン                     # 合議で追加: 個人アカウントの学マス標ファイナル参加記(ファンレポート)
   note.com/atto_hk: ファン                        # 合議で追加: 個人のnoteで、学園アイマス公演の現地観戦レポートを投稿
   youtube.com/post/Ugkx3L2iBqKM4RM9am4x8oohVKGkvGwL21kU: 公式 # 機械で追加: 持ち主 @imas-official「SideMさんの事、みやたんの事、もっと知りたかったです！ 」
@@ -1372,6 +1377,16 @@ x_posts:
 
 # --- リンク元から引き継いだ種別(リンク先1つずつ。キーは pipelib.link_key)。合議がリンク元の告知と関係していると確かめたものだけ(classify_sources.inherit_from_links)。リンク先そのものの種別より強いときだけ効く ---
 link_types:
+  youtube.com/watch?v=ulOmfWv7abE: 準公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/SideM_lantis/status/2125109660122485052(準公式)。投稿のCafé Parade「Chocolate Special」2DMV修正版
+  youtube.com/watch?v=nGVfqEK4xIg: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://idolmaster-official.jp/news/01_20193(公式)。本文が延期公演の開催と冒頭無料枠URLを案内。相手は主題をボイスのみと見た
+  youtube.com/watch?v=bHqlMb4Zm7Q: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/valiv_official/status/2125159995377410439(公式)。投稿の灯里愛夏「Japanese Ramen Simulator」総集編そのもの
+  youtube.com/watch?v=YCeXn1nTPi0: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/imas_ch/status/2125243058333606382(公式)。投稿で案内された川島瑞樹のお祝いムービーそのもの
+  youtube.com/watch?v=OMIFNeZ5IuA: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/KamizuruCosmo/status/2125152444585799861(公式)。投稿の上水流宇宙「ザッツ！超常」ダンス動画そのもの
+  youtube.com/watch?v=BsJJhWjOp6o: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/imas_ch/status/2125243058333606382(公式)。投稿で案内された輿水幸子のお祝いムービーそのもの
+  youtube.com/watch?v=BUCqIC2oaEA: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://idolmaster-official.jp/news/01_20291(公式)。投稿のIM＠S RADIO #6の本編配信URL（次回放送の告知）
+  youtube.com/watch?v=9NV0GqzPkso: 準公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/SideM_lantis/status/2125182663141085313(準公式)。投稿のLegenders「リフレインアトリウム」2DMVそのもの
+  youtube.com/watch?v=-Vd0of1HXrM: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/imas_ch/status/2125220557297959246(公式)。投稿でIM＠S RADIO #6のアフタートークアーカイブとして案内されている
+  forms.cloud.microsoft/pages/responsepage.aspx?id=q7kiOCyrIE-ozavmrJhsNy1jUNck6E5Boq5Ni9tgygZUMjRDMFVKS1hLOENVM1BPRzVHNVlWV01OTi4u: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://x.com/gkmas_official/status/2125067129817055341(公式)。投稿の篠澤広誕生日メッセージ募集の送付先フォームとして案内されている
   youtube.com/watch?v=vl9SS0toOrs: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/imas_ch/status/2124518274495140262(公式)。星井美希の誕生日ムービーのページで、告知された動画と同じ
   shop.asobistore.jp/category/vl_3rd: 公式      # リンク元から引き継ぎ(合議で関係を確認): https://x.com/valiv_official/status/2124708454510342514(公式)。リンク先の題名が3rdLIVE公式グッズ事前販売で、告知と同じ企画の購入ページ
   youtube.com/watch?v=dp-x87l413o: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/gkmas_official/status/2124458312708284567(公式)。リンク元が『ミラクルナナウ』MVの300万再生突破を伝え、リンク先がそのMV本体

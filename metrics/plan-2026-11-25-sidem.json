@@ -1,0 +1,407 @@
+{
+ "decisions": {
+  "memory-pict-8th-january-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-who-goes-first-setlist-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "実体は劇場版SideMのセットリスト公開(公式サイト)"
+  },
+  "sidem-howanui-vol6-vol7-2026": {
+   "action": "article",
+   "angle": "SideMほわぬいvol.6(全5種)・vol.7(全6種)が11月28日に登場予定。Jupiterのクレーンゲーム登場の告知も合わせて伝える",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "sidem-mfes-animate-winter-wonderland-2026": {
+   "action": "article",
+   "angle": "アニメイトのMフェス対象商品に、High×Jokerのクリアファイルが追加された",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "source_change: 虎牙道から High×Joker の商品に変更後の差分を新事実とする"
+  },
+  "sidem-mfes-label-cans-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "出典はGoogleマップ。閲覧数・公開時期の表示変化が中心で、公式でない地図の店舗追加は記事にしない"
+  },
+  "sidem-who-goes-first-setlist-2026": {
+   "action": "article",
+   "angle": "劇場版SideM「Who goes first」の本編セットリストが公式サイトで公開され、公式プレイリストも配信中",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "セットリストの更新告知・プレイリスト配信も統合。鑑賞前の人への配慮を書く"
+  },
+  "legenders-refrain-atrium-2dmv": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-refrain-atrium-2dmv-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "sidem-fbfes-movie-goods-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/21号と同内容。受注は12月6日まで、締切3日以内でも当日トリガーでもない"
+  },
+  "sidem-zenryoku-heatup-live-2026-11": {
+   "action": "article",
+   "angle": "「全力ヒートアップ!!!」生配信が本日19時からYouTube Liveとニコニコ生放送で始まる。出演は小林大紀・中島ヨシキ・浦尾岳大・宮﨑雅也",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "sidem-315-mode-vol2-spring-goods-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/24号が受注開始を報じ済み。新しい事実なし、締切は12月6日"
+  },
+  "cafe-parade-chocolate-special-2dmv-2026": {
+   "action": "article",
+   "angle": "Café Parade「Chocolate Special」2DMVの一部不備が見つかり、修正版が再公開された",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "既報の公開に対する修正版という新事実"
+  },
+  "sidem-fbfes-movie-playlist-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-who-goes-first-setlist-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "sidem-producer-meeting-ajewelholic-2027-premium-second": {
+   "action": "article",
+   "angle": "SideMプロミ2027のアソビストアプレミアム会員2次先行は、申込締切が明日11月26日23時59分に迫っている",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "締切まで1日。当落は12月10日13時、入金は14日23時59分まで"
+  },
+  "sidem-whats-it-taste-like-cds-2027": {
+   "action": "article",
+   "angle": "315 STARSのCD「What's it taste like?」がSweet・Spicy・Bitterの3作で2027年2月24日から3月10日に順次発売され、予約が始まっている",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "AJIプロジェクトCD3作の既報(11/21)と同一企画なら、新しい事実(発売日・品番・特典)に絞る"
+  },
+  "shiny-kawaii-season-chibiguru-2027": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-howanui-vol6-vol7-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "実体はSideM Jupiterのほわぬいのクレーンゲーム登場予告(BANPRESTO)"
+  },
+  "sidem-jupiter-monthly-theme-song-13-store-stock": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-monthly-theme-song-13-jupiter-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "sidem-movie-fan-activity-2026-11-24": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿が中心。単体では記事にしない"
+  },
+  "sidem-fbfes-movie-setlist-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-who-goes-first-setlist-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "sidem-monthly-theme-song-13-jupiter-2026": {
+   "action": "article",
+   "angle": "SideM MONTHLY THEME SONG 13「Jupiter」が本日発売。店舗別特典と、封入シリアルコードで読めるCD特典ストーリー『アミューズメント・オブ・315!』を案内する",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じCDの発売主題を統合。店舗特典の一覧、シリアルコード入力にはASOBI STORE会員登録が必要。ストーリーの動画・静止画は投稿・共有不可"
+  },
+  "sidem-monthly-theme-song-13-jupiter-tokuten": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-monthly-theme-song-13-jupiter-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "jupiter-monthly-theme-song-13-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-monthly-theme-song-13-jupiter-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "sidem-monthly-theme-song-13-jupiter-cd": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-monthly-theme-song-13-jupiter-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "sidem-refrain-atrium-2dmv-2026": {
+   "action": "article",
+   "angle": "Legenders「リフレインアトリウム」の2DMVが本日21時に公開される予定",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "劇場版セットリスト曲でもある"
+  },
+  "sidem-amusement-of-315-story-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-monthly-theme-song-13-jupiter-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "sidem-howanui-vol6-vol7-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "SideMほわぬいvol.6(全5種)・vol.7(全6種)が11月28日に登場予定。Jupiterのクレーンゲーム登場の告知も合わせて伝える",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "sidem-howanui-vol6-vol7-2026",
+    "candidate_ids": [
+     "202611241835-explore-10",
+     "202611250223-grok-38"
+    ]
+   },
+   {
+    "slug": "sidem-mfes-animate-winter-wonderland-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "アニメイトのMフェス対象商品に、High×Jokerのクリアファイルが追加された",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "sidem-mfes-animate-winter-wonderland-2026",
+    "candidate_ids": [
+     "update-b73c6f2aa301"
+    ]
+   },
+   {
+    "slug": "sidem-who-goes-first-setlist-2026",
+    "brand": "sidem",
+    "rank": "medium",
+    "angle": "劇場版SideM「Who goes first」の本編セットリストが公式サイトで公開され、公式プレイリストも配信中",
+    "purpose": "新情報",
+    "lead_score": 30,
+    "dedup_key": "sidem-who-goes-first-setlist-2026",
+    "candidate_ids": [
+     "202611250223-explore-2",
+     "202611241835-watch-4",
+     "202611250223-grok-35",
+     "202611250223-grok-85"
+    ]
+   },
+   {
+    "slug": "sidem-zenryoku-heatup-live-2026-11",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "「全力ヒートアップ!!!」生配信が本日19時からYouTube Liveとニコニコ生放送で始まる。出演は小林大紀・中島ヨシキ・浦尾岳大・宮﨑雅也",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "sidem-zenryoku-heatup-live-2026-11",
+    "candidate_ids": [
+     "202611250223-grok-31",
+     "202611250223-grok-83",
+     "sched-2026-11-25-sidem-zenryoku-heatup-live-2026-11-開始"
+    ]
+   },
+   {
+    "slug": "sidem-cafe-parade-chocolate-special-2dmv-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "Café Parade「Chocolate Special」2DMVの一部不備が見つかり、修正版が再公開された",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "cafe-parade-chocolate-special-2dmv-2026",
+    "candidate_ids": [
+     "202611250223-grok-33"
+    ]
+   },
+   {
+    "slug": "sidem-producer-meeting-ajewelholic-2027-premium-second",
+    "brand": "sidem",
+    "rank": "medium",
+    "angle": "SideMプロミ2027のアソビストアプレミアム会員2次先行は、申込締切が明日11月26日23時59分に迫っている",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "sidem-producer-meeting-ajewelholic-2027-premium-second",
+    "candidate_ids": [
+     "202611250223-grok-36",
+     "202611250223-grok-86"
+    ]
+   },
+   {
+    "slug": "sidem-whats-it-taste-like-cds-2027",
+    "brand": "sidem",
+    "rank": "medium",
+    "angle": "315 STARSのCD「What's it taste like?」がSweet・Spicy・Bitterの3作で2027年2月24日から3月10日に順次発売され、予約が始まっている",
+    "purpose": "新情報",
+    "lead_score": 30,
+    "dedup_key": "sidem-whats-it-taste-like-cds-2027",
+    "candidate_ids": [
+     "202611250223-grok-37"
+    ]
+   },
+   {
+    "slug": "sidem-monthly-theme-song-13-jupiter-2026",
+    "brand": "sidem",
+    "rank": "medium",
+    "angle": "SideM MONTHLY THEME SONG 13「Jupiter」が本日発売。店舗別特典と、封入シリアルコードで読めるCD特典ストーリー『アミューズメント・オブ・315!』を案内する",
+    "purpose": "期日の知らせ",
+    "lead_score": 60,
+    "dedup_key": "sidem-monthly-theme-song-13-jupiter-2026",
+    "candidate_ids": [
+     "sched-2026-11-25-sidem-monthly-theme-song-13-jupiter-2026-発売",
+     "sched-2026-11-25-sidem-monthly-theme-song-13-jupiter-2026-発売-src1",
+     "202611250223-grok-39",
+     "sched-2026-11-25-sidem-monthly-theme-song-13-jupiter-tokuten-発売",
+     "sched-2026-11-25-jupiter-monthly-theme-song-13-2026-発売",
+     "sched-2026-11-25-sidem-monthly-theme-song-13-jupiter-cd-発売",
+     "sched-2026-11-25-sidem-amusement-of-315-story-2026-発売",
+     "sched-2026-11-25-sidem-amusement-of-315-story-2026-発売-src1"
+    ]
+   },
+   {
+    "slug": "sidem-refrain-atrium-2dmv-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "Legenders「リフレインアトリウム」の2DMVが本日21時に公開される予定",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "sidem-refrain-atrium-2dmv-2026",
+    "candidate_ids": [
+     "sched-2026-11-25-sidem-refrain-atrium-2dmv-2026-開始",
+     "202611250223-grok-29"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "sidem-mfes-label-cans-2026",
+    "reason": "出典不足",
+    "note": "出典はGoogleマップ。閲覧数・公開時期の表示変化が中心で、公式でない地図の店舗追加は記事にしない"
+   },
+   {
+    "dedup_key": "sidem-fbfes-movie-goods-2026",
+    "reason": "既報",
+    "note": "11/21号と同内容。受注は12月6日まで、締切3日以内でも当日トリガーでもない"
+   },
+   {
+    "dedup_key": "sidem-315-mode-vol2-spring-goods-2026",
+    "reason": "既報",
+    "note": "11/24号が受注開始を報じ済み。新しい事実なし、締切は12月6日"
+   },
+   {
+    "dedup_key": "sidem-movie-fan-activity-2026-11-24",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿が中心。単体では記事にしない"
+   }
+  ],
+  "cross_brand": []
+ }
+}

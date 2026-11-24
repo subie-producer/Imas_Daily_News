@@ -488,3 +488,9 @@
   subject: シャニソン シャイニーコンペティション開催
   watch: 「近日開催予定」とされた開催期間・開始日(判明次第 triggers へ)
   added_on: '2026-11-24'
+  removed_on: '2026-11-25'
+- dedup_key: hangetsu-twin-live-cd2-2026
+  brand: '765'
+  subject: はんげつであえたら会場オリジナルCD第2弾
+  watch: 発売日・購入方法などの詳細(「詳細は後日お知らせ」とされた。判明次第 triggers へ)
+  added_on: '2026-11-25'

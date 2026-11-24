@@ -4919,6 +4919,17 @@ def test_info_boundary_rules():
     m = pipelib.maintenance_notice("2026-11-26", [], archived=[("lantis.jp", "maintenance", at, "collect"), *failed]) or ""
     check("ランティスがメンテナンス中" in m and "nitter" not in m and "読み直せず" not in m,
           f"メンテナンスの断り書きが消えた・読み直せなかった出典が混ざった: {m}")
+    # メンテナンスの断り書きも、11/26 号からは公式・準公式のサイトだけ(編集長 2026-11-25)
+    m = pipelib.maintenance_notice("2026-11-26", ["teapawt.org", "idolmaster-official.jp"],
+                                   archived=[("nitter.cf", "maintenance", at, "collect")]) or ""
+    check("公式ポータルがメンテナンス中" in m and "teapawt" not in m and "nitter" not in m,
+          f"公式クラスでないサイトのメンテナンスに断り書きを付けた・公式の断り書きが消えた: {m}")
+    check(pipelib.maintenance_notice("2026-11-26", ["teapawt.org"]) is None, "公式クラスでないサイトだけのメンテナンスに断り書きを付けた")
+    old = pipelib.maintenance_notice("2026-11-24", ["teapawt.org"]) or ""
+    check("teapawt.org" in old, f"発行済みの号のメンテナンスの断り書きの文面が変わった: {old}")
+    for role in ("write", "revise", "review"):
+        check("公式・準公式" in pipelib.render_prompt(f"site-maintenance.{role}"),
+              f"site-maintenance.{role}: メンテナンスの扱いを公式・準公式に限っていない")
 
 
 def test_site_maintenance_scope_x_posts():

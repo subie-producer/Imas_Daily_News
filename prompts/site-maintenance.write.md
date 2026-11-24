@@ -1,4 +1,5 @@
 - 出典のサイトのメンテナンス: fetch_page.py が `FETCH_FAILED: メンテナンス中` を返したら、そのページは原本を確認できないまま、次のとおりに書く(2・3・6 より優先)
+  - この項目が当たるのは、素材の source_type が公式・準公式の url だけ。それ以外のサイトがメンテナンス中なら、その url の素材の facts は使わず、url を sources・new_facts に書かない(読める出典で確かめられた事実だけを書く)
   - 原本を読めないことは見送りの理由にしない(それだけで NO_PRIMARY_SOURCE・SOURCE_MISMATCH にしない)
   - その url の素材は、素材の種別どおりの出典として使う。verify が `confirmed` なら facts をそのまま使い、url を sources に載せる。`confirmed` でない素材の facts は、読める出典(公式・準公式・当事者の X の投稿、報道など)で確かめられたものだけを使う
   - 素材に無いメンテナンス中の url は、sources・new_facts に書かない

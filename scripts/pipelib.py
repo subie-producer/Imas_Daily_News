@@ -2217,6 +2217,16 @@ ARCHIVE_NOTICE_FROM = "2026-10-27"
 # 読み直せなかった(メンテナンスでない)出典の断り書きは、この号の前の号まで(編集長 2026-11-25: 読者に宛てていない舞台裏なのでやめる。
 # メンテナンスの断り書きは常設のまま)
 ARCHIVE_FAILED_NOTICE_UNTIL = "2026-11-26"
+# この号からは、メンテナンスの断り書きも公式・準公式のサイトだけに付ける(編集長 2026-11-25「メンテナンスだったから、は公式クラスのみ」)
+MAINTENANCE_OFFICIAL_ONLY_FROM = "2026-11-26"
+
+
+def official_class_host(host: str) -> bool:
+    """ホストのサイトが公式・準公式か(判定表。ホストの最上位のページの種別で見る)。判定表を読めなければ False。"""
+    try:
+        return classify_source(f"https://{host}/") in ("公式", "準公式")
+    except (Exception, SystemExit):
+        return False
 ARCHIVE_NOTICE_TAILS = {
     "maintenance": "がメンテナンス中のため、原本は現在確認できていません({date}時点)。内容は{read}に読んだ原本に基づきます。",
     "failed": "の原本を読み直せず、現在の内容は確認できていません({date}時点)。内容は{read}に読んだ原本に基づきます。",
@@ -2258,6 +2268,9 @@ def maintenance_notice(edition: str, hosts, archived=None) -> str | None:
         return None
     d = datetime.date.fromisoformat(edition)
     day = f"{d.year}年{d.month}月{d.day}日"
+    if edition >= MAINTENANCE_OFFICIAL_ONLY_FROM:
+        hosts = [h for h in hosts if official_class_host(h)]
+        archived = [a for a in (archived or []) if a and official_class_host(a[0])]
     parts = []
     if hosts:
         names = sorted({maintenance_site_name(h) for h in hosts})       # 同じサイトの別ホストは1つにまとめ、並びは名前で決める

@@ -4914,6 +4914,12 @@ def test_info_boundary_rules():
     failed = [("nitter.cf", "failed", at, "collect"), ("teapawt.org", "failed", at, "collect")]
     check(pipelib.maintenance_notice("2026-11-26", [], archived=failed) is None,
           "11/26 号から読み直せなかった出典の断り書きを付けている")
+    check(pipelib.maintenance_notice("2026-11-26", [], archived=[("idolmaster-official.jp", "failed", at, "collect")]) is None,
+          "11/26 号から公式のサイトの読み直せなかった出典に断り書きを付けている")
+    body = renderlib.with_notice("---\nslug: s\n---\n本文。\n", pipelib.maintenance_notice("2026-11-24", [], archived=failed))
+    check(renderlib.NOTICE_MARK in body
+          and renderlib.NOTICE_MARK not in renderlib.with_notice(body, pipelib.maintenance_notice("2026-11-26", [], archived=failed)),
+          "11/26 号の付け直しで前に付けた断り書きが残る")
     old = pipelib.maintenance_notice("2026-11-24", [], archived=failed) or ""
     check("nitter.cf" in old and "読み直せず" in old, f"発行済みの号の断り書きの文面が変わった: {old}")
     m = pipelib.maintenance_notice("2026-11-26", [], archived=[("lantis.jp", "maintenance", at, "collect"), *failed]) or ""
@@ -8712,8 +8718,11 @@ def test_update_server_council(tmp: Path):
             q = answers.get((who, name.split("-")[1]), [])
             return q.pop(0) if q else None
         return f
+    # 発行の時間帯の待ちは実時刻で決まる。ここでは待たせない(待ちの扱いは test_update_server_apply が時計を差し替えて確かめる。
+    # 02:30〜07:00 に走らせると数時間待った: Sol 監査 2026-11-25)
     saved = _patch(us, sol_session=fake("sol"), opus_session=fake("opus"), STATE=tmp / "state.json",
-                   notify=lambda job, msg, ok=True, require=False, ledger=True: notes.append((msg, ok)) or True)
+                   notify=lambda job, msg, ok=True, require=False, ledger=True: notes.append((msg, ok)) or True,
+                   quiet_wait_secs=lambda now, margin=0: 0.0)
     notes: list = []
     try:
         answers.update({("sol", "assess"): [ap], ("opus", "assess"): [ap]})
@@ -20021,6 +20030,9 @@ if __name__ == "__main__":
     phase = os.environ.get("FAKE_PHASE", "collect")
     fetch_page.urllib.request.urlopen = lambda req, timeout=25: fake_urlopen(req.full_url, phase)
     fetch_page.needs_render = lambda u, t: False
+    official = {h for h in os.environ.get("FAKE_OFFICIAL_HOSTS", "").split(",") if h}
+    real_classify = fetch_page.classify_source
+    fetch_page.classify_source = lambda u: "公式" if urllib.parse.urlsplit(u).hostname in official else real_classify(u)
     sys.exit(fetch_page.main())
 '''
 
@@ -20752,7 +20764,10 @@ def test_page_archive_read_back(tmp: Path):
     spec["write-busy"] = [{"fetch": [urls["busy"], other], "answer": dict(ans(urls["busy"]), new_facts=[{"id": "N1", "text": "価格は3000円", "url": other}])}]
     spec_p.write_text(json.dumps(spec, ensure_ascii=False), encoding="utf-8")
     plan = {"articles": [{"slug": k, "brand": "cg", "rank": "small", "angle": "知らせ", "candidate_ids": [f"c{k}"], "dedup_key": k} for k in urls]}
-    env_keys = ("FAKE_CODEX_SPEC", "FAKE_FETCH_PAGE", "FAKE_SCRIPTS", "FAKE_PHASE", "FAKE_FETCH_LOG", "IMAS_FETCH_PAGES", "PATH")
+    env_keys = ("FAKE_CODEX_SPEC", "FAKE_FETCH_PAGE", "FAKE_SCRIPTS", "FAKE_PHASE", "FAKE_FETCH_LOG", "IMAS_FETCH_PAGES", "PATH",
+                "FAKE_OFFICIAL_HOSTS")
+    # 読み直せないページの原本で書いてよいのは公式・準公式だけ(編集長 2026-11-25)。この事例の出典は公式のサイトとして読ませる
+    official_hosts = ",".join(f"{h}.example" for h in ("down", "busy", "slow", "changed", "gone", "fresh", "facts-only"))
     saved = (compose.ROOT, pipelib.ROOT, compose.classify_source, compose.storylink.prior_lookup, compose.DEADLINE,
              {k: os.environ.get(k) for k in env_keys})
     try:
@@ -20763,7 +20778,7 @@ def test_page_archive_read_back(tmp: Path):
         os.environ["PATH"] = f"{bindir}{os.pathsep}{os.environ.get('PATH', '')}"
         os.environ.pop("IMAS_FETCH_PAGES", None)
         os.environ.update(FAKE_CODEX_SPEC=str(spec_p), FAKE_FETCH_PAGE=str(fake_fetch), FAKE_SCRIPTS=str(repo / "scripts"),
-                          FAKE_PHASE="down", FAKE_FETCH_LOG=str(log))
+                          FAKE_PHASE="down", FAKE_FETCH_LOG=str(log), FAKE_OFFICIAL_HOSTS=official_hosts)
         compose.FACT_MAP.clear()
         with contextlib.redirect_stdout(io.StringIO()):
             written, aborted = compose.write_articles(date, plan, cands, [], {}, wave=4)
@@ -20792,6 +20807,13 @@ def test_page_archive_read_back(tmp: Path):
         check(got[k][0] == 0 and "いまは読み直せない" in got[k][1] and f"収集時点({collected_at[:16].replace('T', ' ')})" in got[k][1]
               and "応募締切は10月30日" in got[k][1] and "FETCH_FAILED" not in got[k][1],
               f"{k}: 読み直せないときに収集時点の原本を返さない: {got[k][1][:300]!r}")
+    # 公式・準公式でないサイトは、読み直せなければ原本があっても出典にさせない(編集長 2026-11-25)
+    env_j = {**os.environ, "FAKE_SCRIPTS": str(repo / "scripts"), "FAKE_PHASE": "down", "FAKE_OFFICIAL_HOSTS": ""}
+    env_j.pop("IMAS_FETCH_PAGES", None)
+    rj = subprocess.run([sys.executable, str(fake_fetch), urls["down"]], capture_output=True, text=True, env=env_j, timeout=120)
+    check(rj.returncode != 0 and "FETCH_FAILED" in rj.stdout and "公式・準公式でないページ" in rj.stdout
+          and "応募締切は10月30日" not in rj.stdout,
+          f"公式クラスでないサイトの原本を、読み直せないのに出典として返した: {rj.returncode} {rj.stdout[:300]!r}")
     ch = got["changed"][1]
     check(got["changed"][0] == 0 and "内容が変わっている" in ch and "-応募締切は10月30日。" in ch and "+応募締切は11月3日まで延長しました。" in ch
           and ch.index("--- 変わったところ ---") < ch.index("--- 本文(要約なし) ---") and "11月3日" in ch.split("--- 本文(要約なし) ---")[1],

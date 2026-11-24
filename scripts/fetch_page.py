@@ -122,6 +122,15 @@ def main() -> int:
     elif live["kind"] != "ok":
         note_fetched(args.url, live.get("final"), failed=True, http=live.get("http"))
     if live["kind"] != "ok":
+        # 読み直せないページの原本で書いてよいのは、公式・準公式のページだけ(編集長 2026-11-25: それ以外のサイトはいつ消えるか分からない)
+        try:
+            official = classify_source(base.get("final") or args.url) in ("公式", "準公式") if base else False
+        except SystemExit:
+            official = False
+        if base and live["kind"] != "gone" and not official:
+            print(live["msg"])
+            print("原本の照合: 公式・準公式でないページは、読み直せないときに保存の原本を出典にしない。このページを根拠に書かない")
+            return 1
         if base and live["kind"] != "gone":
             # 読み直せない(メンテナンス・5xx・429・時間切れ)。保存の原本で書ける(読めたページに数え、組版は断り書きを付ける)
             note_fetched(args.url, base.get("final"), archived=page_archive.fetched_at(base), via=base.get("via"),

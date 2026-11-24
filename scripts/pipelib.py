@@ -2217,9 +2217,9 @@ MAINTENANCE_NOTICE_TAIL = "がメンテナンス中のため、原本は確認�
 ARCHIVE_NOTICE_FROM = "2026-10-27"
 # 読み直せなかった(メンテナンスでない)出典の断り書きは、この号の前の号まで(編集長 2026-11-25: 読者に宛てていない舞台裏なのでやめる。
 # メンテナンスの断り書きは常設のまま)
-ARCHIVE_FAILED_NOTICE_UNTIL = "2026-11-26"
+ARCHIVE_FAILED_NOTICE_UNTIL = "2026-11-25"
 # この号からは、メンテナンスの断り書きも公式・準公式のサイトだけに付ける(編集長 2026-11-25「メンテナンスだったから、は公式クラスのみ」)
-MAINTENANCE_OFFICIAL_ONLY_FROM = "2026-11-26"
+MAINTENANCE_OFFICIAL_ONLY_FROM = "2026-11-25"
 
 
 def official_class_host(host: str) -> bool:

@@ -4903,7 +4903,7 @@ ACTIVE_PROMPTS = ("plan-brand", "plan-rules", "plan-lead", "plan-missing", "writ
 
 def test_info_boundary_rules():
     """執筆・書き直し・校閲には、読者に向けた書き方(ibgs。編集長 2026-11-25)が常に入る。読み直せなかった出典の断り書きは
-    2026-11-26 号から付けない(メンテナンスの断り書きは常設のまま。発行済みの号の文面は変えない)"""
+    2026-11-25 号から付けない(メンテナンスの断り書きは常設のまま。発行済みの号の文面は変えない)"""
     for role in ("write", "revise", "review"):
         t = pipelib.maintenance_rules(role)
         check("読者に向けた書き方" in t and "作業の経過" in t and "ホスト名" in t and "ダッシュ" in t,
@@ -4911,29 +4911,29 @@ def test_info_boundary_rules():
     r = pipelib.maintenance_rules("review")
     check("R17" in r and "R18" in r and "R19" in r and "ブロック" in r, "校閲に読者に向けた書き方のブロック項目が無い")
     art = {"slug": "s", "brand": "million", "rank": "small", "angle": "a", "candidate_ids": ["c1"]}
-    t = compose.article_prompt("2026-11-26", art, [{"id": "c1", "url": "https://idolmaster-official.jp/news/1"}], [], None)
+    t = compose.article_prompt("2026-11-25", art, [{"id": "c1", "url": "https://idolmaster-official.jp/news/1"}], [], None)
     check("読者に向けた書き方" in t, "執筆の依頼文に読者に向けた書き方が埋まっていない")
     at = "2026-11-23T02:00:00+09:00"
     failed = [("nitter.cf", "failed", at, "collect"), ("teapawt.org", "failed", at, "collect")]
-    check(pipelib.maintenance_notice("2026-11-26", [], archived=failed) is None,
-          "11/26 号から読み直せなかった出典の断り書きを付けている")
-    check(pipelib.maintenance_notice("2026-11-26", [], archived=[("idolmaster-official.jp", "failed", at, "collect")]) is None,
-          "11/26 号から公式のサイトの読み直せなかった出典に断り書きを付けている")
+    check(pipelib.maintenance_notice("2026-11-25", [], archived=failed) is None,
+          "11/25 号から読み直せなかった出典の断り書きを付けている")
+    check(pipelib.maintenance_notice("2026-11-25", [], archived=[("idolmaster-official.jp", "failed", at, "collect")]) is None,
+          "11/25 号から公式のサイトの読み直せなかった出典に断り書きを付けている")
     body = renderlib.with_notice("---\nslug: s\n---\n本文。\n", pipelib.maintenance_notice("2026-11-24", [], archived=failed))
     check(renderlib.NOTICE_MARK in body
-          and renderlib.NOTICE_MARK not in renderlib.with_notice(body, pipelib.maintenance_notice("2026-11-26", [], archived=failed)),
-          "11/26 号の付け直しで前に付けた断り書きが残る")
+          and renderlib.NOTICE_MARK not in renderlib.with_notice(body, pipelib.maintenance_notice("2026-11-25", [], archived=failed)),
+          "11/25 号の付け直しで前に付けた断り書きが残る")
     old = pipelib.maintenance_notice("2026-11-24", [], archived=failed) or ""
     check("nitter.cf" in old and "読み直せず" in old, f"発行済みの号の断り書きの文面が変わった: {old}")
-    m = pipelib.maintenance_notice("2026-11-26", [], archived=[("lantis.jp", "maintenance", at, "collect"), *failed]) or ""
+    m = pipelib.maintenance_notice("2026-11-25", [], archived=[("lantis.jp", "maintenance", at, "collect"), *failed]) or ""
     check("ランティスがメンテナンス中" in m and "nitter" not in m and "読み直せず" not in m,
           f"メンテナンスの断り書きが消えた・読み直せなかった出典が混ざった: {m}")
-    # メンテナンスの断り書きも、11/26 号からは公式・準公式のサイトだけ(編集長 2026-11-25)
-    m = pipelib.maintenance_notice("2026-11-26", ["teapawt.org", "idolmaster-official.jp"],
+    # メンテナンスの断り書きも、11/25 号からは公式・準公式のサイトだけ(編集長 2026-11-25)
+    m = pipelib.maintenance_notice("2026-11-25", ["teapawt.org", "idolmaster-official.jp"],
                                    archived=[("nitter.cf", "maintenance", at, "collect")]) or ""
     check("公式ポータルがメンテナンス中" in m and "teapawt" not in m and "nitter" not in m,
           f"公式クラスでないサイトのメンテナンスに断り書きを付けた・公式の断り書きが消えた: {m}")
-    check(pipelib.maintenance_notice("2026-11-26", ["teapawt.org"]) is None, "公式クラスでないサイトだけのメンテナンスに断り書きを付けた")
+    check(pipelib.maintenance_notice("2026-11-25", ["teapawt.org"]) is None, "公式クラスでないサイトだけのメンテナンスに断り書きを付けた")
     old = pipelib.maintenance_notice("2026-11-24", ["teapawt.org"]) or ""
     check("teapawt.org" in old, f"発行済みの号のメンテナンスの断り書きの文面が変わった: {old}")
     for role in ("write", "revise", "review"):

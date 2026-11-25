@@ -1757,7 +1757,8 @@ RULE_CASES = {
     "review-paper-same-event-different-news-kept": "review_paper", "review-paper-same-news-twice-drops-one": "review_paper",
     "revise-press-price-conflict-uses-official": "revise",
     "write-linked-official-read-by-fetch-page": "write", "write-unreadable-link-not-cited": "write",
-    "review-article-ibgs-closed-call-and-copied-label": "review_article", "review-article-ibgs-open-call-correct-label": "review_article",
+    "review-article-ibgs-closed-call": "review_article", "review-article-ibgs-copied-label": "review_article",
+    "review-article-ibgs-open-call-correct-label": "review_article", "review-article-ibgs-related-call-kept": "review_article",
 }
 
 

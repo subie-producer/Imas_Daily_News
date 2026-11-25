@@ -51,7 +51,8 @@ DECLINE_CODES = ("NO_PRIMARY_SOURCE", "SOURCE_MISMATCH", "TOO_FEW_MATERIALS", "N
 FIXED_PAGES_ENV = "IMAS_FETCH_PAGES"                  # fetch_page.py が読む(事例の出典の本文)
 PARALLEL = 6
 PROMPT_FILES = ("prompts/write-article*.md", "prompts/revise-article.md", "prompts/review-*.md", "prompts/review-schema.json",
-                "schema/article-out.schema.json")
+                "schema/article-out.schema.json", "prompts/info-boundary.*.md", "prompts/site-maintenance.*.md",
+                "prompts/source-archive.*.md", ".agents/skills/*/SKILL.md")
 
 
 def load_cases(names: list[str] | None = None) -> dict[str, dict]:
@@ -357,7 +358,8 @@ def run_review(name: str, case: dict, label: str, work: Path) -> dict:
     (work / "metrics" / f"stories-before-{date}.yml").write_text(
         yaml.safe_dump(case.get("stories_before") or [], allow_unicode=True, sort_keys=False), encoding="utf-8")
     # 校閲が使う道具(fetch_page.py)・出典の判定表・名鑑は、コードと同じ版を指す(作業フォルダからは書き換えない)
-    for rel in ("scripts", "source_types.yml", "docs/_data"):
+    # 校閲の claude は作業フォルダの .claude/skills からスキル(ibgs)を読む。本番の ops と同じものを見せる
+    for rel in ("scripts", "source_types.yml", "docs/_data", ".agents", ".claude"):
         (work / rel).symlink_to(CODE / rel)
     saved = (compose.ROOT, pipelib.ROOT)
     compose.ROOT = pipelib.ROOT = work

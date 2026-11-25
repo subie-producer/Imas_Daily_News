@@ -1757,6 +1757,7 @@ RULE_CASES = {
     "review-paper-same-event-different-news-kept": "review_paper", "review-paper-same-news-twice-drops-one": "review_paper",
     "revise-press-price-conflict-uses-official": "revise",
     "write-linked-official-read-by-fetch-page": "write", "write-unreadable-link-not-cited": "write",
+    "review-article-ibgs-closed-call-and-copied-label": "review_article", "review-article-ibgs-open-call-correct-label": "review_article",
 }
 
 
@@ -4898,7 +4899,8 @@ ACTIVE_PROMPTS = ("plan-brand", "plan-rules", "plan-lead", "plan-missing", "writ
                   "collect-rules", "collect-item", "grok-collect", "grok-verify", "grok-deep", "explore", "watch-facts",
                   "classify-rules", "classify-site", "classify-x", "classify-debate", "classify-link",
                   "oncall-fix", "oncall-fix.objections", "oncall-review", "oncall-parser", "oncall-anomalies", "oncall-reformat",
-                  "site-maintenance.write", "site-maintenance.revise", "site-maintenance.review")
+                  "site-maintenance.write", "site-maintenance.revise", "site-maintenance.review",
+                  "info-boundary.write", "info-boundary.revise", "info-boundary.review")
 
 
 def test_info_boundary_rules():

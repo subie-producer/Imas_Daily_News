@@ -462,6 +462,7 @@
   subject: セガ ラッキーくじ シンデレラガールズ Vol.1キュート 購入期間再設定
   watch: メンテナンス終了後に設けられる購入期間の日程(未定。判明次第 triggers へ)
   added_on: '2026-11-15'
+  removed_on: '2026-11-26'
 - dedup_key: tachibana-arisu-seaside-memory-figure-2026
   brand: cg
   subject: 橘ありす「シーサイド・メモリー」1/7フィギュア(プラム)

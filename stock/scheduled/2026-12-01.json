@@ -2395,5 +2395,27 @@
   "src_candidate_id": "update-7a8b51b6c00c",
   "companion_of": "sched-2026-12-01-gakumas-round1-vol2-開幕",
   "src_dedup_key": "gaku-round1-vol2-2026"
+ },
+ {
+  "id": "sched-2026-12-01-gaku-wednesday-jewel-2026-11-25-終了",
+  "dedup_key": "gaku-wednesday-jewel-2026-11-25",
+  "brand": "gaku",
+  "subject": "学マ水曜日 ジュエル250個配布終了",
+  "kind": "終了",
+  "note": "12/2 4:59まで。受け取りは前日中に済ませられる",
+  "reserved_on": "2026-11-26",
+  "occurs_on": "2026-12-02",
+  "title": "学マ水曜日のジュエル配布",
+  "url": "https://x.com/gkmas_official/status/2125424256557166672",
+  "source_type": "公式",
+  "facts": [
+   "今週の学マ水曜日としてジュエル250個を配布中。",
+   "配布期間: 12/2(水) 4:59まで(予定)。",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "deadline": "2026-12-02",
+  "src_candidate_id": "202611260224-grok-83"
  }
 ]

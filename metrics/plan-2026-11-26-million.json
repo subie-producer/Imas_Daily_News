@@ -1,0 +1,116 @@
+{
+ "decisions": {
+  "million-platinum-trust-13-outside-isotope-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "勤労感謝ログボは11/23号で記事化済み。新事実なし(終了は29日で3日以内だが同内容の再掲)"
+  },
+  "soutei-shinrigai-mv-2026": {
+   "action": "article",
+   "angle": "アイドルグランプリVer.1.3.000配信と中谷育追加、WEB STORE限定9.5周年記念ジュエルセット(最大17.5%増量)の予告",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "育の追加自体は11/25号で既報。Ver更新・PV・ジュエルセット予告を新事実として扱う"
+  },
+  "iku-idol-grand-prix-fan-art-2026-11-26": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "同人・ファン主催",
+   "note": "個人のファンAIイラスト投稿"
+  },
+  "million-vs-million-fighter-gasha-2026": {
+   "action": "article",
+   "angle": "「VSミリオンファイター！」ガシャは本日14時59分まで、限定SSR四条貴音・双海真美を引ける最終日",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 50,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "終了・締切の続報予約2件を1記事に"
+  },
+  "million-rio-idol-grand-prix-missions-2026": {
+   "action": "article",
+   "angle": "莉緒アイグラ追加記念ミッションは本日23時59分まで、全達成で引換券210枚",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "million-soutei-shinrigai-mv-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "アイドルグランプリVer.1.3.000配信と中谷育追加、WEB STORE限定9.5周年記念ジュエルセット(最大17.5%増量)の予告",
+    "purpose": "新情報",
+    "lead_score": 30,
+    "dedup_key": "soutei-shinrigai-mv-2026",
+    "candidate_ids": [
+     "202611251834-explore-7",
+     "202611260224-explore-2"
+    ]
+   },
+   {
+    "slug": "million-vs-million-fighter-gasha-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "「VSミリオンファイター！」ガシャは本日14時59分まで、限定SSR四条貴音・双海真美を引ける最終日",
+    "purpose": "期日の知らせ",
+    "lead_score": 50,
+    "dedup_key": "million-vs-million-fighter-gasha-2026",
+    "candidate_ids": [
+     "sched-2026-11-26-million-vs-million-fighter-gasha-2026-終了",
+     "sched-2026-11-26-million-vs-million-fighter-gasha-2026-終了-src1",
+     "sched-2026-11-26-million-vs-million-fighter-gasha-2026-締切",
+     "sched-2026-11-26-million-vs-million-fighter-gasha-2026-締切-src1"
+    ]
+   },
+   {
+    "slug": "million-rio-idol-grand-prix-missions-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "莉緒アイグラ追加記念ミッションは本日23時59分まで、全達成で引換券210枚",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "million-rio-idol-grand-prix-missions-2026",
+    "candidate_ids": [
+     "sched-2026-11-26-million-rio-idol-grand-prix-missions-2026-締切"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "million-platinum-trust-13-outside-isotope-2026",
+    "reason": "既報",
+    "note": "勤労感謝ログボは11/23号で記事化済み。新事実なし(終了は29日で3日以内だが同内容の再掲)"
+   },
+   {
+    "dedup_key": "iku-idol-grand-prix-fan-art-2026-11-26",
+    "reason": "同人・ファン主催",
+    "note": "個人のファンAIイラスト投稿"
+   }
+  ],
+  "cross_brand": []
+ }
+}

@@ -1,0 +1,145 @@
+{
+ "decisions": {
+  "chibigurumi-tree-guinness-2026": {
+   "action": "article",
+   "angle": "ちびぐるみ1,038体のツリーがギネス世界記録に認定、クイーンズスクエア横浜で12月3日まで展示",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "当事者(BANPRE)発信"
+  },
+  "fan-nei-bluray-arrival-report-2026-11-26": {
+   "action": "article",
+   "angle": "NEI Blu-ray特装版やグッズの到着、公演の思い出、MVやライブフォトなどファンの投稿をまとめて紹介",
+   "purpose": "新情報",
+   "rank": "culture",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ファン面の束ね先。誰か1人を主役にしない"
+  },
+  "fan-nei-bluray-memory-2026-11-26": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "fan-nei-bluray-arrival-report-2026-11-26",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "fan-nei-cinderella-goods-arrival-2026-11-26": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "fan-nei-bluray-arrival-report-2026-11-26",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "fan-nei-bluray-day1-setlist-reaction-2026-11-25": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "fan-nei-bluray-arrival-report-2026-11-26",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "fan-shinysong-765as-mv-post-2026-11-25": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "fan-nei-bluray-arrival-report-2026-11-26",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "tourmas-miki-birthday-live-photos-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "fan-nei-bluray-arrival-report-2026-11-26",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-coherent-light-illumine-reader-reactions-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "fan-nei-bluray-arrival-report-2026-11-26",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "コヒーレントライト更新話への読者の反応"
+  },
+  "metamorphose-400man-views-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "重複",
+   "note": "gaku面が gaku-metamorphose-mv-4m-2026 で記事化済み"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "general-fan-nei-bluray-arrival-report-2026-11-26",
+    "brand": "general",
+    "rank": "culture",
+    "angle": "NEI Blu-ray特装版やグッズの到着、公演の思い出、MVやライブフォトなどファンの投稿をまとめて紹介",
+    "purpose": "新情報",
+    "lead_score": 5,
+    "dedup_key": "fan-nei-bluray-arrival-report-2026-11-26",
+    "candidate_ids": [
+     "202611260224-grok-19",
+     "202611250732-explore-4",
+     "202611260224-grok-20",
+     "202611260224-grok-21",
+     "202611260224-grok-22",
+     "202611260224-grok-23",
+     "202611260224-grok-95"
+    ]
+   },
+   {
+    "slug": "general-chibigurumi-tree-guinness-2026",
+    "brand": "general",
+    "rank": "small",
+    "angle": "ちびぐるみ1,038体のツリーがギネス世界記録に認定、クイーンズスクエア横浜で12月3日まで展示",
+    "purpose": "新情報",
+    "lead_score": 25,
+    "dedup_key": "chibigurumi-tree-guinness-2026",
+    "candidate_ids": [
+     "202611260224-grok-108"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "metamorphose-400man-views-2026",
+    "reason": "重複",
+    "note": "gaku面が gaku-metamorphose-mv-4m-2026 で記事化済み"
+   }
+  ],
+  "cross_brand": []
+ }
+}

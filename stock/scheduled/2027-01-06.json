@@ -29,5 +29,39 @@
   "event_date": "2026-12-01",
   "deadline": "2027-01-06",
   "src_candidate_id": "202611200230-grok-75"
+ },
+ {
+  "id": "sched-2027-01-06-cg-15th-anniversary-label-can-2026-終了",
+  "dedup_key": "cg-15th-anniversary-label-can-2026",
+  "brand": "cg",
+  "subject": "15周年記念ラベル缶 全国販売最終日",
+  "kind": "終了",
+  "note": "全国販売の最終日で、ラベル缶を買える最後の日",
+  "reserved_on": "2026-11-26",
+  "occurs_on": "2027-01-06",
+  "title": "15th ANNIVERSARY PARTY記念オリジナルラベル缶の全国販売",
+  "url": "https://idolmaster-official.jp/news/01_20417",
+  "source_type": "公式",
+  "facts": [
+   "Kアリーナ会場販売: 11月28日・29日（ライブ会場のKアリーナに専用自販機を設置）",
+   "全国販売: 11月30日～1月6日",
+   "販売期間: 11/30(月)-1/6(水)",
+   "全国の自販機と一部アニメイト内の自販機で発売",
+   "全国自販機販売場所: https://tag-live-label.mapion.co.jp?code=770756&filter=1",
+   "アニメイト内自販機販売場所: https://www.google.com/maps/d/u/0/viewer?mid=1rnK79n6UVcsB6_5zrk6of_hd1CS9jaY&ll=38.857852109912066%2C136.9057453&z=6",
+   "11/30(月)の投入時間は自販機によって異なる",
+   "在庫状況は前日時点の情報",
+   "MAP内の黒ピンは在庫状況未取得場所であり、常時売切ではない",
+   "EC販売はない",
+   "2層構造のラベルは剥がしてステッカーとしても二次利用可能",
+   "数量限定アクキーがあたるかも",
+   "エンゲージメント: 中",
+   "「THE IDOLM@STER CINDERELLA GIRLS 15th ANNIVERSARY PARTY!!!! ～ for your ONE ～」を記念したオリジナルラベル缶の全国販売が決定"
+  ],
+  "via": "watch",
+  "verify": "unconfirmed",
+  "deadline": "2027-01-06",
+  "link_from": "https://x.com/imas_official/status/2125514843583381660",
+  "src_candidate_id": "202611251834-watch-2"
  }
 ]

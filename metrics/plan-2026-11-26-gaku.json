@@ -1,0 +1,304 @@
+{
+ "decisions": {
+  "gakumas-round1-vol2": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/25号に詳細(店舗・価格・特典)が既出。開始は12/1で当日・3日以内のトリガー無し"
+  },
+  "shiny-kawaii-season-chibiguru-2027": {
+   "action": "article",
+   "angle": "学マスのちびぐるみフェイスポーチが12月17日からクレーンゲームに登場、vol.1〜3で全13人を順次展開",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "dedup_keyはシャニマス風だが内容は学マス。既報のESPRESTOとは別商品"
+  },
+  "gaku-ui-cedec-kyushu-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/19号『学マスUI演出の設計思想とTitan活用』と同じ講演の知らせ"
+  },
+  "gakumas-kanae-chibigurumi-pouch": {
+   "action": "article",
+   "angle": "氷渡香名江のちびぐるみがおなまえ入りポーチ付きでプレミアムバンダイに登場、受注は2027年1月8日まで",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "お届けは2027年5月予定"
+  },
+  "gaku-hatsuboshi-broadcast-115": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-radio-archive-2026-11-25",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ#115の放送。アーカイブ記事に統合"
+  },
+  "gaku-metamorphose-4m-views-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "metamorphose-mv-4m-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ400万再生。公式投稿の主題へ統合"
+  },
+  "gaku-radio-archive-2026-11-25": {
+   "action": "article",
+   "angle": "初星学園放送部#115(伊藤舞音さん・安倍彩野夏さん回)のアーカイブがYouTubeで公開、翌週も21時から放送",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "#115の放送案内の素材も統合"
+  },
+  "gaku-radio-guests-2026-12-02": {
+   "action": "article",
+   "angle": "初星学園放送部12月2日回のゲストは川村玲奈さん・薄井友里さん、おたよりは金曜午前まで",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "おたより締切は金曜(11/27)午前"
+  },
+  "gaku-radio-2026-11-25": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/25号『放送部、安倍彩野夏さんらの回を本日放送』で既報。放送も終了済み"
+  },
+  "metamorphose-mv-4m-2026": {
+   "action": "article",
+   "angle": "氷渡香名江「メタモルフォーゼ」MVが400万再生を突破、公開10日前後で100万→400万と伸びる",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 45,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "二次情報の素材も統合。この面の最大の話題"
+  },
+  "gaku-wednesday-jewel-2026-11-25": {
+   "action": "article",
+   "angle": "今週の学マ水曜日はジュエル250個を配布、12月2日4時59分まで",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "定常運営だが3件に満たないためroundupにせず単独"
+  },
+  "gaku-metamorphose-mv-3m-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "EP配信開始は11/24号で既報。CD予約・3/3発売は11/23号で予約受付中と既出で、新事実もトリガーも無い"
+  },
+  "gaku-kananae-25th-loginbonus-2026": {
+   "action": "article",
+   "angle": "氷渡香名江登場記念＆2.5thアニバーサリーログインボーナス開催中、初日ジュエル2,500個・12月1日4時59分まで",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "既報の記事は無い。定常運営だが2件のためroundupにせず単独"
+  },
+  "gaku-fan-trailer-mod-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "同人・ファン主催",
+   "note": "個人のファン創作で未確認。ファン面は general 面だけ"
+  },
+  "gaku-seibu-chichibu-yukemuri-2026": {
+   "action": "article",
+   "angle": "学マス×祭の湯のデジタルスタンプラリーなどコラボは11月29日で終了、締切まであと3日",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(締切前)。スタンプラリーは29日23時59分、コラボ全体も29日まで"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "gaku-shiny-kawaii-season-chibiguru-2027",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "学マスのちびぐるみフェイスポーチが12月17日からクレーンゲームに登場、vol.1〜3で全13人を順次展開",
+    "purpose": "新情報",
+    "lead_score": 25,
+    "dedup_key": "shiny-kawaii-season-chibiguru-2027",
+    "candidate_ids": [
+     "202611251234-watch-4",
+     "202611251834-explore-12",
+     "202611260224-grok-157"
+    ]
+   },
+   {
+    "slug": "gaku-gakumas-kanae-chibigurumi-pouch",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "氷渡香名江のちびぐるみがおなまえ入りポーチ付きでプレミアムバンダイに登場、受注は2027年1月8日まで",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "gakumas-kanae-chibigurumi-pouch",
+    "candidate_ids": [
+     "202611251834-watch-0",
+     "202611260224-grok-152"
+    ]
+   },
+   {
+    "slug": "gaku-radio-archive-2026-11-25",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "初星学園放送部#115(伊藤舞音さん・安倍彩野夏さん回)のアーカイブがYouTubeで公開、翌週も21時から放送",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "gaku-radio-archive-2026-11-25",
+    "candidate_ids": [
+     "202611260224-grok-79",
+     "202611260224-grok-138",
+     "202611251834-explore-14"
+    ]
+   },
+   {
+    "slug": "gaku-radio-guests-2026-12-02",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "初星学園放送部12月2日回のゲストは川村玲奈さん・薄井友里さん、おたよりは金曜午前まで",
+    "purpose": "新情報",
+    "lead_score": 25,
+    "dedup_key": "gaku-radio-guests-2026-12-02",
+    "candidate_ids": [
+     "202611260224-grok-80"
+    ]
+   },
+   {
+    "slug": "gaku-metamorphose-mv-4m-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "氷渡香名江「メタモルフォーゼ」MVが400万再生を突破、公開10日前後で100万→400万と伸びる",
+    "purpose": "新情報",
+    "lead_score": 45,
+    "dedup_key": "metamorphose-mv-4m-2026",
+    "candidate_ids": [
+     "202611260224-grok-82",
+     "202611260224-explore-16"
+    ]
+   },
+   {
+    "slug": "gaku-wednesday-jewel-2026-11-25",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "今週の学マ水曜日はジュエル250個を配布、12月2日4時59分まで",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "gaku-wednesday-jewel-2026-11-25",
+    "candidate_ids": [
+     "202611260224-grok-83"
+    ]
+   },
+   {
+    "slug": "gaku-kananae-25th-loginbonus-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "氷渡香名江登場記念＆2.5thアニバーサリーログインボーナス開催中、初日ジュエル2,500個・12月1日4時59分まで",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "gaku-kananae-25th-loginbonus-2026",
+    "candidate_ids": [
+     "202611260224-grok-86"
+    ]
+   },
+   {
+    "slug": "gaku-seibu-chichibu-yukemuri-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "学マス×祭の湯のデジタルスタンプラリーなどコラボは11月29日で終了、締切まであと3日",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "gaku-seibu-chichibu-yukemuri-2026",
+    "candidate_ids": [
+     "sched-2026-11-26-gaku-seibu-chichibu-yukemuri-2026-締切前",
+     "sched-2026-11-26-gaku-seibu-chichibu-yukemuri-2026-締切前-src1"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "gakumas-round1-vol2",
+    "reason": "既報",
+    "note": "11/25号に詳細(店舗・価格・特典)が既出。開始は12/1で当日・3日以内のトリガー無し"
+   },
+   {
+    "dedup_key": "gaku-ui-cedec-kyushu-2026",
+    "reason": "既報",
+    "note": "11/19号『学マスUI演出の設計思想とTitan活用』と同じ講演の知らせ"
+   },
+   {
+    "dedup_key": "gaku-radio-2026-11-25",
+    "reason": "既報",
+    "note": "11/25号『放送部、安倍彩野夏さんらの回を本日放送』で既報。放送も終了済み"
+   },
+   {
+    "dedup_key": "gaku-metamorphose-mv-3m-2026",
+    "reason": "既報",
+    "note": "EP配信開始は11/24号で既報。CD予約・3/3発売は11/23号で予約受付中と既出で、新事実もトリガーも無い"
+   },
+   {
+    "dedup_key": "gaku-fan-trailer-mod-2026",
+    "reason": "同人・ファン主催",
+    "note": "個人のファン創作で未確認。ファン面は general 面だけ"
+   }
+  ],
+  "cross_brand": []
+ }
+}

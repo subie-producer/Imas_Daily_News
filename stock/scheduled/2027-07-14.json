@@ -180,5 +180,51 @@
   "src_candidate_id": "202609200734-explore-11",
   "event_date": "2027-07-14",
   "deadline": "2027-05-10"
+ },
+ {
+  "id": "sched-2027-07-14-sidem-11th-bluray-details-発売",
+  "dedup_key": "sidem-11th-bluray-details",
+  "brand": "sidem",
+  "subject": "SideM 11th STAGE Blu-ray 発売",
+  "kind": "発売",
+  "note": "Blu-rayが発売され、購入できる",
+  "reserved_on": "2026-11-26",
+  "occurs_on": "2027-07-14",
+  "title": "SideM 11th STAGE Blu-ray情報公開",
+  "url": "https://x.com/SideM_official/status/2125534032519938361",
+  "source_type": "公式",
+  "facts": [
+   "【イベント情報】",
+   "#SideM11th",
+   "Blu-ray情報を公開📀✨",
+   "・━・━・━・━・━・✧✧✧",
+   "Special Discに収録される撮り下ろし特典映像の詳細を公開しました💫",
+   "Blu-ray情報は公式サイトをチェック👀",
+   "#SideM #SideM生配信"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202611260224-grok-132"
+ },
+ {
+  "id": "sched-2027-07-14-sidem-11th-bluray-details-発売-src1",
+  "dedup_key": "sidem-11th-bluray-details",
+  "brand": "sidem",
+  "subject": "SideM 11th STAGE Blu-ray 発売",
+  "kind": "発売",
+  "note": "Blu-rayが発売され、購入できる",
+  "reserved_on": "2026-11-26",
+  "occurs_on": "2027-07-14",
+  "title": "Blu-ray | THE IDOLM@STER SideM 11th STAGE ～EVER EVER＠FTER～ │ バンダイナムコエンターテインメント公式サイト (2026-11-25)",
+  "url": "https://idolmaster-official.jp/live_event/sidem11th/bluray/",
+  "source_type": "公式",
+  "facts": [
+   "Blu-rayの発売日は2027年7月14日。通常版の価格は26,400円（10％税込）/24,000円（税抜）、品番LABX-18001～5（BD5枚組）。アソビストア特装版は39,600円（10％税込）/36,000円（税抜）。"
+  ],
+  "via": "verified_fact",
+  "verify": "unconfirmed",
+  "src_candidate_id": "202611260224-grok-132",
+  "companion_of": "sched-2027-07-14-sidem-11th-bluray-details-発売",
+  "src_dedup_key": "sidem-11th-bluray-details"
  }
 ]

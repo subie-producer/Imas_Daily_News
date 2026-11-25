@@ -215,5 +215,31 @@
   "src_candidate_id": "202611190229-explore-15",
   "companion_of": "sched-2027-05-30-million-x-stream-release-event-2027-締切",
   "src_dedup_key": "million-x-stream-theater-joint-release-2027"
+ },
+ {
+  "id": "sched-2027-05-30-derepa-real-party-13-2027-開幕",
+  "dedup_key": "derepa-real-party-13-2027",
+  "brand": "cg",
+  "subject": "CINDERELLA REAL PARTY! 13 開催日",
+  "kind": "開幕",
+  "note": "ニッショーホールで昼夜2部のトーク＆ミニライブが開かれる日",
+  "reserved_on": "2026-11-26",
+  "occurs_on": "2027-05-30",
+  "title": "デレパ公開録音「CINDERELLA REAL PARTY! 13」開催決定",
+  "url": "https://x.com/imas_columbia/status/2125582784274235854",
+  "source_type": "準公式",
+  "facts": [
+   "◤開催決定◢",
+   "#デレパ 公開録音イベント",
+   "『CINDERELLA REAL PARTY! 13』開催決定🎉",
+   "日程：2027年5月30日(日)",
+   "会場：東京・ニッショーホール",
+   "内容：トーク＆ミニライブ予定",
+   "詳細は後日ラジオ放送内でお知らせします📻",
+   "スケジュールをあけてお待ちください！"
+  ],
+  "via": "grok",
+  "verify": "unconfirmed",
+  "src_candidate_id": "202611260224-grok-146"
  }
 ]

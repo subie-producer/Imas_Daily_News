@@ -117,5 +117,39 @@
   "src_candidate_id": "202611210225-grok-120",
   "companion_of": "sched-2027-01-08-sidem-popup-howls-2026-animo-締切",
   "src_dedup_key": "sidem-who-howls-at-night-marche-mailorder-2026"
+ },
+ {
+  "id": "sched-2027-01-08-gakumas-kanae-chibigurumi-pouch-締切",
+  "dedup_key": "gakumas-kanae-chibigurumi-pouch",
+  "brand": "gaku",
+  "subject": "氷渡香名江ちびぐるみ・ポーチセット 受注最終日",
+  "kind": "締切",
+  "note": "23時までプレミアムバンダイで予約できる最終日",
+  "reserved_on": "2026-11-26",
+  "occurs_on": "2027-01-08",
+  "title": "氷渡香名江の「ちびぐるみ」がおなまえ入りポーチとセットでプレミアムバンダイに登場",
+  "url": "https://idolmaster-official.jp/news/01_20443",
+  "source_type": "公式",
+  "facts": [
+   "予約受付中（プレミアムバンダイ）",
+   "販売元: BANDAI SPIRITSの「e-BANPRESTO」",
+   "商品: 氷渡香名江の「ちびぐるみ」がおなまえ入りのポーチとセット",
+   "ポーチのデザインはこれまでに登場したアイドルたちのポーチとお揃い",
+   "受注期間: 2026年11月16日(月)11時～2027年1月8日(金)23時予定",
+   "商品お届け: 2027年5月予定",
+   "予約ページ: https://p-bandai.jp/item/item-1000257438/",
+   "ちびぐるみは手のひらサイズのぬいぐるみブランド",
+   "予定数に達した時点で受付終了の場合がある。要望が多い場合は再度受付を行う場合がある",
+   "本商品は海外で販売の可能性がある",
+   "アミューズメント景品としての展開予定はない",
+   "エンゲージメント: 中",
+   "言及アイドル: 氷渡香名江",
+   "氷渡香名江の「ちびぐるみ」がおなまえ入りポーチとセットでプレミアムバンダイに登場"
+  ],
+  "via": "watch",
+  "verify": "confirmed",
+  "deadline": "2027-01-08",
+  "link_from": "https://x.com/imas_official/status/2125514840093687951",
+  "src_candidate_id": "202611251834-watch-0"
  }
 ]

@@ -1,0 +1,666 @@
+{
+ "decisions": {
+  "idolmaster-series-popup-taipei-2027": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-25号に同内容の記事。新事実なし"
+  },
+  "shiny-coherent-light-episode-29-part-2": {
+   "action": "article",
+   "angle": "「コヒーレントライト」第29話「星を目指して」後編が公開され、次回更新は12月8日",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-shiny-party-2026-november": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "変更点は動画サイトの表示(再生数等)のみ。イベントも24日に終了済み"
+  },
+  "shiny-hbt-radio-december-mc-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-25号の番組運営記事に12月度MCとゲストが既出"
+  },
+  "shiny-mattari-habataki-radio-2026-11-24": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-25号に24日放送回とアーカイブが既出"
+  },
+  "shiny-coherent-light-update-2026-11-24": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-coherent-light-episode-29-part-2",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ24日更新の連載一覧表示"
+  },
+  "shiny-shiny-competition-2026-11": {
+   "action": "article",
+   "angle": "シャイニーコンペティションは28日20:59まで、締切まで残り2日",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "juri-birthday-2026": {
+   "action": "article",
+   "angle": "西城樹里の誕生日、ミニコミュ・フェザージュエル300個・記念ガシャやパックなどシャニソン・シャニマスの誕生日施策が一斉に始まる",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "樹里誕生日施策の素材を1本に統合"
+  },
+  "juri-birthday-stamp-gasha-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "juri-birthday-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "juri-birthday-gasha-song-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "juri-birthday-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "juri-birthday-packs-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "juri-birthday-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "juri-birthday-photo-pack-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "juri-birthday-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "juri-birthday-p-idol-rerun-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "juri-birthday-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "juri-birthday-story-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "juri-birthday-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "juri-feather-jewel-sale-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "juri-birthday-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-style-collection-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-style-collection-3-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "Classical Twin分。同じ受注・同じ締切"
+  },
+  "shiny-event-ketsujitsu-no-saki-2026": {
+   "action": "article",
+   "angle": "シナリオイベント「結実、の先に」が27日から12月8日11:59まで復刻開催",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-winter-festival-2026": {
+   "action": "article",
+   "angle": "フェスイベント「ウィンター・フェスティバル」が27日から12月8日11:59まで開催",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-maintenance-2026-11-27": {
+   "action": "article",
+   "angle": "27日12:00〜18:00にメンテナンス、実施前に283ステージを終えておく必要がある",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-masters-fes-ranking-2026-11": {
+   "action": "article",
+   "angle": "2026年11月マスターズフェスの上位100名の最終順位が発表された",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-mattari-habataki-radio-december-mc-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-25号に12月度MCとゲストが既出。おたより締切も25日頃で終了"
+  },
+  "shiny-song-for-prism-pickup-natsuha-2026-11": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-25号に夏葉ピックアップと3DMV演出が既出"
+  },
+  "chikusei-shiny-furusato-goods-2026": {
+   "action": "article",
+   "angle": "茨城県筑西市のふるさと納税返礼品にシャニマスコラボグッズが登場、25日から受付",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "fan-shiny-song-dance-2026-11-26": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿のみ。shiny面はculture対象外"
+  },
+  "fan-juri-birthday-illustration-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "同人・ファン主催",
+   "note": "AI生成のファン投稿。culture対象はgeneral面"
+  },
+  "shiny-new-idol-teaser-2026-11": {
+   "action": "article",
+   "angle": "近日登場予定の新アイドルが27日18:00に登場すると予告された",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "お得なガシャ・パッケージ終了告知の2件も統合"
+  },
+  "shiny-new-idol-gacha-package-ending-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-new-idol-teaser-2026-11",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-value-gacha-package-ending-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-new-idol-teaser-2026-11",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-sweets-paradise-goods-online-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-22号に通販の期間・商品・価格が既出。新事実も当日のトリガーも無い"
+  },
+  "shiny-prelude-collection-chiyuki-2026-11": {
+   "action": "article",
+   "angle": "桑山千雪のプレリュードコレクションは明日27日11:59まで",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-style-collection-3-2026": {
+   "action": "article",
+   "angle": "SHINY Style COLLECTION第3弾(Fumage・彼岸流)のASOBI STORE受注は29日まで、締切3日前",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "Classical Twin・彼岸流の各主題を統合"
+  },
+  "shiny-song-for-prism-3rd-anniv-x-campaign": {
+   "action": "article",
+   "angle": "シャニソン3周年「心に残るセリフ」Xキャンペーンは29日23:59まで、締切3日前",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-phrase-award-2026": {
+   "action": "article",
+   "angle": "シャニマス流行語大賞2026の募集は29日23:59まで、締切3日前",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-style-collection-higanryu-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-style-collection-3-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "彼岸流分。同じ受注・同じ締切"
+  },
+  "lisani-tokyo-2027": {
+   "action": "article",
+   "angle": "LISANI！TOKYO 2027(2月21日ストレイライト出演)のチケット2次先行は29日23:59まで、締切3日前",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-super-explosion-galaxy-2026": {
+   "action": "article",
+   "angle": "シャニソン「超爆発ギャラクシー」は本日20:59で終了、最終追い込みの日",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "終了・締切の2予約を統合"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "shiny-coherent-light-episode-29-part-2",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "「コヒーレントライト」第29話「星を目指して」後編が公開され、次回更新は12月8日",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "shiny-coherent-light-episode-29-part-2",
+    "candidate_ids": [
+     "202611250732-explore-3",
+     "202611252338-explore-64"
+    ]
+   },
+   {
+    "slug": "shiny-shiny-competition-2026-11",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "シャイニーコンペティションは28日20:59まで、締切まで残り2日",
+    "purpose": "期日の知らせ",
+    "lead_score": 10,
+    "dedup_key": "shiny-shiny-competition-2026-11",
+    "candidate_ids": [
+     "202611260224-explore-5"
+    ]
+   },
+   {
+    "slug": "shiny-juri-birthday-2026",
+    "brand": "shiny",
+    "rank": "medium",
+    "angle": "西城樹里の誕生日、ミニコミュ・フェザージュエル300個・記念ガシャやパックなどシャニソン・シャニマスの誕生日施策が一斉に始まる",
+    "purpose": "新情報",
+    "lead_score": 60,
+    "dedup_key": "juri-birthday-2026",
+    "candidate_ids": [
+     "202611260224-grok-35",
+     "202611260224-grok-36",
+     "202611260224-grok-37",
+     "202611260224-grok-38",
+     "202611260224-grok-39",
+     "202611260224-grok-40",
+     "202611260224-grok-41",
+     "202611260224-grok-42"
+    ]
+   },
+   {
+    "slug": "shiny-event-ketsujitsu-no-saki-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "シナリオイベント「結実、の先に」が27日から12月8日11:59まで復刻開催",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "shiny-event-ketsujitsu-no-saki-2026",
+    "candidate_ids": [
+     "202611260224-grok-44"
+    ]
+   },
+   {
+    "slug": "shiny-winter-festival-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "フェスイベント「ウィンター・フェスティバル」が27日から12月8日11:59まで開催",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "shiny-winter-festival-2026",
+    "candidate_ids": [
+     "202611260224-grok-45"
+    ]
+   },
+   {
+    "slug": "shiny-maintenance-2026-11-27",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "27日12:00〜18:00にメンテナンス、実施前に283ステージを終えておく必要がある",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "shiny-maintenance-2026-11-27",
+    "candidate_ids": [
+     "202611260224-grok-46"
+    ]
+   },
+   {
+    "slug": "shiny-masters-fes-ranking-2026-11",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "2026年11月マスターズフェスの上位100名の最終順位が発表された",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "shiny-masters-fes-ranking-2026-11",
+    "candidate_ids": [
+     "202611260224-grok-47"
+    ]
+   },
+   {
+    "slug": "shiny-chikusei-shiny-furusato-goods-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "茨城県筑西市のふるさと納税返礼品にシャニマスコラボグッズが登場、25日から受付",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "chikusei-shiny-furusato-goods-2026",
+    "candidate_ids": [
+     "202611260224-grok-50"
+    ]
+   },
+   {
+    "slug": "shiny-new-idol-teaser-2026-11",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "近日登場予定の新アイドルが27日18:00に登場すると予告された",
+    "purpose": "新情報",
+    "lead_score": 25,
+    "dedup_key": "shiny-new-idol-teaser-2026-11",
+    "candidate_ids": [
+     "202611260224-grok-53",
+     "202611260224-grok-55",
+     "202611260224-grok-56"
+    ]
+   },
+   {
+    "slug": "shiny-prelude-collection-chiyuki-2026-11",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "桑山千雪のプレリュードコレクションは明日27日11:59まで",
+    "purpose": "期日の知らせ",
+    "lead_score": 15,
+    "dedup_key": "shiny-prelude-collection-chiyuki-2026-11",
+    "candidate_ids": [
+     "sched-2026-11-24-shiny-prelude-collection-chiyuki-2026-11-締切前",
+     "sched-2026-11-24-shiny-prelude-collection-chiyuki-2026-11-締切前-src1",
+     "sched-2026-11-24-shiny-prelude-collection-chiyuki-2026-11-締切前-src2",
+     "sched-2026-11-24-shiny-prelude-collection-chiyuki-2026-11-締切前-src3"
+    ]
+   },
+   {
+    "slug": "shiny-style-collection-3-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "SHINY Style COLLECTION第3弾(Fumage・彼岸流)のASOBI STORE受注は29日まで、締切3日前",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "shiny-style-collection-3-2026",
+    "candidate_ids": [
+     "sched-2026-11-26-shiny-style-collection-3-2026-締切前",
+     "sched-2026-11-26-shiny-style-collection-3-2026-締切前-src1",
+     "202611260224-grok-43",
+     "202611260224-grok-125",
+     "202611260224-grok-127",
+     "sched-2026-11-26-shiny-style-collection-2026-締切前",
+     "sched-2026-11-26-shiny-style-collection-2026-締切前-src1",
+     "sched-2026-11-26-shiny-style-collection-higanryu-2026-締切前",
+     "sched-2026-11-26-shiny-style-collection-higanryu-2026-締切前-src1",
+     "sched-2026-11-26-shiny-style-collection-higanryu-2026-締切前-src2"
+    ]
+   },
+   {
+    "slug": "shiny-song-for-prism-3rd-anniv-x-campaign",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "シャニソン3周年「心に残るセリフ」Xキャンペーンは29日23:59まで、締切3日前",
+    "purpose": "期日の知らせ",
+    "lead_score": 15,
+    "dedup_key": "shiny-song-for-prism-3rd-anniv-x-campaign",
+    "candidate_ids": [
+     "sched-2026-11-26-shiny-song-for-prism-3rd-anniv-x-campaign-締切前",
+     "sched-2026-11-26-shiny-song-for-prism-3rd-anniv-x-campaign-締切前-src1",
+     "sched-2026-11-26-shiny-song-for-prism-3rd-anniv-x-campaign-締切前-src2"
+    ]
+   },
+   {
+    "slug": "shiny-phrase-award-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "シャニマス流行語大賞2026の募集は29日23:59まで、締切3日前",
+    "purpose": "期日の知らせ",
+    "lead_score": 15,
+    "dedup_key": "shiny-phrase-award-2026",
+    "candidate_ids": [
+     "sched-2026-11-26-shiny-phrase-award-2026-締切前",
+     "sched-2026-11-26-shiny-phrase-award-2026-締切前-src1"
+    ]
+   },
+   {
+    "slug": "shiny-lisani-tokyo-2027",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "LISANI！TOKYO 2027(2月21日ストレイライト出演)のチケット2次先行は29日23:59まで、締切3日前",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "lisani-tokyo-2027",
+    "candidate_ids": [
+     "sched-2026-11-26-lisani-tokyo-2027-締切前"
+    ]
+   },
+   {
+    "slug": "shiny-super-explosion-galaxy-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "シャニソン「超爆発ギャラクシー」は本日20:59で終了、最終追い込みの日",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "shiny-super-explosion-galaxy-2026",
+    "candidate_ids": [
+     "sched-2026-11-26-shiny-super-explosion-galaxy-2026-終了",
+     "sched-2026-11-26-shiny-super-explosion-galaxy-2026-終了-src1",
+     "sched-2026-11-26-shiny-super-explosion-galaxy-2026-終了-src2",
+     "sched-2026-11-26-shiny-super-explosion-galaxy-2026-終了-src3",
+     "sched-2026-11-26-shiny-super-explosion-galaxy-2026-終了-src4",
+     "sched-2026-11-26-shiny-super-explosion-galaxy-2026-終了-src5",
+     "sched-2026-11-26-shiny-super-explosion-galaxy-2026-終了-src6",
+     "sched-2026-11-26-shiny-super-explosion-galaxy-2026-終了-src7",
+     "sched-2026-11-26-shiny-super-explosion-galaxy-2026-締切",
+     "sched-2026-11-26-shiny-super-explosion-galaxy-2026-締切-src1"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "idolmaster-series-popup-taipei-2027",
+    "reason": "既報",
+    "note": "11-25号に同内容の記事。新事実なし"
+   },
+   {
+    "dedup_key": "shiny-shiny-party-2026-november",
+    "reason": "その他",
+    "note": "変更点は動画サイトの表示(再生数等)のみ。イベントも24日に終了済み"
+   },
+   {
+    "dedup_key": "shiny-hbt-radio-december-mc-2026",
+    "reason": "既報",
+    "note": "11-25号の番組運営記事に12月度MCとゲストが既出"
+   },
+   {
+    "dedup_key": "shiny-mattari-habataki-radio-2026-11-24",
+    "reason": "既報",
+    "note": "11-25号に24日放送回とアーカイブが既出"
+   },
+   {
+    "dedup_key": "shiny-mattari-habataki-radio-december-mc-2026",
+    "reason": "既報",
+    "note": "11-25号に12月度MCとゲストが既出。おたより締切も25日頃で終了"
+   },
+   {
+    "dedup_key": "shiny-song-for-prism-pickup-natsuha-2026-11",
+    "reason": "既報",
+    "note": "11-25号に夏葉ピックアップと3DMV演出が既出"
+   },
+   {
+    "dedup_key": "fan-shiny-song-dance-2026-11-26",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿のみ。shiny面はculture対象外"
+   },
+   {
+    "dedup_key": "fan-juri-birthday-illustration-2026",
+    "reason": "同人・ファン主催",
+    "note": "AI生成のファン投稿。culture対象はgeneral面"
+   },
+   {
+    "dedup_key": "shiny-sweets-paradise-goods-online-2026",
+    "reason": "既報",
+    "note": "11-22号に通販の期間・商品・価格が既出。新事実も当日のトリガーも無い"
+   }
+  ],
+  "cross_brand": []
+ }
+}

@@ -1,0 +1,572 @@
+{
+ "decisions": {
+  "sidem-fantastic-battle-fes-setlist-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-fantastic-battle-fes-movie-weekly-footage-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "劇場版の第2週映像(11/27〜)の素材として統合。全曲リストは既報"
+  },
+  "sidem-315-mode-vol2-spring-goods-2026": {
+   "action": "article",
+   "angle": "315 MODE vol.2 SPRINGの公式ルックブック発売記念で、サイン入りチェキ風カード計24枚のプレゼントキャンペーンが追加された。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "source_change: プレゼントキャンペーンの追加"
+  },
+  "sidem-fantastic-battle-fes-2026-nagano-sale": {
+   "action": "article",
+   "angle": "長野公演の配信チケットが11/25から販売開始。2027年1月25日まで、ストーリーパック27,200円・配信パック18,400円、定点カメラ映像も。",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "現地先着(既報)とは別施策。fan-fes-nagano-stream-ticketを統合"
+  },
+  "sidem-who-goes-first-setlist": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/25に全18曲を記事化済み"
+  },
+  "sidem-movie-who-goes-first-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-fantastic-battle-fes-movie-weekly-footage-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "11/27から2週目の入場者プレゼント第2弾・週替わり映像"
+  },
+  "sidem-costume-museum-panel-2026": {
+   "action": "article",
+   "angle": "STAGE COSTUME MUSEUM公式等身大パネル(アナザーバージョン49名、30,000円)の受注を12/27までASOBI STOREで受付。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "sidem-producer-meeting-2027": {
+   "action": "article",
+   "angle": "プロミ「AJewelholIc!!!」(3/13・14京王アリーナ)の追加出演者が生配信で発表され、各チームの新衣装ビジュアルと楽曲シャッフル企画も公開された。",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "new-visuals・shuffle-projectを統合。facts上は追加出演者の氏名が未確認なので校閲で確認"
+  },
+  "sidem-cold-fight-live-signed-shikishi-2026": {
+   "action": "article",
+   "angle": "全力ヒートアップ!!!生配信出演キャスト全員のサイン色紙が抽選で4名に当たる。応募は12/2 23:59までのX投稿。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "sidem-refrain-atrium-2dmv-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/25に公開予告を記事化済み。新事実なし"
+  },
+  "sidem-ajiproject-cd-release": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/21・11/25に記事化済み。新事実なし"
+  },
+  "sidem-fanfes-wsi-name-us-zenith-mv": {
+   "action": "article",
+   "angle": "8ユニット参加の新合同曲「NAME US ZENITH!」のMVが公開された。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "SideM単独名義の8ユニット合同曲"
+  },
+  "sidem-promi2027-new-visuals": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-producer-meeting-2027",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ公演の新情報"
+  },
+  "sidem-promi2027-shuffle-project": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-producer-meeting-2027",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ公演の新情報"
+  },
+  "sidem-ajiproject-episode3": {
+   "action": "article",
+   "angle": "AJIプロジェクトのストーリー第3話「ほろ苦な試練！？」が12月上旬に公開予定。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "第3話の題名・時期は新しい事実か校閲で既報と突き合わせ"
+  },
+  "sidem-zenryoku-heatup-live-2026-11": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "配信は終了。11/19・11/25に記事化済み"
+  },
+  "sidem-monthly-theme-song-13-jupiter-cd": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/25に発売日の記事を出済み"
+  },
+  "sidem-m-fes-winter-wonderland-theme-song-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "12/2発売。価格・特典とも10/31・11/1に記事化済みで新事実なし"
+  },
+  "sidem-2dmv-goods-4": {
+   "action": "article",
+   "angle": "2DMV公開記念グッズ第4弾の受注が今日12時に開始。12月13日23:59まで。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "受注開始日"
+  },
+  "cafe-parade-chocolate-special-2dmv-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/14・11/25に記事化済み"
+  },
+  "sidem-who-goes-first-setlist-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "公式プレイリストも11/25の記事に記載済み"
+  },
+  "sidem-wgf-movie-fan-reactions": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "ファン投稿のみ。個人のSNS投稿は単体記事にしない"
+  },
+  "sidem-collab-reaction-trend-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "ファン反応のみで具体的事実が無い"
+  },
+  "sidem-stream-roundup": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "facts は見出しのみ。個別の発表は各主題で扱う"
+  },
+  "sidem-11th-bluray-details": {
+   "action": "article",
+   "angle": "SideM 11th STAGE Blu-rayのSpecial Discに収録される撮り下ろし特典映像の詳細が公開された。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "詳細は公式サイト。facts は短い"
+  },
+  "sidem-315mode-vol2-spring": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-315-mode-vol2-spring-goods-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "受注開始とプレゼントキャンペーン決定の公式ポスト"
+  },
+  "sidem-fan-fes-nagano-stream-ticket": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-fantastic-battle-fes-2026-nagano-sale",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ配信チケット販売の公式ポスト"
+  },
+  "sidem-producer-meeting-ajewelholic-2027-premium-advance-2": {
+   "action": "article",
+   "angle": "プロミ「AJewelholIc!!!」プレミアム12か月会員2次先行の申込は、今日23:59が締切。",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(締切)。他2主題を統合"
+  },
+  "sidem-renaissance-campaign2-2026": {
+   "action": "article",
+   "angle": "315 Fitness ProjectのSNSキャンペーン第2弾、ウォールステッカー抽選の応募は11月29日まであと3日。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(締切3日前)"
+  },
+  "sidem-fantastic-battle-fes-movie-weekly-footage-2026": {
+   "action": "article",
+   "angle": "劇場版SideMの1週目バックステージ映像①は今日が最終日。11/27からは2週目の映像と入場者プレゼント第2弾に切り替わる。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(終了)。setlist-2026・movie-who-goes-first-2026を統合"
+  },
+  "sidem-producer-meeting-ajewelholic-2027-premium-second": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-producer-meeting-ajewelholic-2027-premium-advance-2",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ2次先行の締切(続報予約あり)"
+  },
+  "sidem-producer-meeting-2027-premium-2nd": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-producer-meeting-ajewelholic-2027-premium-advance-2",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ2次先行の締切(続報予約あり)"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "sidem-315-mode-vol2-spring-goods-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "315 MODE vol.2 SPRINGの公式ルックブック発売記念で、サイン入りチェキ風カード計24枚のプレゼントキャンペーンが追加された。",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "sidem-315-mode-vol2-spring-goods-2026",
+    "candidate_ids": [
+     "update-d47035a0b280",
+     "update-4015411f1651",
+     "202611260224-grok-136"
+    ]
+   },
+   {
+    "slug": "sidem-fantastic-battle-fes-2026-nagano-sale",
+    "brand": "sidem",
+    "rank": "medium",
+    "angle": "長野公演の配信チケットが11/25から販売開始。2027年1月25日まで、ストーリーパック27,200円・配信パック18,400円、定点カメラ映像も。",
+    "purpose": "新情報",
+    "lead_score": 25,
+    "dedup_key": "sidem-fantastic-battle-fes-2026-nagano-sale",
+    "candidate_ids": [
+     "202611251234-watch-0",
+     "202611252338-watch-54",
+     "202611252338-explore-65",
+     "202611260224-grok-149",
+     "202611260224-grok-155"
+    ]
+   },
+   {
+    "slug": "sidem-costume-museum-panel-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "STAGE COSTUME MUSEUM公式等身大パネル(アナザーバージョン49名、30,000円)の受注を12/27までASOBI STOREで受付。",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "sidem-costume-museum-panel-2026",
+    "candidate_ids": [
+     "202611252338-watch-48"
+    ]
+   },
+   {
+    "slug": "sidem-producer-meeting-2027",
+    "brand": "sidem",
+    "rank": "medium",
+    "angle": "プロミ「AJewelholIc!!!」(3/13・14京王アリーナ)の追加出演者が生配信で発表され、各チームの新衣装ビジュアルと楽曲シャッフル企画も公開された。",
+    "purpose": "新情報",
+    "lead_score": 60,
+    "dedup_key": "sidem-producer-meeting-2027",
+    "candidate_ids": [
+     "202611252338-watch-49",
+     "202611260224-grok-148",
+     "202611260224-grok-61",
+     "202611260224-grok-130",
+     "202611260224-grok-131",
+     "202611260224-grok-62"
+    ]
+   },
+   {
+    "slug": "sidem-cold-fight-live-signed-shikishi-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "全力ヒートアップ!!!生配信出演キャスト全員のサイン色紙が抽選で4名に当たる。応募は12/2 23:59までのX投稿。",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "sidem-cold-fight-live-signed-shikishi-2026",
+    "candidate_ids": [
+     "202611252338-watch-60",
+     "202611260224-grok-133",
+     "202611260224-grok-150"
+    ]
+   },
+   {
+    "slug": "sidem-fanfes-wsi-name-us-zenith-mv",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "8ユニット参加の新合同曲「NAME US ZENITH!」のMVが公開された。",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "sidem-fanfes-wsi-name-us-zenith-mv",
+    "candidate_ids": [
+     "202611260224-grok-60"
+    ]
+   },
+   {
+    "slug": "sidem-ajiproject-episode3",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "AJIプロジェクトのストーリー第3話「ほろ苦な試練！？」が12月上旬に公開予定。",
+    "purpose": "新情報",
+    "lead_score": 5,
+    "dedup_key": "sidem-ajiproject-episode3",
+    "candidate_ids": [
+     "202611260224-grok-64"
+    ]
+   },
+   {
+    "slug": "sidem-2dmv-goods-4",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "2DMV公開記念グッズ第4弾の受注が今日12時に開始。12月13日23:59まで。",
+    "purpose": "期日の知らせ",
+    "lead_score": 15,
+    "dedup_key": "sidem-2dmv-goods-4",
+    "candidate_ids": [
+     "202611260224-grok-71"
+    ]
+   },
+   {
+    "slug": "sidem-11th-bluray-details",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "SideM 11th STAGE Blu-rayのSpecial Discに収録される撮り下ろし特典映像の詳細が公開された。",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "sidem-11th-bluray-details",
+    "candidate_ids": [
+     "202611260224-grok-132"
+    ]
+   },
+   {
+    "slug": "sidem-producer-meeting-ajewelholic-2027-premium-advance-2",
+    "brand": "sidem",
+    "rank": "medium",
+    "angle": "プロミ「AJewelholIc!!!」プレミアム12か月会員2次先行の申込は、今日23:59が締切。",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "sidem-producer-meeting-ajewelholic-2027-premium-advance-2",
+    "candidate_ids": [
+     "sched-2026-11-26-sidem-producer-meeting-ajewelholic-2027-premium-advance-2-締切",
+     "sched-2026-11-26-sidem-producer-meeting-ajewelholic-2027-premium-advance-2-締切-src1",
+     "sched-2026-11-26-sidem-producer-meeting-ajewelholic-2027-premium-second-締切",
+     "sched-2026-11-26-sidem-producer-meeting-ajewelholic-2027-premium-second-締切-src1",
+     "sched-2026-11-26-sidem-producer-meeting-2027-premium-2nd-締切"
+    ]
+   },
+   {
+    "slug": "sidem-renaissance-campaign2-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "315 Fitness ProjectのSNSキャンペーン第2弾、ウォールステッカー抽選の応募は11月29日まであと3日。",
+    "purpose": "期日の知らせ",
+    "lead_score": 10,
+    "dedup_key": "sidem-renaissance-campaign2-2026",
+    "candidate_ids": [
+     "sched-2026-11-26-sidem-renaissance-campaign2-2026-締切前"
+    ]
+   },
+   {
+    "slug": "sidem-fantastic-battle-fes-movie-weekly-footage-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "劇場版SideMの1週目バックステージ映像①は今日が最終日。11/27からは2週目の映像と入場者プレゼント第2弾に切り替わる。",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "sidem-fantastic-battle-fes-movie-weekly-footage-2026",
+    "candidate_ids": [
+     "sched-2026-11-26-sidem-fantastic-battle-fes-movie-weekly-footage-2026-終了",
+     "sched-2026-11-26-sidem-fantastic-battle-fes-movie-weekly-footage-2026-終了-src1",
+     "202611250732-explore-5",
+     "202611252338-watch-0",
+     "202611260224-explore-6"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "sidem-who-goes-first-setlist",
+    "reason": "既報",
+    "note": "11/25に全18曲を記事化済み"
+   },
+   {
+    "dedup_key": "sidem-refrain-atrium-2dmv-2026",
+    "reason": "既報",
+    "note": "11/25に公開予告を記事化済み。新事実なし"
+   },
+   {
+    "dedup_key": "sidem-ajiproject-cd-release",
+    "reason": "既報",
+    "note": "11/21・11/25に記事化済み。新事実なし"
+   },
+   {
+    "dedup_key": "sidem-zenryoku-heatup-live-2026-11",
+    "reason": "既報",
+    "note": "配信は終了。11/19・11/25に記事化済み"
+   },
+   {
+    "dedup_key": "sidem-monthly-theme-song-13-jupiter-cd",
+    "reason": "既報",
+    "note": "11/25に発売日の記事を出済み"
+   },
+   {
+    "dedup_key": "sidem-m-fes-winter-wonderland-theme-song-2026",
+    "reason": "既報",
+    "note": "12/2発売。価格・特典とも10/31・11/1に記事化済みで新事実なし"
+   },
+   {
+    "dedup_key": "cafe-parade-chocolate-special-2dmv-2026",
+    "reason": "既報",
+    "note": "11/14・11/25に記事化済み"
+   },
+   {
+    "dedup_key": "sidem-who-goes-first-setlist-2026",
+    "reason": "既報",
+    "note": "公式プレイリストも11/25の記事に記載済み"
+   },
+   {
+    "dedup_key": "sidem-wgf-movie-fan-reactions",
+    "reason": "出典不足",
+    "note": "ファン投稿のみ。個人のSNS投稿は単体記事にしない"
+   },
+   {
+    "dedup_key": "sidem-collab-reaction-trend-2026",
+    "reason": "出典不足",
+    "note": "ファン反応のみで具体的事実が無い"
+   },
+   {
+    "dedup_key": "sidem-stream-roundup",
+    "reason": "出典不足",
+    "note": "facts は見出しのみ。個別の発表は各主題で扱う"
+   }
+  ],
+  "cross_brand": []
+ }
+}

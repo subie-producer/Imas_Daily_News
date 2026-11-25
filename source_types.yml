@@ -135,6 +135,7 @@ discovery_only_domains:
 # --- 二次情報: 他所の発表を写して伝えている情報源(規程2.5) ---
 # 法人運営か個人運営かは問わない。自ら取材・発表していないものはここ。
 secondary_domains:
+  - anihk.com             # 合議で追加: 公式発表の全曲順を言い換えた記事で、署名は編集部のみ。運営は香港の情報サイト
   - media.on-gacha.com    # 合議で追加: 署名は編集部のみ、商品発表を定型構成で紹介する媒体
   - mibasamu.doorblog.jp  # 合議で追加: X投稿を集めて写す話題まとめ。個人と示す材料なし(相手の個人ブログ説は未確認)
   - imabazu.com           # 合議で追加: X投稿を集めて順位付けし紹介する媒体。自ら取材した形跡なし
@@ -527,6 +528,7 @@ video_ids:
     - sm18526341          # 機械で追加: nicovideo.jp/user/17835786「iM@S 6th Anniversary Live - キラ」
     - LSkzNm3AzHk         # 機械で追加: @TogawaNonoha「〖 世界のアソビ大全51 〗遊び…？いいえ、ののは vs ま」
   公式:
+    - C8YCfZSSm7o         # 機械で追加: @imas-official「【学マス】初星学園放送部 #115【アイドルマスター】」
     - VjFfUY_P2Ug         # 機械で追加: @imas-official「【ミリシタ】『キミが真ん中にいた』アイドルグランプリ PV【」
     - DDn5Eq5Ntec         # 機械で追加: @hatsuboshi_gakuen「初星学園 「メタモルフォーゼ」Official Music 」
     - F2Wk47w6fxU         # 機械で追加: @imas-official「【ミリシタ】ゲーム内楽曲『想定心理外 -Outside Is」
@@ -1377,6 +1379,7 @@ x_posts:
 
 # --- リンク元から引き継いだ種別(リンク先1つずつ。キーは pipelib.link_key)。合議がリンク元の告知と関係していると確かめたものだけ(classify_sources.inherit_from_links)。リンク先そのものの種別より強いときだけ効く ---
 link_types:
+  youtube.com/watch?v=J_ClG0QRp_I: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/shinyc_official/status/2125086350613622980(公式)。告知の11/24放送回の視聴URLで、同番組の#410の動画
   youtube.com/watch?v=ulOmfWv7abE: 準公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/SideM_lantis/status/2125109660122485052(準公式)。投稿のCafé Parade「Chocolate Special」2DMV修正版
   youtube.com/watch?v=nGVfqEK4xIg: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://idolmaster-official.jp/news/01_20193(公式)。本文が延期公演の開催と冒頭無料枠URLを案内。相手は主題をボイスのみと見た
   youtube.com/watch?v=bHqlMb4Zm7Q: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/valiv_official/status/2125159995377410439(公式)。投稿の灯里愛夏「Japanese Ramen Simulator」総集編そのもの

@@ -1,0 +1,342 @@
+{
+ "decisions": {
+  "valiv-onsen-radio-egg": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "変更後はプレーヤー表示(再生速度等)のみで読者に関わる変更なし。初回11/30は11-25号で既報"
+  },
+  "dsva-sukusuku-radio-start-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-25号と同内容(初回11/30、隔週月曜13時)。当日トリガーなし"
+  },
+  "dsva-situation-voice-2026-11": {
+   "action": "article",
+   "angle": "vα-livのシチュエーションボイス「なぜか怪異にばっかりモテるのだがボイス」が特設BOOTHで12月13日まで期間限定販売",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "letora-birthday-online-live-archive-2026": {
+   "action": "article",
+   "angle": "レトラ バースデーONLINE LIVE 2026のアーカイブチケットが12月13日18時まで販売、スペシャルゲストはジュリア",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "valiv-machine-party-livestream-2026-11-25": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-25号で既報、配信は昨夜終了済み"
+  },
+  "manaka-japanese-ramen-simulator-compilation-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-25号『Japanese Ramen Simulator』総集編と同じ"
+  },
+  "cosmo-zattsu-choujou-dance-collab-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-25号『ザッツ！超常』と同じ"
+  },
+  "valiv-machine-party-result-2026-11-25": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿の報告で単体記事にしない。配信自体も既報"
+  },
+  "cosmo-yes-tokyo-dance-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "carried。11-23号の既報と同じ動画で新事実なし"
+  },
+  "va-liv-manaka-birthday-live-2026": {
+   "action": "article",
+   "angle": "灯里愛夏バースデー延期公演の配信チケット販売とアーカイブ視聴は29日18時まで、締切3日前(購入先はZ-aN)",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同公演の他の配信券・アーカイブ・上映会・レポート主題を統合"
+  },
+  "dsva-manaka-birthday-online-live-2026-platform-change": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "va-liv-manaka-birthday-live-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "manaka-birthday-live-platform-change-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "va-liv-manaka-birthday-live-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "valiv-tomori-birthday-voice-2026-reissue": {
+   "action": "article",
+   "angle": "灯里愛夏バースデー記念ボイス2026(3,300円)の特設BOOTH再販は29日23時59分まで、締切3日前",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "購入行動がチケットと別のため別記事"
+  },
+  "dsva-manaka-birthday-live-report-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "va-liv-manaka-birthday-live-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同公演。配信チケット締切の素材として統合"
+  },
+  "manaka-birthday-online-live-archive-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "va-liv-manaka-birthday-live-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "valiv-tomori-birthday-live-2026-screening": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "va-liv-manaka-birthday-live-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "上映会は11/23に終了済み。販売期限の素材として統合"
+  },
+  "va-liv-3rdlive-qonnect-goods-preorder-2026": {
+   "action": "article",
+   "angle": "3rdLIVE&MEETING公式グッズの事前受注は29日まで、締切3日前(届け時期は3月中旬頃)",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同グッズの別主題を統合"
+  },
+  "manaka-birthday-archive-watch-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "va-liv-manaka-birthday-live-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "valiv-3rdlive-goods-preorder-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "va-liv-3rdlive-qonnect-goods-preorder-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "valiv-manaka-birthday-live-archive-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "va-liv-manaka-birthday-live-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "dsva-situation-voice-2026-11",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "vα-livのシチュエーションボイス「なぜか怪異にばっかりモテるのだがボイス」が特設BOOTHで12月13日まで期間限定販売",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "dsva-situation-voice-2026-11",
+    "candidate_ids": [
+     "202611251834-watch-1",
+     "202611260224-grok-144"
+    ]
+   },
+   {
+    "slug": "dsva-letora-birthday-online-live-archive-2026",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "レトラ バースデーONLINE LIVE 2026のアーカイブチケットが12月13日18時まで販売、スペシャルゲストはジュリア",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "letora-birthday-online-live-archive-2026",
+    "candidate_ids": [
+     "202611260224-grok-88"
+    ]
+   },
+   {
+    "slug": "dsva-va-liv-manaka-birthday-live-2026",
+    "brand": "dsva",
+    "rank": "medium",
+    "angle": "灯里愛夏バースデー延期公演の配信チケット販売とアーカイブ視聴は29日18時まで、締切3日前(購入先はZ-aN)",
+    "purpose": "期日の知らせ",
+    "lead_score": 60,
+    "dedup_key": "va-liv-manaka-birthday-live-2026",
+    "candidate_ids": [
+     "sched-2026-11-26-va-liv-manaka-birthday-live-2026-締切前",
+     "sched-2026-11-26-dsva-manaka-birthday-online-live-2026-platform-change-締切前",
+     "sched-2026-11-26-manaka-birthday-live-platform-change-2026-締切前",
+     "sched-2026-11-26-manaka-birthday-live-platform-change-2026-締切前-src1",
+     "sched-2026-11-26-manaka-birthday-live-platform-change-2026-締切前-src2",
+     "sched-2026-11-26-dsva-manaka-birthday-live-report-2026-締切前",
+     "sched-2026-11-26-manaka-birthday-online-live-archive-2026-締切前",
+     "sched-2026-11-26-manaka-birthday-online-live-archive-2026-締切前-src1",
+     "sched-2026-11-26-valiv-tomori-birthday-live-2026-screening-締切前",
+     "sched-2026-11-26-valiv-tomori-birthday-live-2026-screening-締切前-src1",
+     "sched-2026-11-26-manaka-birthday-archive-watch-2026-締切前",
+     "sched-2026-11-26-manaka-birthday-archive-watch-2026-締切前-src1",
+     "sched-2026-11-26-valiv-manaka-birthday-live-archive-2026-締切前"
+    ]
+   },
+   {
+    "slug": "dsva-valiv-tomori-birthday-voice-2026-reissue",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "灯里愛夏バースデー記念ボイス2026(3,300円)の特設BOOTH再販は29日23時59分まで、締切3日前",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "valiv-tomori-birthday-voice-2026-reissue",
+    "candidate_ids": [
+     "sched-2026-11-26-valiv-tomori-birthday-voice-2026-reissue-締切前"
+    ]
+   },
+   {
+    "slug": "dsva-va-liv-3rdlive-qonnect-goods-preorder-2026",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "3rdLIVE&MEETING公式グッズの事前受注は29日まで、締切3日前(届け時期は3月中旬頃)",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "va-liv-3rdlive-qonnect-goods-preorder-2026",
+    "candidate_ids": [
+     "sched-2026-11-26-va-liv-3rdlive-qonnect-goods-preorder-2026-締切前",
+     "sched-2026-11-26-valiv-3rdlive-goods-preorder-2026-締切前",
+     "sched-2026-11-26-valiv-3rdlive-goods-preorder-2026-締切前-src1",
+     "sched-2026-11-26-valiv-3rdlive-goods-preorder-2026-締切前-src2"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "valiv-onsen-radio-egg",
+    "reason": "既報",
+    "note": "変更後はプレーヤー表示(再生速度等)のみで読者に関わる変更なし。初回11/30は11-25号で既報"
+   },
+   {
+    "dedup_key": "dsva-sukusuku-radio-start-2026",
+    "reason": "既報",
+    "note": "11-25号と同内容(初回11/30、隔週月曜13時)。当日トリガーなし"
+   },
+   {
+    "dedup_key": "valiv-machine-party-livestream-2026-11-25",
+    "reason": "既報",
+    "note": "11-25号で既報、配信は昨夜終了済み"
+   },
+   {
+    "dedup_key": "manaka-japanese-ramen-simulator-compilation-2026",
+    "reason": "既報",
+    "note": "11-25号『Japanese Ramen Simulator』総集編と同じ"
+   },
+   {
+    "dedup_key": "cosmo-zattsu-choujou-dance-collab-2026",
+    "reason": "既報",
+    "note": "11-25号『ザッツ！超常』と同じ"
+   },
+   {
+    "dedup_key": "valiv-machine-party-result-2026-11-25",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿の報告で単体記事にしない。配信自体も既報"
+   },
+   {
+    "dedup_key": "cosmo-yes-tokyo-dance-2026",
+    "reason": "既報",
+    "note": "carried。11-23号の既報と同じ動画で新事実なし"
+   }
+  ],
+  "cross_brand": []
+ }
+}

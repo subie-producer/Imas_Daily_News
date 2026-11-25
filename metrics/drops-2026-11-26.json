@@ -1,0 +1,46 @@
+{
+ "shiny-shiny-competition-2026-11": {
+  "title": "シャイニーコンペティションは28日20:59まで、締切まで残り2日",
+  "stage": "執筆で見送り",
+  "why": "NO_PRIMARY_SOURCE シャイニーコンペティションの公式・準公式の告知、または公式発表を報じた報道の本文を確認できませんでした。読めた出典は二次情報のみのため、記事を見送ります。",
+  "candidate_ids": [
+   "202611260224-explore-5"
+  ]
+ },
+ "shiny-prelude-collection-chiyuki-2026-11": {
+  "title": "桑山千雪のプレリュードコレクションは明日27日11:59まで",
+  "stage": "執筆で見送り",
+  "why": "NO_PRIMARY_SOURCE 桑山千雪の「プレリュードコレクション」の公式X投稿は確認できましたが、締切を確かめられる公式・準公式の出典は確認できませんでした。素材の二次情報にある11月27日11:59という期間は、読み直したページの現行版では12月8日11:59となっ",
+  "candidate_ids": [
+   "sched-2026-11-24-shiny-prelude-collection-chiyuki-2026-11-締切前",
+   "sched-2026-11-24-shiny-prelude-collection-chiyuki-2026-11-締切前-src1",
+   "sched-2026-11-24-shiny-prelude-collection-chiyuki-2026-11-締切前-src2",
+   "sched-2026-11-24-shiny-prelude-collection-chiyuki-2026-11-締切前-src3"
+  ]
+ },
+ "million-soutei-shinrigai-mv-2026": {
+  "title": "アイドルグランプリVer.1.3.000配信と中谷育追加、WEB STORE限定9.5周年記念ジュエルセット(最大17.5%増量)の予告",
+  "stage": "執筆で見送り",
+  "why": "NO_PRIMARY_SOURCE 素材のURLは公式アカウントの投稿を掲載する二次情報ページでした。公式WEB STOREのページも確認しましたが、アイドルグランプリVer.1.3.000の更新内容と9.5周年記念ジュエルセットの告知内容は掲載されておらず、これらを裏付ける",
+  "candidate_ids": [
+   "202611251834-explore-7",
+   "202611260224-explore-2"
+  ]
+ },
+ "cg-cosmoclock-special-2026": {
+  "title": "シンデレラガールズ、コスモクロック21で特別演出",
+  "stage": "書き直しで見送り",
+  "why": "NO_PRIMARY_SOURCE R5を満たす公式・準公式ページまたは公式発表を報じた報道を確認できませんでした。公式NEWS一覧（https://cinderellagirls.idolmaster-official.jp/news/）にはコラボ詳細の告知がありますが、コスモクロック21の特別演出は記載されていませ",
+  "candidate_ids": [
+   "202611232332-explore-0"
+  ]
+ },
+ "sidem-renaissance-campaign2-2026": {
+  "title": "SideM、ステッカー抽選は11月29日締切",
+  "stage": "書き直しで見送り",
+  "why": "NO_PRIMARY_SOURCE R5を満たす出典を確認できませんでした。指定のX投稿（https://x.com/renaissance_IP/status/2121075585623748794）はfetch_page.pyで「当事者」、ルネサンスの告知ページ（https://www.s-renaissance.",
+  "candidate_ids": [
+   "sched-2026-11-26-sidem-renaissance-campaign2-2026-締切前"
+  ]
+ }
+}

@@ -1,0 +1,101 @@
+{
+ "decisions": {
+  "765pro-allstars-never-end-idol-bluray-day1-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "Amazon掲載価格の変動(14,894→14,891円)のみ。公式価格17,600円は既報で、読者に関わる変更なし"
+  },
+  "765-allstars-live-2025-bluray-release": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "発売日・特装版・購入特典とも11/25号の記事と同内容で、新事実なし"
+  },
+  "765as-never-end-idol-bluray-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "ゲーマーズの在庫表示(取り寄せ→1～2日以内に入荷)の変化のみで、特典などの変更なし"
+  },
+  "765-ws-masterpiece-card-stock-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "カードショップのシングルカード入荷告知で未確認。公式発表ではない"
+  },
+  "imas-radio-mail-2026-11-24": {
+   "action": "article",
+   "angle": "IM＠S RADIO次回(12月8日20時)のパーソナリティは平田宏美と若林直美、ゲストのCGキャストは29日発表",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "放送日・テーマ・メール募集は11/25号で既報。パーソナリティとゲスト発表日が新事実"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "765-imas-radio-mail-2026-11-24",
+    "brand": "765",
+    "rank": "small",
+    "angle": "IM＠S RADIO次回(12月8日20時)のパーソナリティは平田宏美と若林直美、ゲストのCGキャストは29日発表",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "imas-radio-mail-2026-11-24",
+    "candidate_ids": [
+     "202611260224-grok-18",
+     "202611260224-grok-111",
+     "202611260224-grok-112",
+     "202611260224-grok-113"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "765pro-allstars-never-end-idol-bluray-day1-2026",
+    "reason": "既報",
+    "note": "Amazon掲載価格の変動(14,894→14,891円)のみ。公式価格17,600円は既報で、読者に関わる変更なし"
+   },
+   {
+    "dedup_key": "765-allstars-live-2025-bluray-release",
+    "reason": "既報",
+    "note": "発売日・特装版・購入特典とも11/25号の記事と同内容で、新事実なし"
+   },
+   {
+    "dedup_key": "765as-never-end-idol-bluray-2026",
+    "reason": "既報",
+    "note": "ゲーマーズの在庫表示(取り寄せ→1～2日以内に入荷)の変化のみで、特典などの変更なし"
+   },
+   {
+    "dedup_key": "765-ws-masterpiece-card-stock-2026",
+    "reason": "出典不足",
+    "note": "カードショップのシングルカード入荷告知で未確認。公式発表ではない"
+   }
+  ],
+  "cross_brand": []
+ }
+}

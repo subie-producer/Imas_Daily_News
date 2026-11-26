@@ -23324,6 +23324,18 @@ def test_x_post_original(tmp: Path):
         for p in ("77002", "77003", "77004", "77005", "77006"):
             pipelib.x_post(f"https://x.com/a/status/{p}")
         check(reads == ["77001", "77002", "77003", "77004"], f"使い回し・問い合わせの打ち切り: {reads}")
+        # 並列の呼び手が同じ投稿を同時に頼んでも1回だけ読む
+        import threading
+        pipelib.X_POST_DOWN["fails"] = 0
+        reads.clear()
+        def slow(pid, t, f, d):
+            reads.append(pid)
+            time.sleep(0.2)
+            return {"kind": "ok", "id": pid, "url": "u", "author": "a", "text": "t", "why": "", "http": 200}
+        pipelib._x_post_read = slow
+        ths = [threading.Thread(target=pipelib.x_post, args=("https://x.com/a/status/78001",)) for _ in range(3)]
+        [t_.start() for t_ in ths], [t_.join() for t_ in ths]
+        check(reads == ["78001"], f"同時に頼まれた同じ投稿を2回以上読んだ: {reads}")
     finally:
         pipelib._x_post_read = saved_r[0]
         pipelib.X_POST_CACHE.clear(), pipelib.X_POST_CACHE.update(saved_r[1])

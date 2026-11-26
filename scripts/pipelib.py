@@ -3181,6 +3181,7 @@ def _x_post_block(t: dict, head: str) -> list[str]:
 X_POST_CACHE: dict[str, dict] = {}     # 投稿 ID → 読めた結果(ok・gone)。同じ工程で同じ投稿を二度問い合わせない
 X_POST_DOWN = {"fails": 0}             # 続けて読めなかった回数。X_POST_DOWN_AFTER 回で、この工程では問い合わせをやめる
 X_POST_DOWN_AFTER = 3
+X_POST_LOCK = threading.Lock()
 
 
 def x_post(url: str, timeout: float = 20, fetch=None, deadline: float | None = None) -> dict:
@@ -3204,17 +3205,29 @@ def x_post(url: str, timeout: float = 20, fetch=None, deadline: float | None = N
             return {"kind": "failed", "id": pid, "why": f"fxtwitter が {X_POST_DOWN_AFTER} 回続けて読めず、この工程では問い合わせを止めた", "http": None}
     if deadline is not None and time.time() >= deadline - 1:
         return {"kind": "failed", "id": pid, "why": "原文を読む持ち時間を過ぎた", "http": None}
-    try:
-        r = _x_post_read(pid, timeout, fetch, deadline)
-    except Exception as e:      # noqa: BLE001  応答の形が崩れていても「今は読めない」(工程を止めない)
-        r = {"kind": "failed", "id": pid, "why": f"fxtwitter の応答を読めなかった({type(e).__name__}: {e})"[:300], "http": None}
-    if not fetch:
+    if fetch:
+        return _x_post_guarded(pid, timeout, fetch, deadline)
+    # 外へ問い合わせるのは1件ずつ(同じホストへの間隔で、どのみち1件ずつになる)。並列の呼び手が同じ投稿を同時に頼んでも1回だけ読む
+    # (Sol 監査 later)
+    with X_POST_LOCK:
+        if pid in X_POST_CACHE:
+            return X_POST_CACHE[pid]
+        if X_POST_DOWN["fails"] >= X_POST_DOWN_AFTER:
+            return {"kind": "failed", "id": pid, "why": f"fxtwitter が {X_POST_DOWN_AFTER} 回続けて読めず、この工程では問い合わせを止めた", "http": None}
+        r = _x_post_guarded(pid, timeout, fetch, deadline)
         if r["kind"] == "failed":
             X_POST_DOWN["fails"] += 1
         else:
             X_POST_DOWN["fails"] = 0
             X_POST_CACHE[pid] = r
     return r
+
+
+def _x_post_guarded(pid: str, timeout: float, fetch, deadline: float | None) -> dict:
+    try:
+        return _x_post_read(pid, timeout, fetch, deadline)
+    except Exception as e:      # noqa: BLE001  応答の形が崩れていても「今は読めない」(工程を止めない)
+        return {"kind": "failed", "id": pid, "why": f"fxtwitter の応答を読めなかった({type(e).__name__}: {e})"[:300], "http": None}
 
 
 def _x_post_read(pid: str, timeout: float, fetch, deadline: float | None) -> dict:

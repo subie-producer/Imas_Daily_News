@@ -23285,6 +23285,10 @@ def test_x_post_original(tmp: Path):
             raise OSError("接続できない")
         if pid.endswith("999"):
             return 200, body("11111")       # 頼んだ ID と違う投稿
+        if pid.endswith("555"):         # リポストの ID: 元の投稿が返り、reposted_by にリポストした公式が入る
+            d = json.loads(body("55001", author="hatsuboshistore"))
+            d["tweet"]["reposted_by"] = {"screen_name": "gkmas_official", "name": "学マス公式"}
+            return 200, json.dumps(d, ensure_ascii=False).encode("utf-8")
         if pid.endswith("888"):
             return 200, body(pid, author="someone_else")      # 公式の URL に付いた別人の投稿
         if pid.endswith("666"):
@@ -23306,6 +23310,10 @@ def test_x_post_original(tmp: Path):
     check(kinds == ["gone", "gone", "failed", "failed", "failed"], f"無い投稿・読めない・別の投稿の見分け: {kinds}")
     check(pipelib.x_post("https://x.com/a/status/123456")["kind"] == "failed" and calls[-1].endswith("55999"),
           "回帰テストで fxtwitter に問い合わせた")
+    rp = pipelib.x_post("https://x.com/gkmas_official/status/55555", fetch=fake)
+    check(rp["kind"] == "ok" and rp["url"] == "https://x.com/hatsuboshistore/status/55001" and rp["author"] == "hatsuboshistore"
+          and "@gkmas_official がリポスト" in rp["text"] and "募集は金曜午前まで" in rp["text"],
+          f"リポストの ID を読めない・元の投稿として返さない: {rp}")
     broken = pipelib.x_post("https://x.com/a/status/55666", fetch=fake)
     check(broken["kind"] == "failed", f"形の崩れた応答で例外を上げた・読めたことにした: {broken}")
     n = len(calls)
@@ -23336,6 +23344,25 @@ def test_x_post_original(tmp: Path):
         ths = [threading.Thread(target=pipelib.x_post, args=("https://x.com/a/status/78001",)) for _ in range(3)]
         [t_.start() for t_ in ths], [t_.join() for t_ in ths]
         check(reads == ["78001"], f"同時に頼まれた同じ投稿を2回以上読んだ: {reads}")
+        # 順番待ちは持ち時間を越えない・持ち時間で切れたものは fxtwitter の不調に数えない(Sol 監査 r3)
+        reads.clear()
+        def slower(pid, t, f, d):
+            reads.append(pid)
+            time.sleep(1.5)
+            return {"kind": "ok", "id": pid, "url": "u", "author": "a", "text": "t", "why": "", "http": 200}
+        pipelib._x_post_read = slower
+        got_: list[tuple[str, float]] = []
+        def waiter(p: str):
+            t0 = time.time()
+            r_ = pipelib.x_post(f"https://x.com/a/status/{p}", deadline=time.time() + 1.6)
+            got_.append((r_["kind"], time.time() - t0))
+        first = threading.Thread(target=pipelib.x_post, args=("https://x.com/a/status/79000",))
+        first.start()
+        time.sleep(0.1)
+        ws = [threading.Thread(target=waiter, args=(p,)) for p in ("79001", "79002", "79003")]
+        [t_.start() for t_ in ws], [t_.join() for t_ in ws], first.join()
+        check(all(k == "failed" and s < 1.2 for k, s in got_) and pipelib.X_POST_DOWN["fails"] == 0 and reads == ["79000"],
+              f"順番待ちが持ち時間を越えた・持ち時間切れを不調に数えた: {got_} fails={pipelib.X_POST_DOWN['fails']} reads={reads}")
     finally:
         pipelib._x_post_read = saved_r[0]
         pipelib.X_POST_CACHE.clear(), pipelib.X_POST_CACHE.update(saved_r[1])

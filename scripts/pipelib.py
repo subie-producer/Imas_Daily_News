@@ -3209,18 +3209,27 @@ def x_post(url: str, timeout: float = 20, fetch=None, deadline: float | None = N
         return _x_post_guarded(pid, timeout, fetch, deadline)
     # 外へ問い合わせるのは1件ずつ(同じホストへの間隔で、どのみち1件ずつになる)。並列の呼び手が同じ投稿を同時に頼んでも1回だけ読む
     # (Sol 監査 later)
-    with X_POST_LOCK:
+    # 順番待ちも持ち時間を越えない(持ち時間が無い呼び手は、1件の取得の上限ほど待つ。Sol 監査 r3)
+    wait = (deadline - 1 - time.time()) if deadline is not None else timeout + 5
+    late = {"kind": "failed", "id": pid, "why": "原文を読む持ち時間を過ぎた", "http": None}
+    if wait <= 0 or not X_POST_LOCK.acquire(timeout=wait):
+        return late
+    try:
         if pid in X_POST_CACHE:
             return X_POST_CACHE[pid]
         if X_POST_DOWN["fails"] >= X_POST_DOWN_AFTER:
             return {"kind": "failed", "id": pid, "why": f"fxtwitter が {X_POST_DOWN_AFTER} 回続けて読めず、この工程では問い合わせを止めた", "http": None}
+        if deadline is not None and time.time() >= deadline - 1:
+            return late     # 順番待ちのあいだに持ち時間を過ぎた: 問い合わせない(fxtwitter が読めなかった回にも数えない)
         r = _x_post_guarded(pid, timeout, fetch, deadline)
-        if r["kind"] == "failed":
-            X_POST_DOWN["fails"] += 1
-        else:
+        if r["kind"] != "failed":
             X_POST_DOWN["fails"] = 0
             X_POST_CACHE[pid] = r
-    return r
+        elif deadline is None or time.time() < deadline - 1:
+            X_POST_DOWN["fails"] += 1       # 持ち時間で切れた取得は fxtwitter の不調に数えない
+        return r
+    finally:
+        X_POST_LOCK.release()
 
 
 def _x_post_guarded(pid: str, timeout: float, fetch, deadline: float | None) -> dict:
@@ -3255,9 +3264,17 @@ def _x_post_read(pid: str, timeout: float, fetch, deadline: float | None) -> dic
     if code in (404, 410) or jcode in (404, 410):
         return {"kind": "gone", "id": pid, "why": f"投稿が無い(fxtwitter が {jcode or code}。存在しない ID・削除・非公開)", "http": code}
     t = d.get("tweet") if isinstance(d, dict) else None
-    if code != 200 or not isinstance(t, dict) or str(t.get("id") or "") != pid:
+    if code != 200 or not isinstance(t, dict):
         return {"kind": "failed", "id": pid, "why": f"fxtwitter の応答が読めない(HTTP {code}・code {jcode})", "http": code}
-    lines = _x_post_block(t, "X の投稿(fxtwitter で読んだ原文)")
+    # リポストの ID には、元の投稿が返り、reposted_by にリポストしたアカウントが入る(2026-11-26: 公式が当事者の告知をリポストした ID を
+    # 出典にした記事が14件あった)。中身は元の投稿で、出典の主体も元の投稿者
+    rp = t.get("reposted_by")
+    repost = str(t.get("id") or "") != pid and isinstance(rp, dict) and rp.get("screen_name")
+    if str(t.get("id") or "") != pid and not repost:
+        return {"kind": "failed", "id": pid, "why": f"fxtwitter が頼んだ ID と違う投稿を返した(HTTP {code})", "http": code}
+    head = (f"X のリポスト(@{rp['screen_name']} がリポストした投稿。下は元の投稿の原文。fxtwitter で読んだ)" if repost
+            else "X の投稿(fxtwitter で読んだ原文)")
+    lines = _x_post_block(t, head)
     q = t.get("quote")
     if isinstance(q, dict):
         lines += [""] + _x_post_block(q, "引用している投稿")

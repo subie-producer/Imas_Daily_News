@@ -1230,7 +1230,7 @@ def yaml_scalar(item: str) -> str:
     import yaml
     try:
         same = yaml.safe_load(item) == item
-    except yaml.YAMLError:
+    except (yaml.YAMLError, ValueError):     # `2026-13-01` は日付として読もうとして ValueError になる(Sol 監査 later)
         same = False
     return item if same else json.dumps(item, ensure_ascii=False)
 

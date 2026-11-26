@@ -4318,6 +4318,8 @@ def test_classify_consensus(tmp: Path):
         t = yaml.safe_load((tmp / "source_types.yml").read_text(encoding="utf-8"))
         check({"499", "0123", "no"} <= set(t["x_accounts"]["ファン"]) and all(isinstance(v, str) for v in t["x_accounts"]["ファン"]),
               f"数や真偽値に読める名前が文字列で載らない: {t['x_accounts']['ファン']}")
+        check(cs.yaml_scalar("2026-13-01") == '"2026-13-01"' and cs.yaml_scalar("imas_official") == "imas_official",
+              "日付に読めて読み損なう値を引用符で囲まない・普通の名前まで囲む")
         cs.add_x_accounts({"499": ("ファン", "f")})
         check((tmp / "source_types.yml").read_text(encoding="utf-8").count('"499"') == 1, "引用符で囲んだ名前を載っていないと見て二重に足した")
         saved_root, saved_tab = pipelib.ROOT, pipelib._ST_TABLE

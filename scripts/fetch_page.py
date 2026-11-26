@@ -38,7 +38,8 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from pipelib import (PAGE_READ_BYTES, RENDER_FINAL, RENDER_STATUS, RenderFailed, browser_only, classify_source, extract_periods, html_to_text, http_status,
-                     maintenance_http_error, maintenance_redirect, maintenance_screen, needs_render, note_fetched, polite_urlopen, render_page)
+                     maintenance_http_error, maintenance_redirect, maintenance_screen, needs_render, note_fetched, polite_urlopen, render_page,
+                     x_post, x_status_id)
 import page_archive
 
 UA = "Mozilla/5.0 (compatible; ImasNewsCollect/1.0)"
@@ -175,6 +176,17 @@ GONE_CODES = (404, 410)       # ページが無い(取り下げ・移動の可�
 def read_live(url: str, fixed: str = "") -> dict:
     """相手のサイトから読み直す。戻りは {"kind": ok / maintenance / gone / failed, "text", "final", "html", "why", "msg"}。
     msg は読めなかったときに出す FETCH_FAILED の行(保存の原本が無いときはこれまでどおりの文面)。"""
+    if not fixed and x_status_id(url):
+        # X の投稿は fxtwitter で原文を読む(x.com はログインが要り、素の取得でも描画でも本文が出ない)
+        r = x_post(url)
+        if r["kind"] == "ok":
+            final = r["url"] if r["url"].rstrip("/") != url.split("?")[0].rstrip("/") else None
+            return {"kind": "ok", "text": r["text"], "final": final, "html": r["text"].encode("utf-8"), "rendered": False, "status": 200}
+        if r["kind"] == "gone":
+            return {"kind": "gone", "final": None, "why": r["why"], "http": r["http"],
+                    "msg": f"FETCH_FAILED: X の{r['why']}。この投稿を出典にしない・この投稿の内容として書かない"}
+        return {"kind": "failed", "final": None, "why": r["why"], "http": r["http"],
+                "msg": f"FETCH_FAILED: X の投稿を今は読めない({r['why']})。投稿が無いという意味ではない"}
     try:
         text = fixed_page(fixed, url) if fixed else fetch(url)
     except Maintenance as e:

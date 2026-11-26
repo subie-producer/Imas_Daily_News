@@ -49,7 +49,7 @@ from pipelib import (ENV, ROOT, COLLECT_MODEL, CODEX_WRITE_MODEL, EXPLORE_MODEL,
                      anomaly, anomaly_shape, http_status, whywhy_exempt_status, checkout_edition_branch, classify_retag_lint, collect_oncall_end, commit_and_push, diagnose_anomalies,
                      edition_date, mark_collect_oncall, write_checked, write_atomic, COLLECT_OUTPUTS, settle_collect_outputs,
                      extract_json_array, git, notify, notify_crash, now_jst, prompt_part, render_prompt,
-                     X_ANON_POST, x_post_author, x_post_hidden, x_status_time, align_x_published_date,
+                     X_ANON_POST, x_post_author, x_post_hidden, x_status_time, align_x_published_date, x_post, x_status_id,
                      CLI_BLOCKED, CLI_BLOCKED_EXIT, CLI_STOPPED, CliBlocked, cli_blocked_reason, cli_check, grok_session_reasons,
                      scratch_dir, link_key, polite_urlopen)
 from storylink import url_key
@@ -1460,7 +1460,7 @@ def verify_grok_faces(queries: list[dict], outdir: Path, suffix: str = "",
             if not text or re.fullmatch(r"(なし|見つからない)[。\s]*", text):
                 continue
             text = dedupe_posts(text)   # 公式アカウントの遡りのページの境目で重なった投稿を1つにする
-            text = with_jst_post_time(text)
+            text = with_jst_post_time(with_x_originals(text))     # 日時の行が url の次(やり直しの書き出しで二重に足さない)
             if "codex" in CLI_BLOCKED:
                 # この収集で確かめ役の CLI が止まっている: 起動せず読み直しの列へ(下の止まった面と同じ扱い。投稿は済み)
                 ledger.setdefault("blocked", set()).add(q["key"])
@@ -2568,6 +2568,32 @@ def with_jst_post_time(text: str) -> str:
     return "\n".join(out)
 
 
+# Grok の書き出しの投稿に、コードが足す原文の行(grok-verify の依頼文がこの名前で指す)
+X_ORIGINAL = "原文(fxtwitter で読んだ投稿そのもの)"
+
+
+def with_x_originals(text: str, read=None) -> str:
+    """Grok の書き出しの X の投稿ごとに、fxtwitter で読んだ原文を url の行の次に足す(read はテスト用の差し替え。既定は x_post)。
+    2026-11-25 号: Grok が書いた投稿 ID が存在せず、確かめ役は Grok の書いた本文を投稿の中身として候補にした。
+    無い投稿には「無い」と書く。読めなかった投稿には何も足さない(これまでどおり Grok の本文で確かめる)。
+    原文の行は「  > 」で字下げする(投稿の url の行と取り違えて、投稿ごとの結果の突き合わせに数えない)。収集の締切を過ぎたら読まない"""
+    read = read or x_post
+    lines = text.split("\n")
+    out = []
+    for i, line in enumerate(lines):
+        out.append(line)
+        m = POST_URL_LINE.match(line)
+        if not m or not x_status_id(m.group(1)) or any(X_ORIGINAL in ln for ln in lines[i + 1:i + 3]) or deadline_passed():
+            continue
+        r = read(m.group(1))
+        if r["kind"] == "gone":
+            out.append(f"- {X_ORIGINAL}: この投稿は無い({r['why']})")
+        elif r["kind"] == "ok":
+            out.append(f"- {X_ORIGINAL}:")
+            out += [f"  > {ln}" for ln in r["text"].split("\n")]
+    return "\n".join(out)
+
+
 def check_stale(c: dict, days: int = STALE_DAYS) -> str | None:
     """鮮度切れなら理由を返す。X は Snowflake、それ以外は自己申告の published_date で判定。
     days は収集の新着の窓(STALE_DAYS)。計画済みの記事の出典を揃える入口(source_rescue)は、告知の原本が窓より前に出ているのが
@@ -2614,7 +2640,23 @@ def verify(cands: list[dict], stale_days: int = STALE_DAYS) -> dict:
                 counts["failed"] += 1
                 continue
             if is_x(c["url"]):
-                c["verify"] = "confirmed" if (c["via"] == "grok" and c["source_type"] == "公式") else "unconfirmed"
+                # 投稿の原文を fxtwitter で読む(2026-11-25: Grok が書いた存在しない投稿 ID が公式の出典として紙面に載った)。
+                # 無い投稿は使わせない。写しが原文に無ければ ID の取り違え。読めなければ(fxtwitter の不調・締切)これまでどおり
+                r = x_post(c["url"]) if x_status_id(c["url"]) and not deadline_passed() else {"kind": "failed", "why": ""}
+                quotes = c.get("quotes") or []
+                if r["kind"] == "gone":
+                    c["verify"] = "failed"
+                    c["verify_note"] = f"X の{r['why']}"[:300]
+                elif r["kind"] == "ok" and quotes and not any(quote_on_page(q, r["text"]) for q in quotes) \
+                        and any(quote_on_page(q, r["text"]) is False for q in quotes):
+                    c["verify"] = "failed"
+                    c["verify_note"] = "写しが投稿の原文(fxtwitter)に無い。投稿 ID の取り違え"
+                else:
+                    c["verify"] = "confirmed" if (c["via"] == "grok" and c["source_type"] == "公式") else "unconfirmed"
+                    if r["kind"] == "ok":
+                        keep_page(c["url"], r["text"], r["text"].encode("utf-8"), final=r["url"])
+                    elif r.get("why"):
+                        c["verify_note"] = f"X の投稿を fxtwitter で読めなかった({r['why']})"[:300]
             elif deadline_passed():
                 # 前段の締切(収集の締切から必須段の見込みを引いた時刻: stage_deadline)を過ぎたら、新しく読み直さない(必須段の時間を
                 # 食わない。2026-11-04 Sol 監査 r2)。始めた読み直しは途中で切らない(取得 15秒・描画の上限で終わり、予約に収まる。途中で切ると

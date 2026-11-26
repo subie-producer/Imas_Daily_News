@@ -3133,6 +3133,97 @@ def browser_only(url: str) -> bool:
         return False
 
 
+# X の投稿は x.com を機械で開けない(ログインが要る)。fxtwitter の API で原文を読む(編集長 2026-11-25 承認。
+# 11/25 号: Grok が書いた存在しない投稿 ID が公式の出典として載り、告知の「金曜午前まで」を誰も原文で見ていなかった)
+FXTWITTER_API = "https://api.fxtwitter.com/status/{id}"
+X_POST_FETCH = None     # 差し替え(API の URL → (状態コード, 本文の bytes))
+X_POST_OFFLINE_ENV = "IMAS_X_POST_OFFLINE"     # 立っていれば外へ問い合わせず「今は読めない」(回帰テストが子プロセスにも効かせる)
+X_STATUS_PATH = re.compile(r"^/(?:i/(?:web/)?|[A-Za-z0-9_]{1,15}/)status(?:es)?/(\d{5,25})(?:/.*)?$")
+
+
+def x_status_id(url: str) -> str:
+    """X の投稿の URL なら投稿 ID、そうでなければ空文字(アカウントのページ・検索・記事機能は投稿ではない)。"""
+    import urllib.parse
+    try:
+        u = urllib.parse.urlsplit(str(url or "").strip())
+    except ValueError:
+        return ""
+    host = (u.hostname or "").lower().removeprefix("www.").removeprefix("mobile.")
+    if host not in ("x.com", "twitter.com"):
+        return ""
+    m = X_STATUS_PATH.match(u.path)
+    return m.group(1) if m else ""
+
+
+def _x_post_block(t: dict, head: str) -> list[str]:
+    """fxtwitter の投稿1件を、読み手(執筆・確かめ役・校閲)が読む行にする。"""
+    import datetime
+    a = t.get("author") or {}
+    lines = [head, f"投稿: {t.get('url') or ''}", f"投稿者: {a.get('name') or ''} (@{a.get('screen_name') or ''})"]
+    ts = t.get("created_timestamp")
+    if isinstance(ts, (int, float)):
+        at = datetime.datetime.fromtimestamp(ts, datetime.timezone(datetime.timedelta(hours=9)))
+        lines.append(f"投稿日時(日本時間): {at.strftime('%Y-%m-%d %H:%M')}")
+    if t.get("replying_to"):
+        lines.append(f"返信先: @{t['replying_to']}")
+    lines += ["本文:", str(t.get("text") or "").strip() or "(本文なし)"]
+    media = t.get("media") or {}
+    kinds = {"photos": "写真", "videos": "動画"}
+    att = [f"{kinds[k]} {len(media.get(k) or [])}件" for k in kinds if media.get(k)]
+    if att:
+        lines.append(f"添付: {'・'.join(att)}(画像・動画の中の文字は、この原文には含まれない)")
+    card = t.get("twitter_card")
+    if isinstance(card, dict) and (card.get("title") or card.get("url")):
+        lines.append(f"リンクのカード: {card.get('title') or ''} {card.get('url') or ''}".rstrip())
+    return lines
+
+
+def x_post(url: str, timeout: float = 20, fetch=None) -> dict:
+    """X の投稿を fxtwitter で読む。戻りは {"kind": ok / gone / failed, "id", "url"(投稿の正しい URL), "author", "text", "why", "http"}。
+    - ok: text は読み手に渡す原文(投稿者・日本時間の投稿日時・本文・引用している投稿・添付)。url は投稿者の正しいアカウントの URL
+    - gone: その投稿は無い(404・410。存在しない ID・削除・非公開)。出典にしない
+    - failed: 今は読めない(fxtwitter の不調・時間切れ・429)。投稿が無いとは言えない
+    fetch はテスト用の差し替え(URL → (状態コード, 本文の bytes))。"""
+    import json
+    import urllib.error
+    pid = x_status_id(url)
+    if not pid:
+        return {"kind": "failed", "id": "", "why": "X の投稿の URL ではない", "http": None}
+    api = FXTWITTER_API.format(id=pid)
+    fetch = fetch or X_POST_FETCH
+    if not fetch and os.environ.get(X_POST_OFFLINE_ENV):
+        return {"kind": "failed", "id": pid, "why": "回帰テストでは fxtwitter を読まない", "http": None}
+    try:
+        if fetch:
+            code, body = fetch(api)
+        else:
+            req = urllib.request.Request(api, headers={"User-Agent": "Mozilla/5.0 (compatible; ImasNewsCollect/1.0)"})
+            try:
+                with polite_urlopen(req, timeout=timeout) as r:
+                    code, body = r.status, r.read(PAGE_READ_BYTES)
+            except urllib.error.HTTPError as e:
+                code, body = e.code, (e.read() or b"")
+    except Exception as e:      # noqa: BLE001  取得の失敗は「今は読めない」(投稿が無いとは言えない)
+        return {"kind": "failed", "id": pid, "why": f"fxtwitter を読めなかった({type(e).__name__}: {e})"[:300], "http": None}
+    try:
+        d = json.loads(body.decode("utf-8", "replace")) if body else {}
+    except ValueError:
+        d = {}
+    jcode = d.get("code") if isinstance(d, dict) else None
+    if code in (404, 410) or jcode in (404, 410):
+        return {"kind": "gone", "id": pid, "why": f"投稿が無い(fxtwitter が {jcode or code}。存在しない ID・削除・非公開)", "http": code}
+    t = d.get("tweet") if isinstance(d, dict) else None
+    if code != 200 or not isinstance(t, dict) or str(t.get("id") or "") != pid:
+        return {"kind": "failed", "id": pid, "why": f"fxtwitter の応答が読めない(HTTP {code}・code {jcode})", "http": code}
+    lines = _x_post_block(t, "X の投稿(fxtwitter で読んだ原文)")
+    q = t.get("quote")
+    if isinstance(q, dict):
+        lines += [""] + _x_post_block(q, "引用している投稿")
+    a = t.get("author") or {}
+    return {"kind": "ok", "id": pid, "url": str(t.get("url") or f"https://x.com/i/status/{pid}"),
+            "author": str(a.get("screen_name") or ""), "text": "\n".join(lines), "why": "", "http": 200}
+
+
 def render_hosts() -> set[str]:
     """描画しないと本文が出ないと分かっているサイトのホスト(sources.yml で type: portal の観測先と、BROWSER_ONLY_HOSTS)。"""
     import urllib.parse

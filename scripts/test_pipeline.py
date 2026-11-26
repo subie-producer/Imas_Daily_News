@@ -4081,7 +4081,7 @@ def test_revise_apply_decline(tmp: Path):
         compose.REVISE_NOTES.clear()
     # 校閲の依頼文: 続報予約の素材の在りか、「X の投稿 URL を特定しろ」と言わせない(2026-09-25: 執筆に直せない指摘で3本落ちた)
     rp = (pipelib.PROMPTS / "review-article.md").read_text(encoding="utf-8")
-    check("続報予約の素材" in rp and "stock/scheduled/{DATE}.json" not in rp and "執筆には直せない" in rp and "執筆も X を開けない" in rp, "校閲の依頼文に、執筆に直せない指摘を避ける規則が無い")
+    check("続報予約の素材" in rp and "stock/scheduled/{DATE}.json" not in rp and "執筆には直せない" in rp and "執筆は X を検索できない" in rp, "校閲の依頼文に、執筆に直せない指摘を避ける規則が無い")
     check(any("HTML コメント" in p_ for p_ in renderlib.check_output(dict(OK, blocks=[{"markdown": "x<!-- F1 -->", "fact_ids": ["F1", "F3", "F4"]}]), fb, MATS)),
           "本文の HTML コメントが通った")
 
@@ -23254,8 +23254,123 @@ def test_x_survey_streams_faces(tmp: Path):
         collect.subprocess.Popen, pipelib.ROOT = saved_popen, saved_proot
 
 
+def test_x_post_original(tmp: Path):
+    """X の投稿は fxtwitter で原文を読む(2026-11-25 号: Grok が書いた存在しない投稿 ID が公式の出典として載り、
+    告知の「金曜午前まで」を誰も原文で見ていなかった)。無い投稿は出典・候補にさせず、読めないときはこれまでどおり。
+    執筆・校閲は fetch_page.py で、確かめ役は Grok の書き出しに足した原文で、収集の裏取りは原文と写しで見る"""
+    import time
+    import collect
+    import fetch_page
+    tmp.mkdir(parents=True, exist_ok=True)
+    now_id = str((int(time.time() * 1000) - 1288834974657) << 22)      # いまの投稿 ID(鮮度切れにしない)
+    calls: list[str] = []
+
+    def body(pid: str, author: str = "gkmas_official") -> bytes:
+        return json.dumps({"code": 200, "tweet": {
+            "id": pid, "url": f"https://x.com/{author}/status/{pid}", "text": "募集は金曜午前まで\nhttps://idolmaster-official.jp/gakuen/gakuenradio/contact/",
+            "created_timestamp": 1795066827, "author": {"screen_name": author, "name": "学マス公式"}, "media": {"photos": [{}]},
+            "quote": {"id": "12345", "url": "https://x.com/a/status/12345", "text": "元の告知", "author": {"screen_name": "a", "name": "A"}}}},
+            ensure_ascii=False).encode("utf-8")
+
+    def fake(api: str):
+        calls.append(api)
+        pid = api.rsplit("/", 1)[1]
+        if pid.endswith("404"):
+            return 404, b'{"code":404,"message":"NOT_FOUND"}'
+        if pid.endswith("4040"):
+            return 200, b'{"code":404,"message":"NOT_FOUND"}'
+        if pid.endswith("500"):
+            return 500, b""
+        if pid.endswith("777"):
+            raise OSError("接続できない")
+        if pid.endswith("999"):
+            return 200, body("11111")       # 頼んだ ID と違う投稿
+        return 200, body(pid)
+
+    # 投稿の URL の形
+    ids = [pipelib.x_status_id(u) for u in ("https://x.com/a_b/status/123456", "https://twitter.com/i/web/status/123456",
+                                            "https://mobile.twitter.com/a/status/123456/photo/1", "https://x.com/i/status/123456?s=20",
+                                            "https://x.com/a_b", "https://x.com/search?q=imas", "https://example.com/a/status/123456",
+                                            "https://x.com/a/article/123456")]
+    check(ids == ["123456"] * 4 + [""] * 4, f"X の投稿の URL の見分け: {ids}")
+    # 原文: 投稿者・日本時間の投稿日時・本文・引用・添付。投稿者の無い URL は正しいアカウントの URL を返す
+    r = pipelib.x_post("https://x.com/i/status/2123290286793302269", fetch=fake)
+    check(r["kind"] == "ok" and r["url"] == "https://x.com/gkmas_official/status/2123290286793302269"
+          and all(s in r["text"] for s in ("投稿日時(日本時間): 2026-11-19 14:40", "募集は金曜午前まで", "(@gkmas_official)", "引用している投稿", "元の告知", "写真 1件")),
+          f"fxtwitter の原文: {r}")
+    kinds = [pipelib.x_post(f"https://x.com/a/status/{p}", fetch=fake)["kind"] for p in ("55404", "554040", "55500", "55777", "55999")]
+    check(kinds == ["gone", "gone", "failed", "failed", "failed"], f"無い投稿・読めない・別の投稿の見分け: {kinds}")
+    check(pipelib.x_post("https://x.com/a/status/123456")["kind"] == "failed" and calls[-1].endswith("55999"),
+          "回帰テストで fxtwitter に問い合わせた")
+    # fetch_page: 原文を出す・無い投稿は「出典にしない」・読めないときは「無いという意味ではない」
+    saved = pipelib.X_POST_FETCH
+    try:
+        pipelib.X_POST_FETCH = fake
+        ok = fetch_page.read_live("https://x.com/i/status/2123290286793302269")
+        gone = fetch_page.read_live("https://x.com/gkmas_official/status/55404")
+        ng = fetch_page.read_live("https://x.com/gkmas_official/status/55500")
+        check(ok["kind"] == "ok" and "募集は金曜午前まで" in ok["text"] and ok["final"] == "https://x.com/gkmas_official/status/2123290286793302269",
+              f"fetch_page が X の投稿の原文を返さない: {ok}")
+        check(gone["kind"] == "gone" and "X の投稿が無い" in gone["msg"] and "出典にしない" in gone["msg"], f"無い投稿: {gone}")
+        check(ng["kind"] == "failed" and "今は読めない" in ng["msg"] and "無いという意味ではない" in ng["msg"], f"読めない投稿: {ng}")
+        same = fetch_page.read_live("https://x.com/gkmas_official/status/2123290286793302269")
+        check(same["kind"] == "ok" and not same["final"], f"同じ URL を転送先として出した: {same.get('final')}")
+    finally:
+        pipelib.X_POST_FETCH = saved
+
+    # 確かめ役に渡す Grok の書き出し: 原文を字下げで足す・無い投稿は無いと書く・読めない投稿には足さない。二重に足さない
+    def read(u: str) -> dict:
+        return pipelib.x_post(u, fetch=fake)
+    head = now_id[:-3]
+    grok = (f"### 1\n- url: https://x.com/gkmas_official/status/{head}123\n- 本文:\n嘘の本文\n"
+            f"### 2\n- url: https://x.com/gkmas_official/status/{head}404\n- 本文: 無い投稿\n"
+            f"### 3\n- url: https://x.com/gkmas_official/status/{head}500\n- 本文: 読めない投稿\n")
+    got = collect.with_jst_post_time(collect.with_x_originals(grok, read))
+    lines = got.split("\n")
+    check(lines[1].startswith("- url:") and collect.JST_POST_TIME in lines[2] and lines[3] == f"- {collect.X_ORIGINAL}:"
+          and lines[4].startswith("  > X の投稿") and any("  > 募集は金曜午前まで" == ln for ln in lines),
+          f"原文を投稿の url の後ろに足さない: {lines[:8]}")
+    check(f"- {collect.X_ORIGINAL}: この投稿は無い" in got and got.count(collect.X_ORIGINAL) == 2, f"無い投稿・読めない投稿の扱い: {got}")
+    check(len(collect.POST_URL_LINE.findall(got)) == 3, f"原文の行を投稿の url の行に数えた: {collect.POST_URL_LINE.findall(got)}")
+    again = collect.with_jst_post_time(collect.with_x_originals(got, read))
+    check(again == got, "やり直しの書き出しに原文・日時を二重に足した")
+    check(collect.X_ORIGINAL in collect.render_prompt("grok-verify", INPUT="i", OUT="o", DEEP="d", POSTS="p", BRAND="b",
+                                                      TOPIC="t", TODAY="2026-11-26", RULES="", ITEM=""),
+          "grok-verify の依頼文が、コードの足す原文の行の名前を指していない")
+
+    # 収集の裏取り: 無い投稿は failed、写しが原文に無ければ取り違えで failed、読めればこれまでの判定、読めなければこれまでどおり
+    saved_c = (collect.x_post, collect.keep_page)
+    kept: list[str] = []
+    try:
+        collect.x_post = read
+        collect.keep_page = lambda url, *a, **k: kept.append(url)
+        def one(suffix: str, quote: str = "募集は金曜午前まで") -> dict:
+            cv = collect.normalize([{"url": f"https://x.com/gkmas_official/status/{now_id[:-len(suffix)]}{suffix}",
+                                     "facts": ["募集は金曜午前まで"], "quote": quote, "_via": "grok"}])
+            collect.verify(cv)
+            return cv[0]
+        g, wrong, good, down = one("404"), one("123", "まったく別の告知の文言です"), one("123"), one("500")
+        check(g.get("verify") == "failed" and "投稿が無い" in (g.get("verify_note") or ""), f"無い投稿を裏取りで落とさない: {g.get('verify')} {g.get('verify_note')}")
+        check(wrong.get("verify") == "failed" and "取り違え" in (wrong.get("verify_note") or ""), f"写しの無い投稿: {wrong.get('verify')} {wrong.get('verify_note')}")
+        check(good.get("verify") == "confirmed" and kept and kept[-1] == good["url"], f"原文で確かめた公式の投稿: {good.get('verify')} {good.get('verify_note')} {kept}")
+        check(down.get("verify") == "confirmed" and "fxtwitter" in (down.get("verify_note") or ""), f"読めない投稿の扱い: {down.get('verify')} {down.get('verify_note')}")
+    finally:
+        collect.x_post, collect.keep_page = saved_c
+
+    # 依頼文: X の投稿も fetch_page.py で読み、無い投稿は使わない(執筆・まとめ・校閲)
+    prompts = pipelib.ROOT / "prompts"
+    write = (prompts / "write-article.md").read_text(encoding="utf-8")
+    check("取得できないので読まない" not in write and "FETCH_FAILED: X の投稿が無い" in write and "今は読めない" in write,
+          "執筆の依頼文が X の投稿を原文で確かめさせていない")
+    check("FETCH_FAILED: X の投稿が無い" in (prompts / "write-article.roundup.md").read_text(encoding="utf-8"), "まとめの依頼文")
+    review = (prompts / "review-article.md").read_text(encoding="utf-8")
+    check("機械から開けない" not in review and "FETCH_FAILED: X の投稿が無い" in review, "校閲の依頼文が X の投稿を原文で照合させていない")
+
+
 def main() -> int:
     tmp = Path(tempfile.mkdtemp(prefix="imas-test-"))
+    os.environ[pipelib.X_POST_OFFLINE_ENV] = "1"     # X の投稿の原文を外へ読みに行かない(子プロセスの fetch_page にも効く)
+    test_x_post_original(tmp / "xpo")
     test_assemble_run_returns_reservations(tmp / "arrr")
     test_lede_contract()
     test_reuse_rewrites_cut_lede(tmp / "rcl")

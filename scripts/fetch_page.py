@@ -128,6 +128,11 @@ def main() -> int:
             official = classify_source(base.get("final") or args.url) in ("公式", "準公式") if base else False
         except SystemExit:
             official = False
+        if base and live["kind"] != "gone" and not official and x_status_id(args.url):
+            # 非公式の X の投稿が今は読めない: 保存の原本は返さないが、「根拠に書かない」とも言わない(素材の facts を使ってよい。
+            # 依頼文の「今は読めない」の扱い。Sol 監査 must_fix)
+            print(live["msg"])
+            return 1
         if base and live["kind"] != "gone" and not official:
             print(live["msg"])
             print("原本の照合: 公式・準公式でないページは、読み直せないときに保存の原本を出典にしない。このページを根拠に書かない")

@@ -23285,6 +23285,10 @@ def test_x_post_original(tmp: Path):
             raise OSError("接続できない")
         if pid.endswith("999"):
             return 200, body("11111")       # 頼んだ ID と違う投稿
+        if pid.endswith("888"):
+            return 200, body(pid, author="someone_else")      # 公式の URL に付いた別人の投稿
+        if pid.endswith("666"):
+            return 200, json.dumps({"code": 200, "tweet": {"id": pid, "text": "x", "created_timestamp": 1e20, "media": "壊れた"}}).encode()
         return 200, body(pid)
 
     # 投稿の URL の形
@@ -23302,6 +23306,30 @@ def test_x_post_original(tmp: Path):
     check(kinds == ["gone", "gone", "failed", "failed", "failed"], f"無い投稿・読めない・別の投稿の見分け: {kinds}")
     check(pipelib.x_post("https://x.com/a/status/123456")["kind"] == "failed" and calls[-1].endswith("55999"),
           "回帰テストで fxtwitter に問い合わせた")
+    broken = pipelib.x_post("https://x.com/a/status/55666", fetch=fake)
+    check(broken["kind"] == "failed", f"形の崩れた応答で例外を上げた・読めたことにした: {broken}")
+    n = len(calls)
+    late = pipelib.x_post("https://x.com/a/status/55123", fetch=fake, deadline=time.time() - 5)
+    check(late["kind"] == "failed" and "持ち時間" in late["why"] and len(calls) == n, f"持ち時間を過ぎても問い合わせた: {late}")
+    # 外へ問い合わせるときだけ: 読めた投稿は使い回す・続けて読めなければ残りは問い合わせない
+    saved_r = (pipelib._x_post_read, dict(pipelib.X_POST_CACHE), dict(pipelib.X_POST_DOWN), os.environ.pop(pipelib.X_POST_OFFLINE_ENV, None))
+    reads: list[str] = []
+    try:
+        pipelib.X_POST_CACHE.clear()
+        pipelib.X_POST_DOWN["fails"] = 0
+        pipelib._x_post_read = lambda pid, t, f, d: reads.append(pid) or (
+            {"kind": "ok", "id": pid, "url": "u", "author": "a", "text": "t", "why": "", "http": 200} if pid == "77001"
+            else {"kind": "failed", "id": pid, "why": "落ちている", "http": None})
+        pipelib.x_post("https://x.com/a/status/77001"), pipelib.x_post("https://x.com/a/status/77001")
+        for p in ("77002", "77003", "77004", "77005", "77006"):
+            pipelib.x_post(f"https://x.com/a/status/{p}")
+        check(reads == ["77001", "77002", "77003", "77004"], f"使い回し・問い合わせの打ち切り: {reads}")
+    finally:
+        pipelib._x_post_read = saved_r[0]
+        pipelib.X_POST_CACHE.clear(), pipelib.X_POST_CACHE.update(saved_r[1])
+        pipelib.X_POST_DOWN.update(saved_r[2])
+        if saved_r[3] is not None:
+            os.environ[pipelib.X_POST_OFFLINE_ENV] = saved_r[3]
     # fetch_page: 原文を出す・無い投稿は「出典にしない」・読めないときは「無いという意味ではない」
     saved = pipelib.X_POST_FETCH
     try:
@@ -23339,10 +23367,11 @@ def test_x_post_original(tmp: Path):
           "grok-verify の依頼文が、コードの足す原文の行の名前を指していない")
 
     # 収集の裏取り: 無い投稿は failed、写しが原文に無ければ取り違えで failed、読めればこれまでの判定、読めなければこれまでどおり
-    saved_c = (collect.x_post, collect.keep_page)
+    saved_c = (collect.x_post, collect.keep_page, collect.x_post_author)
     kept: list[str] = []
     try:
-        collect.x_post = read
+        collect.x_post_author = lambda *a, **k: ""     # 投稿者の無い URL の oEmbed を外へ引かない(引けなかったことにする)
+        collect.x_post = lambda u, **k: read(u)
         collect.keep_page = lambda url, *a, **k: kept.append(url)
         def one(suffix: str, quote: str = "募集は金曜午前まで") -> dict:
             cv = collect.normalize([{"url": f"https://x.com/gkmas_official/status/{now_id[:-len(suffix)]}{suffix}",
@@ -23351,11 +23380,24 @@ def test_x_post_original(tmp: Path):
             return cv[0]
         g, wrong, good, down = one("404"), one("123", "まったく別の告知の文言です"), one("123"), one("500")
         check(g.get("verify") == "failed" and "投稿が無い" in (g.get("verify_note") or ""), f"無い投稿を裏取りで落とさない: {g.get('verify')} {g.get('verify_note')}")
-        check(wrong.get("verify") == "failed" and "取り違え" in (wrong.get("verify_note") or ""), f"写しの無い投稿: {wrong.get('verify')} {wrong.get('verify_note')}")
+        check(wrong.get("verify") == "unconfirmed" and "原文" in (wrong.get("verify_note") or ""),
+              f"写しが原文に無い投稿(画像の文字のこともある): 落とした・確かめた扱いにした: {wrong.get('verify')} {wrong.get('verify_note')}")
         check(good.get("verify") == "confirmed" and kept and kept[-1] == good["url"], f"原文で確かめた公式の投稿: {good.get('verify')} {good.get('verify_note')} {kept}")
         check(down.get("verify") == "confirmed" and "fxtwitter" in (down.get("verify_note") or ""), f"読めない投稿の扱い: {down.get('verify')} {down.get('verify_note')}")
+        tco = one("124", "募集は金曜午前まで https://t.co/MZC4lxTN1O")
+        check(tco.get("verify") == "confirmed", f"写しの t.co と原文の展開した URL の違いで確かめられない: {tco.get('verify')} {tco.get('verify_note')}")
+        other = one("888")
+        check(other["url"].startswith("https://x.com/someone_else/status/") and other.get("source_type") != "公式"
+              and other.get("verify") == "unconfirmed" and "someone_else" in (other.get("verify_note") or ""),
+              f"公式の URL に付いた別人の投稿を公式として確かめた: {other.get('url')} {other.get('source_type')} {other.get('verify')} {other.get('verify_note')}")
+        anon = collect.normalize([{"url": f"https://x.com/i/status/{now_id[:-3]}125", "facts": ["f"], "quote": "募集は金曜午前まで", "_via": "grok"}])
+        collect.verify(anon)
+        check(anon[0]["url"].startswith("https://x.com/gkmas_official/status/") and anon[0].get("source_type") == "公式"
+              and anon[0].get("verify") == "confirmed", f"投稿者の無い URL を正しいアカウントで判定しない: {anon[0]}")
+        check(collect.x_post_key("https://twitter.com/GKMAS_official/status/123456/photo/1") == collect.x_post_key("https://x.com/gkmas_official/status/123456"),
+              "表記の違うだけの同じ投稿を別のアカウントと見た")
     finally:
-        collect.x_post, collect.keep_page = saved_c
+        collect.x_post, collect.keep_page, collect.x_post_author = saved_c
 
     # 依頼文: X の投稿も fetch_page.py で読み、無い投稿は使わない(執筆・まとめ・校閲)
     prompts = pipelib.ROOT / "prompts"

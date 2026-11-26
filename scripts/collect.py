@@ -2572,12 +2572,40 @@ def with_jst_post_time(text: str) -> str:
 X_ORIGINAL = "原文(fxtwitter で読んだ投稿そのもの)"
 
 
+X_ORIGINALS_SEC = 180      # 1回の収集で原文を読む持ち時間の合計(確かめ役の時間を食わない。超えた投稿はこれまでどおり Grok の本文で確かめる)
+X_ORIGINALS_END: list[float] = []      # この収集の原文の持ち時間の終わり(最初に読むときに決める)
+
+
+def x_post_key(url: str) -> str:
+    """X の投稿の URL を比べる形(アカウント名は大文字小文字を区別しない。x.com・twitter.com・mobile. の違いは見ない。
+    投稿者の無い `i/status` は投稿 ID だけ)。投稿でなければ空文字"""
+    pid = x_status_id(url)
+    if not pid:
+        return ""
+    seg = [s for s in urllib.parse.urlsplit(url).path.split("/") if s]
+    acct = seg[0].lower() if seg and seg[0].lower() != "i" else ""
+    return f"{acct}/{pid}" if acct else f"?/{pid}"
+
+
+def strip_urls(text: str) -> str:
+    """写しの照合で URL を外す(写しの t.co と原文の展開した URL の違いで、同じ文を別と見ない。Sol 監査 must_fix)。"""
+    return re.sub(r"https?://\S+", " ", text or "")
+
+
+def x_originals_deadline() -> float:
+    """この収集で原文を読んでよい時刻の終わり(持ち時間 X_ORIGINALS_SEC と収集の締切の早いほう)。"""
+    if not X_ORIGINALS_END:
+        X_ORIGINALS_END.append(time.time() + X_ORIGINALS_SEC)
+    return min(X_ORIGINALS_END[0], DEADLINE) if DEADLINE else X_ORIGINALS_END[0]
+
+
 def with_x_originals(text: str, read=None) -> str:
     """Grok の書き出しの X の投稿ごとに、fxtwitter で読んだ原文を url の行の次に足す(read はテスト用の差し替え。既定は x_post)。
     2026-11-25 号: Grok が書いた投稿 ID が存在せず、確かめ役は Grok の書いた本文を投稿の中身として候補にした。
     無い投稿には「無い」と書く。読めなかった投稿には何も足さない(これまでどおり Grok の本文で確かめる)。
-    原文の行は「  > 」で字下げする(投稿の url の行と取り違えて、投稿ごとの結果の突き合わせに数えない)。収集の締切を過ぎたら読まない"""
-    read = read or x_post
+    原文の行は「  > 」で字下げする(投稿の url の行と取り違えて、投稿ごとの結果の突き合わせに数えない)。
+    持ち時間(x_originals_deadline)を過ぎたら残りは読まない(fxtwitter が遅い・落ちた日に確かめ役の時間を食わない。Sol 監査 must_fix)"""
+    read = read or (lambda u: x_post(u, timeout=15, deadline=x_originals_deadline()))
     lines = text.split("\n")
     out = []
     for i, line in enumerate(lines):
@@ -2642,21 +2670,31 @@ def verify(cands: list[dict], stale_days: int = STALE_DAYS) -> dict:
             if is_x(c["url"]):
                 # 投稿の原文を fxtwitter で読む(2026-11-25: Grok が書いた存在しない投稿 ID が公式の出典として紙面に載った)。
                 # 無い投稿は使わせない。写しが原文に無ければ ID の取り違え。読めなければ(fxtwitter の不調・締切)これまでどおり
-                r = x_post(c["url"]) if x_status_id(c["url"]) and not deadline_passed() else {"kind": "failed", "why": ""}
-                quotes = c.get("quotes") or []
+                r = (x_post(c["url"], timeout=15, deadline=x_originals_deadline())
+                     if x_status_id(c["url"]) and not deadline_passed() else {"kind": "failed", "why": ""})
                 if r["kind"] == "gone":
                     c["verify"] = "failed"
                     c["verify_note"] = f"X の{r['why']}"[:300]
-                elif r["kind"] == "ok" and quotes and not any(quote_on_page(q, r["text"]) for q in quotes) \
-                        and any(quote_on_page(q, r["text"]) is False for q in quotes):
-                    c["verify"] = "failed"
-                    c["verify_note"] = "写しが投稿の原文(fxtwitter)に無い。投稿 ID の取り違え"
-                else:
-                    c["verify"] = "confirmed" if (c["via"] == "grok" and c["source_type"] == "公式") else "unconfirmed"
-                    if r["kind"] == "ok":
-                        keep_page(c["url"], r["text"], r["text"].encode("utf-8"), final=r["url"])
-                    elif r.get("why"):
-                        c["verify_note"] = f"X の投稿を fxtwitter で読めなかった({r['why']})"[:300]
+                    counts["failed"] += 1
+                    continue
+                if r["kind"] == "ok":
+                    keep_page(c["url"], r["text"], r["text"].encode("utf-8"), final=r["url"])
+                    # 投稿者は fxtwitter が返したアカウントで決める(fxtwitter は URL のアカウント名を見ない。公式の URL に別人の
+                    # 投稿 ID が付いていても公式にしない。Sol 監査 must_fix)。URL も正しいアカウントのものにする
+                    if x_post_key(r["url"]) != x_post_key(c["url"]):
+                        if not x_post_key(c["url"]).startswith("?/"):
+                            c["verify_note"] = f"投稿者は @{r['author']}(URL のアカウントと違う。正しい URL に直した)"
+                        c["url"] = r["url"]
+                        c["source_type"] = classify_source(r["url"])
+                c["verify"] = "confirmed" if (c["via"] == "grok" and c["source_type"] == "公式") else "unconfirmed"
+                quotes = c.get("quotes") or []
+                if r["kind"] == "ok" and quotes and not any(quote_on_page(strip_urls(q), strip_urls(r["text"])) for q in quotes) \
+                        and any(quote_on_page(strip_urls(q), strip_urls(r["text"])) is False for q in quotes):
+                    # 写しが原文に無い: 画像の中の文字の写しのこともあるので、それだけでは落とさない(確かめた扱いにしない。Sol 監査 must_fix)
+                    c["verify"] = "unconfirmed"
+                    c["verify_note"] = "写しが投稿の原文(fxtwitter)に無い(画像の中の文字か、投稿の取り違え)"
+                elif r["kind"] == "failed" and r.get("why"):
+                    c["verify_note"] = f"X の投稿を fxtwitter で読めなかった({r['why']})"[:300]
             elif deadline_passed():
                 # 前段の締切(収集の締切から必須段の見込みを引いた時刻: stage_deadline)を過ぎたら、新しく読み直さない(必須段の時間を
                 # 食わない。2026-11-04 Sol 監査 r2)。始めた読み直しは途中で切らない(取得 15秒・描画の上限で終わり、予約に収まる。途中で切ると

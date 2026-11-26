@@ -3178,28 +3178,57 @@ def _x_post_block(t: dict, head: str) -> list[str]:
     return lines
 
 
-def x_post(url: str, timeout: float = 20, fetch=None) -> dict:
+X_POST_CACHE: dict[str, dict] = {}     # 投稿 ID → 読めた結果(ok・gone)。同じ工程で同じ投稿を二度問い合わせない
+X_POST_DOWN = {"fails": 0}             # 続けて読めなかった回数。X_POST_DOWN_AFTER 回で、この工程では問い合わせをやめる
+X_POST_DOWN_AFTER = 3
+
+
+def x_post(url: str, timeout: float = 20, fetch=None, deadline: float | None = None) -> dict:
     """X の投稿を fxtwitter で読む。戻りは {"kind": ok / gone / failed, "id", "url"(投稿の正しい URL), "author", "text", "why", "http"}。
     - ok: text は読み手に渡す原文(投稿者・日本時間の投稿日時・本文・引用している投稿・添付)。url は投稿者の正しいアカウントの URL
     - gone: その投稿は無い(404・410。存在しない ID・削除・非公開)。出典にしない
-    - failed: 今は読めない(fxtwitter の不調・時間切れ・429)。投稿が無いとは言えない
+    - failed: 今は読めない(fxtwitter の不調・時間切れ・429・持ち時間切れ)。投稿が無いとは言えない
+    deadline(時刻)を過ぎたら問い合わせない。取得・429 の待ち・取り直しもこれを越えない。fxtwitter が続けて読めなければ
+    (X_POST_DOWN_AFTER 回)、同じ工程の残りは問い合わせずに failed を返す(落ちた日に1件ずつ時間を使わない)。
     fetch はテスト用の差し替え(URL → (状態コード, 本文の bytes))。"""
-    import json
-    import urllib.error
     pid = x_status_id(url)
     if not pid:
         return {"kind": "failed", "id": "", "why": "X の投稿の URL ではない", "http": None}
-    api = FXTWITTER_API.format(id=pid)
     fetch = fetch or X_POST_FETCH
-    if not fetch and os.environ.get(X_POST_OFFLINE_ENV):
-        return {"kind": "failed", "id": pid, "why": "回帰テストでは fxtwitter を読まない", "http": None}
+    if not fetch:
+        if os.environ.get(X_POST_OFFLINE_ENV):
+            return {"kind": "failed", "id": pid, "why": "回帰テストでは fxtwitter を読まない", "http": None}
+        if pid in X_POST_CACHE:
+            return X_POST_CACHE[pid]
+        if X_POST_DOWN["fails"] >= X_POST_DOWN_AFTER:
+            return {"kind": "failed", "id": pid, "why": f"fxtwitter が {X_POST_DOWN_AFTER} 回続けて読めず、この工程では問い合わせを止めた", "http": None}
+    if deadline is not None and time.time() >= deadline - 1:
+        return {"kind": "failed", "id": pid, "why": "原文を読む持ち時間を過ぎた", "http": None}
+    try:
+        r = _x_post_read(pid, timeout, fetch, deadline)
+    except Exception as e:      # noqa: BLE001  応答の形が崩れていても「今は読めない」(工程を止めない)
+        r = {"kind": "failed", "id": pid, "why": f"fxtwitter の応答を読めなかった({type(e).__name__}: {e})"[:300], "http": None}
+    if not fetch:
+        if r["kind"] == "failed":
+            X_POST_DOWN["fails"] += 1
+        else:
+            X_POST_DOWN["fails"] = 0
+            X_POST_CACHE[pid] = r
+    return r
+
+
+def _x_post_read(pid: str, timeout: float, fetch, deadline: float | None) -> dict:
+    import json
+    import urllib.error
+    api = FXTWITTER_API.format(id=pid)
     try:
         if fetch:
             code, body = fetch(api)
         else:
             req = urllib.request.Request(api, headers={"User-Agent": "Mozilla/5.0 (compatible; ImasNewsCollect/1.0)"})
+            t = timeout if deadline is None else max(1.0, min(timeout, deadline - time.time()))
             try:
-                with polite_urlopen(req, timeout=timeout) as r:
+                with polite_urlopen(req, timeout=t, deadline=deadline) as r:
                     code, body = r.status, r.read(PAGE_READ_BYTES)
             except urllib.error.HTTPError as e:
                 code, body = e.code, (e.read() or b"")

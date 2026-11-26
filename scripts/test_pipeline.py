@@ -23363,6 +23363,18 @@ def test_x_post_original(tmp: Path):
         [t_.start() for t_ in ws], [t_.join() for t_ in ws], first.join()
         check(all(k == "failed" and s < 1.2 for k, s in got_) and pipelib.X_POST_DOWN["fails"] == 0 and reads == ["79000"],
               f"順番待ちが持ち時間を越えた・持ち時間切れを不調に数えた: {got_} fails={pipelib.X_POST_DOWN['fails']} reads={reads}")
+        # 取得の順番が持ち時間に収まらず問い合わせなかった(polite_urlopen が「…を取得しない」)ものも不調に数えない(Sol 監査 r4)
+        pipelib._x_post_read = saved_r[0]
+        saved_u = pipelib.polite_urlopen
+        def no_turn(req, timeout, deadline=None, **k):
+            raise TimeoutError(f"{req.full_url} を取得しない: 締切までに順番が来ない")
+        try:
+            pipelib.polite_urlopen = no_turn
+            outs = [pipelib.x_post(f"https://x.com/a/status/7910{i}", deadline=time.time() + 30)["kind"] for i in range(4)]
+            check(outs == ["failed"] * 4 and pipelib.X_POST_DOWN["fails"] == 0,
+                  f"問い合わせずに諦めた取得を fxtwitter の不調に数えた: {outs} fails={pipelib.X_POST_DOWN['fails']}")
+        finally:
+            pipelib.polite_urlopen = saved_u
     finally:
         pipelib._x_post_read = saved_r[0]
         pipelib.X_POST_CACHE.clear(), pipelib.X_POST_CACHE.update(saved_r[1])
@@ -23380,6 +23392,9 @@ def test_x_post_original(tmp: Path):
               f"fetch_page が X の投稿の原文を返さない: {ok}")
         check(gone["kind"] == "gone" and "X の投稿が無い" in gone["msg"] and "出典にしない" in gone["msg"], f"無い投稿: {gone}")
         check(ng["kind"] == "failed" and "今は読めない" in ng["msg"] and "無いという意味ではない" in ng["msg"], f"読めない投稿: {ng}")
+        rpl = fetch_page.read_live("https://x.com/gkmas_official/status/55555")
+        check(rpl["kind"] == "ok" and rpl["final"] == "https://x.com/hatsuboshistore/status/55001" and "リポスト" in rpl["text"],
+              f"リポストの ID を元の投稿として読まない・転送先に出さない: {rpl}")
         same = fetch_page.read_live("https://x.com/gkmas_official/status/2123290286793302269")
         check(same["kind"] == "ok" and not same["final"], f"同じ URL を転送先として出した: {same.get('final')}")
     finally:
@@ -23425,6 +23440,10 @@ def test_x_post_original(tmp: Path):
         check(down.get("verify") == "confirmed" and "fxtwitter" in (down.get("verify_note") or ""), f"読めない投稿の扱い: {down.get('verify')} {down.get('verify_note')}")
         tco = one("124", "募集は金曜午前まで https://t.co/MZC4lxTN1O")
         check(tco.get("verify") == "confirmed", f"写しの t.co と原文の展開した URL の違いで確かめられない: {tco.get('verify')} {tco.get('verify_note')}")
+        rpv = one("555")
+        check(rpv["url"] == "https://x.com/hatsuboshistore/status/55001" and rpv.get("source_type") == pipelib.classify_source(rpv["url"])
+              and rpv.get("verify") == ("confirmed" if rpv.get("source_type") == "公式" else "unconfirmed"),
+              f"リポストの ID を元の投稿の URL・投稿者の種別に直さない: {rpv.get('url')} {rpv.get('source_type')} {rpv.get('verify')}")
         other = one("888")
         check(other["url"].startswith("https://x.com/someone_else/status/") and other.get("source_type") != "公式"
               and other.get("verify") == "unconfirmed" and "someone_else" in (other.get("verify_note") or ""),

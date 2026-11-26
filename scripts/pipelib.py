@@ -3225,8 +3225,8 @@ def x_post(url: str, timeout: float = 20, fetch=None, deadline: float | None = N
         if r["kind"] != "failed":
             X_POST_DOWN["fails"] = 0
             X_POST_CACHE[pid] = r
-        elif deadline is None or time.time() < deadline - 1:
-            X_POST_DOWN["fails"] += 1       # 持ち時間で切れた取得は fxtwitter の不調に数えない
+        elif not r.get("budget") and (deadline is None or time.time() < deadline - 1):
+            X_POST_DOWN["fails"] += 1       # 持ち時間で切れた・持ち時間に収まらず問い合わせなかった取得は fxtwitter の不調に数えない
         return r
     finally:
         X_POST_LOCK.release()
@@ -3255,7 +3255,11 @@ def _x_post_read(pid: str, timeout: float, fetch, deadline: float | None) -> dic
             except urllib.error.HTTPError as e:
                 code, body = e.code, (e.read() or b"")
     except Exception as e:      # noqa: BLE001  取得の失敗は「今は読めない」(投稿が無いとは言えない)
-        return {"kind": "failed", "id": pid, "why": f"fxtwitter を読めなかった({type(e).__name__}: {e})"[:300], "http": None}
+        # 取得の順番・待ちが持ち時間に収まらず、問い合わせずに諦めた(polite_urlopen の「…を取得しない」)ものは fxtwitter の不調ではない
+        # (不調に数えると、持ち時間の短い呼び手だけで問い合わせが止まる。Sol 監査 r4)
+        budget = isinstance(e, TimeoutError) and "を取得しない" in str(e)
+        return {"kind": "failed", "id": pid, "why": f"fxtwitter を読めなかった({type(e).__name__}: {e})"[:300], "http": None,
+                **({"budget": True} if budget else {})}
     try:
         d = json.loads(body.decode("utf-8", "replace")) if body else {}
     except ValueError:

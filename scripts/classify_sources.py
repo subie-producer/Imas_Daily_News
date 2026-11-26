@@ -1219,8 +1219,20 @@ def _span(text: str, section: str) -> tuple[int, int] | None:
 def _listed(text: str, section: str, item: str, ci: bool) -> bool:
     """`section` の**中に** `- item` が既にあるか(種別の節は問わない)。"""
     sp = _span(text, section)
-    return bool(sp and re.search(rf"^\s+-\s+{re.escape(item)}(?=\s|#|$)", text[sp[0]:sp[1]],
+    return bool(sp and re.search(rf"^\s+-\s+([\"']?){re.escape(item)}\1(?=\s|#|$)", text[sp[0]:sp[1]],
                                  re.M | (re.I if ci else 0)))
+
+
+def yaml_scalar(item: str) -> str:
+    """表に書く1項目。YAML がそのまま同じ文字列として読まないもの(`499`・`0123`・`no` など)は引用符で囲む
+    (囲まないと数や真偽値として読まれ、判定器がアカウント名と比べられない。実測 2026-11-26 @499)。"""
+    import json
+    import yaml
+    try:
+        same = yaml.safe_load(item) == item
+    except yaml.YAMLError:
+        same = False
+    return item if same else json.dumps(item, ensure_ascii=False)
 
 
 def insert_labeled(text: str, section: str, label: str, item: str, note: str, ci: bool) -> tuple[str, str]:
@@ -1238,7 +1250,8 @@ def insert_labeled(text: str, section: str, label: str, item: str, note: str, ci
         return text, "nosection"
     if _listed(text, section, item, ci):
         return text, "exists"
-    line = f"    - {item}{' ' * max(1, 20 - len(item))}# {note}\n"
+    shown = yaml_scalar(item)
+    line = f"    - {shown}{' ' * max(1, 20 - len(shown))}# {note}\n"
     m = re.compile(rf"^  {re.escape(label)}:\n", re.M).search(text, sp[0], sp[1])
     if m:
         return text[:m.end()] + line + text[m.end():], "added"

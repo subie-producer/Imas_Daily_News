@@ -4107,6 +4107,11 @@ def _check_table(t: dict, p) -> None:
     for group in ("x_accounts", "x_posts", "video_ids", "video_channels"):
         for label, names in (t.get(group) or {}).items():
             for v in names or []:
+                # アカウント・チャンネル・動画 ID は文字列で書く。YAML は `499` を数、`0123` を 83、`no` を偽として読むので、
+                # 判定器がアカウント名と比べられない(実測 2026-11-26: @499 で付け直しが落ち、合議の結果ごと戻り続けた)。
+                # 投稿 ID(x_posts)は数字だけなので数のままでよい
+                if group != "x_posts" and not isinstance(v, str):
+                    raise SystemExit(f"{p} の {group}/{label} に文字列でない値 {v!r} がある(引用符で囲んで文字列にする)")
                 v = str(v)
                 # 判定器は X アカウントを小文字化して比べるので、検査側も揃える。
                 # 揃えないと `imas_official` と `IMAS_OFFICIAL` を別種別に登録できてしまい、

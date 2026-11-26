@@ -4312,6 +4312,26 @@ def test_classify_consensus(tmp: Path):
         check(t["video_channels"]["公式"] == ["imas-official"], f"動画チャンネルの節に混入した: {t}")
         check("idolmaster_en" in t["x_accounts"]["公式"] and "newfan" in t["x_accounts"]["ファン"] and t["x_accounts"].get("演者") == ["actor"],
               f"x_accounts への追加: {t}")
+        # 数字だけ・先頭が 0・真偽値に読める名前も文字列のまま載り、判定器で引ける(実測 2026-11-26: @499 で付け直しが落ちた)
+        import pipelib
+        cs.add_x_accounts({"499": ("ファン", "f"), "0123": ("ファン", "f"), "no": ("ファン", "f")})
+        t = yaml.safe_load((tmp / "source_types.yml").read_text(encoding="utf-8"))
+        check({"499", "0123", "no"} <= set(t["x_accounts"]["ファン"]) and all(isinstance(v, str) for v in t["x_accounts"]["ファン"]),
+              f"数や真偽値に読める名前が文字列で載らない: {t['x_accounts']['ファン']}")
+        cs.add_x_accounts({"499": ("ファン", "f")})
+        check((tmp / "source_types.yml").read_text(encoding="utf-8").count('"499"') == 1, "引用符で囲んだ名前を載っていないと見て二重に足した")
+        saved_root, saved_tab = pipelib.ROOT, pipelib._ST_TABLE
+        try:
+            pipelib.ROOT, pipelib._ST_TABLE = tmp, None
+            got = [pipelib.classify_source(f"https://x.com/{h}/status/1") for h in ("499", "0123", "NO")]
+            check(got == ["ファン"] * 3, f"数字だけの名前のアカウントを判定器で引けない: {got}")
+        finally:
+            pipelib.ROOT, pipelib._ST_TABLE = saved_root, saved_tab
+        try:
+            pipelib.parse_source_table("x_accounts:\n  ファン:\n    - 499\n", tmp / "bad.yml")
+            check(False, "数で書かれたアカウント名を表の検査が通した")
+        except SystemExit as e:
+            check("文字列でない値" in str(e), f"表の検査の理由: {e}")
     finally:
         cs.ask, cs.ROOT = saved
 

@@ -725,6 +725,14 @@ x_accounts:
     - imasnews765
     - zutapoke
   ファン:
+    - sakasaki24          # 合議で追加: 劇場版SideMの鑑賞と特典交換。個人の発信
+    - roco11th            # 合議で追加: ロコ・日菜子の応援広告企画。個人の進行報告
+    - aqua_mrine          # 合議で追加: 劇場版SideMの鑑賞を振り返る個人投稿
+    - Ta1ch1_cg           # 合議で追加: 劇場版SideMを観た感想。個人の発信
+    - Master0626          # 合議で追加: 応援広告の投稿。ファンによる出稿と見る
+    - HANOTAROSAN         # 合議で追加: 西城樹里の誕生日を祝うファン投稿
+    - Barista1347K5       # 合議で追加: 劇場版SideM応援上映の感想。個人の発信
+    - 06134432a           # 合議で追加: 個人の撮影報告。応援広告の目撃・報告
     - yamayama6059        # 合議で追加: 個人アカウントの、BD到着や思い出の投稿
     - ringoapple43        # 合議で追加: 個人アカウントの、BD到着や思い出の投稿
     - USAMIN_0824         # 合議で追加: 個人アカウントの、BD特装版到着と公演の感想
@@ -1167,6 +1175,10 @@ x_accounts:
     - procinen1
     - yutaleP
   当事者:
+    - zukoo_am            # 合議で追加: 中谷育PVの制作プロダクションとしての実績発信
+    - sidem_goods         # 合議で追加: SideMコラボグッズの告知。販売側の発信と見る
+    - bushi_store         # 合議で追加: BCRストアのポップアップ販売。販売元の告知
+    - bolt_inc0623        # 合議で追加: 制作会社の発信。楽曲ロゴ・リリース素材の担当
     - Simeji_pr           # 合議で追加: Simejiの販売元PR。Mフェスとのコラボを告知
     - gema_nagoya         # 合議で追加: ゲーマーズ(販売元)によるBlu-ray予約・特典案内
     - lashin_chiba        # 合議で追加: ちびぐるみの買取保証を掲げる商業事業者の告知と見える
@@ -1316,6 +1328,7 @@ x_accounts:
 # tiktok.com/@…、ch.nicovideo.jp/…、manga.nicovideo.jp/comic/… など。ドメイン(プラットフォーム)では
 # 決まらず、そのパスの主体で決まる。合議が足す(classify_sources.add_paths)。
 path_types:
+  forms.cloud.microsoft/pages/responsepage.aspx?id=q7kiOCyrIE-ozavmrJhsN7Xo70AL1htBl0YLyOneN9FUMlpUNVk0VEZTVjVHRU9OVUhLNVlUOTBaSi4u: 当事者 # 合議で追加: リンク元なし。本文の「当社」「本イベント窓口」が主催側の一次発信。窓口は同社FA
   booth.pm/ja/items/9197830: 公式               # 機械で追加: ショップ va-liv.booth.pm
   booth.pm/ja/items/8568512: 公式               # 機械で追加: ショップ va-liv.booth.pm
   note.com/thinkaigyo: ファン                     # 合議で追加: 個人アカウントの学マス標ファイナル参加記(ファンレポート)
@@ -1386,6 +1399,15 @@ x_posts:
 
 # --- リンク元から引き継いだ種別(リンク先1つずつ。キーは pipelib.link_key)。合議がリンク元の告知と関係していると確かめたものだけ(classify_sources.inherit_from_links)。リンク先そのものの種別より強いときだけ効く ---
 link_types:
+  www.tiktok.com/@sidem_315production/video/7712315049544617237?is_from_webapp=1&sender_device=pc: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://x.com/SideM_official/status/2125840727175299505(公式)。同じ「JOKER↗オールマイティ」のハイパーわちゃver.動画
+  www.tiktok.com/@sidem_315production/video/7712313987714665748?is_from_webapp=1&sender_device=pc: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://x.com/SideM_official/status/2125805495026086249(公式)。同じ「JOKER↗オールマイティ」のハイパーマジver.動画
+  nicovideo.jp/watch/lv351633226: 準公式          # リンク元から引き継ぎ(合議で関係を確認): https://x.com/SideM_lantis/status/2125786646075371646(準公式)。告知と同じ315プロNight!の11/20放送回の生放送ページ
+  lnk.to/Legenders_2DMV: 準公式                   # リンク元から引き継ぎ(合議で関係を確認): https://x.com/SideM_lantis/status/2125560130271842337(準公式)。リンク元が告知する「リフレインアトリウム」2DMVの配信・DL先
+  docs.google.com/forms/d/e/1FAIpQLScJjWQ1w2d5CZijkX_QhNrgNAgCUae_9w2P34dku8l63hONrA: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://x.com/valiv_official/status/2125877233478762608(公式)。同じ11月度プロジェクト活動アンケートのフォーム。回答の受付ページ
+  youtube.com/watch?v=VLtpO_Bp9xg: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/valiv_official/status/2125794171403608407(公式)。告知の11/26 レトラ『脱毛サロンシミュレーター』配信の動画ページ
+  youtube.com/watch?v=VAnlBA8FL2g: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/SideM_official/status/2125546971943608636(公式)。告知の合同曲「NAME US ZENITH!」のMVそのもの
+  shop.asobistore.jp/products/detail/251502-00-00-00: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://x.com/imas_CGofficial/status/2125845354428182735(公式)。告知のカードフォリオ「CLASH M@TCH!!」プレミアムパックの商品ページ
+  shop.asobistore.jp/category/sm_fbs_gd: 公式   # リンク元から引き継ぎ(合議で関係を確認): https://x.com/SideM_official/status/2125182645092954268(公式)。告知の劇場版SideM公開記念グッズ（クリアカード）の受注ページ
   x.com/i/status/2125167554976993287: 公式      # リンク元から引き継ぎ(合議で関係を確認): https://x.com/valiv_official/status/2125175395918225812(公式)。同じ番組「ヴイアラジオ_卵」の初回配信日を知らせる告知のページ
   youtube.com/watch?v=J_ClG0QRp_I: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/shinyc_official/status/2125086350613622980(公式)。告知の11/24放送回の視聴URLで、同番組の#410の動画
   youtube.com/watch?v=ulOmfWv7abE: 準公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/SideM_lantis/status/2125109660122485052(準公式)。投稿のCafé Parade「Chocolate Special」2DMV修正版

@@ -1,0 +1,482 @@
+{
+ "decisions": {
+  "shiny-kawaii-season-chibiguru-2027": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/26号の記事に全13種・登場時期とも記載済み。新事実なし"
+  },
+  "gakumas-round1-vol2": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/25号で詳細記事済み。開始は12/1で3日以内でない"
+  },
+  "gaku-radio-archive-2026-11-25": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/26号でアーカイブ公開を記事化済み"
+  },
+  "twinkle-rabbit-poster-2026": {
+   "action": "article",
+   "angle": "ハツボシストア渋谷サクラステージで花海佑芽のトゥインクルラビットポスターの店内展示が今日始まる(姫崎莉波ら他のポスターも同日展示)",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(開始)。出典変更は数値のみで読者向けの変更なし"
+  },
+  "gakuen-ichiban-kuji-part7-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "ichiban-kuji-part7-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ一番くじPart7"
+  },
+  "gaku-metamorphose-4-million-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/26号で400万再生を記事化済み"
+  },
+  "metamorphose-2m-views-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "出典変更は再生数などの表示更新のみ。読者に関わる変更なし"
+  },
+  "twinkle-rabbit-rinami-poster-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "twinkle-rabbit-poster-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じトゥインクルラビットのポスター展示"
+  },
+  "gaku-unbalance-release-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-update-2026-22",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "MV公開と同じ『アンバランス』の施策。配信は11/28 0:00"
+  },
+  "ichiban-kuji-part7-2026": {
+   "action": "article",
+   "angle": "一番くじ学マスPart7のオンライン販売が12月14日17時開始、ダブルチャンスは2027年3月末まで",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "既報(10/21)に無いオンライン販売日・キャンペーン期間が新事実"
+  },
+  "gaku-kanae-2-5th-produce-campaign-2026": {
+   "action": "roundup",
+   "angle": "今日11時で終了する香名江登場記念の開催中施策(キャンペーン・ガシャ)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-2-5th-tour-limited-guaranteed-gacha-2026": {
+   "action": "roundup",
+   "angle": "今日11時で終了する香名江登場記念の開催中施策(キャンペーン・ガシャ)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-kaigou-story-event-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-update-2026-39",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ乖轟イベント"
+  },
+  "gaku-unbalance-kaigou-gacha-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-update-2026-39",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ乖轟施策のガシャ(燕・麻央のSSR)"
+  },
+  "gaku-radio-guests-2026-12-02": {
+   "action": "article",
+   "angle": "初星学園放送部12月2日回(川村玲奈さん・薄井友里さん)のおたより受付は今日の午前まで",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "締切が今日"
+  },
+  "metamorphose-mv-4m-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/26号で記事化済み"
+  },
+  "gaku-metamorphose-gacha-2026": {
+   "action": "roundup",
+   "angle": "今日11時で終了する香名江登場記念の開催中施策(キャンペーン・ガシャ)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "11-00-1-26": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-update-2026-39",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "演者の個人SNS投稿。単体記事にしない"
+  },
+  "gakumas-kanae-chibigurumi-pouch": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/26号で受注1月8日までを記事化済み"
+  },
+  "gaku-mission-pass-2026-11": {
+   "action": "article",
+   "angle": "11月ミッションパスは12月1日4:59まで、最大5,000ジュエルの報酬を受け取れる",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(締切前)。終了が3日以内"
+  },
+  "gakumas-espresto-prize-kuramoto-shinozawa": {
+   "action": "article",
+   "angle": "倉本千奈のESPRESTOフィギュア(約22cm)が今日から全国のクレーンゲームに順次登場",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(発売)。篠澤広分は11/12に登場済み"
+  },
+  "gaku-update-2026-22": {
+   "action": "article",
+   "angle": "乖轟「アンバランス」のMVが今夜22時に初星学園YouTubeでプレミア公開、音源は明日0時に配信",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 40,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(開始)"
+  },
+  "gaku-update-2026-11": {
+   "action": "article",
+   "angle": "ハツボシストアで香名江のクラシカル制服・AutumnVer.グッズが今日発売",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(発売)"
+  },
+  "gaku-update-2026-12": {
+   "action": "article",
+   "angle": "ハツボシストアで「トゥインクルラビット」グッズが今日発売",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(発売)"
+  },
+  "gaku-update-2026-39": {
+   "action": "article",
+   "angle": "新ユニット「乖轟」のストーリーイベントと燕・麻央のSSR、乖轟ガシャが今日11時に開始",
+   "purpose": "期日の知らせ",
+   "rank": "large",
+   "lead_score": 85,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(開始)。素材14件。ガシャ内容も含める"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "gaku-twinkle-rabbit-poster-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "ハツボシストア渋谷サクラステージで花海佑芽のトゥインクルラビットポスターの店内展示が今日始まる(姫崎莉波ら他のポスターも同日展示)",
+    "purpose": "期日の知らせ",
+    "lead_score": 10,
+    "dedup_key": "twinkle-rabbit-poster-2026",
+    "candidate_ids": [
+     "update-6b1d1b563840",
+     "sched-2026-11-27-twinkle-rabbit-poster-2026-開始",
+     "sched-2026-11-27-twinkle-rabbit-poster-2026-開始-src1",
+     "202611270225-explore-15"
+    ]
+   },
+   {
+    "slug": "gaku-ichiban-kuji-part7-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "一番くじ学マスPart7のオンライン販売が12月14日17時開始、ダブルチャンスは2027年3月末まで",
+    "purpose": "新情報",
+    "lead_score": 5,
+    "dedup_key": "ichiban-kuji-part7-2026",
+    "candidate_ids": [
+     "202611270225-grok-91",
+     "202611270225-grok-199",
+     "202611261836-watch-6",
+     "202611270225-grok-209"
+    ]
+   },
+   {
+    "slug": "gaku-radio-guests-2026-12-02",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "初星学園放送部12月2日回(川村玲奈さん・薄井友里さん)のおたより受付は今日の午前まで",
+    "purpose": "期日の知らせ",
+    "lead_score": 5,
+    "dedup_key": "gaku-radio-guests-2026-12-02",
+    "candidate_ids": [
+     "202611270225-grok-96"
+    ]
+   },
+   {
+    "slug": "gaku-mission-pass-2026-11",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "11月ミッションパスは12月1日4:59まで、最大5,000ジュエルの報酬を受け取れる",
+    "purpose": "期日の知らせ",
+    "lead_score": 10,
+    "dedup_key": "gaku-mission-pass-2026-11",
+    "candidate_ids": [
+     "sched-2026-11-27-gaku-mission-pass-2026-11-締切前",
+     "sched-2026-11-27-gaku-mission-pass-2026-11-締切前-src1",
+     "sched-2026-11-27-gaku-mission-pass-2026-11-締切前-src2",
+     "sched-2026-11-27-gaku-mission-pass-2026-11-締切前-src3",
+     "sched-2026-11-27-gaku-mission-pass-2026-11-締切前-src4",
+     "sched-2026-11-27-gaku-mission-pass-2026-11-締切前-src5",
+     "sched-2026-11-27-gaku-mission-pass-2026-11-締切前-src6",
+     "sched-2026-11-27-gaku-mission-pass-2026-11-締切前-src7",
+     "sched-2026-11-27-gaku-mission-pass-2026-11-締切前-src8"
+    ]
+   },
+   {
+    "slug": "gaku-gakumas-espresto-prize-kuramoto-shinozawa",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "倉本千奈のESPRESTOフィギュア(約22cm)が今日から全国のクレーンゲームに順次登場",
+    "purpose": "期日の知らせ",
+    "lead_score": 10,
+    "dedup_key": "gakumas-espresto-prize-kuramoto-shinozawa",
+    "candidate_ids": [
+     "sched-2026-11-27-gakumas-espresto-prize-kuramoto-shinozawa-発売"
+    ]
+   },
+   {
+    "slug": "gaku-update-2026-22",
+    "brand": "gaku",
+    "rank": "medium",
+    "angle": "乖轟「アンバランス」のMVが今夜22時に初星学園YouTubeでプレミア公開、音源は明日0時に配信",
+    "purpose": "期日の知らせ",
+    "lead_score": 40,
+    "dedup_key": "gaku-update-2026-22",
+    "candidate_ids": [
+     "sched-2026-11-27-gaku-update-2026-22-開始",
+     "sched-2026-11-27-gaku-update-2026-22-開始-src1",
+     "sched-2026-11-27-gaku-update-2026-22-開始-src2",
+     "sched-2026-11-27-gaku-update-2026-22-開始-src3",
+     "sched-2026-11-27-gaku-update-2026-22-開始-src4",
+     "sched-2026-11-27-gaku-update-2026-22-開始-src5",
+     "202611270225-grok-90"
+    ]
+   },
+   {
+    "slug": "gaku-update-2026-11",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "ハツボシストアで香名江のクラシカル制服・AutumnVer.グッズが今日発売",
+    "purpose": "期日の知らせ",
+    "lead_score": 10,
+    "dedup_key": "gaku-update-2026-11",
+    "candidate_ids": [
+     "sched-2026-11-27-gaku-update-2026-11-発売",
+     "sched-2026-11-27-gaku-update-2026-11-発売-src1",
+     "sched-2026-11-27-gaku-update-2026-11-発売-src2"
+    ]
+   },
+   {
+    "slug": "gaku-update-2026-12",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "ハツボシストアで「トゥインクルラビット」グッズが今日発売",
+    "purpose": "期日の知らせ",
+    "lead_score": 10,
+    "dedup_key": "gaku-update-2026-12",
+    "candidate_ids": [
+     "sched-2026-11-27-gaku-update-2026-12-発売",
+     "sched-2026-11-27-gaku-update-2026-12-発売-src1",
+     "sched-2026-11-27-gaku-update-2026-12-発売-src2"
+    ]
+   },
+   {
+    "slug": "gaku-update-2026-39",
+    "brand": "gaku",
+    "rank": "large",
+    "angle": "新ユニット「乖轟」のストーリーイベントと燕・麻央のSSR、乖轟ガシャが今日11時に開始",
+    "purpose": "期日の知らせ",
+    "lead_score": 85,
+    "dedup_key": "gaku-update-2026-39",
+    "candidate_ids": [
+     "sched-2026-11-27-gaku-update-2026-39-開始",
+     "sched-2026-11-27-gaku-update-2026-39-開始-src1",
+     "sched-2026-11-27-gaku-update-2026-39-開始-src2",
+     "sched-2026-11-27-gaku-update-2026-39-開始-src3",
+     "sched-2026-11-27-gaku-update-2026-39-開始-src4",
+     "sched-2026-11-27-gaku-update-2026-39-開始-src5",
+     "sched-2026-11-27-gaku-update-2026-39-開始-src6",
+     "sched-2026-11-27-gaku-update-2026-39-開始-src7",
+     "sched-2026-11-27-gaku-update-2026-39-開始-src8",
+     "sched-2026-11-27-gaku-update-2026-39-開始-src9",
+     "sched-2026-11-27-gaku-update-2026-39-開始-src10",
+     "sched-2026-11-27-gaku-update-2026-39-開始-src11",
+     "sched-2026-11-27-gaku-update-2026-39-開始-src12",
+     "sched-2026-11-27-gaku-update-2026-39-開始-src13",
+     "202611270225-grok-94",
+     "202611270225-grok-95",
+     "202611270225-grok-151"
+    ]
+   },
+   {
+    "slug": "gaku-ops-roundup",
+    "brand": "gaku",
+    "rank": "roundup",
+    "angle": "今日11時で終了する香名江登場記念の開催中施策(キャンペーン・ガシャ)",
+    "lead_score": 0,
+    "dedup_key": "gaku-kanae-2-5th-produce-campaign-2026",
+    "candidate_ids": [
+     "202611270225-grok-92",
+     "202611270225-grok-93",
+     "202611270225-grok-98"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "shiny-kawaii-season-chibiguru-2027",
+    "reason": "既報",
+    "note": "11/26号の記事に全13種・登場時期とも記載済み。新事実なし"
+   },
+   {
+    "dedup_key": "gakumas-round1-vol2",
+    "reason": "既報",
+    "note": "11/25号で詳細記事済み。開始は12/1で3日以内でない"
+   },
+   {
+    "dedup_key": "gaku-radio-archive-2026-11-25",
+    "reason": "既報",
+    "note": "11/26号でアーカイブ公開を記事化済み"
+   },
+   {
+    "dedup_key": "gaku-metamorphose-4-million-2026",
+    "reason": "既報",
+    "note": "11/26号で400万再生を記事化済み"
+   },
+   {
+    "dedup_key": "metamorphose-2m-views-2026",
+    "reason": "既報",
+    "note": "出典変更は再生数などの表示更新のみ。読者に関わる変更なし"
+   },
+   {
+    "dedup_key": "metamorphose-mv-4m-2026",
+    "reason": "既報",
+    "note": "11/26号で記事化済み"
+   },
+   {
+    "dedup_key": "gakumas-kanae-chibigurumi-pouch",
+    "reason": "既報",
+    "note": "11/26号で受注1月8日までを記事化済み"
+   }
+  ],
+  "cross_brand": []
+ }
+}

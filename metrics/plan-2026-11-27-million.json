@@ -1,0 +1,330 @@
+{
+ "decisions": {
+  "million-platinum-trust-13-outside-isotope-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-igp-nakatani-iku-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "中谷育アイグラ追加の同じ出来事"
+  },
+  "soutei-shinrigai-mv-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-igp-nakatani-iku-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "中谷育アイグラ追加の同じ出来事"
+  },
+  "million-kotobukiya-year-end-2026": {
+   "action": "article",
+   "angle": "コトブキヤ秋葉原館で「MILLIONSTARS 2026⇒2027 大忘年会×新年会」を12月26日〜1月11日に開催すると公式が発表。",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "million-igp-nakatani-iku-2026": {
+   "action": "article",
+   "angle": "アイグラに中谷育が追加され、12月25日までのフラッシュGPメダル引換券210枚の特別ミッションと「キミが真ん中にいた」PVが登場。",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "想定心理外・PV関連投稿を統合"
+  },
+  "million-november-jewel-bonus-2026": {
+   "action": "article",
+   "angle": "「9.5周年記念！みんなでHop-Step-10th！ミリシタ生配信！」を12月7日19時から実施、愛美さん出演。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "key名と内容が不一致、facts は生配信告知"
+  },
+  "shs-selection-ticket-2026": {
+   "action": "roundup",
+   "angle": "開催中のミリシタ販売セット・ガシャ(ハーフアニバーサリー関連)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "fes-masterpiece-set-2026": {
+   "action": "roundup",
+   "angle": "開催中のミリシタ販売セット・ガシャ(ハーフアニバーサリー関連)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "million-fes-selection-ticket-2026": {
+   "action": "roundup",
+   "angle": "開催中のミリシタ販売セット・ガシャ(ハーフアニバーサリー関連)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "million-39-gacha-vol1-2026": {
+   "action": "roundup",
+   "angle": "開催中のミリシタ販売セット・ガシャ(ハーフアニバーサリー関連)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "theater-gem-accessories-2026": {
+   "action": "roundup",
+   "angle": "開催中のミリシタ販売セット・ガシャ(宝石販売)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "daily-shs-gacha-bonus-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "daily-shs-gacha-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ日替わりガシャ"
+  },
+  "daily-shs-gacha-2026": {
+   "action": "roundup",
+   "angle": "開催中の日替わりピックアップ セカンドヘアスタイルガシャ",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "theater-talk-party-vol69-2026": {
+   "action": "roundup",
+   "angle": "開催中のイベント THEATER TALK PARTY☆ Vol.69",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "kimi-ga-mannaka-shortmv-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-igp-nakatani-iku-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "育のアイグラPV公開は同じ施策"
+  },
+  "roco-hinako-cheering-ad-progress-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "同人・ファン主催",
+   "note": "ファン主催の応援広告、未確認の投稿"
+  },
+  "works-pv-1-25": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-igp-nakatani-iku-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "制作会社の個人投稿は単体で記事にしない、PV素材として統合"
+  },
+  "million-idol-grand-prix-iku-addition-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-igp-nakatani-iku-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "制作会社の投稿、PV素材として統合"
+  },
+  "million-topaz-happy-price-2026": {
+   "action": "article",
+   "angle": "11月誕生石トパーズのHappy Price(S/Lとも無償ジュエル150個)は11月30日23:59まで、あと3日。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約"
+  },
+  "million-master-style-drop-2026": {
+   "action": "article",
+   "angle": "マスタースタイルドロップM・L・XLセットは11月30日23:59まで、残り3日。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "million-kotobukiya-year-end-2026",
+    "brand": "million",
+    "rank": "medium",
+    "angle": "コトブキヤ秋葉原館で「MILLIONSTARS 2026⇒2027 大忘年会×新年会」を12月26日〜1月11日に開催すると公式が発表。",
+    "purpose": "新情報",
+    "lead_score": 60,
+    "dedup_key": "million-kotobukiya-year-end-2026",
+    "candidate_ids": [
+     "202611261836-watch-7",
+     "202611270225-grok-210"
+    ]
+   },
+   {
+    "slug": "million-igp-nakatani-iku-2026",
+    "brand": "million",
+    "rank": "medium",
+    "angle": "アイグラに中谷育が追加され、12月25日までのフラッシュGPメダル引換券210枚の特別ミッションと「キミが真ん中にいた」PVが登場。",
+    "purpose": "新情報",
+    "lead_score": 25,
+    "dedup_key": "million-igp-nakatani-iku-2026",
+    "candidate_ids": [
+     "202611261836-explore-19",
+     "202611260732-explore-0",
+     "202611261235-explore-5",
+     "202611270225-explore-3",
+     "202611270225-grok-51",
+     "202611270225-grok-153",
+     "202611270225-grok-154",
+     "202611270225-grok-155",
+     "202611270225-grok-156"
+    ]
+   },
+   {
+    "slug": "million-november-jewel-bonus-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "「9.5周年記念！みんなでHop-Step-10th！ミリシタ生配信！」を12月7日19時から実施、愛美さん出演。",
+    "purpose": "新情報",
+    "lead_score": 30,
+    "dedup_key": "million-november-jewel-bonus-2026",
+    "candidate_ids": [
+     "202611262334-watch-0",
+     "202611270225-grok-172",
+     "202611270225-grok-178",
+     "202611270225-grok-179",
+     "202611270225-grok-180",
+     "202611270225-grok-181",
+     "202611270225-grok-182",
+     "202611270225-grok-183",
+     "202611270225-grok-184",
+     "202611270225-grok-185",
+     "202611270225-grok-186",
+     "202611270225-grok-187",
+     "202611270225-grok-188",
+     "202611270225-grok-189",
+     "202611270225-grok-206"
+    ]
+   },
+   {
+    "slug": "million-topaz-happy-price-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "11月誕生石トパーズのHappy Price(S/Lとも無償ジュエル150個)は11月30日23:59まで、あと3日。",
+    "purpose": "期日の知らせ",
+    "lead_score": 10,
+    "dedup_key": "million-topaz-happy-price-2026",
+    "candidate_ids": [
+     "sched-2026-11-27-million-topaz-happy-price-2026-締切前",
+     "sched-2026-11-27-million-topaz-happy-price-2026-締切前-src1",
+     "sched-2026-11-27-million-topaz-happy-price-2026-締切前-src2",
+     "sched-2026-11-27-million-topaz-happy-price-2026-締切前-src3"
+    ]
+   },
+   {
+    "slug": "million-master-style-drop-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "マスタースタイルドロップM・L・XLセットは11月30日23:59まで、残り3日。",
+    "purpose": "期日の知らせ",
+    "lead_score": 10,
+    "dedup_key": "million-master-style-drop-2026",
+    "candidate_ids": [
+     "sched-2026-11-27-million-master-style-drop-2026-締切前",
+     "sched-2026-11-27-million-master-style-drop-2026-締切前-src1"
+    ]
+   },
+   {
+    "slug": "million-ops-roundup",
+    "brand": "million",
+    "rank": "roundup",
+    "angle": "開催中のミリシタ販売セット・ガシャ(ハーフアニバーサリー関連)",
+    "lead_score": 0,
+    "dedup_key": "shs-selection-ticket-2026",
+    "candidate_ids": [
+     "202611270225-grok-43",
+     "202611270225-grok-44",
+     "202611270225-grok-45",
+     "202611270225-grok-46",
+     "202611270225-grok-47",
+     "202611270225-grok-49",
+     "202611270225-grok-50",
+     "202611270225-grok-48"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "roco-hinako-cheering-ad-progress-2026",
+    "reason": "同人・ファン主催",
+    "note": "ファン主催の応援広告、未確認の投稿"
+   }
+  ],
+  "cross_brand": []
+ }
+}

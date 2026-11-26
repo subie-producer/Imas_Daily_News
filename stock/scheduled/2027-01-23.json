@@ -115,5 +115,33 @@
   "verify": "confirmed",
   "event_date": "2027-01-23",
   "src_candidate_id": "202611180226-grok-25"
+ },
+ {
+  "id": "sched-2027-01-23-sidem-cardfolio-voice-edition-2027-発売",
+  "dedup_key": "sidem-cardfolio-voice-edition-2027",
+  "brand": "sidem",
+  "subject": "カードフォリオ VOICE EDITION SideMver.",
+  "kind": "発売",
+  "note": "幕張公演の会場から販売開始予定。購入できる",
+  "reserved_on": "2026-11-27",
+  "occurs_on": "2027-01-23",
+  "title": "カードフォリオ VOICE EDITION SideM ver.発売決定",
+  "url": "https://cardfolio.idolmaster-official.jp/news/?p=1171",
+  "source_type": "公式",
+  "facts": [
+   "「アイドルマスター カードフォリオ VOICE EDITION SideMver.」の発売が決定した。",
+   "2027年1月23日(土)、1月24日(日)開催の「315 Production presents F＠NTASTIC BATTLE FES ～Wanna step in～」幕張公演より販売開始予定。",
+   "「ブレイジングフォース」を着用したアイドルたちのビジュアルを使用したカードが登場する。",
+   "一部カードでは、新規録り下ろしのセリフを視聴できる。",
+   "商品の詳細は後日発表予定。",
+   "エンゲージメント: 中",
+   "一部のカードはセリフを視聴できる。",
+   "セリフは新規録り下ろし。",
+   "エンゲージメント: 低"
+  ],
+  "via": "explore",
+  "verify": "confirmed",
+  "event_date": "2027-01-23",
+  "src_candidate_id": "202611270225-explore-12"
  }
 ]

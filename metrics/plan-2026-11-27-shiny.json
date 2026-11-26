@@ -1,0 +1,715 @@
+{
+ "decisions": {
+  "shiny-winter-festival-2026": {
+   "action": "article",
+   "angle": "「ウィンター・フェスティバル」が本日開始、ユニットボーナス強化は12月1日まで(IS・放クラ・アルストロメリア)",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 45,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-juri-birthday-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/26に樹里誕生日施策の記事あり"
+  },
+  "chikusei-shinycolors-collab-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "返礼品の件は11/26記事で既報、表示変更のみ"
+  },
+  "shinyradio-archive-end-2027": {
+   "action": "article",
+   "angle": "はばたきラジオステーションのアーカイブは、ASOBI CHANNELのサービス終了(2027年3月31日23:59予定)で公開終了",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-sweets-paradise-goods-online-2026": {
+   "action": "article",
+   "angle": "スイパラショップ通販で11/25夜〜26朝の注文に処理遅延、配送が遅れる可能性の案内",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-style-collection-3-2026": {
+   "action": "article",
+   "angle": "SHINY Style COLLECTION第3弾の受注は29日まで、締切が迫る",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "noctchill-questionnaire-2027": {
+   "action": "article",
+   "angle": "ノクチルなんでもランキングのアンケート、公式パンフ掲載用に12月6日23:59まで回答募集",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "noctchill-goods-presale-2027": {
+   "action": "article",
+   "angle": "noctchill公式グッズの事前販売が開始、制服風ジャケットやマルチカラーライトなど",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "juri-birthday-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/26に既報"
+  },
+  "shiny-event-ketsujitsu-no-saki-2026": {
+   "action": "article",
+   "angle": "シナリオイベント「結実、の先に」が本日復刻開幕、12月8日11:59まで",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-maintenance-2026-11-27": {
+   "action": "article",
+   "angle": "本日12:00〜18:00メンテナンス、中断した283ステージは再開不可",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-masters-fes-ranking-2026-11": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/26に上位100名の記事あり"
+  },
+  "shiny-juri-birthday-fan-posts-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿"
+  },
+  "shiny-juri-birthday-mv-post-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "同人・ファン主催",
+   "note": "ファン投稿動画"
+  },
+  "bcr-283production-pop-up-shop-1-26": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-283-pop-up-egai-eikou-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-shiny-competition-2026-11": {
+   "action": "article",
+   "angle": "シャニソン「シャイニーコンペティション」は明日28日20:59まで、結果発表は29日12:00から",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-283-pop-up-egai-eikou-2026": {
+   "action": "article",
+   "angle": "283PRODUCTION POP UP SHOP「笑顔、その永劫の光」が本日秋葉原で開幕、12月13日まで(全28アイドルのMy Songs Collection商品も)",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-3rd-anniv-login-bonus-2026": {
+   "action": "roundup",
+   "angle": "シャニソン3周年ログボ(11/30まで)など開催中の運営情報",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-alstroemeria-gotoken-xmas-2026": {
+   "action": "article",
+   "angle": "アルストロメリア×五島軒クリスマスオードブルの予約は11月30日23:59まで、あと3日",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-3rd-anniversary-jewel-sale-2026": {
+   "action": "article",
+   "angle": "シャニソン3周年記念プリズムジュエル商品4種の販売は11月30日23:59:59まで、あと3日",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-song-3rd-limited-guaranteed-gasha": {
+   "action": "roundup",
+   "angle": "3周年記念期間限定★3・SSR確定ガシャ(11/30まで)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-pj-refrac7ions-chibigurumi-2026": {
+   "action": "article",
+   "angle": "ちびぐるみ～PJ: REFRAC7IONS～ vol.3・vol.4がナムコ・ナムコオンラインクレーンに登場",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-song-cutie-finder-login-pass-2026": {
+   "action": "roundup",
+   "angle": "Cutie Finderログインボーナスパス(販売11/30まで)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-song-3rd-jewel-sale-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-3rd-anniversary-jewel-sale-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じジュエル商品"
+  },
+  "shiny-birthday-plate-2026-vol2": {
+   "action": "article",
+   "angle": "バースデープレート第2弾の受注はASOBI STOREで11月30日23:59まで、あと3日",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-song-for-prism-3rd-anniversary-login-bonus-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-3rd-anniv-login-bonus-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ3周年ログボ"
+  },
+  "shiny-party-november-2026": {
+   "action": "article",
+   "angle": "「シャイニーパーティ in November」のアイテム受取・交換期限は本日11:59",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-collab-fes-2026-11": {
+   "action": "article",
+   "angle": "「コラボフェス」は本日11:59までの最終日",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-tomarikaze-no-harutachi-rerun-2026": {
+   "action": "article",
+   "angle": "「とまりかぜの春たちは」復刻は本日11:59まで、ミッションと報酬交換の最終日",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-song-im-a-cutie-finder-rerun-2026": {
+   "action": "roundup",
+   "angle": "「I'm a Cutie Finder」復刻ピックアップガシャ(11/30まで)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-prelude-collection-chiyuki-2026-11": {
+   "action": "article",
+   "angle": "桑山千雪のプレリュードコレクションとミッションは本日11:59(予定)で終了",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-283-production-pop-up-shop-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-283-pop-up-egai-eikou-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じPOP UP SHOP開幕"
+  },
+  "shiny-super-explosion-galaxy-2026": {
+   "action": "article",
+   "angle": "「超爆発ギャラクシー」の結果発表が本日12:00から30日11:59まで",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-new-idol-teaser-2026-11": {
+   "action": "article",
+   "angle": "シャニマスの新アイドルが本日18:00にゲーム内へ登場",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 40,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "shiny-winter-festival-2026",
+    "brand": "shiny",
+    "rank": "medium",
+    "angle": "「ウィンター・フェスティバル」が本日開始、ユニットボーナス強化は12月1日まで(IS・放クラ・アルストロメリア)",
+    "purpose": "期日の知らせ",
+    "lead_score": 45,
+    "dedup_key": "shiny-winter-festival-2026",
+    "candidate_ids": [
+     "202611260732-explore-3",
+     "202611261836-explore-20",
+     "202611270225-grok-63",
+     "sched-2026-11-27-shiny-winter-festival-2026-開始"
+    ]
+   },
+   {
+    "slug": "shiny-shinyradio-archive-end-2027",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "はばたきラジオステーションのアーカイブは、ASOBI CHANNELのサービス終了(2027年3月31日23:59予定)で公開終了",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "shinyradio-archive-end-2027",
+    "candidate_ids": [
+     "202611261836-watch-8",
+     "202611270225-grok-211"
+    ]
+   },
+   {
+    "slug": "shiny-sweets-paradise-goods-online-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "スイパラショップ通販で11/25夜〜26朝の注文に処理遅延、配送が遅れる可能性の案内",
+    "purpose": "新情報",
+    "lead_score": 5,
+    "dedup_key": "shiny-sweets-paradise-goods-online-2026",
+    "candidate_ids": [
+     "update-f5ee3ec34f85",
+     "sched-2026-11-25-shiny-sweets-paradise-goods-online-2026-開始"
+    ]
+   },
+   {
+    "slug": "shiny-style-collection-3-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "SHINY Style COLLECTION第3弾の受注は29日まで、締切が迫る",
+    "purpose": "期日の知らせ",
+    "lead_score": 10,
+    "dedup_key": "shiny-style-collection-3-2026",
+    "candidate_ids": [
+     "202611270225-grok-53",
+     "202611270225-grok-190"
+    ]
+   },
+   {
+    "slug": "shiny-noctchill-questionnaire-2027",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "ノクチルなんでもランキングのアンケート、公式パンフ掲載用に12月6日23:59まで回答募集",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "noctchill-questionnaire-2027",
+    "candidate_ids": [
+     "202611270225-grok-54"
+    ]
+   },
+   {
+    "slug": "shiny-noctchill-goods-presale-2027",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "noctchill公式グッズの事前販売が開始、制服風ジャケットやマルチカラーライトなど",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "noctchill-goods-presale-2027",
+    "candidate_ids": [
+     "202611270225-grok-55"
+    ]
+   },
+   {
+    "slug": "shiny-event-ketsujitsu-no-saki-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "シナリオイベント「結実、の先に」が本日復刻開幕、12月8日11:59まで",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "shiny-event-ketsujitsu-no-saki-2026",
+    "candidate_ids": [
+     "202611270225-grok-62",
+     "sched-2026-11-27-shiny-event-ketsujitsu-no-saki-2026-開幕"
+    ]
+   },
+   {
+    "slug": "shiny-maintenance-2026-11-27",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "本日12:00〜18:00メンテナンス、中断した283ステージは再開不可",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "shiny-maintenance-2026-11-27",
+    "candidate_ids": [
+     "202611270225-grok-64",
+     "sched-2026-11-27-shiny-maintenance-2026-11-27-開始"
+    ]
+   },
+   {
+    "slug": "shiny-shiny-competition-2026-11",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "シャニソン「シャイニーコンペティション」は明日28日20:59まで、結果発表は29日12:00から",
+    "purpose": "期日の知らせ",
+    "lead_score": 15,
+    "dedup_key": "shiny-shiny-competition-2026-11",
+    "candidate_ids": [
+     "202611260224-explore-5"
+    ]
+   },
+   {
+    "slug": "shiny-283-pop-up-egai-eikou-2026",
+    "brand": "shiny",
+    "rank": "medium",
+    "angle": "283PRODUCTION POP UP SHOP「笑顔、その永劫の光」が本日秋葉原で開幕、12月13日まで(全28アイドルのMy Songs Collection商品も)",
+    "purpose": "期日の知らせ",
+    "lead_score": 60,
+    "dedup_key": "shiny-283-pop-up-egai-eikou-2026",
+    "candidate_ids": [
+     "sched-2026-11-27-shiny-283-pop-up-egai-eikou-2026-開幕",
+     "202611270225-grok-149",
+     "sched-2026-11-27-shiny-283-production-pop-up-shop-2026-開幕",
+     "sched-2026-11-27-shiny-283-production-pop-up-shop-2026-開幕-src1"
+    ]
+   },
+   {
+    "slug": "shiny-alstroemeria-gotoken-xmas-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "アルストロメリア×五島軒クリスマスオードブルの予約は11月30日23:59まで、あと3日",
+    "purpose": "期日の知らせ",
+    "lead_score": 10,
+    "dedup_key": "shiny-alstroemeria-gotoken-xmas-2026",
+    "candidate_ids": [
+     "sched-2026-11-27-shiny-alstroemeria-gotoken-xmas-2026-締切前"
+    ]
+   },
+   {
+    "slug": "shiny-3rd-anniversary-jewel-sale-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "シャニソン3周年記念プリズムジュエル商品4種の販売は11月30日23:59:59まで、あと3日",
+    "purpose": "期日の知らせ",
+    "lead_score": 10,
+    "dedup_key": "shiny-3rd-anniversary-jewel-sale-2026",
+    "candidate_ids": [
+     "sched-2026-11-27-shiny-3rd-anniversary-jewel-sale-2026-締切前",
+     "sched-2026-11-27-shiny-song-3rd-jewel-sale-2026-締切前",
+     "sched-2026-11-27-shiny-song-3rd-jewel-sale-2026-締切前-src1",
+     "sched-2026-11-27-shiny-song-3rd-jewel-sale-2026-締切前-src2",
+     "sched-2026-11-27-shiny-song-3rd-jewel-sale-2026-締切前-src3",
+     "sched-2026-11-27-shiny-song-3rd-jewel-sale-2026-締切前-src4",
+     "sched-2026-11-27-shiny-song-3rd-jewel-sale-2026-締切前-src5",
+     "sched-2026-11-27-shiny-song-3rd-jewel-sale-2026-締切前-src6"
+    ]
+   },
+   {
+    "slug": "shiny-pj-refrac7ions-chibigurumi-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "ちびぐるみ～PJ: REFRAC7IONS～ vol.3・vol.4がナムコ・ナムコオンラインクレーンに登場",
+    "purpose": "期日の知らせ",
+    "lead_score": 15,
+    "dedup_key": "shiny-pj-refrac7ions-chibigurumi-2026",
+    "candidate_ids": [
+     "sched-2026-11-27-shiny-pj-refrac7ions-chibigurumi-2026-開始"
+    ]
+   },
+   {
+    "slug": "shiny-birthday-plate-2026-vol2",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "バースデープレート第2弾の受注はASOBI STOREで11月30日23:59まで、あと3日",
+    "purpose": "期日の知らせ",
+    "lead_score": 10,
+    "dedup_key": "shiny-birthday-plate-2026-vol2",
+    "candidate_ids": [
+     "sched-2026-11-27-shiny-birthday-plate-2026-vol2-締切前",
+     "sched-2026-11-27-shiny-birthday-plate-2026-vol2-締切前-src1"
+    ]
+   },
+   {
+    "slug": "shiny-party-november-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "「シャイニーパーティ in November」のアイテム受取・交換期限は本日11:59",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "shiny-party-november-2026",
+    "candidate_ids": [
+     "sched-2026-11-27-shiny-party-november-2026-締切",
+     "sched-2026-11-27-shiny-party-november-2026-締切-src1"
+    ]
+   },
+   {
+    "slug": "shiny-collab-fes-2026-11",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "「コラボフェス」は本日11:59までの最終日",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "shiny-collab-fes-2026-11",
+    "candidate_ids": [
+     "sched-2026-11-27-shiny-collab-fes-2026-11-終了",
+     "sched-2026-11-27-shiny-collab-fes-2026-11-締切"
+    ]
+   },
+   {
+    "slug": "shiny-tomarikaze-no-harutachi-rerun-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "「とまりかぜの春たちは」復刻は本日11:59まで、ミッションと報酬交換の最終日",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "shiny-tomarikaze-no-harutachi-rerun-2026",
+    "candidate_ids": [
+     "sched-2026-11-27-shiny-tomarikaze-no-harutachi-rerun-2026-終了",
+     "sched-2026-11-27-shiny-tomarikaze-no-harutachi-rerun-2026-終了-src1",
+     "sched-2026-11-27-shiny-tomarikaze-no-harutachi-rerun-2026-締切",
+     "sched-2026-11-27-shiny-tomarikaze-no-harutachi-rerun-2026-締切-src1"
+    ]
+   },
+   {
+    "slug": "shiny-prelude-collection-chiyuki-2026-11",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "桑山千雪のプレリュードコレクションとミッションは本日11:59(予定)で終了",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "shiny-prelude-collection-chiyuki-2026-11",
+    "candidate_ids": [
+     "sched-2026-11-27-shiny-prelude-collection-chiyuki-2026-11-終了",
+     "sched-2026-11-27-shiny-prelude-collection-chiyuki-2026-11-終了-src1",
+     "sched-2026-11-27-shiny-prelude-collection-chiyuki-2026-11-終了-src2",
+     "sched-2026-11-27-shiny-prelude-collection-chiyuki-2026-11-終了-src3"
+    ]
+   },
+   {
+    "slug": "shiny-super-explosion-galaxy-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "「超爆発ギャラクシー」の結果発表が本日12:00から30日11:59まで",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "shiny-super-explosion-galaxy-2026",
+    "candidate_ids": [
+     "sched-2026-11-27-shiny-super-explosion-galaxy-2026-結果",
+     "sched-2026-11-27-shiny-super-explosion-galaxy-2026-結果-src1",
+     "sched-2026-11-27-shiny-super-explosion-galaxy-2026-結果-src2",
+     "sched-2026-11-27-shiny-super-explosion-galaxy-2026-結果-src3",
+     "sched-2026-11-27-shiny-super-explosion-galaxy-2026-結果-src4",
+     "sched-2026-11-27-shiny-super-explosion-galaxy-2026-結果-src5",
+     "sched-2026-11-27-shiny-super-explosion-galaxy-2026-結果-src6",
+     "sched-2026-11-27-shiny-super-explosion-galaxy-2026-結果-src7"
+    ]
+   },
+   {
+    "slug": "shiny-new-idol-teaser-2026-11",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "シャニマスの新アイドルが本日18:00にゲーム内へ登場",
+    "purpose": "期日の知らせ",
+    "lead_score": 40,
+    "dedup_key": "shiny-new-idol-teaser-2026-11",
+    "candidate_ids": [
+     "sched-2026-11-27-shiny-new-idol-teaser-2026-11-開始"
+    ]
+   },
+   {
+    "slug": "shiny-ops-roundup",
+    "brand": "shiny",
+    "rank": "roundup",
+    "angle": "シャニソン3周年ログボ(11/30まで)など開催中の運営情報",
+    "lead_score": 0,
+    "dedup_key": "shiny-3rd-anniv-login-bonus-2026",
+    "candidate_ids": [
+     "sched-2026-11-27-shiny-3rd-anniv-login-bonus-2026-締切前",
+     "sched-2026-11-27-shiny-song-3rd-limited-guaranteed-gasha-締切前",
+     "sched-2026-11-27-shiny-song-cutie-finder-login-pass-2026-締切前",
+     "sched-2026-11-27-shiny-song-cutie-finder-login-pass-2026-締切前-src1",
+     "sched-2026-11-27-shiny-song-cutie-finder-login-pass-2026-締切前-src2",
+     "sched-2026-11-27-shiny-song-cutie-finder-login-pass-2026-締切前-src3",
+     "sched-2026-11-27-shiny-song-cutie-finder-login-pass-2026-締切前-src4",
+     "sched-2026-11-27-shiny-song-cutie-finder-login-pass-2026-締切前-src5",
+     "sched-2026-11-27-shiny-song-cutie-finder-login-pass-2026-締切前-src6",
+     "sched-2026-11-27-shiny-song-im-a-cutie-finder-rerun-2026-締切前",
+     "sched-2026-11-27-shiny-song-im-a-cutie-finder-rerun-2026-締切前-src1",
+     "sched-2026-11-27-shiny-song-im-a-cutie-finder-rerun-2026-締切前-src2",
+     "sched-2026-11-27-shiny-song-for-prism-3rd-anniversary-login-bonus-2026-締切前",
+     "sched-2026-11-27-shiny-song-for-prism-3rd-anniversary-login-bonus-2026-締切前-src1",
+     "sched-2026-11-27-shiny-song-for-prism-3rd-anniversary-login-bonus-2026-締切前-src2",
+     "sched-2026-11-27-shiny-song-for-prism-3rd-anniversary-login-bonus-2026-締切前-src3"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "shiny-juri-birthday-2026",
+    "reason": "既報",
+    "note": "11/26に樹里誕生日施策の記事あり"
+   },
+   {
+    "dedup_key": "chikusei-shinycolors-collab-2026",
+    "reason": "既報",
+    "note": "返礼品の件は11/26記事で既報、表示変更のみ"
+   },
+   {
+    "dedup_key": "juri-birthday-2026",
+    "reason": "既報",
+    "note": "11/26に既報"
+   },
+   {
+    "dedup_key": "shiny-masters-fes-ranking-2026-11",
+    "reason": "既報",
+    "note": "11/26に上位100名の記事あり"
+   },
+   {
+    "dedup_key": "shiny-juri-birthday-fan-posts-2026",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿"
+   },
+   {
+    "dedup_key": "shiny-juri-birthday-mv-post-2026",
+    "reason": "同人・ファン主催",
+    "note": "ファン投稿動画"
+   }
+  ],
+  "cross_brand": []
+ }
+}

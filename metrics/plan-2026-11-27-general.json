@@ -1,0 +1,98 @@
+{
+ "decisions": {
+  "idolmaster-series-popup-taipei-2027": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/25号に開催期間・会場・テーマ・6人・学マス新商品まで掲載済み。新事実も当日のトリガーも無い"
+  },
+  "live-theater-performance-08-13th-anniversary-2026": {
+   "action": "article",
+   "angle": "「THE IDOLM@STER LIVE THE@TER PERFORMANCE 08」のリリース13周年を、ファンが収録曲とともに祝う",
+   "purpose": "新情報",
+   "rank": "culture",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "記念日の盛り上がりとしてファン面(culture)にまとめる。出典は非公式の投稿のみで、断定は避ける"
+  },
+  "asobi-channel-2027-3-31-1-26": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "重複",
+   "note": "シャニマス面がshiny-shinyradio-archive-end-2027でASOBI CHANNELの2027年3月31日終了を記事にしている"
+  },
+  "hangetsu-twin-live-cd2-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/25号に全7曲収録・詳細は後日の旨まで掲載済み。新事実なし"
+  },
+  "imas-radio-mail-2026-11-24": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/25号・11/26号に次回12月8日20時、ゲスト11月29日発表、お便り募集まで掲載済み。当日のトリガーも無い"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "general-live-theater-performance-08-13th-anniversary-2026",
+    "brand": "general",
+    "rank": "culture",
+    "angle": "「THE IDOLM@STER LIVE THE@TER PERFORMANCE 08」のリリース13周年を、ファンが収録曲とともに祝う",
+    "purpose": "新情報",
+    "lead_score": 5,
+    "dedup_key": "live-theater-performance-08-13th-anniversary-2026",
+    "candidate_ids": [
+     "202611270225-grok-52"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "idolmaster-series-popup-taipei-2027",
+    "reason": "既報",
+    "note": "11/25号に開催期間・会場・テーマ・6人・学マス新商品まで掲載済み。新事実も当日のトリガーも無い"
+   },
+   {
+    "dedup_key": "asobi-channel-2027-3-31-1-26",
+    "reason": "重複",
+    "note": "シャニマス面がshiny-shinyradio-archive-end-2027でASOBI CHANNELの2027年3月31日終了を記事にしている"
+   },
+   {
+    "dedup_key": "hangetsu-twin-live-cd2-2026",
+    "reason": "既報",
+    "note": "11/25号に全7曲収録・詳細は後日の旨まで掲載済み。新事実なし"
+   },
+   {
+    "dedup_key": "imas-radio-mail-2026-11-24",
+    "reason": "既報",
+    "note": "11/25号・11/26号に次回12月8日20時、ゲスト11月29日発表、お便り募集まで掲載済み。当日のトリガーも無い"
+   }
+  ],
+  "cross_brand": []
+ }
+}

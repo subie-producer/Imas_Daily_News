@@ -698,5 +698,97 @@
   "deadline": "2027-01-25",
   "link_from": "https://x.com/imas_official/status/2125424246835011912",
   "src_candidate_id": "202611251234-watch-0"
+ },
+ {
+  "id": "sched-2026-12-26-million-kotobukiya-year-end-2026-開幕",
+  "dedup_key": "million-kotobukiya-year-end-2026",
+  "brand": "million",
+  "subject": "MILLIONSTARS 2026⇒2027 大忘年会×新年会 in KOTOBUKIY@ 開幕",
+  "kind": "開幕",
+  "note": "コトブキヤ秋葉原館5Fで、忘年会・新年会テーマのミリオンスターズ展示を見に行ける",
+  "reserved_on": "2026-11-27",
+  "occurs_on": "2026-12-26",
+  "title": "MILLIONSTARS 2026⇒2027 大忘年会×新年会 in KOTOBUKIY@",
+  "url": "https://idolmaster-official.jp/news/01_20447",
+  "source_type": "公式",
+  "facts": [
+   "開催場所▶コトブキヤ秋葉原館 5Fイベントフロア「コトブキヤベース・アキバ」",
+   "開催期間▶2026年12月26日（土）～2027年1月11日（月・祝）",
+   "ミリオンスターズのアイドルたちが「忘年会」と「新年会」テーマのパーティードレスに身を包んで登場",
+   "詳細は下記のイベント特設ページにて後日発表",
+   "エンゲージメント: 中",
+   "【ミリオン】コトブキヤ秋葉原館にて「MILLIONSTARS 2026⇒2027 大忘年会×新年会 in KOTOBUKIY@」開催決定‼✨ #idolmaster https://idolmaster-official.jp/news/01_20447",
+   "エンゲージメント: 低"
+  ],
+  "via": "watch",
+  "verify": "unconfirmed",
+  "event_date": "2026-12-26",
+  "deadline": "2027-01-11",
+  "link_from": "https://x.com/imas_official/status/2125862131279290568",
+  "src_candidate_id": "202611261836-watch-7"
+ },
+ {
+  "id": "sched-2026-12-26-million-kotobukiya-year-end-2026-開幕-src1",
+  "dedup_key": "million-kotobukiya-year-end-2026",
+  "brand": "million",
+  "subject": "MILLIONSTARS 2026⇒2027 大忘年会×新年会 in KOTOBUKIY@ 開幕",
+  "kind": "開幕",
+  "note": "コトブキヤ秋葉原館5Fで、忘年会・新年会テーマのミリオンスターズ展示を見に行ける",
+  "reserved_on": "2026-11-27",
+  "occurs_on": "2026-12-26",
+  "title": "【ミリオン】コトブキヤ秋葉原館にて「MILLIONSTARS 2026⇒2027 大忘年会×新年会 in KOTOBUKIY@」開催決定‼✨",
+  "url": "https://x.com/imas_official/status/2125862131279290568",
+  "source_type": "公式",
+  "facts": [
+   "【ミリオン】コトブキヤ秋葉原館にて「MILLIONSTARS 2026⇒2027 大忘年会×新年会 in KOTOBUKIY@」開催決定‼✨  #idolmaster https://idolmaster-official.jp/news/01_20447"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202611270225-grok-210",
+  "companion_of": "sched-2026-12-26-million-kotobukiya-year-end-2026-開幕",
+  "src_dedup_key": "millionstars-2026-2027-in-kotobukiy-1-26"
+ },
+ {
+  "id": "sched-2026-12-26-sidemf-nfes-wanna-step-in-sidem-1-25-開始",
+  "dedup_key": "sidemf-nfes-wanna-step-in-sidem-1-25",
+  "brand": "sidem",
+  "subject": "冬馬のバターチキンカレーパン出張販売所 出店初日",
+  "kind": "開始",
+  "note": "ホクト文化ホール正面入り口横で10:00～17:00(予定)に購入できる",
+  "reserved_on": "2026-11-27",
+  "occurs_on": "2026-12-26",
+  "title": "【SideMF@NFES】 ～Wanna step in～  長野公演に「冬馬のバターチキンカレーパン出張販売所」出店決定！！ #SideM",
+  "url": "https://x.com/imas_official/status/2125540006739800300",
+  "source_type": "公式",
+  "facts": [
+   "【SideMF@NFES】 ～Wanna step in～  長野公演に「冬馬のバターチキンカレーパン出張販売所」出店決定！！ #SideM #SideMFANFES_WSI #idolmaster https://idolmaster-official.jp/news/01_20438"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202611270225-grok-219"
+ },
+ {
+  "id": "sched-2026-12-26-sidemf-nfes-wanna-step-in-sidem-1-25-開始-src1",
+  "dedup_key": "sidemf-nfes-wanna-step-in-sidem-1-25",
+  "brand": "sidem",
+  "subject": "冬馬のバターチキンカレーパン出張販売所 出店初日",
+  "kind": "開始",
+  "note": "ホクト文化ホール正面入り口横で10:00～17:00(予定)に購入できる",
+  "reserved_on": "2026-11-27",
+  "occurs_on": "2026-12-26",
+  "title": "【SideMF@NFES】 ～Wanna step in～  長野公演に「冬馬のバターチキンカレーパン出張販売所」出店決定！！ #SideM",
+  "url": "https://idolmaster-official.jp/news/01_20438",
+  "source_type": "公式",
+  "facts": [
+   "【SideMF@NFES】 ～Wanna step in～ 長野公演に「冬馬のバターチキンカレーパン出張販売所」出店決定！！ #SideM #SideMFANFES_WSI #idolmaster https://idolmaster-official.jp/news/01_20438",
+   "エンゲージメント: 低",
+   "「冬馬のバターチキンカレーパン出張販売所」は2026年12月26日・27日にホクト文化ホール正面入り口横で出店し、両日とも営業時間は10:00～17:00（予定）。"
+  ],
+  "via": "grok",
+  "verify": "unconfirmed",
+  "link_from": "https://x.com/imas_official/status/2125540006739800300",
+  "src_candidate_id": "202611270225-grok-128",
+  "companion_of": "sched-2026-12-26-sidemf-nfes-wanna-step-in-sidem-1-25-開始",
+  "src_dedup_key": "sidemf-nfes-wanna-step-in-sidem-1-25"
  }
 ]

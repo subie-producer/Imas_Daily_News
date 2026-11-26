@@ -859,5 +859,28 @@
   "verify": "confirmed",
   "deadline": "2026-12-08",
   "src_candidate_id": "202611260224-grok-45"
+ },
+ {
+  "id": "sched-2026-12-08-shiny-story-ketsujitsu-2026-終了",
+  "dedup_key": "shiny-story-ketsujitsu-2026",
+  "brand": "shiny",
+  "subject": "「結実、の先に」復刻 終了日",
+  "kind": "終了",
+  "note": "本日11:59でイベント終了。最後に読める日",
+  "reserved_on": "2026-11-27",
+  "occurs_on": "2026-12-08",
+  "title": "シャニマス「結実、の先に」復刻開催",
+  "url": "https://x.com/imassc_official/status/2125470034705146122",
+  "source_type": "公式",
+  "facts": [
+   "シナリオイベント「結実、の先に」を復刻開催。",
+   "開催期間：2026年11月27日～2026年12月8日11:59（予定）。",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "event_date": "2026-11-27",
+  "deadline": "2026-12-08",
+  "src_candidate_id": "202611270225-grok-62"
  }
 ]

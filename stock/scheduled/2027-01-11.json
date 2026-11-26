@@ -924,5 +924,54 @@
   "deadline": "2027-01-11",
   "link_from": "https://x.com/Noel_angelos/status/2122692123422249183",
   "src_candidate_id": "202611180226-grok-48"
+ },
+ {
+  "id": "sched-2027-01-11-million-kotobukiya-year-end-2026-終了",
+  "dedup_key": "million-kotobukiya-year-end-2026",
+  "brand": "million",
+  "subject": "MILLIONSTARS 2026⇒2027 大忘年会×新年会 in KOTOBUKIY@ 最終日",
+  "kind": "終了",
+  "note": "コトブキヤ秋葉原館で催事を見に行ける最終日",
+  "reserved_on": "2026-11-27",
+  "occurs_on": "2027-01-11",
+  "title": "MILLIONSTARS 2026⇒2027 大忘年会×新年会 in KOTOBUKIY@",
+  "url": "https://idolmaster-official.jp/news/01_20447",
+  "source_type": "公式",
+  "facts": [
+   "開催場所▶コトブキヤ秋葉原館 5Fイベントフロア「コトブキヤベース・アキバ」",
+   "開催期間▶2026年12月26日（土）～2027年1月11日（月・祝）",
+   "ミリオンスターズのアイドルたちが「忘年会」と「新年会」テーマのパーティードレスに身を包んで登場",
+   "詳細は下記のイベント特設ページにて後日発表",
+   "エンゲージメント: 中",
+   "【ミリオン】コトブキヤ秋葉原館にて「MILLIONSTARS 2026⇒2027 大忘年会×新年会 in KOTOBUKIY@」開催決定‼✨ #idolmaster https://idolmaster-official.jp/news/01_20447",
+   "エンゲージメント: 低"
+  ],
+  "via": "watch",
+  "verify": "unconfirmed",
+  "event_date": "2026-12-26",
+  "deadline": "2027-01-11",
+  "link_from": "https://x.com/imas_official/status/2125862131279290568",
+  "src_candidate_id": "202611261836-watch-7"
+ },
+ {
+  "id": "sched-2027-01-11-million-kotobukiya-year-end-2026-終了-src1",
+  "dedup_key": "million-kotobukiya-year-end-2026",
+  "brand": "million",
+  "subject": "MILLIONSTARS 2026⇒2027 大忘年会×新年会 in KOTOBUKIY@ 最終日",
+  "kind": "終了",
+  "note": "コトブキヤ秋葉原館で催事を見に行ける最終日",
+  "reserved_on": "2026-11-27",
+  "occurs_on": "2027-01-11",
+  "title": "【ミリオン】コトブキヤ秋葉原館にて「MILLIONSTARS 2026⇒2027 大忘年会×新年会 in KOTOBUKIY@」開催決定‼✨",
+  "url": "https://x.com/imas_official/status/2125862131279290568",
+  "source_type": "公式",
+  "facts": [
+   "【ミリオン】コトブキヤ秋葉原館にて「MILLIONSTARS 2026⇒2027 大忘年会×新年会 in KOTOBUKIY@」開催決定‼✨  #idolmaster https://idolmaster-official.jp/news/01_20447"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202611270225-grok-210",
+  "companion_of": "sched-2027-01-11-million-kotobukiya-year-end-2026-終了",
+  "src_dedup_key": "millionstars-2026-2027-in-kotobukiy-1-26"
  }
 ]

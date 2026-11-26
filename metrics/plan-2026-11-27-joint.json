@@ -1,0 +1,236 @@
+{
+ "decisions": {
+  "sidem-shiny-sparkle-showdown": {
+   "action": "article",
+   "angle": "SideM×シャニマス「SPARKLE SHOWDOWN」の新合同曲「NAME US ZENITH!」MV公開と、現地チケット2次先行の29日締切",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "先行の締切は2日後で当日のトリガー内。MV公開が新しい事実"
+  },
+  "cg-million-clash-match-2027": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "deremilli-official-goods-presale-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公演情報は既報。新しいのはグッズ事前二次販売なので同じ記事に統合"
+  },
+  "sidem-wanna-step-in-performance-duration-2026": {
+   "action": "article",
+   "angle": "SideM「Wanna step in」の公演時間は約180分の予定(状況により前後)と公式Q&Aで案内",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "過去の記事に公演時間の記載なし"
+  },
+  "clash-match-cardfolio-premium-pack-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "deremilli-official-goods-presale-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ ASOBI STORE 受注・同じ12/6締切のため、グッズ事前二次販売の記事に統合"
+  },
+  "deremiri-clash-match-warmup-stream-2026": {
+   "action": "article",
+   "angle": "CLASH M@TCH!!のオリジナルのぼりプロデュース権が受付開始。77,000円、デザイン提出は12月20日23:59まで",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "既報は12月上旬開始予定・価格未定。価格・締切・場内のみなどが新事実。のぼり告知の別の主題を統合"
+  },
+  "deremilli-official-goods-presale-2026": {
+   "action": "article",
+   "angle": "CLASH M@TCH!!の公式グッズ事前二次販売が開始。12月6日まで受注、カードフォリオ プレミアムパックも登場",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "グッズ・カードフォリオ・公演情報の主題を統合(素材5件)。のぼりとは読者の行動が別"
+  },
+  "tours-momoko-halloween-community-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "tours-allnet-maintenance-remedy-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じメンテ補填施策。12月の再実施日程は終了日の記事に含める"
+  },
+  "deremilli-original-banner-2027": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "deremiri-clash-match-warmup-stream-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じのぼりプロデュース権の公式X告知"
+  },
+  "cardfolio-clash-match-pack-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "deremilli-official-goods-presale-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "カードフォリオ プレミアムパックの公式X告知。グッズ記事に統合"
+  },
+  "imas-year-end-survey-2026": {
+   "action": "article",
+   "angle": "アイマス年末感謝祭の事前アンケートは11月30日23:59まで、あと3日",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(締切前)。締切が3日以内"
+  },
+  "tours-allnet-maintenance-remedy-2026": {
+   "action": "article",
+   "angle": "ツアマスのハロウィンコミュは本日25:59、ログボは23:59が最終日。中断した桃子誕生日コミュは12月2日、ハロウィンコミュは12月3日〜9日に再実施",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(終了)。桃子誕生日コミュの再実施日程(12/2、YouTube公開12/2〜8)は既報の「12月初旬」より具体的な新情報"
+  },
+  "765-961-xr-live-2027": {
+   "action": "article",
+   "angle": "765×961 xRライブの当選者入金は11月30日23:59まで、あと3日",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(締切前)。入金期間は既報だが締切が3日以内"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "joint-sidem-shiny-sparkle-showdown",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "SideM×シャニマス「SPARKLE SHOWDOWN」の新合同曲「NAME US ZENITH!」MV公開と、現地チケット2次先行の29日締切",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "sidem-shiny-sparkle-showdown",
+    "candidate_ids": [
+     "202611260732-explore-11"
+    ]
+   },
+   {
+    "slug": "joint-sidem-wanna-step-in-performance-duration-2026",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "SideM「Wanna step in」の公演時間は約180分の予定(状況により前後)と公式Q&Aで案内",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "sidem-wanna-step-in-performance-duration-2026",
+    "candidate_ids": [
+     "202611261836-explore-28"
+    ]
+   },
+   {
+    "slug": "joint-deremiri-clash-match-warmup-stream-2026",
+    "brand": "joint",
+    "rank": "medium",
+    "angle": "CLASH M@TCH!!のオリジナルのぼりプロデュース権が受付開始。77,000円、デザイン提出は12月20日23:59まで",
+    "purpose": "新情報",
+    "lead_score": 30,
+    "dedup_key": "deremiri-clash-match-warmup-stream-2026",
+    "candidate_ids": [
+     "202611270225-grok-39",
+     "202611270225-grok-164",
+     "202611270225-grok-174"
+    ]
+   },
+   {
+    "slug": "joint-deremilli-official-goods-presale-2026",
+    "brand": "joint",
+    "rank": "medium",
+    "angle": "CLASH M@TCH!!の公式グッズ事前二次販売が開始。12月6日まで受注、カードフォリオ プレミアムパックも登場",
+    "purpose": "新情報",
+    "lead_score": 60,
+    "dedup_key": "deremilli-official-goods-presale-2026",
+    "candidate_ids": [
+     "202611270225-grok-41",
+     "202611261836-watch-10",
+     "202611270225-grok-205",
+     "202611262334-explore-17",
+     "202611270225-grok-176"
+    ]
+   },
+   {
+    "slug": "joint-imas-year-end-survey-2026",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "アイマス年末感謝祭の事前アンケートは11月30日23:59まで、あと3日",
+    "purpose": "期日の知らせ",
+    "lead_score": 15,
+    "dedup_key": "imas-year-end-survey-2026",
+    "candidate_ids": [
+     "sched-2026-11-27-imas-year-end-survey-2026-締切前",
+     "sched-2026-11-27-imas-year-end-survey-2026-締切前-src1"
+    ]
+   },
+   {
+    "slug": "joint-tours-allnet-maintenance-remedy-2026",
+    "brand": "joint",
+    "rank": "medium",
+    "angle": "ツアマスのハロウィンコミュは本日25:59、ログボは23:59が最終日。中断した桃子誕生日コミュは12月2日、ハロウィンコミュは12月3日〜9日に再実施",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "tours-allnet-maintenance-remedy-2026",
+    "candidate_ids": [
+     "sched-2026-11-27-tours-allnet-maintenance-remedy-2026-終了",
+     "sched-2026-11-27-tours-allnet-maintenance-remedy-2026-終了-src1",
+     "202611270225-grok-107"
+    ]
+   },
+   {
+    "slug": "joint-765-961-xr-live-2027",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "765×961 xRライブの当選者入金は11月30日23:59まで、あと3日",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "765-961-xr-live-2027",
+    "candidate_ids": [
+     "sched-2026-11-27-765-961-xr-live-2027-締切前",
+     "sched-2026-11-27-765-961-xr-live-2027-締切前-src1"
+    ]
+   }
+  ],
+  "dropped": [],
+  "cross_brand": []
+ }
+}

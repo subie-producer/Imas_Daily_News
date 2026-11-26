@@ -495,3 +495,8 @@
   subject: はんげつであえたら会場オリジナルCD第2弾
   watch: 発売日・購入方法などの詳細(「詳細は後日お知らせ」とされた。判明次第 triggers へ)
   added_on: '2026-11-25'
+- dedup_key: sidem-cardfolio-voice-edition-2027
+  brand: sidem
+  subject: カードフォリオ VOICE EDITION SideMver.
+  watch: 「商品の詳細は後日発表予定」とされた価格・仕様などの詳細(判明次第 triggers へ)
+  added_on: '2026-11-27'

@@ -1,0 +1,134 @@
+{
+ "shiny-sweets-paradise-goods-online-2026": {
+  "title": "スイパラショップ通販で11/25夜〜26朝の注文に処理遅延、配送が遅れる可能性の案内",
+  "stage": "執筆で見送り",
+  "why": "NOT_NEWS 公式の販売ページでは商品6点が引き続き掲載されていますが、通販開始と販売期間は既報です。注文処理遅延と配送遅延の案内は現在のページから削除されており、解消したとは確認できません。新たに伝えられる事実を確かめられないため、記事化を見送ります。",
+  "candidate_ids": [
+   "update-f5ee3ec34f85",
+   "sched-2026-11-25-shiny-sweets-paradise-goods-online-2026-開始"
+  ]
+ },
+ "shiny-shiny-competition-2026-11": {
+  "title": "シャニソン「シャイニーコンペティション」は明日28日20:59まで、結果発表は29日12:00から",
+  "stage": "執筆で見送り",
+  "why": "NO_PRIMARY_SOURCE シャニソンのイベント告知を確認できる公式・準公式または報道の出典に届きませんでした。読めた素材は二次情報で、公式告知との照合ができないため見送ります。",
+  "candidate_ids": [
+   "202611260224-explore-5"
+  ]
+ },
+ "shiny-party-november-2026": {
+  "title": "「シャイニーパーティ in November」のアイテム受取・交換期限は本日11:59",
+  "stage": "執筆で見送り",
+  "why": "NO_PRIMARY_SOURCE アイテムの受取・交換期限が11月27日11時59分であることは二次情報のページで確認できましたが、公式出典では確認できませんでした。公式出典の投稿はイベント開催期間と報酬を案内しているものの、この期限には触れていません。",
+  "candidate_ids": [
+   "sched-2026-11-27-shiny-party-november-2026-締切",
+   "sched-2026-11-27-shiny-party-november-2026-締切-src1"
+  ]
+ },
+ "shiny-prelude-collection-chiyuki-2026-11": {
+  "title": "桑山千雪のプレリュードコレクションとミッションは本日11:59(予定)で終了",
+  "stage": "執筆で見送り",
+  "why": "SOURCE_MISMATCH 素材で11月27日11:59までとする開催期間は、取得できた公式X投稿では確認できませんでした。二次情報の素材も開催期間を裏付ける原本として確認できず、記事の軸となる期日を確かめられません。",
+  "candidate_ids": [
+   "sched-2026-11-27-shiny-prelude-collection-chiyuki-2026-11-終了",
+   "sched-2026-11-27-shiny-prelude-collection-chiyuki-2026-11-終了-src1",
+   "sched-2026-11-27-shiny-prelude-collection-chiyuki-2026-11-終了-src2",
+   "sched-2026-11-27-shiny-prelude-collection-chiyuki-2026-11-終了-src3"
+  ]
+ },
+ "cg-onmyoji-kyomafu-goods-2027": {
+  "title": "京まふで先行販売された陰陽師衣装グッズ(全8人)が2027年2月下旬に一般発売",
+  "stage": "執筆で見送り",
+  "why": "NO_PRIMARY_SOURCE 二次情報の記事では、京まふ先行グッズの2027年2月下旬発売と予約受付を確認できましたが、一般発売を告知する公式・準公式の発表または報道は確認できませんでした。販売元のAnime Store.JPの商品ページは取得時にAccess Deni",
+  "candidate_ids": [
+   "202611270225-explore-2"
+  ]
+ },
+ "cg-cinderella-fes-blanc-2026-11": {
+  "title": "デレステのシンデレラフェス ブラン・ノワールとプレミアムオーディションガシャは11月30日23時59分まであと3日",
+  "stage": "執筆で見送り",
+  "why": "NO_PRIMARY_SOURCE 2026年11月24日から30日までのシンデレラフェス ブラン・ノワールとプレミアムオーディションガシャの開催期間は二次情報で確認できましたが、今回の開催を確認できる公式・準公式または報道の出典に届きませんでした。",
+  "candidate_ids": [
+   "sched-2026-11-27-cg-cinderella-fes-blanc-2026-11-締切前",
+   "sched-2026-11-27-cg-cinderella-fes-blanc-2026-11-締切前-src1",
+   "sched-2026-11-27-cg-cinderella-fes-blanc-2026-11-締切前-src2",
+   "sched-2026-11-27-cg-cinderella-fes-blanc-2026-11-締切前-src3",
+   "sched-2026-11-27-cg-premium-audition-blanc-2026-11-締切前",
+   "sched-2026-11-27-cg-premium-audition-blanc-2026-11-締切前-src1",
+   "sched-2026-11-27-cg-premium-audition-blanc-2026-11-締切前-src2",
+   "sched-2026-11-27-cg-premium-audition-blanc-2026-11-締切前-src3"
+  ]
+ },
+ "dsva-letora-birthday-online-live-archive-2026": {
+  "title": "レトラ誕生日ボイス再販、公演アンケートも実施",
+  "stage": "書き直しで見送り",
+  "why": "NOT_NEWS 指摘I1のとおり、記事の中核となるアーカイブチケット販売とバースデー記念ボイス販売は既報の内容です。発行日時点の新しい話題として成立する材料は、公演アンケートの案内と「再販」の表現に限られるため、記事を取り下げます。",
+  "candidate_ids": [
+   "202611270225-grok-101"
+  ]
+ },
+ "gaku-mission-pass-2026-11": {
+  "title": "学マス11月パス、12月1日4:59まで",
+  "stage": "書き直しで見送り",
+  "why": "NOT_NEWS 既報と同じ内容の再掲で新しい事実がなく、締切も3日以内に迫っていないため、記事として成立しません。",
+  "candidate_ids": [
+   "sched-2026-11-27-gaku-mission-pass-2026-11-締切前",
+   "sched-2026-11-27-gaku-mission-pass-2026-11-締切前-src1",
+   "sched-2026-11-27-gaku-mission-pass-2026-11-締切前-src2",
+   "sched-2026-11-27-gaku-mission-pass-2026-11-締切前-src3",
+   "sched-2026-11-27-gaku-mission-pass-2026-11-締切前-src4",
+   "sched-2026-11-27-gaku-mission-pass-2026-11-締切前-src5",
+   "sched-2026-11-27-gaku-mission-pass-2026-11-締切前-src6",
+   "sched-2026-11-27-gaku-mission-pass-2026-11-締切前-src7",
+   "sched-2026-11-27-gaku-mission-pass-2026-11-締切前-src8"
+  ]
+ },
+ "general-live-theater-performance-08-13th-anniversary-2026": {
+  "title": "ミリオンライブ、LTP08の13周年をファンが祝う",
+  "stage": "書き直しで見送り",
+  "why": "NOT_NEWS 素材は2013年発売作品の13周年を紹介する投稿のみで、2026年11月27日号の発行時点で新しく発表・発生した出来事を確認できません。記事として掲載できる当日の話題がないため、掲載を見送ります。",
+  "candidate_ids": [
+   "202611270225-grok-52"
+  ]
+ },
+ "shiny-3rd-anniversary-jewel-sale-2026": {
+  "title": "シャニソン3周年ジュエル、販売は11月30日まで",
+  "stage": "書き直しで見送り",
+  "why": "OTHER 同じ3周年記念ジュエル販売の知らせをshiny-ops-roundupが伝えており、校閲指摘に従ってこの記事を紙面から外します。",
+  "candidate_ids": [
+   "sched-2026-11-27-shiny-3rd-anniversary-jewel-sale-2026-締切前",
+   "sched-2026-11-27-shiny-song-3rd-jewel-sale-2026-締切前",
+   "sched-2026-11-27-shiny-song-3rd-jewel-sale-2026-締切前-src1",
+   "sched-2026-11-27-shiny-song-3rd-jewel-sale-2026-締切前-src2",
+   "sched-2026-11-27-shiny-song-3rd-jewel-sale-2026-締切前-src3",
+   "sched-2026-11-27-shiny-song-3rd-jewel-sale-2026-締切前-src4",
+   "sched-2026-11-27-shiny-song-3rd-jewel-sale-2026-締切前-src5",
+   "sched-2026-11-27-shiny-song-3rd-jewel-sale-2026-締切前-src6"
+  ],
+  "settled": {
+   "rule": "P1",
+   "dup_of": [
+    "shiny-ops-roundup"
+   ]
+  }
+ },
+ "dsva-valiv-machine-party-result-2026-11-25": {
+  "title": "ヴイアライヴ『Machine Party』、上水流宇宙が勝利",
+  "stage": "校閲ブロック",
+  "why": "R11 R11: 記事の中核は、11月25日20時に終わった『Machine Party』配信の結果（上水流宇宙が勝ったこと）の報告で、発行日（11月27日）時点で新しく起きたことではない。結果の投稿は11/25 22:15に出ており、終了済みの話",
+  "candidate_ids": [
+   "202611270225-grok-104",
+   "202611270225-grok-103",
+   "202611270225-grok-202",
+   "202611270225-grok-204"
+  ]
+ },
+ "sidem-mfes-label-cans-2026": {
+  "title": "SideM Mフェス、アニメイト5店舗で缶販売",
+  "stage": "校閲ブロック",
+  "why": "R1 見出しが「アニメイト5店舗で缶販売」と読め、ラベル缶の販売店がアニメイト5店舗だけに見える。根拠の素材では、5店舗は12/8〜12/24に販売と案内された店舗で、マップにはほかに「... 他 57 個」の販売場所が載っている。販売店の総数を",
+  "candidate_ids": [
+   "update-af444172d6e0"
+  ]
+ }
+}

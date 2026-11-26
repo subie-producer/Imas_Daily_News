@@ -1,0 +1,26 @@
+{
+ "decisions": {
+  "noctchill-live-2027": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "重複",
+   "note": "新情報は公式グッズ事前販売開始とマルチカラーライトの納品形態のみで、シャニマス面の shiny-noctchill-goods-presale-2027 が記事化済み。公演日程・会場・先行抽選は2026-11-08号の既報どおり。"
+  }
+ },
+ "plan": {
+  "articles": [],
+  "dropped": [
+   {
+    "dedup_key": "noctchill-live-2027",
+    "reason": "重複",
+    "note": "新情報は公式グッズ事前販売開始とマルチカラーライトの納品形態のみで、シャニマス面の shiny-noctchill-goods-presale-2027 が記事化済み。公演日程・会場・先行抽選は2026-11-08号の既報どおり。"
+   }
+  ],
+  "cross_brand": []
+ }
+}

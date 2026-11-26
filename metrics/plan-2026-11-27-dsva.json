@@ -1,0 +1,303 @@
+{
+ "decisions": {
+  "tomori-manaka-kpf2026-stage": {
+   "action": "article",
+   "angle": "KPF2026公式ページに朝の整列案内と入場規制の可能性の告知が加わった。灯里愛夏の出演日(29日)を含む開催が明日から",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "変更前の行が無いため、執筆時に公式ページで案内内容を確認すること"
+  },
+  "dsva-sukusuku-radio-start-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11月25日号と同内容。初回は30日で今日のトリガーなし"
+  },
+  "dsva-kaik-voice-17-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "dsva-situation-voice-2026-11",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ商品(第十七弾)。どちらも既報"
+  },
+  "letora-datsumo-salon-stream-2026-11-26": {
+   "action": "roundup",
+   "angle": "vα-livの配信・動画まとめ(レトラの脱毛サロン配信、新宝島ダンス、愛夏とののちゃんの深夜雑談)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "valiv-activity-survey-2026-11": {
+   "action": "article",
+   "angle": "ヴイアライヴの11月度プロデューサー向け活動アンケートは12月2日23:59まで、3人の11月の活動への感想と意見を募集",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "letora-birthday-online-live-archive-2026": {
+   "action": "article",
+   "angle": "レトラ誕生日ライブのバースデー記念ボイス再販と公演アンケート実施の案内(アーカイブ券は12月13日まで)",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "チケット期限などは既報(11月26日号)。新規はボイス再販とアンケートのみ"
+  },
+  "dsva-situation-voice-2026-11": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11月26日号に価格・配役・期間が全て掲載済み。新事実なし"
+  },
+  "valiv-machine-party-2026-11-25": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "valiv-machine-party-result-2026-11-25",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ配信。開催告知は既報"
+  },
+  "valiv-machine-party-result-2026-11-25": {
+   "action": "article",
+   "angle": "『Machine Party』3人コラボ配信のデスゲームは上水流宇宙が生き残って勝利",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "各視点のYouTubeリンクを併記"
+  },
+  "cosmo-shintakarajima-dance-2026-11-26": {
+   "action": "roundup",
+   "angle": "vα-livの配信・動画まとめ(上水流宇宙『新宝島』ダンス動画、上水流チアダンス部参加)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "manaka-nonoha-chat-2026-11-27": {
+   "action": "roundup",
+   "angle": "vα-livの配信・動画まとめ(今夜22時、灯里愛夏とののちゃんの深夜雑談、お便り募集)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "cosmo-yes-tokyo-dance-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11月23日号の既報と同じ動画。新事実・トリガーなし"
+  },
+  "manaka-birthday-live-setlist-2026": {
+   "action": "article",
+   "angle": "灯里愛夏バースデーライブ延期公演の公式アンケートは11月30日23:59まで、あと3日",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "回答にはバンダイナムコIDとアソビストア無料会員登録が必要"
+  },
+  "cosmo-ace-combat-zero-2026": {
+   "action": "article",
+   "angle": "上水流宇宙『ACE COMBAT ZERO』の初回配信は今夜21時開始",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "valiv-online-1on1-14-2026": {
+   "action": "article",
+   "angle": "第14回オンライン1on1の抽選当落発表が本日。灯里愛夏は12月19日、宇宙とレトラは27日開催",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 35,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "追加販売・一般販売の予定は無い"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "dsva-tomori-manaka-kpf2026-stage",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "KPF2026公式ページに朝の整列案内と入場規制の可能性の告知が加わった。灯里愛夏の出演日(29日)を含む開催が明日から",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "tomori-manaka-kpf2026-stage",
+    "candidate_ids": [
+     "update-471bfd0b0a8a"
+    ]
+   },
+   {
+    "slug": "dsva-valiv-activity-survey-2026-11",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "ヴイアライヴの11月度プロデューサー向け活動アンケートは12月2日23:59まで、3人の11月の活動への感想と意見を募集",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "valiv-activity-survey-2026-11",
+    "candidate_ids": [
+     "202611270225-grok-100"
+    ]
+   },
+   {
+    "slug": "dsva-letora-birthday-online-live-archive-2026",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "レトラ誕生日ライブのバースデー記念ボイス再販と公演アンケート実施の案内(アーカイブ券は12月13日まで)",
+    "purpose": "新情報",
+    "lead_score": 5,
+    "dedup_key": "letora-birthday-online-live-archive-2026",
+    "candidate_ids": [
+     "202611270225-grok-101"
+    ]
+   },
+   {
+    "slug": "dsva-valiv-machine-party-result-2026-11-25",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "『Machine Party』3人コラボ配信のデスゲームは上水流宇宙が生き残って勝利",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "valiv-machine-party-result-2026-11-25",
+    "candidate_ids": [
+     "202611270225-grok-104",
+     "202611270225-grok-103",
+     "202611270225-grok-202",
+     "202611270225-grok-204"
+    ]
+   },
+   {
+    "slug": "dsva-manaka-birthday-live-setlist-2026",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "灯里愛夏バースデーライブ延期公演の公式アンケートは11月30日23:59まで、あと3日",
+    "purpose": "期日の知らせ",
+    "lead_score": 15,
+    "dedup_key": "manaka-birthday-live-setlist-2026",
+    "candidate_ids": [
+     "sched-2026-11-27-manaka-birthday-live-setlist-2026-締切前",
+     "sched-2026-11-27-manaka-birthday-live-setlist-2026-締切前-src1"
+    ]
+   },
+   {
+    "slug": "dsva-cosmo-ace-combat-zero-2026",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "上水流宇宙『ACE COMBAT ZERO』の初回配信は今夜21時開始",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "cosmo-ace-combat-zero-2026",
+    "candidate_ids": [
+     "sched-2026-11-27-cosmo-ace-combat-zero-2026-開始"
+    ]
+   },
+   {
+    "slug": "dsva-valiv-online-1on1-14-2026",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "第14回オンライン1on1の抽選当落発表が本日。灯里愛夏は12月19日、宇宙とレトラは27日開催",
+    "purpose": "期日の知らせ",
+    "lead_score": 35,
+    "dedup_key": "valiv-online-1on1-14-2026",
+    "candidate_ids": [
+     "sched-2026-11-27-valiv-online-1on1-14-2026-結果",
+     "sched-2026-11-27-valiv-online-1on1-14-2026-結果-src1",
+     "sched-2026-11-27-valiv-online-1on1-14-2026-結果-src2",
+     "sched-2026-11-27-valiv-online-1on1-14-2026-結果-src3"
+    ]
+   },
+   {
+    "slug": "dsva-ops-roundup",
+    "brand": "dsva",
+    "rank": "roundup",
+    "angle": "vα-livの配信・動画まとめ(レトラの脱毛サロン配信、新宝島ダンス、愛夏とののちゃんの深夜雑談)",
+    "lead_score": 0,
+    "dedup_key": "letora-datsumo-salon-stream-2026-11-26",
+    "candidate_ids": [
+     "202611270225-explore-17",
+     "202611270225-grok-99",
+     "202611270225-grok-200",
+     "202611270225-grok-105",
+     "202611270225-grok-201",
+     "202611270225-grok-106"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "dsva-sukusuku-radio-start-2026",
+    "reason": "既報",
+    "note": "11月25日号と同内容。初回は30日で今日のトリガーなし"
+   },
+   {
+    "dedup_key": "dsva-situation-voice-2026-11",
+    "reason": "既報",
+    "note": "11月26日号に価格・配役・期間が全て掲載済み。新事実なし"
+   },
+   {
+    "dedup_key": "cosmo-yes-tokyo-dance-2026",
+    "reason": "既報",
+    "note": "11月23日号の既報と同じ動画。新事実・トリガーなし"
+   },
+   {
+    "dedup_key": "dsva-kaik-voice-17-2026",
+    "reason": "既報",
+    "note": "不採用の主題 dsva-situation-voice-2026-11 へ統合: 11月26日号に価格・配役・期間が全て掲載済み。新事実なし"
+   }
+  ],
+  "cross_brand": []
+ }
+}

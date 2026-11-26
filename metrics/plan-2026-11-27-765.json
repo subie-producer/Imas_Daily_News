@@ -1,0 +1,42 @@
+{
+ "decisions": {
+  "765as-never-end-idol-bluray-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/22・11/25の記事に特装版の数量限定・メイキング・フォトブック・A4クリアファイルまで全て既出。新事実・当日トリガーなし。"
+  },
+  "765-hangetsu-cd-vol-2-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/25「はんげつであえたら会場CD第2弾、全7曲収録」と同内容(First Stage・キミはメロディ・全7曲・詳細は後日)。新事実なし。"
+  }
+ },
+ "plan": {
+  "articles": [],
+  "dropped": [
+   {
+    "dedup_key": "765as-never-end-idol-bluray-2026",
+    "reason": "既報",
+    "note": "11/22・11/25の記事に特装版の数量限定・メイキング・フォトブック・A4クリアファイルまで全て既出。新事実・当日トリガーなし。"
+   },
+   {
+    "dedup_key": "765-hangetsu-cd-vol-2-2026",
+    "reason": "既報",
+    "note": "11/25「はんげつであえたら会場CD第2弾、全7曲収録」と同内容(First Stage・キミはメロディ・全7曲・詳細は後日)。新事実なし。"
+   }
+  ],
+  "cross_brand": []
+ }
+}

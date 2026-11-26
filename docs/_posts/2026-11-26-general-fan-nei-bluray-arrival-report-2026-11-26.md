@@ -2,7 +2,7 @@
 slug: general-fan-nei-bluray-arrival-report-2026-11-26
 edition: "2026-11-26"
 brand: general
-src: 未確認
+src: ファン
 rank: culture
 corrected: false
 corrections: []
@@ -24,22 +24,22 @@ tags:
 sources:
 - label: X投稿「NEVER END IDOL Blu-rayアソビストア特装版の到着」(11月26日)
   url: https://x.com/yamayama6059/status/2125637167095665041
-  type: 未確認
+  type: ファン
 - label: X投稿「NEVER END IDOL Blu-ray、シンデレラ15周年グッズ、天海春香フィギュアの到着」(11月26日)
   url: https://x.com/ringoapple43/status/2125624437949313355
-  type: 未確認
+  type: ファン
 - label: X投稿「Blu-ray特装版の到着とDAY1公演の思い出」(11月26日)
   url: https://x.com/USAMIN_0824/status/2125623130731532535
-  type: 未確認
+  type: ファン
 - label: X投稿「Blu-rayでDAY1を見ながら楽曲を振り返る投稿」(11月25日)
   url: https://x.com/Hichan_603/status/2125596651192746201
-  type: 未確認
+  type: ファン
 - label: X投稿「765PRO ALLSTARS出演のシャニソンMV」(11月25日)
   url: https://x.com/HDMI3777/status/2125600020712103990
   type: ファン
 - label: X投稿「星井美希の誕生日タグ付きツアマスライブフォト」(11月26日)
   url: https://x.com/499/status/2125618256157503741
-  type: 未確認
+  type: ファン
 - label: アイドルマスター TOURS「ライブフォト：→→→SP」
   url: https://idolmaster-tours-w.bn-am.net/live-showcase/view/f1996769-872d-4320-b04c-6b661bcfd31c/202611231815_01
   type: 公式

@@ -288,6 +288,7 @@ party_paths:
   - item.rakuten.co.jp/f272078-takatsuki        # 高槻市ふるさと納税
 
 party_domains:
+  - minatomirai21.com     # 合議で追加: 運営は地区の社団法人(会員は地権者・施設)。ちびぐるみツリー催しの主催発表を掲載
   - cheering-ad.jeki.co.jp # 合議で追加: 応援広告の掲出を取り次ぐ事務局の自社サイトで、広告まとめを発信
   - cosmoworld.jp         # 合議で追加: 会場の公式サイトで、コスモクロック21の作品コラボ演出を告知
   - google.com            # 合議で追加: SideM Mフェス缶の販売店マップを掲載。作成者は表示になし
@@ -724,6 +725,11 @@ x_accounts:
     - imasnews765
     - zutapoke
   ファン:
+    - yamayama6059        # 合議で追加: 個人アカウントの、BD到着や思い出の投稿
+    - ringoapple43        # 合議で追加: 個人アカウントの、BD到着や思い出の投稿
+    - USAMIN_0824         # 合議で追加: 個人アカウントの、BD特装版到着と公演の感想
+    - Hichan_603          # 合議で追加: 個人アカウントの、BD視聴と楽曲振り返りの投稿
+    - "499"               # 合議で追加: 個人アカウントの、ライブBD到着や思い出の投稿
     - tettikuwahata       # 合議で追加: 個人によるツアーファイナル公演の感想・披露曲投稿
     - skypenguins         # 合議で追加: 個人によるコール参加の観察・感想の発信
     - sizuku_rouge        # 合議で追加: 個人による15周年公演向けネイル制作の発信、事業者の根拠なし
@@ -1310,6 +1316,7 @@ x_accounts:
 # tiktok.com/@…、ch.nicovideo.jp/…、manga.nicovideo.jp/comic/… など。ドメイン(プラットフォーム)では
 # 決まらず、そのパスの主体で決まる。合議が足す(classify_sources.add_paths)。
 path_types:
+  booth.pm/ja/items/9197830: 公式               # 機械で追加: ショップ va-liv.booth.pm
   booth.pm/ja/items/8568512: 公式               # 機械で追加: ショップ va-liv.booth.pm
   note.com/thinkaigyo: ファン                     # 合議で追加: 個人アカウントの学マス標ファイナル参加記(ファンレポート)
   note.com/atto_hk: ファン                        # 合議で追加: 個人のnoteで、学園アイマス公演の現地観戦レポートを投稿
@@ -1379,6 +1386,7 @@ x_posts:
 
 # --- リンク元から引き継いだ種別(リンク先1つずつ。キーは pipelib.link_key)。合議がリンク元の告知と関係していると確かめたものだけ(classify_sources.inherit_from_links)。リンク先そのものの種別より強いときだけ効く ---
 link_types:
+  x.com/i/status/2125167554976993287: 公式      # リンク元から引き継ぎ(合議で関係を確認): https://x.com/valiv_official/status/2125175395918225812(公式)。同じ番組「ヴイアラジオ_卵」の初回配信日を知らせる告知のページ
   youtube.com/watch?v=J_ClG0QRp_I: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/shinyc_official/status/2125086350613622980(公式)。告知の11/24放送回の視聴URLで、同番組の#410の動画
   youtube.com/watch?v=ulOmfWv7abE: 準公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/SideM_lantis/status/2125109660122485052(準公式)。投稿のCafé Parade「Chocolate Special」2DMV修正版
   youtube.com/watch?v=nGVfqEK4xIg: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://idolmaster-official.jp/news/01_20193(公式)。本文が延期公演の開催と冒頭無料枠URLを案内。相手は主題をボイスのみと見た

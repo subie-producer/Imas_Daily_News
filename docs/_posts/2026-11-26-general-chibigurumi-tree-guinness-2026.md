@@ -2,7 +2,7 @@
 slug: general-chibigurumi-tree-guinness-2026
 edition: "2026-11-26"
 brand: general
-src: 未確認
+src: 当事者
 rank: small
 corrected: false
 corrections: []
@@ -24,7 +24,7 @@ sources:
   type: 当事者
 - label: 横浜みなとみらい21公式ウェブサイト「みんなの“好き”が1,000体集まったら、世界一のツリーになった！ ～目指せ「ちびぐるみ」ギネス世界記録™～」(2026年11月19日)
   url: https://minatomirai21.com/campaign/158198
-  type: 未確認
+  type: 当事者
 event_date: "2026-11-25"
 title_fact_ids:
 - F1

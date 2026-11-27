@@ -257,5 +257,22 @@
    ],
    "duration_s": 3837
   }
+ ],
+ "recheck": [
+  {
+   "at": "2026-11-28T07:39:09+09:00",
+   "cap": 69,
+   "parallel": 5,
+   "runs_per_day": 4,
+   "cycle_days": 1.97,
+   "oldest_age_h": 552.0,
+   "targets": 545,
+   "chosen": 69,
+   "tried": 69,
+   "checked": 65,
+   "changed": 46,
+   "elapsed_s": 120,
+   "cycle_days_actual": 2.1
+  }
  ]
 }

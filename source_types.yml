@@ -725,6 +725,19 @@ x_accounts:
     - imasnews765
     - zutapoke
   ファン:
+    - yana__Mas12         # 合議で追加: 個人による劇場版の鑑賞感想と応援上映の報告
+    - shishishishio_      # 合議で追加: 北千住ハンズでのSideMアイドルとの交流を伝える個人の活動
+    - pikadaripenta       # 合議で追加: 公式グッズに対する個人のファン反応の投稿
+    - pe21414             # 合議で追加: 西武園ゆうえんちコラボへの個人の参加報告
+    - noboru_SKMC         # 合議で追加: 個人によるメモリアルコミュの鑑賞配信
+    - masaya_miyazaki     # 合議で追加: 個人名義の投稿アカウント。制作者と示す材料はなく、個人はファン
+    - makoko_kko          # 合議で追加: 発表に対する個人のファン反応の投稿
+    - m08_dream           # 合議で追加: 個人が作る痛バッグの発信。ファンの二次創作活動
+    - kyamiday            # 合議で追加: 北村想楽の誕生日ガシャを紹介する個人の発信と見る
+    - alice_187_M         # 合議で追加: 個人の劇場版2週目鑑賞の感想投稿
+    - RioPenP             # 合議で追加: 劇場版の描写への個人の反応投稿
+    - Anya_DereCheer1     # 合議で追加: 個人名のアカウントによる15th PARTY会場への応援の投稿
+    - 2tLWs27J8z4YXus     # 合議で追加: 個人の劇場版鑑賞の感想投稿。個人アカウントはファン
     - sakasaki24          # 合議で追加: 劇場版SideMの鑑賞と特典交換。個人の発信
     - roco11th            # 合議で追加: ロコ・日菜子の応援広告企画。個人の進行報告
     - aqua_mrine          # 合議で追加: 劇場版SideMの鑑賞を振り返る個人投稿
@@ -1175,6 +1188,9 @@ x_accounts:
     - procinen1
     - yutaleP
   当事者:
+    - namco_nagoyaeki     # 合議で追加: namco名古屋駅前店(ゲームセンター)の催し告知で、販売・会場側の一次発信
+    - Taito_Olcrane       # 合議で追加: タイクレ(タイトーのクレーンゲーム)での景品展開の告知
+    - CAPCOM_CAPTORE      # 合議で追加: ほわぬいの取り扱い先の店舗・ゲームセンター側の告知
     - zukoo_am            # 合議で追加: 中谷育PVの制作プロダクションとしての実績発信
     - sidem_goods         # 合議で追加: SideMコラボグッズの告知。販売側の発信と見る
     - bushi_store         # 合議で追加: BCRストアのポップアップ販売。販売元の告知
@@ -1399,6 +1415,11 @@ x_posts:
 
 # --- リンク元から引き継いだ種別(リンク先1つずつ。キーは pipelib.link_key)。合議がリンク元の告知と関係していると確かめたものだけ(classify_sources.inherit_from_links)。リンク先そのものの種別より強いときだけ効く ---
 link_types:
+  www.segaluckykujionline.net/kuji/imas-cinderella_vol2: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://idolmaster-official.jp/news/01_20457(公式)。くじ発売の告知。リンク先は同じくじの販売ページ
+  shop.asobistore.jp/feature/cg_15th_fyo: 公式  # リンク元から引き継ぎ(合議で関係を確認): https://idolmaster-official.jp/news/01_20435(公式)。PARTY開催記念グッズ告知の特設サイトと同じページ
+  asobiticket2.asobistore.jp/receptions/bebd8d4b-9a4f-4c9f-b224-35d1808ddc84: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://idolmaster-official.jp/news/01_20333(公式)。告知のオケコン一般先行受付と同じ受付URLのページ
+  shop.asobistore.jp/products/detail/251528-00-00-d_lmd_0: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://x.com/gkmas_official/status/2126303778483634634(公式)。告知と同名の特装盤の購入ページ。相手の別公演説は誤り
+  asobistage.asobistore.jp/event/cinderella_15th_party/ticket: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://idolmaster-official.jp/news/01_20334(公式)。告知と同じ15th PARTYの配信チケット購入・視聴ページ
   www.tiktok.com/@sidem_315production/video/7712315049544617237?is_from_webapp=1&sender_device=pc: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://x.com/SideM_official/status/2125840727175299505(公式)。同じ「JOKER↗オールマイティ」のハイパーわちゃver.動画
   www.tiktok.com/@sidem_315production/video/7712313987714665748?is_from_webapp=1&sender_device=pc: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://x.com/SideM_official/status/2125805495026086249(公式)。同じ「JOKER↗オールマイティ」のハイパーマジver.動画
   nicovideo.jp/watch/lv351633226: 準公式          # リンク元から引き継ぎ(合議で関係を確認): https://x.com/SideM_lantis/status/2125786646075371646(準公式)。告知と同じ315プロNight!の11/20放送回の生放送ページ

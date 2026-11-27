@@ -1,0 +1,82 @@
+{
+ "cg-onmyoji-kyomafu-goods-2027": {
+  "title": "京まふ2026などで先行販売された陰陽師衣装の描き下ろしグッズ(8人)が、2027年2月下旬に一般発売される。",
+  "stage": "執筆で見送り",
+  "why": "NO_PRIMARY_SOURCE 素材の二次情報ページでは2027年2月下旬の一般発売とアニストでの予約を確認できましたが、これらを告知する公式・準公式の出典を確認できませんでした。コンテンツシード運営のTHEキャラ本店ページは京まふ2026などでの販売商品を掲載しています",
+  "candidate_ids": [
+   "202611270225-explore-2"
+  ]
+ },
+ "cg-cinderella-fes-blanc-2026-11": {
+  "title": "デレステのシンデレラフェス ブランは11月30日23時59分まで。セレクトピックアップで、プラチナガシャのSSレア提供割合が2倍。",
+  "stage": "執筆で見送り",
+  "why": "NO_PRIMARY_SOURCE 素材は二次情報で、開催期間とプラチナオーディションガシャのSSレア提供割合2倍を今回の開催について確認できる公式・準公式または報道の出典に届きませんでした。確認できた公式ページは過年度のお知らせで、今回の開催期間を裏付けません。",
+  "candidate_ids": [
+   "sched-2026-11-27-cg-cinderella-fes-blanc-2026-11-締切前",
+   "sched-2026-11-27-cg-cinderella-fes-blanc-2026-11-締切前-src1",
+   "sched-2026-11-27-cg-cinderella-fes-blanc-2026-11-締切前-src2",
+   "sched-2026-11-27-cg-cinderella-fes-blanc-2026-11-締切前-src3"
+  ]
+ },
+ "dsva-valiv-machine-party-2026-11-25": {
+  "title": "ヴイアライヴ『Machine Party』宇宙が生き残る",
+  "stage": "書き直しで見送り",
+  "why": "NOT_NEWS 記事の中核は11月25日に終了した配信と同日22:15の勝利報告で、11月28日号の発行時点に新たな出来事や発表がありません。未発表・続報待ち、延期・中止、rank roundup/cultureにも当たらず、記事として成立しないため紙面から外します。",
+  "candidate_ids": [
+   "202611270225-grok-103",
+   "202611270225-grok-202",
+   "202611270225-grok-204",
+   "202611270225-grok-104"
+  ]
+ },
+ "general-noctchill-goods-fan-reactions-2026": {
+  "title": "ノクチル新作グッズに「飾りたい」の声",
+  "stage": "書き直しで見送り",
+  "why": "NOT_NEWS 公式グッズ事前販売の内容は前号で報じられており、今号で加わるファンの反応は低エンゲージメントの個人投稿1件で、当日の新しい出来事にも当たらないため、記事として掲載できません。",
+  "candidate_ids": [
+   "202611280237-grok-84",
+   "202611270225-grok-52"
+  ]
+ },
+ "cg-apple-of-my-ai-goods-2026": {
+  "title": "アイドルマスター シンデレラガールズ「ATHOME xR LIVE Apple of my",
+  "stage": "校閲ブロック",
+  "why": "R16 見出し（frontmatter の title）が途中で切れている。「」が閉じておらず、「Apple of my」の後に「アイ」と「公式グッズ事前販売」が無い。読者には何の催しのグッズかも、どの販売の話かも分からない（R16 の機械的に壊れ",
+  "candidate_ids": [
+   "202611280237-grok-151",
+   "202611280237-grok-156"
+  ]
+ },
+ "cg-memory-pict-9th-february-2026": {
+  "title": "シンデレラガールズ「Memory Pict. 9th Pict. February」受注は",
+  "stage": "校閲ブロック",
+  "why": "R16 見出し（title）が「受注は」で途切れている。述語がなく、機械的に切れたテキストになっている（R16）。本文の1文目は「受注は2026年11月17日（火）から11月29日（日）まで。」で続くため、見出しだけが切れている。",
+  "candidate_ids": [
+   "202611280237-grok-30",
+   "202611280237-grok-150",
+   "202611280237-grok-157"
+  ]
+ },
+ "cg-popn-toybox-revival-ticket-2026": {
+  "title": "「Pop'n ToyBox!! もういっかい！」現地チケット一般先着販売は12月5日まで",
+  "stage": "校閲ブロック",
+  "why": "R2 verified_facts N2 の text に「2026年12月13日（土）」とあるが、出典(ASOBI TICKET 受付ページ)の公演一覧は【第四公演】を2026/12/13 (日) としており、曜日が合わない(2026年12月1",
+  "candidate_ids": [
+   "202611280237-grok-27"
+  ]
+ },
+ "sidem-itsunui-pattythree-2026": {
+  "title": "SideM「一緒に暮らすぬい」予約開始",
+  "stage": "校閲ブロック",
+  "why": "P1 P1: 同じ知らせが2本ある。pattythreeの「一緒に暮らすぬい」の予約開始(11月27日・pattythree公式通販)を、シャニマス版(shiny-itsunui-pattythree-2026)とSideM版の2本で伝えている。",
+  "candidate_ids": [
+   "202611271836-watch-9"
+  ],
+  "settled": {
+   "rule": "P1",
+   "dup_of": [
+    "shiny-itsunui-pattythree-2026"
+   ]
+  }
+ }
+}

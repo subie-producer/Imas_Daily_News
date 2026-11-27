@@ -185,5 +185,122 @@
   "src_candidate_id": "sched-2026-11-19-shiny-karaoke-tetsujin-concept-room-2026-開幕-src1",
   "companion_of": "sched-2026-12-31-shiny-karaoke-tetsujin-refrac7ions-2026-終了",
   "src_dedup_key": "shiny-karaoke-tetsujin-panels-2026"
+ },
+ {
+  "id": "sched-2026-12-31-shiny-winter-campaign-free-gacha-2026-終了",
+  "dedup_key": "shiny-winter-campaign-free-gacha-2026",
+  "brand": "shiny",
+  "subject": "ウィンターキャンペーン2026 無料ガシャ終了",
+  "kind": "終了",
+  "note": "無料ガシャを引ける最終日",
+  "reserved_on": "2026-11-28",
+  "occurs_on": "2026-12-31",
+  "title": "ウィンターキャンペーン2026無料ガシャ",
+  "url": "https://x.com/imassc_official/status/2126254957297082827",
+  "source_type": "公式",
+  "facts": [
+   "12月31日まで各種無料ガシャを開催。",
+   "全期間累計で最大370連を無料で引ける。",
+   "エンゲージメント: 高"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "deadline": "2026-12-31",
+  "src_candidate_id": "202611280237-grok-63"
+ },
+ {
+  "id": "sched-2026-12-31-shiny-winter-campaign-free-gacha-2026-終了-src1",
+  "dedup_key": "shiny-winter-campaign-free-gacha-2026",
+  "brand": "shiny",
+  "subject": "ウィンターキャンペーン2026 無料ガシャ終了",
+  "kind": "終了",
+  "note": "無料ガシャを引ける最終日",
+  "reserved_on": "2026-11-28",
+  "occurs_on": "2026-12-31",
+  "title": "ウィンターキャンペーン2026第1弾",
+  "url": "https://x.com/imassc_official/status/2126239857936683255",
+  "source_type": "公式",
+  "facts": [
+   "第1弾を開始。",
+   "期間中、トレーニング超成功、アイドル信頼度UP、ファン感謝祭編ではづき出現率UP。",
+   "お得なパッケージやガシャを販売。",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202611280237-grok-80",
+  "companion_of": "sched-2026-12-31-shiny-winter-campaign-free-gacha-2026-終了",
+  "src_dedup_key": "shiny-winter-campaign-wave1-2026"
+ },
+ {
+  "id": "sched-2026-12-31-shiny-winter-campaign-free-gacha-2026-終了-src2",
+  "dedup_key": "shiny-winter-campaign-free-gacha-2026",
+  "brand": "shiny",
+  "subject": "ウィンターキャンペーン2026 無料ガシャ終了",
+  "kind": "終了",
+  "note": "無料ガシャを引ける最終日",
+  "reserved_on": "2026-11-28",
+  "occurs_on": "2026-12-31",
+  "title": "ウィンターCP第1弾限定入り1日1回10連無料ガシャ",
+  "url": "https://x.com/imassc_official/status/2126254709484765429",
+  "source_type": "公式",
+  "facts": [
+   "「ウィンターキャンペーン2026 第1弾 限定入り1日1回10連無料ガシャ」を開始。",
+   "期間限定アイドルを含む。",
+   "期間中最大120連無料。",
+   "エンゲージメント: 高"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202611280237-grok-66",
+  "companion_of": "sched-2026-12-31-shiny-winter-campaign-free-gacha-2026-終了",
+  "src_dedup_key": "shiny-winter-1day-free-gacha-2026"
+ },
+ {
+  "id": "sched-2026-12-31-shiny-winter-campaign-free-gacha-2026-終了-src3",
+  "dedup_key": "shiny-winter-campaign-free-gacha-2026",
+  "brand": "shiny",
+  "subject": "ウィンターキャンペーン2026 無料ガシャ終了",
+  "kind": "終了",
+  "note": "無料ガシャを引ける最終日",
+  "reserved_on": "2026-11-28",
+  "occurs_on": "2026-12-31",
+  "title": "ウィンターキャンペーン2026限定入りスタンプガシャ",
+  "url": "https://x.com/imassc_official/status/2126241115644797414",
+  "source_type": "公式",
+  "facts": [
+   "期間限定アイドルを含み、無償ジュエルでも引ける。",
+   "スタンプ1個でSSR以上確定、3個で限定入りSSR以上確定、5個で限定SSR確定、10個でパラコレSSR確定のガシャチケットを獲得。",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202611280237-grok-75",
+  "companion_of": "sched-2026-12-31-shiny-winter-campaign-free-gacha-2026-終了",
+  "src_dedup_key": "shiny-winter-stamp-gacha-2026"
+ },
+ {
+  "id": "sched-2026-12-31-shiny-winter-campaign-free-gacha-2026-終了-src4",
+  "dedup_key": "shiny-winter-campaign-free-gacha-2026",
+  "brand": "shiny",
+  "subject": "ウィンターキャンペーン2026 無料ガシャ終了",
+  "kind": "終了",
+  "note": "無料ガシャを引ける最終日",
+  "reserved_on": "2026-11-28",
+  "occurs_on": "2026-12-31",
+  "title": "ウィンターCP2026特別ミッション第1弾",
+  "url": "https://x.com/imassc_official/status/2126240109305688223",
+  "source_type": "公式",
+  "facts": [
+   "「ウィンターキャンペーン2026特別ミッション第1弾」を開始。",
+   "達成報酬に「ウィンターCP2026特別ミッション第1弾限定入りアンティーカSSR確定ガシャチケット」などがある。",
+   "エンゲージメント: 中",
+   "言及アイドル: 月岡恋鐘、田中摩美々、白瀬咲耶、三峰結華、幽谷霧子"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202611280237-grok-79",
+  "companion_of": "sched-2026-12-31-shiny-winter-campaign-free-gacha-2026-終了",
+  "src_dedup_key": "shiny-winter-missions-wave1-2026"
  }
 ]

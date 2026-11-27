@@ -1,0 +1,765 @@
+{
+ "decisions": {
+  "sidem-console-cfirst-visual-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/27号でC.FIRST新ビジュアル、11/26号で合同曲MVを記事化済み"
+  },
+  "sidem-refrain-atrium-2dmv-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "出典はYouTube一覧の表示変化のみで読者に関わる変更なし"
+  },
+  "sidem-producer-meeting-2027": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "変更後の行はナビ類で、画像差し替えの対象が特定できない。新事実・当日トリガーなし"
+  },
+  "sidem-cardfolio-voice-edition-2027": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/27号で記事化済み、新事実なし"
+  },
+  "sidem-fbfes-movie-goods-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "出典の変化はログイン等の表示のみ"
+  },
+  "sidem-fbfes-wanna-step-in-2026-nagano-venue-sales": {
+   "action": "article",
+   "angle": "長野公演(12月26・27日)の会場物販の時間帯と、26日朝の整理券(事前申込・抽選)など入場条件が公開された。",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "sidem-itsunui-pattythree-2026": {
+   "action": "article",
+   "angle": "pattythreeの「一緒に暮らすぬい」SideM版(全3種)の予約が11月27日に始まった。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "sidem-kuppyramune-collab-2027": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/27号で記事化済み。店頭受取予約の締切12/2は3日以内に入っていない"
+  },
+  "sidem-2dmv-goods-vol4-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/26・11/27号で記事化済み。締切12/13はまだ先"
+  },
+  "sidem-2dmv-goods-vol4": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "同じ第4弾の別URL。11/26・11/27号で記事化済み"
+  },
+  "sidem-nippan-bookstore-campaign-2027": {
+   "action": "article",
+   "angle": "SideMと日販の書店コラボキャンペーンが2027年1月14日〜2月7日に全国の書店で開かれ、AltessimoとS.E.Mがアンバサダーを務める。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "出典が二次情報のため執筆・校閲で確認"
+  },
+  "sidem-m-fes-2026-winter-wonderland-shop": {
+   "action": "article",
+   "angle": "12月1日開始の315!!!SHOP「Mフェス2026」の店舗利用案内として、1会計あたりの購入制限と全49種などの商品構成が公開された。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "11/22号の本文と重なる点は執筆時に除く"
+  },
+  "sidem-idolish7-special-story-2026": {
+   "action": "article",
+   "angle": "SideMとアイドリッシュセブンのコラボスペシャルストーリーが、12月1日21時からアイマスchで公開される。",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "sidem-kitamura-sora-birthday-2026": {
+   "action": "article",
+   "angle": "11月28日は北村想楽の誕生日で、公式が祝福メッセージを出し、ゲームでは当日3回限定のバースデーガシャが開かれている。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ガシャの出典は未確認のため執筆・校閲で確認"
+  },
+  "sidem-315-episode-one-scene-update-2026-11-28": {
+   "action": "roundup",
+   "angle": "定常運営まとめ:「アイドルたちの1コマ」更新など進行中の運営情報",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "面で3件以上に足りなければ small の通常記事にする"
+  },
+  "sidem-315pronight-december-personalities-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/21号で12月パーソナリティと投稿募集を記事化済み"
+  },
+  "sidem-315pronight-mofumofuen-2026-11-27": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "放送は11月27日21時で終了済み"
+  },
+  "sidem-wgf-amber-color-oasis-seiji-version-2026": {
+   "action": "article",
+   "angle": "劇場版SideMのFRAME「Amber Color Oasis」の信玄誠司・木村龍・握野英雄の各verがTikTokで公開された。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ryu・hideoを統合"
+  },
+  "sidem-wgf-amber-color-oasis-ryu-version-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-wgf-amber-color-oasis-seiji-version-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "sidem-wsi-story-altessimo-daregatameni-2026": {
+   "action": "article",
+   "angle": "長野公演連動ストーリー、Altessimo「誰がために歌はある」とJupiter「Growing Gravity」が12月10日に公開・販売開始される。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "Jupiter分を統合"
+  },
+  "sidem-wsi-story-jupiter-growing-gravity-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-wsi-story-altessimo-daregatameni-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "sidem-wgf-second-week-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/27号「劇場版、2週目映像と特典開始」で記事化済み"
+  },
+  "sidem-wgf-movie-goods-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/21号で記事化済み。締切12/6は3日以内に入っていない"
+  },
+  "sidem-joker-allmighty-hyper-magic-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/27号で2本とも記事化済み"
+  },
+  "sidem-wgf-amber-color-oasis-hideo-version-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-wgf-amber-color-oasis-seiji-version-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "fan-shibuya-aivision-sora-birthday-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "同人・ファン主催",
+   "note": "ファン主催の誕生祭広告"
+  },
+  "sidem-howanuivol6-capcom-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-howanui-vol6-vol7-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "sidem-howanuivol7-capcom-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-howanui-vol6-vol7-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "sidem-howanuivol6-7-taito-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-howanui-vol6-vol7-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "fan-hokuto-senju-hands-sidem-visit-2026-11-27": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿"
+  },
+  "fan-sidem-wgf-second-week-cheering-screening-2026-11-27": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿。ファン面は general 面の担当"
+  },
+  "fan-wgf-self-drink-viewing-2026-11-27": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿"
+  },
+  "fan-sidem-idolish7-collab-reactions-2026-11-28": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿。コラボ本体は sidem-idolish7-special-story-2026 で記事化"
+  },
+  "fan-sidem-seibuen-collab-visit-2026-11-27": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿"
+  },
+  "sidem-cho-retro-rose-party-campaign-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-seibuen-retro-party-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "サイン入りブロマイド抽選(12/13締切)を西武園の記事に統合"
+  },
+  "fan-wgf-stage-side-monitor-reaction-2026-11-27": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿"
+  },
+  "fan-wgf-second-week-colleagues-2026-11-27": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿"
+  },
+  "sidem-wsi-name-us-zenith-mv-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/26号「8ユニット合同曲MV公開」で記事化済み。声優の紹介投稿が出典"
+  },
+  "sidem-happy-birthday-soragaku-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-kitamura-sora-birthday-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "sidem-mfes-315pronight-public-recording-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/21号で出張版公開録音の出演者と募集を記事化済み"
+  },
+  "sidem-mfes-label-cans-2026": {
+   "action": "article",
+   "angle": "Mフェスのラベル缶の販売場所マップに、アニメイト札幌・広島など店舗の12月8日〜24日限定販売の表記が加わった。全国発売は12月1日。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "出典の変更が読者に関わるため採用。carried"
+  },
+  "sidem-howanuivol7-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-howanui-vol6-vol7-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "sidem-seibuen-retro-party-2026": {
+   "action": "article",
+   "angle": "西武園ゆうえんちのSideMコラボ「超!!レトローズパーティ」は12月1日まで。残り3日で、キャストサイン入りブロマイドの抽選(12月13日締切)も続く。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "cho-retro-rose-party-campaign を統合"
+  },
+  "sidem-howanui-vol6-vol7-2026": {
+   "action": "article",
+   "angle": "SideMほわぬいvol.6・vol.7が本日11月28日に登場し、カプとれ・タイクレなどのオンラインクレーンで挑戦できる。",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 40,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "vol6/vol7のカプとれ・タイクレ・予約キーを統合"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "sidem-fbfes-wanna-step-in-2026-nagano-venue-sales",
+    "brand": "sidem",
+    "rank": "medium",
+    "angle": "長野公演(12月26・27日)の会場物販の時間帯と、26日朝の整理券(事前申込・抽選)など入場条件が公開された。",
+    "purpose": "新情報",
+    "lead_score": 25,
+    "dedup_key": "sidem-fbfes-wanna-step-in-2026-nagano-venue-sales",
+    "candidate_ids": [
+     "202611271836-watch-4"
+    ]
+   },
+   {
+    "slug": "sidem-itsunui-pattythree-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "pattythreeの「一緒に暮らすぬい」SideM版(全3種)の予約が11月27日に始まった。",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "sidem-itsunui-pattythree-2026",
+    "candidate_ids": [
+     "202611271836-watch-9"
+    ]
+   },
+   {
+    "slug": "sidem-nippan-bookstore-campaign-2027",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "SideMと日販の書店コラボキャンペーンが2027年1月14日〜2月7日に全国の書店で開かれ、AltessimoとS.E.Mがアンバサダーを務める。",
+    "purpose": "新情報",
+    "lead_score": 25,
+    "dedup_key": "sidem-nippan-bookstore-campaign-2027",
+    "candidate_ids": [
+     "202611272335-explore-17"
+    ]
+   },
+   {
+    "slug": "sidem-m-fes-2026-winter-wonderland-shop",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "12月1日開始の315!!!SHOP「Mフェス2026」の店舗利用案内として、1会計あたりの購入制限と全49種などの商品構成が公開された。",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "sidem-m-fes-2026-winter-wonderland-shop",
+    "candidate_ids": [
+     "202611272335-explore-19"
+    ]
+   },
+   {
+    "slug": "sidem-idolish7-special-story-2026",
+    "brand": "sidem",
+    "rank": "medium",
+    "angle": "SideMとアイドリッシュセブンのコラボスペシャルストーリーが、12月1日21時からアイマスchで公開される。",
+    "purpose": "新情報",
+    "lead_score": 60,
+    "dedup_key": "sidem-idolish7-special-story-2026",
+    "candidate_ids": [
+     "202611280237-explore-14",
+     "202611280237-grok-89"
+    ]
+   },
+   {
+    "slug": "sidem-kitamura-sora-birthday-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "11月28日は北村想楽の誕生日で、公式が祝福メッセージを出し、ゲームでは当日3回限定のバースデーガシャが開かれている。",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "sidem-kitamura-sora-birthday-2026",
+    "candidate_ids": [
+     "202611280237-grok-85",
+     "202611280237-grok-112"
+    ]
+   },
+   {
+    "slug": "sidem-wgf-amber-color-oasis-seiji-version-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "劇場版SideMのFRAME「Amber Color Oasis」の信玄誠司・木村龍・握野英雄の各verがTikTokで公開された。",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "sidem-wgf-amber-color-oasis-seiji-version-2026",
+    "candidate_ids": [
+     "202611280237-grok-91",
+     "202611280237-grok-92",
+     "202611280237-grok-98"
+    ]
+   },
+   {
+    "slug": "sidem-wsi-story-altessimo-daregatameni-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "長野公演連動ストーリー、Altessimo「誰がために歌はある」とJupiter「Growing Gravity」が12月10日に公開・販売開始される。",
+    "purpose": "新情報",
+    "lead_score": 25,
+    "dedup_key": "sidem-wsi-story-altessimo-daregatameni-2026",
+    "candidate_ids": [
+     "202611280237-grok-93",
+     "202611280237-grok-94"
+    ]
+   },
+   {
+    "slug": "sidem-mfes-label-cans-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "Mフェスのラベル缶の販売場所マップに、アニメイト札幌・広島など店舗の12月8日〜24日限定販売の表記が加わった。全国発売は12月1日。",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "sidem-mfes-label-cans-2026",
+    "candidate_ids": [
+     "update-af444172d6e0"
+    ]
+   },
+   {
+    "slug": "sidem-seibuen-retro-party-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "西武園ゆうえんちのSideMコラボ「超!!レトローズパーティ」は12月1日まで。残り3日で、キャストサイン入りブロマイドの抽選(12月13日締切)も続く。",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "sidem-seibuen-retro-party-2026",
+    "candidate_ids": [
+     "sched-2026-11-28-sidem-seibuen-retro-party-2026-締切前",
+     "202611280237-grok-108"
+    ]
+   },
+   {
+    "slug": "sidem-howanui-vol6-vol7-2026",
+    "brand": "sidem",
+    "rank": "medium",
+    "angle": "SideMほわぬいvol.6・vol.7が本日11月28日に登場し、カプとれ・タイクレなどのオンラインクレーンで挑戦できる。",
+    "purpose": "期日の知らせ",
+    "lead_score": 40,
+    "dedup_key": "sidem-howanui-vol6-vol7-2026",
+    "candidate_ids": [
+     "sched-2026-11-28-sidem-howanui-vol6-vol7-2026-発売",
+     "sched-2026-11-28-sidem-howanui-vol6-vol7-2026-発売-src1",
+     "202611280237-grok-100",
+     "202611280237-grok-101",
+     "202611280237-grok-102",
+     "sched-2026-11-28-sidem-howanuivol7-2026-発売",
+     "sched-2026-11-28-sidem-howanuivol7-2026-発売-src1"
+    ]
+   },
+   {
+    "slug": "sidem-315-episode-one-scene-update-2026-11-28",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "定常運営まとめ:「アイドルたちの1コマ」更新など進行中の運営情報",
+    "lead_score": 0,
+    "dedup_key": "sidem-315-episode-one-scene-update-2026-11-28",
+    "candidate_ids": [
+     "202611280237-grok-86"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "sidem-console-cfirst-visual-2026",
+    "reason": "既報",
+    "note": "11/27号でC.FIRST新ビジュアル、11/26号で合同曲MVを記事化済み"
+   },
+   {
+    "dedup_key": "sidem-refrain-atrium-2dmv-2026",
+    "reason": "既報",
+    "note": "出典はYouTube一覧の表示変化のみで読者に関わる変更なし"
+   },
+   {
+    "dedup_key": "sidem-producer-meeting-2027",
+    "reason": "既報",
+    "note": "変更後の行はナビ類で、画像差し替えの対象が特定できない。新事実・当日トリガーなし"
+   },
+   {
+    "dedup_key": "sidem-cardfolio-voice-edition-2027",
+    "reason": "既報",
+    "note": "11/27号で記事化済み、新事実なし"
+   },
+   {
+    "dedup_key": "sidem-fbfes-movie-goods-2026",
+    "reason": "既報",
+    "note": "出典の変化はログイン等の表示のみ"
+   },
+   {
+    "dedup_key": "sidem-kuppyramune-collab-2027",
+    "reason": "既報",
+    "note": "11/27号で記事化済み。店頭受取予約の締切12/2は3日以内に入っていない"
+   },
+   {
+    "dedup_key": "sidem-2dmv-goods-vol4-2026",
+    "reason": "既報",
+    "note": "11/26・11/27号で記事化済み。締切12/13はまだ先"
+   },
+   {
+    "dedup_key": "sidem-2dmv-goods-vol4",
+    "reason": "既報",
+    "note": "同じ第4弾の別URL。11/26・11/27号で記事化済み"
+   },
+   {
+    "dedup_key": "sidem-315pronight-december-personalities-2026",
+    "reason": "既報",
+    "note": "11/21号で12月パーソナリティと投稿募集を記事化済み"
+   },
+   {
+    "dedup_key": "sidem-315pronight-mofumofuen-2026-11-27",
+    "reason": "その他",
+    "note": "放送は11月27日21時で終了済み"
+   },
+   {
+    "dedup_key": "sidem-wgf-second-week-2026",
+    "reason": "既報",
+    "note": "11/27号「劇場版、2週目映像と特典開始」で記事化済み"
+   },
+   {
+    "dedup_key": "sidem-wgf-movie-goods-2026",
+    "reason": "既報",
+    "note": "11/21号で記事化済み。締切12/6は3日以内に入っていない"
+   },
+   {
+    "dedup_key": "sidem-joker-allmighty-hyper-magic-2026",
+    "reason": "既報",
+    "note": "11/27号で2本とも記事化済み"
+   },
+   {
+    "dedup_key": "fan-shibuya-aivision-sora-birthday-2026",
+    "reason": "同人・ファン主催",
+    "note": "ファン主催の誕生祭広告"
+   },
+   {
+    "dedup_key": "fan-hokuto-senju-hands-sidem-visit-2026-11-27",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿"
+   },
+   {
+    "dedup_key": "fan-sidem-wgf-second-week-cheering-screening-2026-11-27",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿。ファン面は general 面の担当"
+   },
+   {
+    "dedup_key": "fan-wgf-self-drink-viewing-2026-11-27",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿"
+   },
+   {
+    "dedup_key": "fan-sidem-idolish7-collab-reactions-2026-11-28",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿。コラボ本体は sidem-idolish7-special-story-2026 で記事化"
+   },
+   {
+    "dedup_key": "fan-sidem-seibuen-collab-visit-2026-11-27",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿"
+   },
+   {
+    "dedup_key": "fan-wgf-stage-side-monitor-reaction-2026-11-27",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿"
+   },
+   {
+    "dedup_key": "fan-wgf-second-week-colleagues-2026-11-27",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿"
+   },
+   {
+    "dedup_key": "sidem-wsi-name-us-zenith-mv-2026",
+    "reason": "既報",
+    "note": "11/26号「8ユニット合同曲MV公開」で記事化済み。声優の紹介投稿が出典"
+   },
+   {
+    "dedup_key": "sidem-mfes-315pronight-public-recording-2026",
+    "reason": "既報",
+    "note": "11/21号で出張版公開録音の出演者と募集を記事化済み"
+   }
+  ],
+  "cross_brand": []
+ }
+}

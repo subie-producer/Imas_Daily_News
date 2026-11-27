@@ -1,0 +1,164 @@
+{
+ "collect": [
+  {
+   "at": "2026-11-28T02:38:06+09:00",
+   "edition": "2026-11-28",
+   "started_at": "2026-11-28T02:00:21+09:00",
+   "trigger": "timer",
+   "watch": {
+    "stats": {
+     "imas-portal": {
+      "found": 24,
+      "pages": 2,
+      "new": 1,
+      "deferred": 0
+     },
+     "pylonport-sidem": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-shiny": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-million": {
+      "found": 8,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "lantis-shiny": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "lantis-sidem": {
+      "found": 5,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "columbia-imas": {
+      "found": 356,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "bnam-tours": {
+      "found": 70,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "imasnews765": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     }
+    },
+    "new": 1,
+    "facted": 1,
+    "deferred": 0,
+    "blocked": 0,
+    "unavailable": 0
+   },
+   "per_query": {
+    "explore:765as": 0,
+    "explore:cinderella": 4,
+    "explore:million": 8,
+    "explore:shiny": 1,
+    "explore:sidem": 3,
+    "explore:gakuen": 3,
+    "explore:dsva": 0,
+    "explore:joint-other": 2,
+    "explore:trend": 1,
+    "grok_week_searches": 471,
+    "grok:765as": 0,
+    "grok:cinderella": 27,
+    "grok:million": 6,
+    "grok:shiny": 38,
+    "grok:sidem": 24,
+    "grok:gakuen": 14,
+    "grok:dsva": 23,
+    "grok:joint-other": 34,
+    "grok:trend": 15,
+    "grok_searches:gaku": 10,
+    "grok_searches:shiny": 13,
+    "grok_searches:cg": 8,
+    "grok_searches:million": 6,
+    "grok_searches:sidem": 8,
+    "grok_searches:765": 18,
+    "grok_searches:joint": 8,
+    "grok_searches:general": 9,
+    "grok_searches:dsva": 7
+   },
+   "normalized": 205,
+   "added": 179,
+   "verify": {
+    "confirmed": 141,
+    "unconfirmed": 53,
+    "failed": 11
+   },
+   "duration_s": 2265
+  }
+ ],
+ "collect_required": [
+  {
+   "at": "2026-11-28T02:40:06+09:00",
+   "edition": "2026-11-28",
+   "started_at": "2026-11-28T02:00:21+09:00",
+   "trigger": "timer",
+   "reserve_s": 420,
+   "left_s": 415,
+   "elapsed_s": 122
+  }
+ ],
+ "compose": [
+  {
+   "at": "2026-11-28T04:04:18+09:00",
+   "edition": "2026-11-28",
+   "rounds": 6,
+   "approved": true,
+   "lint_green": true,
+   "planned": 67,
+   "written": 59,
+   "roundups": 2,
+   "dropped": 0,
+   "coverage": {
+    "subjects": 196,
+    "covered": 196,
+    "missing": 0,
+    "missing_keys": []
+   },
+   "dropped_by_review": [
+    "cg-apple-of-my-ai-goods-2026",
+    "cg-memory-pict-9th-february-2026",
+    "cg-popn-toybox-revival-ticket-2026",
+    "sidem-itsunui-pattythree-2026"
+   ],
+   "stages_min": {
+    "選定": 2.34701554775238,
+    "執筆": 22.931237816810608,
+    "出典の判定": 1.5237674156824748,
+    "組版": 1.2544801155726115,
+    "校閲": 0.7125497937202454,
+    "校閲1波": 0.7125497937202454
+   },
+   "target_min": 60,
+   "over_target": true,
+   "aborted": [
+    "cg-onmyoji-kyomafu-goods-2027",
+    "cg-cinderella-fes-blanc-2026-11",
+    "dsva-valiv-machine-party-2026-11-25",
+    "general-noctchill-goods-fan-reactions-2026"
+   ],
+   "duration_s": 3837
+  }
+ ]
+}

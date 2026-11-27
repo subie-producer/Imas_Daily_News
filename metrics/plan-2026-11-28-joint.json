@@ -1,0 +1,332 @@
+{
+ "decisions": {
+  "demirimi-clash-goods-preorder-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "出典ページは二次販売の内容に変わっただけで、11-27「グッズ事前二次販売を開始」で既報"
+  },
+  "deremiri-clash-match-warmup-stream-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "のぼりの場内掲出のみ・77,000円は11-27「のぼり受付開始」で既報。新事実なし"
+  },
+  "tours-allnet-maintenance-remedy-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "桃子誕生日コミュ12/2・ハロウィンコミュ12/3の再実施は11-27の記事で既報"
+  },
+  "clash-match-2027-asobistore-2jisenkou": {
+   "action": "article",
+   "angle": "CLASH M@TCH!!現地チケットのアソビストア一般会員2次先行(抽選)が11月27日に始まり、12月13日23時59分まで受け付ける。",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "2/27・28 IGアリーナ、一般指定席。公式X・告知の2主題を統合"
+  },
+  "deremilli-official-goods-presale-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-million-clash-cardfolio-mr-reveal-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "カードフォリオ発売概要は11-27に既報。MR公開の素材として統合"
+  },
+  "cg-million-clash-cardfolio-mr-reveal-2026": {
+   "action": "article",
+   "angle": "事前二次販売(12月6日まで)のカードフォリオ プレミアムパックで、MRに夢見りあむ・松田亜利沙のコラボビジュアルが公開された。",
+   "purpose": "新情報",
+   "rank": "large",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "スタジャンLサイズ(ML ver.)の寸法・素材も同じ二次販売の話題として統合。素材18件超"
+  },
+  "portal-attendance-compensation-completed-2026": {
+   "action": "article",
+   "angle": "アイマスポータルの緊急メンテナンス期間(10/21〜26)の出勤日数補填が完了した。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "対象は10/21 23:00までの登録・未退会の会員"
+  },
+  "rhythm-live-recording-p-station-nagoya-2026": {
+   "action": "article",
+   "angle": "RHYTHM LIVE FESTIVAL 2027の予選課題曲を遊べるリズムライブ記録会が、12月6日にPステ名古屋で追加開催される。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "12/6 15:00〜16:30"
+  },
+  "clash-match-ticket-general-member-2nd-advance-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "clash-match-2027-asobistore-2jisenkou",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ2次先行。公式Xの告知"
+  },
+  "momoko-birthday-page-and-title-2026": {
+   "action": "article",
+   "angle": "周防桃子のバースデーページが公開され、バースデーライブの称号が筐体ログインで獲得できる。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "称号は11/27から。コミュ再実施(12/2)は既報なので触れすぎない"
+  },
+  "tours-rhythm-live-festival-2027-preliminaries": {
+   "action": "article",
+   "angle": "ツアマスのRHYTHM LIVE FESTIVAL 2027予選ランキングが更新され、次回は12月4日、最終ランキングは12月11日12時ごろ公開予定。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "最終公開後、通過者らにマイページで最終参加意思確認を連絡"
+  },
+  "asobi-channel-service-ends-2027": {
+   "action": "article",
+   "angle": "ASOBI CHANNELが2027年3月31日23:59にサービス終了し、はばたきラジオステーションのアーカイブは公開終了、初星学園放送部はYouTubeで順次再公開される。",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 70,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "面でいちばん大きなニュース"
+  },
+  "clash-match-stadium-jacket-ml-l": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-million-clash-cardfolio-mr-reveal-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ事前二次販売(12/6まで)。Lサイズ寸法・素材は新情報として本文に入れる"
+  },
+  "cg-million-clash-match-ticket-2nd-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "clash-match-2027-asobistore-2jisenkou",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ2次先行の告知"
+  },
+  "prime-match-fes-2026": {
+   "action": "article",
+   "angle": "ツアマスの第1回プライムマッチフェスが開かれ、決勝マッチングでランクSSSの各グループ1位にカード風賞状が贈られる。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "実物の記念品。開催日程は素材の確認が必要"
+  },
+  "v-aliv-3rd-live-ticket-2026": {
+   "action": "article",
+   "angle": "vα-liv 3rdLIVE＆MEETINGの現地チケット最速先行の抽選結果が本日13時に発表され、当選者は12月2日23時59分までに入金する。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約。結果発表と入金期間は11-12の既報記事の本文による(facts欄には日付なし)"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "joint-clash-match-2027-asobistore-2jisenkou",
+    "brand": "joint",
+    "rank": "medium",
+    "angle": "CLASH M@TCH!!現地チケットのアソビストア一般会員2次先行(抽選)が11月27日に始まり、12月13日23時59分まで受け付ける。",
+    "purpose": "新情報",
+    "lead_score": 30,
+    "dedup_key": "clash-match-2027-asobistore-2jisenkou",
+    "candidate_ids": [
+     "202611271235-watch-0",
+     "202611271836-explore-31",
+     "202611280237-grok-136",
+     "202611280237-grok-153",
+     "202611280237-grok-163"
+    ]
+   },
+   {
+    "slug": "joint-cg-million-clash-cardfolio-mr-reveal-2026",
+    "brand": "joint",
+    "rank": "large",
+    "angle": "事前二次販売(12月6日まで)のカードフォリオ プレミアムパックで、MRに夢見りあむ・松田亜利沙のコラボビジュアルが公開された。",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "cg-million-clash-cardfolio-mr-reveal-2026",
+    "candidate_ids": [
+     "202611280237-grok-35",
+     "202611271836-explore-23",
+     "202611272335-explore-12",
+     "202611280237-grok-36",
+     "202611280237-grok-48",
+     "202611280237-grok-50",
+     "202611280237-grok-149",
+     "202611280237-grok-155",
+     "202611280237-grok-159",
+     "202611280237-grok-160",
+     "202611280237-grok-161",
+     "202611280237-grok-162",
+     "202611280237-grok-165",
+     "202611280237-grok-166",
+     "202611280237-grok-167",
+     "202611280237-grok-168",
+     "202611280237-grok-201",
+     "202611280237-grok-142"
+    ]
+   },
+   {
+    "slug": "joint-portal-attendance-compensation-completed-2026",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "アイマスポータルの緊急メンテナンス期間(10/21〜26)の出勤日数補填が完了した。",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "portal-attendance-compensation-completed-2026",
+    "candidate_ids": [
+     "202611280237-grok-132"
+    ]
+   },
+   {
+    "slug": "joint-rhythm-live-recording-p-station-nagoya-2026",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "RHYTHM LIVE FESTIVAL 2027の予選課題曲を遊べるリズムライブ記録会が、12月6日にPステ名古屋で追加開催される。",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "rhythm-live-recording-p-station-nagoya-2026",
+    "candidate_ids": [
+     "202611280237-grok-134"
+    ]
+   },
+   {
+    "slug": "joint-momoko-birthday-page-and-title-2026",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "周防桃子のバースデーページが公開され、バースデーライブの称号が筐体ログインで獲得できる。",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "momoko-birthday-page-and-title-2026",
+    "candidate_ids": [
+     "202611280237-grok-137"
+    ]
+   },
+   {
+    "slug": "joint-tours-rhythm-live-festival-2027-preliminaries",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "ツアマスのRHYTHM LIVE FESTIVAL 2027予選ランキングが更新され、次回は12月4日、最終ランキングは12月11日12時ごろ公開予定。",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "tours-rhythm-live-festival-2027-preliminaries",
+    "candidate_ids": [
+     "202611280237-grok-138"
+    ]
+   },
+   {
+    "slug": "joint-asobi-channel-service-ends-2027",
+    "brand": "joint",
+    "rank": "medium",
+    "angle": "ASOBI CHANNELが2027年3月31日23:59にサービス終了し、はばたきラジオステーションのアーカイブは公開終了、初星学園放送部はYouTubeで順次再公開される。",
+    "purpose": "新情報",
+    "lead_score": 70,
+    "dedup_key": "asobi-channel-service-ends-2027",
+    "candidate_ids": [
+     "202611280237-grok-139"
+    ]
+   },
+   {
+    "slug": "joint-prime-match-fes-2026",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "ツアマスの第1回プライムマッチフェスが開かれ、決勝マッチングでランクSSSの各グループ1位にカード風賞状が贈られる。",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "prime-match-fes-2026",
+    "candidate_ids": [
+     "202611280237-grok-200"
+    ]
+   },
+   {
+    "slug": "joint-v-aliv-3rd-live-ticket-2026",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "vα-liv 3rdLIVE＆MEETINGの現地チケット最速先行の抽選結果が本日13時に発表され、当選者は12月2日23時59分までに入金する。",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "v-aliv-3rd-live-ticket-2026",
+    "candidate_ids": [
+     "sched-2026-11-28-v-aliv-3rd-live-ticket-2026-結果",
+     "sched-2026-11-28-v-aliv-3rd-live-ticket-2026-結果-src1"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "demirimi-clash-goods-preorder-2026",
+    "reason": "既報",
+    "note": "出典ページは二次販売の内容に変わっただけで、11-27「グッズ事前二次販売を開始」で既報"
+   },
+   {
+    "dedup_key": "deremiri-clash-match-warmup-stream-2026",
+    "reason": "既報",
+    "note": "のぼりの場内掲出のみ・77,000円は11-27「のぼり受付開始」で既報。新事実なし"
+   },
+   {
+    "dedup_key": "tours-allnet-maintenance-remedy-2026",
+    "reason": "既報",
+    "note": "桃子誕生日コミュ12/2・ハロウィンコミュ12/3の再実施は11-27の記事で既報"
+   }
+  ],
+  "cross_brand": []
+ }
+}

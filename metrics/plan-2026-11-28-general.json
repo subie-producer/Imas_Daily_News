@@ -1,0 +1,79 @@
+{
+ "decisions": {
+  "asobi-channel-shutdown-2026": {
+   "action": "cross_brand",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "joint-asobi-channel-service-ends-2027",
+   "reason": "",
+   "note": "ASOBI CHANNEL終了は合同面が記事化済み"
+  },
+  "shinyradio-archive-end-2027": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "重複",
+   "note": "11/27号で記事化済み、かつ合同面の終了記事と同じ施策。新事実なし"
+  },
+  "general-noctchill-goods-fan-reactions-2026": {
+   "action": "article",
+   "angle": "noctchill公式グッズ(制服風ジャケット・ペンライト)の告知にファンが喜ぶ声と、LIVE THE@TER PERFORMANCE 08の13周年を祝う投稿をまとめる。",
+   "purpose": "新情報",
+   "rank": "culture",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "個人投稿は単体にせず、2件を文化面1本に束ねる。出典は未確認なので執筆・校閲で判断"
+  },
+  "live-theater-performance-08-13th-anniversary-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "general-noctchill-goods-fan-reactions-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "記念日の盛り上がりとして文化面の1本に統合"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "general-noctchill-goods-fan-reactions-2026",
+    "brand": "general",
+    "rank": "culture",
+    "angle": "noctchill公式グッズ(制服風ジャケット・ペンライト)の告知にファンが喜ぶ声と、LIVE THE@TER PERFORMANCE 08の13周年を祝う投稿をまとめる。",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "general-noctchill-goods-fan-reactions-2026",
+    "candidate_ids": [
+     "202611280237-grok-84",
+     "202611270225-grok-52"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "shinyradio-archive-end-2027",
+    "reason": "重複",
+    "note": "11/27号で記事化済み、かつ合同面の終了記事と同じ施策。新事実なし"
+   }
+  ],
+  "cross_brand": [
+   {
+    "slug": "joint-asobi-channel-service-ends-2027",
+    "dedup_key": "asobi-channel-shutdown-2026",
+    "note": "ASOBI CHANNEL終了は合同面が記事化済み"
+   }
+  ]
+ }
+}

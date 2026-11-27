@@ -206,5 +206,57 @@
   "src_candidate_id": "202611270225-grok-211",
   "companion_of": "sched-2027-03-31-shinyradio-archive-end-2027-終了",
   "src_dedup_key": "hbtk-asobi-channel-idolmas-1-26"
+ },
+ {
+  "id": "sched-2027-03-31-asobi-channel-service-ends-2027-終了",
+  "dedup_key": "asobi-channel-service-ends-2027",
+  "brand": "joint",
+  "subject": "ASOBI CHANNELサービス終了",
+  "kind": "終了",
+  "note": "23時59分の終了までASOBI CHANNELとシャニラジHBTKのアーカイブを見られる最終日",
+  "reserved_on": "2026-11-28",
+  "occurs_on": "2027-03-31",
+  "title": "ASOBI CHANNELのサービス終了と番組アーカイブの扱い",
+  "url": "https://x.com/imasnews765/status/2125935686410973566",
+  "source_type": "二次情報",
+  "facts": [
+   "ASOBI CHANNELのサービス終了日時: 2027年3月31日（水）23:59予定。",
+   "サービス終了後は動画コンテンツの配信を終了し、サービスページへアクセスできなくなる。",
+   "「アイドルマスター シャイニーカラーズ はばたきラジオステーション」のプレミアム会員向けアーカイブは、ASOBI CHANNELのサービス終了をもって公開終了し、その後視聴できなくなる。",
+   "「初星学園放送部」の一般会員向けアーカイブはASOBI CHANNELでの公開終了後、YouTubeで順次再公開予定。公開時期は決まり次第案内。",
+   "リンク: https://imasnews765.com/?p=32707",
+   "エンゲージメント: 高"
+  ],
+  "via": "grok",
+  "verify": "unconfirmed",
+  "event_date": "2027-03-31",
+  "deadline": "2027-03-31",
+  "src_candidate_id": "202611280237-grok-139"
+ },
+ {
+  "id": "sched-2027-03-31-asobi-channel-service-ends-2027-終了-src1",
+  "dedup_key": "asobi-channel-service-ends-2027",
+  "brand": "joint",
+  "subject": "ASOBI CHANNELサービス終了",
+  "kind": "終了",
+  "note": "23時59分の終了までASOBI CHANNELとシャニラジHBTKのアーカイブを見られる最終日",
+  "reserved_on": "2026-11-28",
+  "occurs_on": "2027-03-31",
+  "title": "ASOBI CHANNELが2027年3月31日にサービス終了",
+  "url": "https://dengekionline.com/article/202611/95196",
+  "source_type": "報道",
+  "facts": [
+   "バンダイナムコエンターテインメントは、動画配信・コミュニティサービス「ASOBI CHANNEL」を2027年3月31日23:59に終了する。",
+   "「ASOBI CHANNEL」の終了に伴い、「アイドルマスター シャイニーカラーズ はばたきラジオステーション（シャニラジHBTK）」のアーカイブは公開を終了する。",
+   "「初星学園放送部」（#1～#99）のアーカイブは、YouTubeで順次再公開される予定。",
+   "「ASOBI STORE（電子書籍）」は、現在実施中のメンテナンスから再開せず、サービスを終了する。",
+   "エンゲージメント: 高"
+  ],
+  "via": "explore",
+  "verify": "confirmed",
+  "deadline": "2027-03-31",
+  "src_candidate_id": "202611271836-explore-32",
+  "companion_of": "sched-2027-03-31-asobi-channel-service-ends-2027-終了",
+  "src_dedup_key": "asobi-channel-shutdown-2026"
  }
 ]

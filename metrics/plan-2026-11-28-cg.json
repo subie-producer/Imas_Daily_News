@@ -1,0 +1,674 @@
+{
+ "decisions": {
+  "cg-voice-earphone-restock-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/27号で再受注開始を記事化済み。締切は2027年1月で新事実なし"
+  },
+  "cinderella-yokohama-cosmoworld-collab-2026": {
+   "action": "article",
+   "angle": "よこはまコスモワールド物販は11月28・29日11〜15時が先着申込の整理券制で入場制限となる(出典更新)。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "変更後の整理券・事前申込スケジュールを本文と突き合わせて確認"
+  },
+  "imas-cinderella-vol2-cool-sega-kuji": {
+   "action": "article",
+   "angle": "セガ ラッキーくじオンライン「シンデレラガールズ Vol.2 クール」が11月27日に販売開始し、2027年1月12日まで1回840円で引ける。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "cg-sega-lucky-kuji-vol2-cool-2026・cinderella-sega-lucky-kuji-vol1-cuteを統合"
+  },
+  "cg-15th-anniversary-party-venue-cd-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "キー不一致の保険。cg-15th-party-venue-cd-2026側で対応"
+  },
+  "cinderella-sega-lucky-kuji-vol1-cute": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "imas-cinderella-vol2-cool-sega-kuji",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公式ニュース欄にVol.2告知が加わった更新。Vol.1延長は既報"
+  },
+  "cg-15th-party-ticket-update-2026": {
+   "action": "article",
+   "angle": "DAY2(11/29)の一般販売2次(先着)は本日23時まで。DAY1は当日券が0時から申し込める。",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "cg-15th-party-ticket-general-second-2026を統合"
+  },
+  "cinderella-15th-party-goods-2026": {
+   "action": "article",
+   "angle": "15周年公演の開催記念グッズ受注が始まり、出演アイドル全員分のお花畑デザインのシャドーボックスや総選挙MVグッズが登場した。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "受注期間はfactsに無く、執筆で出典を確認"
+  },
+  "cg-15th-anniversary-orchestra-goods-2026": {
+   "action": "article",
+   "angle": "15周年オーケストラコンサートの公式グッズ数量限定販売は、あす11月29日までで終了する。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "出典更新はASOBI STORE他サービス終了告知で読者に関わる変更なし。締切のトリガーで採用"
+  },
+  "cg-15th-memory-post-campaign-2026": {
+   "action": "article",
+   "angle": "「#祝シンデレラガールズ15周年」思い出投稿キャンペーンが12月4日23:59まで開催中で、15名にフォンタブ＆ストラップセットが当たる。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "cg-15th-anniversary-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-15th-anniversary-party-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "15周年当日の節目として公演開幕記事に含める"
+  },
+  "cg-popn-toybox-revival-ticket-2026": {
+   "action": "article",
+   "angle": "「Pop'n ToyBox!! もういっかい！」の現地チケットがアソビチケットで一般先着販売中で、申込は12月5日まで。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "cg-memory-pict-9th-february-2026": {
+   "action": "article",
+   "angle": "Memory Pict.第9弾「February」(一ノ瀬志希・成宮由愛)の受注は、あす11月29日までで終了する。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "cg-15th-party-ticket-general-second-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-15th-party-ticket-update-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "cg-sega-lucky-kuji-vol2-cool-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "imas-cinderella-vol2-cool-sega-kuji",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "cg-yokohama-cosmoworld-collab-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cinderella-yokohama-cosmoworld-collab-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "cg-famitsu-15th-anniversary-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-15th-anniversary-party-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "サービス開始日2011年11月28日の報道として15周年の記述に使う"
+  },
+  "cg-15th-fan-support-ads-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "同人・ファン主催",
+   "note": "ファン主催の応援広告で出典も未確認"
+  },
+  "cg-anastasia-flower-stand-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "同人・ファン主催",
+   "note": "ファン有志のフラワースタンド。個人投稿のみで出典不足"
+  },
+  "cg-15th-fan-itabag-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人の痛バッグ投稿。この面ではcultureを作らない"
+  },
+  "deresute-10th-tour-final-bd-2026": {
+   "action": "article",
+   "angle": "デレステ10thツアー千秋楽のBlu-ray BOXが2027年3月24日に発売され、Day1・Day2全曲とバンド密着映像などを収録する。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "準公式の投稿のみで未確認。執筆でコロムビア公式を確認"
+  },
+  "cg-apple-of-my-ai-goods-2026": {
+   "action": "article",
+   "angle": "「Apple of my アイ」公式グッズ事前販売の受注は、あす11月29日まで。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "cinderella-15th-orchestra-concert": {
+   "action": "article",
+   "angle": "15周年オーケストラコンサートのアソビストア一般会員先行(抽選)は、あす11月29日23時59分に締め切る。",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "cg-onmyoji-kyomafu-goods-2027": {
+   "action": "article",
+   "angle": "京まふ2026などで先行販売された陰陽師衣装の描き下ろしグッズ(8人)が、2027年2月下旬に一般発売される。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "二次情報のみ。出典が足りるかは執筆と校閲で判断"
+  },
+  "cg-cinderella-fes-blanc-2026-11": {
+   "action": "article",
+   "angle": "デレステのシンデレラフェス ブランは11月30日23時59分まで。セレクトピックアップで、プラチナガシャのSSレア提供割合が2倍。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "出典は攻略wikiのみ。終了2日前のトリガーで採用"
+  },
+  "cinderella-15th-anniversary-party-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-15th-anniversary-party-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "cg-15th-party-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-15th-anniversary-party-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "cg-15th-anniversary-party-2026-general": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-15th-anniversary-party-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "cg-15th-anniversary-party-bakusute-talk-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-15th-anniversary-party-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "DAY1終了後のYouTube振り返り生配信を開幕記事に含める"
+  },
+  "cinderella-athome-xr-live-apple-of-my-ai": {
+   "action": "article",
+   "angle": "「Apple of my アイ」(2027年2月・山形)の現地チケット一般会員先行の当落が、本日13時に発表される。",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "cg-apple-of-my-ai-general-presale-2027を統合"
+  },
+  "cg-15th-anniversary-party-2026": {
+   "action": "article",
+   "angle": "シンデレラガールズ15周年PARTYのDAY1が、きょう11月28日17時からKアリーナ横浜で開演。15周年当日で、配信と終演後の「ばくすて！とーく」もある。",
+   "purpose": "期日の知らせ",
+   "rank": "large",
+   "lead_score": 95,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "開幕・配信・振り返り生配信・15周年当日をまとめる"
+  },
+  "cg-15th-anniversary-party-2026-venue-goods": {
+   "action": "article",
+   "angle": "15周年PARTYの会場物販が、きょう10時〜17時にKアリーナ横浜の物販特設テントで始まる。会場限定CDと専用自販機のラベル缶も。",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "cg-15th-party-venue-cd-2026・cg-15th-anniversary-label-can-2026を統合"
+  },
+  "cg-apple-of-my-ai-general-presale-2027": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cinderella-athome-xr-live-apple-of-my-ai",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "cg-15th-party-venue-cd-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-15th-anniversary-party-2026-venue-goods",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "会場CD2枚組4,000円の販売開始を物販記事に含める"
+  },
+  "cinderella-15th-party-sales-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-15th-anniversary-party-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "cg-15th-anniversary-label-can-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-15th-anniversary-party-2026-venue-goods",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "会場販売は11/28・29。全国販売は11/30から"
+  },
+  "cg-15th-anniversary-party-2026-flower-stand": {
+   "action": "article",
+   "angle": "Cygamesフラワースタンド「Piece of Magic!!!!」がきょう9:30から開演までKアリーナ横浜のデッキで体験でき、限定ステッカーがもらえる(数量限定)。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "cg-cinderella-yokohama-cosmoworld-collab-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "よこはまコスモワールド物販は11月28・29日11〜15時が先着申込の整理券制で入場制限となる(出典更新)。",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "cinderella-yokohama-cosmoworld-collab-2026",
+    "candidate_ids": [
+     "update-f75a36a4a0c2",
+     "202611280237-grok-40"
+    ]
+   },
+   {
+    "slug": "cg-imas-cinderella-vol2-cool-sega-kuji",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "セガ ラッキーくじオンライン「シンデレラガールズ Vol.2 クール」が11月27日に販売開始し、2027年1月12日まで1回840円で引ける。",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "imas-cinderella-vol2-cool-sega-kuji",
+    "candidate_ids": [
+     "202611271235-watch-4",
+     "update-bda5056f240e",
+     "202611280237-grok-39"
+    ]
+   },
+   {
+    "slug": "cg-15th-party-ticket-update-2026",
+    "brand": "cg",
+    "rank": "medium",
+    "angle": "DAY2(11/29)の一般販売2次(先着)は本日23時まで。DAY1は当日券が0時から申し込める。",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "cg-15th-party-ticket-update-2026",
+    "candidate_ids": [
+     "202611272335-watch-0",
+     "202611280237-explore-4",
+     "202611280237-grok-25",
+     "202611280237-grok-145",
+     "202611280237-grok-147",
+     "202611280237-grok-154",
+     "202611280237-grok-158",
+     "sched-2026-11-28-cg-15th-party-ticket-update-2026-締切",
+     "sched-2026-11-28-cg-15th-party-ticket-update-2026-開幕",
+     "202611280237-grok-34"
+    ]
+   },
+   {
+    "slug": "cg-cinderella-15th-party-goods-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "15周年公演の開催記念グッズ受注が始まり、出演アイドル全員分のお花畑デザインのシャドーボックスや総選挙MVグッズが登場した。",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "cinderella-15th-party-goods-2026",
+    "candidate_ids": [
+     "202611272335-watch-6",
+     "202611280237-grok-148",
+     "202611280237-grok-203"
+    ]
+   },
+   {
+    "slug": "cg-15th-anniversary-orchestra-goods-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "15周年オーケストラコンサートの公式グッズ数量限定販売は、あす11月29日までで終了する。",
+    "purpose": "期日の知らせ",
+    "lead_score": 15,
+    "dedup_key": "cg-15th-anniversary-orchestra-goods-2026",
+    "candidate_ids": [
+     "update-20b8d0211853"
+    ]
+   },
+   {
+    "slug": "cg-15th-memory-post-campaign-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "「#祝シンデレラガールズ15周年」思い出投稿キャンペーンが12月4日23:59まで開催中で、15名にフォンタブ＆ストラップセットが当たる。",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "cg-15th-memory-post-campaign-2026",
+    "candidate_ids": [
+     "202611280237-watch-0",
+     "202611280237-grok-202"
+    ]
+   },
+   {
+    "slug": "cg-popn-toybox-revival-ticket-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "「Pop'n ToyBox!! もういっかい！」の現地チケットがアソビチケットで一般先着販売中で、申込は12月5日まで。",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "cg-popn-toybox-revival-ticket-2026",
+    "candidate_ids": [
+     "202611280237-grok-27"
+    ]
+   },
+   {
+    "slug": "cg-memory-pict-9th-february-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "Memory Pict.第9弾「February」(一ノ瀬志希・成宮由愛)の受注は、あす11月29日までで終了する。",
+    "purpose": "期日の知らせ",
+    "lead_score": 15,
+    "dedup_key": "cg-memory-pict-9th-february-2026",
+    "candidate_ids": [
+     "202611280237-grok-30",
+     "202611280237-grok-150",
+     "202611280237-grok-157"
+    ]
+   },
+   {
+    "slug": "cg-deresute-10th-tour-final-bd-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "デレステ10thツアー千秋楽のBlu-ray BOXが2027年3月24日に発売され、Day1・Day2全曲とバンド密着映像などを収録する。",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "deresute-10th-tour-final-bd-2026",
+    "candidate_ids": [
+     "202611280237-grok-144"
+    ]
+   },
+   {
+    "slug": "cg-apple-of-my-ai-goods-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "「Apple of my アイ」公式グッズ事前販売の受注は、あす11月29日まで。",
+    "purpose": "期日の知らせ",
+    "lead_score": 15,
+    "dedup_key": "cg-apple-of-my-ai-goods-2026",
+    "candidate_ids": [
+     "202611280237-grok-151",
+     "202611280237-grok-156"
+    ]
+   },
+   {
+    "slug": "cg-cinderella-15th-orchestra-concert",
+    "brand": "cg",
+    "rank": "medium",
+    "angle": "15周年オーケストラコンサートのアソビストア一般会員先行(抽選)は、あす11月29日23時59分に締め切る。",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "cinderella-15th-orchestra-concert",
+    "candidate_ids": [
+     "202611280237-grok-152"
+    ]
+   },
+   {
+    "slug": "cg-onmyoji-kyomafu-goods-2027",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "京まふ2026などで先行販売された陰陽師衣装の描き下ろしグッズ(8人)が、2027年2月下旬に一般発売される。",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "cg-onmyoji-kyomafu-goods-2027",
+    "candidate_ids": [
+     "202611270225-explore-2"
+    ]
+   },
+   {
+    "slug": "cg-cinderella-fes-blanc-2026-11",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "デレステのシンデレラフェス ブランは11月30日23時59分まで。セレクトピックアップで、プラチナガシャのSSレア提供割合が2倍。",
+    "purpose": "期日の知らせ",
+    "lead_score": 15,
+    "dedup_key": "cg-cinderella-fes-blanc-2026-11",
+    "candidate_ids": [
+     "sched-2026-11-27-cg-cinderella-fes-blanc-2026-11-締切前",
+     "sched-2026-11-27-cg-cinderella-fes-blanc-2026-11-締切前-src1",
+     "sched-2026-11-27-cg-cinderella-fes-blanc-2026-11-締切前-src2",
+     "sched-2026-11-27-cg-cinderella-fes-blanc-2026-11-締切前-src3"
+    ]
+   },
+   {
+    "slug": "cg-cinderella-athome-xr-live-apple-of-my-ai",
+    "brand": "cg",
+    "rank": "medium",
+    "angle": "「Apple of my アイ」(2027年2月・山形)の現地チケット一般会員先行の当落が、本日13時に発表される。",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "cinderella-athome-xr-live-apple-of-my-ai",
+    "candidate_ids": [
+     "sched-2026-11-28-cinderella-athome-xr-live-apple-of-my-ai-結果",
+     "sched-2026-11-28-cinderella-athome-xr-live-apple-of-my-ai-結果-src1",
+     "sched-2026-11-28-cinderella-athome-xr-live-apple-of-my-ai-結果-src2",
+     "sched-2026-11-28-cg-apple-of-my-ai-general-presale-2027-結果",
+     "sched-2026-11-28-cg-apple-of-my-ai-general-presale-2027-結果-src1"
+    ]
+   },
+   {
+    "slug": "cg-15th-anniversary-party-2026",
+    "brand": "cg",
+    "rank": "large",
+    "angle": "シンデレラガールズ15周年PARTYのDAY1が、きょう11月28日17時からKアリーナ横浜で開演。15周年当日で、配信と終演後の「ばくすて！とーく」もある。",
+    "purpose": "期日の知らせ",
+    "lead_score": 95,
+    "dedup_key": "cg-15th-anniversary-party-2026",
+    "candidate_ids": [
+     "sched-2026-11-28-cg-15th-anniversary-party-2026-開幕",
+     "sched-2026-11-28-cg-15th-anniversary-party-2026-開幕-src1",
+     "202611280237-grok-24",
+     "202611280237-grok-41",
+     "sched-2026-11-28-cinderella-15th-anniversary-party-2026-開幕",
+     "sched-2026-11-28-cg-15th-party-2026-開幕",
+     "sched-2026-11-28-cg-15th-anniversary-party-2026-general-開幕",
+     "sched-2026-11-28-cg-15th-anniversary-party-bakusute-talk-2026-開始",
+     "sched-2026-11-28-cinderella-15th-party-sales-2026-開幕",
+     "sched-2026-11-28-cinderella-15th-party-sales-2026-開幕-src1"
+    ]
+   },
+   {
+    "slug": "cg-15th-anniversary-party-2026-venue-goods",
+    "brand": "cg",
+    "rank": "medium",
+    "angle": "15周年PARTYの会場物販が、きょう10時〜17時にKアリーナ横浜の物販特設テントで始まる。会場限定CDと専用自販機のラベル缶も。",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "cg-15th-anniversary-party-2026-venue-goods",
+    "candidate_ids": [
+     "sched-2026-11-28-cg-15th-anniversary-party-2026-venue-goods-開始",
+     "sched-2026-11-28-cg-15th-anniversary-party-2026-venue-goods-開幕",
+     "sched-2026-11-28-cg-15th-party-venue-cd-2026-発売",
+     "sched-2026-11-28-cg-15th-party-venue-cd-2026-発売-src1",
+     "sched-2026-11-28-cg-15th-anniversary-label-can-2026-発売"
+    ]
+   },
+   {
+    "slug": "cg-15th-anniversary-party-2026-flower-stand",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "Cygamesフラワースタンド「Piece of Magic!!!!」がきょう9:30から開演までKアリーナ横浜のデッキで体験でき、限定ステッカーがもらえる(数量限定)。",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "cg-15th-anniversary-party-2026-flower-stand",
+    "candidate_ids": [
+     "sched-2026-11-28-cg-15th-anniversary-party-2026-flower-stand-開幕"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "cg-voice-earphone-restock-2026",
+    "reason": "既報",
+    "note": "11/27号で再受注開始を記事化済み。締切は2027年1月で新事実なし"
+   },
+   {
+    "dedup_key": "cg-15th-anniversary-party-venue-cd-2026",
+    "reason": "その他",
+    "note": "キー不一致の保険。cg-15th-party-venue-cd-2026側で対応"
+   },
+   {
+    "dedup_key": "cg-15th-fan-support-ads-2026",
+    "reason": "同人・ファン主催",
+    "note": "ファン主催の応援広告で出典も未確認"
+   },
+   {
+    "dedup_key": "cg-anastasia-flower-stand-2026",
+    "reason": "同人・ファン主催",
+    "note": "ファン有志のフラワースタンド。個人投稿のみで出典不足"
+   },
+   {
+    "dedup_key": "cg-15th-fan-itabag-2026",
+    "reason": "個人の話題",
+    "note": "個人の痛バッグ投稿。この面ではcultureを作らない"
+   }
+  ],
+  "cross_brand": []
+ }
+}

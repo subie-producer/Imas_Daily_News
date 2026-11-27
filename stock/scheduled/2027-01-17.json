@@ -359,5 +359,48 @@
   "src_candidate_id": "202611220221-grok-80",
   "companion_of": "sched-2027-01-17-tours-prime-match-fes-support-cards-2026-終了",
   "src_dedup_key": "tours-prime-match-fes-support-cards-2026"
+ },
+ {
+  "id": "sched-2027-01-17-prime-match-fes-2026-終了",
+  "dedup_key": "prime-match-fes-2026",
+  "brand": "joint",
+  "subject": "第1回プライムマッチフェス 開催期間終了",
+  "kind": "終了",
+  "note": "イベント最終日(25:59まで)で、マッチングに参加できる最後の日",
+  "reserved_on": "2026-11-28",
+  "title": "第1回プライムマッチフェス開催とSSSランク1位賞状",
+  "url": "https://x.com/TOURS_imas/status/2126239628424524217",
+  "source_type": "公式",
+  "facts": [
+   "✨プライムマッチフェス✨",
+   "決勝マッチングにて、ランクSSSの各グループの1位に輝いたプロデューサーさんには、カード風賞状を贈呈👑",
+   "実際に手にできるリアルな記念品ですよ。",
+   "遊び方はこちら✅",
+   "#ツアマス"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202611280237-grok-200"
+ },
+ {
+  "id": "sched-2027-01-17-prime-match-fes-2026-終了-src1",
+  "dedup_key": "prime-match-fes-2026",
+  "brand": "joint",
+  "subject": "第1回プライムマッチフェス 開催期間終了",
+  "kind": "終了",
+  "note": "イベント最終日(25:59まで)で、マッチングに参加できる最後の日",
+  "reserved_on": "2026-11-28",
+  "title": "アイドルマスター TOURS マイページ「第1回プライムマッチフェス 開催！」(2026-11-16)",
+  "url": "https://idolmaster-tours-w.bn-am.net/news/detail/59",
+  "source_type": "公式",
+  "facts": [
+   "公式告知のイベント開催期間は2026年11月19日（木）7:00 ～ 2027年1月17日（日）25:59。",
+   "決勝マッチングの開催期間は2027年1月11日（月）7:00～1月17日（日）25:59。"
+  ],
+  "via": "verified_fact",
+  "verify": "unconfirmed",
+  "src_candidate_id": "202611280237-grok-200",
+  "companion_of": "sched-2027-01-17-prime-match-fes-2026-終了",
+  "src_dedup_key": "prime-match-fes-2026"
  }
 ]

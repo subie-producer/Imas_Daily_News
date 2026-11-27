@@ -1,0 +1,26 @@
+{
+ "decisions": {
+  "765-never-end-idol-bluray-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/25の発売日記事に特装版の4枚組・BOX・フォトブック・数量限定・収録内容がすべてあり、新事実も当日のトリガーも無い"
+  }
+ },
+ "plan": {
+  "articles": [],
+  "dropped": [
+   {
+    "dedup_key": "765-never-end-idol-bluray-2026",
+    "reason": "既報",
+    "note": "11/25の発売日記事に特装版の4枚組・BOX・フォトブック・数量限定・収録内容がすべてあり、新事実も当日のトリガーも無い"
+   }
+  ],
+  "cross_brand": []
+ }
+}

@@ -358,5 +358,28 @@
   "src_candidate_id": "202611190229-explore-15",
   "companion_of": "sched-2027-03-24-million-x-stream-release-event-2027-発売",
   "src_dedup_key": "million-x-stream-theater-joint-release-2027"
+ },
+ {
+  "id": "sched-2027-03-24-deresute-10th-tour-final-bd-2026-発売",
+  "dedup_key": "deresute-10th-tour-final-bd-2026",
+  "brand": "cg",
+  "subject": "デレステ10th MEMORIAL LIVE Blu-ray BOX 発売",
+  "kind": "発売",
+  "note": "5枚組BD BOXの発売日。店頭・通販で購入できる",
+  "reserved_on": "2026-11-28",
+  "occurs_on": "2027-03-24",
+  "title": "デレステ10thツアー千秋楽Blu-ray BOX予約",
+  "url": "https://x.com/imas_columbia/status/2126270056963432831",
+  "source_type": "準公式",
+  "facts": [
+   "2027年3月24日発売。",
+   "Day1、Day2の全曲を収録。",
+   "オーディオコメンタリー、舞台裏メイキング、シンデレラバンド密着、衣装紹介映像などを収録。",
+   "リンク: https://shop.columbia.jp/shop/g/gP6130/",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "unconfirmed",
+  "src_candidate_id": "202611280237-grok-144"
  }
 ]

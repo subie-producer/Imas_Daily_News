@@ -1,0 +1,344 @@
+{
+ "decisions": {
+  "letora-datsumo-salon-stream-2026-11-26": {
+   "action": "roundup",
+   "angle": "ヴイアライヴ3人の配信・動画の動き(脱毛サロンシミュレーター、ACE COMBAT ZERO、ソーラン節)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "valiv-3rd-live-meeting-qonnect-as-one-2027": {
+   "action": "article",
+   "angle": "3rdLIVE＆MEETING公式グッズ事前受注は明日29日まで。お届けは3月中旬で、名古屋公演では間に合わない場合がある。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "締切3日以内"
+  },
+  "dsva-situation-voice-2026-11": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/26に記事化済み、新事実なし"
+  },
+  "valiv-official-space-2026-11-29": {
+   "action": "article",
+   "angle": "ヴイアラ公式Xで29日12時から、事前物販終了直前の公式スペース配信がある。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "valiv-online-1on1-14-results": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/27に当落発表の記事済み"
+  },
+  "tomori-manaka-birthday-online-live-2026-archive": {
+   "action": "article",
+   "angle": "灯里愛夏バースデーONLINE LIVE 2026のアーカイブチケットは29日18時まで、視聴は23時59分まで。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "締切3日以内"
+  },
+  "valiv-manaka-soran-short-2026-11-27": {
+   "action": "roundup",
+   "angle": "配信・動画の動き(愛夏と宇宙のソーラン節自由形)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "valiv-activity-survey-2026-11": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/27に記事済み、締切12/2はまだ4日先"
+  },
+  "kamizuru-ace-combat-zero-playthrough-2026": {
+   "action": "roundup",
+   "angle": "配信の動き(ACE COMBAT ZERO第1回、続きは12/2 20時)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "cosmo-shintakarajima-dance-2026-11-26": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/27のまとめ記事で紹介済み"
+  },
+  "letora-birthday-online-live-archive-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/26記事と同内容、締切12/13は先"
+  },
+  "valiv-machine-party-result-2026-11-25": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "valiv-machine-party-2026-11-25",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "valiv-machine-party-2026-11-25": {
+   "action": "article",
+   "angle": "ヴイアライヴ3人が『Machine Party』で3人コラボ配信し、デスゲームを上水流宇宙が勝ち抜いた。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "結果の素材を統合"
+  },
+  "valiv-3rdlive-meeting-2027": {
+   "action": "cross_brand",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "joint-v-aliv-3rd-live-ticket-2026",
+   "reason": "",
+   "note": "当落13時発表は合同面記事"
+  },
+  "valiv-2nd-live-premiere-2026": {
+   "action": "cross_brand",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "joint-v-aliv-3rd-live-ticket-2026",
+   "reason": "",
+   "note": "先行抽選結果は合同面記事"
+  },
+  "valiv-comic-episode-36": {
+   "action": "cross_brand",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "joint-v-aliv-3rd-live-ticket-2026",
+   "reason": "",
+   "note": "アソビストア先行の当落は合同面記事"
+  },
+  "valiv-3rdlive-meeting-ticket-early-2027": {
+   "action": "cross_brand",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "joint-v-aliv-3rd-live-ticket-2026",
+   "reason": "",
+   "note": "一般会員先行の結果は合同面記事"
+  },
+  "tomori-manaka-kpf2026-stage": {
+   "action": "article",
+   "angle": "KPF2026が北九州メッセ・あるあるCityで今日開幕し、灯里愛夏が無料ステージに出演する。",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "開幕当日、朝の整列・入場規制の案内あり"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "dsva-valiv-3rd-live-meeting-qonnect-as-one-2027",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "3rdLIVE＆MEETING公式グッズ事前受注は明日29日まで。お届けは3月中旬で、名古屋公演では間に合わない場合がある。",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "valiv-3rd-live-meeting-qonnect-as-one-2027",
+    "candidate_ids": [
+     "202611271836-watch-0",
+     "202611280237-grok-190"
+    ]
+   },
+   {
+    "slug": "dsva-valiv-official-space-2026-11-29",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "ヴイアラ公式Xで29日12時から、事前物販終了直前の公式スペース配信がある。",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "valiv-official-space-2026-11-29",
+    "candidate_ids": [
+     "202611280237-grok-122"
+    ]
+   },
+   {
+    "slug": "dsva-tomori-manaka-birthday-online-live-2026-archive",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "灯里愛夏バースデーONLINE LIVE 2026のアーカイブチケットは29日18時まで、視聴は23時59分まで。",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "tomori-manaka-birthday-online-live-2026-archive",
+    "candidate_ids": [
+     "202611280237-grok-124",
+     "202611280237-grok-188"
+    ]
+   },
+   {
+    "slug": "dsva-valiv-machine-party-2026-11-25",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "ヴイアライヴ3人が『Machine Party』で3人コラボ配信し、デスゲームを上水流宇宙が勝ち抜いた。",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "valiv-machine-party-2026-11-25",
+    "candidate_ids": [
+     "202611270225-grok-103",
+     "202611270225-grok-202",
+     "202611270225-grok-204",
+     "202611270225-grok-104"
+    ]
+   },
+   {
+    "slug": "dsva-tomori-manaka-kpf2026-stage",
+    "brand": "dsva",
+    "rank": "medium",
+    "angle": "KPF2026が北九州メッセ・あるあるCityで今日開幕し、灯里愛夏が無料ステージに出演する。",
+    "purpose": "期日の知らせ",
+    "lead_score": 60,
+    "dedup_key": "tomori-manaka-kpf2026-stage",
+    "candidate_ids": [
+     "sched-2026-11-28-tomori-manaka-kpf2026-stage-開幕"
+    ]
+   },
+   {
+    "slug": "dsva-ops-roundup",
+    "brand": "dsva",
+    "rank": "roundup",
+    "angle": "ヴイアライヴ3人の配信・動画の動き(脱毛サロンシミュレーター、ACE COMBAT ZERO、ソーラン節)",
+    "lead_score": 0,
+    "dedup_key": "letora-datsumo-salon-stream-2026-11-26",
+    "candidate_ids": [
+     "202611271235-explore-13",
+     "202611280237-grok-125",
+     "202611280237-grok-130",
+     "202611280237-grok-189",
+     "202611280237-grok-191",
+     "202611280237-grok-192",
+     "202611280237-grok-193",
+     "202611280237-grok-196",
+     "202611280237-grok-199",
+     "202611280237-grok-126",
+     "202611280237-grok-195",
+     "202611280237-grok-197",
+     "202611280237-grok-128",
+     "202611280237-grok-194"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "dsva-situation-voice-2026-11",
+    "reason": "既報",
+    "note": "11/26に記事化済み、新事実なし"
+   },
+   {
+    "dedup_key": "valiv-online-1on1-14-results",
+    "reason": "既報",
+    "note": "11/27に当落発表の記事済み"
+   },
+   {
+    "dedup_key": "valiv-activity-survey-2026-11",
+    "reason": "既報",
+    "note": "11/27に記事済み、締切12/2はまだ4日先"
+   },
+   {
+    "dedup_key": "cosmo-shintakarajima-dance-2026-11-26",
+    "reason": "既報",
+    "note": "11/27のまとめ記事で紹介済み"
+   },
+   {
+    "dedup_key": "letora-birthday-online-live-archive-2026",
+    "reason": "既報",
+    "note": "11/26記事と同内容、締切12/13は先"
+   }
+  ],
+  "cross_brand": [
+   {
+    "slug": "joint-v-aliv-3rd-live-ticket-2026",
+    "dedup_key": "valiv-3rdlive-meeting-2027",
+    "note": "当落13時発表は合同面記事"
+   },
+   {
+    "slug": "joint-v-aliv-3rd-live-ticket-2026",
+    "dedup_key": "valiv-2nd-live-premiere-2026",
+    "note": "先行抽選結果は合同面記事"
+   },
+   {
+    "slug": "joint-v-aliv-3rd-live-ticket-2026",
+    "dedup_key": "valiv-comic-episode-36",
+    "note": "アソビストア先行の当落は合同面記事"
+   },
+   {
+    "slug": "joint-v-aliv-3rd-live-ticket-2026",
+    "dedup_key": "valiv-3rdlive-meeting-ticket-early-2027",
+    "note": "一般会員先行の結果は合同面記事"
+   }
+  ]
+ }
+}

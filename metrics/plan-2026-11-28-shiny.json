@@ -1,0 +1,702 @@
+{
+ "decisions": {
+  "shiny-upcoming-idol-teaser-2026-11-27": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "27日18時登場は11/26・11/27号で既報。登場済み"
+  },
+  "shiny-iwe-digital-release-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-relight-axe8-illumination-stars-i-we-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ配信開始"
+  },
+  "shiny-itsunui-pattythree-2026": {
+   "action": "article",
+   "angle": "pattythreeの「一緒に暮らすぬい」(全3種・着せ替え可)の予約が11月27日に始まった。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-relight-axe8-illumination-stars-i-we-2026": {
+   "action": "article",
+   "angle": "Project \"ReLight\" AXE8第2弾、イルミネーションスターズ「I=WE」が配信開始され2DMVも公開された。",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 50,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-winter-festival-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "期間・ボーナス強化日程とも11/27号に掲載済み。新事実・当日トリガー無し"
+  },
+  "shiny-event-ketsujitsu-no-saki-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "期間・報酬とも11/26・11/27号に掲載済み"
+  },
+  "shiny-tsutaya-yujo-fumetsu-popup-2026": {
+   "action": "article",
+   "angle": "「友情不滅宣言」にオンライン受注限定の描き下ろし等身大パネル(全5種・33,000円、送料5,500円)が加わり、2027年2月28日まで受け付ける。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "出典の変更で品目追加(既報本文に無い)"
+  },
+  "shiny-hbt-k-noctchill-2026": {
+   "action": "roundup",
+   "angle": "配信・動画の運営情報(まったりHBTKノクチル回切り抜き)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-twinkle-collection-s-ticket-pack": {
+   "action": "roundup",
+   "angle": "開催中のガシャ・パッケージ販売(トワコレS-SSRセレクションパッケージ)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-twinkle-collection-p-ticket-pack": {
+   "action": "roundup",
+   "angle": "開催中のガシャ・パッケージ販売(トワコレP-SSRセレクションパッケージ)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-casting-mikoto-piece-pack": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-casting-collection-gal-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同キャスコレのピース付きパッケージ"
+  },
+  "shiny-casting-rinze-piece-pack": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-casting-collection-gal-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同キャスコレのピース付きパッケージ"
+  },
+  "shiny-zanko-mamimi-piece-pack": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-zanko-mamimi-stamp-gacha",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同ガシャのピース付きパッケージ"
+  },
+  "shiny-283-stage-asahi-costume": {
+   "action": "roundup",
+   "angle": "ゲーム内の更新(283ステージ衣装交換所にあさひ衣装追加)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-match-live-update-2026": {
+   "action": "roundup",
+   "angle": "ゲーム内の更新(MATCH LIVE更新)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-grefes-mikoto-ssr-update": {
+   "action": "roundup",
+   "angle": "ゲーム内の更新(グレフェスコインショップに美琴S-SSR追加)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-antica-taikanshiki-song": {
+   "action": "roundup",
+   "angle": "楽曲追加(アンティーカ「戴冠式は滅びの朝に」実装)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-winter-campaign-free-gacha-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-winter-campaign-wave1-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ウィンターCP2026の施策"
+  },
+  "shiny-prism-juri-birthday-gacha-2026": {
+   "action": "roundup",
+   "angle": "開催中のガシャ(シャニソン西城樹里誕生日記念ガシャ)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-style-collection-3-2026": {
+   "action": "article",
+   "angle": "SHINY Style COLLECTION第3弾(Fumage・彼岸流)のASOBI STORE受注は11月29日、あす締切。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-winter-1day-free-gacha-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-winter-campaign-wave1-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ウィンターCP2026の施策"
+  },
+  "shiny-web4koma-671": {
+   "action": "article",
+   "angle": "web4コマ第671話「至福の時間」が公開され、杜野凛世が主役。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 8,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-casting-theme-voice-gacha-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-casting-collection-gal-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "キャスコレ連動ガシャ"
+  },
+  "shiny-casting-fes-stepup-gacha-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-casting-collection-gal-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "キャスコレ向けステップアップ"
+  },
+  "shiny-casting-collection-gal-2026": {
+   "action": "article",
+   "angle": "限定シリーズ「キャスティングコレクション～ボクに優しいギャル編～」が開催され、凛世・美琴のP-SSRと連動ガシャ・ピース付きパッケージが登場した。",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-zanko-mamimi-stamp-gacha": {
+   "action": "article",
+   "angle": "AXE8シリーズ限定S-SSR【残光】田中摩美々が特別アイドルスタンプガシャで新登場し、ピース付きパッケージも販売される。",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 28,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-costume-gacha-2019-2022-revival": {
+   "action": "roundup",
+   "angle": "開催中のガシャ(復刻2019～2022コスチュームガシャ)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-costume-gacha-2023-revival": {
+   "action": "roundup",
+   "angle": "開催中のガシャ(復刻2023コスチュームガシャ)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-antica-guaranteed-stepup-2026": {
+   "action": "roundup",
+   "angle": "開催中のガシャ(アンティーカ確定ステップアップ)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-winter-stamp-gacha-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-winter-campaign-wave1-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ウィンターCP2026の施策"
+  },
+  "shiny-scenario-ketsujitsu-rerun-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-event-ketsujitsu-no-saki-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ復刻イベント(既報)"
+  },
+  "shiny-feather-jewel-sale-2026": {
+   "action": "roundup",
+   "angle": "ジュエルセール(フェザージュエル増量セール)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-winter-missions-wave1-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-winter-campaign-wave1-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ウィンターCP2026の施策"
+  },
+  "shiny-winter-campaign-wave1-2026": {
+   "action": "article",
+   "angle": "ウィンターキャンペーン2026第1弾が始まり、最大370連の無料ガシャ、限定入りスタンプガシャ、特別ミッションなどが用意された。",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 35,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "noctchill-questionnaire-2027": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/27号で記事化済み。締切12/6でトリガー無し"
+  },
+  "noctchill-goods-presale-2027": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/27号で記事化済み。締切12/6でトリガー無し"
+  },
+  "shiny-msp-fuwa-face-restock-2026": {
+   "action": "roundup",
+   "angle": "グッズの運営情報(MSPふわふぇいすぬいぐるみ再入荷)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-sweets-paradise-goods-online-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "通販・期間は既報。配送遅延注記の削除のみで読者に関わる変更無し"
+  },
+  "shiny-shiny-competition-2026-11": {
+   "action": "article",
+   "angle": "シャニソン「シャイニーコンペティション」は本日20:59が最終日で、イベントPt集めのプロデュースができる。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-prelude-collection-chiyuki-2026-11": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "11/27 11:59に終了済み"
+  },
+  "shiny-noctchill-asobi-general-2027": {
+   "action": "article",
+   "angle": "ノクチル単独ライブのアソビストア一般会員先行・ティーン割は12月1日23時59分締切まであと3日。",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-noctchill-live-2027": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-noctchill-asobi-general-2027",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ先行の締切"
+  },
+  "shiny-orchestra-concert-2027-radiant-chord": {
+   "action": "article",
+   "angle": "「Radiant Chord」ゲーム先行の申込は12月1日23時59分締切まであと3日。ゲーム内「お知らせ」から申し込む。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "shiny-itsunui-pattythree-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "pattythreeの「一緒に暮らすぬい」(全3種・着せ替え可)の予約が11月27日に始まった。",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "shiny-itsunui-pattythree-2026",
+    "candidate_ids": [
+     "202611271836-watch-8"
+    ]
+   },
+   {
+    "slug": "shiny-relight-axe8-illumination-stars-i-we-2026",
+    "brand": "shiny",
+    "rank": "medium",
+    "angle": "Project \"ReLight\" AXE8第2弾、イルミネーションスターズ「I=WE」が配信開始され2DMVも公開された。",
+    "purpose": "新情報",
+    "lead_score": 50,
+    "dedup_key": "shiny-relight-axe8-illumination-stars-i-we-2026",
+    "candidate_ids": [
+     "202611271836-watch-10",
+     "202611271235-explore-5"
+    ]
+   },
+   {
+    "slug": "shiny-tsutaya-yujo-fumetsu-popup-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "「友情不滅宣言」にオンライン受注限定の描き下ろし等身大パネル(全5種・33,000円、送料5,500円)が加わり、2027年2月28日まで受け付ける。",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "shiny-tsutaya-yujo-fumetsu-popup-2026",
+    "candidate_ids": [
+     "update-17d228bbbfcb"
+    ]
+   },
+   {
+    "slug": "shiny-style-collection-3-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "SHINY Style COLLECTION第3弾(Fumage・彼岸流)のASOBI STORE受注は11月29日、あす締切。",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "shiny-style-collection-3-2026",
+    "candidate_ids": [
+     "202611280237-grok-65",
+     "202611280237-grok-169",
+     "202611280237-grok-173",
+     "202611280237-grok-174"
+    ]
+   },
+   {
+    "slug": "shiny-web4koma-671",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "web4コマ第671話「至福の時間」が公開され、杜野凛世が主役。",
+    "purpose": "新情報",
+    "lead_score": 8,
+    "dedup_key": "shiny-web4koma-671",
+    "candidate_ids": [
+     "202611280237-grok-67"
+    ]
+   },
+   {
+    "slug": "shiny-casting-collection-gal-2026",
+    "brand": "shiny",
+    "rank": "medium",
+    "angle": "限定シリーズ「キャスティングコレクション～ボクに優しいギャル編～」が開催され、凛世・美琴のP-SSRと連動ガシャ・ピース付きパッケージが登場した。",
+    "purpose": "新情報",
+    "lead_score": 30,
+    "dedup_key": "shiny-casting-collection-gal-2026",
+    "candidate_ids": [
+     "202611280237-grok-70",
+     "202611280237-grok-170",
+     "202611280237-grok-171",
+     "202611280237-grok-56",
+     "202611280237-grok-57",
+     "202611280237-grok-68",
+     "202611280237-grok-69"
+    ]
+   },
+   {
+    "slug": "shiny-zanko-mamimi-stamp-gacha",
+    "brand": "shiny",
+    "rank": "medium",
+    "angle": "AXE8シリーズ限定S-SSR【残光】田中摩美々が特別アイドルスタンプガシャで新登場し、ピース付きパッケージも販売される。",
+    "purpose": "新情報",
+    "lead_score": 28,
+    "dedup_key": "shiny-zanko-mamimi-stamp-gacha",
+    "candidate_ids": [
+     "202611280237-grok-71",
+     "202611280237-grok-172",
+     "202611280237-grok-58"
+    ]
+   },
+   {
+    "slug": "shiny-winter-campaign-wave1-2026",
+    "brand": "shiny",
+    "rank": "medium",
+    "angle": "ウィンターキャンペーン2026第1弾が始まり、最大370連の無料ガシャ、限定入りスタンプガシャ、特別ミッションなどが用意された。",
+    "purpose": "新情報",
+    "lead_score": 35,
+    "dedup_key": "shiny-winter-campaign-wave1-2026",
+    "candidate_ids": [
+     "202611280237-grok-80",
+     "202611280237-grok-63",
+     "202611280237-grok-66",
+     "202611280237-grok-75",
+     "202611280237-grok-79"
+    ]
+   },
+   {
+    "slug": "shiny-shiny-competition-2026-11",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "シャニソン「シャイニーコンペティション」は本日20:59が最終日で、イベントPt集めのプロデュースができる。",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "shiny-shiny-competition-2026-11",
+    "candidate_ids": [
+     "202611260224-explore-5",
+     "sched-2026-11-28-shiny-shiny-competition-2026-11-締切",
+     "sched-2026-11-28-shiny-shiny-competition-2026-11-締切-src1"
+    ]
+   },
+   {
+    "slug": "shiny-noctchill-asobi-general-2027",
+    "brand": "shiny",
+    "rank": "medium",
+    "angle": "ノクチル単独ライブのアソビストア一般会員先行・ティーン割は12月1日23時59分締切まであと3日。",
+    "purpose": "期日の知らせ",
+    "lead_score": 60,
+    "dedup_key": "shiny-noctchill-asobi-general-2027",
+    "candidate_ids": [
+     "sched-2026-11-28-shiny-noctchill-asobi-general-2027-締切前",
+     "sched-2026-11-28-shiny-noctchill-asobi-general-2027-締切前-src1",
+     "sched-2026-11-28-shiny-noctchill-asobi-general-2027-締切前-src2",
+     "sched-2026-11-28-shiny-noctchill-live-2027-締切前",
+     "sched-2026-11-28-shiny-noctchill-live-2027-締切前-src1"
+    ]
+   },
+   {
+    "slug": "shiny-orchestra-concert-2027-radiant-chord",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "「Radiant Chord」ゲーム先行の申込は12月1日23時59分締切まであと3日。ゲーム内「お知らせ」から申し込む。",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "shiny-orchestra-concert-2027-radiant-chord",
+    "candidate_ids": [
+     "sched-2026-11-28-shiny-orchestra-concert-2027-radiant-chord-締切前",
+     "sched-2026-11-28-shiny-orchestra-concert-2027-radiant-chord-締切前-src1"
+    ]
+   },
+   {
+    "slug": "shiny-ops-roundup",
+    "brand": "shiny",
+    "rank": "roundup",
+    "angle": "配信・動画の運営情報(まったりHBTKノクチル回切り抜き)",
+    "lead_score": 0,
+    "dedup_key": "shiny-hbt-k-noctchill-2026",
+    "candidate_ids": [
+     "202611280237-grok-53",
+     "202611280237-grok-54",
+     "202611280237-grok-55",
+     "202611280237-grok-59",
+     "202611280237-grok-60",
+     "202611280237-grok-61",
+     "202611280237-grok-62",
+     "202611280237-grok-64",
+     "202611280237-grok-72",
+     "202611280237-grok-73",
+     "202611280237-grok-74",
+     "202611280237-grok-78",
+     "202611280237-grok-83"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "shiny-upcoming-idol-teaser-2026-11-27",
+    "reason": "既報",
+    "note": "27日18時登場は11/26・11/27号で既報。登場済み"
+   },
+   {
+    "dedup_key": "shiny-winter-festival-2026",
+    "reason": "既報",
+    "note": "期間・ボーナス強化日程とも11/27号に掲載済み。新事実・当日トリガー無し"
+   },
+   {
+    "dedup_key": "shiny-event-ketsujitsu-no-saki-2026",
+    "reason": "既報",
+    "note": "期間・報酬とも11/26・11/27号に掲載済み"
+   },
+   {
+    "dedup_key": "noctchill-questionnaire-2027",
+    "reason": "既報",
+    "note": "11/27号で記事化済み。締切12/6でトリガー無し"
+   },
+   {
+    "dedup_key": "noctchill-goods-presale-2027",
+    "reason": "既報",
+    "note": "11/27号で記事化済み。締切12/6でトリガー無し"
+   },
+   {
+    "dedup_key": "shiny-sweets-paradise-goods-online-2026",
+    "reason": "既報",
+    "note": "通販・期間は既報。配送遅延注記の削除のみで読者に関わる変更無し"
+   },
+   {
+    "dedup_key": "shiny-prelude-collection-chiyuki-2026-11",
+    "reason": "その他",
+    "note": "11/27 11:59に終了済み"
+   },
+   {
+    "dedup_key": "shiny-scenario-ketsujitsu-rerun-2026",
+    "reason": "既報",
+    "note": "不採用の主題 shiny-event-ketsujitsu-no-saki-2026 へ統合: 期間・報酬とも11/26・11/27号に掲載済み"
+   }
+  ],
+  "cross_brand": []
+ }
+}

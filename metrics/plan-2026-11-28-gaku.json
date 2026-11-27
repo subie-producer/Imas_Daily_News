@@ -1,0 +1,436 @@
+{
+ "decisions": {
+  "shiny-kawaii-season-chibiguru-2027": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/26号に3カ月・13種の内容を既報。新事実なし"
+  },
+  "gaku-update-2026-39": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/27号に開催告知を既報。当日のトリガーなし"
+  },
+  "gaku-ambalance-release-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-update-2026-23",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ配信開始"
+  },
+  "gaku-ichiban-kuji-part7-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/27号に店頭・オンライン販売を既報"
+  },
+  "twinkle-rabbit-poster-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "出典の更新は閲覧数など表示の変化のみ。展示は11/27号で既報"
+  },
+  "gaku-kaigo-story-event-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/27号に開催を既報。新事実・締切接近なし(終了12/8)"
+  },
+  "gaku-unbalance-single-release-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-update-2026-23",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ配信開始"
+  },
+  "ichiban-kuji-part7-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/27号と10/21号に既報"
+  },
+  "gaku-curtainsoul-goods-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "出典の更新は商品一覧の入れ替わり(まどマギ等の他作品含む)で、学マスの新事実なし"
+  },
+  "gaku-tsubame-garaku-road-gasha-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-update-2026-23",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "「アンバランス」MVのスタッフ情報。同じ施策"
+  },
+  "gaku-unbalance-music-video-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-update-2026-23",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "MV公開とスタッフクレジットは配信開始の記事に統合"
+  },
+  "gaku-dokago-first-single-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "価格・特典・仕様とも11/16号で既報。発売は2027年4月"
+  },
+  "gaku-dokago-story-event-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/27号の記事と同内容"
+  },
+  "gaku-dokago-gacha-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/27号に開催と新カードを既報(SRカードのみ未掲載だが小さい)"
+  },
+  "gaku-memory-outfit-events-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11/16号に既報"
+  },
+  "gaku-kurai-ai-mv-two-million-2026": {
+   "action": "article",
+   "angle": "乖轟ではなく、『クライア』のMusic Videoが200万再生を突破した。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-update-2026-22": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-update-2026-23",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ配信開始"
+  },
+  "gaku-mission-pass-2026-11": {
+   "action": "article",
+   "angle": "11月ミッションパスは12月1日4時59分の終了まであと3日で、プレミアム報酬は最大5,000ジュエル。",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "jewel-sale-2026": {
+   "action": "article",
+   "angle": "ジュエル12,300個を9,800円で買えるセールが12月1日10時59分まで、あと3日。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-anniversary-pack-2026": {
+   "action": "article",
+   "angle": "2.5thアニバーサリー前夜祭パック(ジュエル3,000個)の販売が12月1日10時59分に終了する、あと3日。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-update-2026-23": {
+   "action": "article",
+   "angle": "乖轟「アンバランス」が今日0時からサブスク配信・DL販売を開始し、前夜公開のMVのスタッフも判明した。",
+   "purpose": "新情報",
+   "rank": "large",
+   "lead_score": 85,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "kanae-implementation-gift": {
+   "action": "article",
+   "angle": "氷渡香名江登場記念プレゼント(ジュエル2,500個など)の受け取りは12月1日10時59分まで、あと3日。",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-unbalance-release-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-update-2026-23",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ配信開始。MV公開の告知も統合"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "gaku-kurai-ai-mv-two-million-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "乖轟ではなく、『クライア』のMusic Videoが200万再生を突破した。",
+    "purpose": "新情報",
+    "lead_score": 5,
+    "dedup_key": "gaku-kurai-ai-mv-two-million-2026",
+    "candidate_ids": [
+     "202611280237-grok-119"
+    ]
+   },
+   {
+    "slug": "gaku-mission-pass-2026-11",
+    "brand": "gaku",
+    "rank": "medium",
+    "angle": "11月ミッションパスは12月1日4時59分の終了まであと3日で、プレミアム報酬は最大5,000ジュエル。",
+    "purpose": "期日の知らせ",
+    "lead_score": 15,
+    "dedup_key": "gaku-mission-pass-2026-11",
+    "candidate_ids": [
+     "sched-2026-11-27-gaku-mission-pass-2026-11-締切前",
+     "sched-2026-11-27-gaku-mission-pass-2026-11-締切前-src1",
+     "sched-2026-11-27-gaku-mission-pass-2026-11-締切前-src3",
+     "sched-2026-11-27-gaku-mission-pass-2026-11-締切前-src4",
+     "sched-2026-11-27-gaku-mission-pass-2026-11-締切前-src5",
+     "sched-2026-11-27-gaku-mission-pass-2026-11-締切前-src6",
+     "sched-2026-11-27-gaku-mission-pass-2026-11-締切前-src7",
+     "sched-2026-11-27-gaku-mission-pass-2026-11-締切前-src8",
+     "sched-2026-11-28-gaku-mission-pass-2026-11-締切前",
+     "sched-2026-11-28-gaku-mission-pass-2026-11-締切前-src1",
+     "sched-2026-11-28-gaku-mission-pass-2026-11-締切前-src2",
+     "sched-2026-11-28-gaku-mission-pass-2026-11-締切前-src3"
+    ]
+   },
+   {
+    "slug": "gaku-jewel-sale-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "ジュエル12,300個を9,800円で買えるセールが12月1日10時59分まで、あと3日。",
+    "purpose": "期日の知らせ",
+    "lead_score": 10,
+    "dedup_key": "jewel-sale-2026",
+    "candidate_ids": [
+     "sched-2026-11-28-jewel-sale-2026-締切前"
+    ]
+   },
+   {
+    "slug": "gaku-anniversary-pack-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "2.5thアニバーサリー前夜祭パック(ジュエル3,000個)の販売が12月1日10時59分に終了する、あと3日。",
+    "purpose": "期日の知らせ",
+    "lead_score": 10,
+    "dedup_key": "gaku-anniversary-pack-2026",
+    "candidate_ids": [
+     "sched-2026-11-28-gaku-anniversary-pack-2026-締切前",
+     "sched-2026-11-28-gaku-anniversary-pack-2026-締切前-src1",
+     "sched-2026-11-28-gaku-anniversary-pack-2026-締切前-src2",
+     "sched-2026-11-28-gaku-anniversary-pack-2026-締切前-src3"
+    ]
+   },
+   {
+    "slug": "gaku-update-2026-23",
+    "brand": "gaku",
+    "rank": "large",
+    "angle": "乖轟「アンバランス」が今日0時からサブスク配信・DL販売を開始し、前夜公開のMVのスタッフも判明した。",
+    "purpose": "新情報",
+    "lead_score": 85,
+    "dedup_key": "gaku-update-2026-23",
+    "candidate_ids": [
+     "sched-2026-11-28-gaku-update-2026-23-開始",
+     "sched-2026-11-28-gaku-update-2026-23-開始-src1",
+     "sched-2026-11-28-gaku-update-2026-23-開始-src2",
+     "sched-2026-11-28-gaku-update-2026-23-開始-src3",
+     "sched-2026-11-28-gaku-update-2026-23-開始-src4",
+     "sched-2026-11-28-gaku-update-2026-23-開始-src5",
+     "202611270734-explore-17",
+     "202611271836-explore-26",
+     "202611280237-explore-17",
+     "202611280237-grok-113",
+     "202611280237-grok-182",
+     "202611280237-grok-183",
+     "202611280237-grok-184",
+     "202611280237-grok-186",
+     "202611280237-grok-120",
+     "sched-2026-11-28-gaku-unbalance-release-2026-発売",
+     "sched-2026-11-28-gaku-unbalance-release-2026-発売-src1",
+     "sched-2026-11-28-gaku-unbalance-release-2026-発売-src2"
+    ]
+   },
+   {
+    "slug": "gaku-kanae-implementation-gift",
+    "brand": "gaku",
+    "rank": "medium",
+    "angle": "氷渡香名江登場記念プレゼント(ジュエル2,500個など)の受け取りは12月1日10時59分まで、あと3日。",
+    "purpose": "期日の知らせ",
+    "lead_score": 15,
+    "dedup_key": "kanae-implementation-gift",
+    "candidate_ids": [
+     "sched-2026-11-28-kanae-implementation-gift-締切前",
+     "sched-2026-11-28-kanae-implementation-gift-締切前-src1",
+     "sched-2026-11-28-kanae-implementation-gift-締切前-src2",
+     "sched-2026-11-28-kanae-implementation-gift-締切前-src3",
+     "sched-2026-11-28-kanae-implementation-gift-締切前-src4",
+     "sched-2026-11-28-kanae-implementation-gift-締切前-src5",
+     "sched-2026-11-28-kanae-implementation-gift-締切前-src6",
+     "sched-2026-11-28-kanae-implementation-gift-締切前-src7",
+     "sched-2026-11-28-kanae-implementation-gift-締切前-src8",
+     "sched-2026-11-28-kanae-implementation-gift-締切前-src9",
+     "sched-2026-11-28-kanae-implementation-gift-締切前-src10",
+     "sched-2026-11-28-kanae-implementation-gift-締切前-src11",
+     "sched-2026-11-28-kanae-implementation-gift-締切前-src12",
+     "sched-2026-11-28-kanae-implementation-gift-締切前-src13",
+     "sched-2026-11-28-kanae-implementation-gift-締切前-src14"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "shiny-kawaii-season-chibiguru-2027",
+    "reason": "既報",
+    "note": "11/26号に3カ月・13種の内容を既報。新事実なし"
+   },
+   {
+    "dedup_key": "gaku-update-2026-39",
+    "reason": "既報",
+    "note": "11/27号に開催告知を既報。当日のトリガーなし"
+   },
+   {
+    "dedup_key": "gaku-ichiban-kuji-part7-2026",
+    "reason": "既報",
+    "note": "11/27号に店頭・オンライン販売を既報"
+   },
+   {
+    "dedup_key": "twinkle-rabbit-poster-2026",
+    "reason": "その他",
+    "note": "出典の更新は閲覧数など表示の変化のみ。展示は11/27号で既報"
+   },
+   {
+    "dedup_key": "gaku-kaigo-story-event-2026",
+    "reason": "既報",
+    "note": "11/27号に開催を既報。新事実・締切接近なし(終了12/8)"
+   },
+   {
+    "dedup_key": "ichiban-kuji-part7-2026",
+    "reason": "既報",
+    "note": "11/27号と10/21号に既報"
+   },
+   {
+    "dedup_key": "gaku-curtainsoul-goods-2026",
+    "reason": "その他",
+    "note": "出典の更新は商品一覧の入れ替わり(まどマギ等の他作品含む)で、学マスの新事実なし"
+   },
+   {
+    "dedup_key": "gaku-dokago-first-single-2026",
+    "reason": "既報",
+    "note": "価格・特典・仕様とも11/16号で既報。発売は2027年4月"
+   },
+   {
+    "dedup_key": "gaku-dokago-story-event-2026",
+    "reason": "既報",
+    "note": "11/27号の記事と同内容"
+   },
+   {
+    "dedup_key": "gaku-dokago-gacha-2026",
+    "reason": "既報",
+    "note": "11/27号に開催と新カードを既報(SRカードのみ未掲載だが小さい)"
+   },
+   {
+    "dedup_key": "gaku-memory-outfit-events-2026",
+    "reason": "既報",
+    "note": "11/16号に既報"
+   }
+  ],
+  "cross_brand": []
+ }
+}

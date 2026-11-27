@@ -1,0 +1,212 @@
+{
+ "decisions": {
+  "million-half-anniversary-39-gacha-vol-1-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-27のミリシタ運営情報まとめで同内容を記事化済み。新事実・当日トリガー無し"
+  },
+  "million-fes-selection-ticket-set-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-27のまとめで価格・内容を記事化済み"
+  },
+  "million-year-end-shs-selection-ticket-set-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-27のまとめで価格・内容を記事化済み"
+  },
+  "million-november-jewel-bonus-2026": {
+   "action": "article",
+   "angle": "WEB STOREに限定ピックアップ商品(half anniversary edition III、3万円、2回購入可)が加わり、9.5周年ジュエルセットも登場した。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "出典の変更で新商品が追加。9.5周年ジュエルセットの素材もここへ統合"
+  },
+  "million-kotobukiya-year-end-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "11-27に同内容を記事化済み。新事実・当日トリガー無し"
+  },
+  "million-95th-anniversary-livestream-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-november-jewel-bonus-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "配信は11-27に既報。新事実は9.5周年ジュエルセットのみで、WEB STOREの記事へ統合"
+  },
+  "million-platinum-star-treasure-dance-dance-dance-2026": {
+   "action": "article",
+   "angle": "ミリシタでプラチナスタートレジャー「ダンス・ダンス・ダンス」が11月30日15時から始まる予定で、ランキング報酬はSR三浦あずさ。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "開催予告で新規。開始は2日後"
+  },
+  "million-idol-grand-prix-november-flash-gp-medal-2026": {
+   "action": "article",
+   "angle": "アイドルグランプリ11月の特別プレゼント「フラッシュGPメダル」の受け取り・使用期限は11月30日23時59分。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "期限まで3日以内。単独の期限なので roundup に入れない"
+  },
+  "fan-miya-memorial-main-commu-stream-2026-11-27": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人の配信終了報告の投稿"
+  },
+  "medicos-cyberplanet-popup-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-cyber-planet-popup-shop-mail-order-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ事後通販の締切前予約。同じ出典ページ"
+  },
+  "million-cyber-planet-popup-shop-mail-order-2026": {
+   "action": "article",
+   "angle": "「Cyber Planet」POP UP SHOPの事後通販(MEDICOS ONLINE SHOP)の受注は12月1日で終わる。残り3日で、1,000円ごとに特典カードが付く。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 40,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(締切前)。締切3日前というトリガーあり"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "million-november-jewel-bonus-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "WEB STOREに限定ピックアップ商品(half anniversary edition III、3万円、2回購入可)が加わり、9.5周年ジュエルセットも登場した。",
+    "purpose": "新情報",
+    "lead_score": 25,
+    "dedup_key": "million-november-jewel-bonus-2026",
+    "candidate_ids": [
+     "update-67b2f149dff0",
+     "202611271836-explore-18",
+     "202611280237-grok-51",
+     "202611280237-grok-164",
+     "202611280237-grok-204",
+     "202611280237-explore-5"
+    ]
+   },
+   {
+    "slug": "million-platinum-star-treasure-dance-dance-dance-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "ミリシタでプラチナスタートレジャー「ダンス・ダンス・ダンス」が11月30日15時から始まる予定で、ランキング報酬はSR三浦あずさ。",
+    "purpose": "新情報",
+    "lead_score": 30,
+    "dedup_key": "million-platinum-star-treasure-dance-dance-dance-2026",
+    "candidate_ids": [
+     "202611280237-grok-45"
+    ]
+   },
+   {
+    "slug": "million-idol-grand-prix-november-flash-gp-medal-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "アイドルグランプリ11月の特別プレゼント「フラッシュGPメダル」の受け取り・使用期限は11月30日23時59分。",
+    "purpose": "期日の知らせ",
+    "lead_score": 10,
+    "dedup_key": "million-idol-grand-prix-november-flash-gp-medal-2026",
+    "candidate_ids": [
+     "202611280237-grok-46"
+    ]
+   },
+   {
+    "slug": "million-cyber-planet-popup-shop-mail-order-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "「Cyber Planet」POP UP SHOPの事後通販(MEDICOS ONLINE SHOP)の受注は12月1日で終わる。残り3日で、1,000円ごとに特典カードが付く。",
+    "purpose": "期日の知らせ",
+    "lead_score": 40,
+    "dedup_key": "million-cyber-planet-popup-shop-mail-order-2026",
+    "candidate_ids": [
+     "sched-2026-11-28-million-cyber-planet-popup-shop-mail-order-2026-締切前",
+     "sched-2026-11-28-medicos-cyberplanet-popup-2026-締切前",
+     "sched-2026-11-28-medicos-cyberplanet-popup-2026-締切前-src1"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "million-half-anniversary-39-gacha-vol-1-2026",
+    "reason": "既報",
+    "note": "11-27のミリシタ運営情報まとめで同内容を記事化済み。新事実・当日トリガー無し"
+   },
+   {
+    "dedup_key": "million-fes-selection-ticket-set-2026",
+    "reason": "既報",
+    "note": "11-27のまとめで価格・内容を記事化済み"
+   },
+   {
+    "dedup_key": "million-year-end-shs-selection-ticket-set-2026",
+    "reason": "既報",
+    "note": "11-27のまとめで価格・内容を記事化済み"
+   },
+   {
+    "dedup_key": "million-kotobukiya-year-end-2026",
+    "reason": "既報",
+    "note": "11-27に同内容を記事化済み。新事実・当日トリガー無し"
+   },
+   {
+    "dedup_key": "fan-miya-memorial-main-commu-stream-2026-11-27",
+    "reason": "個人の話題",
+    "note": "個人の配信終了報告の投稿"
+   }
+  ],
+  "cross_brand": []
+ }
+}

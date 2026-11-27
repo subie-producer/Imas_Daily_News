@@ -1415,6 +1415,8 @@ x_posts:
 
 # --- リンク元から引き継いだ種別(リンク先1つずつ。キーは pipelib.link_key)。合議がリンク元の告知と関係していると確かめたものだけ(classify_sources.inherit_from_links)。リンク先そのものの種別より強いときだけ効く ---
 link_types:
+  youtube.com/watch?v=tH_z4e2wVC8: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/TomoriManaka/status/2125790778190610838(公式)。告知された灯里愛夏と十河ののはの深夜雑談配信の動画
+  youtube.com/watch?v=D8nRMAkHK1Q: 公式         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/KamizuruCosmo/status/2126327663820435756(公式)。同じ11/27の『ACE COMBAT ZERO』配信の動画で、告知と一致
   www.segaluckykujionline.net/kuji/imas-cinderella_vol2: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://idolmaster-official.jp/news/01_20457(公式)。くじ発売の告知。リンク先は同じくじの販売ページ
   shop.asobistore.jp/feature/cg_15th_fyo: 公式  # リンク元から引き継ぎ(合議で関係を確認): https://idolmaster-official.jp/news/01_20435(公式)。PARTY開催記念グッズ告知の特設サイトと同じページ
   asobiticket2.asobistore.jp/receptions/bebd8d4b-9a4f-4c9f-b224-35d1808ddc84: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://idolmaster-official.jp/news/01_20333(公式)。告知のオケコン一般先行受付と同じ受付URLのページ

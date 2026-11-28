@@ -594,6 +594,21 @@
    "changed": 40,
    "elapsed_s": 101,
    "cycle_days_actual": 2.1
+  },
+  {
+   "at": "2026-11-28T23:41:13+09:00",
+   "cap": 69,
+   "parallel": 5,
+   "runs_per_day": 4,
+   "cycle_days": 1.97,
+   "oldest_age_h": 568.1,
+   "targets": 545,
+   "chosen": 69,
+   "tried": 69,
+   "checked": 65,
+   "changed": 49,
+   "elapsed_s": 178,
+   "cycle_days_actual": 2.1
   }
  ]
 }
